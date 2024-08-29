@@ -1,0 +1,114 @@
+'use strict';
+
+const { Routines } = require('../models/Routines');
+const { OriginsDatas } = require('../models/OriginsDatas');
+const { StatusRegs } = require('../models/StatusRegs');
+const { Users } = require('../models/Users');
+const modules = require('../catalogs/modules.json');
+const { Modules } = require('../models/Modules');
+const { Utils } = require('../../controllers/utils/Utils');
+
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+  async up (queryInterface, Sequelize) {    
+
+    let registersModules = [];
+    let registersRoutines = [];
+
+
+    function seedRoutine(routine,idModuleSup,idRoutineSup) {
+      try {
+        if (Utils.typeOf(routine) == 'array') {          
+          for(let i = 0; i < routine.length; i++) {
+            seedRoutine(routine[i],idModuleSup);
+          }
+        } else {
+          Utils.log('FL','passing routine ',routine.NAME);
+          if (Utils.hasValue(routine?.SUBS)) {
+            Utils.log('FL',routine.NAME,' has subs');
+            if (routine.IDROUTINETYPE || routine.VIEWPATH) {
+              Utils.log('FL',routine.NAME,' is routine');
+              registersRoutines.push({
+                ID:routine.ID-0,
+                IDSTATUSREG: StatusRegs.ACTIVE,
+                IDUSERCREATE : Users.SYSTEM,
+                CREATEDAT: new Date(),
+                IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
+                ISSYSTEMREG : 1,
+                IDMODULE: idModuleSup,
+                IDSUP: idRoutineSup,
+                IDROUTINETYPE : (Utils.firstValid([routine.IDROUTINETYPE,1]))-0,
+                NAME:routine.NAME,
+                ICON:routine.ICON,
+                VIEWPATH:routine.VIEWPATH,
+                ORDERNUM: routine.ORDERNUM,
+                SHOWINMENU: Utils.firstValid([routine.SHOWINMENU,1]),
+              });
+              for(let i = 0; i < routine.SUBS.length; i++) {
+                seedRoutine(routine.SUBS[i],idModuleSup,routine.ID);
+              } 
+            } else {
+              Utils.log('FL',routine.NAME,' is module');
+              registersModules.push({
+                ID:routine.ID-0,
+                IDSTATUSREG: StatusRegs.ACTIVE,
+                IDUSERCREATE : Users.SYSTEM,
+                CREATEDAT: new Date(),
+                IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
+                ISSYSTEMREG : 1,
+                IDSUP: idModuleSup,
+                NAME:routine.NAME,
+                ORDERNUM: routine.ORDERNUM,
+                ICON:routine.ICON
+              });
+
+              for(let i = 0; i < routine.SUBS.length; i++) {
+                seedRoutine(routine.SUBS[i],routine.ID);
+              } 
+            }
+
+          } else {
+            Utils.log('FL',routine.NAME,' no has subs');
+            registersRoutines.push({
+              ID:routine.ID-0,
+              IDSTATUSREG: StatusRegs.ACTIVE,
+              IDUSERCREATE : Users.SYSTEM,
+              CREATEDAT: new Date(),
+              IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
+              ISSYSTEMREG : 1,
+              IDMODULE: idModuleSup,
+              IDSUP: idRoutineSup,
+              IDROUTINETYPE : routine.IDROUTINETYPE-0,
+              NAME:routine.NAME,
+              ICON:routine.ICON,
+              VIEWPATH:routine.VIEWPATH,
+              ORDERNUM: routine.ORDERNUM,
+              SHOWINMENU: Utils.firstValid([routine.SHOWINMENU,1]),
+            });
+          }
+        }
+      } catch(e) {
+        Utils.log(e);
+      }
+    }
+
+    seedRoutine(modules,null);
+    //Utils.log('FL',registersModules);
+    //Utils.log('FL',registersRoutines);
+
+    await queryInterface.bulkInsert(Modules.name.toUpperCase(),registersModules,{
+      ignoreDuplicates:true,
+      updateOnDuplicate:['IDSTATUSREG','IDSUP','NAME','ICON']
+    });  
+
+    await queryInterface.bulkInsert(Routines.name.toUpperCase(),registersRoutines,{
+      ignoreDuplicates:true,
+      updateOnDuplicate:['IDSTATUSREG','IDMODULE','NAME','ICON','VIEWPATH']
+    });  
+  },
+
+  async down (queryInterface, Sequelize) {
+     await queryInterface.bulkDelete(Routines.name.toUpperCase(), null, {});
+     await queryInterface.bulkDelete(Modules.name.toUpperCase(), null, {});
+  }
+};

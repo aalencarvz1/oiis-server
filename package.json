@@ -1,0 +1,29 @@
+{
+  "name": "com.oiis.server",
+  "version": "2.0.0",
+  "description": "oiis server",
+  "main": "src/api/api.js",
+  "scripts": {
+    "test": "jest",
+    "start": "nodemon src/api/api.js",
+    "start schedulers": "nodemon src/api/api_schedulers.js",
+    "start_webhook": "nodemon src/api/api_webhook_https.js"
+  },
+  "author": "Antonio Alencar Velozo",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "email-validator": "^2.0.4",
+    "express": "^4.19.2",
+    "flatted": "^3.3.1",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.14",
+    "oracledb": "^6.6.0",
+    "sequelize": "^6.37.3"
+  }
+}

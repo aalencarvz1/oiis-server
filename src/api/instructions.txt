@@ -1,0 +1,139 @@
+* = Obrigatory
+
+*TO INSTALL NODE: 
+run cmd in root project folder:
+npm install
+
+TO CONFIGURE YOUR DATABASE
+goto src/database/config/config.[js/json]
+check/change your database configuration
+
+*RUN MIGRATIONS:
+run cmds (in src/server/database folder):
+cd src/database
+npx sequelize-cli db:create (if your database not exists)(oracle dont support it, create manually)
+npx sequelize-cli db:migrate
+npx sequelize-cli db:seed:all
+
+*TO UP SERVER
+run cmd in root project folder
+npm start
+
+**** ADJUSTS ****
+node_modules\sequelize\lib\dialects\abstract\query-generator.js
+UPDATE IF TO ACCEPT LITERALS OF OTHERS INSTANCES OF SEQUELIZE:
+    LINE 1680
+    if (smth instanceof Utils.Literal
+        || smth?.constructor.name.trim().toLowerCase() == 'literal') {
+        return smth.val;
+    }
+    LINE 1071
+    if (attr instanceof Utils.SequelizeMethod 
+        || ['literal','col','cast'].indexOf(attr?.constructor.name.trim().toLowerCase()) > -1) {
+        return this.handleSequelizeMethod(attr);
+    }
+    find all places with instanceof Utils.SequelizeMethod or instanceof Utils.Literal and aply same adjusts to compare also constructor name
+    the best way is compare this file with this same file in old project, to view all places that was modifieds
+
+ORIENTATIONS
+use attributes in findOne/findAll sequelize methods only if strict necessary, and when use it, use with raw:true also
+
+TO DEPLOY SERVER
+check if pm2 service is istalled and running
+in project folder
+pm2 start src\api.js --name OiisApi
+pm2 -f save
+
+
+
+TO AUTO-GENERATE MODELS WITH SEQUELIZE AND PRE-EXISTS DATABASE TABLES:
+cd node_modules\.bin & sequelize-auto -h localhost -d ['YOUR SCHEMA NAME'] -u root -x masterkey -p 3306  --dialect mysql -o ../../server/models
+
+
+ORACLE ONLY:
+alter node_modules\sequelize\lib\dialects\abstract\query-generator.js
+alter line 556 to suppress unsuported on update of oracle
+change 
+    if (options.onUpdate)
+to
+    if (options.onUpdate && !["oracle"].includes(this.dialect)) {
+
+to delete all tables of oracle database, run this code in your created schema
+drop all_tables ATTENTION TO OWER NAME CORRECT
+set serveroutput on size unl;
+DECLARE
+    cmd varchar2(4000);
+begin
+    for li in (
+        select
+            *
+        from
+            all_constraints
+        where
+            owner = ['YOUR SCHEMA NAME']
+            and table_name not like 'BIN%'
+            and constraint_type = 'R'
+    ) loop 
+        cmd:= 'alter table "'||li.owner||'"."'||li.table_name||'" drop constraint "'||li.constraint_name ||'"'; 
+        dbms_output.put_line(cmd);
+        EXECUTE IMMEDIATE cmd;
+     end loop;
+              
+     for li in (
+        select
+            *
+        from
+            all_tables
+        where
+            owner = ['YOUR SCHEMA NAME']
+            and table_name not like 'BIN%'
+    ) loop 
+        cmd:= 'drop table "'||li.owner||'"."'||li.table_name||'"'; 
+        dbms_output.put_line(cmd);
+        EXECUTE IMMEDIATE cmd;
+     end loop;     
+end;
+
+
+
+to include permissions:
+example to permit modules/outpus/sales/financial_collection/pix/integrations/sicredi:
+insert into permissions (createdat,idpowertype,iduser,idmodule,allowed) values (current_timestamp,2,2,4,1);
+insert into permissions (createdat,idpowertype,iduser,idmodule,allowed) values (current_timestamp,2,2,4000,1);
+insert into permissions (createdat,idpowertype,iduser,idmodule,allowed) values (current_timestamp,2,2,4000001,1);
+insert into permissions (createdat,idpowertype,iduser,idmodule,allowed) values (current_timestamp,2,2,4000100,1);
+insert into permissions (createdat,idpowertype,iduser,idmodule,allowed) values (current_timestamp,2,2,4000110,1);
+insert into permissions (createdat,idpowertype,iduser,idmodule,allowed) values (current_timestamp,2,2,4000111,1);
+
+
+TO GENERATE MODEL FIELDS OF EXISTENT ORACLE TABLE:
+SELECT
+    CHR(9) || CHR(9) || c.column_name || ':{' 
+        || chr(13) || CHR(9) ||CHR(9) ||CHR(9) || 'type: DataTypes.'
+        || case c.data_type
+            when 'NUMBER' THEN
+                case 
+                    when nvl(c.data_scale,0) = 0 then 
+                        'INTEGER'
+                    else 
+                        'DECIMAL('||c.data_precision||','||c.data_scale||')'
+                end
+            WHEN 'VARCHAR2' THEN
+                case 
+                    when c.data_length > 2000 then
+                        'TEXT'
+                    ELSE
+                        'STRING('||C.DATA_LENGTH||')'
+                END
+            WHEN 'CLOB' THEN 'TEXT'
+            WHEN 'BLOB' THEN 'TEXT'
+            else c.data_type
+        end 
+        || chr(13) ||CHR(9) ||CHR(9) || '},',
+    c.*
+FROM
+    user_tab_columns c
+WHERE
+    table_name = 'EPMOVIMENTACOESSAIDA'
+ORDER BY
+    column_id
