@@ -105,7 +105,7 @@ class StructuredQueryUtils {
             let structuredReportsDataItems = _.keyBy(reportsDataItems,'ID');
             for(let k in structuredReportsDataItems) {
                 if (Utils.hasValue(structuredReportsDataItems[k].EXISTENCECRITERY)) {
-                    //Utils.log('executing eval',structuredReportsDataItems[k].EXISTENCECRITERY);
+                    Utils.log('executing eval',structuredReportsDataItems[k].EXISTENCECRITERY);
                     if (!Utils.toBool(eval(structuredReportsDataItems[k].EXISTENCECRITERY))) {
                         structuredReportsDataItems[k].MOVED = true;
                         continue;    

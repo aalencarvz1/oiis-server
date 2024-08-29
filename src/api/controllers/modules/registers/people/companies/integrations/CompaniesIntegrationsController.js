@@ -107,11 +107,19 @@ class CompaniesIntegrationsController extends RegistersController{
             if (transaction) queryParams.transaction = transaction;
 
             let company = await Companies.getModel().findOne(queryParams);
+            if (!Utils.hasValue(company)) {
+                queryParams = {
+                    where: {
+                        ID: pcFilialCompany.CODIGO
+                    }
+                };
+                company = await Companies.getModel().findOne(queryParams);
+            }
             let options = {};
             if (transaction) options.transaction = transaction;
 
             //try preserve winthor code, if unique or primary key viloated, then raise exception here
-            if (company) {
+            if (Utils.hasValue(company)) {
                 if (company.ID != pcFilialCompany.CODIGO) company.ID = pcFilialCompany.CODIGO; 
                 if (company.IDPEOPLE != people.ID) company.IDPEOPLE = people.ID;                    
                 await company.save(options);                
