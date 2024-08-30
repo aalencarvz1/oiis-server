@@ -79,6 +79,16 @@ module.exports = {
       IDDATATYPE: DataTypes.BOOLEAN,
       NAME : 'WINTHOR_INTEGRATION_NCM_CONSIDER_EXCEPTION_NULL_IF_NOT_EXISTS',
       DEFAULTVALUE: 1
+    },{
+      ID: Parameters.COMMISSION_MIN_VAL,
+      IDSTATUSREG: StatusRegs.ACTIVE,
+      IDUSERCREATE : Users.SYSTEM,
+      CREATEDAT: new Date(),
+      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
+      ISSYSTEMREG : 1,
+      IDDATATYPE: DataTypes.NUMBER,
+      NAME : 'COMMISSION_MIN_VAL',
+      DEFAULTVALUE: 1844
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

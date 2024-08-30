@@ -19,7 +19,7 @@ class Parameters extends BaseTableModel {
   static APPS_DELIVERY_MUST_CAPTURE_SIGNATURE_BY_INVOICE	= 5;
   static APPS_DELIVERY_ONLY_ONE_DELIVERY_RUNNING = 6;
   static WINTHOR_INTEGRATION_NCM_CONSIDER_EXCEPTION_NULL_IF_NOT_EXISTS = 10;
-
+  static COMMISSION_MIN_VAL = 9050;
 
   static model = null;
   static fields = {
