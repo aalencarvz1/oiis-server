@@ -1,13 +1,17 @@
 'use strict';
 
 /*imports*/
+const { Utils } = require('../../controllers/utils/Utils');
 const { PcCidade } = require('../models/winthor/PcCidade');
+require('dotenv').config({ path: __dirname + "/../../../../.env" });
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await PcCidade.runUpMigration(queryInterface);     
+    if (Utils.toBool(process.env.WINTHOR_INTEGRATE) == true) {
+      await PcCidade.runUpMigration(queryInterface);     
+    }
   },
   async down(queryInterface, Sequelize) {
     //await queryInterface.dropTable(PcCidade.name.toUpperCase());
