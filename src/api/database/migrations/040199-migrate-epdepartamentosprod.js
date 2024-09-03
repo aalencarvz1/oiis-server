@@ -9,7 +9,7 @@ require('dotenv').config({ path: __dirname + "/../../../../.env" });
 /*migration*/
 module.exports = {
   async up(queryInterface, Sequelize) {
-    if (Utils.toBool(process.env.EP_INTEGRATE) == true) {
+    if (Utils.toBool(process.env.HAS_EP_INTEGRATION) == true) {
       await EpDepartamentosProd.runUpMigration(queryInterface); 
     }    
   },

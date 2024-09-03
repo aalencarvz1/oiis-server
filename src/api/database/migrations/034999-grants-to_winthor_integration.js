@@ -11,7 +11,7 @@ const configDB  = require("../config/config");
 /*migration*/
 module.exports = {  
   async up(queryInterface, Sequelize) {
-    if (Utils.toBool(process.env.WINTHOR_INTEGRATE) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
       let originQueryInterface = await DBConnectionManager.getWinthorDBConnection().getQueryInterface();    
       let connectionConfig = configDB[`${process.env.NODE_ENV||'development'}_winthor_integration`];
       let dbUserName = connectionConfig?.username || 'OIIS';
@@ -20,7 +20,7 @@ module.exports = {
     }    
   },
   async down(queryInterface, Sequelize) {
-    if (Utils.toBool(process.env.WINTHOR_INTEGRATE) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
       let originQueryInterface = await DBConnectionManager.getWinthorDBConnection().getQueryInterface();    
       let connectionConfig = configDB[`${process.env.NODE_ENV||'development'}_winthor_integration`];
       let dbUserName = connectionConfig?.username || 'OIIS';

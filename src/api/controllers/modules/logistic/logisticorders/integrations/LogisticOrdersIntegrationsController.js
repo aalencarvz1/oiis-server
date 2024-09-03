@@ -643,7 +643,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                     res.data = loadings;
                     res.sendResponse(200,true);    
                     try {
-                        if (idsLogOrders.length > 0 && Utils.toBool(await ParametersValues.get(Parameters.INTEGRATE_WINTHOR)) == true && Utils.toBool(await ParametersValues.get(Parameters.LOGISTIC_INTEGRATE_AUTOMATIC_CLOSE_BOX_DRIVER)) == true) {
+                        if (idsLogOrders.length > 0 && Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true && Utils.toBool(await ParametersValues.get(Parameters.LOGISTIC_INTEGRATE_AUTOMATIC_CLOSE_BOX_DRIVER)) == true) {
                             await LogisticOrdersWinthorIntegrationsController.integrateBoxClosing(idsLogOrders);
                         }   
                     } catch (ex) {

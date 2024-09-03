@@ -12,7 +12,7 @@ console.log('Parameters - antes declaracao classe, antes exportacao');
 class Parameters extends BaseTableModel {
   static ID = 55;
 
-  static INTEGRATE_WINTHOR = 1;
+  static HAS_WINTHOR_INTEGRATION = 1;
   static LOGISTIC_INTEGRATE_AUTOMATIC_CLOSE_BOX_DRIVER = 2;
   static WMS_OUTPUT_INTEGRATION_CHECK_RCA = 3;
   static APPS_DELIVERY_MUST_CAPTURE_SIGNATURE	= 4;

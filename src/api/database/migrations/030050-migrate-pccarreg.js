@@ -9,7 +9,7 @@ require('dotenv').config({ path: __dirname + "/../../../../.env" });
 /*migration*/
 module.exports = {
   async up(queryInterface, Sequelize) {
-    if (Utils.toBool(process.env.WINTHOR_INTEGRATE) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
       await PcCarreg.runUpMigration(queryInterface);     
     }
   },

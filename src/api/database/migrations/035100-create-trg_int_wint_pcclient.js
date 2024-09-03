@@ -11,7 +11,7 @@ const configDB  = require("../config/config");
 /*migration*/
 module.exports = {  
   async up(queryInterface, Sequelize) {
-    if (Utils.toBool(process.env.WINTHOR_INTEGRATE) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
         let originQueryInterface = await DBConnectionManager.getWinthorIntegrationDBConnection().getQueryInterface();
         let triggerName = 'trg_int_wint_pcclient';
         let connectionConfig = configDB[`${process.env.NODE_ENV||'development'}_winthor`];
@@ -250,7 +250,7 @@ module.exports = {
     }
   },
   async down(queryInterface, Sequelize) {
-    if (Utils.toBool(process.env.WINTHOR_INTEGRATE) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
         let originQueryInterface = await DBConnectionManager().getWinthorIntegrationDBConnection().getQueryInterface();
         let triggerName = 'trg_int_wint_pcclient';
         //await originQueryInterface.sequelize.query(`DROP TRIGGER ${triggerName}`);

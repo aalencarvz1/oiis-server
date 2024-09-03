@@ -70,7 +70,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
             ERRORS : []
         }
         try {            
-            if (Utils.toBool(await ParametersValues.get(Parameters.INTEGRATE_WINTHOR)) == true) {            
+            if (Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true) {            
                 if (Utils.hasValue(ids)) {
                     if (Utils.typeOf(ids) !== 'array') {
                         ids = ids.toString().split(',');

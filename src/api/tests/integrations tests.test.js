@@ -3,8 +3,8 @@ const path = require('path');
 process.env.API_INTERNAL_PROTOCOL = process?.env?.API_INTERNAL_PROTOCOL || "http";
 process.env.API_INTERNAL_IP = process?.env?.API_INTERNAL_IP || "localhost";
 process.env.API_PORT = process?.env?.API_PORT || "3004";
-process.env.WINTHOR_INTEGRATE = process?.env?.WINTHOR_INTEGRATE || "false";
-process.env.EP_INTEGRATE = process?.env?.EP_INTEGRATE || "false";
+process.env.HAS_WINTHOR_INTEGRATION = process?.env?.HAS_WINTHOR_INTEGRATION || "false";
+process.env.HAS_EP_INTEGRATION = process?.env?.HAS_EP_INTEGRATION || "false";
 let loggedUser = null;
 let userToken = null;
 let userRefreshToken = null;
@@ -417,7 +417,7 @@ describe('Running api call tests',()=>{
                         }
                     };
                     
-                    if (toBool(process.env.WINTHOR_INTEGRATE) == true) {
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
                         getParamsToIntegrate = ()=>{
                             return {
                                 tableName: modelName,
@@ -440,7 +440,7 @@ describe('Running api call tests',()=>{
                         }
                     };
                 
-                    if (toBool(process.env.WINTHOR_INTEGRATE) == true) {
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
                         getParamsToIntegrate = ()=>{
                             return {
                                 tableName: modelName,
@@ -468,7 +468,7 @@ describe('Running api call tests',()=>{
                         }
                     };
                 
-                    if (toBool(process.env.WINTHOR_INTEGRATE) == true) {
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
                         getParamsToIntegrate = ()=>{
                             return {
                                 tableName: modelName,
@@ -507,7 +507,7 @@ describe('Running api call tests',()=>{
                         }
                     };
 
-                    if (toBool(process.env.WINTHOR_INTEGRATE) == true) {
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
                         getParamsToIntegrate = ()=>{
                             return {
                                 tableName: modelName,
@@ -550,7 +550,7 @@ describe('Running api call tests',()=>{
                         }
                     };
 
-                    if (toBool(process.env.WINTHOR_INTEGRATE) == true) {
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
                         getParamsToIntegrate = ()=>{
                             return {
                                 tableName: modelName,
@@ -615,7 +615,7 @@ describe('Running api call tests',()=>{
                         }
                     };
 
-                    if (toBool(process.env.WINTHOR_INTEGRATE) == true) {
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
                         if (modelName == 'clients') {                        
                             getParamsToIntegrate = ()=>{
                                 return {
@@ -659,7 +659,7 @@ describe('Running api call tests',()=>{
                     };
                     break;
                 case 'logisticreasons': 
-                    if (toBool(process.env.WINTHOR_INTEGRATE) == true) {                   
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {                   
                         getParamsToIntegrate = ()=>{
                             return {
                                 tableName: modelName,
