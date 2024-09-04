@@ -99,6 +99,7 @@ dist
 
 uploads/
 files/
+src/api/assets/certificates/
 
 # vuepress build output
 .vuepress/dist
