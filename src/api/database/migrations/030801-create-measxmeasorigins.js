@@ -2,6 +2,7 @@
 
 /*imports*/
 const { MeasXMeasOrigins } = require('../models/MeasXMeasOrigins');
+require('dotenv').config({ path: __dirname + "/../../../../.env" });
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/

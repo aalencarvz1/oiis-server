@@ -1,7 +1,0 @@
-homologacao
-client_id: ODU1MjIwNDMwMDAxOTA6MDAwMTpxWjM
-client_secret: IUdEXjhYcyt1azljKEkz
-
-producao
-client_id: ODU1MjIwNDMwMDAxOTA6MDAwMTpJZDk
-client_secret: SjdCWW9EXyt1QGgzVUM5

@@ -70,7 +70,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
             ERRORS : []
         }
         try {            
-            if (Utils.toBool(await ParametersValues.get(Parameters.INTEGRATE_WINTHOR)) == true) {            
+            if (Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true) {            
                 if (Utils.hasValue(ids)) {
                     if (Utils.typeOf(ids) !== 'array') {
                         ids = ids.toString().split(',');
@@ -461,7 +461,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                     raw:true,
                     attributes: [
                         Sequelize.literal('0 AS IDORIGINDATA'),
-                        ['NUMCAR','IDCARREGAMENTOORIGEM'],
+                        ['NUMCAR','IDLOADORIGIN'],
                         'DTSAIDA',
                         ['CODMOTORISTA','IDMOTORISTAORIGEM'],
                         ['CODVEICULO','IDVEICULOORIGEM'],
@@ -507,7 +507,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                 (
                                     select
                                         0 as IDORIGINDATA,
-                                        c.CODCLI AS IDCLIENTEORIGEM,
+                                        c.CODCLI AS IDCLIENTORIGIN,
                                         to_number(regexp_replace(c.CGCENT,'[^0-9]','')) as CGC,
                                         c.CLIENTE AS NOME,
                                         c.FANTASIA,
@@ -531,11 +531,11 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                         )
                                         join jumbo.pcclient c on c.codcli = s.codcli
                                     where
-                                        cr.numcar = ${res.data[key].IDCARREGAMENTOORIGEM}
+                                        cr.numcar = ${res.data[key].IDLOADORIGIN}
                                     union 
                                     select
                                         decode(cj.codcli,null,1,0) as IDORIGINDATA,
-                                        nvl(cj.codcli,p.COD) AS IDCLIENTEORIGEM,
+                                        nvl(cj.codcli,p.COD) AS IDCLIENTORIGIN,
                                         to_number(regexp_replace(nvl(cj.cgcent,p.coddocidentificador),'[^0-9]','')) as CGC,
                                         nvl(cj.cliente,p.NOMERAZAO) AS NOME,
                                         nvl(cj.fantasia,p.FANTASIA) AS FANTASIA,
@@ -562,7 +562,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                         left outer join ep.epcidades ci on ci.cod = p.codcidade
                                         left outer join jumbo.pcclient cj on cj.codcli = p.cod
                                     where
-                                        u.ID = (select u2.ID from ep.epunifcargas u2 where u2.NRCARGA = ${res.data[key].IDCARREGAMENTOORIGEM})
+                                        u.ID = (select u2.ID from ep.epunifcargas u2 where u2.NRCARGA = ${res.data[key].IDLOADORIGIN})
                                         and u.IDORIGEMINFO = 1
                                 )
                             order by
@@ -581,20 +581,20 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                 attributes:[
                                     Sequelize.literal('0 as IDORIGINDATA'),
                                     ['NUMTRANSVENDA','IDONORIGINDATA'],
-                                    ['NUMNOTA','IDNOTAFISCALORIGEM'],
+                                    ['NUMNOTA','IDINVOICEORIGIN'],
                                     ['DTSAIDA','DTEMISSAO'],
-                                    ['CODCOB','IDCOBRANCAORIGEM'],
+                                    ['CODCOB','IDFINANCIALCOLLECTIONORIGIN'],
                                     ['CODPLPAG','IDPRAZOPAGAMENTOORIGEM'],
                                     ['TOTPESO','PESOTOTAL'],
                                     'VLTOTAL',
                                     'DTCANCEL',
                                     'NUMTRANSVENDA',
-                                    ['CODCLI','IDCLIENTEORIGEM'],
+                                    ['CODCLI','IDCLIENTORIGIN'],
                                     'CHAVENFE',
                                     [Sequelize.col(`${PcDocEletronico.name.toUpperCase()}.XMLNFE`),'XML']
                                 ],
                                 where:{
-                                    NUMCAR: res.data[key].IDCARREGAMENTOORIGEM,
+                                    NUMCAR: res.data[key].IDLOADORIGIN,
                                     DTCANCEL: {
                                         [Sequelize.Op.is] : null
                                     }
@@ -655,7 +655,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                             and l.numlote = m.numlote
                                         )
                                     where
-                                        s.numcar = ${res.data[key].IDCARREGAMENTOORIGEM}
+                                        s.numcar = ${res.data[key].IDLOADORIGIN}
                                         and s.dtcancel is null     
                                     group by
                                         m.CODPROD,
@@ -695,7 +695,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                 for(let kc in res.data[key].CLIENTS) {
                                     res.data[key].CLIENTS[kc].NFS = res.data[key].CLIENTS[kc].NFS || [];
                                     for(let kn in nfsWinthor) {
-                                        if (nfsWinthor[kn].IDCLIENTEORIGEM == res.data[key].CLIENTS[kc].IDCLIENTEORIGEM) {
+                                        if (nfsWinthor[kn].IDCLIENTORIGIN == res.data[key].CLIENTS[kc].IDCLIENTORIGIN) {
                                             res.data[key].CLIENTS[kc].NFS.push(nfsWinthor[kn]);
                                         }
                                     }
@@ -707,9 +707,9 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                 select
                                     1 AS IDORIGINDATA,
                                     s.cod as IDONORIGINDATA,
-                                    s.NUMNOTAORIGEM AS IDNOTAFISCALORIGEM,
+                                    s.NUMNOTAORIGEM AS IDINVOICEORIGIN,
                                     s.DTEMISSAO,
-                                    null as IDCOBRANCAORIGEM,
+                                    null as IDFINANCIALCOLLECTIONORIGIN,
                                     null as IDPRAZOPAGAMENTOORIGEM,
                                     sum(nvl(ms.qtsaida,0) - nvl(ms.qtdevolvida,0)) as PESOTOTAL,
                                     sum((nvl(ms.qtsaida,0) - nvl(ms.qtdevolvida,0)) * nvl(ms.vlun,0)) as VLTOTAL,
@@ -721,7 +721,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                     ep.epnfssaida s
                                     JOIN EP.EPMOVIMENTACOESSAIDA ms on ms.codnfsaida = s.cod
                                 where
-                                    s.nrcarga = (select u2.nrcarga from ep.epunifcargas u2 where u2.idorigeminfo = 1 and u2.id = (select u.id from ep.epunifcargas u where u.idorigeminfo = 0 and u.nrcarga = ${res.data[key].IDCARREGAMENTOORIGEM}) and u2.idorigeminfo = 1)
+                                    s.nrcarga = (select u2.nrcarga from ep.epunifcargas u2 where u2.idorigeminfo = 1 and u2.id = (select u.id from ep.epunifcargas u where u.idorigeminfo = 0 and u.nrcarga = ${res.data[key].IDLOADORIGIN}) and u2.idorigeminfo = 1)
                                 GROUP BY
                                     1,
                                     s.NUMNOTAORIGEM,
@@ -763,7 +763,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                         )
                                         left outer join jumbo.pcprodut p on p.codprod = m.codprod
                                     where
-                                        s.nrcarga = (select u2.nrcarga from ep.epunifcargas u2 where u2.idorigeminfo = 1 and u2.id = (select u.id from ep.epunifcargas u where u.idorigeminfo = 0 and u.nrcarga = ${res.data[key].IDCARREGAMENTOORIGEM}))
+                                        s.nrcarga = (select u2.nrcarga from ep.epunifcargas u2 where u2.idorigeminfo = 1 and u2.id = (select u.id from ep.epunifcargas u where u.idorigeminfo = 0 and u.nrcarga = ${res.data[key].IDLOADORIGIN}))
                                         and s.dtcancel is null     
                                     group by
                                         m.CODPROD,
@@ -802,7 +802,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                 for(let kc in res.data[key].CLIENTS) {
                                     res.data[key].CLIENTS[kc].NFS = res.data[key].CLIENTS[kc].NFS || [];
                                     for(let kn in nfsBroker) {
-                                        if (nfsBroker[kn].CODCLIENTE == res.data[key].CLIENTS[kc].IDCLIENTEORIGEM) {
+                                        if (nfsBroker[kn].CODCLIENTE == res.data[key].CLIENTS[kc].IDCLIENTORIGIN) {
                                             res.data[key].CLIENTS[kc].NFS.push(nfsBroker[kn]);
                                         }
                                     }

@@ -143,7 +143,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
 
 
                 //check if is same rca
-                if (Utils.toBool(await ParametersValues.get(Parameters.INTEGRATE_WINTHOR)) == true && Utils.toBool(await ParametersValues.get(Parameters.WMS_OUTPUT_INTEGRATION_CHECK_RCA)) == true) {
+                if (Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true && Utils.toBool(await ParametersValues.get(Parameters.WMS_OUTPUT_INTEGRATION_CHECK_RCA)) == true) {
                     let loadingsWinthor = [];
                     let loadingsBroker = [];
                     for(let key in identifiers) {

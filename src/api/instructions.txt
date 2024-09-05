@@ -4,6 +4,11 @@
 run cmd in root project folder:
 npm install
 
+ADJUSTS LIBRARIES:
+node_modules\sequelize\lib\associations\mixin.js:13:13
+    adjust function isModel to always returns true
+
+    
 TO CONFIGURE YOUR DATABASE
 goto src/database/config/config.[js/json]
 check/change your database configuration

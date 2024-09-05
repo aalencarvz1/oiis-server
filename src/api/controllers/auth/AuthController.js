@@ -70,12 +70,16 @@ class AuthController extends RegistersController{
                 TOKEN: token            
             }
         })
-        if (!userToken) {
-            await UsersTokens.getModel().create({
-                IDUSER: user.ID,
-                TOKEN: token,
-                TIMEZONEOFFSET: user.LASTTIMEZONEOFFSET
-            });
+        if (!Utils.hasValue(userToken)) {
+            try {
+                await UsersTokens.getModel().create({
+                    IDUSER: user.ID,
+                    TOKEN: token,
+                    TIMEZONEOFFSET: user.LASTTIMEZONEOFFSET
+                });
+            } catch (e) {
+                Utils.log(e);
+            }
         } else {
             userToken.TIMEZONEOFFSET = user.LASTTIMEZONEOFFSET;
             await userToken.save();

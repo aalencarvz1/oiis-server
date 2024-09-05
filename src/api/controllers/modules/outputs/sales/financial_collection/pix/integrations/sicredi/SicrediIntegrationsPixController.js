@@ -56,7 +56,7 @@ class SicrediIntegrationsPixController extends RegistersController{
             if (!pixParams.valor.original || pixParams.valor.original < 0) throw new Error("value invalid");
 
 
-            let integrateWinthor = Utils.toBool(await ParametersValues.get(Parameters.INTEGRATE_WINTHOR));
+            let integrateWinthor = Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION));
 
 
             //ESTA RETORNANDO false, VER PORQUE
@@ -234,7 +234,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                 }
                 res.data.push(responseJson?.data || responseJson);                    
 
-                if (Utils.toBool(await ParametersValues.get(Parameters.INTEGRATE_WINTHOR))) {
+                if (Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION))) {
                     let pixWinthor = await PcPixCobrancaDados.getModel().findOne({
                         where:{
                             NUMTRANSPAGDIGITAL: txIdentifiers[key]
@@ -1019,7 +1019,7 @@ class SicrediIntegrationsPixController extends RegistersController{
             });
             if (result?.success) {
                 Utils.log('cobs concluidas: ',result?.data?.cobs?.length);
-                if (Utils.toBool(await ParametersValues.get(Parameters.INTEGRATE_WINTHOR)) == true) {
+                if (Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true) {
                     for(let key in result?.data?.cobs) {
                         let numtrans = null;
                         let numnf = null;
@@ -1086,7 +1086,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                 for(let key in pix) {
                     let txid = pix[key].txid;
                     let value = pix[key].valor;
-                    if (Utils.toBool(await ParametersValues.get(Parameters.INTEGRATE_WINTHOR)) == true) {
+                    if (Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true) {
                         pixWinthor = await PcPixCobrancaDados.getModel().findOne({
                             where:{
                                 NUMTRANSPAGDIGITAL: txid

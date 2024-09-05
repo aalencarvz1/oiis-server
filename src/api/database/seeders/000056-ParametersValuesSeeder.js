@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config({ path: __dirname + "/../../../../.env" });
+const { Utils } = require('../../controllers/utils/Utils');
 const { OriginsDatas } = require('../models/OriginsDatas');
 const { Parameters } = require('../models/Parameters');
 const { ParametersValues }  = require('../models/ParametersValues');
@@ -10,14 +12,14 @@ const { Users } = require('../models/Users');
 module.exports = {
   async up (queryInterface, Sequelize) {    
     await queryInterface.bulkInsert(ParametersValues.name.toUpperCase(),[{
-      ID: Parameters.INTEGRATE_WINTHOR,
+      ID: Parameters.HAS_WINTHOR_INTEGRATION,
       IDSTATUSREG: StatusRegs.ACTIVE,
       IDUSERCREATE : Users.SYSTEM,
       CREATEDAT: new Date(),
       IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
       ISSYSTEMREG : 1,
-      IDPARAMETER: Parameters.INTEGRATE_WINTHOR,
-      VALUE : 1
+      IDPARAMETER: Parameters.HAS_WINTHOR_INTEGRATION,
+      VALUE : Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) ? 1 : 0
     },{
       ID: Parameters.LOGISTIC_INTEGRATE_AUTOMATIC_CLOSE_BOX_DRIVER,
       IDSTATUSREG: StatusRegs.ACTIVE,

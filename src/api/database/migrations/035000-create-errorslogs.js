@@ -1,6 +1,8 @@
 'use strict';
 
+const { Utils } = require('../../controllers/utils/Utils');
 const { ErrorsLogs } = require('../models/winthor_integration/ErrorsLogs');
+require('dotenv').config({ path: __dirname + "/../../../../.env" });
 
 /*imports*/
 
@@ -10,9 +12,13 @@ const { ErrorsLogs } = require('../models/winthor_integration/ErrorsLogs');
 /*migration*/
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await ErrorsLogs.runUpMigration(queryInterface);     
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+      await ErrorsLogs.runUpMigration(queryInterface);     
+    }
   },
   async down(queryInterface, Sequelize) {
-    await ErrorsLogs.runDownMigration(queryInterface);         
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+      await ErrorsLogs.runDownMigration(queryInterface);         
+    }
   }
 };

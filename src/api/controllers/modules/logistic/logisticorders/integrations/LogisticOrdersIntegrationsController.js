@@ -137,7 +137,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
             if (loadings) {
                 for(let key in loadings) {
                     let idOriginData = LogisticOrdersIntegrationsController.getIdOriginData(loadings[key].IDORIGINDATA);
-                    let query = `select min(codfilial) as CODFILIAL from jumbo.pcpedc where numcar = ${loadings[key].IDCARREGAMENTOORIGEM}`;
+                    let query = `select min(codfilial) as CODFILIAL from jumbo.pcpedc where numcar = ${loadings[key].IDLOADORIGIN}`;
                     let codFilial = await DBConnectionManager.getWinthorDBConnection().query(query,{queryType:Sequelize.QueryTypes.SELECT});
                     if (codFilial) {
                         codFilial = codFilial[0][0].CODFILIAL;
@@ -171,17 +171,17 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                     let logisticOrder = await LogisticOrders.getModel().findOne({                        
                         where: {
                             IDORIGINDATA: idOriginData,
-                            IDONORIGINDATA:loadings[key].IDCARREGAMENTOORIGEM
+                            IDONORIGINDATA:loadings[key].IDLOADORIGIN
                         }
                     });
                     if (!logisticOrder) {
                         logisticOrder = await LogisticOrders.getModel().create({
                             IDUSERCREATE: req.user.ID,
                             IDORIGINDATA: idOriginData,
-                            IDONORIGINDATA:loadings[key].IDCARREGAMENTOORIGEM,
+                            IDONORIGINDATA:loadings[key].IDLOADORIGIN,
                             IDLOGISTICMOVTYPE: LogisticMovTypes.DELIVERY,
                             IDIDENTIFIERTYPE: IdentifiersTypes.CODE,
-                            IDENTIFIER: loadings[key].IDCARREGAMENTOORIGEM,
+                            IDENTIFIER: loadings[key].IDLOADORIGIN,
                             IDLOGISTICSTATUS: loadings[key].IDSTATUSENTREGA
                         });
                     } else {
@@ -201,7 +201,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                 IDBUSINESSUNIT: businessUnit.ID,
                                 IDTYPEMOV: MovementsTypes.OUTPUT,
                                 IDIDENTIFIERTYPE: IdentifiersTypes.CODE,
-                                IDENTIFIER: loadings[key].NOTASFISCAIS[kn].IDNOTAFISCALORIGEM,
+                                IDENTIFIER: loadings[key].NOTASFISCAIS[kn].IDINVOICEORIGIN,
                             }
                         });
                         Utils.log('FL',mov);
@@ -223,7 +223,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                             } else {
                                 client = client.data;
                             }
-                            let idFinancialValueForm = FinancialValueForms.getIdByIntegrationId(loadings[key].NOTASFISCAIS[kn].IDCOBRANCAORIGEM||'');                            
+                            let idFinancialValueForm = FinancialValueForms.getIdByIntegrationId(loadings[key].NOTASFISCAIS[kn].IDFINANCIALCOLLECTIONORIGIN||'');                            
 
                             try {
                                 mov = await Movements.getModel().create({
@@ -232,7 +232,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                     IDONORIGINDATA: loadings[key].NOTASFISCAIS[kn].IDONORIGINDATA,
                                     IDTYPEMOV: MovementsTypes.OUTPUT,
                                     IDIDENTIFIERTYPE: IdentifiersTypes.CODE,
-                                    IDENTIFIER: loadings[key].NOTASFISCAIS[kn].IDNOTAFISCALORIGEM,
+                                    IDENTIFIER: loadings[key].NOTASFISCAIS[kn].IDINVOICEORIGIN,
                                     IDCOMPANY: company.ID,
                                     IDWAREHOUSE: warehouse.ID,
                                     IDBUSINESSUNIT: businessUnit.ID,
@@ -249,7 +249,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                             IDBUSINESSUNIT: businessUnit.ID,
                                             IDTYPEMOV: MovementsTypes.OUTPUT,
                                             IDIDENTIFIERTYPE: IdentifiersTypes.CODE,
-                                            IDENTIFIER: loadings[key].NOTASFISCAIS[kn].IDNOTAFISCALORIGEM,
+                                            IDENTIFIER: loadings[key].NOTASFISCAIS[kn].IDINVOICEORIGIN,
                                         }
                                     }); 
                                     if (!mov) {
@@ -533,7 +533,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                             },{
                                                 IDLOGISTICORDERXMOV: logisticOrderXMov.ID
                                             },{
-                                                IDFINANCIALVALUEFORM: this.getFinancialValueFormID(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].IDCOBRANCAORIGEM)
+                                                IDFINANCIALVALUEFORM: this.getFinancialValueFormID(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].IDFINANCIALCOLLECTIONORIGIN)
                                             },{
                                                 IDCURRENCYTYPEEXPECTED: CurrenciesTypes.BRL
                                             },{
@@ -549,12 +549,12 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                     IDORIGINDATA: mov.IDORIGINDATA,
                                     IDLOGISTICORDER: logisticOrder.ID,
                                     IDLOGISTICORDERXMOV: logisticOrderXMov.ID,
-                                    IDFINANCIALVALUEFORM: this.getFinancialValueFormID(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].IDCOBRANCAORIGEM),
+                                    IDFINANCIALVALUEFORM: this.getFinancialValueFormID(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].IDFINANCIALCOLLECTIONORIGIN),
                                     IDCURRENCYTYPEEXPECTED: CurrenciesTypes.BRL,
                                     ORDERNUM: loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].ORDERNUM || 1,   
                                     IDCURRENCYTYPERECEIVED: CurrenciesTypes.BRL,
                                     EXPECTEDVALUE: Utils.toNumber(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].VLARECEBER || 0),
-                                    RECEIVEDVALUE: Utils.toNumber(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].VLRECEBIDO || 0),
+                                    RECEIVEDVALUE: Utils.toNumber(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].RECEIPTEDVALUE || 0),
                                     RECEIVED_AT: loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].RECEBIDOEM,
                                     CANCELED_AT: loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].EXCLUIDOEM
                                 }
@@ -580,7 +580,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
 
                     for(let kd in loadings[key].DESTINACAOVALORES || []) {
 
-                        let idFinValForm = FinancialValueForms.getIdByIntegrationId(loadings[key].DESTINACAOVALORES[kd].IDCOBRANCAORIGEM || 'D');
+                        let idFinValForm = FinancialValueForms.getIdByIntegrationId(loadings[key].DESTINACAOVALORES[kd].IDFINANCIALCOLLECTIONORIGIN || 'D');
                         let idFinValMovType = FinancialValueMovTypes.getIdByIntegrationId(loadings[key].DESTINACAOVALORES[kd].FORMA || 'DEPÓSITO');
 
                         let logDestVal = await LogisticOrdersXDestValues.getModel().findOne({
@@ -643,7 +643,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                     res.data = loadings;
                     res.sendResponse(200,true);    
                     try {
-                        if (idsLogOrders.length > 0 && Utils.toBool(await ParametersValues.get(Parameters.INTEGRATE_WINTHOR)) == true && Utils.toBool(await ParametersValues.get(Parameters.LOGISTIC_INTEGRATE_AUTOMATIC_CLOSE_BOX_DRIVER)) == true) {
+                        if (idsLogOrders.length > 0 && Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true && Utils.toBool(await ParametersValues.get(Parameters.LOGISTIC_INTEGRATE_AUTOMATIC_CLOSE_BOX_DRIVER)) == true) {
                             await LogisticOrdersWinthorIntegrationsController.integrateBoxClosing(idsLogOrders);
                         }   
                     } catch (ex) {

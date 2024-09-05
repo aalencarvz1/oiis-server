@@ -2,6 +2,7 @@
 
 /*imports*/
 const { PacksXPacksOrigins } = require('../models/PacksXPacksOrigins');
+require('dotenv').config({ path: __dirname + "/../../../../.env" });
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/

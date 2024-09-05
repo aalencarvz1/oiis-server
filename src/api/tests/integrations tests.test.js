@@ -3,6 +3,8 @@ const path = require('path');
 process.env.API_INTERNAL_PROTOCOL = process?.env?.API_INTERNAL_PROTOCOL || "http";
 process.env.API_INTERNAL_IP = process?.env?.API_INTERNAL_IP || "localhost";
 process.env.API_PORT = process?.env?.API_PORT || "3004";
+process.env.HAS_WINTHOR_INTEGRATION = process?.env?.HAS_WINTHOR_INTEGRATION || "false";
+process.env.HAS_EP_INTEGRATION = process?.env?.HAS_EP_INTEGRATION || "false";
 let loggedUser = null;
 let userToken = null;
 let userRefreshToken = null;
@@ -68,6 +70,27 @@ function hasValue(pValue){
             result = true;
         }
     }
+    return result;
+}
+
+function toBool(pValue){
+    let result = false;
+    if (typeof pValue !== "undefined" && pValue != null) {
+        if (typeof pValue == "boolean") {
+            result = pValue;
+        } else if (typeof pValue == "string") {
+            if (["0","false","not","no","n","não"," ","","null"].indexOf(pValue.trim().toLowerCase()) == -1) {
+                result = true;
+            }
+        } else if (typeof pValue == "number") {
+            if (pValue != 0) {
+                return true;
+            }
+        } else {
+            result = pValue?true:false;
+        }
+    }
+    //Utils.log('to bool',pValue,result);
     return result;
 }
 
@@ -394,16 +417,18 @@ describe('Running api call tests',()=>{
                         }
                     };
                     
-                    getParamsToIntegrate = ()=>{
-                        return {
-                            tableName: modelName,
-                            winthorTableName: 'pcpais',
-                            winthorTableFields: ['CODPAIS','DESCRICAO'],
-                            endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
-                            identifierWithorField: 'CODPAIS',
-                            fieldUpdate: 'NAME'
-                        }
-                    };
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+                        getParamsToIntegrate = ()=>{
+                            return {
+                                tableName: modelName,
+                                winthorTableName: 'pcpais',
+                                winthorTableFields: ['CODPAIS','DESCRICAO'],
+                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                identifierWithorField: 'CODPAIS',
+                                fieldUpdate: 'NAME'
+                            }
+                        };
+                    }
                     break;
                 case 'states':
                     getParamsToCreate = ()=>{
@@ -415,21 +440,23 @@ describe('Running api call tests',()=>{
                         }
                     };
                 
-                    getParamsToIntegrate = ()=>{
-                        return {
-                            tableName: modelName,
-                            winthorTableName: 'pcestado',
-                            winthorTableFields: [
-                                'CODPAIS',
-                                '(SELECT P.DESCRICAO FROM JUMBO.PCPAIS P WHERE P.CODPAIS = PCESTADO.CODPAIS) AS PAIS',
-                                'UF',
-                                'ESTADO'
-                            ],
-                            endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
-                            identifierWithorField: 'UF',
-                            fieldUpdate: 'NAME'
-                        }
-                    };                    
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+                        getParamsToIntegrate = ()=>{
+                            return {
+                                tableName: modelName,
+                                winthorTableName: 'pcestado',
+                                winthorTableFields: [
+                                    'CODPAIS',
+                                    '(SELECT P.DESCRICAO FROM JUMBO.PCPAIS P WHERE P.CODPAIS = PCESTADO.CODPAIS) AS PAIS',
+                                    'UF',
+                                    'ESTADO'
+                                ],
+                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                identifierWithorField: 'UF',
+                                fieldUpdate: 'NAME'
+                            }
+                        };               
+                    }     
                     break;
                 case 'cities': 
                     getParamsToCreate = ()=>{
@@ -441,20 +468,22 @@ describe('Running api call tests',()=>{
                         }
                     };
                 
-                    getParamsToIntegrate = ()=>{
-                        return {
-                            tableName: modelName,
-                            winthorTableName: 'pccidade',
-                            winthorTableFields: [
-                                'UF',
-                                'CODCIDADE',
-                                'NOMECIDADE'
-                            ],
-                            endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
-                            identifierWithorField: 'CODCIDADE',
-                            fieldUpdate: 'NAME'
-                        }
-                    };
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+                        getParamsToIntegrate = ()=>{
+                            return {
+                                tableName: modelName,
+                                winthorTableName: 'pccidade',
+                                winthorTableFields: [
+                                    'UF',
+                                    'CODCIDADE',
+                                    'NOMECIDADE'
+                                ],
+                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                identifierWithorField: 'CODCIDADE',
+                                fieldUpdate: 'NAME'
+                            }
+                        };
+                    }
                     break;
                 case 'neighborhoods':
                 case 'streets':
@@ -478,32 +507,34 @@ describe('Running api call tests',()=>{
                         }
                     };
 
-                    getParamsToIntegrate = ()=>{
-                        return {
-                            tableName: modelName,
-                            winthorTableName: 'pcclient',
-                            winthorTableFields: [
-                                'CODCLI',
-                                'TIPOFJ',
-                                'CGCENT',
-                                'CODFILIALNF',
-                                'CLIENTE',
-                                'FANTASIA'
-                            ],
-                            endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
-                            identifierWithorField: (origin,data)=>{
-                                return {
-                                    origin:origin,
-                                    identifiers:[data[0].CODCLI],
-                                    registersIdentifiersDocs: [{
-                                        TIPOFJ:data[0].TIPOFJ,
-                                        CGCENT:data[0].CGCENT
-                                    }]
-                                }
-                            },
-                            fieldUpdate: 'NAME'
-                        }
-                    };                    
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+                        getParamsToIntegrate = ()=>{
+                            return {
+                                tableName: modelName,
+                                winthorTableName: 'pcclient',
+                                winthorTableFields: [
+                                    'CODCLI',
+                                    'TIPOFJ',
+                                    'CGCENT',
+                                    'CODFILIALNF',
+                                    'CLIENTE',
+                                    'FANTASIA'
+                                ],
+                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                identifierWithorField: (origin,data)=>{
+                                    return {
+                                        origin:origin,
+                                        identifiers:[data[0].CODCLI],
+                                        registersIdentifiersDocs: [{
+                                            TIPOFJ:data[0].TIPOFJ,
+                                            CGCENT:data[0].CGCENT
+                                        }]
+                                    }
+                                },
+                                fieldUpdate: 'NAME'
+                            }
+                        };                 
+                    }   
                     break;
                 case 'warehouses':
                 case 'businessesunits':
@@ -519,24 +550,26 @@ describe('Running api call tests',()=>{
                         }
                     };
 
-                    getParamsToIntegrate = ()=>{
-                        return {
-                            tableName: modelName,
-                            winthorTableName: 'pcfilial',
-                            winthorTableFields: [
-                                'CODIGO',
-                                'CGC',
-                                'RAZAOSOCIAL',
-                                'FANTASIA',
-                                'CIDADE',
-                                'UF',
-                                'CODCLI'
-                            ],
-                            endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
-                            identifierWithorField: 'CODIGO',
-                            fieldUpdate: 'ALIAS'
-                        }
-                    };                    
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+                        getParamsToIntegrate = ()=>{
+                            return {
+                                tableName: modelName,
+                                winthorTableName: 'pcfilial',
+                                winthorTableFields: [
+                                    'CODIGO',
+                                    'CGC',
+                                    'RAZAOSOCIAL',
+                                    'FANTASIA',
+                                    'CIDADE',
+                                    'UF',
+                                    'CODCLI'
+                                ],
+                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                identifierWithorField: 'CODIGO',
+                                fieldUpdate: 'ALIAS'
+                            }
+                        };         
+                    }           
                     break;
                 case 'users':
                     getParamsToCreate = ()=>{
@@ -582,36 +615,38 @@ describe('Running api call tests',()=>{
                         }
                     };
 
-                    if (modelName == 'clients') {
-                        getParamsToIntegrate = ()=>{
-                            return {
-                                tableName: modelName,
-                                winthorTableName: 'pcclient',
-                                winthorTableFields: undefined,
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
-                                identifierWithorField: 'CODCLI',
-                                fieldUpdate: 'ALIAS'
-                            }
-                        };   
-                    } else if (modelName == 'companies') {
-                        getParamsToIntegrate = ()=>{
-                            return {
-                                tableName: modelName,
-                                winthorTableName: 'pcfilial',
-                                winthorTableFields: [
-                                    'CODIGO',
-                                    'CGC',
-                                    'RAZAOSOCIAL',
-                                    'FANTASIA',
-                                    'CIDADE',
-                                    'UF',
-                                    'CODCLI'
-                                ],
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
-                                identifierWithorField: 'CODIGO',
-                                fieldUpdate: 'ALIAS'
-                            }
-                        };
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+                        if (modelName == 'clients') {                        
+                            getParamsToIntegrate = ()=>{
+                                return {
+                                    tableName: modelName,
+                                    winthorTableName: 'pcclient',
+                                    winthorTableFields: undefined,
+                                    endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                    identifierWithorField: 'CODCLI',
+                                    fieldUpdate: 'ALIAS'
+                                }
+                            };   
+                        } else if (modelName == 'companies') {
+                            getParamsToIntegrate = ()=>{
+                                return {
+                                    tableName: modelName,
+                                    winthorTableName: 'pcfilial',
+                                    winthorTableFields: [
+                                        'CODIGO',
+                                        'CGC',
+                                        'RAZAOSOCIAL',
+                                        'FANTASIA',
+                                        'CIDADE',
+                                        'UF',
+                                        'CODCLI'
+                                    ],
+                                    endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                    identifierWithorField: 'CODIGO',
+                                    fieldUpdate: 'ALIAS'
+                                }
+                            };
+                        }
                     }
                     break;
                 case 'objectives':
@@ -623,21 +658,23 @@ describe('Running api call tests',()=>{
                         }
                     };
                     break;
-                case 'logisticreasons':                    
-                    getParamsToIntegrate = ()=>{
-                        return {
-                            tableName: modelName,
-                            winthorTableName: 'pctabdev',
-                            winthorTableFields: [
-                                'CODDEVOL',
-                                'MOTIVO',
-                                'TIPO'
-                            ],
-                            endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/logistic/reasons/integrations/${modelName}integrationscontroller/integrate`,
-                            identifierWithorField: 'CODDEVOL',
-                            fieldUpdate: 'NAME'
-                        }
-                    };
+                case 'logisticreasons': 
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {                   
+                        getParamsToIntegrate = ()=>{
+                            return {
+                                tableName: modelName,
+                                winthorTableName: 'pctabdev',
+                                winthorTableFields: [
+                                    'CODDEVOL',
+                                    'MOTIVO',
+                                    'TIPO'
+                                ],
+                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/logistic/reasons/integrations/${modelName}integrationscontroller/integrate`,
+                                identifierWithorField: 'CODDEVOL',
+                                fieldUpdate: 'NAME'
+                            }
+                        };
+                    }
                     break;
                 case 'reportsdatasfountsitems':
                     getParamsToCreate = ()=>{
