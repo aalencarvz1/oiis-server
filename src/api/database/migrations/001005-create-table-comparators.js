@@ -11,6 +11,6 @@ module.exports = {
     await Comparators.runUpMigration(queryInterface);     
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(Comparators.name.toLowerCase());
+    await queryInterface.dropTable(Comparators.tableName);
   }
 };

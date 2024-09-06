@@ -13,6 +13,7 @@ const { Contexts } = require("./Contexts");
  */
 class DatasValues extends BaseTableModel {
   static id = 1004;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...DatasValues.getBaseTableModelFields(),...{     
@@ -58,7 +59,7 @@ class DatasValues extends BaseTableModel {
 
   static constraints = [...(DatasValues.getBaseTableModelConstraints() || []),...[
     {
-      name: DatasValues.name.toLowerCase() + '_u1',
+      name: DatasValues.tableName + '_u1',
       fields: [...DatasValues.getBaseTableModelUniqueFields(),...DatasValues.uniqueFields],
       type:"unique"
     }

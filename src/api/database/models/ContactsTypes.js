@@ -10,6 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class ContactsTypes extends BaseTableModel {
   static id = 2012;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...ContactsTypes.getBaseTableModelFields(),...{           
@@ -26,7 +27,7 @@ class ContactsTypes extends BaseTableModel {
 
   static constraints = [...(ContactsTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: ContactsTypes.name.toLowerCase() + '_u1',
+      name: ContactsTypes.tableName + '_u1',
       fields: [...ContactsTypes.getBaseTableModelUniqueFields(),...ContactsTypes.uniqueFields],
       type:"unique"
     }

@@ -4,7 +4,7 @@ const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 const { MovementsStatus } = require("./MovementsStatus");
 const { LogisticMovTypes } = require("./LogisticMovTypes");
-const { ActionsStatus } = require("./ActionsStatus");
+const { ActionStatus } = require("./ActionStatus");
 const { ItemsMovsAmounts } = require("./ItemsMovsAmounts");
 const { LogisticOrdersXMovs } = require("./LogisticOrdersXMovs");
 const { LogisticReasons } = require("./LogisticReasons");
@@ -19,6 +19,7 @@ const { Packagings } = require("./Packagings");
  */
 class LogisticOrdersXItemsMovAmt extends BaseTableModel {
   static id = 12005;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...LogisticOrdersXItemsMovAmt.getBaseTableModelFields(),...{           
@@ -115,7 +116,7 @@ class LogisticOrdersXItemsMovAmt extends BaseTableModel {
 
   static constraints = [...(LogisticOrdersXItemsMovAmt.getBaseTableModelConstraints() || []),...[
     {
-      name: LogisticOrdersXItemsMovAmt.name.toLowerCase() + '_u1',
+      name: LogisticOrdersXItemsMovAmt.tableName + '_u1',
       fields: [...LogisticOrdersXItemsMovAmt.getBaseTableModelUniqueFields(),...LogisticOrdersXItemsMovAmt.uniqueFields],
       type:"unique"
     }
@@ -153,7 +154,7 @@ class LogisticOrdersXItemsMovAmt extends BaseTableModel {
       fields: ['IDACTIONSTATUS'],
       type: 'foreign key',
       references: { 
-          table: ActionsStatus,
+          table: ActionStatus,
           field: 'id'
       },
       onUpdate: 'cascade'

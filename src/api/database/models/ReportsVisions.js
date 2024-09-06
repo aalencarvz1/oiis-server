@@ -12,6 +12,7 @@ const { Utils } = require("../../controllers/utils/Utils");
  */
 class ReportsVisions extends BaseTableModel {
   static id = 10002;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static VALUES = 1;
@@ -43,7 +44,7 @@ class ReportsVisions extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false,
       },
-      DESCRIPTION:{
+      description:{
         type: DataTypes.TEXT
       },
       VISIBLE: {
@@ -59,11 +60,11 @@ class ReportsVisions extends BaseTableModel {
   ];
 
   static constraints = [...(ReportsVisions.getBaseTableModelConstraints() || []),...[{
-    name: ReportsVisions.name.toLowerCase() + '_u1',
+    name: ReportsVisions.tableName + '_u1',
     fields: ReportsVisions.uniqueFields,
     type:"unique"
   },{
-    name: ReportsVisions.name.toLowerCase() + '_c_1',
+    name: ReportsVisions.tableName + '_c_1',
     fields:['VISIBLE'],
     type:"check",
     where:{

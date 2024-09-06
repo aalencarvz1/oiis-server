@@ -10,6 +10,6 @@ module.exports = {
     await PostalCodesXStreets.runUpMigration(queryInterface);     
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(PostalCodesXStreets.name.toLowerCase());
+    await queryInterface.dropTable(PostalCodesXStreets.tableName);
   }
 };

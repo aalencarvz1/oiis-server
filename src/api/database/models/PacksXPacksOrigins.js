@@ -13,6 +13,7 @@ const { Suppliers } = require("./Suppliers");
  */
 class PacksXPacksOrigins extends BaseTableModel {
   static id = 30800;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...PacksXPacksOrigins.getBaseTableModelFields(),...{                 
@@ -40,7 +41,7 @@ class PacksXPacksOrigins extends BaseTableModel {
 
   static constraints = [...(PacksXPacksOrigins.getBaseTableModelConstraints() || []),...[
     {
-      name: PacksXPacksOrigins.name.toLowerCase() + '_u1',
+      name: PacksXPacksOrigins.tableName + '_u1',
       fields: [...PacksXPacksOrigins.getBaseTableModelUniqueFields(),...PacksXPacksOrigins.uniqueFields],
       type:"unique"
     }

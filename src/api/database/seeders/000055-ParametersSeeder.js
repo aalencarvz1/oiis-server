@@ -11,7 +11,7 @@ const { Users } = require('../models/Users');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(Parameters.name.toLowerCase(),[{
+    await queryInterface.bulkInsert(Parameters.tableName,[{
       id: Parameters.HAS_WINTHOR_INTEGRATION,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
@@ -98,6 +98,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(Parameters.name.toLowerCase(), null, {});
+     await queryInterface.bulkDelete(Parameters.tableName, null, {});
   }
 };

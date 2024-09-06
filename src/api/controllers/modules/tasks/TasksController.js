@@ -36,7 +36,7 @@ class TasksController extends RegistersController{
                     order by
                         IDSUP,ID
                     ) t
-                    join ${TasksXStatusXUsers.name.toLowerCase()} x on (
+                    join ${TasksXStatusXUsers.tableName} x on (
                         x.IDTASK = t.id
                         and x.IDUSER = ${pUserId}
                     )
@@ -72,7 +72,7 @@ class TasksController extends RegistersController{
                     order by
                         IDSUP,ID
                     ) t
-                    join ${TasksXStatusXUsers.name.toLowerCase()} x on (
+                    join ${TasksXStatusXUsers.tableName} x on (
                         x.IDTASK = t.id
                         and x.IDUSER = ${pUserId}
                     )
@@ -96,7 +96,7 @@ class TasksController extends RegistersController{
 
                 let query = `
                     update
-                        ${TasksXStatusXUsers.name.toLowerCase()}
+                        ${TasksXStatusXUsers.tableName}
                     set
                         IDSTATUS=${pIdNewStatus},
                         STARTMOMENT=coalesce(STARTMOMENT,current_timestamp),
@@ -119,9 +119,9 @@ class TasksController extends RegistersController{
             if (idsSubs && idsSubs.length > 0) {                
                 let query = `
                     update
-                        ${TasksXStatusXUsers.name.toLowerCase()} t1
-                        join ${TasksStatus.name.toLowerCase()} ts on ts.id = t1.IDSTATUS
-                        join ${TasksStatus.name.toLowerCase()} tsn on tsn.id = ${pIdNewStatus}
+                        ${TasksXStatusXUsers.tableName} t1
+                        join ${TasksStatus.tableName} ts on ts.id = t1.IDSTATUS
+                        join ${TasksStatus.tableName} tsn on tsn.id = ${pIdNewStatus}
                     set
                         t1.IDSTATUS=${pIdNewStatus},
                         t1.ENDMOMENT=CASE WHEN coalesce(tsn.ISCONCLUDED,0) = 1 then current_timestamp else t1.ENDMOMENT end
@@ -146,7 +146,7 @@ class TasksController extends RegistersController{
                 if (pIdNewStatus != TasksStatus.RUNNING) {
                     let query = `
                         update
-                            ${TasksXStatusXUsers.name.toLowerCase()}
+                            ${TasksXStatusXUsers.tableName}
                         set
                             IDSTATUS=${TasksStatus.RUNNING} 
                         where
@@ -174,7 +174,7 @@ class TasksController extends RegistersController{
             if (idsPreserve && idsPreserve.length > 0) {
                 let query = `
                     update
-                        ${TasksXStatusXUsers.name.toLowerCase()}
+                        ${TasksXStatusXUsers.tableName}
                     set
                         IDSTATUS=${pIdNewStatus},
                         IDTASKCAUSESTATUS=${pIdTask}
@@ -203,7 +203,7 @@ class TasksController extends RegistersController{
             if (idsPreserve && idsPreserve.length > 0) {
                 let query = `
                     update
-                        ${TasksXStatusXUsers.name.toLowerCase()} t
+                        ${TasksXStatusXUsers.tableName} t
                     set
                         t.IDSTATUS=${pIdNewStatus}                        
                     where
@@ -216,7 +216,7 @@ class TasksController extends RegistersController{
                 if (metadata.affectedRows > 0 && pIdNewStatus == TasksStatus.RUNNING && idsSups.length > 0) {
                     query = `
                         update
-                            ${TasksXStatusXUsers.name.toLowerCase()}
+                            ${TasksXStatusXUsers.tableName}
                         set
                             IDSTATUS=${TasksStatus.STOPED}                        
                         where
@@ -242,14 +242,14 @@ class TasksController extends RegistersController{
         queryParams.where.creator_user_id = req.user.id;
 
         queryParams.attributes = [
-            `${Tasks.name.toLowerCase()}.*`,
-            Sequelize.literal(`${TasksXStatusXUsers.name.toLowerCase()}.IDSTATUS`),
-            Sequelize.literal(`coalesce(${TasksXStatusXUsers.name.toLowerCase()}.ACCUMTIME,0) + CASE WHEN ${TasksXStatusXUsers.name.toLowerCase()}.IDSTATUS = 2 THEN TIMESTAMPDIFF(SECOND,coalesce(${TasksXStatusXUsers.name.toLowerCase()}.LASTRUN,CURRENT_TIMESTAMP),CURRENT_TIMESTAMP) ELSE 0 END AS ACCUMTIME`),
+            `${Tasks.tableName}.*`,
+            Sequelize.literal(`${TasksXStatusXUsers.tableName}.IDSTATUS`),
+            Sequelize.literal(`coalesce(${TasksXStatusXUsers.tableName}.ACCUMTIME,0) + CASE WHEN ${TasksXStatusXUsers.tableName}.IDSTATUS = 2 THEN TIMESTAMPDIFF(SECOND,coalesce(${TasksXStatusXUsers.tableName}.LASTRUN,CURRENT_TIMESTAMP),CURRENT_TIMESTAMP) ELSE 0 END AS ACCUMTIME`),
             Sequelize.literal(`
                 case 
-                    when coalesce(${TasksXStatusXUsers.name.toLowerCase()}.FORECASTSTARTMOMENT,${Tasks.name.toLowerCase()}.FORECASTSTARTMOMENT) < current_timestamp and ${TasksXStatusXUsers.name.toLowerCase()}.IDSTATUS IN (1) THEN 
+                    when coalesce(${TasksXStatusXUsers.tableName}.FORECASTSTARTMOMENT,${Tasks.tableName}.FORECASTSTARTMOMENT) < current_timestamp and ${TasksXStatusXUsers.tableName}.IDSTATUS IN (1) THEN 
                         1 
-                    when coalesce(${TasksXStatusXUsers.name.toLowerCase()}.FORECASTENDMOMENT,${Tasks.name.toLowerCase()}.FORECASTENDMOMENT) < current_timestamp and ${TasksXStatusXUsers.name.toLowerCase()}.IDSTATUS NOT IN (4,5) then 
+                    when coalesce(${TasksXStatusXUsers.tableName}.FORECASTENDMOMENT,${Tasks.tableName}.FORECASTENDMOMENT) < current_timestamp and ${TasksXStatusXUsers.tableName}.IDSTATUS NOT IN (4,5) then 
                         1 
                     ELSE 0 
                 END AS EXPIRED`
@@ -262,7 +262,7 @@ class TasksController extends RegistersController{
             required:true,
             on:{
                 [Sequelize.Op.and]:[
-                    Sequelize.where(Sequelize.col(`${TasksXStatusXUsers.name.toLowerCase()}.IDTASK`),'=',Sequelize.col(`${Tasks.name.toLowerCase()}.id`)),
+                    Sequelize.where(Sequelize.col(`${TasksXStatusXUsers.tableName}.IDTASK`),'=',Sequelize.col(`${Tasks.tableName}.id`)),
                     {IDUSER: req.user.id}
                 ]
             }
@@ -273,26 +273,26 @@ class TasksController extends RegistersController{
     static mountQueryToGet(req,queryParams) {
         let query = `
             select 
-                ${Tasks.name.toLowerCase()}.*,
-                ${TasksXStatusXUsers.name.toLowerCase()}.IDSTATUS,
-                coalesce(${TasksXStatusXUsers.name.toLowerCase()}.ACCUMTIME,0) + CASE 
-                    WHEN ${TasksXStatusXUsers.name.toLowerCase()}.IDSTATUS = 2 THEN 
-                        TIMESTAMPDIFF(SECOND,coalesce(${TasksXStatusXUsers.name.toLowerCase()}.LASTRUN,CURRENT_TIMESTAMP),CURRENT_TIMESTAMP) 
+                ${Tasks.tableName}.*,
+                ${TasksXStatusXUsers.tableName}.IDSTATUS,
+                coalesce(${TasksXStatusXUsers.tableName}.ACCUMTIME,0) + CASE 
+                    WHEN ${TasksXStatusXUsers.tableName}.IDSTATUS = 2 THEN 
+                        TIMESTAMPDIFF(SECOND,coalesce(${TasksXStatusXUsers.tableName}.LASTRUN,CURRENT_TIMESTAMP),CURRENT_TIMESTAMP) 
                     ELSE 
                         0 
                 END AS ACCUMTIME,                
                 case 
-                    when coalesce(${TasksXStatusXUsers.name.toLowerCase()}.FORECASTSTARTMOMENT,${Tasks.name.toLowerCase()}.FORECASTSTARTMOMENT) < current_timestamp and ${TasksXStatusXUsers.name.toLowerCase()}.IDSTATUS IN (1) THEN 
+                    when coalesce(${TasksXStatusXUsers.tableName}.FORECASTSTARTMOMENT,${Tasks.tableName}.FORECASTSTARTMOMENT) < current_timestamp and ${TasksXStatusXUsers.tableName}.IDSTATUS IN (1) THEN 
                         1 
-                    when coalesce(${TasksXStatusXUsers.name.toLowerCase()}.FORECASTENDMOMENT,${Tasks.name.toLowerCase()}.FORECASTENDMOMENT) < current_timestamp and ${TasksXStatusXUsers.name.toLowerCase()}.IDSTATUS NOT IN (4,5) then 
+                    when coalesce(${TasksXStatusXUsers.tableName}.FORECASTENDMOMENT,${Tasks.tableName}.FORECASTENDMOMENT) < current_timestamp and ${TasksXStatusXUsers.tableName}.IDSTATUS NOT IN (4,5) then 
                         1 
                     ELSE 0 
                 END AS EXPIRED                
             from 
-                ${Tasks.name.toLowerCase()}
-                join ${TasksXStatusXUsers.name.toLowerCase()} on (
-                    ${TasksXStatusXUsers.name.toLowerCase()}.IDTASK = ${Tasks.name.toLowerCase()}.id
-                    and ${TasksXStatusXUsers.name.toLowerCase()}.IDUSER = ${req.user.id}
+                ${Tasks.tableName}
+                join ${TasksXStatusXUsers.tableName} on (
+                    ${TasksXStatusXUsers.tableName}.IDTASK = ${Tasks.tableName}.id
+                    and ${TasksXStatusXUsers.tableName}.IDUSER = ${req.user.id}
                 )
         `;
         if (Utils.hasValue(queryParams)) {
@@ -567,8 +567,8 @@ class TasksController extends RegistersController{
                                     t.IDSUP,
                                     tu.id as TUID
                                 from
-                                    ${Tasks.name.toLowerCase()} t
-                                    join ${TasksXStatusXUsers.name.toLowerCase()} tu on (
+                                    ${Tasks.tableName} t
+                                    join ${TasksXStatusXUsers.tableName} tu on (
                                         tu.IDTASK = t.id
                                         and tu.IDUSER = ${req.user.id}
                                         and tu.IDSTATUS = ${taskLogX.IDOLDSTATUS}
@@ -579,8 +579,8 @@ class TasksController extends RegistersController{
                                         select
                                             1
                                         from
-                                            ${Tasks.name.toLowerCase()} t2
-                                            join ${TasksXStatusXUsers.name.toLowerCase()} tu2 on (
+                                            ${Tasks.tableName} t2
+                                            join ${TasksXStatusXUsers.tableName} tu2 on (
                                                 tu2.IDTASK = t2.id
                                                 and tu2.IDUSER = ${req.user.id}
                                                 and tu2.IDSTATUS NOT IN (${taskLogX.IDNEWSTATUS}, ${TasksStatus.CANCELED}, ${TasksStatus.CONCLUDED})

@@ -10,6 +10,6 @@ module.exports = {
     await DataRelationshipTypes.runUpMigration(queryInterface);     
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(DataRelationshipTypes.name.toLowerCase());
+    await queryInterface.dropTable(DataRelationshipTypes.tableName);
   }
 };

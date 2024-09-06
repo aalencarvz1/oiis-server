@@ -10,6 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class LogisticReasons extends BaseTableModel {
   static id = 12002;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...LogisticReasons.getBaseTableModelFields(),...{                 

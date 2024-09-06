@@ -9,6 +9,7 @@ const { BaseWinthorTableModel } = require('./BaseWinthorTableModel');
  */
 class PcEstado extends BaseWinthorTableModel {
   static id = 30101;
+  static tableName = this.name.toUpperCase();
   static model = null;
 
 

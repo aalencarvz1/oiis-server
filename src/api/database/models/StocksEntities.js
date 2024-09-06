@@ -18,6 +18,7 @@ const { Collaborators } = require("./Collaborators");
  */
 class StocksEntities extends BaseTableModel {
   static id = 8025;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static WITHOUT_CONTEINER = 1;
@@ -74,7 +75,7 @@ class StocksEntities extends BaseTableModel {
 
   static constraints = [...(StocksEntities.getBaseTableModelConstraints() || []),...[
     {
-      name: StocksEntities.name.toLowerCase() + '_u1',
+      name: StocksEntities.tableName + '_u1',
       fields: [...StocksEntities.getBaseTableModelUniqueFields(),...StocksEntities.uniqueFields],
       type:"unique"
     }

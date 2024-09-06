@@ -9,8 +9,9 @@ const { BaseTableModel } = require('./BaseTableModel');
 /**
  * class model
  */
-class ActionsStatus extends BaseTableModel {
+class ActionStatus extends BaseTableModel {
   static id = 51;
+  static tableName = "action_status";
   static model = null;
 
   static NOT_STARTED = 1;
@@ -20,7 +21,7 @@ class ActionsStatus extends BaseTableModel {
   static CONCLUDED = 5;
 
   static fields = {
-    ...ActionsStatus.getBaseTableModelFields(),...{           
+    ...ActionStatus.getBaseTableModelFields(),...{           
       name:{
         type: DataTypes.STRING(256),
         allowNull:false
@@ -50,7 +51,7 @@ class ActionsStatus extends BaseTableModel {
         allowNull: false,
         defaultValue:0
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
     }
@@ -60,13 +61,13 @@ class ActionsStatus extends BaseTableModel {
     'name'
   ];
 
-  static constraints = [...(ActionsStatus.getBaseTableModelConstraints() || []),...[
+  static constraints = [...(ActionStatus.getBaseTableModelConstraints() || []),...[
     {
-      name: ActionsStatus.name.toLowerCase() + '_u1',
-      fields: [...ActionsStatus.getBaseTableModelUniqueFields(),...ActionsStatus.uniqueFields],
+      name: ActionStatus.tableName + '_u1',
+      fields: [...ActionStatus.getBaseTableModelUniqueFields(),...ActionStatus.uniqueFields],
       type:"unique"
     },{
-      name: ActionsStatus.name.toLowerCase() + '_c_1',
+      name: ActionStatus.tableName + '_c_1',
       fields:['ISSTARTED'],
       type:"check",
       where:{
@@ -75,7 +76,7 @@ class ActionsStatus extends BaseTableModel {
           }
       }
     },{
-      name: ActionsStatus.name.toLowerCase() + '_c_2',
+      name: ActionStatus.tableName + '_c_2',
       fields:['ISRUNNING'],
       type:"check",
       where:{
@@ -84,7 +85,7 @@ class ActionsStatus extends BaseTableModel {
           }
       }
     },{
-      name: ActionsStatus.name.toLowerCase() + '_c_3',
+      name: ActionStatus.tableName + '_c_3',
       fields:['ISSTOPED'],
       type:"check",
       where:{
@@ -93,7 +94,7 @@ class ActionsStatus extends BaseTableModel {
           }
       }
     },{
-      name: ActionsStatus.name.toLowerCase() + '_c_4',
+      name: ActionStatus.tableName + '_c_4',
       fields:['ISCANCELED'],
       type:"check",
       where:{
@@ -102,7 +103,7 @@ class ActionsStatus extends BaseTableModel {
           }
       }
     },{
-      name: ActionsStatus.name.toLowerCase() + '_c_5',
+      name: ActionStatus.tableName + '_c_5',
       fields:['ISCONCLUDED'],
       type:"check",
       where:{
@@ -118,4 +119,4 @@ class ActionsStatus extends BaseTableModel {
 };
 
 
-module.exports = {ActionsStatus}
+module.exports = {ActionStatus}

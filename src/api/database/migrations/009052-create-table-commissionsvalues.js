@@ -10,6 +10,6 @@ module.exports = {
     await CommissionsValues.runUpMigration(queryInterface);     
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(CommissionsValues.name.toLowerCase());
+    await queryInterface.dropTable(CommissionsValues.tableName);
   }
 };

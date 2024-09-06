@@ -13,7 +13,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await Collaborators.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});          
     
-    await queryInterface.bulkInsert(Collaborators.name.toLowerCase(),[{      
+    await queryInterface.bulkInsert(Collaborators.tableName,[{      
       id:Collaborators.SYSTEM,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
@@ -32,6 +32,6 @@ module.exports = {
         
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(Collaborators.name.toLowerCase());
+    await queryInterface.dropTable(Collaborators.tableName);
   }
 };

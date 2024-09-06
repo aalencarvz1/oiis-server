@@ -6,7 +6,7 @@ const { BaseTableModel } = require('./BaseTableModel');
 const { PostalCodes } = require("./PostalCodes");
 const { Streets } = require("./Streets");
 const { NeighborHoods } = require("./NeighborHoods");
-const { AddressesTypes } = require("./AddressesTypes");
+const { AddressTypes } = require("./AddressTypes");
 
 
 /**
@@ -14,6 +14,7 @@ const { AddressesTypes } = require("./AddressesTypes");
  */
 class Addresses extends BaseTableModel {
   static id = 2011;
+  static tableName = "addresses";
   static model = null;
   static fields = {
     ...Addresses.getBaseTableModelFields(),...{                 
@@ -57,7 +58,7 @@ class Addresses extends BaseTableModel {
 
   static constraints = [...(Addresses.getBaseTableModelConstraints() || []),...[
     {
-      name: Addresses.name.toLowerCase() + '_u1',
+      name: Addresses.tableName + '_u1',
       fields: [...Addresses.getBaseTableModelUniqueFields(),...Addresses.uniqueFields],
       type:"unique"
     }
@@ -68,7 +69,7 @@ class Addresses extends BaseTableModel {
       fields: ['IDADDRESSTYPE'],
       type: 'foreign key',
       references: { 
-          table: AddressesTypes,
+          table: AddressTypes,
           field: 'id'
       },
       onUpdate: 'cascade'

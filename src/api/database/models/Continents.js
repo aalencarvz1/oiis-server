@@ -10,6 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class Continents extends BaseTableModel {
   static id = 2000;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static AMERICA = 1;
@@ -36,7 +37,7 @@ class Continents extends BaseTableModel {
 
   static constraints = [...(Continents.getBaseTableModelConstraints() || []),...[
     {
-      name: Continents.name.toLowerCase() + '_u1',
+      name: Continents.tableName + '_u1',
       fields: [...Continents.getBaseTableModelUniqueFields(),...Continents.uniqueFields],
       type:"unique"
     }

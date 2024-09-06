@@ -13,6 +13,7 @@ const { TasksStatus } = require("./TasksStatus");
  */
 class TasksXStatusXUsers extends BaseTableModel {
   static id = 15050;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static fields = {

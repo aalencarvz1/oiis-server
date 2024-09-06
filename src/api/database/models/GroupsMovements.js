@@ -11,6 +11,7 @@ const { IdentifiersTypes } = require("./IdentifiersTypes");
  */
 class GroupsMovements extends BaseTableModel {
   static id = 9011;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...GroupsMovements.getBaseTableModelFields(),...{           
@@ -30,7 +31,7 @@ class GroupsMovements extends BaseTableModel {
 
   static constraints = [...(GroupsMovements.getBaseTableModelConstraints() || []),...[
     {
-      name: GroupsMovements.name.toLowerCase() + '_u1',
+      name: GroupsMovements.tableName + '_u1',
       fields: [...GroupsMovements.getBaseTableModelUniqueFields(),...GroupsMovements.uniqueFields],
       type:"unique"
     }

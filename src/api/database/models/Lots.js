@@ -12,6 +12,7 @@ const { Suppliers } = require("./Suppliers");
  */
 class Lots extends BaseTableModel {
   static id = 8014;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static WITHOUT_LOT = 1;
@@ -46,7 +47,7 @@ class Lots extends BaseTableModel {
 
   static constraints = [...(Lots.getBaseTableModelConstraints() || []),...[
     {
-      name: Lots.name.toLowerCase() + '_u1',
+      name: Lots.tableName + '_u1',
       fields: [...Lots.getBaseTableModelUniqueFields(),...Lots.uniqueFields],
       type:"unique"
     }

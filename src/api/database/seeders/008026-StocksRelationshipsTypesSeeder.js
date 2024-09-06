@@ -8,7 +8,7 @@ const { StocksEntitiesRelationshipsTypes } = require('../models/StocksEntitiesRe
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(StocksEntitiesRelationshipsTypes.name.toLowerCase(),[{
+    await queryInterface.bulkInsert(StocksEntitiesRelationshipsTypes.tableName,[{
       id: StocksEntitiesRelationshipsTypes.OWNER,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
@@ -24,6 +24,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(StocksEntitiesRelationshipsTypes.name.toLowerCase(), null, {});
+     await queryInterface.bulkDelete(StocksEntitiesRelationshipsTypes.tableName, null, {});
   }
 };

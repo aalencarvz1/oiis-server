@@ -8,11 +8,12 @@ const { BaseTableModel } = require('./BaseTableModel');
 /**
  * class model
  */
-class WarehousesAddressesTypes extends BaseTableModel {
+class WarehousesAddressTypes extends BaseTableModel {
   static id = 3003;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
-    ...WarehousesAddressesTypes.getBaseTableModelFields(),...{           
+    ...WarehousesAddressTypes.getBaseTableModelFields(),...{           
       name:{
         type: DataTypes.STRING(256),
         allowNull:false
@@ -34,13 +35,13 @@ class WarehousesAddressesTypes extends BaseTableModel {
     'name'
   ];
 
-  static constraints = [...(WarehousesAddressesTypes.getBaseTableModelConstraints() || []),...[
+  static constraints = [...(WarehousesAddressTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: WarehousesAddressesTypes.name.toLowerCase() + '_u1',
-      fields: [...WarehousesAddressesTypes.getBaseTableModelUniqueFields(),...WarehousesAddressesTypes.uniqueFields],
+      name: WarehousesAddressTypes.tableName + '_u1',
+      fields: [...WarehousesAddressTypes.getBaseTableModelUniqueFields(),...WarehousesAddressTypes.uniqueFields],
       type:"unique"
     },{
-      name: WarehousesAddressesTypes.name.toLowerCase() + '_c_1',
+      name: WarehousesAddressTypes.tableName + '_c_1',
       fields:['ISSTORABLE'],
       type:"check",
       where:{
@@ -49,7 +50,7 @@ class WarehousesAddressesTypes extends BaseTableModel {
           }
       }
     },{
-      name: WarehousesAddressesTypes.name.toLowerCase() + '_c_2',
+      name: WarehousesAddressTypes.tableName + '_c_2',
       fields:['ISPASSABLE'],
       type:"check",
       where:{
@@ -65,4 +66,4 @@ class WarehousesAddressesTypes extends BaseTableModel {
 };
 
 
-module.exports = {WarehousesAddressesTypes}
+module.exports = {WarehousesAddressTypes}

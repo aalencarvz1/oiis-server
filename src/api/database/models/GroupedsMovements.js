@@ -12,6 +12,7 @@ const { Movements } = require("./Movements");
  */
 class GroupedsMovements extends BaseTableModel {
   static id = 9012;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...GroupedsMovements.getBaseTableModelFields(),...{           
@@ -46,7 +47,7 @@ class GroupedsMovements extends BaseTableModel {
 
   static constraints = [...(GroupedsMovements.getBaseTableModelConstraints() || []),...[
     {
-      name: GroupedsMovements.name.toLowerCase() + '_u1',
+      name: GroupedsMovements.tableName + '_u1',
       fields: [...GroupedsMovements.getBaseTableModelUniqueFields(),...GroupedsMovements.uniqueFields],
       type:"unique"
     }

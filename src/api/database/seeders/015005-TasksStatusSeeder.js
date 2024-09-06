@@ -9,7 +9,7 @@ const { Users } = require('../models/Users');
 module.exports = {
   async up (queryInterface, Sequelize) {    
     
-    await queryInterface.bulkInsert(TasksStatus.name.toLowerCase(),[{      
+    await queryInterface.bulkInsert(TasksStatus.tableName,[{      
       id:TasksStatus.NOT_STARTED,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
@@ -61,6 +61,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(TasksStatus.name.toLowerCase(), null, {});
+     await queryInterface.bulkDelete(TasksStatus.tableName, null, {});
   }
 };

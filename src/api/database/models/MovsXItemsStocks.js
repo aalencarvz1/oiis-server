@@ -14,6 +14,7 @@ const { MovementsTypes } = require("./MovementsTypes");
  */
 class MovsXItemsStocks extends BaseTableModel {
   static id = 9030;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...MovsXItemsStocks.getBaseTableModelFields(),...{                 
@@ -64,7 +65,7 @@ class MovsXItemsStocks extends BaseTableModel {
 
   static constraints = [...(MovsXItemsStocks.getBaseTableModelConstraints() || []),...[
     {
-      name: MovsXItemsStocks.name.toLowerCase() + '_u1',
+      name: MovsXItemsStocks.tableName + '_u1',
       fields: [...MovsXItemsStocks.getBaseTableModelUniqueFields(),...MovsXItemsStocks.uniqueFields],
       type:"unique"
     }

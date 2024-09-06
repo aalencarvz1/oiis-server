@@ -5,13 +5,14 @@ const { DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
 const { Cities } = require("./Cities");
-const { AddressesTypes } = require("./AddressesTypes");
+const { AddressTypes } = require("./AddressTypes");
 
 /**
  * class model
  */
 class PostalCodes extends BaseTableModel {
   static id = 2008;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...PostalCodes.getBaseTableModelFields(),...{           
@@ -41,7 +42,7 @@ class PostalCodes extends BaseTableModel {
 
   static constraints = [...(PostalCodes.getBaseTableModelConstraints() || []),...[
     {
-      name: PostalCodes.name.toLowerCase() + '_u1',
+      name: PostalCodes.tableName + '_u1',
       fields: [...PostalCodes.getBaseTableModelUniqueFields(),...PostalCodes.uniqueFields],
       type:"unique"
     }
@@ -52,7 +53,7 @@ class PostalCodes extends BaseTableModel {
       fields: ['IDADDRESSTYPE'],
       type: 'foreign key',
       references: { 
-          table: AddressesTypes,
+          table: AddressTypes,
           field: 'id'
       },
       onUpdate: 'cascade'

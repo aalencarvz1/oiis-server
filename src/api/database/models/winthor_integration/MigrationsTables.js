@@ -9,6 +9,7 @@ const { BaseWinthorIntegrationTableModel } = require("./BaseWinthorIntegrationTa
  */
 class MigrationsTables extends BaseWinthorIntegrationTableModel {
   static id = 35002;
+  static tableName = this.name.toUpperCase();
   static model = null;
   static fields = {
     ...MigrationsTables.getBaseTableModelFields(),...{                 
@@ -54,11 +55,11 @@ class MigrationsTables extends BaseWinthorIntegrationTableModel {
   ];
 
   static constraints = [...(MigrationsTables.getBaseTableModelConstraints() || []),...[{
-    name: MigrationsTables.name.toLowerCase() + '_u1',
+    name: MigrationsTables.tableName + '_u1',
     fields: [...MigrationsTables.getBaseTableModelUniqueFields(),...MigrationsTables.uniqueFields],
     type:"unique"
   },{
-    name: MigrationsTables.name.toLowerCase() + '_c_1',
+    name: MigrationsTables.tableName + '_c_1',
     fields:['MIGRATEINTEGRATION'],
     type:"check",
     where:{
@@ -67,7 +68,7 @@ class MigrationsTables extends BaseWinthorIntegrationTableModel {
         }
     }
   },{
-    name: MigrationsTables.name.toLowerCase() + '_c_2',
+    name: MigrationsTables.tableName + '_c_2',
     fields:['MIGRATEINSERT'],
     type:"check",
     where:{
@@ -76,7 +77,7 @@ class MigrationsTables extends BaseWinthorIntegrationTableModel {
         }
     }
   },{
-    name: MigrationsTables.name.toLowerCase() + '_c_3',
+    name: MigrationsTables.tableName + '_c_3',
     fields:['MIGRATEUPDATE'],
     type:"check",
     where:{
@@ -85,7 +86,7 @@ class MigrationsTables extends BaseWinthorIntegrationTableModel {
         }
     }
   },{
-    name: MigrationsTables.name.toLowerCase() + '_c_4',
+    name: MigrationsTables.tableName + '_c_4',
     fields:['MIGRATEDELETE'],
     type:"check",
     where:{

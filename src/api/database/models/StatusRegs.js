@@ -9,6 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class StatusRegs extends BaseTableModel {
   static id = 65;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static ACTIVE = 1;
@@ -20,7 +21,7 @@ class StatusRegs extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull: false
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
       ISACTIVE: {
@@ -37,11 +38,11 @@ class StatusRegs extends BaseTableModel {
 
   static constraints = [...(StatusRegs.getBaseTableModelConstraints() || []),...[
     {
-      name: StatusRegs.name.toLowerCase() + '_u1',
+      name: StatusRegs.tableName + '_u1',
       fields: [...StatusRegs.getBaseTableModelUniqueFields(),...StatusRegs.uniqueFields],
       type:"unique"
     },{
-      name: StatusRegs.name.toLowerCase() + '_c_1',
+      name: StatusRegs.tableName + '_c_1',
       fields:['ISACTIVE'],
       type:"check",
       where:{

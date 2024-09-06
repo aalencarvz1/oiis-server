@@ -11,6 +11,7 @@ const { Condictions } = require("./Condictions");
  */
 class CondictionsItems extends BaseTableModel {
   static id = 7005;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
     static fields = {

@@ -11,6 +11,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class EntitiesTypes extends BaseTableModel {
   static id = 5;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static DATABASE = 1;
@@ -25,7 +26,7 @@ class EntitiesTypes extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull: false
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       }
     }
@@ -37,7 +38,7 @@ class EntitiesTypes extends BaseTableModel {
 
   static constraints = [...(EntitiesTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: EntitiesTypes.name.toLowerCase() + '_U1',
+      name: EntitiesTypes.tableName + '_U1',
       fields: [...EntitiesTypes.getBaseTableModelUniqueFields(),...EntitiesTypes.uniqueFields],
       type:"unique"
     }

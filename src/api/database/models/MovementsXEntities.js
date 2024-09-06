@@ -13,6 +13,7 @@ const { MovementsEntitiesRelationshipsTypes } = require("./MovementsEntitiesRela
  */
 class MovementsXEntities extends BaseTableModel {
   static id = 9021;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...MovementsXEntities.getBaseTableModelFields(),...{                 
@@ -52,7 +53,7 @@ class MovementsXEntities extends BaseTableModel {
 
   static constraints = [...(MovementsXEntities.getBaseTableModelConstraints() || []),...[
     {
-      name: MovementsXEntities.name.toLowerCase() + '_u1',
+      name: MovementsXEntities.tableName + '_u1',
       fields: [...MovementsXEntities.getBaseTableModelUniqueFields(),...MovementsXEntities.uniqueFields],
       type:"unique"
     }

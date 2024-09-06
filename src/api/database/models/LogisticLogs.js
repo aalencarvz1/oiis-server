@@ -10,6 +10,7 @@ const { DataTables } = require("./DataTables");
  */
 class LogisticLogs extends BaseTableModel {
   static id = 12100;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...LogisticLogs.getBaseTableModelFields(),...{    

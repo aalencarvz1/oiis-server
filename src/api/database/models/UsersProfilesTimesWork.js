@@ -10,6 +10,7 @@ const { Users } = require("./Users");
  */
 class UsersProfilesTimesWork extends BaseTableModel {
   static id = 122;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   
@@ -33,7 +34,7 @@ class UsersProfilesTimesWork extends BaseTableModel {
 
   static constraints = [...(UsersProfilesTimesWork.getBaseTableModelConstraints() || []),...[
     {
-      name: UsersProfilesTimesWork.name.toLowerCase() + '_u1',
+      name: UsersProfilesTimesWork.tableName + '_u1',
       fields: UsersProfilesTimesWork.uniqueFields,
       type:"unique"
     }

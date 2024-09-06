@@ -12,6 +12,7 @@ const { Conteiners } = require("./Conteiners");
  */
 class ItemsXLotsXConteiners extends BaseTableModel {
   static id = 8020;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static WITHOUT_CONTEINER = 1;
@@ -44,7 +45,7 @@ class ItemsXLotsXConteiners extends BaseTableModel {
 
   static constraints = [...(ItemsXLotsXConteiners.getBaseTableModelConstraints() || []),...[
     {
-      name: ItemsXLotsXConteiners.name.toLowerCase() + '_u1',
+      name: ItemsXLotsXConteiners.tableName + '_u1',
       fields: [...ItemsXLotsXConteiners.getBaseTableModelUniqueFields(),...ItemsXLotsXConteiners.uniqueFields],
       type:"unique"
     }

@@ -1,6 +1,6 @@
 const { Sequelize, Op, QueryTypes } = require("sequelize");
 const DBConnectionManager = require("../../../../../../database/DBConnectionManager");
-const { ActionsStatus } = require("../../../../../../database/models/ActionsStatus");
+const { ActionStatus } = require("../../../../../../database/models/ActionStatus");
 const { OriginsDatas } = require("../../../../../../database/models/OriginsDatas");
 const { PcCarreg } = require("../../../../../../database/models/winthor/PcCarreg");
 const { PcNfsaid } = require("../../../../../../database/models/winthor/PcNfsaid");
@@ -45,13 +45,13 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
     }
 
     static getIdActionStatus(idStatus) {
-        let result = ActionsStatus.NOT_STARTED;                    
+        let result = ActionStatus.NOT_STARTED;                    
         switch(idStatus) {
             case 2:
-                result = ActionsStatus.RUNNING;
+                result = ActionStatus.RUNNING;
                 break;
             case 3:
-                result = ActionsStatus.CONCLUDED;
+                result = ActionStatus.CONCLUDED;
                 break;
         }
         return result;
@@ -83,7 +83,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                             let logOrder = await LogisticOrders.getModel().findAll({
                                 raw:true,
                                 attributes:[
-                                    Sequelize.col(`${LogisticOrders.name.toLowerCase()}.id_at_origin`),
+                                    Sequelize.col(`${LogisticOrders.tableName}.id_at_origin`),
                                     [Sequelize.col('LOGISTICORDERSXMOVS.IDLOGISTICSTATUS'), 'IDLOGISTICSTATUS'],
                                     [Sequelize.col('LOGISTICORDERSXMOVS->MOVEMENTS.data_origin_id'), 'data_origin_idNF'],
                                     [Sequelize.col('LOGISTICORDERSXMOVS->MOVEMENTS.id_at_origin'), 'NUMTRANSVENDA'],
@@ -102,16 +102,16 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                     include: [{
                                         model: Movements.getModel(),
                                         attributes:[],
-                                        on:Sequelize.where(Sequelize.col(`LOGISTICORDERSXMOVS->MOVEMENTS.id`),Sequelize.col(`${LogisticOrdersXMovs.name.toLowerCase()}.IDMOV`))
+                                        on:Sequelize.where(Sequelize.col(`LOGISTICORDERSXMOVS->MOVEMENTS.id`),Sequelize.col(`${LogisticOrdersXMovs.tableName}.IDMOV`))
                                     },{
                                         model: LogisticOrdersXItemsMovAmt.getModel(),
                                         attributes:[],
-                                        on:Sequelize.where(Sequelize.col(`LOGISTICORDERSXMOVS->LOGISTICORDERSXITEMSMOVAMT.IDLOGISTICORDERXMOV`),Sequelize.col(`${LogisticOrdersXMovs.name.toLowerCase()}.id`))
+                                        on:Sequelize.where(Sequelize.col(`LOGISTICORDERSXMOVS->LOGISTICORDERSXITEMSMOVAMT.IDLOGISTICORDERXMOV`),Sequelize.col(`${LogisticOrdersXMovs.tableName}.id`))
                                         
                                     }]
                                 }],
                                 group:[
-                                    Sequelize.col(`${LogisticOrders.name.toLowerCase()}.id_at_origin`),
+                                    Sequelize.col(`${LogisticOrders.tableName}.id_at_origin`),
                                     Sequelize.col('LOGISTICORDERSXMOVS.IDLOGISTICSTATUS'),
                                     Sequelize.col('LOGISTICORDERSXMOVS->MOVEMENTS.data_origin_id'),
                                     Sequelize.col('LOGISTICORDERSXMOVS->MOVEMENTS.id_at_origin')
@@ -471,8 +471,8 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                         ['NUMENT','QTENTREGAS'],
                         'DESTINO',
                         ['DT_CANCEL','DTCANCEL'],
-                        [Sequelize.col(`${PcEmpr.name.toUpperCase()}.NOME`),'NOMEMOTORISTA'],
-                        [Sequelize.col(`${PcVeicul.name.toUpperCase()}.PLACA`),'PLACA']                        
+                        [Sequelize.col(`${PcEmpr.tableName}.NOME`),'NOMEMOTORISTA'],
+                        [Sequelize.col(`${PcVeicul.tableName}.PLACA`),'PLACA']                        
                     ],
                     include:[{
                         raw:true,
@@ -480,7 +480,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                         attributes:[],
                         on:{
                             [Op.and]: [
-                                Sequelize.where(Sequelize.col(`${PcCarreg.name.toUpperCase()}.CODMOTORISTA`), Sequelize.col(`${PcEmpr.name.toUpperCase()}.MATRICULA`))
+                                Sequelize.where(Sequelize.col(`${PcCarreg.tableName}.CODMOTORISTA`), Sequelize.col(`${PcEmpr.tableName}.MATRICULA`))
                             ]
                         }
                     },{
@@ -489,7 +489,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                         attributes:[],
                         on:{
                             [Op.and]: [
-                                Sequelize.where(Sequelize.col(`${PcCarreg.name.toUpperCase()}.CODVEICULO`), Sequelize.col(`${PcVeicul.name.toUpperCase()}.CODVEICULO`))
+                                Sequelize.where(Sequelize.col(`${PcCarreg.tableName}.CODVEICULO`), Sequelize.col(`${PcVeicul.tableName}.CODVEICULO`))
                             ]
                         }
                     }],
@@ -591,7 +591,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                     'NUMTRANSVENDA',
                                     ['CODCLI','IDCLIENTORIGIN'],
                                     'CHAVENFE',
-                                    [Sequelize.col(`${PcDocEletronico.name.toUpperCase()}.XMLNFE`),'XML']
+                                    [Sequelize.col(`${PcDocEletronico.tableName}.XMLNFE`),'XML']
                                 ],
                                 where:{
                                     NUMCAR: res.data[key].IDLOADORIGIN,

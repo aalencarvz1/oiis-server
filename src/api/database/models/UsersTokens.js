@@ -10,6 +10,7 @@ const { Users } = require("./Users");
  */
 class UsersTokens extends BaseTableModel {
   static id = 121;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   
@@ -48,11 +49,11 @@ class UsersTokens extends BaseTableModel {
 
   static constraints = [...(UsersTokens.getBaseTableModelConstraints() || []),...[
     {
-      name: UsersTokens.name.toLowerCase() + '_u1',
+      name: UsersTokens.tableName + '_u1',
       fields: UsersTokens.uniqueFields,
       type:"unique"
     },{
-      name: UsersTokens.name.toLowerCase() + '_c_1',
+      name: UsersTokens.tableName + '_c_1',
       fields:['EXPIRED'],
       type:"check",
       where:{

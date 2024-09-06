@@ -8,7 +8,7 @@ const { Users } = require('../models/Users');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(FinancialValueLocalizationsTypes.name.toLowerCase(),[{      
+    await queryInterface.bulkInsert(FinancialValueLocalizationsTypes.tableName,[{      
       id:FinancialValueLocalizationsTypes.UNKNOWN,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
@@ -41,6 +41,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(FinancialValueLocalizationsTypes.name.toLowerCase(), null, {});
+     await queryInterface.bulkDelete(FinancialValueLocalizationsTypes.tableName, null, {});
   }
 };

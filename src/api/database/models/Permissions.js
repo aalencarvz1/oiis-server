@@ -8,7 +8,7 @@ const { Users } = require("./Users");
 const { Contexts } = require("./Contexts");
 const { Routines } = require("./Routines");
 const { PowersTypes } = require("./PowersTypes");
-const { AccessesProfiles } = require("./AccessesProfiles");
+const { AccessProfiles } = require("./AccessProfiles");
 const { DataTables } = require("./DataTables");
 const { Modules } = require("./Modules");
 
@@ -17,6 +17,7 @@ const { Modules } = require("./Modules");
  */
 class Permissions extends BaseTableModel {
   static id = 7003;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static SYSTEM = 1;
@@ -100,11 +101,11 @@ class Permissions extends BaseTableModel {
 
   static constraints = [...(Permissions.getBaseTableModelConstraints() || []),...[
     {
-      name: Permissions.name.toLowerCase() + '_u1',
+      name: Permissions.tableName + '_u1',
       fields: [...Permissions.getBaseTableModelUniqueFields(),...Permissions.uniqueFields],
       type:"unique"
     },{
-      name: Permissions.name.toLowerCase() + '_c_1',
+      name: Permissions.tableName + '_c_1',
       fields:['ALLOWEDACCESS'],
       type:"check",
       where:{
@@ -113,7 +114,7 @@ class Permissions extends BaseTableModel {
           }
       }
     },{
-      name: Permissions.name.toLowerCase() + '_c_2',
+      name: Permissions.tableName + '_c_2',
       fields:['ALLOWEDSEARCH'],
       type:"check",
       where:{
@@ -122,7 +123,7 @@ class Permissions extends BaseTableModel {
           }
       }
     },{
-      name: Permissions.name.toLowerCase() + '_c_3',
+      name: Permissions.tableName + '_c_3',
       fields:['ALLOWEDREAD'],
       type:"check",
       where:{
@@ -131,7 +132,7 @@ class Permissions extends BaseTableModel {
           }
       }
     },{
-      name: Permissions.name.toLowerCase() + '_c_4',
+      name: Permissions.tableName + '_c_4',
       fields:['ALLOWEDUPDATE'],
       type:"check",
       where:{
@@ -140,7 +141,7 @@ class Permissions extends BaseTableModel {
           }
       }
     },{
-      name: Permissions.name.toLowerCase() + '_c_5',
+      name: Permissions.tableName + '_c_5',
       fields:['ALLOWEDCREATE'],
       type:"check",
       where:{
@@ -149,7 +150,7 @@ class Permissions extends BaseTableModel {
           }
       }
     },{
-      name: Permissions.name.toLowerCase() + '_c_6',
+      name: Permissions.tableName + '_c_6',
       fields:['ALLOWEDDELETE'],
       type:"check",
       where:{
@@ -174,7 +175,7 @@ class Permissions extends BaseTableModel {
       fields: ['IDACCESSPROFILE'],
       type: 'foreign key',
       references: { 
-          table: AccessesProfiles,
+          table: AccessProfiles,
           field: 'id'
       },
       onUpdate: 'cascade'

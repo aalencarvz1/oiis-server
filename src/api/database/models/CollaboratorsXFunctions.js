@@ -12,6 +12,7 @@ const { CollaboratorsContracts } = require("./CollaboratorsContracts");
  */
 class CollaboratorsXFunctions extends BaseTableModel {
   static id = 6003;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...CollaboratorsXFunctions.getBaseTableModelFields(),...{           
@@ -48,11 +49,11 @@ class CollaboratorsXFunctions extends BaseTableModel {
 
   static constraints = [...(CollaboratorsXFunctions.getBaseTableModelConstraints() || []),...[
     {
-      name: CollaboratorsXFunctions.name.toLowerCase() + '_u1',
+      name: CollaboratorsXFunctions.tableName + '_u1',
       fields: [...CollaboratorsXFunctions.getBaseTableModelUniqueFields(),...CollaboratorsXFunctions.uniqueFields],
       type:"unique"
     },{
-      name: CollaboratorsXFunctions.name.toLowerCase() + '_c_1',
+      name: CollaboratorsXFunctions.tableName + '_c_1',
       fields:['ISTIMECONTROLLED'],
       type:"check",
       where:{

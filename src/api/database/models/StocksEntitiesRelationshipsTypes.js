@@ -10,6 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class StocksEntitiesRelationshipsTypes extends BaseTableModel {
   static id = 8026;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static OWNER = 1;
   static fields = {
@@ -38,7 +39,7 @@ class StocksEntitiesRelationshipsTypes extends BaseTableModel {
         allowNull: false,
         defaultValue:0
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
     }
@@ -50,11 +51,11 @@ class StocksEntitiesRelationshipsTypes extends BaseTableModel {
 
   static constraints = [...(StocksEntitiesRelationshipsTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: StocksEntitiesRelationshipsTypes.name.toLowerCase() + '_u1',
+      name: StocksEntitiesRelationshipsTypes.tableName + '_u1',
       fields: [...StocksEntitiesRelationshipsTypes.getBaseTableModelUniqueFields(),...StocksEntitiesRelationshipsTypes.uniqueFields],
       type:"unique"
     },{
-      name: StocksEntitiesRelationshipsTypes.name.toLowerCase() + '_c_1',
+      name: StocksEntitiesRelationshipsTypes.tableName + '_c_1',
       fields:['ISORIGIN'],
       type:"check",
       where:{
@@ -63,7 +64,7 @@ class StocksEntitiesRelationshipsTypes extends BaseTableModel {
           }
       }
     },{
-      name: StocksEntitiesRelationshipsTypes.name.toLowerCase() + '_c_2',
+      name: StocksEntitiesRelationshipsTypes.tableName + '_c_2',
       fields:['ISOWNER'],
       type:"check",
       where:{
@@ -72,7 +73,7 @@ class StocksEntitiesRelationshipsTypes extends BaseTableModel {
           }
       }
     },{
-      name: StocksEntitiesRelationshipsTypes.name.toLowerCase() + '_c_3',
+      name: StocksEntitiesRelationshipsTypes.tableName + '_c_3',
       fields:['ISRESERVED'],
       type:"check",
       where:{
@@ -81,7 +82,7 @@ class StocksEntitiesRelationshipsTypes extends BaseTableModel {
           }
       }
     },{
-      name: StocksEntitiesRelationshipsTypes.name.toLowerCase() + '_c_4',
+      name: StocksEntitiesRelationshipsTypes.tableName + '_c_4',
       fields:['ISTARGET'],
       type:"check",
       where:{

@@ -11,6 +11,7 @@ const { SqlObjectsTypes } = require("./SqlObjectsTypes");
  */
 class SqlProcesses extends BaseTableModel {
   static id = 10001;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static REPORT_SALES_COST_AND_PROFIT = 1;
@@ -25,7 +26,7 @@ class SqlProcesses extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       }
     }
@@ -38,7 +39,7 @@ class SqlProcesses extends BaseTableModel {
 
   static constraints = [...(SqlProcesses.getBaseTableModelConstraints() || []),...[
     {
-      name: SqlProcesses.name.toLowerCase() + '_u1',
+      name: SqlProcesses.tableName + '_u1',
       fields: SqlProcesses.uniqueFields,
       type:"unique"
     }

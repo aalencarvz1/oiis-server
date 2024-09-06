@@ -11,6 +11,7 @@ const { Utils } = require("../../controllers/utils/Utils");
  */
 class Clients extends BasePeopleModel {
   static id = 4000;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static fields = {
@@ -21,7 +22,7 @@ class Clients extends BasePeopleModel {
 
   static constraints = [...(Clients.getBaseTableModelConstraints() || []),...[
     {
-      name: Clients.name.toLowerCase() + '_u1',
+      name: Clients.tableName + '_u1',
       fields: [...Clients.getBaseTableModelUniqueFields(),...Clients.uniqueFields],
       type:"unique"
     }
@@ -47,7 +48,7 @@ class Clients extends BasePeopleModel {
         ],
         on:{
             [Op.and]: [
-                Sequelize.where(Sequelize.col(`${People.name.toLowerCase()}.id`), Sequelize.col(`${Clients.name.toLowerCase()}.IDPEOPLE`))
+                Sequelize.where(Sequelize.col(`${People.tableName}.id`), Sequelize.col(`${Clients.tableName}.IDPEOPLE`))
             ]
         }
     });
@@ -58,20 +59,20 @@ class Clients extends BasePeopleModel {
         if (typeof el == 'object') {
           if (el.IDIDENTIFIERDOCTYPE) {
             and.push(Sequelize.where(
-              Sequelize.col(`${People.name.toLowerCase()}.IDIDENTIFIERDOCTYPE`),
+              Sequelize.col(`${People.tableName}.IDIDENTIFIERDOCTYPE`),
               el.IDIDENTIFIERDOCTYPE
             ));
           }
           if (el.IDENTIFIERDOC) {
             and.push(Sequelize.where(
-              Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`${People.name.toLowerCase()}.IDENTIFIERDOC`),'[^0-9]',''),'DECIMAL(32)'),
+              Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`${People.tableName}.IDENTIFIERDOC`),'[^0-9]',''),'DECIMAL(32)'),
               '=',
               Sequelize.cast(Sequelize.fn('regexp_replace',el.IDENTIFIERDOC,'[^0-9]',''),'DECIMAL(32)'),
             ));
           }
         } else {
           and.push(Sequelize.where(
-            Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`${People.name.toLowerCase()}.IDENTIFIERDOC`),'[^0-9]',''),'DECIMAL(32)'),
+            Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`${People.tableName}.IDENTIFIERDOC`),'[^0-9]',''),'DECIMAL(32)'),
             '=',
             Sequelize.cast(Sequelize.fn('regexp_replace',el,'[^0-9]',''),'DECIMAL(32)'),
           ));

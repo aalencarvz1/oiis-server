@@ -10,6 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class ItemsStatus extends BaseTableModel {
   static id = 8009;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static NORMAL = 1;
@@ -34,7 +35,7 @@ class ItemsStatus extends BaseTableModel {
         allowNull: false,
         defaultValue: 0
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
     }
@@ -47,11 +48,11 @@ class ItemsStatus extends BaseTableModel {
 
   static constraints = [...(ItemsStatus.getBaseTableModelConstraints() || []),...[
     {
-      name: ItemsStatus.name.toLowerCase() + '_u1',
+      name: ItemsStatus.tableName + '_u1',
       fields: [...ItemsStatus.getBaseTableModelUniqueFields(),...ItemsStatus.uniqueFields],
       type:"unique"
     },{
-      name: ItemsStatus.name.toLowerCase() + '_c_1',
+      name: ItemsStatus.tableName + '_c_1',
       fields:['ISDISPONIBLE'],
       type:"check",
       where:{
@@ -60,7 +61,7 @@ class ItemsStatus extends BaseTableModel {
           }
       }
     },{
-      name: ItemsStatus.name.toLowerCase() + '_c_2',
+      name: ItemsStatus.tableName + '_c_2',
       fields:['ISDAMAGED'],
       type:"check",
       where:{

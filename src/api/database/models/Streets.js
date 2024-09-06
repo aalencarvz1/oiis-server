@@ -12,6 +12,7 @@ const { StreetTypes } = require("./StreetTypes");
  */
 class Streets extends BaseTableModel {
   static id = 2006;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...Streets.getBaseTableModelFields(),...{           
@@ -39,7 +40,7 @@ class Streets extends BaseTableModel {
 
   static constraints = [...(Streets.getBaseTableModelConstraints() || []),...[
     {
-      name: Streets.name.toLowerCase() + '_u1',
+      name: Streets.tableName + '_u1',
       fields: [...Streets.getBaseTableModelUniqueFields(),...Streets.uniqueFields],
       type:"unique"
     }

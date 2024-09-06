@@ -13,6 +13,7 @@ const { ContractsTypes } = require("./ContractsTypes");
  */
 class CollaboratorsContracts extends BaseTableModel {
   static id = 6002;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...CollaboratorsContracts.getBaseTableModelFields(),...{           
@@ -49,11 +50,11 @@ class CollaboratorsContracts extends BaseTableModel {
 
   static constraints = [...(CollaboratorsContracts.getBaseTableModelConstraints() || []),...[
     {
-      name: CollaboratorsContracts.name.toLowerCase() + '_u1',
+      name: CollaboratorsContracts.tableName + '_u1',
       fields: [...CollaboratorsContracts.getBaseTableModelUniqueFields(),...CollaboratorsContracts.uniqueFields],
       type:"unique"
     },{
-      name: CollaboratorsContracts.name.toLowerCase() + '_c_1',
+      name: CollaboratorsContracts.tableName + '_c_1',
       fields:['ISTIMECONTROLLED'],
       type:"check",
       where:{

@@ -12,6 +12,7 @@ const { Suppliers } = require("./Suppliers");
  */
 class MeasXMeasOrigins extends BaseTableModel {
   static id = 30801;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...MeasXMeasOrigins.getBaseTableModelFields(),...{           
@@ -39,7 +40,7 @@ class MeasXMeasOrigins extends BaseTableModel {
 
   static constraints = [...(MeasXMeasOrigins.getBaseTableModelConstraints() || []),...[
     {
-      name: MeasXMeasOrigins.name.toLowerCase() + '_u1',
+      name: MeasXMeasOrigins.tableName + '_u1',
       fields: [...MeasXMeasOrigins.getBaseTableModelUniqueFields(),...MeasXMeasOrigins.uniqueFields],
       type:"unique"
     }

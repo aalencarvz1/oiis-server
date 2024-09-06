@@ -1,6 +1,6 @@
 const { Sequelize } = require("sequelize");
 const DBConnectionManager = require("../../../../../database/DBConnectionManager");
-const { ActionsStatus } = require("../../../../../database/models/ActionsStatus");
+const { ActionStatus } = require("../../../../../database/models/ActionStatus");
 const { IdentifiersTypes } = require("../../../../../database/models/IdentifiersTypes");
 const { ItemsStocks } = require("../../../../../database/models/ItemsStocks");
 const { LogisticOrders } = require("../../../../../database/models/LogisticOrders");
@@ -59,13 +59,13 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
     }
 
     static getIdActionStatus(idStatus) {
-        let result = ActionsStatus.NOT_STARTED;                    
+        let result = ActionStatus.NOT_STARTED;                    
         switch(idStatus) {
             case 2:
-                result = ActionsStatus.RUNNING;
+                result = ActionStatus.RUNNING;
                 break;
             case 3:
-                result = ActionsStatus.CONCLUDED;
+                result = ActionStatus.CONCLUDED;
                 break;
         }
         return result;

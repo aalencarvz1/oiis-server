@@ -11,6 +11,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class Processes extends BaseTableModel {
   static id = 200;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...Processes.getBaseTableModelFields(),...{      
@@ -18,7 +19,7 @@ class Processes extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },      
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       }
     }
@@ -30,7 +31,7 @@ class Processes extends BaseTableModel {
 
   static constraints = [...(Processes.getBaseTableModelConstraints() || []),...[
     {
-      name: Processes.name.toLowerCase() + '_u1',
+      name: Processes.tableName + '_u1',
       fields: Processes.uniqueFields,
       type:"unique"
     }

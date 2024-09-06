@@ -10,6 +10,6 @@ module.exports = {
     await TasksXStatusXUsers.runUpMigration(queryInterface);     
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(TasksXStatusXUsers.name.toLowerCase());
+    await queryInterface.dropTable(TasksXStatusXUsers.tableName);
   }
 };

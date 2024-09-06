@@ -12,6 +12,6 @@ module.exports = {
     await DataTables.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});          
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(DataTables.name.toLowerCase());
+    await queryInterface.dropTable(DataTables.tableName);
   }
 };

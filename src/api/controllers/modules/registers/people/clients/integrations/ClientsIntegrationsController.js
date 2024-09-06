@@ -33,7 +33,7 @@ class ClientsIntegrationsController extends RegistersController{
                 
                 let pcClient = await PcClient.getModel().findOne({
                     raw:true,
-                    attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.name.toUpperCase()}.${el}`)),
+                    attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.tableName}.${el}`)),
                     where:{
                         [Sequelize.Op.and]:[
                             Sequelize.where(
@@ -51,7 +51,7 @@ class ClientsIntegrationsController extends RegistersController{
                 if (!pcClient) {
                     pcClient = await PcClient.getModel().findOne({
                         raw:true,
-                        attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.name.toUpperCase()}.${el}`)),
+                        attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.tableName}.${el}`)),
                         where:{
                             [Sequelize.Op.and]:[
                                 Sequelize.where(
@@ -134,7 +134,7 @@ class ClientsIntegrationsController extends RegistersController{
                 res.data = [];
                 let integrations = await PcClient.getModel().findAll({
                     raw:true,
-                    attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.name.toUpperCase()}.${el}`)),
+                    attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.tableName}.${el}`)),
                     where:{
                         CODCLI : {
                             [Sequelize.Op.in] : identifiers

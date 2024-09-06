@@ -10,6 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class FinancialValueLocalizationsTypes extends BaseTableModel {
   static id = 1033;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static UNKNOWN = 1; //DESCONHECIDO
@@ -36,7 +37,7 @@ class FinancialValueLocalizationsTypes extends BaseTableModel {
         allowNull: false,
         defaultValue:0
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
     }
@@ -49,11 +50,11 @@ class FinancialValueLocalizationsTypes extends BaseTableModel {
 
   static constraints = [...(FinancialValueLocalizationsTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: FinancialValueLocalizationsTypes.name.toLowerCase() + '_u1',
+      name: FinancialValueLocalizationsTypes.tableName + '_u1',
       fields: [...FinancialValueLocalizationsTypes.getBaseTableModelUniqueFields(),...FinancialValueLocalizationsTypes.uniqueFields],
       type:"unique"
     },{
-      name: FinancialValueLocalizationsTypes.name.toLowerCase() + '_c_1',
+      name: FinancialValueLocalizationsTypes.tableName + '_c_1',
       fields:['ISPHYSICAL'],
       type:"check",
       where:{
@@ -62,7 +63,7 @@ class FinancialValueLocalizationsTypes extends BaseTableModel {
           }
       }
     },{
-      name: FinancialValueLocalizationsTypes.name.toLowerCase() + '_c_3',
+      name: FinancialValueLocalizationsTypes.tableName + '_c_3',
       fields:['ISELETRONIC'],
       type:"check",
       where:{

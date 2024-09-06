@@ -11,6 +11,7 @@ const { CommissionsItems } = require('./CommissionsItems');
  */
 class CommissionsValues extends BaseTableModel {
   static id = 9052;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...CommissionsValues.getBaseTableModelFields(),...{                 
@@ -22,7 +23,7 @@ class CommissionsValues extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false,
       },
-      DESCRIPTION:{
+      description:{
         type: DataTypes.TEXT
       },
       PERCENT:{

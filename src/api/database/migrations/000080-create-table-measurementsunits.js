@@ -18,6 +18,6 @@ module.exports = {
         
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(MeasurementsUnits.name.toLowerCase());
+    await queryInterface.dropTable(MeasurementsUnits.tableName);
   }
 };

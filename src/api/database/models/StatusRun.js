@@ -11,6 +11,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class StatusRun extends BaseTableModel {
   static id = 67;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static NOT_STARTED = 1;
@@ -48,7 +49,7 @@ class StatusRun extends BaseTableModel {
         allowNull: false,
         defaultValue: 0
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
     }
@@ -60,11 +61,11 @@ class StatusRun extends BaseTableModel {
 
   static constraints = [...(StatusRun.getBaseTableModelConstraints() || []),...[
     {
-      name: StatusRun.name.toLowerCase() + '_u1',
+      name: StatusRun.tableName + '_u1',
       fields: [...StatusRun.getBaseTableModelUniqueFields(),...StatusRun.uniqueFields],
       type:"unique"
     },{
-      name: StatusRun.name.toLowerCase() + '_c_1',
+      name: StatusRun.tableName + '_c_1',
       fields:['ISRUNNING'],
       type:"check",
       where:{
@@ -73,7 +74,7 @@ class StatusRun extends BaseTableModel {
         }
       }
     },{
-      name: StatusRun.name.toLowerCase() + '_c_2',
+      name: StatusRun.tableName + '_c_2',
       fields:['ISSTOPED'],
       type:"check",
       where:{
@@ -82,7 +83,7 @@ class StatusRun extends BaseTableModel {
         }
       }
     },{
-      name: StatusRun.name.toLowerCase() + '_c_3',
+      name: StatusRun.tableName + '_c_3',
       fields:['ISCANCELED'],
       type:"check",
       where:{
@@ -91,7 +92,7 @@ class StatusRun extends BaseTableModel {
         }
       }
     },{
-      name: StatusRun.name.toLowerCase() + '_c_4',
+      name: StatusRun.tableName + '_c_4',
       fields:['ISCONCLUDED'],
       type:"check",
       where:{

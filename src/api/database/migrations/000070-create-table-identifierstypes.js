@@ -12,7 +12,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await IdentifiersTypes.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});                 
     
-    await queryInterface.bulkInsert(IdentifiersTypes.name.toLowerCase(),[{      
+    await queryInterface.bulkInsert(IdentifiersTypes.tableName,[{      
       id:IdentifiersTypes.CODE,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
@@ -30,6 +30,6 @@ module.exports = {
         
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(IdentifiersTypes.name.toLowerCase());
+    await queryInterface.dropTable(IdentifiersTypes.tableName);
   }
 };

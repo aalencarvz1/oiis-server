@@ -13,6 +13,7 @@ const { Comparators } = require("./Comparators");
  */
 class Condictions extends BaseTableModel {
   static id = 7004;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static fields = {
@@ -56,7 +57,7 @@ class Condictions extends BaseTableModel {
 
   static constraints = [...(Condictions.getBaseTableModelConstraints() || []),...[
     {
-      name: Condictions.name.toLowerCase() + '_u1',
+      name: Condictions.tableName + '_u1',
       fields: [...Condictions.getBaseTableModelUniqueFields(),...Condictions.uniqueFields],
       type:"unique"
     }

@@ -10,6 +10,7 @@ const { PcNfsaid } = require("./PcNfsaid");
  */
 class PcDocEletronico extends BaseWinthorTableModel {
   static id = 30500;
+  static tableName = this.name.toUpperCase();
   static model = null;
 
 

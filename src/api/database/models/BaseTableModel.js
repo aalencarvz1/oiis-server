@@ -14,12 +14,12 @@ class BaseTableModel extends Model {
     
     static schema = configDB[process.env.NODE_ENV || 'development'].database;  
     static id;
-    static model = null;
+    static tableName = null;
+    static model = null;    
     static fields;
     static constraints;
     static foreignsKeys;
     static getConnection = DBConnectionManager.getDefaultDBConnection;
-
     
     static getBaseTableModelFields = () => {
         return {
@@ -152,12 +152,12 @@ class BaseTableModel extends Model {
             for(let i in this.constraints) {
                 if (typeof this.constraints[i] === 'object') {
                     if (!this.constraints[i].name) {
-                        this.constraints[i].name = this.name.toLowerCase() + '_c' + i;
+                        this.constraints[i].name = this.tableName + '_c' + i;
                     }
-                    Utils.log(' add constraint',this.name.toLowerCase(), this.constraints[i]);
-                    await queryInterface.addConstraint(this.name.toLowerCase(), this.constraints[i]);
+                    Utils.log(' add constraint',this.tableName, this.constraints[i]);
+                    await queryInterface.addConstraint(this.tableName, this.constraints[i]);
                 } else {
-                    Utils.log(' add constraint',this.name.toLowerCase(), this.constraints[i]);
+                    Utils.log(' add constraint',this.tableName, this.constraints[i]);
                     await queryInterface.sequelize.query(this.constraints[i]);
                 }
             }
@@ -187,7 +187,7 @@ class BaseTableModel extends Model {
                         if (typeof this.foreignsKeys[i][key].table == 'string') {
                             foreignKey[key].table = this.foreignsKeys[i][key].table.toLowerCase();
                         } else {
-                            foreignKey[key].table = this.foreignsKeys[i][key].table.name.toLowerCase();
+                            foreignKey[key].table = this.foreignsKeys[i][key].table.tableName;
                         }
                     }
                 }
@@ -195,15 +195,15 @@ class BaseTableModel extends Model {
                 foreignKey.references.table = foreignKey.references.table[1] || foreignKey.references.table[0];
 
                 //migrate all foreign keys or only specific model ref parameter
-                if (!pClassModelRef || (foreignKey.references.table.trim().toLowerCase() == pClassModelRef.name.toLowerCase().trim())) {
+                if (!pClassModelRef || (foreignKey.references.table.trim().toLowerCase() == pClassModelRef.tableName.trim())) {
                     if (!foreignKey.name) {
-                        foreignKey.name = this.name.toLowerCase() + '_fk' + i;
+                        foreignKey.name = this.tableName + '_fk' + i;
                     }
-                    Utils.log(' add constraint',this.name.toLowerCase(), foreignKey);
-                    await queryInterface.addConstraint(this.name.toLowerCase(), foreignKey);                
+                    Utils.log(' add constraint',this.tableName, foreignKey);
+                    await queryInterface.addConstraint(this.tableName, foreignKey);                
                 }
             } else {
-                Utils.log(' add constraint',this.name.toLowerCase(), this.foreignsKeys[i]);
+                Utils.log(' add constraint',this.tableName, this.foreignsKeys[i]);
                 await queryInterface.sequelize.query(this.foreignsKeys[i]);  
             }
         }        
@@ -218,8 +218,8 @@ class BaseTableModel extends Model {
      */
     static async runUpMigration(queryInterface, options) {
         options = options || {};
-        Utils.log('creating table',this.name.toLowerCase(), Object.keys(this.fields));
-        await queryInterface.createTable(this.name.toLowerCase(), this.fields);
+        Utils.log('creating table',this.tableName, Object.keys(this.fields));
+        await queryInterface.createTable(this.tableName, this.fields);
         await this.migrateConstraints(queryInterface);    
         await queryInterface.bulkInsert('datatables',[{      
             id:this.id,
@@ -227,7 +227,7 @@ class BaseTableModel extends Model {
             is_sys_rec : 1,
             IDDATACONNECTION : configDB[process.env.NODE_ENV || 'development'].id,
             IDSCHEMA : configDB[process.env.NODE_ENV || 'development'].id,
-            name : this.name.toLowerCase()
+            name : this.tableName
         }],{
             ignoreDuplicates:true,
             updateOnDuplicate:null
@@ -249,8 +249,8 @@ class BaseTableModel extends Model {
         let tableRefClassModel = null;
         try {
             for(let i in (this.foreignsKeys || [])) {
-                //if (this.name.toLowerCase().indexOf('pc') === 0)
-                    //Utils.log(' associating',this.name.toLowerCase(),i,this.foreignsKeys[i]);
+                //if (this.tableName.indexOf('pc') === 0)
+                    //Utils.log(' associating',this.tableName,i,this.foreignsKeys[i]);
 
                 tableRefClassModel = this.foreignsKeys[i].references.table; //for re-declare if necessary
                 if (typeof tableRefClassModel == 'string') {
@@ -288,7 +288,7 @@ class BaseTableModel extends Model {
                     sourceKey: this.foreignsKeys[i].references.fields?.join(',') || this.foreignsKeys[i].references.field,
                     foreignKey : columnForeign
                 };
-                if (tableRefClassModel.name.toLowerCase().trim() == this.model.tableName.trim().toLowerCase()) {
+                if (tableRefClassModel.tableName.trim() == this.model.tableName.trim().toLowerCase()) {
                     model = this.model;
                 } else {
                     model = tableRefClassModel.getModel();
@@ -329,11 +329,11 @@ class BaseTableModel extends Model {
                     sequelize: pSequelize,
                     underscore:false,
                     freezeTableName:true,
-                    modelName:this.name.toLowerCase(),
-                    tableName:this.name.toLowerCase(),
+                    modelName:this.tableName,
+                    tableName:this.tableName,
                     name:{
-                        singular:this.name.toLowerCase(),
-                        plural:this.name.toLowerCase()
+                        singular:this.tableName,
+                        plural:this.tableName
                     },
                     timestamps:false,
                     hooks: this.getBaseTableModelInitHooks(),

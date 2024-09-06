@@ -5,13 +5,14 @@ const { DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
 const { WarehousesAddresses } = require("./WarehousesAddresses");
-const { WarehousesAddressesTypes } = require("./WarehousesAddressesTypes");
+const { WarehousesAddressTypes } = require("./WarehousesAddressTypes");
 
 /**
  * class model
  */
 class WarehousesAddressesCoordinates extends BaseTableModel {
   static id = 3005;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...WarehousesAddressesCoordinates.getBaseTableModelFields(),...{           
@@ -37,7 +38,7 @@ class WarehousesAddressesCoordinates extends BaseTableModel {
 
   static constraints = [...(WarehousesAddressesCoordinates.getBaseTableModelConstraints() || []),...[
     {
-      name: WarehousesAddressesCoordinates.name.toLowerCase() + '_u1',
+      name: WarehousesAddressesCoordinates.tableName + '_u1',
       fields: [...WarehousesAddressesCoordinates.getBaseTableModelUniqueFields(),...WarehousesAddressesCoordinates.uniqueFields],
       type:"unique"
     }
@@ -57,7 +58,7 @@ class WarehousesAddressesCoordinates extends BaseTableModel {
       fields: ['IDCOORDINATETYPE'],
       type: 'foreign key',
       references: { 
-          table: WarehousesAddressesTypes,
+          table: WarehousesAddressTypes,
           field: 'id'
       },
       onUpdate: 'cascade'

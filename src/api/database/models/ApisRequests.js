@@ -12,6 +12,7 @@ const { Utils } = require("../../controllers/utils/Utils");
  */
 class ApisRequests extends BaseTableModel {
   static id = 20001;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static fields = {
@@ -41,7 +42,7 @@ class ApisRequests extends BaseTableModel {
       WEBHOOK:{
         type: DataTypes.STRING(2000)
       }, 
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
     }

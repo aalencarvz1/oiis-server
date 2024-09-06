@@ -10,6 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class Tasks extends BaseTableModel {
   static id = 15010;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static fields = {
@@ -21,7 +22,7 @@ class Tasks extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
       ANOTATIONS: {

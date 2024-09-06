@@ -13,6 +13,7 @@ const { DataTypes } = require("./DataTypes");
  */
 class ReportsDatasFountsItems extends BaseTableModel {
   static id = 10006;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...ReportsDatasFountsItems.getBaseTableModelFields(),...{                 
@@ -81,7 +82,7 @@ class ReportsDatasFountsItems extends BaseTableModel {
   static uniqueFields = [];
 
   static constraints = [...(ReportsDatasFountsItems.getBaseTableModelConstraints() || []),...[{
-    name: ReportsDatasFountsItems.name.toLowerCase() + '_c_1',
+    name: ReportsDatasFountsItems.tableName + '_c_1',
     fields:['UNIQUEINGROUPMENT'],
     type:"check",
     where:{
@@ -90,7 +91,7 @@ class ReportsDatasFountsItems extends BaseTableModel {
         }
     }
   },{
-    name: ReportsDatasFountsItems.name.toLowerCase() + '_c_2',
+    name: ReportsDatasFountsItems.tableName + '_c_2',
     fields:['DATAGROUPMENT'],
     type:"check",
     where:{
@@ -99,7 +100,7 @@ class ReportsDatasFountsItems extends BaseTableModel {
         }
     }
   },{
-    name: ReportsDatasFountsItems.name.toLowerCase() + '_c_3',
+    name: ReportsDatasFountsItems.tableName + '_c_3',
     fields:['VALUEGROUPMENT'],
     type:"check",
     where:{

@@ -82,7 +82,7 @@ class WinthorIntegrationsRegistersController extends RegistersController {
                 if (options && options?.attributes) {
                     findParams.attributes = options.attributes;
                 } else {
-                    findParams.attributes = Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.name.toUpperCase()}.${el}`));
+                    findParams.attributes = Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.tableName}.${el}`));
                 }
                 result = await PcClient.getModel().findAll(findParams);
             }
@@ -209,7 +209,7 @@ class WinthorIntegrationsRegistersController extends RegistersController {
                     switch(arrRoute[level+1].trim().toLowerCase()) {
                         case 'get':                            
                             queryParams.attributes = queryParams.attributes || [];
-                            if (!queryParams.attributes.length) queryParams.attributes.push(Sequelize.literal(`${PcClient.name.toUpperCase()}.*`));                            
+                            if (!queryParams.attributes.length) queryParams.attributes.push(Sequelize.literal(`${PcClient.tableName}.*`));                            
                             break;
                     }
                     break;

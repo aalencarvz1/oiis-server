@@ -20,7 +20,7 @@ const { StatusSync } = require('../models/StatusSync');
 const { IdentifiersTypes } = require('../models/IdentifiersTypes');
 const { Greatnesses } = require('../models/Greatnesses');
 const { MeasurementsUnits } = require('../models/MeasurementsUnits');
-const { AccessesProfiles } = require('../models/AccessesProfiles');
+const { AccessProfiles } = require('../models/AccessProfiles');
 const { AuthController } = require('../../controllers/auth/AuthController');
 const { StatusRun } = require('../models/StatusRun');
 /** @type {import('sequelize-cli').Migration} */
@@ -30,7 +30,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await Users.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});           
     
-    await queryInterface.bulkInsert(Users.name.toLowerCase(),[{      
+    await queryInterface.bulkInsert(Users.tableName,[{      
       id:Users.SYSTEM,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
@@ -38,7 +38,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,      
       IDPEOPLE : People.SYSTEM,
-      IDACCESSPROFILE : AccessesProfiles.SYSTEM,
+      IDACCESSPROFILE : AccessProfiles.SYSTEM,
       EMAIL:process.env.SYSTEM_EMAIL || 'system@system',
       PASSWORD: bcrypt.hashSync(process.env.SYSTEM_EMAIL_PASSWORD ||'system',(process.env.API_USER_PASSWORD_CRIPTSALT||10)-0)
     }],{
@@ -63,11 +63,11 @@ module.exports = {
     await MeasurementsUnits.migrateForeignKeyContraint(queryInterface,Users);  
     await People.migrateForeignKeyContraint(queryInterface,Users);  
     await Collaborators.migrateForeignKeyContraint(queryInterface,Users);  
-    await AccessesProfiles.migrateForeignKeyContraint(queryInterface,Users);  
+    await AccessProfiles.migrateForeignKeyContraint(queryInterface,Users);  
     await Users.migrateForeignKeyContraint(queryInterface);  
         
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(Users.name.toLowerCase());
+    await queryInterface.dropTable(Users.tableName);
   }
 };

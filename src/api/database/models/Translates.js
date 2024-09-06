@@ -12,6 +12,7 @@ const { Texts } = require("./Texts");
  */
 class Translates extends BaseTableModel {
   static id = 250;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...Translates.getBaseTableModelFields(),...{     
@@ -37,7 +38,7 @@ class Translates extends BaseTableModel {
 
   static constraints = [...(Translates.getBaseTableModelConstraints() || []),...[
     {
-      name: Translates.name.toLowerCase() + '_u1',
+      name: Translates.tableName + '_u1',
       fields: [...Translates.getBaseTableModelUniqueFields(),...Translates.uniqueFields],
       type:"unique"
     }

@@ -13,6 +13,7 @@ const { ConteinersTypes } = require("./ConteinersTypes");
  */
 class ConteinersTypesDimensions extends BaseTableModel {
   static id = 8003;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...ConteinersTypesDimensions.getBaseTableModelFields(),...{           
@@ -46,7 +47,7 @@ class ConteinersTypesDimensions extends BaseTableModel {
 
   static constraints = [...(ConteinersTypesDimensions.getBaseTableModelConstraints() || []),...[
     {
-      name: ConteinersTypesDimensions.name.toLowerCase() + '_u1',
+      name: ConteinersTypesDimensions.tableName + '_u1',
       fields: [...ConteinersTypesDimensions.getBaseTableModelUniqueFields(),...ConteinersTypesDimensions.uniqueFields],
       type:"unique"
     }

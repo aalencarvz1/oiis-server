@@ -1,6 +1,6 @@
 'use strict';
 
-const { AccessesProfiles } = require('../models/AccessesProfiles');
+const { AccessProfiles } = require('../models/AccessProfiles');
 const { OriginsDatas } = require('../models/OriginsDatas');
 const { StatusRegs } = require('../models/StatusRegs');
 const { Users } = require('../models/Users');
@@ -8,78 +8,78 @@ const { Users } = require('../models/Users');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(AccessesProfiles.name.toLowerCase(),[{      
-      id:AccessesProfiles.DEFAULT,
+    await queryInterface.bulkInsert(AccessProfiles.tableName,[{      
+      id:AccessProfiles.DEFAULT,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name:'DEFAULT',
-      ALLOWACESSALLROUTINESOFMODULE:0
+      allow_access_to_all_module_routines:0
     },{      
-      id:AccessesProfiles.ADMINISTRATIVE,
+      id:AccessProfiles.ADMINISTRATIVE,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name:'ADMINISTRATIVE',
-      ALLOWACESSALLROUTINESOFMODULE:0
+      allow_access_to_all_module_routines:0
     },{      
-      id:AccessesProfiles.GERENCIAL,
+      id:AccessProfiles.GERENCIAL,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name:'GERENCIAL',
-      ALLOWACESSALLROUTINESOFMODULE:0
+      allow_access_to_all_module_routines:0
     },{      
-      id:AccessesProfiles.INVOICING,
+      id:AccessProfiles.INVOICING,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name:'INVOICING',
-      ALLOWACESSALLROUTINESOFMODULE:0
+      allow_access_to_all_module_routines:0
     },{      
-      id:AccessesProfiles.FINANCIAL,
+      id:AccessProfiles.FINANCIAL,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name:'FINANCIAL',
-      ALLOWACESSALLROUTINESOFMODULE:0
+      allow_access_to_all_module_routines:0
     },{      
-      id:AccessesProfiles.SUPERVISOR,
+      id:AccessProfiles.SUPERVISOR,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name:'SUPERVISOR',
-      ALLOWACESSALLROUTINESOFMODULE:0
+      allow_access_to_all_module_routines:0
     },{      
-      id:AccessesProfiles.SELLER,
+      id:AccessProfiles.SELLER,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name:'SELLER',
-      ALLOWACESSALLROUTINESOFMODULE:0
+      allow_access_to_all_module_routines:0
     },{      
-      id:AccessesProfiles.SUPLIER,
+      id:AccessProfiles.SUPLIER,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name:'SUPLIER',
-      ALLOWACESSALLROUTINESOFMODULE:0
+      allow_access_to_all_module_routines:0
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null
@@ -88,6 +88,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(AccessesProfiles.name.toLowerCase(), null, {});
+     await queryInterface.bulkDelete(AccessProfiles.tableName, null, {});
   }
 };

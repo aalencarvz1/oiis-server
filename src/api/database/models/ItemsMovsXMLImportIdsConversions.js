@@ -14,6 +14,7 @@ const { Items } = require("./Items");
  */
 class ItemsMovsXMLImportIdsConversions extends BaseTableModel {
   static id = 9038;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...ItemsMovsXMLImportIdsConversions.getBaseTableModelFields(),...{                 

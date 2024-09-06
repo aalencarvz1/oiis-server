@@ -14,7 +14,7 @@ const { Users } = require('../models/Users.js');
 module.exports = {
   async up(queryInterface, Sequelize) {
     await DataSchemas.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});           
-    await queryInterface.bulkInsert(DataSchemas.name.toLowerCase(),[{      
+    await queryInterface.bulkInsert(DataSchemas.tableName,[{      
       id:configDB[`${process.env.NODE_ENV||'development'}`].id,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
@@ -57,6 +57,6 @@ module.exports = {
     await DataTables.migrateForeignKeyContraint(queryInterface,DataSchemas);
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(DataSchemas.name.toLowerCase());
+    await queryInterface.dropTable(DataSchemas.tableName);
   }
 };

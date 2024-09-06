@@ -10,6 +10,6 @@ module.exports = {
     await EntitiesTypes.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});                 
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(EntitiesTypes.name.toLowerCase());
+    await queryInterface.dropTable(EntitiesTypes.tableName);
   }
 };

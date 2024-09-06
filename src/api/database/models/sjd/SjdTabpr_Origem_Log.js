@@ -9,6 +9,7 @@ const { BaseSjdTableModel } = require("./BaseSjdTableModel");
  */
 class SjdTabpr_Origem_Log extends BaseSjdTableModel {
   static id = 40112;
+  static tableName = this.name.toUpperCase();
   static model = null;
 
   static noPrimaryKey = true;

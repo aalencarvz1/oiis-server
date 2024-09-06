@@ -8,15 +8,16 @@ const { BaseTableModel } = require('./BaseTableModel');
 /**
  * class model
  */
-class AddressesTypes extends BaseTableModel {
+class AddressTypes extends BaseTableModel {
   static id = 2007;
+  static tableName = "address_types";
   static model = null;
 
   static RESIDENTIAL = 1;
   static BUSINESS = 2;
 
   static fields = {
-    ...AddressesTypes.getBaseTableModelFields(),...{           
+    ...AddressTypes.getBaseTableModelFields(),...{           
       name:{
         type: DataTypes.STRING(256),
         allowNull:false
@@ -28,10 +29,10 @@ class AddressesTypes extends BaseTableModel {
     'name'
   ];
 
-  static constraints = [...(AddressesTypes.getBaseTableModelConstraints() || []),...[
+  static constraints = [...(AddressTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: AddressesTypes.name.toLowerCase() + '_u1',
-      fields: [...AddressesTypes.getBaseTableModelUniqueFields(),...AddressesTypes.uniqueFields],
+      name: AddressTypes.tableName + '_u1',
+      fields: [...AddressTypes.getBaseTableModelUniqueFields(),...AddressTypes.uniqueFields],
       type:"unique"
     }
   ]];
@@ -42,4 +43,4 @@ class AddressesTypes extends BaseTableModel {
 };
 
 
-module.exports = {AddressesTypes}
+module.exports = {AddressTypes}

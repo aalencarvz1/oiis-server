@@ -10,6 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class MovementsStatus extends BaseTableModel {
   static id = 9002;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static NOT_STARTED = 1;
@@ -49,7 +50,7 @@ class MovementsStatus extends BaseTableModel {
         allowNull: false,
         defaultValue:0
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
     }
@@ -61,11 +62,11 @@ class MovementsStatus extends BaseTableModel {
 
   static constraints = [...(MovementsStatus.getBaseTableModelConstraints() || []),...[
     {
-      name: MovementsStatus.name.toLowerCase() + '_u1',
+      name: MovementsStatus.tableName + '_u1',
       fields: [...MovementsStatus.getBaseTableModelUniqueFields(),...MovementsStatus.uniqueFields],
       type:"unique"
     },{
-      name: MovementsStatus.name.toLowerCase() + '_c_1',
+      name: MovementsStatus.tableName + '_c_1',
       fields:['ISSTARTED'],
       type:"check",
       where:{
@@ -74,7 +75,7 @@ class MovementsStatus extends BaseTableModel {
           }
       }
     },{
-      name: MovementsStatus.name.toLowerCase() + '_c_2',
+      name: MovementsStatus.tableName + '_c_2',
       fields:['ISRUNNING'],
       type:"check",
       where:{
@@ -83,7 +84,7 @@ class MovementsStatus extends BaseTableModel {
           }
       }
     },{
-      name: MovementsStatus.name.toLowerCase() + '_c_3',
+      name: MovementsStatus.tableName + '_c_3',
       fields:['ISSTOPED'],
       type:"check",
       where:{
@@ -92,7 +93,7 @@ class MovementsStatus extends BaseTableModel {
           }
       }
     },{
-      name: MovementsStatus.name.toLowerCase() + '_c_4',
+      name: MovementsStatus.tableName + '_c_4',
       fields:['ISCANCELED'],
       type:"check",
       where:{
@@ -101,7 +102,7 @@ class MovementsStatus extends BaseTableModel {
           }
       }
     },{
-      name: MovementsStatus.name.toLowerCase() + '_c_5',
+      name: MovementsStatus.tableName + '_c_5',
       fields:['ISCONCLUDED'],
       type:"check",
       where:{

@@ -10,6 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class ReportsDatasFounts extends BaseTableModel {
   static id = 10005;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...ReportsDatasFounts.getBaseTableModelFields(),...{                 
@@ -17,7 +18,7 @@ class ReportsDatasFounts extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false,
       },
-      DESCRIPTION:{
+      description:{
         type: DataTypes.TEXT
       },
       STARTDATE:{

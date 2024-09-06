@@ -12,6 +12,8 @@ const { BaseTableModel } = require('./BaseTableModel');
 class CurrenciesTypes extends BaseTableModel {
   static id = 1030;
 
+  static tableName = this.name.toLowerCase();
+
   static DOLAR = 1;
   static BRL = 2;
 
@@ -30,7 +32,7 @@ class CurrenciesTypes extends BaseTableModel {
         allowNull: false,
         defaultValue:1
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       }
     }
@@ -42,11 +44,11 @@ class CurrenciesTypes extends BaseTableModel {
 
   static constraints = [...(CurrenciesTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: CurrenciesTypes.name.toLowerCase() + '_u1',
+      name: CurrenciesTypes.tableName + '_u1',
       fields: [...CurrenciesTypes.getBaseTableModelUniqueFields(),...CurrenciesTypes.uniqueFields],
       type:"unique"
     },{
-      name: CurrenciesTypes.name.toLowerCase() + '_c_1',
+      name: CurrenciesTypes.tableName + '_c_1',
       fields:['ISPHYSICAL'],
       type:"check",
       where:{

@@ -10,6 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class Comparators extends BaseTableModel {
   static id = 1005;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static EQUAL = 1;
@@ -38,7 +39,7 @@ class Comparators extends BaseTableModel {
 
   static constraints = [...(Comparators.getBaseTableModelConstraints() || []),...[
     {
-      name: Comparators.name.toLowerCase() + '_u1',
+      name: Comparators.tableName + '_u1',
       fields: [...Comparators.getBaseTableModelUniqueFields(),...Comparators.uniqueFields],
       type:"unique"
     }

@@ -96,19 +96,19 @@ module.exports = {
     //Utils.log('FL',registersModules);
     //Utils.log('FL',registersRoutines);
 
-    await queryInterface.bulkInsert(Modules.name.toLowerCase(),registersModules,{
+    await queryInterface.bulkInsert(Modules.tableName,registersModules,{
       ignoreDuplicates:true,
       updateOnDuplicate:['status_reg_id','IDSUP','name','ICON']
     });  
 
-    await queryInterface.bulkInsert(Routines.name.toLowerCase(),registersRoutines,{
+    await queryInterface.bulkInsert(Routines.tableName,registersRoutines,{
       ignoreDuplicates:true,
       updateOnDuplicate:['status_reg_id','IDMODULE','name','ICON','VIEWPATH']
     });  
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(Routines.name.toLowerCase(), null, {});
-     await queryInterface.bulkDelete(Modules.name.toLowerCase(), null, {});
+     await queryInterface.bulkDelete(Routines.tableName, null, {});
+     await queryInterface.bulkDelete(Modules.tableName, null, {});
   }
 };

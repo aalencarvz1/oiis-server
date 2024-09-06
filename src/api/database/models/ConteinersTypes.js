@@ -11,6 +11,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class ConteinersTypes extends BaseTableModel {
   static id = 8002;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static NO_CONTEINER = 1;
@@ -28,7 +29,7 @@ class ConteinersTypes extends BaseTableModel {
       TARA: {
         type: DataTypes.DECIMAL(32,10)
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       }
     }
@@ -41,7 +42,7 @@ class ConteinersTypes extends BaseTableModel {
 
   static constraints = [...(ConteinersTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: ConteinersTypes.name.toLowerCase() + '_u1',
+      name: ConteinersTypes.tableName + '_u1',
       fields: [...ConteinersTypes.getBaseTableModelUniqueFields(),...ConteinersTypes.uniqueFields],
       type:"unique"
     }

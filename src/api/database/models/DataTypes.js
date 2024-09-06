@@ -12,6 +12,8 @@ const { BaseTableModel } = require('./BaseTableModel');
 class DataTypes extends BaseTableModel {
   static id = 50;
 
+  static tableName = this.name.toLowerCase();
+
   static ANY = 1;
   static STRING = 2;
   static INTEGER = 3;  
@@ -75,7 +77,7 @@ class DataTypes extends BaseTableModel {
         allowNull: false,
         defaultValue:0
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypesSeq.TEXT
       }
     }
@@ -86,11 +88,11 @@ class DataTypes extends BaseTableModel {
   ];
 
   static constraints = [...(DataTypes.getBaseTableModelConstraints() || []),...[{
-    name: DataTypes.name.toLowerCase() + '_u1',
+    name: DataTypes.tableName + '_u1',
     fields: [...DataTypes.getBaseTableModelUniqueFields(),...DataTypes.uniqueFields],
     type:"unique"
   },{
-    name: DataTypes.name.toLowerCase() + '_c_1',
+    name: DataTypes.tableName + '_c_1',
     fields:['ISBOOLEAN'],
     type:"check",
     where:{
@@ -99,7 +101,7 @@ class DataTypes extends BaseTableModel {
       }
     }
   },{
-    name: DataTypes.name.toLowerCase() + '_c_2',
+    name: DataTypes.tableName + '_c_2',
     fields:['ISTEXT'],
     type:"check",
     where:{
@@ -108,7 +110,7 @@ class DataTypes extends BaseTableModel {
       }
     }
   },{
-    name: DataTypes.name.toLowerCase() + '_c_3',
+    name: DataTypes.tableName + '_c_3',
     fields:['ISNUMBER'],
     type:"check",
     where:{
@@ -117,7 +119,7 @@ class DataTypes extends BaseTableModel {
       }
     }
   },{
-    name: DataTypes.name.toLowerCase() + '_c_4',
+    name: DataTypes.tableName + '_c_4',
     fields:['ISARRAY'],
     type:"check",
     where:{
@@ -126,7 +128,7 @@ class DataTypes extends BaseTableModel {
       }
     }
   },{
-    name: DataTypes.name.toLowerCase() + '_c_5',
+    name: DataTypes.tableName + '_c_5',
     fields:['ISOBJECT'],
     type:"check",
     where:{
@@ -135,7 +137,7 @@ class DataTypes extends BaseTableModel {
       }
     }
   },{
-    name: DataTypes.name.toLowerCase() + '_c_6',
+    name: DataTypes.tableName + '_c_6',
     fields:['ISDECIMAL'],
     type:"check",
     where:{
@@ -144,7 +146,7 @@ class DataTypes extends BaseTableModel {
       }
     }
   },{
-    name: DataTypes.name.toLowerCase() + '_c_7',
+    name: DataTypes.tableName + '_c_7',
     fields:['ISDATE'],
     type:"check",
     where:{
@@ -153,7 +155,7 @@ class DataTypes extends BaseTableModel {
       }
     }
   },{
-    name: DataTypes.name.toLowerCase() + '_c_8',
+    name: DataTypes.tableName + '_c_8',
     fields:['ISTIME'],
     type:"check",
     where:{
@@ -162,7 +164,7 @@ class DataTypes extends BaseTableModel {
       }
     }
   },{
-    name: DataTypes.name.toLowerCase() + '_c_9',
+    name: DataTypes.tableName + '_c_9',
     fields:['ISOTHER'],
     type:"check",
     where:{

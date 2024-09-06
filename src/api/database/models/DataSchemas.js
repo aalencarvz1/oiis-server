@@ -11,6 +11,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class DataSchemas extends BaseTableModel {
   static id = 3;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...DataSchemas.getBaseTableModelFields(),...{
@@ -18,7 +19,7 @@ class DataSchemas extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull: false
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
       ISDEFAULT: {
@@ -35,11 +36,11 @@ class DataSchemas extends BaseTableModel {
 
   static constraints = [...(DataSchemas.getBaseTableModelConstraints() || []),...[
     {
-      name: DataSchemas.name.toLowerCase() + '_u1',
+      name: DataSchemas.tableName + '_u1',
       fields: [...DataSchemas.getBaseTableModelUniqueFields(),...DataSchemas.uniqueFields],
       type:"unique"
     },{
-      name: DataSchemas.name.toLowerCase() + '_c_1',
+      name: DataSchemas.tableName + '_c_1',
       fields:['ISDEFAULT'],
       type:"check",
       where:{

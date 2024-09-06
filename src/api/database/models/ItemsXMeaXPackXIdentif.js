@@ -17,6 +17,7 @@ const { IdentifiersTypes } = require("./IdentifiersTypes");
  */
 class ItemsXMeaXPackXIdentif extends BaseTableModel {
   static id = 8032;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...ItemsXMeaXPackXIdentif.getBaseTableModelFields(),...{           
@@ -81,7 +82,7 @@ class ItemsXMeaXPackXIdentif extends BaseTableModel {
 
   static constraints = [...(ItemsXMeaXPackXIdentif.getBaseTableModelConstraints() || []),...[
     {
-      name: ItemsXMeaXPackXIdentif.name.toLowerCase() + '_u1',
+      name: ItemsXMeaXPackXIdentif.tableName + '_u1',
       fields: [...ItemsXMeaXPackXIdentif.getBaseTableModelUniqueFields(),...ItemsXMeaXPackXIdentif.uniqueFields],
       type:"unique"
     }

@@ -10,6 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class LogisticStatus extends BaseTableModel {
   static id = 12001;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static TO_DELIVERY = 1;
@@ -49,7 +50,7 @@ class LogisticStatus extends BaseTableModel {
         allowNull: false,
         defaultValue:0
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
     }
@@ -61,11 +62,11 @@ class LogisticStatus extends BaseTableModel {
 
   static constraints = [...(LogisticStatus.getBaseTableModelConstraints() || []),...[
     {
-      name: LogisticStatus.name.toLowerCase() + '_u1',
+      name: LogisticStatus.tableName + '_u1',
       fields: [...LogisticStatus.getBaseTableModelUniqueFields(),...LogisticStatus.uniqueFields],
       type:"unique"
     },{
-      name: LogisticStatus.name.toLowerCase() + '_c_1',
+      name: LogisticStatus.tableName + '_c_1',
       fields:['ISTODELIVERY'],
       type:"check",
       where:{
@@ -74,7 +75,7 @@ class LogisticStatus extends BaseTableModel {
           }
       }
     },{
-      name: LogisticStatus.name.toLowerCase() + '_c_2',
+      name: LogisticStatus.tableName + '_c_2',
       fields:['ISDELIVERING'],
       type:"check",
       where:{
@@ -83,7 +84,7 @@ class LogisticStatus extends BaseTableModel {
           }
       }
     },{
-      name: LogisticStatus.name.toLowerCase() + '_c_3',
+      name: LogisticStatus.tableName + '_c_3',
       fields:['ISDELIVERED'],
       type:"check",
       where:{
@@ -92,7 +93,7 @@ class LogisticStatus extends BaseTableModel {
           }
       }
     },{
-      name: LogisticStatus.name.toLowerCase() + '_c_4',
+      name: LogisticStatus.tableName + '_c_4',
       fields:['ISPARTIALRETURNED'],
       type:"check",
       where:{
@@ -101,7 +102,7 @@ class LogisticStatus extends BaseTableModel {
           }
       }
     },{
-      name: LogisticStatus.name.toLowerCase() + '_c_5',
+      name: LogisticStatus.tableName + '_c_5',
       fields:['ISTOTALRETURNED'],
       type:"check",
       where:{

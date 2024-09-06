@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { Users } = require("../../database/models/Users");
-const { AccessesProfiles } = require("../../database/models/AccessesProfiles");
+const { AccessProfiles } = require("../../database/models/AccessProfiles");
 const { Utils } = require("../utils/Utils");
 const { UsersTokens } = require("../../database/models/UsersTokens");
 const { createTransport } = require("nodemailer");
@@ -189,7 +189,7 @@ class AuthController extends RegistersController{
         if (user) return res.sendResponse(401,false,'user already register'); 
         user = await Users.getModel().create({
             creator_user_id : Users.SYSTEM,
-            IDACCESSPROFILE : AccessesProfiles.DEFAULT,
+            IDACCESSPROFILE : AccessProfiles.DEFAULT,
             EMAIL:(req.body.email||'').trim().toLowerCase(),
             PASSWORD: bcrypt.hashSync(req.body.password,(process.env.API_USER_PASSWORD_CRIPTSALT||10)-0)
         });

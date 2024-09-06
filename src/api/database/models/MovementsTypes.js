@@ -10,6 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class MovementsTypes extends BaseTableModel {
   static id = 9000;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static INPUT = 1;
@@ -43,7 +44,7 @@ class MovementsTypes extends BaseTableModel {
         allowNull: false,
         defaultValue:0
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
     }
@@ -55,11 +56,11 @@ class MovementsTypes extends BaseTableModel {
 
   static constraints = [...(MovementsTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: MovementsTypes.name.toLowerCase() + '_u1',
+      name: MovementsTypes.tableName + '_u1',
       fields: [...MovementsTypes.getBaseTableModelUniqueFields(),...MovementsTypes.uniqueFields],
       type:"unique"
     },{
-      name: MovementsTypes.name.toLowerCase() + '_c_1',
+      name: MovementsTypes.tableName + '_c_1',
       fields:['ISINPUT'],
       type:"check",
       where:{
@@ -68,7 +69,7 @@ class MovementsTypes extends BaseTableModel {
           }
       }
     },{
-      name: MovementsTypes.name.toLowerCase() + '_c_2',
+      name: MovementsTypes.tableName + '_c_2',
       fields:['ISOUTPUT'],
       type:"check",
       where:{
@@ -77,7 +78,7 @@ class MovementsTypes extends BaseTableModel {
           }
       }
     },{
-      name: MovementsTypes.name.toLowerCase() + '_c_3',
+      name: MovementsTypes.tableName + '_c_3',
       fields:['ISCONFERENCE'],
       type:"check",
       where:{
@@ -86,7 +87,7 @@ class MovementsTypes extends BaseTableModel {
           }
       }
     },{
-      name: MovementsTypes.name.toLowerCase() + '_c_4',
+      name: MovementsTypes.tableName + '_c_4',
       fields:['ISINTERNAL'],
       type:"check",
       where:{

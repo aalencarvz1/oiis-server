@@ -9,7 +9,7 @@ const { IdentifiersTypes } = require('../models/IdentifiersTypes');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(Lots.name.toLowerCase(),[{
+    await queryInterface.bulkInsert(Lots.tableName,[{
       id: Lots.WITHOUT_LOT,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
@@ -25,6 +25,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(Lots.name.toLowerCase(), null, {});
+     await queryInterface.bulkDelete(Lots.tableName, null, {});
   }
 };

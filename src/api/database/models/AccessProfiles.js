@@ -8,8 +8,9 @@ const { BaseTableModel } = require('./BaseTableModel');
 /**
  * class model
  */
-class AccessesProfiles extends BaseTableModel {
+class AccessProfiles extends BaseTableModel {
   static id = 119;
+  static tableName = "access_profiles";
   static model = null;
 
   static SYSTEM = 1;
@@ -23,15 +24,15 @@ class AccessesProfiles extends BaseTableModel {
   static SUPLIER = 60;  
 
   static fields = {
-    ...AccessesProfiles.getBaseTableModelFields(),...{           
+    ...AccessProfiles.getBaseTableModelFields(),...{           
       name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
-      ALLOWACESSALLROUTINESOFMODULE: {
+      allow_access_to_all_module_routines: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         defaultValue: 0
@@ -43,17 +44,17 @@ class AccessesProfiles extends BaseTableModel {
     'name'
   ];  
 
-  static constraints = [...(AccessesProfiles.getBaseTableModelConstraints() || []),...[
+  static constraints = [...(AccessProfiles.getBaseTableModelConstraints() || []),...[
     {
-      name: AccessesProfiles.name.toLowerCase() + '_u1',
-      fields: [...AccessesProfiles.getBaseTableModelUniqueFields(),...AccessesProfiles.uniqueFields],
+      name: AccessProfiles.tableName + '_u1',
+      fields: [...AccessProfiles.getBaseTableModelUniqueFields(),...AccessProfiles.uniqueFields],
       type:"unique"
     },{
-      name: AccessesProfiles.name.toLowerCase() + '_c_1',
-      fields:['ALLOWACESSALLROUTINESOFMODULE'],
+      name: AccessProfiles.tableName + '_c_1',
+      fields:['allow_access_to_all_module_routines'],
       type:"check",
       where:{
-        ALLOWACESSALLROUTINESOFMODULE: {
+        allow_access_to_all_module_routines: {
               [Sequelize.Op.in]: [0,1]
           }
       }
@@ -65,5 +66,5 @@ class AccessesProfiles extends BaseTableModel {
 };
 
 
-module.exports = {AccessesProfiles}
+module.exports = {AccessProfiles}
 

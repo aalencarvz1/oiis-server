@@ -9,6 +9,7 @@ const { BaseWinthorIntegrationTableModel } = require("./BaseWinthorIntegrationTa
  */
 class MigrationsControl extends BaseWinthorIntegrationTableModel {
   static id = 35005;
+  static tableName = this.name.toUpperCase();
   static model = null;
   static fields = {
     ...MigrationsControl.getBaseTableModelFields(),...{                 

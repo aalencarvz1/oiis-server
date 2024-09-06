@@ -14,6 +14,7 @@ const { Utils } = require("../../controllers/utils/Utils");
  */
 class DatasRelationships extends BaseTableModel {
   static id = 1001;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...DatasRelationships.getBaseTableModelFields(),...{     
@@ -81,7 +82,7 @@ class DatasRelationships extends BaseTableModel {
 
   static constraints = [...(DatasRelationships.getBaseTableModelConstraints() || []),...[
     {
-      name: DatasRelationships.name.toLowerCase() + '_u1',
+      name: DatasRelationships.tableName + '_u1',
       fields: [...DatasRelationships.getBaseTableModelUniqueFields(),...DatasRelationships.uniqueFields],
       type:"unique"
     }

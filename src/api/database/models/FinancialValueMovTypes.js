@@ -10,6 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class FinancialValueMovTypes extends BaseTableModel {
   static id = 1034;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static TRANSFERENCE = 1; 
@@ -36,7 +37,7 @@ class FinancialValueMovTypes extends BaseTableModel {
         allowNull: false,
         defaultValue:0
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
     }
@@ -49,11 +50,11 @@ class FinancialValueMovTypes extends BaseTableModel {
 
   static constraints = [...(FinancialValueMovTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: FinancialValueMovTypes.name.toLowerCase() + '_u1',
+      name: FinancialValueMovTypes.tableName + '_u1',
       fields: [...FinancialValueMovTypes.getBaseTableModelUniqueFields(),...FinancialValueMovTypes.uniqueFields],
       type:"unique"
     },{
-      name: FinancialValueMovTypes.name.toLowerCase() + '_c_1',
+      name: FinancialValueMovTypes.tableName + '_c_1',
       fields:['ISPHYSICAL'],
       type:"check",
       where:{
@@ -62,7 +63,7 @@ class FinancialValueMovTypes extends BaseTableModel {
           }
       }
     },{
-      name: FinancialValueMovTypes.name.toLowerCase() + '_c_3',
+      name: FinancialValueMovTypes.tableName + '_c_3',
       fields:['ISELETRONIC'],
       type:"check",
       where:{

@@ -12,6 +12,7 @@ const { ConteinersTypes } = require("./ConteinersTypes");
  */
 class Conteiners extends BaseTableModel {
   static id = 8015;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static WITHOUT_CONTEINER = 1;
@@ -52,11 +53,11 @@ class Conteiners extends BaseTableModel {
 
   static constraints = [...(Conteiners.getBaseTableModelConstraints() || []),...[
     {
-      name: Conteiners.name.toLowerCase() + '_u1',
+      name: Conteiners.tableName + '_u1',
       fields: [...Conteiners.getBaseTableModelUniqueFields(),...Conteiners.uniqueFields],
       type:"unique"
     },{
-      name: Conteiners.name.toLowerCase() + '_c_1',
+      name: Conteiners.tableName + '_c_1',
       fields:['ALLOWMULTIPLESADDRESSES'],
       type:"check",
       where:{

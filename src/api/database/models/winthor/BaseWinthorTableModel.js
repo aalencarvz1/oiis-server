@@ -25,14 +25,14 @@ class BaseWinthorTableModel extends BaseTableModel {
      */
     static async runUpMigration(queryInterface, options) {
         options = options || {};
-        Utils.log('migrating table',this.name.toUpperCase(), Object.keys(this.fields));
+        Utils.log('migrating table',this.tableName, Object.keys(this.fields));
         await queryInterface.bulkInsert('datatables',[{      
             id:this.id,
             created_at: new Date(),
             is_sys_rec : 1,
             IDDATACONNECTION : configDB[`${process.env.NODE_ENV||'development'}_winthor`].id,
             IDSCHEMA : configDB[`${process.env.NODE_ENV||'development'}_winthor`].id,
-            name : this.name.toUpperCase()
+            name : this.tableName
         }],{
             ignoreDuplicates:true,
             updateOnDuplicate:null
@@ -55,11 +55,11 @@ class BaseWinthorTableModel extends BaseTableModel {
                     sequelize: pSequelize,
                     underscore:false,
                     freezeTableName:true,
-                    modelName:this.name.toUpperCase(),//toLowerCase() winthor uses uppercase by default,
-                    tableName:this.name.toUpperCase(),
+                    modelName:this.tableName,//toLowerCase() winthor uses uppercase by default,
+                    tableName:this.tableName,
                     name:{
-                        singular:this.name.toUpperCase(),
-                        plural:this.name.toUpperCase()
+                        singular:this.tableName,
+                        plural:this.tableName
                     },
                     timestamps:false,
                     noPrimaryKey: Utils.firstValid([this.noPrimaryKey ,false]),

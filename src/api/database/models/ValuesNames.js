@@ -11,6 +11,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class ValuesNames extends BaseTableModel {
   static id = 1002;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static INVOICENUM = 1;
@@ -30,7 +31,7 @@ class ValuesNames extends BaseTableModel {
 
   static constraints = [...(ValuesNames.getBaseTableModelConstraints() || []),...[
     {
-      name: ValuesNames.name.toLowerCase() + '_u1',
+      name: ValuesNames.tableName + '_u1',
       fields: [...ValuesNames.getBaseTableModelUniqueFields(),...ValuesNames.uniqueFields],
       type:"unique"
     }

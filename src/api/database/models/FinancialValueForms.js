@@ -10,6 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class FinancialValueForms extends BaseTableModel {
   static id = 1032;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static NONE = 1;
@@ -60,7 +61,7 @@ class FinancialValueForms extends BaseTableModel {
         allowNull: false,
         defaultValue:0
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
     }
@@ -73,11 +74,11 @@ class FinancialValueForms extends BaseTableModel {
 
   static constraints = [...(FinancialValueForms.getBaseTableModelConstraints() || []),...[
     {
-      name: FinancialValueForms.name.toLowerCase() + '_u1',
+      name: FinancialValueForms.tableName + '_u1',
       fields: [...FinancialValueForms.getBaseTableModelUniqueFields(),...FinancialValueForms.uniqueFields],
       type:"unique"
     },{
-      name: FinancialValueForms.name.toLowerCase() + '_c_1',
+      name: FinancialValueForms.tableName + '_c_1',
       fields:['ISPHYSICAL'],
       type:"check",
       where:{
@@ -86,7 +87,7 @@ class FinancialValueForms extends BaseTableModel {
           }
       }
     },{
-      name: FinancialValueForms.name.toLowerCase() + '_c_2',
+      name: FinancialValueForms.tableName + '_c_2',
       fields:['ISCARD'],
       type:"check",
       where:{
@@ -95,7 +96,7 @@ class FinancialValueForms extends BaseTableModel {
           }
       }
     },{
-      name: FinancialValueForms.name.toLowerCase() + '_c_3',
+      name: FinancialValueForms.tableName + '_c_3',
       fields:['ISELETRONIC'],
       type:"check",
       where:{
@@ -104,7 +105,7 @@ class FinancialValueForms extends BaseTableModel {
           }
       }
     },{
-      name: FinancialValueForms.name.toLowerCase() + '_c_4',
+      name: FinancialValueForms.tableName + '_c_4',
       fields:['ISCHECK'],
       type:"check",
       where:{
@@ -113,7 +114,7 @@ class FinancialValueForms extends BaseTableModel {
           }
       }
     },{
-      name: FinancialValueForms.name.toLowerCase() + '_c_5',
+      name: FinancialValueForms.tableName + '_c_5',
       fields:['ISDEPOSIT'],
       type:"check",
       where:{
@@ -122,7 +123,7 @@ class FinancialValueForms extends BaseTableModel {
           }
       }
     },{
-      name: FinancialValueForms.name.toLowerCase() + '_c_6',
+      name: FinancialValueForms.tableName + '_c_6',
       fields:['ISBOLET'],
       type:"check",
       where:{

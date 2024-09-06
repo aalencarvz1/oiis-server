@@ -11,6 +11,7 @@ const { CommissionsEntitiesCodes } = require("./CommissionsEntitiesCodes");
  */
 class CommissionsItems extends BaseTableModel {
   static id = 9051;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static fields = {
@@ -23,7 +24,7 @@ class CommissionsItems extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      DESCRIPTION:{
+      description:{
         type: DataTypes.TEXT
       },
     }
@@ -36,7 +37,7 @@ class CommissionsItems extends BaseTableModel {
 
   static constraints = [...(CommissionsItems.getBaseTableModelConstraints() || []),...[
     {
-      name: CommissionsItems.name.toLowerCase() + '_u1',
+      name: CommissionsItems.tableName + '_u1',
       fields: [...CommissionsItems.getBaseTableModelUniqueFields(),...CommissionsItems.uniqueFields],
       type:"unique"
     }

@@ -13,6 +13,7 @@ const { Contacts } = require("./Contacts");
  */
 class PeopleXContacts extends BaseTableModel {
   static id = 2015;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...PeopleXContacts.getBaseTableModelFields(),...{           
@@ -44,7 +45,7 @@ class PeopleXContacts extends BaseTableModel {
 
   static constraints = [...(PeopleXContacts.getBaseTableModelConstraints() || []),...[
     {
-      name: PeopleXContacts.name.toLowerCase() + '_u1',
+      name: PeopleXContacts.tableName + '_u1',
       fields: [...PeopleXContacts.getBaseTableModelUniqueFields(),...PeopleXContacts.uniqueFields],
       type:"unique"
     }

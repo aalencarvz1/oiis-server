@@ -15,7 +15,7 @@ module.exports = {
 
     let registers = [];
 
-    await queryInterface.bulkInsert(SqlObjects.name.toLowerCase(),[{      
+    await queryInterface.bulkInsert(SqlObjects.tableName,[{      
       id: configDB[`${process.env.NODE_ENV||'development'}`].id,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
@@ -68,7 +68,7 @@ module.exports = {
       }
     });
     if (Object.keys(wintObject||{}).length == 0) {
-      await queryInterface.bulkInsert(SqlObjects.name.toLowerCase(),[{
+      await queryInterface.bulkInsert(SqlObjects.tableName,[{
         status_reg_id: StatusRegs.ACTIVE,
         creator_user_id : Users.SYSTEM,
         created_at: new Date(),
@@ -97,7 +97,7 @@ module.exports = {
     }});
 
     if (Object.keys(wintUserObject||{}).length == 0) {
-      await queryInterface.bulkInsert(SqlObjects.name.toLowerCase(),[{      
+      await queryInterface.bulkInsert(SqlObjects.tableName,[{      
         status_reg_id: StatusRegs.ACTIVE,
         creator_user_id : Users.SYSTEM,
         created_at: new Date(),
@@ -124,7 +124,7 @@ module.exports = {
       name: 'JUMBO'
     }});
     if (Object.keys(wintSchemaObject||{}).length == 0) {
-      await queryInterface.bulkInsert(SqlObjects.name.toLowerCase(),[{      
+      await queryInterface.bulkInsert(SqlObjects.tableName,[{      
         status_reg_id: StatusRegs.ACTIVE,
         creator_user_id : Users.SYSTEM,
         created_at: new Date(),
@@ -147,7 +147,7 @@ module.exports = {
 
     //CONTINUAR AQUI, INCLUIR OS OPJETOS NECESSARIOS PARA FAZER OS COMANDOS SQL DIRETO DO WINTHOR (PCFILIAL, PCPRODUT,PCNFSAID,PCMOV,PCNFENT,PCEST,ETC. POR HORA FAZER SO DA JUMBO, MONTAR COMO MONTADO NO EP (INCLUIR PROCESSOS DE CUSTO/LUCRO E OBJETOS DESTES PROCESSOS (UTILIZANDO O SCHEMA JUMBO)))
     Utils.log('FL',wintSchemaObject);
-    await queryInterface.bulkInsert(SqlObjects.name.toLowerCase(),[{      
+    await queryInterface.bulkInsert(SqlObjects.tableName,[{      
       id: PcFilial.id,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
@@ -156,7 +156,7 @@ module.exports = {
       is_sys_rec : 1,      
       IDSQLOBJECTTYPE : SqlObjectsTypes.TABLE,
       IDSUP: wintSchemaObject.id,
-      name : PcFilial.name.toUpperCase(),
+      name : PcFilial.tableName,
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null
@@ -166,6 +166,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(SqlObjects.name.toLowerCase(), null, {});
+     await queryInterface.bulkDelete(SqlObjects.tableName, null, {});
   }
 };

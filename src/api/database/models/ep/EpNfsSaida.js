@@ -14,6 +14,7 @@ const { EpFornecedores } = require("./EpFornecedores");
  */
 class EpNfsSaida extends BaseEpTableModel {
   static id = 40500;
+  static tableName = this.name.toUpperCase();
   static model = null;
 
 

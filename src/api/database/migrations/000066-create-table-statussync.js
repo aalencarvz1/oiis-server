@@ -15,6 +15,6 @@ module.exports = {
     await StatusSync.migrateForeignKeyContraint(queryInterface, OriginsDatas);      
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(StatusSync.name.toLowerCase());
+    await queryInterface.dropTable(StatusSync.tableName);
   }
 };

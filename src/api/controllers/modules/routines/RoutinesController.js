@@ -35,7 +35,7 @@ class RoutinesController extends RegistersController{
                     MODULES.ICON,
                     MODULES.PATH,
                     MODULES.ORDERNUM,
-                    MODULES.DESCRIPTION,
+                    MODULES.description,
                     ROUTINES.id AS ROUTINEID,
                     ROUTINES.IDSUP AS ROUTINEIDSUP,
                     ROUTINES.IDROUTINETYPE AS ROUTINEIDROUTINETYPE,
@@ -45,7 +45,7 @@ class RoutinesController extends RegistersController{
                     ROUTINES.VIEWPATH AS ROUTINEVIEWPATH,
                     ROUTINES.ORDERNUM AS ROUTINEORDERNUM,
                     ROUTINES.SHOWINMENU AS ROUTINESHOWINMENU,
-                    ROUTINES.DESCRIPTION AS ROUTINEDESCRIPTION
+                    ROUTINES.description AS ROUTINEDESCRIPTION
                 FROM
                     MODULES	                    
                     INNER JOIN USERS ON (
@@ -53,10 +53,10 @@ class RoutinesController extends RegistersController{
                         AND USERS.status_reg_id = ${StatusRegs.ACTIVE}
                         AND USERS.deleted_at IS NULL
                     )
-                    INNER JOIN ACCESSESPROFILES ON (
-                        ACCESSESPROFILES.id = USERS.IDACCESSPROFILE
-                        AND ACCESSESPROFILES.status_reg_id = ${StatusRegs.ACTIVE}
-                        AND ACCESSESPROFILES.deleted_at IS NULL
+                    INNER JOIN access_profiles ON (
+                        access_profiles.id = USERS.IDACCESSPROFILE
+                        AND access_profiles.status_reg_id = ${StatusRegs.ACTIVE}
+                        AND access_profiles.deleted_at IS NULL
                     )
                     INNER JOIN PERMISSIONS ON (
                         PERMISSIONS.status_reg_id = ${StatusRegs.ACTIVE}
@@ -74,7 +74,7 @@ class RoutinesController extends RegistersController{
                             AND UR.status_reg_id = ${StatusRegs.ACTIVE}
                             AND UR.deleted_at IS NULL
                         )
-                        INNER JOIN ACCESSESPROFILES AR ON (
+                        INNER JOIN access_profiles AR ON (
                             AR.id = UR.IDACCESSPROFILE
                             AND AR.status_reg_id = ${StatusRegs.ACTIVE}
                             AND AR.deleted_at IS NULL
@@ -88,7 +88,7 @@ class RoutinesController extends RegistersController{
                             AND COALESCE(P2.IDMODULE, ROUTINES.IDMODULE) = ROUTINES.IDMODULE
                             AND COALESCE(P2.IDROUTINE,
                                 CASE
-                                    WHEN AR.ALLOWACESSALLROUTINESOFMODULE = 0 THEN - 1
+                                    WHEN AR.allow_access_to_all_module_routines = 0 THEN - 1
                                     ELSE ROUTINES.id
                                 END) = ROUTINES.id
                             AND P2.ALLOWEDACCESS = 1
@@ -122,7 +122,7 @@ class RoutinesController extends RegistersController{
                         VIEWPATH: res.data[i].ROUTINEVIEWPATH,
                         ORDERNUM: res.data[i].ROUTINEORDERNUM,
                         SHOWINMENU: res.data[i].ROUTINESHOWINMENU,
-                        DESCRIPTION: res.data[i].ROUTINEDESCRIPTION
+                        description: res.data[i].ROUTINEDESCRIPTION
                     };
                 }
             }

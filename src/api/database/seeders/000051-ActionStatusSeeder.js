@@ -1,6 +1,6 @@
 'use strict';
 
-const { ActionsStatus } = require('../models/ActionsStatus');
+const { ActionStatus } = require('../models/ActionStatus');
 const { Modules } = require('../models/Modules');
 const { OriginsDatas } = require('../models/OriginsDatas');
 const { StatusRegs } = require('../models/StatusRegs');
@@ -9,8 +9,8 @@ const { Users } = require('../models/Users');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(ActionsStatus.name.toLowerCase(),[{
-      id: ActionsStatus.NOT_STARTED,
+    await queryInterface.bulkInsert(ActionStatus.tableName,[{
+      id: ActionStatus.NOT_STARTED,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
@@ -18,40 +18,40 @@ module.exports = {
       is_sys_rec : 1,
       name : 'NOT STARTED'      
     },{
-      id: ActionsStatus.RUNNING,
+      id: ActionStatus.RUNNING,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : ActionsStatus.DEFAULT_ORIGINDATA,
+      data_origin_id : ActionStatus.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'RUNNING',
       ISSTARTED: 1,
       ISRUNNING: 1
     },{
-      id: ActionsStatus.STOPED,
+      id: ActionStatus.STOPED,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : ActionsStatus.DEFAULT_ORIGINDATA,
+      data_origin_id : ActionStatus.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'STOPED',
       ISSTARTED: 1,
       ISSTOPED: 1
     },{
-      id: ActionsStatus.CANCELED,
+      id: ActionStatus.CANCELED,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : ActionsStatus.DEFAULT_ORIGINDATA,
+      data_origin_id : ActionStatus.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'CANCELED',
       ISCANCELED: 1
     },{
-      id: ActionsStatus.CONCLUDED,
+      id: ActionStatus.CONCLUDED,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : ActionsStatus.DEFAULT_ORIGINDATA,
+      data_origin_id : ActionStatus.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'CONCLUDED',
       ISCONCLUDED: 1
@@ -62,6 +62,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(OriginsDatas.name.toLowerCase(), null, {});
+     await queryInterface.bulkDelete(OriginsDatas.tableName, null, {});
   }
 };

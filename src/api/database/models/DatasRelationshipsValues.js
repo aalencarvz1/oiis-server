@@ -14,6 +14,7 @@ const { IdentifiersTypes } = require("./IdentifiersTypes");
  */
 class DatasRelationshipsValues extends BaseTableModel {
   static id = 1003;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...DatasRelationshipsValues.getBaseTableModelFields(),...{           
@@ -59,7 +60,7 @@ class DatasRelationshipsValues extends BaseTableModel {
 
   static constraints = [...(DatasRelationshipsValues.getBaseTableModelConstraints() || []),...[
     {
-      name: DatasRelationshipsValues.name.toLowerCase() + '_u1',
+      name: DatasRelationshipsValues.tableName + '_u1',
       fields: [...DatasRelationshipsValues.getBaseTableModelUniqueFields(),...DatasRelationshipsValues.uniqueFields],
       type:"unique"
     }

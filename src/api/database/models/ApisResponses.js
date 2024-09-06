@@ -11,6 +11,7 @@ const { ApisRequestsCalls } = require("./ApisRequestsCalls");
  */
 class ApisResponses extends BaseTableModel {
   static id = 20005;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static fields = {

@@ -10,6 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class ConferencesTypes extends BaseTableModel {
   static id = 9004;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static NORMAL = 1;
@@ -39,7 +40,7 @@ class ConferencesTypes extends BaseTableModel {
         allowNull: false,
         defaultValue:0
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
     }
@@ -51,11 +52,11 @@ class ConferencesTypes extends BaseTableModel {
 
   static constraints = [...(ConferencesTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: ConferencesTypes.name.toLowerCase() + '_u1',
+      name: ConferencesTypes.tableName + '_u1',
       fields: [...ConferencesTypes.getBaseTableModelUniqueFields(),...ConferencesTypes.uniqueFields],
       type:"unique"
     },{
-      name: ConferencesTypes.name.toLowerCase() + '_c_1',
+      name: ConferencesTypes.tableName + '_c_1',
       fields:['CEGA'],
       type:"check",
       where:{
@@ -64,7 +65,7 @@ class ConferencesTypes extends BaseTableModel {
           }
       }
     },{
-      name: ConferencesTypes.name.toLowerCase() + '_c_2',
+      name: ConferencesTypes.tableName + '_c_2',
       fields:['SEMICEGA'],
       type:"check",
       where:{
@@ -73,7 +74,7 @@ class ConferencesTypes extends BaseTableModel {
           }
       }
     },{
-      name: ConferencesTypes.name.toLowerCase() + '_c_3',
+      name: ConferencesTypes.tableName + '_c_3',
       fields:['NORMAL'],
       type:"check",
       where:{

@@ -13,6 +13,7 @@ const { FinancialValueMovTypes } = require("./FinancialValueMovTypes");
  */
 class LogisticOrdersXDestValues extends BaseTableModel {
   static id = 12007;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...LogisticOrdersXDestValues.getBaseTableModelFields(),...{    
@@ -54,7 +55,7 @@ class LogisticOrdersXDestValues extends BaseTableModel {
 
   static constraints = [...(LogisticOrdersXDestValues.getBaseTableModelConstraints() || []),...[
     {
-      name: LogisticOrdersXDestValues.name.toLowerCase() + '_u1',
+      name: LogisticOrdersXDestValues.tableName + '_u1',
       fields: [...LogisticOrdersXDestValues.getBaseTableModelUniqueFields(),...LogisticOrdersXDestValues.uniqueFields],
       type:"unique"
     }

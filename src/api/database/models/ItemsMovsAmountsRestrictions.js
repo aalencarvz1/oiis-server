@@ -13,6 +13,7 @@ const { IdentifiersTypes } = require("./IdentifiersTypes");
  */
 class ItemsMovsAmountsRestrictions extends BaseTableModel {
   static id = 9037;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...ItemsMovsAmountsRestrictions.getBaseTableModelFields(),...{                 

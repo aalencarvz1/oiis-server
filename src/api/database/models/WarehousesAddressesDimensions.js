@@ -13,6 +13,7 @@ const { IdentifiersTypes } = require("./IdentifiersTypes");
  */
 class WarehousesAddressesDimensions extends BaseTableModel {
   static id = 3006;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...WarehousesAddressesDimensions.getBaseTableModelFields(),...{           
@@ -46,7 +47,7 @@ class WarehousesAddressesDimensions extends BaseTableModel {
 
   static constraints = [...(WarehousesAddressesDimensions.getBaseTableModelConstraints() || []),...[
     {
-      name: WarehousesAddressesDimensions.name.toLowerCase() + '_u1',
+      name: WarehousesAddressesDimensions.tableName + '_u1',
       fields: [...WarehousesAddressesDimensions.getBaseTableModelUniqueFields(),...WarehousesAddressesDimensions.uniqueFields],
       type:"unique"
     }

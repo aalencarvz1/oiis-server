@@ -10,6 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class SqlObjectsTypes extends BaseTableModel {
   static id = 10000;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static DATABASE = 1;
@@ -40,7 +41,7 @@ class SqlObjectsTypes extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       }
     }
@@ -53,7 +54,7 @@ class SqlObjectsTypes extends BaseTableModel {
 
   static constraints = [...(SqlObjectsTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: SqlObjectsTypes.name.toLowerCase() + '_u1',
+      name: SqlObjectsTypes.tableName + '_u1',
       fields: SqlObjectsTypes.uniqueFields,
       type:"unique"
     }

@@ -12,6 +12,7 @@ const { Modules } = require("./Modules");
  */
 class Routines extends BaseTableModel {
   static id = 240;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...Routines.getBaseTableModelFields(),...{     
@@ -44,7 +45,7 @@ class Routines extends BaseTableModel {
         allowNull: false,
         defaultValue:1
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       }
     }
@@ -57,11 +58,11 @@ class Routines extends BaseTableModel {
 
   static constraints = [...(Routines.getBaseTableModelConstraints() || []),...[
     {
-      name: Routines.name.toLowerCase() + '_u1',
+      name: Routines.tableName + '_u1',
       fields: Routines.uniqueFields,
       type:"unique"
     },{
-      name: Routines.name.toLowerCase() + '_c_1',
+      name: Routines.tableName + '_c_1',
       fields:['SHOWINMENU'],
       type:"check",
       where:{

@@ -9,6 +9,7 @@ const { Companies } = require("./Companies");
  */
 class Warehouses extends BasePeopleModel {
   static id = 3002;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static fields = {
@@ -25,7 +26,7 @@ class Warehouses extends BasePeopleModel {
 
   static constraints = [...(Warehouses.getBaseTableModelConstraints() || []),...[
     {
-      name: Warehouses.name.toLowerCase() + '_u1',
+      name: Warehouses.tableName + '_u1',
       fields: [...Warehouses.getBaseTableModelUniqueFields(),...Warehouses.uniqueFields],
       type:"unique"
     }

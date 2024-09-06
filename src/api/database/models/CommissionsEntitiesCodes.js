@@ -11,6 +11,7 @@ const { DataTables } = require("./DataTables");
  */
 class CommissionsEntitiesCodes extends BaseTableModel {
   static id = 9050;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...CommissionsEntitiesCodes.getBaseTableModelFields(),...{                 
@@ -26,7 +27,7 @@ class CommissionsEntitiesCodes extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      DESCRIPTION:{
+      description:{
         type: DataTypes.TEXT
       },
       MINIMALVALUE:{

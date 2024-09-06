@@ -10,6 +10,6 @@ module.exports = {
     await GtinsTypes.runUpMigration(queryInterface);     
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(GtinsTypes.name.toLowerCase());
+    await queryInterface.dropTable(GtinsTypes.tableName);
   }
 };

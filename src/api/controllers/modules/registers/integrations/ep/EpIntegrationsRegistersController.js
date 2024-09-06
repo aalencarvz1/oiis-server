@@ -7,7 +7,7 @@ const { OriginsDatas } = require("../../../../../database/models/OriginsDatas");
 const { DatasRelationships } = require("../../../../../database/models/DatasRelationships");
 const { DataRelationshipTypes } = require("../../../../../database/models/DataRelationshipTypes");
 const { Users } = require("../../../../../database/models/Users");
-const { AccessesProfiles } = require("../../../../../database/models/AccessesProfiles");
+const { AccessProfiles } = require("../../../../../database/models/AccessProfiles");
 const { EpVendedores } = require("../../../../../database/models/ep/EpVendedores");
 const { EpTrabalhadores } = require("../../../../../database/models/ep/EpTrabalhadores");
 const { RegistersController } = require("../../RegistersController");
@@ -116,20 +116,20 @@ class EpIntegrationsRegistersController extends RegistersController{
                     if (typeof el == 'object') {
                         if (el.CODTIPODOCIDENTIFICADOR) {
                             and.push(Sequelize.where(
-                                Sequelize.col(`${EpPessoas.name.toUpperCase()}.CODTIPODOCIDENTIFICADOR`),
+                                Sequelize.col(`${EpPessoas.tableName}.CODTIPODOCIDENTIFICADOR`),
                                 el.CODTIPODOCIDENTIFICADOR
                             ));
                         }
                         if (el.CODDOCIDENTIFICADOR) {
                             and.push(Sequelize.where(
-                                Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`${EpPessoas.name.toUpperCase()}.CODDOCIDENTIFICADOR`),'[^0-9]',''),'DECIMAL(32)'),
+                                Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`${EpPessoas.tableName}.CODDOCIDENTIFICADOR`),'[^0-9]',''),'DECIMAL(32)'),
                                 '=',
                                 Sequelize.cast(Sequelize.fn('regexp_replace',el.CODDOCIDENTIFICADOR,'[^0-9]',''),'DECIMAL(32)')
                             ));
                         }
                     } else {
                         and.push(Sequelize.where(
-                            Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`${EpPessoas.name.toUpperCase()}.CODDOCIDENTIFICADOR`),'[^0-9]',''),'DECIMAL(32)'),
+                            Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`${EpPessoas.tableName}.CODDOCIDENTIFICADOR`),'[^0-9]',''),'DECIMAL(32)'),
                             '=',
                             Sequelize.cast(Sequelize.fn('regexp_replace',el,'[^0-9]',''),'DECIMAL(32)')
                         ));
@@ -150,7 +150,7 @@ class EpIntegrationsRegistersController extends RegistersController{
                         attributes:[],
                         on:{
                             [Op.and]: [
-                                Sequelize.where(Sequelize.col(`${EpPessoas.name.toUpperCase()}.COD`), Sequelize.col(`${EpClientes.name.toUpperCase()}.CODPESSOA`))
+                                Sequelize.where(Sequelize.col(`${EpPessoas.tableName}.COD`), Sequelize.col(`${EpClientes.tableName}.CODPESSOA`))
                             ]
                         }
                     }]
@@ -192,7 +192,7 @@ class EpIntegrationsRegistersController extends RegistersController{
 
     static async getRcasCodes(req) {
         let rcas = null;
-        if (req?.user.IDACCESSPROFILE == AccessesProfiles.SUPERVISOR) {
+        if (req?.user.IDACCESSPROFILE == AccessProfiles.SUPERVISOR) {
             let dataRel = await DatasRelationships.getModel().findAll({
                 raw:true,
                 where:{
@@ -208,15 +208,15 @@ class EpIntegrationsRegistersController extends RegistersController{
                 let sellers = await EpVendedores.getModel().findAll({
                     raw:true,
                     attributes:[
-                        Sequelize.col(`${EpVendedores.name.toUpperCase()}.COD`)
+                        Sequelize.col(`${EpVendedores.tableName}.COD`)
                     ],
                     include:[{
                         required:true,
                         model:EpTrabalhadores.getModel(),
                         attributes:[],
                         on:[
-                            Sequelize.where(Sequelize.col(`${EpTrabalhadores.name.toUpperCase()}.COD`),Sequelize.col(`${EpVendedores.name.toUpperCase()}.CODTRABALHADOR`)),
-                            Sequelize.where(Sequelize.col(`${EpTrabalhadores.name.toUpperCase()}.CODSUP`),'in',dataRel),
+                            Sequelize.where(Sequelize.col(`${EpTrabalhadores.tableName}.COD`),Sequelize.col(`${EpVendedores.tableName}.CODTRABALHADOR`)),
+                            Sequelize.where(Sequelize.col(`${EpTrabalhadores.tableName}.CODSUP`),'in',dataRel),
                         ]
                     }],
                     where:{

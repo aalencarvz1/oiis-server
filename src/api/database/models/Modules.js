@@ -11,6 +11,7 @@ const modulesJson = require("../catalogs/modules.json");
  */
 class Modules extends BaseTableModel {
   static id = 230;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static WMS = modulesJson.find((el) => el.name == "WMS")?.id;
@@ -34,7 +35,7 @@ class Modules extends BaseTableModel {
       ORDERNUM: {
         type: DataTypes.BIGINT.UNSIGNED
       },   
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       }
     }
@@ -47,7 +48,7 @@ class Modules extends BaseTableModel {
 
   static constraints = [...(Modules.getBaseTableModelConstraints() || []),...[
     {
-      name: Modules.name.toLowerCase() + '_u1',
+      name: Modules.tableName + '_u1',
       fields: Modules.uniqueFields,
       type:"unique"
     }

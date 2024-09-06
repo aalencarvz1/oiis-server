@@ -11,6 +11,7 @@ const { Utils } = require("../../controllers/utils/Utils");
  */
 class People extends BaseTableModel {
   static id = 100;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static SYSTEM = 1;
@@ -51,7 +52,7 @@ class People extends BaseTableModel {
 
   static constraints = [...(People.getBaseTableModelConstraints() || []),...[
     {
-      name: People.name.toLowerCase() + '_u1',
+      name: People.tableName + '_u1',
       fields: [...People.getBaseTableModelUniqueFields(),...People.uniqueFields],
       type:"unique"
     }
@@ -71,20 +72,20 @@ class People extends BaseTableModel {
   
   static include(queryParams,pClassModelParent) {
     queryParams = queryParams || {};
-    queryParams.attributes = queryParams.attributes || [`${pClassModelParent.name.toLowerCase()}.*`],
-    queryParams.attributes.push([Sequelize.col(`${People.name.toLowerCase()}.IDIDENTIFIERDOCTYPE`),'IDIDENTIFIERDOCTYPE']);
-    queryParams.attributes.push([Sequelize.col(`${People.name.toLowerCase()}.IDENTIFIERDOC`),'IDENTIFIERDOC']);
-    queryParams.attributes.push([Sequelize.col(`${People.name.toLowerCase()}.name`),'name']);
-    queryParams.attributes.push([Sequelize.col(`${People.name.toLowerCase()}.FANTASY`),'FANTASY']);
+    queryParams.attributes = queryParams.attributes || [`${pClassModelParent.tableName}.*`],
+    queryParams.attributes.push([Sequelize.col(`${People.tableName}.IDIDENTIFIERDOCTYPE`),'IDIDENTIFIERDOCTYPE']);
+    queryParams.attributes.push([Sequelize.col(`${People.tableName}.IDENTIFIERDOC`),'IDENTIFIERDOC']);
+    queryParams.attributes.push([Sequelize.col(`${People.tableName}.name`),'name']);
+    queryParams.attributes.push([Sequelize.col(`${People.tableName}.FANTASY`),'FANTASY']);
     queryParams.include = queryParams.include || [];
     queryParams.include.push({
         raw:true,
         model:People.getModel(),
         attributes:[],
         on:Sequelize.where(
-            Sequelize.col(`${People.name.toLowerCase()}.id`),
+            Sequelize.col(`${People.tableName}.id`),
             '=',
-            Sequelize.col(`${pClassModelParent.name.toLowerCase()}.IDPEOPLE`)
+            Sequelize.col(`${pClassModelParent.tableName}.IDPEOPLE`)
         )
     });
     return queryParams;

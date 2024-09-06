@@ -37,7 +37,7 @@ class CompaniesIntegrationsController extends RegistersController{
 
             let pcclientCompany = await PcClient.getModel().findOne({
                 raw:true,
-                attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.name.toUpperCase()}.${el}`)),
+                attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.tableName}.${el}`)),
                 where : {
                     [Sequelize.Op.and] : [
                         Sequelize.where(
@@ -57,7 +57,7 @@ class CompaniesIntegrationsController extends RegistersController{
             if (!pcclientCompany) {
                 pcclientCompany = await PcClient.getModel().findOne({
                     raw:true,
-                    attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.name.toUpperCase()}.${el}`)),
+                    attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.tableName}.${el}`)),
                     where : {
                         [Sequelize.Op.and] : [
                             Sequelize.where(

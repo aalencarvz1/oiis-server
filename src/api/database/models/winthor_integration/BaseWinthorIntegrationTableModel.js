@@ -27,15 +27,15 @@ class BaseWinthorIntegrationTableModel extends BaseTableModel {
      */
     static async runUpMigration(queryInterface, options) {
         options = options || {};
-        Utils.log('migrating table',this.name.toLowerCase(), Object.keys(this.fields));
-        //await queryInterface.createTable(this.name.toLowerCase(), this.fields);
+        Utils.log('migrating table',this.tableName, Object.keys(this.fields));
+        //await queryInterface.createTable(this.tableName, this.fields);
         let originQueryInterface = await this.getConnection().getQueryInterface();
-        //let tableExists = await originQueryInterface.tableExists(this.name.toLowerCase());
+        //let tableExists = await originQueryInterface.tableExists(this.tableName);
         let tableExists = await originQueryInterface.sequelize.query(`
             select 
                 count(1) as "exists"
             from user_tables
-            where lower(table_name) = lower('${this.name.toLowerCase()}')
+            where lower(table_name) = lower('${this.tableName}')
         `);        
         if (Utils.hasValue(tableExists)) {
             tableExists = tableExists[0];
@@ -50,7 +50,7 @@ class BaseWinthorIntegrationTableModel extends BaseTableModel {
         }
 
         if (!tableExists) {
-            await originQueryInterface.createTable(this.name.toLowerCase(), this.fields);
+            await originQueryInterface.createTable(this.tableName, this.fields);
             await this.migrateConstraints(originQueryInterface);   
             await queryInterface.bulkInsert('datatables',[{      
                 id:this.id,
@@ -58,7 +58,7 @@ class BaseWinthorIntegrationTableModel extends BaseTableModel {
                 is_sys_rec : 1,
                 IDDATACONNECTION : configDB[`${process.env.NODE_ENV||'development'}_winthor_integration`].id,
                 IDSCHEMA : configDB[`${process.env.NODE_ENV||'development'}_winthor_integration`].id,
-                name : this.name.toLowerCase()
+                name : this.tableName
             }],{
                 ignoreDuplicates:true,
                 updateOnDuplicate:null
@@ -74,10 +74,10 @@ class BaseWinthorIntegrationTableModel extends BaseTableModel {
 
     static async runDownMigration(queryInterface, options) {
         options = options || {};
-        Utils.log('migrating down table',this.name.toLowerCase(), Object.keys(this.fields));
-        //await queryInterface.createTable(this.name.toLowerCase(), this.fields);
+        Utils.log('migrating down table',this.tableName, Object.keys(this.fields));
+        //await queryInterface.createTable(this.tableName, this.fields);
         let originQueryInterface = this.getConnection().getQueryInterface();
-        //await originQueryInterface.dropTable(ErrorsLogs.name.toLowerCase());
+        //await originQueryInterface.dropTable(ErrorsLogs.tableName);
     }
 
     
@@ -97,11 +97,11 @@ class BaseWinthorIntegrationTableModel extends BaseTableModel {
                     sequelize: pSequelize,
                     underscore:false,
                     freezeTableName:true,
-                    modelName:this.name.toLowerCase(),
-                    tableName:this.name.toLowerCase(),
+                    modelName:this.tableName,
+                    tableName:this.tableName,
                     name:{
-                        singular:this.name.toLowerCase(),
-                        plural:this.name.toLowerCase()
+                        singular:this.tableName,
+                        plural:this.tableName
                     },
                     timestamps:false,
                     hooks: this.getBaseTableModelInitHooks(),

@@ -11,6 +11,7 @@ const { PcVeicul } = require("./PcVeicul");
  */
 class PcCarreg extends BaseWinthorTableModel {
   static id = 30050;
+  static tableName = this.name.toUpperCase();
   static model = null;
 
 

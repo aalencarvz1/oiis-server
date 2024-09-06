@@ -11,6 +11,7 @@ const { DataTables } = require("./DataTables");
  */
 class Midias extends BaseTableModel {
   static id = 50000;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static fields = {
@@ -36,7 +37,7 @@ class Midias extends BaseTableModel {
       BASE64CONTENT:{
         type: DataTypes.TEXT
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
     }

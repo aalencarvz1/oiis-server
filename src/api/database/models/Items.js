@@ -16,6 +16,7 @@ const { DataSwap } = require("../../controllers/data/DataSwap");
  */
 class Items extends BaseTableModel {
   static id = 8010;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...Items.getBaseTableModelFields(),...{           
@@ -35,7 +36,7 @@ class Items extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },      
-      DESCRIPTION:{
+      description:{
         type: DataTypes.TEXT
       },      
       DEFAULTEXPIRATIONTIME:{
@@ -52,7 +53,7 @@ class Items extends BaseTableModel {
 
   static constraints = [...(Items.getBaseTableModelConstraints() || []),...[
     {
-      name: Items.name.toLowerCase() + '_u1',
+      name: Items.tableName + '_u1',
       fields: [...Items.getBaseTableModelUniqueFields(),...Items.uniqueFields],
       type:"unique"
     }
@@ -132,7 +133,7 @@ class Items extends BaseTableModel {
           }
         }
         queryParams.name = queryParams.name || winthorData.DESCRICAO;
-        queryParams.DESCRIPTION = queryParams.DESCRIPTION;
+        queryParams.description = queryParams.description;
         queryParams.DEFAULTEXPIRATIONTIME = queryParams.DEFAULTEXPIRATIONTIME || winthorData.PRAZOVAL;
         result.data = await Items.getModel().create(queryParams);
         if (result.data) {
@@ -203,7 +204,7 @@ class Items extends BaseTableModel {
           }
         }
         queryParams.name = queryParams.name || auroraData.DESCRICAO;
-        queryParams.DESCRIPTION = queryParams.DESCRIPTION;
+        queryParams.description = queryParams.description;
         queryParams.DEFAULTEXPIRATIONTIME = queryParams.DEFAULTEXPIRATIONTIME || 1;
         result.data = await Items.getModel().create(queryParams);
         if (result.data) {

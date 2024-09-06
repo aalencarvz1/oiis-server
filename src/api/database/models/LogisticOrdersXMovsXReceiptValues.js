@@ -14,6 +14,7 @@ const { CurrenciesTypes } = require("./CurrenciesTypes");
  */
 class LogisticOrdersXMovsXReceiptValues extends BaseTableModel {
   static id = 12006;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...LogisticOrdersXMovsXReceiptValues.getBaseTableModelFields(),...{    
@@ -85,7 +86,7 @@ class LogisticOrdersXMovsXReceiptValues extends BaseTableModel {
 
   static constraints = [...(LogisticOrdersXMovsXReceiptValues.getBaseTableModelConstraints() || []),...[
     {
-      name: LogisticOrdersXMovsXReceiptValues.name.toLowerCase() + '_u1',
+      name: LogisticOrdersXMovsXReceiptValues.tableName + '_u1',
       fields: [...LogisticOrdersXMovsXReceiptValues.getBaseTableModelUniqueFields(),...LogisticOrdersXMovsXReceiptValues.uniqueFields],
       type:"unique"
     }

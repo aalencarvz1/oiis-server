@@ -11,6 +11,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class Greatnesses extends BaseTableModel {
   static id = 79;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static QUANTITY = 1;
@@ -28,7 +29,7 @@ class Greatnesses extends BaseTableModel {
         type: DataTypes.STRING(10),
         allowNull: false
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
       ISSCALAR: {
@@ -51,11 +52,11 @@ class Greatnesses extends BaseTableModel {
 
   static constraints = [...(Greatnesses.getBaseTableModelConstraints() || []),...[
     {
-      name: Greatnesses.name.toLowerCase() + '_u1',
+      name: Greatnesses.tableName + '_u1',
       fields: [...Greatnesses.getBaseTableModelUniqueFields(),...Greatnesses.uniqueFields],
       type:"unique"
     },{
-      name: Greatnesses.name.toLowerCase() + '_c_1',
+      name: Greatnesses.tableName + '_c_1',
       fields:['ISSCALAR'],
       type:"check",
       where:{
@@ -64,7 +65,7 @@ class Greatnesses extends BaseTableModel {
           }
       }
     },{
-      name: Greatnesses.name.toLowerCase() + '_c_2',
+      name: Greatnesses.tableName + '_c_2',
       fields:['ISVETORIAL'],
       type:"check",
       where:{

@@ -8,7 +8,7 @@ const { Users } = require('../models/Users');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(Comparators.name.toLowerCase(),[{      
+    await queryInterface.bulkInsert(Comparators.tableName,[{      
       id:Comparators.EQUAL,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
@@ -96,6 +96,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(Comparators.name.toLowerCase(), null, {});
+     await queryInterface.bulkDelete(Comparators.tableName, null, {});
   }
 };

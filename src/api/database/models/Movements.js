@@ -10,7 +10,7 @@ const { StatusRegs } = require("./StatusRegs");
 const { DataRelationshipTypes } = require("./DataRelationshipTypes");
 const { Modules } = require("./Modules");
 const { DatasRelationships } = require("./DatasRelationships");
-const { ActionsStatus } = require("./ActionsStatus");
+const { ActionStatus } = require("./ActionStatus");
 const { BusinessesUnits } = require("./BusinessesUnits");
 const { Clients } = require("./Clients");
 const { Warehouses } = require("./Warehouses");
@@ -25,6 +25,7 @@ const { FinancialValueForms } = require("./FinancialValueForms");
  */
 class Movements extends BaseTableModel {
   static id = 9010;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...Movements.getBaseTableModelFields(),...{           
@@ -41,7 +42,7 @@ class Movements extends BaseTableModel {
       IDSTATUSMOV:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
-        defaultValue:ActionsStatus.NOT_STARTED
+        defaultValue:ActionStatus.NOT_STARTED
       },
       IDCONFERENCETYPE:{
         type: DataTypes.BIGINT.UNSIGNED
@@ -84,7 +85,7 @@ class Movements extends BaseTableModel {
 
   static constraints = [...(Movements.getBaseTableModelConstraints() || []),...[
     {
-      name: Movements.name.toLowerCase() + '_u1',
+      name: Movements.tableName + '_u1',
       fields: [...Movements.getBaseTableModelUniqueFields(),...Movements.uniqueFields],
       type:"unique"
     }
@@ -113,7 +114,7 @@ class Movements extends BaseTableModel {
       fields: ['IDSTATUSMOV'],
       type: 'foreign key',
       references: { 
-          table: ActionsStatus,
+          table: ActionStatus,
           field: 'id'
       },
       onUpdate: 'cascade'

@@ -11,6 +11,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class Languages extends BaseTableModel {
   static id = 248;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...Languages.getBaseTableModelFields(),...{     
@@ -27,7 +28,7 @@ class Languages extends BaseTableModel {
 
   static constraints = [...(Languages.getBaseTableModelConstraints() || []),...[
     {
-      name: Languages.name.toLowerCase() + '_u1',
+      name: Languages.tableName + '_u1',
       fields: Languages.uniqueFields,
       type:"unique"
     }

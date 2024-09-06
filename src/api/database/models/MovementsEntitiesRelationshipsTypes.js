@@ -10,6 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class MovementsEntitiesRelationshipsTypes extends BaseTableModel {
   static id = 9020;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static ORIGIN_INPUT = 1;
@@ -43,7 +44,7 @@ class MovementsEntitiesRelationshipsTypes extends BaseTableModel {
         allowNull: false,
         defaultValue:0
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
     }
@@ -55,11 +56,11 @@ class MovementsEntitiesRelationshipsTypes extends BaseTableModel {
 
   static constraints = [...(MovementsEntitiesRelationshipsTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: MovementsEntitiesRelationshipsTypes.name.toLowerCase() + '_u1',
+      name: MovementsEntitiesRelationshipsTypes.tableName + '_u1',
       fields: [...MovementsEntitiesRelationshipsTypes.getBaseTableModelUniqueFields(),...MovementsEntitiesRelationshipsTypes.uniqueFields],
       type:"unique"
     },{
-      name: MovementsEntitiesRelationshipsTypes.name.toLowerCase() + '_c_1',
+      name: MovementsEntitiesRelationshipsTypes.tableName + '_c_1',
       fields:['ISORIGIN'],
       type:"check",
       where:{
@@ -68,7 +69,7 @@ class MovementsEntitiesRelationshipsTypes extends BaseTableModel {
           }
       }
     },{
-      name: MovementsEntitiesRelationshipsTypes.name.toLowerCase() + '_c_2',
+      name: MovementsEntitiesRelationshipsTypes.tableName + '_c_2',
       fields:['ISTARGET'],
       type:"check",
       where:{
@@ -77,7 +78,7 @@ class MovementsEntitiesRelationshipsTypes extends BaseTableModel {
           }
       }
     },{
-      name: MovementsEntitiesRelationshipsTypes.name.toLowerCase() + '_c_3',
+      name: MovementsEntitiesRelationshipsTypes.tableName + '_c_3',
       fields:['ISINPUT'],
       type:"check",
       where:{
@@ -86,7 +87,7 @@ class MovementsEntitiesRelationshipsTypes extends BaseTableModel {
           }
       }
     },{
-      name: MovementsEntitiesRelationshipsTypes.name.toLowerCase() + '_c_4',
+      name: MovementsEntitiesRelationshipsTypes.tableName + '_c_4',
       fields:['ISOUTPUT'],
       type:"check",
       where:{

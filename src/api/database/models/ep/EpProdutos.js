@@ -12,6 +12,7 @@ const { EpDepartamentosProd } = require("./EpDeparamentosProd");
  */
 class EpProdutos extends BaseEpTableModel {
   static id = 40200;
+  static tableName = this.name.toUpperCase();
   static model = null;
 
 

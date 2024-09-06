@@ -10,6 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class CollaboratorsFunctions extends BaseTableModel {
   static id = 6001;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...CollaboratorsFunctions.getBaseTableModelFields(),...{           
@@ -36,11 +37,11 @@ class CollaboratorsFunctions extends BaseTableModel {
 
   static constraints = [...(CollaboratorsFunctions.getBaseTableModelConstraints() || []),...[
     {
-      name: CollaboratorsFunctions.name.toLowerCase() + '_u1',
+      name: CollaboratorsFunctions.tableName + '_u1',
       fields: [...CollaboratorsFunctions.getBaseTableModelUniqueFields(),...CollaboratorsFunctions.uniqueFields],
       type:"unique"
     },{
-      name: CollaboratorsFunctions.name.toLowerCase() + '_c_1',
+      name: CollaboratorsFunctions.tableName + '_c_1',
       fields:['ISTRUST'],
       type:"check",
       where:{
@@ -49,7 +50,7 @@ class CollaboratorsFunctions extends BaseTableModel {
           }
       }
     },{
-      name: CollaboratorsFunctions.name.toLowerCase() + '_c_2',
+      name: CollaboratorsFunctions.tableName + '_c_2',
       fields:['ISTIMECONTROLLED'],
       type:"check",
       where:{

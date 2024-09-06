@@ -15,6 +15,6 @@ module.exports = {
     await StatusRun.migrateForeignKeyContraint(queryInterface, OriginsDatas);      
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(StatusRun.name.toLowerCase());
+    await queryInterface.dropTable(StatusRun.tableName);
   }
 };

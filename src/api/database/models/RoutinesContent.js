@@ -11,6 +11,7 @@ const { Routines } = require("./Routines");
  */
 class RoutinesContent extends BaseTableModel {
   static id = 241;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...RoutinesContent.getBaseTableModelFields(),...{     
@@ -44,7 +45,7 @@ class RoutinesContent extends BaseTableModel {
 
   static constraints = [...(RoutinesContent.getBaseTableModelConstraints() || []),...[
     {
-      name: RoutinesContent.name.toLowerCase() + '_u1',
+      name: RoutinesContent.tableName + '_u1',
       fields: RoutinesContent.uniqueFields,
       type:"unique"
     }

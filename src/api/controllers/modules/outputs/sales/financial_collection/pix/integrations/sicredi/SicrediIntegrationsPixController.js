@@ -67,7 +67,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                 if (integrateWinthor) {
                     pcClient = await PcClient.getModel().findOne({
                         raw:true,
-                        attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.name.toUpperCase()}.${el}`)),
+                        attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.tableName}.${el}`)),
                         where:{
                             CODCLI:bodyParams.codcli
                         }
@@ -406,7 +406,7 @@ class SicrediIntegrationsPixController extends RegistersController{
 
                                         let pcClient = await PcClient.getModel(wintConnection).findOne({
                                             raw:true,
-                                            attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.name.toUpperCase()}.${el}`)),
+                                            attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.tableName}.${el}`)),
                                             where:{
                                                 CODCLI: pcPrest.CODCLI
                                             }

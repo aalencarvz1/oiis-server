@@ -12,6 +12,8 @@ console.log('Parameters - antes declaracao classe, antes exportacao');
 class Parameters extends BaseTableModel {
   static id = 55;
 
+  static tableName = this.name.toLowerCase();
+
   static HAS_WINTHOR_INTEGRATION = 1;
   static LOGISTIC_INTEGRATE_AUTOMATIC_CLOSE_BOX_DRIVER = 2;
   static WMS_OUTPUT_INTEGRATION_CHECK_RCA = 3;
@@ -35,7 +37,7 @@ class Parameters extends BaseTableModel {
       DEFAULTVALUE: {
         type: DataTypesSeq.STRING(256)
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypesSeq.TEXT
       }
     }
@@ -47,7 +49,7 @@ class Parameters extends BaseTableModel {
 
   static constraints = [...(Parameters.getBaseTableModelConstraints() || []),...[
     {
-      name: Parameters.name.toLowerCase() + '_u1',
+      name: Parameters.tableName + '_u1',
       fields: [...Parameters.getBaseTableModelUniqueFields(),...Parameters.uniqueFields],
       type:"unique"
     }

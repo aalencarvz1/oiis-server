@@ -5,7 +5,7 @@ const { Sequelize, DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
 const { IdentifiersTypes } = require("./IdentifiersTypes");
-const { WarehousesAddressesTypes } = require("./WarehousesAddressesTypes");
+const { WarehousesAddressTypes } = require("./WarehousesAddressTypes");
 const { Warehouses } = require("./Warehouses");
 const { FormsTypes } = require("./FormsTypes");
 
@@ -14,6 +14,7 @@ const { FormsTypes } = require("./FormsTypes");
  */
 class WarehousesAddresses extends BaseTableModel {
   static id = 3004;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...WarehousesAddresses.getBaseTableModelFields(),...{           
@@ -64,11 +65,11 @@ class WarehousesAddresses extends BaseTableModel {
 
   static constraints = [...(WarehousesAddresses.getBaseTableModelConstraints() || []),...[
     {
-      name: WarehousesAddresses.name.toLowerCase() + '_u1',
+      name: WarehousesAddresses.tableName + '_u1',
       fields: [...WarehousesAddresses.getBaseTableModelUniqueFields(),...WarehousesAddresses.uniqueFields],
       type:"unique"
     },{
-      name: WarehousesAddresses.name.toLowerCase() + '_c_1',
+      name: WarehousesAddresses.tableName + '_c_1',
       fields:['ISSTORABLE'],
       type:"check",
       where:{
@@ -77,7 +78,7 @@ class WarehousesAddresses extends BaseTableModel {
           }
       }
     },{
-      name: WarehousesAddresses.name.toLowerCase() + '_c_2',
+      name: WarehousesAddresses.tableName + '_c_2',
       fields:['ISPASSABLE'],
       type:"check",
       where:{
@@ -86,7 +87,7 @@ class WarehousesAddresses extends BaseTableModel {
           }
       }
     },{
-      name: WarehousesAddresses.name.toLowerCase() + '_c_3',
+      name: WarehousesAddresses.tableName + '_c_3',
       fields:['ISDISPONIBLE'],
       type:"check",
       where:{
@@ -111,7 +112,7 @@ class WarehousesAddresses extends BaseTableModel {
       fields: ['IDWAREHOUSEADDRESSTYPE'],
       type: 'foreign key',
       references: { 
-          table: WarehousesAddressesTypes,
+          table: WarehousesAddressTypes,
           field: 'id'
       },
       onUpdate: 'cascade'

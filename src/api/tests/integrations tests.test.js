@@ -575,7 +575,7 @@ describe('Running api call tests',()=>{
                     getParamsToCreate = ()=>{
                         let parentTableName = 'people';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'accessesprofiles';
+                        let parentTableName2 = 'access_profiles';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             ALIAS:testString,                            
@@ -590,7 +590,7 @@ describe('Running api call tests',()=>{
                     getParamsToCreate = ()=>{
                         let parentTableName = 'users';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'accessesprofiles';
+                        let parentTableName2 = 'access_profiles';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         let parentTableName3 = 'powerstypes';
                         let parent3 = crudsToDelete.find(el=>el.tableName == parentTableName3);        
@@ -762,7 +762,7 @@ describe('Running api call tests',()=>{
                 case 'ncms':
                     getParamsToCreate = ()=>{
                         return {
-                            DESCRIPTION:testString,
+                            description:testString,
                             CHAPTER: 1,
                             NCM: 1                            
                         }
@@ -903,7 +903,7 @@ describe('Running api call tests',()=>{
                     break;
                 case 'postalcodes':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'addressestypes';
+                        let parentTableName = 'addresstypes';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         let parentTableName2 = 'cities';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
@@ -942,7 +942,7 @@ describe('Running api call tests',()=>{
                     break;
                 case 'addresses':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'addressestypes';
+                        let parentTableName = 'addresstypes';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
                             NUMBER:testString,                            

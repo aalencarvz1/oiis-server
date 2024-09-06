@@ -5,7 +5,7 @@ const { BaseTableModel } = require('./BaseTableModel');
 const { IdentifiersTypes } = require("./IdentifiersTypes");
 const { MovementsStatus } = require("./MovementsStatus");
 const { LogisticMovTypes } = require("./LogisticMovTypes");
-const { ActionsStatus } = require("./ActionsStatus");
+const { ActionStatus } = require("./ActionStatus");
 const { LogisticStatus } = require("./LogisticStatus");
 const { LogisticReasons } = require("./LogisticReasons");
 
@@ -15,6 +15,7 @@ const { LogisticReasons } = require("./LogisticReasons");
  */
 class LogisticOrders extends BaseTableModel {
   static id = 12003;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...LogisticOrders.getBaseTableModelFields(),...{           
@@ -67,7 +68,7 @@ class LogisticOrders extends BaseTableModel {
 
   static constraints = [...(LogisticOrders.getBaseTableModelConstraints() || []),...[
     {
-      name: LogisticOrders.name.toLowerCase() + '_u1',
+      name: LogisticOrders.tableName + '_u1',
       fields: [...LogisticOrders.getBaseTableModelUniqueFields(),...LogisticOrders.uniqueFields],
       type:"unique"
     }
@@ -96,7 +97,7 @@ class LogisticOrders extends BaseTableModel {
       fields: ['IDACTIONSTATUS'],
       type: 'foreign key',
       references: { 
-          table: ActionsStatus,
+          table: ActionStatus,
           field: 'id'
       },
       onUpdate: 'cascade'

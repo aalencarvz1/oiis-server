@@ -9,6 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class OriginsDatas extends BaseTableModel {
   static id = 60;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static DEFAULT_ORIGINDATA = 1;
@@ -25,7 +26,7 @@ class OriginsDatas extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull: false
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       }
     }
@@ -37,7 +38,7 @@ class OriginsDatas extends BaseTableModel {
 
   static constraints = [...(OriginsDatas.getBaseTableModelConstraints() || []),...[
     {
-      name: OriginsDatas.name.toLowerCase() + '_u1',
+      name: OriginsDatas.tableName + '_u1',
       fields: [...OriginsDatas.getBaseTableModelUniqueFields(),...OriginsDatas.uniqueFields],
       type:"unique"
     }

@@ -9,6 +9,7 @@ const { BaseWinthorIntegrationTableModel } = require("./BaseWinthorIntegrationTa
  */
 class ErrorsLogs extends BaseWinthorIntegrationTableModel {
   static id = 35000;
+  static tableName = this.name.toUpperCase();
   static model = null;
   static fields = {
     ...ErrorsLogs.getBaseTableModelFields(),...{                 

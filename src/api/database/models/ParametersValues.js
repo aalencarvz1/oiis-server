@@ -11,6 +11,7 @@ const { Parameters } = require("./Parameters");
  */
 class ParametersValues extends BaseTableModel {
   static id = 56;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static fields = {
@@ -22,7 +23,7 @@ class ParametersValues extends BaseTableModel {
       VALUE: {
         type: DataTypes.STRING(256)
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       }
     }
@@ -35,7 +36,7 @@ class ParametersValues extends BaseTableModel {
 
   static constraints = [...(ParametersValues.getBaseTableModelConstraints() || []),...[
     {
-      name: ParametersValues.name.toLowerCase() + '_u1',
+      name: ParametersValues.tableName + '_u1',
       fields: [...ParametersValues.getBaseTableModelUniqueFields(),...ParametersValues.uniqueFields],
       type:"unique"
     }
@@ -59,7 +60,7 @@ class ParametersValues extends BaseTableModel {
     let result = null;
     result = await ParametersValues.getModel().findOne({
       raw:true,
-      attributes:[Sequelize.literal(`${ParametersValues.name.toLowerCase()}.*`)],
+      attributes:[Sequelize.literal(`${ParametersValues.tableName}.*`)],
       where:{IDPARAMETER:pIdParameter}
     });
     if (result) {

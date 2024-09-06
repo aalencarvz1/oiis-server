@@ -12,6 +12,6 @@ module.exports = {
     await ParametersValues.migrateForeignKeyContraint(queryInterface,Parameters);  
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(ParametersValues.name.toLowerCase());
+    await queryInterface.dropTable(ParametersValues.tableName);
   }
 };

@@ -19,7 +19,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await OriginsDatas.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});       
 
-    await queryInterface.bulkInsert(OriginsDatas.name.toLowerCase(),[{
+    await queryInterface.bulkInsert(OriginsDatas.tableName,[{
       id: OriginsDatas.DEFAULT_ORIGINDATA,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
@@ -76,6 +76,6 @@ module.exports = {
     await OriginsDatas.migrateForeignKeyContraint(queryInterface,OriginsDatas);  
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(OriginsDatas.name.toLowerCase());
+    await queryInterface.dropTable(OriginsDatas.tableName);
   }
 };

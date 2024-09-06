@@ -11,6 +11,6 @@ module.exports = {
     await PacksXPacksOrigins.runUpMigration(queryInterface);     
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(PacksXPacksOrigins.name.toLowerCase());
+    await queryInterface.dropTable(PacksXPacksOrigins.tableName);
   }
 };

@@ -10,7 +10,7 @@ const { Users } = require('../models/Users');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(DataSchemas.name.toLowerCase(),[{      
+    await queryInterface.bulkInsert(DataSchemas.tableName,[{      
       id:configDB[`${process.env.NODE_ENV||'development'}`].id,
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
@@ -53,6 +53,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(DataTypes.name.toLowerCase(), null, {});
+     await queryInterface.bulkDelete(DataTypes.tableName, null, {});
   }
 };

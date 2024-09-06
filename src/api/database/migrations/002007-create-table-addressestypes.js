@@ -1,15 +1,15 @@
 'use strict';
 
 /*imports*/
-const { AddressesTypes } = require('../models/AddressesTypes');
+const { AddressTypes } = require('../models/AddressTypes');
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await AddressesTypes.runUpMigration(queryInterface);     
+    await AddressTypes.runUpMigration(queryInterface);     
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(AddressesTypes.name.toLowerCase());
+    await queryInterface.dropTable(AddressTypes.tableName);
   }
 };

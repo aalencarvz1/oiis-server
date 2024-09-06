@@ -15,6 +15,7 @@ const { ParametersValues } = require("./ParametersValues");
  */
 class Ncms extends BaseTableModel {
   static id = 8008;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...Ncms.getBaseTableModelFields(),...{           
@@ -29,14 +30,14 @@ class Ncms extends BaseTableModel {
       EXCEPTION:{
         type: DataTypes.BIGINT.UNSIGNED
       },      
-      DESCRIPTION:{
+      description:{
         type: DataTypes.TEXT,
         allowNull:false
       }
     }
   };
   
-  static uniqueFields = `create unique index ${Ncms.name.toLowerCase()}_u1 on ${Ncms.name.toLowerCase()} (${Ncms.getBaseTableModelUniqueFields().join(',')},NCM,(coalesce(EXCEPTION,-1))) `;
+  static uniqueFields = `create unique index ${Ncms.tableName}_u1 on ${Ncms.tableName} (${Ncms.getBaseTableModelUniqueFields().join(',')},NCM,(coalesce(EXCEPTION,-1))) `;
 
   static constraints = [...(Ncms.getBaseTableModelConstraints() || []),...[
     Ncms.uniqueFields
@@ -68,7 +69,7 @@ class Ncms extends BaseTableModel {
       if (winthorData) {
         queryParams.data_origin_id = OriginsDatas.WINTHOR;
         queryParams.CHAPTER = queryParams.CHAPTER || winthorData.CAPITULO;
-        queryParams.DESCRIPTION = queryParams.DESCRIPTION || winthorData.DESCRICAO;
+        queryParams.description = queryParams.description || winthorData.DESCRICAO;
         result.data = await Ncms.getModel().create(queryParams);
         if (result.data) {
           result.data = result.data.dataValues;

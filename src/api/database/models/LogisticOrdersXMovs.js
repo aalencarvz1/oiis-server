@@ -6,7 +6,7 @@ const { BaseTableModel } = require('./BaseTableModel');
 const { LogisticOrders } = require("./LogisticOrders");
 const { MovementsStatus } = require("./MovementsStatus");
 const { LogisticStatus } = require("./LogisticStatus");
-const { ActionsStatus } = require("./ActionsStatus");
+const { ActionStatus } = require("./ActionStatus");
 const { Movements } = require("./Movements");
 const { LogisticReasons } = require("./LogisticReasons");
 
@@ -16,6 +16,7 @@ const { LogisticReasons } = require("./LogisticReasons");
  */
 class LogisticOrdersXMovs extends BaseTableModel {
   static id = 12004;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...LogisticOrdersXMovs.getBaseTableModelFields(),...{           
@@ -65,7 +66,7 @@ class LogisticOrdersXMovs extends BaseTableModel {
 
   static constraints = [...(LogisticOrdersXMovs.getBaseTableModelConstraints() || []),...[
     {
-      name: LogisticOrdersXMovs.name.toLowerCase() + '_u1',
+      name: LogisticOrdersXMovs.tableName + '_u1',
       fields: [...LogisticOrdersXMovs.getBaseTableModelUniqueFields(),...LogisticOrdersXMovs.uniqueFields],
       type:"unique"
     }
@@ -96,7 +97,7 @@ class LogisticOrdersXMovs extends BaseTableModel {
       fields: ['IDACTIONSTATUS'],
       type: 'foreign key',
       references: { 
-          table: ActionsStatus,
+          table: ActionStatus,
           field: 'id'
       },
       onUpdate: 'cascade'

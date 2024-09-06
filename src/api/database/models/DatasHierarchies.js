@@ -12,6 +12,7 @@ const { DataTables } = require("./DataTables");
  */
 class DatasHierarchies extends BaseTableModel {
   static id = 1010;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...DatasHierarchies.getBaseTableModelFields(),...{           
@@ -61,7 +62,7 @@ class DatasHierarchies extends BaseTableModel {
 
   static constraints = [...(DatasHierarchies.getBaseTableModelConstraints() || []),...[
     {
-      name: DatasHierarchies.name.toLowerCase() + '_u1',
+      name: DatasHierarchies.tableName + '_u1',
       fields: [...DatasHierarchies.getBaseTableModelUniqueFields(),...DatasHierarchies.uniqueFields],
       type:"unique"
     }

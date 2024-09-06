@@ -11,6 +11,7 @@ const { Cities } = require("./Cities");
  */
 class NeighborHoods extends BaseTableModel {
   static id = 2004;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...NeighborHoods.getBaseTableModelFields(),...{           
@@ -32,7 +33,7 @@ class NeighborHoods extends BaseTableModel {
 
   static constraints = [...(NeighborHoods.getBaseTableModelConstraints() || []),...[
     {
-      name: NeighborHoods.name.toLowerCase() + '_u1',
+      name: NeighborHoods.tableName + '_u1',
       fields: [...NeighborHoods.getBaseTableModelUniqueFields(),...NeighborHoods.uniqueFields],
       type:"unique"
     }

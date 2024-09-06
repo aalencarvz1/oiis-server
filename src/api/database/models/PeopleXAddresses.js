@@ -5,7 +5,7 @@ const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
 const { People } = require("./People");
-const { AddressesTypes } = require("./AddressesTypes");
+const { AddressTypes } = require("./AddressTypes");
 const { Addresses } = require("./Addresses");
 
 /**
@@ -13,6 +13,7 @@ const { Addresses } = require("./Addresses");
  */
 class PeopleXAddresses extends BaseTableModel {
   static id = 2014;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...PeopleXAddresses.getBaseTableModelFields(),...{           
@@ -44,7 +45,7 @@ class PeopleXAddresses extends BaseTableModel {
 
   static constraints = [...(PeopleXAddresses.getBaseTableModelConstraints() || []),...[
     {
-      name: PeopleXAddresses.name.toLowerCase() + '_u1',
+      name: PeopleXAddresses.tableName + '_u1',
       fields: [...PeopleXAddresses.getBaseTableModelUniqueFields(),...PeopleXAddresses.uniqueFields],
       type:"unique"
     }
@@ -65,7 +66,7 @@ class PeopleXAddresses extends BaseTableModel {
       fields: ['IDADDRESSTYPE'],
       type: 'foreign key',
       references: { 
-          table: AddressesTypes,
+          table: AddressTypes,
           field: 'id'
       },
       onUpdate: 'cascade'

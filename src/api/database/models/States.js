@@ -11,6 +11,7 @@ const { Countries } = require("./Countries");
  */
 class States extends BaseTableModel {
   static id = 2002;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...States.getBaseTableModelFields(),...{           
@@ -35,7 +36,7 @@ class States extends BaseTableModel {
 
   static constraints = [...(States.getBaseTableModelConstraints() || []),...[
     {
-      name: States.name.toLowerCase() + '_u1',
+      name: States.tableName + '_u1',
       fields: [...States.getBaseTableModelUniqueFields(),...States.uniqueFields],
       type:"unique"
     }

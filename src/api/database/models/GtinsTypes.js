@@ -11,6 +11,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  */
 class GtinsTypes extends BaseTableModel {
   static id = 8007;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static UNDEFINED = 1;
@@ -28,7 +29,7 @@ class GtinsTypes extends BaseTableModel {
       CHARACTERS: {
         type: DataTypes.BIGINT.UNSIGNED
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       }
     }
@@ -41,7 +42,7 @@ class GtinsTypes extends BaseTableModel {
 
   static constraints = [...(GtinsTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: GtinsTypes.name.toLowerCase() + '_u1',
+      name: GtinsTypes.tableName + '_u1',
       fields: [...GtinsTypes.getBaseTableModelUniqueFields(),...GtinsTypes.uniqueFields],
       type:"unique"
     }

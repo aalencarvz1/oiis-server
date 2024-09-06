@@ -10,6 +10,6 @@ module.exports = {
     await GroupsMovements.runUpMigration(queryInterface);     
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(GroupsMovements.name.toLowerCase());
+    await queryInterface.dropTable(GroupsMovements.tableName);
   }
 };
