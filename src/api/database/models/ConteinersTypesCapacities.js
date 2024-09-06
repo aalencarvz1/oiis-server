@@ -12,7 +12,7 @@ const { ConteinersTypes } = require("./ConteinersTypes");
  * class model
  */
 class ConteinersTypesCapacities extends BaseTableModel {
-  static ID = 8004;
+  static id = 8004;
   static model = null;
   static fields = {
     ...ConteinersTypesCapacities.getBaseTableModelFields(),...{           
@@ -46,7 +46,7 @@ class ConteinersTypesCapacities extends BaseTableModel {
 
   static constraints = [...(ConteinersTypesCapacities.getBaseTableModelConstraints() || []),...[
     {
-      name: ConteinersTypesCapacities.name.toUpperCase() + '_U1',
+      name: ConteinersTypesCapacities.name.toLowerCase() + '_u1',
       fields: [...ConteinersTypesCapacities.getBaseTableModelUniqueFields(),...ConteinersTypesCapacities.uniqueFields],
       type:"unique"
     }
@@ -58,7 +58,7 @@ class ConteinersTypesCapacities extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: ConteinersTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -67,7 +67,7 @@ class ConteinersTypesCapacities extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: IdentifiersTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -76,7 +76,7 @@ class ConteinersTypesCapacities extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: MeasurementsUnits,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

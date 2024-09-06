@@ -10,7 +10,7 @@ const { ContactsTypes } = require("./ContactsTypes");
  * class model
  */
 class Contacts extends BaseTableModel {
-  static ID = 2013;
+  static id = 2013;
   static model = null;
   static fields = {
     ...Contacts.getBaseTableModelFields(),...{           
@@ -32,7 +32,7 @@ class Contacts extends BaseTableModel {
 
   static constraints = [...(Contacts.getBaseTableModelConstraints() || []),...[
     {
-      name: Contacts.name.toUpperCase() + '_U1',
+      name: Contacts.name.toLowerCase() + '_u1',
       fields: [...Contacts.getBaseTableModelUniqueFields(),...Contacts.uniqueFields],
       type:"unique"
     }
@@ -44,7 +44,7 @@ class Contacts extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: ContactsTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

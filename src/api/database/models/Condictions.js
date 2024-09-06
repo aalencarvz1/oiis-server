@@ -12,7 +12,7 @@ const { Comparators } = require("./Comparators");
  * class model
  */
 class Condictions extends BaseTableModel {
-  static ID = 7004;
+  static id = 7004;
   static model = null;
 
   static fields = {
@@ -56,7 +56,7 @@ class Condictions extends BaseTableModel {
 
   static constraints = [...(Condictions.getBaseTableModelConstraints() || []),...[
     {
-      name: Condictions.name.toUpperCase() + '_U1',
+      name: Condictions.name.toLowerCase() + '_u1',
       fields: [...Condictions.getBaseTableModelUniqueFields(),...Condictions.uniqueFields],
       type:"unique"
     }
@@ -68,7 +68,7 @@ class Condictions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: EntitiesTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -77,7 +77,7 @@ class Condictions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Comparators,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

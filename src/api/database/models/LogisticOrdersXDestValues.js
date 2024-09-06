@@ -12,7 +12,7 @@ const { FinancialValueMovTypes } = require("./FinancialValueMovTypes");
  * class model
  */
 class LogisticOrdersXDestValues extends BaseTableModel {
-  static ID = 12007;
+  static id = 12007;
   static model = null;
   static fields = {
     ...LogisticOrdersXDestValues.getBaseTableModelFields(),...{    
@@ -54,7 +54,7 @@ class LogisticOrdersXDestValues extends BaseTableModel {
 
   static constraints = [...(LogisticOrdersXDestValues.getBaseTableModelConstraints() || []),...[
     {
-      name: LogisticOrdersXDestValues.name.toUpperCase() + '_U1',
+      name: LogisticOrdersXDestValues.name.toLowerCase() + '_u1',
       fields: [...LogisticOrdersXDestValues.getBaseTableModelUniqueFields(),...LogisticOrdersXDestValues.uniqueFields],
       type:"unique"
     }
@@ -66,7 +66,7 @@ class LogisticOrdersXDestValues extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: LogisticOrders,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -75,7 +75,7 @@ class LogisticOrdersXDestValues extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: FinancialValueForms,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -84,7 +84,7 @@ class LogisticOrdersXDestValues extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: CurrenciesTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -93,7 +93,7 @@ class LogisticOrdersXDestValues extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: FinancialValueMovTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

@@ -8,93 +8,93 @@ const { Users } = require('../models/Users');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(IdentifiersTypes.name.toUpperCase(),[{      
-      ID:IdentifiersTypes.IDENTIFIER,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+    await queryInterface.bulkInsert(IdentifiersTypes.name.toLowerCase(),[{      
+      id:IdentifiersTypes.IDENTIFIER,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'IDENTIFIER'
     },{      
-      ID:IdentifiersTypes.CNPJ,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id:IdentifiersTypes.CNPJ,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'CNPJ'
     },{      
-      ID:IdentifiersTypes.CPF,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id:IdentifiersTypes.CPF,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'CPF'
     },{      
-      ID:IdentifiersTypes.CHAVENFE,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id:IdentifiersTypes.CHAVENFE,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'CHAVENFE'
     },{      
-      ID:IdentifiersTypes.GTIN,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id:IdentifiersTypes.GTIN,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'GTIN'
     },{      
-      ID:IdentifiersTypes.GTINTYPE,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id:IdentifiersTypes.GTINTYPE,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'GTINTYPE'
     },{      
-      ID:IdentifiersTypes.PACKAGING,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id:IdentifiersTypes.PACKAGING,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'PACKAGING'
     },{      
-      ID:IdentifiersTypes.SUPPLIER,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id:IdentifiersTypes.SUPPLIER,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'SUPPLIER'
     },{      
-      ID:IdentifiersTypes.VALUE,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id:IdentifiersTypes.VALUE,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'VALUE'
     },{      
-      ID:IdentifiersTypes.WINTHORCODE,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id:IdentifiersTypes.WINTHORCODE,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'WINTHORCODE'
     },{      
-      ID:IdentifiersTypes.WINTHORCODEFAB,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id:IdentifiersTypes.WINTHORCODEFAB,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'WINTHORCODEFAB'
     }],{
       ignoreDuplicates:true,
@@ -104,6 +104,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(IdentifiersTypes.name.toUpperCase(), null, {});
+     await queryInterface.bulkDelete(IdentifiersTypes.name.toLowerCase(), null, {});
   }
 };

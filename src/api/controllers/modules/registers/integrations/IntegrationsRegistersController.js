@@ -34,7 +34,7 @@ class IntegrationsRegistersController extends BaseEndPointController{
                                 if (dataToUpdate && dataToUpdate.length > 0) {
                                     let hasUpdate = false;
                                     for(let k2 in dataToUpdate[0]) {
-                                        if (k2 != 'ID' && result.data[k][k2] != dataToUpdate[0][k2]) {
+                                        if (k2 != 'id' && result.data[k][k2] != dataToUpdate[0][k2]) {
                                             result.data[k][k2] = dataToUpdate[0][k2];
                                             hasUpdate = true;
                                         }

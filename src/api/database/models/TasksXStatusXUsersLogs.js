@@ -10,7 +10,7 @@ const { TasksXStatusXUsers } = require("./TasksXStatusXUsers");
  * class model
  */
 class TasksXStatusXUsersLogs extends BaseTableModel {
-  static ID = 15051;
+  static id = 15051;
   static model = null;
 
   static fields = {
@@ -42,7 +42,7 @@ class TasksXStatusXUsersLogs extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: TasksXStatusXUsers,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'

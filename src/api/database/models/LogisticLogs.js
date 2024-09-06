@@ -9,7 +9,7 @@ const { DataTables } = require("./DataTables");
  * class model
  */
 class LogisticLogs extends BaseTableModel {
-  static ID = 12100;
+  static id = 12100;
   static model = null;
   static fields = {
     ...LogisticLogs.getBaseTableModelFields(),...{    
@@ -60,7 +60,7 @@ class LogisticLogs extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: DataTables,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

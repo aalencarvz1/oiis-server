@@ -9,7 +9,7 @@ const { UsersProfilesTimesWork } = require("./UsersProfilesTimesWork");
  * class model
  */
 class UsersTimesWork extends BaseTableModel {
-  static ID = 123;
+  static id = 123;
   static model = null;
 
   
@@ -51,16 +51,16 @@ class UsersTimesWork extends BaseTableModel {
 
   static constraints = [...(UsersTimesWork.getBaseTableModelConstraints() || []),...[
     {
-      name: UsersTimesWork.name.toUpperCase() + '_U1',
+      name: UsersTimesWork.name.toLowerCase() + '_u1',
       fields: UsersTimesWork.uniqueFields,
       type:"unique"
     },
     {
-      name: UsersTimesWork.name.toUpperCase() + '_U2',
+      name: UsersTimesWork.name.toLowerCase() + '_u2',
       fields: UsersTimesWork.uniqueFields2,
       type:"unique"
     },{
-      name: UsersTimesWork.name.toUpperCase() + '_C_1',
+      name: UsersTimesWork.name.toLowerCase() + '_c_1',
       fields:['WEEKDAY'],
       type:"check",
       where:{
@@ -77,7 +77,7 @@ class UsersTimesWork extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: UsersProfilesTimesWork,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'

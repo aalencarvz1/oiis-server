@@ -7,10 +7,10 @@ const { Logs } = require('../models/Logs');
 /*migration*/
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable(Logs.name.toUpperCase(), Logs.fields);
+    await queryInterface.createTable(Logs.name.toLowerCase(), Logs.fields);
     await Logs.migrateConstraints(queryInterface);
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(Logs.name.toUpperCase());
+    await queryInterface.dropTable(Logs.name.toLowerCase());
   }
 };

@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class FinancialValueLocalizationsTypes extends BaseTableModel {
-  static ID = 1033;
+  static id = 1033;
   static model = null;
 
   static UNKNOWN = 1; //DESCONHECIDO
@@ -49,11 +49,11 @@ class FinancialValueLocalizationsTypes extends BaseTableModel {
 
   static constraints = [...(FinancialValueLocalizationsTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: FinancialValueLocalizationsTypes.name.toUpperCase() + '_U1',
+      name: FinancialValueLocalizationsTypes.name.toLowerCase() + '_u1',
       fields: [...FinancialValueLocalizationsTypes.getBaseTableModelUniqueFields(),...FinancialValueLocalizationsTypes.uniqueFields],
       type:"unique"
     },{
-      name: FinancialValueLocalizationsTypes.name.toUpperCase() + '_C_1',
+      name: FinancialValueLocalizationsTypes.name.toLowerCase() + '_c_1',
       fields:['ISPHYSICAL'],
       type:"check",
       where:{
@@ -62,7 +62,7 @@ class FinancialValueLocalizationsTypes extends BaseTableModel {
           }
       }
     },{
-      name: FinancialValueLocalizationsTypes.name.toUpperCase() + '_C_3',
+      name: FinancialValueLocalizationsTypes.name.toLowerCase() + '_c_3',
       fields:['ISELETRONIC'],
       type:"check",
       where:{
@@ -78,7 +78,7 @@ class FinancialValueLocalizationsTypes extends BaseTableModel {
     type: 'foreign key',
     references: { 
         table: FinancialValueLocalizationsTypes,
-        field: 'ID'
+        field: 'id'
     },
     onUpdate: 'cascade',
     onDelete: 'cascade'

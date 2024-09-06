@@ -45,9 +45,9 @@ const { BaseEndPointController } = require("../../../../endpoints/BaseEndPointCo
  */
 class LogisticOrdersIntegrationsController extends BaseEndPointController{
 
-    static getIdOriginData(idOriginData) {
+    static getDataOriginId(data_origin_id) {
         let result = OriginsDatas.DEFAULT_ORIGINDATA;
-        switch(idOriginData) {
+        switch(data_origin_id) {
             case 0:
                 result = OriginsDatas.WINTHOR;
                 break;
@@ -90,17 +90,17 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
         return result;
     }
 
-    static async saveLog(idUserCreate, idTableRef,idRegisterRef, logs, messages, exceptions){
+    static async saveLog(creator_user_id, idTableRef,idRegisterRef, logs, messages, exceptions){
         try {
             for(let kl in logs || []) {
                 let log = await LogisticLogs.getOrCreate({
                     raw:false,
                     where:{
-                        ID: logs[kl].IDONSERVER || -1
+                        id: logs[kl].IDONSERVER || -1
                     },
                     values:{
-                        ID:undefined,
-                        IDUSERCREATE: idUserCreate,
+                        id:undefined,
+                        creator_user_id: creator_user_id,
                         IDTABLEREF: idTableRef,
                         IDREGISTERREF: idRegisterRef,
                         OPERATION: logs[kl].OPERATION,
@@ -114,7 +114,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                 });
                 if (log.success) {
                     log = log.data;
-                    logs[kl].IDONSERVER = log.ID;
+                    logs[kl].IDONSERVER = log.id;
                 } else {
                     messages.push(log.message);
                     if (log.exception) exceptions.push(log.exception);
@@ -136,8 +136,8 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
             let lotWhithoutLot = null;
             if (loadings) {
                 for(let key in loadings) {
-                    let idOriginData = LogisticOrdersIntegrationsController.getIdOriginData(loadings[key].IDORIGINDATA);
-                    let query = `select min(codfilial) as CODFILIAL from jumbo.pcpedc where numcar = ${loadings[key].IDLOADORIGIN}`;
+                    let data_origin_id = LogisticOrdersIntegrationsController.getDataOriginId(loadings[key].data_origin_id);
+                    let query = `select min(codfilial) as CODFILIAL from JUMBO.PCPEDC where numcar = ${loadings[key].IDLOADORIGIN}`;
                     let codFilial = await DBConnectionManager.getWinthorDBConnection().query(query,{queryType:Sequelize.QueryTypes.SELECT});
                     if (codFilial) {
                         codFilial = codFilial[0][0].CODFILIAL;
@@ -148,21 +148,21 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                     let businessUnit = await BusinessesUnits.getModel().findOne({
                         raw:true,
                         where:{
-                            ID:codFilial
+                            id:codFilial
                         }
                     });
                     if (!businessUnit) throw new Error(`business unit not found: ${codFilial}`);
                     let warehouse = await Warehouses.getModel().findOne({
                         raw:true,
                         where:{
-                            ID:codFilial
+                            id:codFilial
                         }
                     });
                     if (!warehouse) throw new Error(`warehouse not found: ${codFilial}`);
                     let company = await Companies.getModel().findOne({
                         raw:true,
                         where:{
-                            ID:businessUnit.IDCOMPANY
+                            id:businessUnit.IDCOMPANY
                         }
                     });
                     if (!company) throw new Error(`company not found: ${businessUnit.IDCOMPANY}`);
@@ -170,15 +170,15 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
 
                     let logisticOrder = await LogisticOrders.getModel().findOne({                        
                         where: {
-                            IDORIGINDATA: idOriginData,
-                            IDONORIGINDATA:loadings[key].IDLOADORIGIN
+                            data_origin_id: data_origin_id,
+                            id_at_origin:loadings[key].IDLOADORIGIN
                         }
                     });
                     if (!logisticOrder) {
                         logisticOrder = await LogisticOrders.getModel().create({
-                            IDUSERCREATE: req.user.ID,
-                            IDORIGINDATA: idOriginData,
-                            IDONORIGINDATA:loadings[key].IDLOADORIGIN,
+                            creator_user_id: req.user.id,
+                            data_origin_id: data_origin_id,
+                            id_at_origin:loadings[key].IDLOADORIGIN,
                             IDLOGISTICMOVTYPE: LogisticMovTypes.DELIVERY,
                             IDIDENTIFIERTYPE: IdentifiersTypes.CODE,
                             IDENTIFIER: loadings[key].IDLOADORIGIN,
@@ -187,18 +187,18 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                     } else {
                         if (logisticOrder.IDLOGISTICSTATUS != loadings[key].IDSTATUSENTREGA) {
                             logisticOrder.IDLOGISTICSTATUS = loadings[key].IDSTATUSENTREGA;
-                            logisticOrder.IDUSERUPDATE = req.user.ID;
+                            logisticOrder.updater_user_id = req.user.id;
                             await logisticOrder.save();
                         }
                     }
-                    idsLogOrders.push(logisticOrder.ID);
+                    idsLogOrders.push(logisticOrder.id);
 
                     for(let kn in loadings[key].NOTASFISCAIS || []) {
-                        let idOriginMov = LogisticOrdersIntegrationsController.getIdOriginData(loadings[key].NOTASFISCAIS[kn].IDORIGINDATA);                        
+                        let idOriginMov = LogisticOrdersIntegrationsController.getDataOriginId(loadings[key].NOTASFISCAIS[kn].data_origin_id);                        
                         let mov = await Movements.getModel().findOne({
                             where:{
-                                IDORIGINDATA: idOriginMov,
-                                IDBUSINESSUNIT: businessUnit.ID,
+                                data_origin_id: idOriginMov,
+                                IDBUSINESSUNIT: businessUnit.id,
                                 IDTYPEMOV: MovementsTypes.OUTPUT,
                                 IDIDENTIFIERTYPE: IdentifiersTypes.CODE,
                                 IDENTIFIER: loadings[key].NOTASFISCAIS[kn].IDINVOICEORIGIN,
@@ -211,7 +211,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                             if (!client) {
                                 throw new Error("client is null as return of integration client")
                             } else if (!client.success) {
-                                if ((client.message||client?.exception.message||'').indexOf('not found in pcclient') > -1) {
+                                if ((client.message||client?.exception.message||'').indexOf('not found in PCCLIENT') > -1) {
                                     client = await ClientsIntegrationsController.integrateEpClientToClient(loadings[key].NOTASFISCAIS[kn].CGC);
                                     if (client && client.success) {
                                         client = client?.data[0];
@@ -227,16 +227,16 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
 
                             try {
                                 mov = await Movements.getModel().create({
-                                    IDUSERCREATE: req.user.ID,
-                                    IDORIGINDATA: idOriginMov,
-                                    IDONORIGINDATA: loadings[key].NOTASFISCAIS[kn].IDONORIGINDATA,
+                                    creator_user_id: req.user.id,
+                                    data_origin_id: idOriginMov,
+                                    id_at_origin: loadings[key].NOTASFISCAIS[kn].id_at_origin,
                                     IDTYPEMOV: MovementsTypes.OUTPUT,
                                     IDIDENTIFIERTYPE: IdentifiersTypes.CODE,
                                     IDENTIFIER: loadings[key].NOTASFISCAIS[kn].IDINVOICEORIGIN,
-                                    IDCOMPANY: company.ID,
-                                    IDWAREHOUSE: warehouse.ID,
-                                    IDBUSINESSUNIT: businessUnit.ID,
-                                    IDCLIENT: client?.ID,
+                                    IDCOMPANY: company.id,
+                                    IDWAREHOUSE: warehouse.id,
+                                    IDBUSINESSUNIT: businessUnit.id,
+                                    IDCLIENT: client?.id,
                                     IDFINANCIALVALUEFORM : idFinancialValueForm
                                 });
                             } catch (eMov) {
@@ -245,8 +245,8 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                 ) {
                                     mov = await Movements.getModel().findOne({
                                         where:{
-                                            IDORIGINDATA: idOriginMov,
-                                            IDBUSINESSUNIT: businessUnit.ID,
+                                            data_origin_id: idOriginMov,
+                                            IDBUSINESSUNIT: businessUnit.id,
                                             IDTYPEMOV: MovementsTypes.OUTPUT,
                                             IDIDENTIFIERTYPE: IdentifiersTypes.CODE,
                                             IDENTIFIER: loadings[key].NOTASFISCAIS[kn].IDINVOICEORIGIN,
@@ -266,12 +266,12 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                         let logisticOrderXMov = await LogisticOrdersXMovs.getOrCreate({
                             raw:false,
                             where:{
-                                IDORIGINDATA: mov.IDORIGINDATA,
-                                IDLOGISTICORDER: logisticOrder.ID,
-                                IDMOV: mov.ID                                
+                                data_origin_id: mov.data_origin_id,
+                                IDLOGISTICORDER: logisticOrder.id,
+                                IDMOV: mov.id                                
                             },
                             values:{
-                                IDUSERCREATE: req.user.ID,
+                                creator_user_id: req.user.id,
                                 IDLOGISTICSTATUS: loadings[key].NOTASFISCAIS[kn].IDSTATUSENTREGA
                             }
                         });
@@ -279,7 +279,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                             logisticOrderXMov = logisticOrderXMov.data;
                             if (logisticOrderXMov.IDLOGISTICSTATUS != loadings[key].NOTASFISCAIS[kn].IDSTATUSENTREGA) {
                                 logisticOrderXMov.IDLOGISTICSTATUS = loadings[key].NOTASFISCAIS[kn].IDSTATUSENTREGA;
-                                logisticOrderXMov.IDUSERUPDATE = req.user.ID;
+                                logisticOrderXMov.updater_user_id = req.user.id;
                                 console.log(logisticOrderXMov);
                                 await logisticOrderXMov.save();
                             }
@@ -297,10 +297,10 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                             let item = await Items.getOrCreate({
                                 raw:true,
                                 where:{
-                                    IDORIGINDATA: mov.IDORIGINDATA,
-                                    IDONORIGINDATA: loadings[key].NOTASFISCAIS[kn].ITEMS[ki].IDITEMORIGEM,   
+                                    data_origin_id: mov.data_origin_id,
+                                    id_at_origin: loadings[key].NOTASFISCAIS[kn].ITEMS[ki].IDITEMORIGEM,   
                                 },
-                                createMethod: mov.IDORIGINDATA == OriginsDatas.AURORA ? Items.integrateByAurora : Items.integrateByWinthor
+                                createMethod: mov.data_origin_id == OriginsDatas.AURORA ? Items.integrateByAurora : Items.integrateByWinthor
                             });
                             if (item.success) item = item.data
                             else {
@@ -313,16 +313,16 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                             let stockEntity = await StocksEntities.getOrCreate({
                                 raw:true,
                                 where:{
-                                    IDCOMPANY: company.ID,
-                                    IDBUSINESSUNIT: businessUnit.ID,
-                                    IDWAREHOUSE: warehouse.ID,
+                                    IDCOMPANY: company.id,
+                                    IDBUSINESSUNIT: businessUnit.id,
+                                    IDWAREHOUSE: warehouse.id,
                                     IDSUPPLIER: null,
                                     IDCLIENT:null,
                                     IDUSER:null,
                                     IDCOLLABORATOR:null,
                                 },
                                 values: {
-                                    IDUSERCREATE: req.user.ID
+                                    creator_user_id: req.user.id
                                 }
                             });
                             if (stockEntity.success) stockEntity = stockEntity.data
@@ -342,7 +342,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                             EXPIRATIONDATE: loadings[key].NOTASFISCAIS[kn].ITEMS[ki].LOTES[kl].DTVALIDADE
                                         },
                                         values:{
-                                            IDUSERCREATE: req.user.ID,
+                                            creator_user_id: req.user.id,
                                             IDIDENTIFIERTYPE: IdentifiersTypes.IDENTIFIER
                                         }
                                     });
@@ -357,7 +357,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                 lotWhithoutLot = lotWhithoutLot || await Lots.getModel().findOne({
                                     raw:true,
                                     where:{
-                                        ID:Lots.WITHOUT_LOT
+                                        id:Lots.WITHOUT_LOT
                                     }
                                 })
                                 lots.push({
@@ -371,13 +371,13 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                 let itemXLotXConteiner = await ItemsXLotsXConteiners.getOrCreate({
                                     raw:true,
                                     where:{
-                                        IDORIGINDATA: item.IDORIGINDATA,
-                                        IDITEM: item.ID,
-                                        IDLOT: lots[kl].LOT.ID,
+                                        data_origin_id: item.data_origin_id,
+                                        IDITEM: item.id,
+                                        IDLOT: lots[kl].LOT.id,
                                         IDCONTEINER: Conteiners.WITHOUT_CONTEINER
                                     },
                                     values: {
-                                        IDUSERCREATE: req.user.ID,
+                                        creator_user_id: req.user.id,
                                     }
                                 });
                                 if (itemXLotXConteiner.success) itemXLotXConteiner = itemXLotXConteiner.data
@@ -391,10 +391,10 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                 let itemStock = await ItemsStocks.getModel().findOne({
                                     raw:true,
                                     where:{
-                                        IDORIGINDATA: itemXLotXConteiner.IDORIGINDATA,
-                                        IDITEMXLOTXCONTEINER: itemXLotXConteiner.ID,
+                                        data_origin_id: itemXLotXConteiner.data_origin_id,
+                                        IDITEMXLOTXCONTEINER: itemXLotXConteiner.id,
                                         IDSTOCKRELATIONSHIPTYPE: StocksEntitiesRelationshipsTypes.OWNER,
-                                        IDSTOCKENTITY: stockEntity.ID,
+                                        IDSTOCKENTITY: stockEntity.id,
                                         IDMEASUREMENTUNIT: MeasurementsUnits[loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE] || MeasurementsUnits.KG,
                                         IDPACKAGING: Packagings[loadings[key].NOTASFISCAIS[kn].ITEMS[ki].EMBALAGEM] || Packagings.BOX/*,
                                         [Sequelize.Op.and]:[
@@ -407,11 +407,11 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                 });
                                 if (!itemStock) {
                                     itemStock = await ItemsStocks.getModel().create({
-                                        IDUSERCREATE: req.user.ID,
-                                        IDORIGINDATA: itemXLotXConteiner.IDORIGINDATA,
-                                        IDITEMXLOTXCONTEINER: itemXLotXConteiner.ID,
+                                        creator_user_id: req.user.id,
+                                        data_origin_id: itemXLotXConteiner.data_origin_id,
+                                        IDITEMXLOTXCONTEINER: itemXLotXConteiner.id,
                                         IDSTOCKRELATIONSHIPTYPE: StocksEntitiesRelationshipsTypes.OWNER,
-                                        IDSTOCKENTITY: stockEntity.ID,
+                                        IDSTOCKENTITY: stockEntity.id,
                                         IDMEASUREMENTUNIT: MeasurementsUnits[loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE] || MeasurementsUnits.KG,
                                         IDPACKAGING: Packagings[loadings[key].NOTASFISCAIS[kn].ITEMS[ki].EMBALAGEM] || Packagings.BOX/*,
                                         UNITWEIGHT: Utils.toNumber(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE == 'KG' ? 1 : loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN)*/
@@ -423,13 +423,13 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                 let movXItemStock = await MovsXItemsStocks.getOrCreate({
                                     raw:true,
                                     where:{
-                                        IDORIGINDATA: itemStock.IDORIGINDATA,
-                                        IDMOV: mov.ID,
+                                        data_origin_id: itemStock.data_origin_id,
+                                        IDMOV: mov.id,
                                         IDTYPEMOV: MovementsTypes.OUTPUT,
-                                        IDITEMSTOCK: itemStock.ID
+                                        IDITEMSTOCK: itemStock.id
                                     }, 
                                     values:{
-                                        IDUSERCREATE: req.user.ID,
+                                        creator_user_id: req.user.id,
                                     }
                                 });
                                 if (movXItemStock.success) movXItemStock = movXItemStock.data
@@ -443,8 +443,8 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
 
                                 let itemMovAmt = await ItemsMovsAmounts.saveOrCreate({
                                     where:{
-                                        IDORIGINDATA: movXItemStock.IDORIGINDATA,
-                                        IDMOVXITEMSTOCK: movXItemStock.ID,
+                                        data_origin_id: movXItemStock.data_origin_id,
+                                        IDMOVXITEMSTOCK: movXItemStock.id,
                                         IDTYPEMOV: MovementsTypes.OUTPUT,
                                         IDMEASUREMENTUNIT: itemStock.IDMEASUREMENTUNIT,
                                         IDPACKAGING: itemStock.IDPACKAGING/*,
@@ -456,7 +456,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                         ]*/
                                     },
                                     values:{
-                                        IDORIGINDATA: movXItemStock.IDORIGINDATA,
+                                        data_origin_id: movXItemStock.data_origin_id,
                                         IDSTATUSMOV: movXItemStock.IDSTATUSMOV,
                                         EXPECTEDAMT: lots[kl].LOTORIGIN.QT,
                                         MOVIMENTEDAMT: lots[kl].LOTORIGIN.QTENTREGUE,
@@ -473,9 +473,9 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                 let logXItemMovAmt = await LogisticOrdersXItemsMovAmt.saveOrCreate({
                                     raw:false,
                                     where:{
-                                        IDORIGINDATA: itemMovAmt.IDORIGINDATA,
-                                        IDLOGISTICORDERXMOV: logisticOrderXMov.ID,
-                                        IDITEMMOVAMT: itemMovAmt.ID,
+                                        data_origin_id: itemMovAmt.data_origin_id,
+                                        IDLOGISTICORDERXMOV: logisticOrderXMov.id,
+                                        IDITEMMOVAMT: itemMovAmt.id,
                                         IDLOGISTICMOVTYPE: logisticOrder.IDLOGISTICMOVTYPE,
                                         IDTYPEMOV: itemMovAmt.IDTYPEMOV,
                                         IDMEASUREMENTUNIT: itemStock.IDMEASUREMENTUNIT,
@@ -509,10 +509,10 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                     continue;
                                 }
 
-                                loadings[key].NOTASFISCAIS[kn].ITEMS[ki].IDONSERVER = logXItemMovAmt.data.ID;
+                                loadings[key].NOTASFISCAIS[kn].ITEMS[ki].IDONSERVER = logXItemMovAmt.data.id;
 
                                 if (loadings[key].NOTASFISCAIS[kn].ITEMS[ki].LOGS) {
-                                    await LogisticOrdersIntegrationsController.saveLog(req.user.ID,LogisticOrdersXItemsMovAmt.ID, logXItemMovAmt.data.ID, loadings[key].NOTASFISCAIS[kn].ITEMS[ki].LOGS, messages,exceptions);                        
+                                    await LogisticOrdersIntegrationsController.saveLog(req.user.id,LogisticOrdersXItemsMovAmt.id, logXItemMovAmt.data.id, loadings[key].NOTASFISCAIS[kn].ITEMS[ki].LOGS, messages,exceptions);                        
                                 }
                                 
                             }
@@ -523,15 +523,15 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                             let receivedValue = await LogisticOrdersXMovsXReceiptValues.saveOrCreate({
                                 where:{
                                     [Sequelize.Op.or]:[{
-                                        ID: loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].IDONSERVER || -1
+                                        id: loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].IDONSERVER || -1
                                     },{
                                         [Sequelize.Op.and]:[
                                             {
-                                                IDORIGINDATA: mov.IDORIGINDATA
+                                                data_origin_id: mov.data_origin_id
                                             },{
-                                                IDLOGISTICORDER: logisticOrder.ID
+                                                IDLOGISTICORDER: logisticOrder.id
                                             },{
-                                                IDLOGISTICORDERXMOV: logisticOrderXMov.ID
+                                                IDLOGISTICORDERXMOV: logisticOrderXMov.id
                                             },{
                                                 IDFINANCIALVALUEFORM: this.getFinancialValueFormID(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].IDFINANCIALCOLLECTIONORIGIN)
                                             },{
@@ -545,10 +545,10 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                     }]
                                 },
                                 values:{
-                                    ID: loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].IDONSERVER || undefined,
-                                    IDORIGINDATA: mov.IDORIGINDATA,
-                                    IDLOGISTICORDER: logisticOrder.ID,
-                                    IDLOGISTICORDERXMOV: logisticOrderXMov.ID,
+                                    id: loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].IDONSERVER || undefined,
+                                    data_origin_id: mov.data_origin_id,
+                                    IDLOGISTICORDER: logisticOrder.id,
+                                    IDLOGISTICORDERXMOV: logisticOrderXMov.id,
                                     IDFINANCIALVALUEFORM: this.getFinancialValueFormID(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].IDFINANCIALCOLLECTIONORIGIN),
                                     IDCURRENCYTYPEEXPECTED: CurrenciesTypes.BRL,
                                     ORDERNUM: loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].ORDERNUM || 1,   
@@ -564,17 +564,17 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                 if (receivedValue.exception) exceptions.push(receivedValue.exception);
                                 continue;
                             }
-                            loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].IDONSERVER = receivedValue.data.ID;
+                            loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].IDONSERVER = receivedValue.data.id;
 
                             if (loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].LOGS) {
-                                await LogisticOrdersIntegrationsController.saveLog(req.user.ID, LogisticOrdersXMovsXReceiptValues.ID, receivedValue.data.ID, loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].LOGS, messages,exceptions);                        
+                                await LogisticOrdersIntegrationsController.saveLog(req.user.id, LogisticOrdersXMovsXReceiptValues.id, receivedValue.data.id, loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].LOGS, messages,exceptions);                        
                             }
                         }
 
-                        loadings[key].NOTASFISCAIS[kn].IDONSERVER = logisticOrderXMov.ID;
+                        loadings[key].NOTASFISCAIS[kn].IDONSERVER = logisticOrderXMov.id;
 
                         if (loadings[key].NOTASFISCAIS[kn].LOGS) {
-                            await LogisticOrdersIntegrationsController.saveLog(req.user.ID, LogisticOrdersXMovs.ID, logisticOrderXMov.ID, loadings[key].NOTASFISCAIS[kn].LOGS, messages,exceptions);                        
+                            await LogisticOrdersIntegrationsController.saveLog(req.user.id, LogisticOrdersXMovs.id, logisticOrderXMov.id, loadings[key].NOTASFISCAIS[kn].LOGS, messages,exceptions);                        
                         }
                     }
 
@@ -586,13 +586,13 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                         let logDestVal = await LogisticOrdersXDestValues.getModel().findOne({
                             where:{
                                 [Sequelize.Op.or]: [{
-                                    ID: loadings[key].DESTINACAOVALORES[kd].IDONSERVER || -1
+                                    id: loadings[key].DESTINACAOVALORES[kd].IDONSERVER || -1
                                 },{
                                     [Sequelize.Op.and]:[
                                         {
-                                            IDORIGINDATA: OriginsDatas.APP_DELIVERY
+                                            data_origin_id: OriginsDatas.APP_DELIVERY
                                         },{
-                                            IDLOGISTICORDER: logisticOrder.ID
+                                            IDLOGISTICORDER: logisticOrder.id
                                         },{
                                             IDLOGORDFINANCIALVALUEFORM: idFinValForm
                                         },{
@@ -605,9 +605,9 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
 
                         if (!logDestVal) {
                             logDestVal = await LogisticOrdersXDestValues.getModel().create({
-                                IDUSERCREATE: req.user.ID,
-                                IDORIGINDATA: OriginsDatas.APP_DELIVERY,
-                                IDLOGISTICORDER: logisticOrder.ID,
+                                creator_user_id: req.user.id,
+                                data_origin_id: OriginsDatas.APP_DELIVERY,
+                                IDLOGISTICORDER: logisticOrder.id,
                                 IDLOGORDFINANCIALVALUEFORM: idFinValForm,
                                 IDFINANCIALVALUEMOVTYPEDEST: idFinValMovType,
                                 DESTINATEDVALUE: Utils.toNumber(loadings[key].DESTINACAOVALORES[kd].VLFECHADO || 0),
@@ -615,23 +615,23 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                             });
                         } else {                            
                             logDestVal.DESTINATEDVALUE = Utils.toNumber(loadings[key].DESTINACAOVALORES[kd].VLFECHADO || 0);
-                            logDestVal.IDUSERUPDATE = req.user.ID;
+                            logDestVal.updater_user_id = req.user.id;
                             await logDestVal.save();
                         }
 
                         
 
-                        loadings[key].DESTINACAOVALORES[kd].IDONSERVER = logDestVal.ID;
+                        loadings[key].DESTINACAOVALORES[kd].IDONSERVER = logDestVal.id;
 
                         if (loadings[key].DESTINACAOVALORES[kd].LOGS) {
-                            await LogisticOrdersIntegrationsController.saveLog(req.user.ID, LogisticOrdersXDestValues.ID, logDestVal.ID, loadings[key].DESTINACAOVALORES[kd].LOGS, messages,exceptions);                        
+                            await LogisticOrdersIntegrationsController.saveLog(req.user.id, LogisticOrdersXDestValues.id, logDestVal.id, loadings[key].DESTINACAOVALORES[kd].LOGS, messages,exceptions);                        
                         }
                     }
 
-                    loadings[key].IDONSERVER = logisticOrder.ID;
+                    loadings[key].IDONSERVER = logisticOrder.id;
 
                     if (loadings[key].LOGS) {
-                        await LogisticOrdersIntegrationsController.saveLog(req.user.ID, LogisticOrders.ID, logisticOrder.ID, loadings[key].LOGS, messages,exceptions);                        
+                        await LogisticOrdersIntegrationsController.saveLog(req.user.id, LogisticOrders.id, logisticOrder.id, loadings[key].LOGS, messages,exceptions);                        
                     }
                 }
                 if (messages.length || exceptions.length) {

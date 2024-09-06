@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class AccessesProfiles extends BaseTableModel {
-  static ID = 119;
+  static id = 119;
   static model = null;
 
   static SYSTEM = 1;
@@ -45,11 +45,11 @@ class AccessesProfiles extends BaseTableModel {
 
   static constraints = [...(AccessesProfiles.getBaseTableModelConstraints() || []),...[
     {
-      name: AccessesProfiles.name.toUpperCase() + '_U1',
+      name: AccessesProfiles.name.toLowerCase() + '_u1',
       fields: [...AccessesProfiles.getBaseTableModelUniqueFields(),...AccessesProfiles.uniqueFields],
       type:"unique"
     },{
-      name: AccessesProfiles.name.toUpperCase() + '_C_1',
+      name: AccessesProfiles.name.toLowerCase() + '_c_1',
       fields:['ALLOWACESSALLROUTINESOFMODULE'],
       type:"check",
       where:{

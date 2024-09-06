@@ -9,13 +9,13 @@ const { SqlObjectsTypes } = require('../models/SqlObjectsTypes');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(SqlProcesses.name.toUpperCase(),[{      
-      ID:SqlProcesses.REPORT_SALES_COST_AND_PROFIT,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+    await queryInterface.bulkInsert(SqlProcesses.name.toLowerCase(),[{      
+      id:SqlProcesses.REPORT_SALES_COST_AND_PROFIT,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       IDSQLOBJECTTYPE: SqlObjectsTypes.SELECT,
       NAME : 'REPORT SALES COST AND PROFIT',
     }],{
@@ -26,6 +26,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(SqlObjectsTypes.name.toUpperCase(), null, {});
+     await queryInterface.bulkDelete(SqlObjectsTypes.name.toLowerCase(), null, {});
   }
 };

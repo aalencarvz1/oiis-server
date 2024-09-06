@@ -12,7 +12,7 @@ const { MovementsEntitiesRelationshipsTypes } = require("./MovementsEntitiesRela
  * class model
  */
 class MovementsXEntities extends BaseTableModel {
-  static ID = 9021;
+  static id = 9021;
   static model = null;
   static fields = {
     ...MovementsXEntities.getBaseTableModelFields(),...{                 
@@ -52,7 +52,7 @@ class MovementsXEntities extends BaseTableModel {
 
   static constraints = [...(MovementsXEntities.getBaseTableModelConstraints() || []),...[
     {
-      name: MovementsXEntities.name.toUpperCase() + '_U1',
+      name: MovementsXEntities.name.toLowerCase() + '_u1',
       fields: [...MovementsXEntities.getBaseTableModelUniqueFields(),...MovementsXEntities.uniqueFields],
       type:"unique"
     }
@@ -64,7 +64,7 @@ class MovementsXEntities extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Movements,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -74,7 +74,7 @@ class MovementsXEntities extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: MovementsEntitiesRelationshipsTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -83,7 +83,7 @@ class MovementsXEntities extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: StocksEntities,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

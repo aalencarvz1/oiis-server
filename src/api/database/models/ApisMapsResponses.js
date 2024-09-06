@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class ApisMapsResponses extends BaseTableModel {
-  static ID = 20010;
+  static id = 20010;
   static model = null;
 
   static fields = {

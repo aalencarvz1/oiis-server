@@ -9,7 +9,7 @@ const { BaseTableModel } = require("./BaseTableModel");
  * class model
  */
 class IdentifiersTypes extends BaseTableModel {
-  static ID = 70;
+  static id = 70;
   static model = null;
 
   static IDENTIFIER = 1;
@@ -46,7 +46,7 @@ class IdentifiersTypes extends BaseTableModel {
 
   static constraints = [...(IdentifiersTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: IdentifiersTypes.name.toUpperCase() + '_U1',
+      name: IdentifiersTypes.name.toLowerCase() + '_u1',
       fields: [...IdentifiersTypes.getBaseTableModelUniqueFields(),...IdentifiersTypes.uniqueFields],
       type:"unique"
     }

@@ -156,7 +156,7 @@ module.exports = {
                 SECOND, 
                 coalesce(
                 new.LASTRUN,
-                (SELECT MAX(T2.CREATEDAT) FROM TASKSXSTATUSXUSERSLOGS T2 WHERE T2.IDTASKXSTATUSXUSER = new.ID AND T2.IDNEWSTATUS=2),
+                (SELECT MAX(T2.created_at) FROM TASKSXSTATUSXUSERSLOGS T2 WHERE T2.IDTASKXSTATUSXUSER = new.id AND T2.IDNEWSTATUS=2),
                 utc_timestamp
                 ),
                 utc_timestamp

@@ -10,7 +10,7 @@ const { Condictions } = require("./Condictions");
  * class model
  */
 class CondictionsItems extends BaseTableModel {
-  static ID = 7005;
+  static id = 7005;
   static model = null;
 
     static fields = {
@@ -36,7 +36,7 @@ class CondictionsItems extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Condictions,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'

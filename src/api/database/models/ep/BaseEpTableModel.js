@@ -21,12 +21,12 @@ class BaseEpTableModel extends BaseTableModel {
     static async runUpMigration(queryInterface, options) {
         options = options || {};
         Utils.log('migrating table',this.name.toUpperCase(), Object.keys(this.fields));
-        await queryInterface.bulkInsert('DATATABLES',[{      
-            ID:this.ID,
-            CREATEDAT: new Date(),
-            ISSYSTEMREG : 1,
-            IDDATACONNECTION : configDB[`${process.env.NODE_ENV||'development'}_ep`].ID,
-            IDSCHEMA : configDB[`${process.env.NODE_ENV||'development'}_ep`].ID,
+        await queryInterface.bulkInsert('datatables',[{      
+            id:this.id,
+            created_at: new Date(),
+            is_sys_rec : 1,
+            IDDATACONNECTION : configDB[`${process.env.NODE_ENV||'development'}_ep`].id,
+            IDSCHEMA : configDB[`${process.env.NODE_ENV||'development'}_ep`].id,
             NAME : this.name.toUpperCase()
         }],{
             ignoreDuplicates:true,

@@ -16,7 +16,7 @@ const { ItemsXLotsXConteiners } = require("./ItemsXLotsXConteiners");
  * class model
  */
 class ItemsStocks extends BaseTableModel{
-  static ID = 8030;
+  static id = 8030;
   static model = null;
   static fields = {
     ...ItemsStocks.getBaseTableModelFields(),...{           
@@ -94,7 +94,7 @@ class ItemsStocks extends BaseTableModel{
 
   static constraints = [...(ItemsStocks.getBaseTableModelConstraints() || []),...[
     {
-      name: ItemsStocks.name.toUpperCase() + '_U1',
+      name: ItemsStocks.name.toLowerCase() + '_u1',
       fields: [...ItemsStocks.getBaseTableModelUniqueFields(),...ItemsStocks.uniqueFields],
       type:"unique"
     }
@@ -106,7 +106,7 @@ class ItemsStocks extends BaseTableModel{
       type: 'foreign key',
       references: { 
           table: ItemsXLotsXConteiners,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -115,7 +115,7 @@ class ItemsStocks extends BaseTableModel{
       type: 'foreign key',
       references: { 
           table: StocksEntitiesRelationshipsTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -124,7 +124,7 @@ class ItemsStocks extends BaseTableModel{
       type: 'foreign key',
       references: { 
           table: StocksEntities,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -133,7 +133,7 @@ class ItemsStocks extends BaseTableModel{
       type: 'foreign key',
       references: { 
           table: WarehousesAddresses,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -142,7 +142,7 @@ class ItemsStocks extends BaseTableModel{
       type: 'foreign key',
       references: { 
           table: ItemsStatus,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -151,7 +151,7 @@ class ItemsStocks extends BaseTableModel{
       type: 'foreign key',
       references: { 
           table: MeasurementsUnits,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -160,7 +160,7 @@ class ItemsStocks extends BaseTableModel{
       type: 'foreign key',
       references: { 
           table: Packagings,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class MovementsEntitiesRelationshipsTypes extends BaseTableModel {
-  static ID = 9020;
+  static id = 9020;
   static model = null;
 
   static ORIGIN_INPUT = 1;
@@ -55,11 +55,11 @@ class MovementsEntitiesRelationshipsTypes extends BaseTableModel {
 
   static constraints = [...(MovementsEntitiesRelationshipsTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: MovementsEntitiesRelationshipsTypes.name.toUpperCase() + '_U1',
+      name: MovementsEntitiesRelationshipsTypes.name.toLowerCase() + '_u1',
       fields: [...MovementsEntitiesRelationshipsTypes.getBaseTableModelUniqueFields(),...MovementsEntitiesRelationshipsTypes.uniqueFields],
       type:"unique"
     },{
-      name: MovementsEntitiesRelationshipsTypes.name.toUpperCase() + '_C_1',
+      name: MovementsEntitiesRelationshipsTypes.name.toLowerCase() + '_c_1',
       fields:['ISORIGIN'],
       type:"check",
       where:{
@@ -68,7 +68,7 @@ class MovementsEntitiesRelationshipsTypes extends BaseTableModel {
           }
       }
     },{
-      name: MovementsEntitiesRelationshipsTypes.name.toUpperCase() + '_C_2',
+      name: MovementsEntitiesRelationshipsTypes.name.toLowerCase() + '_c_2',
       fields:['ISTARGET'],
       type:"check",
       where:{
@@ -77,7 +77,7 @@ class MovementsEntitiesRelationshipsTypes extends BaseTableModel {
           }
       }
     },{
-      name: MovementsEntitiesRelationshipsTypes.name.toUpperCase() + '_C_3',
+      name: MovementsEntitiesRelationshipsTypes.name.toLowerCase() + '_c_3',
       fields:['ISINPUT'],
       type:"check",
       where:{
@@ -86,7 +86,7 @@ class MovementsEntitiesRelationshipsTypes extends BaseTableModel {
           }
       }
     },{
-      name: MovementsEntitiesRelationshipsTypes.name.toUpperCase() + '_C_4',
+      name: MovementsEntitiesRelationshipsTypes.name.toLowerCase() + '_c_4',
       fields:['ISOUTPUT'],
       type:"check",
       where:{

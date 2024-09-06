@@ -14,7 +14,7 @@ const { MovsXItemsStocks } = require("./MovsXItemsStocks");
  * class model
  */
 class ItemsMovsAmounts extends BaseTableModel {
-  static ID = 9035;
+  static id = 9035;
   static model = null;
   static fields = {
     ...ItemsMovsAmounts.getBaseTableModelFields(),...{                 
@@ -85,7 +85,7 @@ class ItemsMovsAmounts extends BaseTableModel {
 
   static constraints = [...(ItemsMovsAmounts.getBaseTableModelConstraints() || []),...[
     {
-      name: ItemsMovsAmounts.name.toUpperCase() + '_U1',
+      name: ItemsMovsAmounts.name.toLowerCase() + '_u1',
       fields: [...ItemsMovsAmounts.getBaseTableModelUniqueFields(),...ItemsMovsAmounts.uniqueFields],
       type:"unique"
     }
@@ -97,7 +97,7 @@ class ItemsMovsAmounts extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: MovsXItemsStocks,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -107,7 +107,7 @@ class ItemsMovsAmounts extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: MovementsTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -116,7 +116,7 @@ class ItemsMovsAmounts extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: MeasurementsUnits,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -125,7 +125,7 @@ class ItemsMovsAmounts extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Packagings,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -134,7 +134,7 @@ class ItemsMovsAmounts extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: MovementsStatus,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

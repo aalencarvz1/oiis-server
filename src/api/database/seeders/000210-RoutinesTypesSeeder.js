@@ -8,37 +8,37 @@ const { Users } = require('../models/Users');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(RoutinesTypes.name.toUpperCase(),[{      
-      ID:RoutinesTypes.SYSTEM,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+    await queryInterface.bulkInsert(RoutinesTypes.name.toLowerCase(),[{      
+      id:RoutinesTypes.SYSTEM,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME:'SYSTEM'
     },{      
-      ID:RoutinesTypes.REGISTER,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id:RoutinesTypes.REGISTER,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME:'REGISTER'
     },{      
-      ID:RoutinesTypes.REPORT,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id:RoutinesTypes.REPORT,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME:'REPORT'
     }],{
       ignoreDuplicates:true,
-      updateOnDuplicate:['IDSTATUSREG','NAME']
+      updateOnDuplicate:['status_reg_id','NAME']
     });  
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(RoutinesTypes.name.toUpperCase(), null, {});
+     await queryInterface.bulkDelete(RoutinesTypes.name.toLowerCase(), null, {});
   }
 };

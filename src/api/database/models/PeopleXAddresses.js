@@ -12,7 +12,7 @@ const { Addresses } = require("./Addresses");
  * class model
  */
 class PeopleXAddresses extends BaseTableModel {
-  static ID = 2014;
+  static id = 2014;
   static model = null;
   static fields = {
     ...PeopleXAddresses.getBaseTableModelFields(),...{           
@@ -44,7 +44,7 @@ class PeopleXAddresses extends BaseTableModel {
 
   static constraints = [...(PeopleXAddresses.getBaseTableModelConstraints() || []),...[
     {
-      name: PeopleXAddresses.name.toUpperCase() + '_U1',
+      name: PeopleXAddresses.name.toLowerCase() + '_u1',
       fields: [...PeopleXAddresses.getBaseTableModelUniqueFields(),...PeopleXAddresses.uniqueFields],
       type:"unique"
     }
@@ -56,7 +56,7 @@ class PeopleXAddresses extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: People,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -66,7 +66,7 @@ class PeopleXAddresses extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: AddressesTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -75,7 +75,7 @@ class PeopleXAddresses extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Addresses,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'

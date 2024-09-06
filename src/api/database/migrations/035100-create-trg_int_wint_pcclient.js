@@ -58,9 +58,9 @@ module.exports = {
     BEGIN    
         v_exists := 0;
         hasValues := 0;
-        select count(1) into v_exists from migrationstables where upper(trim(tablename)) = v_table_name;
+        select count(1) into v_exists from migrationstables where lower(trim(tablename)) = v_table_name;
         IF v_exists > 0 THEN
-            select * into v_migrationtable_row from migrationstables where upper(trim(tablename)) = v_table_name;     
+            select * into v_migrationtable_row from migrationstables where lower(trim(tablename)) = v_table_name;     
             IF v_migrationtable_row.MIGRATEINTEGRATION = 1 THEN
                 v_json_values := new json_object_t();            
                 v_operation := 'MIGRATION';
@@ -208,8 +208,8 @@ module.exports = {
         
             IF DELETING OR hasValues = 1 THEN
                 INSERT INTO MIGRATIONSCONTROL (            
-                    CREATEDAT,
-                    IDSTATUSREG,
+                    created_at,
+                    status_reg_id,
                     OBJECTTYPE,
                     OBJECTNAME,
                     OBJECTREGISTERID,
@@ -229,11 +229,11 @@ module.exports = {
         end if;
     EXCEPTION
         WHEN OTHERS THEN
-            v_error_log.idusercreate := 1;        
-            v_error_log.createdat := sysdate;        
-            v_error_log.idstatusreg := 1;
-            v_error_log.idorigindata := 1;
-            v_error_log.issystemreg := 0;
+            v_error_log.creator_user_id := 1;        
+            v_error_log.created_at := sysdate;        
+            v_error_log.status_reg_id := 1;
+            v_error_log.data_origin_id := 1;
+            v_error_log.is_sys_rec := 0;
             v_error_log.objecttype := 'trigger';
             v_error_log.objectname := $$plsql_unit;
             v_error_log.objectline := $$plsql_line;

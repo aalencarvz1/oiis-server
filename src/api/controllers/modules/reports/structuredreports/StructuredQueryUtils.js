@@ -15,7 +15,7 @@ class StructuredQueryUtils {
     static sortNestedReportDataFoutItems(currentItems) {        
         if (currentItems) {
             if (Utils.typeOf(currentItems) == 'array') {
-                currentItems = currentItems.sort(function(a,b){return ((a.ORDERNUM||a.ID)-0) - ((b.ORDERNUM||b.ID)-0)});
+                currentItems = currentItems.sort(function(a,b){return ((a.ORDERNUM||a.id)-0) - ((b.ORDERNUM||b.id)-0)});
                 for(let k in currentItems) {
                     if (currentItems[k].SUBS && currentItems[k].SUBS.length) {
                         currentItems[k].SUBS = StructuredQueryUtils.sortNestedReportDataFoutItems(currentItems[k].SUBS);
@@ -47,22 +47,22 @@ class StructuredQueryUtils {
                 ${reportDataFount.IDVISION||'NULL'} as IDVISION,
                 ${reportDataFount.ISVISION||0} as ISVISION,
                 ${reportDataFount.ISCONDICTIONVISION||0} as ISCONDICTIONVISION,
-                P.ID AS IDPERMISSION,
+                P.id AS IDPERMISSION,
                 C.EXPRESSION
             FROM
                 REPORTSDATASFOUNTSITEMS RFI 
-                LEFT OUTER JOIN DATATABLES T ON (   
+                LEFT OUTER JOIN datatables T ON (   
                     RFI.IDSQLOBJECTTYPE = ${SqlObjectsTypes.TABLE}
-                    AND T.ID = RFI.IDSQLOBJECT
+                    AND T.id = RFI.IDSQLOBJECT
                 )
                 LEFT OUTER JOIN USERS U ON (
-                    U.ID = ${params.user.ID}
+                    U.id = ${params.user.id}
                 )
                 LEFT OUTER JOIN PERMISSIONS P ON (
                     P.IDTABLE IS NOT NULL 
-                    AND P.IDTABLE = T.ID 
+                    AND P.IDTABLE = T.id 
                     AND (
-                        P.IDUSER = U.ID
+                        P.IDUSER = U.id
                         OR (
                             P.IDUSER IS NULL
                             AND P.IDACCESSPROFILE = U.IDACCESSPROFILE
@@ -71,12 +71,12 @@ class StructuredQueryUtils {
                 )
                 LEFT OUTER JOIN CONDICTIONS C ON (
                     C.IDENTITYTYPE = ${EntitiesTypes.DATABASE_TABLE}
-                    AND C.IDENTITY = ${Permissions.ID}
-                    AND C.IDREGISTER = P.ID
+                    AND C.IDENTITY = ${Permissions.id}
+                    AND C.IDREGISTER = P.id
                 )
             WHERE
-                RFI.IDREPORTDATAFOUNT = ${reportDataFount.ID}
-                AND RFI.IDSTATUSREG = ${StatusRegs.ACTIVE}
+                RFI.IDREPORTDATAFOUNT = ${reportDataFount.id}
+                AND RFI.status_reg_id = ${StatusRegs.ACTIVE}
                 AND (
                     ${reportDataFount.ISVISION||0} = 1
                     OR (
@@ -86,14 +86,14 @@ class StructuredQueryUtils {
                             RFI.IDSQLOBJECTTYPE <> ${SqlObjectsTypes.FIELD}
                             OR (
                                 RFI.IDSQLOBJECTTYPE = ${SqlObjectsTypes.FIELD}
-                                AND NOT EXISTS (SELECT 1 FROM REPORTSDATASFOUNTSITEMS RFI2 WHERE RFI2.ID = RFI.IDSUP AND RFI2.IDSQLOBJECTTYPE = ${SqlObjectsTypes.SELECT})
+                                AND NOT EXISTS (SELECT 1 FROM REPORTSDATASFOUNTSITEMS RFI2 WHERE RFI2.id = RFI.IDSUP AND RFI2.IDSQLOBJECTTYPE = ${SqlObjectsTypes.SELECT})
                             )
 
                         )
                     )
                 )
             ORDER BY
-                COALESCE(RFI.IDSUP,RFI.ID)
+                COALESCE(RFI.IDSUP,RFI.id)
         `;
 
         let reportsDataItems = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
@@ -102,7 +102,7 @@ class StructuredQueryUtils {
         if (reportsDataItems && reportsDataItems.length) {
 
             //scructure in sub nested elements
-            let structuredReportsDataItems = _.keyBy(reportsDataItems,'ID');
+            let structuredReportsDataItems = _.keyBy(reportsDataItems,'id');
             for(let k in structuredReportsDataItems) {
                 if (Utils.hasValue(structuredReportsDataItems[k].EXISTENCECRITERY)) {
                     Utils.log('executing eval',structuredReportsDataItems[k].EXISTENCECRITERY);
@@ -133,7 +133,7 @@ class StructuredQueryUtils {
             arrStructuredReportsDataItems = StructuredQueryUtils.sortNestedReportDataFoutItems(arrStructuredReportsDataItems);            
             result = arrStructuredReportsDataItems;
         } else {
-            Utils.log(`reports data fount items not found for report data fount id ${reportDataFount.ID}`);
+            Utils.log(`reports data fount items not found for report data fount id ${reportDataFount.id}`);
         }
         return result;
     }
@@ -483,7 +483,7 @@ class StructuredQueryUtils {
                 await StructuredQueryUtils.unifyStructuredQueryItems(structuredQuery,arrStructuredReportsDataItems,params);
             }
         } else {
-            Utils.log(`reports data fount items not found for report data fount id ${reportDataFount.ID}`);
+            Utils.log(`reports data fount items not found for report data fount id ${reportDataFount.id}`);
         }
         //Utils.log('unified structured query',JSON.stringify(structuredQuery));
         return structuredQuery;

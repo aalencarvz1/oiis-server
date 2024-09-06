@@ -12,7 +12,7 @@ const { Contacts } = require("./Contacts");
  * class model
  */
 class PeopleXContacts extends BaseTableModel {
-  static ID = 2015;
+  static id = 2015;
   static model = null;
   static fields = {
     ...PeopleXContacts.getBaseTableModelFields(),...{           
@@ -44,7 +44,7 @@ class PeopleXContacts extends BaseTableModel {
 
   static constraints = [...(PeopleXContacts.getBaseTableModelConstraints() || []),...[
     {
-      name: PeopleXContacts.name.toUpperCase() + '_U1',
+      name: PeopleXContacts.name.toLowerCase() + '_u1',
       fields: [...PeopleXContacts.getBaseTableModelUniqueFields(),...PeopleXContacts.uniqueFields],
       type:"unique"
     }
@@ -56,7 +56,7 @@ class PeopleXContacts extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: People,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -66,7 +66,7 @@ class PeopleXContacts extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: ContactsTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -75,7 +75,7 @@ class PeopleXContacts extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Contacts,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'

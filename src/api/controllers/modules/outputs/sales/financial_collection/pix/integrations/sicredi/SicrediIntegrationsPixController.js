@@ -351,7 +351,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                             select
                                 *
                             from 
-                                jumbo.pcprest p
+                                JUMBO.PCPREST p
                             where
                                 p.NUMTRANSVENDA = ${params.numtrans}
                                 and p.dtpag is null
@@ -386,7 +386,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                                     select
                                         * 
                                     from
-                                        jumbo.pcestcr
+                                        JUMBO.PCESTCR
                                     where
                                         codbanco=748
                                         and codcob='D'
@@ -414,7 +414,7 @@ class SicrediIntegrationsPixController extends RegistersController{
 
                                         //DESDOBRAMENTO
                                         await wintConnection.query(`
-                                            INSERT INTO pcprest (
+                                            INSERT INTO PCPREST (
                                                 numtransvenda,
                                                 codcli,
                                                 dtemissao,
@@ -697,7 +697,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                                                 trunc(sysdate),
                                                 p.nossonumbco
                                             from
-                                                pcprest p
+                                                PCPREST p
                                             where 
                                                 p.numtransvenda = ${pcPrest.NUMTRANSVENDA}
                                                 and nvl(p.prest,1) = ${Utils.firstValid([pcPrest.PREST,1])}                                    
@@ -780,7 +780,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                                         }
                                     }
                                 } else {
-                                    throw new Error(`pcestcr not found ${'748'} ${'D'}`);
+                                    throw new Error(`PCESTCR not found ${'748'} ${'D'}`);
                                 }
 
 
@@ -790,7 +790,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                                         nvl(PROXNUMTRANS,0) PROXNUMTRANS,
                                         nvl(PROXNUMLANC,0) PROXNUMLANC 
                                     from
-                                        jumbo.pcconsum
+                                        JUMBO.PCCONSUM
                                     where
                                         1=1
                                     FOR UPDATE                                    
@@ -929,7 +929,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                                     748,
                                     'D',
                                     'BAIXA DE PAGAMENTO VIA API PIX',        
-                                    SUBSTR(NVL((select c.cliente from jumbo.pcclient c where c.codcli=${pcPrest.CODCLI}),''),0,194) || ' (BI)',
+                                    SUBSTR(NVL((select c.cliente from JUMBO.PCCLIENT c where c.codcli=${pcPrest.CODCLI}),''),0,194) || ' (BI)',
                                     ${Utils.toNumber(params.pix.valor.original)},
                                     'D',             
                                     ${pcPrest.NUMTRANSVENDA||0},
@@ -956,7 +956,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                                 DESNECESSARIO, JA SALVO NO INICIO*/
                                 Utils.log("downWinthorTitle","ok10.4");
                             } else {
-                                throw new Error(`pccob ${pcPrest.CODCOB} not found`);
+                                throw new Error(`PCCOB ${pcPrest.CODCOB} not found`);
                             }
 
                             /*LEMBRAR O USUARIO DE FAZER A CONCILIAÇÃO NA 604*/
@@ -964,14 +964,14 @@ class SicrediIntegrationsPixController extends RegistersController{
                             dowed = true;
                             Utils.log("downWinthorTitle","ok11");
                         } else {
-                            Utils.log("downWinthorTitle","not found pcprest");
+                            Utils.log("downWinthorTitle","not found PCPREST");
                         } 
                         Utils.log("downWinthorTitle","okxxxxxx20");
                         return true; //if in here, no errors occured, commit transaction
                     });
                     result = dowed;
                 } else {
-                    Utils.log("downWinthorTitle","pcprest not found");
+                    Utils.log("downWinthorTitle","PCPREST not found");
                 }
             } 
         } catch (e) {

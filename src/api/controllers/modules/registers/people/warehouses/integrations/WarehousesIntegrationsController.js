@@ -32,7 +32,7 @@ class WarehousesIntegrationsController extends RegistersController {
                 raw : true,
                 attributes:[
                     ...Object.keys(PcFilial.fields),
-                    [Sequelize.literal(`(select c.CGCENT from jumbo.pcclient c where c.CODCLI = PCFILIAL.CODCLI)`), 'CGCENT']
+                    [Sequelize.literal(`(select c.CGCENT from JUMBO.PCCLIENT c where c.CODCLI = PCFILIAL.CODCLI)`), 'CGCENT']
                 ],
                 where:{
                     CODIGO:winthorFilialCode
@@ -57,20 +57,20 @@ class WarehousesIntegrationsController extends RegistersController {
                                 
                 let warehouse = await Warehouses.getModel().findOne({
                     where:{
-                        ID:pcfilial.CODIGO
+                        id:pcfilial.CODIGO
                     },
                     transaction: transaction
                 });
                 if (warehouse) {
-                    if (warehouse.IDPEOPLE != people.ID) warehouse.IDPEOPLE = people.ID;
-                    if (warehouse.IDCOMPANY != company.ID) warehouse.IDCOMPANY = company.ID;
+                    if (warehouse.IDPEOPLE != people.id) warehouse.IDPEOPLE = people.id;
+                    if (warehouse.IDCOMPANY != company.id) warehouse.IDCOMPANY = company.id;
                     await warehouse.save({transaction:transaction});
                 } else {
                     warehouse = await Warehouses.getModel().create({
-                        ID: pcfilial.CODIGO,
-                        IDORIGINDATA: OriginsDatas.WINTHOR,
-                        IDPEOPLE : people.ID,
-                        IDCOMPANY : company.ID
+                        id: pcfilial.CODIGO,
+                        data_origin_id: OriginsDatas.WINTHOR,
+                        IDPEOPLE : people.id,
+                        IDCOMPANY : company.id
                     },{transaction:transaction});
                 }
 
@@ -87,47 +87,47 @@ class WarehousesIntegrationsController extends RegistersController {
                 //relationships
                 let rel = await DatasRelationships.createIfNotExists({
                     where: {
-                        IDSTATUSREG: StatusRegs.ACTIVE,
+                        status_reg_id: StatusRegs.ACTIVE,
                         IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-                        IDTABLE1 : Companies.ID,
-                        IDREG1: company.ID,
-                        IDTABLE2 : Warehouses.ID,
-                        IDREG2: warehouse.ID                            
+                        IDTABLE1 : Companies.id,
+                        IDREG1: company.id,
+                        IDTABLE2 : Warehouses.id,
+                        IDREG2: warehouse.id                            
                     },
                     transaction:transaction
                 });
                 
                 rel = await DatasRelationships.createIfNotExists({
                     where: {
-                        IDSTATUSREG: StatusRegs.ACTIVE,
+                        status_reg_id: StatusRegs.ACTIVE,
                         IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-                        IDTABLE1 : Companies.ID,
-                        IDREG1: company.ID,
-                        IDTABLE2 : Clients.ID,
-                        IDREG2: client.ID                            
+                        IDTABLE1 : Companies.id,
+                        IDREG1: company.id,
+                        IDTABLE2 : Clients.id,
+                        IDREG2: client.id                            
                     },
                     transaction:transaction
                 });
                 
                 rel = await DatasRelationships.createIfNotExists({
                     where:{
-                        IDSTATUSREG: StatusRegs.ACTIVE,
+                        status_reg_id: StatusRegs.ACTIVE,
                         IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-                        IDTABLE1 : Warehouses.ID,
-                        IDREG1: warehouse.ID,
-                        IDTABLE2 : Clients.ID,
-                        IDREG2: client.ID                            
+                        IDTABLE1 : Warehouses.id,
+                        IDREG1: warehouse.id,
+                        IDTABLE2 : Clients.id,
+                        IDREG2: client.id                            
                     },
                     transaction: transaction
                 });
 
                 rel = await DatasRelationships.createIfNotExists({
                     where:{
-                        IDSTATUSREG: StatusRegs.ACTIVE,
+                        status_reg_id: StatusRegs.ACTIVE,
                         IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-                        IDTABLE1 : Companies.ID,
-                        IDREG1: company.ID,
-                        IDTABLE2 : Modules.ID,
+                        IDTABLE1 : Companies.id,
+                        IDREG1: company.id,
+                        IDTABLE2 : Modules.id,
                         IDREG2: Modules.WMS
                     },
                     transaction: transaction
@@ -135,11 +135,11 @@ class WarehousesIntegrationsController extends RegistersController {
 
                 rel = await DatasRelationships.createIfNotExists({
                     where:{
-                        IDSTATUSREG: StatusRegs.ACTIVE,
+                        status_reg_id: StatusRegs.ACTIVE,
                         IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-                        IDTABLE1 : Warehouses.ID,
-                        IDREG1: warehouse.ID,
-                        IDTABLE2 : Modules.ID,
+                        IDTABLE1 : Warehouses.id,
+                        IDREG1: warehouse.id,
+                        IDTABLE2 : Modules.id,
                         IDREG2: Modules.WMS
                     },
                     transaction: transaction
@@ -147,11 +147,11 @@ class WarehousesIntegrationsController extends RegistersController {
 
                 rel = await DatasRelationships.createIfNotExists({
                     where:{
-                        IDSTATUSREG: StatusRegs.ACTIVE,
+                        status_reg_id: StatusRegs.ACTIVE,
                         IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-                        IDTABLE1 : Clients.ID,
-                        IDREG1: client.ID,
-                        IDTABLE2 : Modules.ID,
+                        IDTABLE1 : Clients.id,
+                        IDREG1: client.id,
+                        IDTABLE2 : Modules.id,
                         IDREG2: Modules.WMS
                     },
                     transaction: transaction

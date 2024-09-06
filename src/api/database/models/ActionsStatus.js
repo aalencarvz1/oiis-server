@@ -10,7 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class ActionsStatus extends BaseTableModel {
-  static ID = 51;
+  static id = 51;
   static model = null;
 
   static NOT_STARTED = 1;
@@ -62,11 +62,11 @@ class ActionsStatus extends BaseTableModel {
 
   static constraints = [...(ActionsStatus.getBaseTableModelConstraints() || []),...[
     {
-      name: ActionsStatus.name.toUpperCase() + '_U1',
+      name: ActionsStatus.name.toLowerCase() + '_u1',
       fields: [...ActionsStatus.getBaseTableModelUniqueFields(),...ActionsStatus.uniqueFields],
       type:"unique"
     },{
-      name: ActionsStatus.name.toUpperCase() + '_C_1',
+      name: ActionsStatus.name.toLowerCase() + '_c_1',
       fields:['ISSTARTED'],
       type:"check",
       where:{
@@ -75,7 +75,7 @@ class ActionsStatus extends BaseTableModel {
           }
       }
     },{
-      name: ActionsStatus.name.toUpperCase() + '_C_2',
+      name: ActionsStatus.name.toLowerCase() + '_c_2',
       fields:['ISRUNNING'],
       type:"check",
       where:{
@@ -84,7 +84,7 @@ class ActionsStatus extends BaseTableModel {
           }
       }
     },{
-      name: ActionsStatus.name.toUpperCase() + '_C_3',
+      name: ActionsStatus.name.toLowerCase() + '_c_3',
       fields:['ISSTOPED'],
       type:"check",
       where:{
@@ -93,7 +93,7 @@ class ActionsStatus extends BaseTableModel {
           }
       }
     },{
-      name: ActionsStatus.name.toUpperCase() + '_C_4',
+      name: ActionsStatus.name.toLowerCase() + '_c_4',
       fields:['ISCANCELED'],
       type:"check",
       where:{
@@ -102,7 +102,7 @@ class ActionsStatus extends BaseTableModel {
           }
       }
     },{
-      name: ActionsStatus.name.toUpperCase() + '_C_5',
+      name: ActionsStatus.name.toLowerCase() + '_c_5',
       fields:['ISCONCLUDED'],
       type:"check",
       where:{

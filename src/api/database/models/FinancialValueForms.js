@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class FinancialValueForms extends BaseTableModel {
-  static ID = 1032;
+  static id = 1032;
   static model = null;
 
   static NONE = 1;
@@ -73,11 +73,11 @@ class FinancialValueForms extends BaseTableModel {
 
   static constraints = [...(FinancialValueForms.getBaseTableModelConstraints() || []),...[
     {
-      name: FinancialValueForms.name.toUpperCase() + '_U1',
+      name: FinancialValueForms.name.toLowerCase() + '_u1',
       fields: [...FinancialValueForms.getBaseTableModelUniqueFields(),...FinancialValueForms.uniqueFields],
       type:"unique"
     },{
-      name: FinancialValueForms.name.toUpperCase() + '_C_1',
+      name: FinancialValueForms.name.toLowerCase() + '_c_1',
       fields:['ISPHYSICAL'],
       type:"check",
       where:{
@@ -86,7 +86,7 @@ class FinancialValueForms extends BaseTableModel {
           }
       }
     },{
-      name: FinancialValueForms.name.toUpperCase() + '_C_2',
+      name: FinancialValueForms.name.toLowerCase() + '_c_2',
       fields:['ISCARD'],
       type:"check",
       where:{
@@ -95,7 +95,7 @@ class FinancialValueForms extends BaseTableModel {
           }
       }
     },{
-      name: FinancialValueForms.name.toUpperCase() + '_C_3',
+      name: FinancialValueForms.name.toLowerCase() + '_c_3',
       fields:['ISELETRONIC'],
       type:"check",
       where:{
@@ -104,7 +104,7 @@ class FinancialValueForms extends BaseTableModel {
           }
       }
     },{
-      name: FinancialValueForms.name.toUpperCase() + '_C_4',
+      name: FinancialValueForms.name.toLowerCase() + '_c_4',
       fields:['ISCHECK'],
       type:"check",
       where:{
@@ -113,7 +113,7 @@ class FinancialValueForms extends BaseTableModel {
           }
       }
     },{
-      name: FinancialValueForms.name.toUpperCase() + '_C_5',
+      name: FinancialValueForms.name.toLowerCase() + '_c_5',
       fields:['ISDEPOSIT'],
       type:"check",
       where:{
@@ -122,7 +122,7 @@ class FinancialValueForms extends BaseTableModel {
           }
       }
     },{
-      name: FinancialValueForms.name.toUpperCase() + '_C_6',
+      name: FinancialValueForms.name.toLowerCase() + '_c_6',
       fields:['ISBOLET'],
       type:"check",
       where:{
@@ -138,7 +138,7 @@ class FinancialValueForms extends BaseTableModel {
     type: 'foreign key',
     references: { 
         table: FinancialValueForms,
-        field: 'ID'
+        field: 'id'
     },
     onUpdate: 'cascade',
     onDelete: 'cascade'
@@ -146,7 +146,7 @@ class FinancialValueForms extends BaseTableModel {
 
   static getIdByIntegrationId(idOnOrigin) {
     let result = FinancialValueForms.MONEY;
-    switch(idOnOrigin.trim().toUpperCase()) {
+    switch(idOnOrigin.trim().toLowerCase()) {
       case 'D':
       case 'DH':
           result = FinancialValueForms.MONEY;

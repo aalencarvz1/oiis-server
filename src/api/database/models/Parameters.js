@@ -10,7 +10,7 @@ const { DataTypes } = require("./DataTypes");
  */
 console.log('Parameters - antes declaracao classe, antes exportacao');
 class Parameters extends BaseTableModel {
-  static ID = 55;
+  static id = 55;
 
   static HAS_WINTHOR_INTEGRATION = 1;
   static LOGISTIC_INTEGRATE_AUTOMATIC_CLOSE_BOX_DRIVER = 2;
@@ -47,7 +47,7 @@ class Parameters extends BaseTableModel {
 
   static constraints = [...(Parameters.getBaseTableModelConstraints() || []),...[
     {
-      name: Parameters.name.toUpperCase() + '_U1',
+      name: Parameters.name.toLowerCase() + '_u1',
       fields: [...Parameters.getBaseTableModelUniqueFields(),...Parameters.uniqueFields],
       type:"unique"
     }
@@ -60,7 +60,7 @@ class Parameters extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: DataTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'

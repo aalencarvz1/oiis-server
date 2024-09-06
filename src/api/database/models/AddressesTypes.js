@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class AddressesTypes extends BaseTableModel {
-  static ID = 2007;
+  static id = 2007;
   static model = null;
 
   static RESIDENTIAL = 1;
@@ -30,7 +30,7 @@ class AddressesTypes extends BaseTableModel {
 
   static constraints = [...(AddressesTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: AddressesTypes.name.toUpperCase() + '_U1',
+      name: AddressesTypes.name.toLowerCase() + '_u1',
       fields: [...AddressesTypes.getBaseTableModelUniqueFields(),...AddressesTypes.uniqueFields],
       type:"unique"
     }

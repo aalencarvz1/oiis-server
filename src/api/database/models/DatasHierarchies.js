@@ -11,7 +11,7 @@ const { DataTables } = require("./DataTables");
  * class model
  */
 class DatasHierarchies extends BaseTableModel {
-  static ID = 1010;
+  static id = 1010;
   static model = null;
   static fields = {
     ...DatasHierarchies.getBaseTableModelFields(),...{           
@@ -61,7 +61,7 @@ class DatasHierarchies extends BaseTableModel {
 
   static constraints = [...(DatasHierarchies.getBaseTableModelConstraints() || []),...[
     {
-      name: DatasHierarchies.name.toUpperCase() + '_U1',
+      name: DatasHierarchies.name.toLowerCase() + '_u1',
       fields: [...DatasHierarchies.getBaseTableModelUniqueFields(),...DatasHierarchies.uniqueFields],
       type:"unique"
     }
@@ -73,7 +73,7 @@ class DatasHierarchies extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: DataTables,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },{
@@ -81,7 +81,7 @@ class DatasHierarchies extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: DataTables,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },{
@@ -89,7 +89,7 @@ class DatasHierarchies extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Contexts,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

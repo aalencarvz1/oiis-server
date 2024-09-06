@@ -9,10 +9,10 @@ const { Errors } = require('../models/Errors');
 module.exports = {
 
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable(Errors.name.toUpperCase(), Errors.fields);
+    await queryInterface.createTable(Errors.name.toLocaleLowerCase(), Errors.fields);
     await Errors.migrateConstraints(queryInterface);
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(Errors.name.toUpperCase());
+    await queryInterface.dropTable(Errors.name.toLocaleLowerCase());
   }
 };

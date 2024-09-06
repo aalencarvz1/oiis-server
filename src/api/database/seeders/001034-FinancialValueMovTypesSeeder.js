@@ -8,30 +8,30 @@ const { Users } = require('../models/Users');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(FinancialValueMovTypes.name.toUpperCase(),[{      
-      ID:FinancialValueMovTypes.TRANSFERENCE,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+    await queryInterface.bulkInsert(FinancialValueMovTypes.name.toLowerCase(),[{      
+      id:FinancialValueMovTypes.TRANSFERENCE,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'TRANSFERENCE',
       ISELETRONIC: 1
     },{      
-      ID:FinancialValueMovTypes.DEPOSIT,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id:FinancialValueMovTypes.DEPOSIT,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'DEPOSIT'
     },{      
-      ID:FinancialValueMovTypes.POUCH,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id:FinancialValueMovTypes.POUCH,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'POUCH',
       ISPHYSICAL: 1
     }],{
@@ -42,6 +42,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(FinancialValueMovTypes.name.toUpperCase(), null, {});
+     await queryInterface.bulkDelete(FinancialValueMovTypes.name.toLowerCase(), null, {});
   }
 };

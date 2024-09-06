@@ -39,8 +39,8 @@ class CitiesIntegrationsController extends RegistersController{
                                        
             let queryParams = {
                 where: {
-                    IDSTATE: state.ID,
-                    ID: winthorCityCode
+                    IDSTATE: state.id,
+                    id: winthorCityCode
                 }
             };
             if (transaction) queryParams.transaction = transaction;
@@ -57,10 +57,10 @@ class CitiesIntegrationsController extends RegistersController{
                 }
             } else {
                 city = await Cities.getModel().create({   
-                    ID:pccidade.CODCIDADE,                 
-                    IDORIGINDATA: OriginsDatas.WINTHOR,
-                    IDONORIGINDATA: pccidade.CODCIDADE,
-                    IDSTATE: state.ID,
+                    id:pccidade.CODCIDADE,                 
+                    data_origin_id: OriginsDatas.WINTHOR,
+                    id_at_origin: pccidade.CODCIDADE,
+                    IDSTATE: state.id,
                     NAME: pccidade.NOMECIDADE,
                     POPULATION: pccidade.POPULACAO,
                     LATITUDE: pccidade.LATITUDE,

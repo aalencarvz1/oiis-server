@@ -10,6 +10,6 @@ module.exports = {
     await PostalCodesXPaths.runUpMigration(queryInterface);     
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(PostalCodesXPaths.name.toUpperCase());
+    await queryInterface.dropTable(PostalCodesXPaths.name.toLowerCase());
   }
 };

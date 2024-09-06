@@ -23,11 +23,11 @@ class LogisticReasonsIntegrationsController extends RegistersController {
                 }
             });
 
-            if (!pcTabDev) throw new Error(`coddevol not found in pctabdev: ${winthorCode}`);           
+            if (!pcTabDev) throw new Error(`coddevol not found in PCTABDEV: ${winthorCode}`);           
 
             let queryParams = {
                 where:{
-                    ID:winthorCode
+                    id:winthorCode
                 }
             };
             if (transaction) queryParams.transaction = transaction;
@@ -43,9 +43,9 @@ class LogisticReasonsIntegrationsController extends RegistersController {
                 await logisticReason.save(options);
             } else {
                 logisticReason = await LogisticReasons.getModel().create({
-                    ID: pcTabDev.CODDEVOL,
-                    IDORIGINDATA: OriginsDatas.WINTHOR,
-                    IDONORIGINDATA: pcTabDev.CODDEVOL,                    
+                    id: pcTabDev.CODDEVOL,
+                    data_origin_id: OriginsDatas.WINTHOR,
+                    id_at_origin: pcTabDev.CODDEVOL,                    
                     NAME: pcTabDev.MOTIVO,
                     SIGLAMOVTYPE: pcTabDev.TIPO
                 },options);

@@ -11,7 +11,7 @@ const { Utils } = require("../../controllers/utils/Utils");
  * class model
  */
 class ApisRequests extends BaseTableModel {
-  static ID = 20001;
+  static id = 20001;
   static model = null;
 
   static fields = {
@@ -56,7 +56,7 @@ class ApisRequests extends BaseTableModel {
     type: 'foreign key',
     references: { 
         table: Apis,
-        field: 'ID'
+        field: 'id'
     },    
     onUpdate: 'cascade',
     onDelete: 'cascade'
@@ -80,7 +80,7 @@ class ApisRequests extends BaseTableModel {
       if (Utils.hasValue(apiBodyParams.webhook)) {
         result.WEBHOOK = apiBodyParams.webhook;  
       } else {
-        result.WEBHOOK = `http://${process.env.API_EXTERNAL_IP}:${process.env.API_PORT}/api/modules/webhooks/apisrequests/${result.ID}/responses`;
+        result.WEBHOOK = `http://${process.env.API_EXTERNAL_IP}:${process.env.API_PORT}/api/modules/webhooks/apisrequests/${result.id}/responses`;
         apiBodyParams.webhook = result.WEBHOOK;
         result.BODYPARAMS = JSON.stringify(apiBodyParams);
       }      

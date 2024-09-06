@@ -8,7 +8,7 @@ const { BaseSjdTableModel } = require("./BaseSjdTableModel");
  * class model
  */
 class SjdTabpr_Origem extends BaseSjdTableModel {
-  static ID = 40111;
+  static id = 40111;
   static model = null;
 
 

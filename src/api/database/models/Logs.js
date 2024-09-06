@@ -10,7 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
 class Logs extends BaseTableModel {
   static model = null;
   static fields = {
-    ID: {
+    id: {
       type : DataTypes.BIGINT.UNSIGNED,                
       autoIncrement : true,
       primaryKey: true,               

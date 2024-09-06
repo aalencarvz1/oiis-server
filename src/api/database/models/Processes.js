@@ -10,7 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class Processes extends BaseTableModel {
-  static ID = 200;
+  static id = 200;
   static model = null;
   static fields = {
     ...Processes.getBaseTableModelFields(),...{      
@@ -30,7 +30,7 @@ class Processes extends BaseTableModel {
 
   static constraints = [...(Processes.getBaseTableModelConstraints() || []),...[
     {
-      name: Processes.name.toUpperCase() + '_U1',
+      name: Processes.name.toLowerCase() + '_u1',
       fields: Processes.uniqueFields,
       type:"unique"
     }

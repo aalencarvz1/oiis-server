@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class Apis extends BaseTableModel {
-  static ID = 20000;
+  static id = 20000;
   static model = null;
 
   static fields = {
@@ -48,7 +48,7 @@ class Apis extends BaseTableModel {
 
   static constraints = [...(Apis.getBaseTableModelConstraints() || []),...[
     {
-      name: Apis.name.toUpperCase() + '_U1',
+      name: Apis.name.toLowerCase() + '_u1',
       fields: Apis.uniqueFields,
       type:"unique"
     }

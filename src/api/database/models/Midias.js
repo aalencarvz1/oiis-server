@@ -10,7 +10,7 @@ const { DataTables } = require("./DataTables");
  * class model
  */
 class Midias extends BaseTableModel {
-  static ID = 50000;
+  static id = 50000;
   static model = null;
 
   static fields = {
@@ -51,7 +51,7 @@ class Midias extends BaseTableModel {
     type: 'foreign key',
     references: { 
         table: DataTables,
-        field: 'ID'
+        field: 'id'
     },
     onUpdate: 'cascade'
   }]];

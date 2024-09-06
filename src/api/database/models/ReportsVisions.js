@@ -11,13 +11,13 @@ const { Utils } = require("../../controllers/utils/Utils");
  * class model
  */
 class ReportsVisions extends BaseTableModel {
-  static ID = 10002;
+  static id = 10002;
   static model = null;
 
   static VALUES = 1;
   static ORIGIN_DATA = 2;
   static COMPANY = 3;
-  static BUSINESS_UNIT = 4;
+  static BUSINESS_uNIT = 4;
   static SUPPLIER = 5;
   static CITY = 6;
   static SUPERVISOR = 7;
@@ -59,11 +59,11 @@ class ReportsVisions extends BaseTableModel {
   ];
 
   static constraints = [...(ReportsVisions.getBaseTableModelConstraints() || []),...[{
-    name: ReportsVisions.name.toUpperCase() + '_U1',
+    name: ReportsVisions.name.toLowerCase() + '_u1',
     fields: ReportsVisions.uniqueFields,
     type:"unique"
   },{
-    name: ReportsVisions.name.toUpperCase() + '_C_1',
+    name: ReportsVisions.name.toLowerCase() + '_c_1',
     fields:['VISIBLE'],
     type:"check",
     where:{
@@ -85,10 +85,10 @@ class ReportsVisions extends BaseTableModel {
         case 2: //origin
           query = `
             select
-              n.cod as ID,
+              n.cod as id,
               n.nome as NAME
             from
-              ep.eporigensinfo n
+              EP.EPORIGENSINFO n
             order by 
               n.cod
           `;
@@ -96,18 +96,18 @@ class ReportsVisions extends BaseTableModel {
           result = result[0] || [];
           break;
         case 3: //enterprise
-          result = [{ID:1,NAME:'JUMBO ALIMENTOS LTDA'}];
+          result = [{id:1,NAME:'JUMBO ALIMENTOS LTDA'}];
           break;
         case 4: //business unit          
           query = `
             select
-              n.cod as ID,
+              n.cod as id,
               n.cod || '-' || s.nome  as NAME,
               n.cod as BUTTON_TEXT
             from
-              ep.epfiliais n
-              left outer join ep.eppessoas p on p.cod = n.codpessoa
-              left outer join ep.epcidades s on s.cod = p.codcidade
+              EP.EPFILIAIS n
+              left outer join EP.EPPESSOAS p on p.cod = n.codpessoa
+              left outer join EP.EPCIDADES s on s.cod = p.codcidade
             order by 
               n.cod
           `;
@@ -117,12 +117,12 @@ class ReportsVisions extends BaseTableModel {
         case 5: //supplier
           query = `
             select
-              n.cod as ID,
+              n.cod as id,
               n.cod || '-' || p.nomerazao  as NAME,
               n.cod as BUTTON_TEXT
             from
-              EP.epfornecedores n
-              left outer join ep.eppessoas p on p.cod = n.codpessoa
+              EP.EPFORNECEDORES n
+              left outer join EP.EPPESSOAS p on p.cod = n.codpessoa
             order by 
               n.cod
           `;
@@ -132,10 +132,10 @@ class ReportsVisions extends BaseTableModel {
         case 6: //city
           query = `
             select
-              n.cod as ID,
+              n.cod as id,
               n.uf || '-' || n.nome as NAME
             from
-              ep.epcidades n
+              EP.EPCIDADES n
             order by 
               n.cod
           `;
@@ -145,11 +145,11 @@ class ReportsVisions extends BaseTableModel {
         case 7: //supervisor
           query = `
             select 
-              n.codsupervisor as ID,
+              n.codsupervisor as id,
               n.codsupervisor || '-' || n.nome as NAME,
               n.codsupervisor  as BUTTON_TEXT
             from
-              jumbo.pcsuperv n                            
+              JUMBO.PCSUPERV n                            
             order by 
               n.codsupervisor
           `;
@@ -159,11 +159,11 @@ class ReportsVisions extends BaseTableModel {
         case 8: //seller
           query = `
             select 
-              n.codusur as ID,
+              n.codusur as id,
               n.codusur || '-' || n.nome as NAME,
               n.codusur as BUTTON_TEXT
             from
-              jumbo.pcusuari n
+              JUMBO.PCUSUARI n
             order by 
               n.codusur
           `;
@@ -173,11 +173,11 @@ class ReportsVisions extends BaseTableModel {
         case 9: //ramo
           query = `
             select 
-              n.cod as ID,
+              n.cod as id,
               n.cod || '-' || n.descricao  as NAME,
               n.cod  as BUTTON_TEXT
             from
-              ep.epatividadesclientes n
+              EP.EPATIVIDADESCLIENTES n
             order by 
               n.cod
           `;
@@ -187,11 +187,11 @@ class ReportsVisions extends BaseTableModel {
         case 10: //department
           query = `
             select 
-              n.cod as ID,
+              n.cod as id,
               n.cod || '-' || n.descricao as NAME,
               n.cod  as BUTTON_TEXT
             from
-              ep.epdepartamentosprod n
+              EP.EPDEPARTAMENTOSPROD n
             order by 
               n.cod
           `;
@@ -201,11 +201,11 @@ class ReportsVisions extends BaseTableModel {
         case 11: //product
           query = `
             select 
-              n.cod as ID,
+              n.cod as id,
               n.cod || '-' || n.descricao as NAME,
               n.cod as BUTTON_TEXT
             from
-              ep.epprodutos n
+              EP.EPPRODUTOS n
             order by 
               n.cod
           `;
@@ -215,12 +215,12 @@ class ReportsVisions extends BaseTableModel {
         case 13: //CLIENT
           query = `
             select
-              cl.cod as ID,
+              cl.cod as id,
               cl.cod || '-' || cl_ps.coddocidentificador || '-' || cl_ps.nomerazao as NAME,
               cl.cod as BUTTON_TEXT
             from
-              ep.epclientes cl
-              join ep.eppessoas cl_ps on cl_ps.cod = cl.codpessoa
+              EP.EPCLIENTES cl
+              join EP.EPPESSOAS cl_ps on cl_ps.cod = cl.codpessoa
             order by 
               cl.cod
           `;
@@ -230,11 +230,11 @@ class ReportsVisions extends BaseTableModel {
         case 14: //CUSTOMER NETWORK
           query = `
             select 
-              n.cod as ID,
+              n.cod as id,
               n.cod || '-' || n.descricao as NAME,
               n.cod  as BUTTON_TEXT
             from
-              ep.epredesclientes n
+              EP.EPREDESCLIENTES n
             order by 
               n.cod
           `;
@@ -244,11 +244,11 @@ class ReportsVisions extends BaseTableModel {
         case 15: //ROUTES
           query = `
             select 
-              n.cod as ID,
+              n.cod as id,
               n.cod || '-' || n.descricao  as NAME,
               n.cod  as BUTTON_TEXT
             from
-              ep.eprotasclientes n
+              EP.EPROTASCLIENTES n
             order by 
               n.cod
           `;
@@ -258,11 +258,11 @@ class ReportsVisions extends BaseTableModel {
         case 16: //SQUARE
           query = `
             select 
-              n.cod as ID,
+              n.cod as id,
               n.cod || '-' || n.descricao as NAME,
               n.cod as BUTTON_TEXT
             from
-              ep.eppracasclientes n
+              EP.EPPRACASCLIENTES n
             order by 
               n.cod
           `;
@@ -272,11 +272,11 @@ class ReportsVisions extends BaseTableModel {
         case 19: //BUSINESS ORIGIN
           query = `
             select
-              n.cod as ID,
+              n.cod as id,
               n.cod || '-' || n.descricao as NAME,
               n.cod as BUTTON_TEXT
             from
-              ep.epnegociosorigem n
+              EP.EPNEGOCIOSORIGEM n
             order by 
               n.cod
           `;
@@ -286,11 +286,11 @@ class ReportsVisions extends BaseTableModel {
         case 20: //CATEGORY ORIGIN
           query = `
             select
-              c.cod as ID,
+              c.cod as id,
               c.cod || '-' || c.descricao as NAME,
               c.cod as BUTTON_TEXT
             from
-              ep.epcategoriasorigem c
+              EP.EPCATEGORIASORIGEM c
             order by 
               c.cod
           `;

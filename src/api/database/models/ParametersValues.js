@@ -10,7 +10,7 @@ const { Parameters } = require("./Parameters");
  * class model
  */
 class ParametersValues extends BaseTableModel {
-  static ID = 56;
+  static id = 56;
   static model = null;
 
   static fields = {
@@ -35,7 +35,7 @@ class ParametersValues extends BaseTableModel {
 
   static constraints = [...(ParametersValues.getBaseTableModelConstraints() || []),...[
     {
-      name: ParametersValues.name.toUpperCase() + '_U1',
+      name: ParametersValues.name.toLowerCase() + '_u1',
       fields: [...ParametersValues.getBaseTableModelUniqueFields(),...ParametersValues.uniqueFields],
       type:"unique"
     }
@@ -48,7 +48,7 @@ class ParametersValues extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Parameters,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -59,7 +59,7 @@ class ParametersValues extends BaseTableModel {
     let result = null;
     result = await ParametersValues.getModel().findOne({
       raw:true,
-      attributes:[Sequelize.literal(`${ParametersValues.name.toUpperCase()}.*`)],
+      attributes:[Sequelize.literal(`${ParametersValues.name.toLowerCase()}.*`)],
       where:{IDPARAMETER:pIdParameter}
     });
     if (result) {

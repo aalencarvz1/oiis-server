@@ -10,7 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class Contexts extends BaseTableModel {
-  static ID = 4;
+  static id = 4;
   static model = null;
   static fields = {
     ...Contexts.getBaseTableModelFields(),...{
@@ -30,7 +30,7 @@ class Contexts extends BaseTableModel {
 
   static constraints = [...(Contexts.getBaseTableModelConstraints() || []),...[
     {
-      name: Contexts.name.toUpperCase() + '_U1',
+      name: Contexts.name.toLowerCase() + '_u1',
       fields: [...Contexts.getBaseTableModelUniqueFields(),...Contexts.uniqueFields],
       type:"unique"
     }

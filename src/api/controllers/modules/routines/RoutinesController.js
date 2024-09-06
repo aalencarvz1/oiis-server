@@ -29,14 +29,14 @@ class RoutinesController extends RegistersController{
             Utils.log('user',req.user);
             let query = `
                  SELECT 
-                    MODULES.ID,
+                    MODULES.id,
                     MODULES.IDSUP,
                     MODULES.NAME,
                     MODULES.ICON,
                     MODULES.PATH,
                     MODULES.ORDERNUM,
                     MODULES.DESCRIPTION,
-                    ROUTINES.ID AS ROUTINEID,
+                    ROUTINES.id AS ROUTINEID,
                     ROUTINES.IDSUP AS ROUTINEIDSUP,
                     ROUTINES.IDROUTINETYPE AS ROUTINEIDROUTINETYPE,
                     ROUTINES.IDMODULE AS ROUTINEIDMODULE,
@@ -49,52 +49,52 @@ class RoutinesController extends RegistersController{
                 FROM
                     MODULES	                    
                     INNER JOIN USERS ON (
-                        USERS.ID = ${req.user.ID}
-                        AND USERS.IDSTATUSREG = ${StatusRegs.ACTIVE}
-                        AND USERS.DELETEDAT IS NULL
+                        USERS.id = ${req.user.id}
+                        AND USERS.status_reg_id = ${StatusRegs.ACTIVE}
+                        AND USERS.deleted_at IS NULL
                     )
                     INNER JOIN ACCESSESPROFILES ON (
-                        ACCESSESPROFILES.ID = USERS.IDACCESSPROFILE
-                        AND ACCESSESPROFILES.IDSTATUSREG = ${StatusRegs.ACTIVE}
-                        AND ACCESSESPROFILES.DELETEDAT IS NULL
+                        ACCESSESPROFILES.id = USERS.IDACCESSPROFILE
+                        AND ACCESSESPROFILES.status_reg_id = ${StatusRegs.ACTIVE}
+                        AND ACCESSESPROFILES.deleted_at IS NULL
                     )
                     INNER JOIN PERMISSIONS ON (
-                        PERMISSIONS.IDSTATUSREG = ${StatusRegs.ACTIVE}
-                        AND PERMISSIONS.DELETEDAT IS NULL
+                        PERMISSIONS.status_reg_id = ${StatusRegs.ACTIVE}
+                        AND PERMISSIONS.deleted_at IS NULL
                         AND COALESCE(PERMISSIONS.IDACCESSPROFILE,
                             USERS.IDACCESSPROFILE) = USERS.IDACCESSPROFILE
-                        AND COALESCE(PERMISSIONS.IDUSER, USERS.ID) = USERS.ID
-                        AND COALESCE(PERMISSIONS.IDMODULE, MODULES.ID) = MODULES.ID
+                        AND COALESCE(PERMISSIONS.IDUSER, USERS.id) = USERS.id
+                        AND COALESCE(PERMISSIONS.IDMODULE, MODULES.id) = MODULES.id
                         AND PERMISSIONS.ALLOWEDACCESS = 1
                     )
                     LEFT OUTER JOIN (
                         ROUTINES
                         INNER JOIN USERS UR ON (
-                            UR.ID = ${req.user.ID}
-                            AND UR.IDSTATUSREG = ${StatusRegs.ACTIVE}
-                            AND UR.DELETEDAT IS NULL
+                            UR.id = ${req.user.id}
+                            AND UR.status_reg_id = ${StatusRegs.ACTIVE}
+                            AND UR.deleted_at IS NULL
                         )
                         INNER JOIN ACCESSESPROFILES AR ON (
-                            AR.ID = UR.IDACCESSPROFILE
-                            AND AR.IDSTATUSREG = ${StatusRegs.ACTIVE}
-                            AND AR.DELETEDAT IS NULL
+                            AR.id = UR.IDACCESSPROFILE
+                            AND AR.status_reg_id = ${StatusRegs.ACTIVE}
+                            AND AR.deleted_at IS NULL
                         )
                         INNER JOIN PERMISSIONS P2 ON (
-                            P2.IDSTATUSREG = ${StatusRegs.ACTIVE}
-                            AND P2.DELETEDAT IS NULL
+                            P2.status_reg_id = ${StatusRegs.ACTIVE}
+                            AND P2.deleted_at IS NULL
                             AND COALESCE(P2.IDACCESSPROFILE,
                                 UR.IDACCESSPROFILE) = UR.IDACCESSPROFILE
-                            AND COALESCE(P2.IDUSER, UR.ID) = UR.ID
+                            AND COALESCE(P2.IDUSER, UR.id) = UR.id
                             AND COALESCE(P2.IDMODULE, ROUTINES.IDMODULE) = ROUTINES.IDMODULE
                             AND COALESCE(P2.IDROUTINE,
                                 CASE
                                     WHEN AR.ALLOWACESSALLROUTINESOFMODULE = 0 THEN - 1
-                                    ELSE ROUTINES.ID
-                                END) = ROUTINES.ID
+                                    ELSE ROUTINES.id
+                                END) = ROUTINES.id
                             AND P2.ALLOWEDACCESS = 1
                         )
                     ) ON (
-                        ROUTINES.IDMODULE = MODULES.ID
+                        ROUTINES.IDMODULE = MODULES.id
                     )                    
                 WHERE
                     (
@@ -102,18 +102,18 @@ class RoutinesController extends RegistersController{
                         OR PERMISSIONS.IDMODULE IS NOT NULL
                     )    
                 ORDER BY 
-                    COALESCE(MODULES.ORDERNUM, MODULES.ID),
-                    COALESCE(ROUTINES.ORDERNUM, ROUTINES.ID);    
+                    COALESCE(MODULES.ORDERNUM, MODULES.id),
+                    COALESCE(ROUTINES.ORDERNUM, ROUTINES.id);    
             `;
             res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
             res.data = res.data[0] || [];
             let nestedModules = {};
             for(let i = 0; i < res.data.length; i++) {                
-                nestedModules[res.data[i].ID] = nestedModules[res.data[i].ID] || res.data[i];
+                nestedModules[res.data[i].id] = nestedModules[res.data[i].id] || res.data[i];
                 if (Utils.hasValue(res.data[i].ROUTINEID)) {
-                    nestedModules[res.data[i].ID].ROUTINES = nestedModules[res.data[i].ID].ROUTINES || {};
-                    nestedModules[res.data[i].ID].ROUTINES[res.data[i].ROUTINEID] = {
-                        ID: res.data[i].ROUTINEID,
+                    nestedModules[res.data[i].id].ROUTINES = nestedModules[res.data[i].id].ROUTINES || {};
+                    nestedModules[res.data[i].id].ROUTINES[res.data[i].ROUTINEID] = {
+                        id: res.data[i].ROUTINEID,
                         IDSUP: res.data[i].ROUTINEIDSUP,
                         IDROUTINETYPE: res.data[i].ROUTINEIDROUTINETYPE,
                         IDMODULE: res.data[i].ROUTINEIDMODULE,

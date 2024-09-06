@@ -17,7 +17,7 @@ const { Collaborators } = require("./Collaborators");
  * class model
  */
 class StocksEntities extends BaseTableModel {
-  static ID = 8025;
+  static id = 8025;
   static model = null;
 
   static WITHOUT_CONTEINER = 1;
@@ -74,7 +74,7 @@ class StocksEntities extends BaseTableModel {
 
   static constraints = [...(StocksEntities.getBaseTableModelConstraints() || []),...[
     {
-      name: StocksEntities.name.toUpperCase() + '_U1',
+      name: StocksEntities.name.toLowerCase() + '_u1',
       fields: [...StocksEntities.getBaseTableModelUniqueFields(),...StocksEntities.uniqueFields],
       type:"unique"
     }
@@ -86,7 +86,7 @@ class StocksEntities extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Companies,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -95,7 +95,7 @@ class StocksEntities extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: BusinessesUnits,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -104,7 +104,7 @@ class StocksEntities extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Warehouses,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -113,7 +113,7 @@ class StocksEntities extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Suppliers,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -122,7 +122,7 @@ class StocksEntities extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Clients,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -131,7 +131,7 @@ class StocksEntities extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Users,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -140,7 +140,7 @@ class StocksEntities extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Collaborators,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

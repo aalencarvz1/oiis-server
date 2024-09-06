@@ -8,7 +8,7 @@ const { BaseWinthorIntegrationTableModel } = require("./BaseWinthorIntegrationTa
  * class model
  */
 class MigrationsControl extends BaseWinthorIntegrationTableModel {
-  static ID = 35005;
+  static id = 35005;
   static model = null;
   static fields = {
     ...MigrationsControl.getBaseTableModelFields(),...{                 

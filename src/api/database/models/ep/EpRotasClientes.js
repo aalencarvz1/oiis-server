@@ -9,7 +9,7 @@ const { EpOrigensInfo } = require("./EpOrigensInfo");
  * class model
  */
 class EpRotasClientes extends BaseEpTableModel {
-  static ID = 40016;
+  static id = 40016;
   static model = null;
 
 

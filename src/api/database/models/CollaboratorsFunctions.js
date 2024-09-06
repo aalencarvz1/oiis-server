@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class CollaboratorsFunctions extends BaseTableModel {
-  static ID = 6001;
+  static id = 6001;
   static model = null;
   static fields = {
     ...CollaboratorsFunctions.getBaseTableModelFields(),...{           
@@ -36,11 +36,11 @@ class CollaboratorsFunctions extends BaseTableModel {
 
   static constraints = [...(CollaboratorsFunctions.getBaseTableModelConstraints() || []),...[
     {
-      name: CollaboratorsFunctions.name.toUpperCase() + '_U1',
+      name: CollaboratorsFunctions.name.toLowerCase() + '_u1',
       fields: [...CollaboratorsFunctions.getBaseTableModelUniqueFields(),...CollaboratorsFunctions.uniqueFields],
       type:"unique"
     },{
-      name: CollaboratorsFunctions.name.toUpperCase() + '_C_1',
+      name: CollaboratorsFunctions.name.toLowerCase() + '_c_1',
       fields:['ISTRUST'],
       type:"check",
       where:{
@@ -49,7 +49,7 @@ class CollaboratorsFunctions extends BaseTableModel {
           }
       }
     },{
-      name: CollaboratorsFunctions.name.toUpperCase() + '_C_2',
+      name: CollaboratorsFunctions.name.toLowerCase() + '_c_2',
       fields:['ISTIMECONTROLLED'],
       type:"check",
       where:{

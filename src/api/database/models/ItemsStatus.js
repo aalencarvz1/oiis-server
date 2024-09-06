@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class ItemsStatus extends BaseTableModel {
-  static ID = 8009;
+  static id = 8009;
   static model = null;
 
   static NORMAL = 1;
@@ -47,11 +47,11 @@ class ItemsStatus extends BaseTableModel {
 
   static constraints = [...(ItemsStatus.getBaseTableModelConstraints() || []),...[
     {
-      name: ItemsStatus.name.toUpperCase() + '_U1',
+      name: ItemsStatus.name.toLowerCase() + '_u1',
       fields: [...ItemsStatus.getBaseTableModelUniqueFields(),...ItemsStatus.uniqueFields],
       type:"unique"
     },{
-      name: ItemsStatus.name.toUpperCase() + '_C_1',
+      name: ItemsStatus.name.toLowerCase() + '_c_1',
       fields:['ISDISPONIBLE'],
       type:"check",
       where:{
@@ -60,7 +60,7 @@ class ItemsStatus extends BaseTableModel {
           }
       }
     },{
-      name: ItemsStatus.name.toUpperCase() + '_C_2',
+      name: ItemsStatus.name.toLowerCase() + '_c_2',
       fields:['ISDAMAGED'],
       type:"check",
       where:{

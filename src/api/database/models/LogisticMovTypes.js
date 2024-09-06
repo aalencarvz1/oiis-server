@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class LogisticMovTypes extends BaseTableModel {
-  static ID = 12000;
+  static id = 12000;
   static model = null;
 
   static DELIVERY = 1;
@@ -44,11 +44,11 @@ class LogisticMovTypes extends BaseTableModel {
 
   static constraints = [...(LogisticMovTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: LogisticMovTypes.name.toUpperCase() + '_U1',
+      name: LogisticMovTypes.name.toLowerCase() + '_u1',
       fields: [...LogisticMovTypes.getBaseTableModelUniqueFields(),...LogisticMovTypes.uniqueFields],
       type:"unique"
     },{
-      name: LogisticMovTypes.name.toUpperCase() + '_C_1',
+      name: LogisticMovTypes.name.toLowerCase() + '_c_1',
       fields:['ISINPUT'],
       type:"check",
       where:{
@@ -57,7 +57,7 @@ class LogisticMovTypes extends BaseTableModel {
           }
       }
     },{
-      name: LogisticMovTypes.name.toUpperCase() + '_C_2',
+      name: LogisticMovTypes.name.toLowerCase() + '_c_2',
       fields:['ISOUTPUT'],
       type:"check",
       where:{

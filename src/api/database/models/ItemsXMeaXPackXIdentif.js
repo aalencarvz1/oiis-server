@@ -16,7 +16,7 @@ const { IdentifiersTypes } = require("./IdentifiersTypes");
  * class model
  */
 class ItemsXMeaXPackXIdentif extends BaseTableModel {
-  static ID = 8032;
+  static id = 8032;
   static model = null;
   static fields = {
     ...ItemsXMeaXPackXIdentif.getBaseTableModelFields(),...{           
@@ -81,7 +81,7 @@ class ItemsXMeaXPackXIdentif extends BaseTableModel {
 
   static constraints = [...(ItemsXMeaXPackXIdentif.getBaseTableModelConstraints() || []),...[
     {
-      name: ItemsXMeaXPackXIdentif.name.toUpperCase() + '_U1',
+      name: ItemsXMeaXPackXIdentif.name.toLowerCase() + '_u1',
       fields: [...ItemsXMeaXPackXIdentif.getBaseTableModelUniqueFields(),...ItemsXMeaXPackXIdentif.uniqueFields],
       type:"unique"
     }
@@ -93,7 +93,7 @@ class ItemsXMeaXPackXIdentif extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Items,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -102,7 +102,7 @@ class ItemsXMeaXPackXIdentif extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Packagings,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -111,7 +111,7 @@ class ItemsXMeaXPackXIdentif extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: MeasurementsUnits,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -120,7 +120,7 @@ class ItemsXMeaXPackXIdentif extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: IdentifiersTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },    
@@ -129,7 +129,7 @@ class ItemsXMeaXPackXIdentif extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: ItemsStocks,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -138,7 +138,7 @@ class ItemsXMeaXPackXIdentif extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: StocksEntities,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

@@ -10,11 +10,10 @@ const { DataSwap } = require('../../controllers/data/DataSwap');
 /**
  * class model
  */
-console.log('BaseTableModel - antes declaracao classe, antes exportacao');
 class BaseTableModel extends Model { 
     
     static schema = configDB[process.env.NODE_ENV || 'development'].database;  
-    static ID;
+    static id;
     static model = null;
     static fields;
     static constraints;
@@ -24,47 +23,47 @@ class BaseTableModel extends Model {
     
     static getBaseTableModelFields = () => {
         return {
-            ID: {
+            id: {
                 type : DataTypes.BIGINT.UNSIGNED,                
                 autoIncrement : true,
                 primaryKey: true,               
                 allowNull: false 
             },
-            IDSTATUSREG: {
+            status_reg_id: {
                 type: DataTypes.BIGINT.UNSIGNED,                
                 allowNull: false,
                 defaultValue:1 
             },
-            IDUSERCREATE: {
+            creator_user_id: {
                 type: DataTypes.BIGINT.UNSIGNED,                
                 allowNull: false,
                 defaultValue:1 
             },
-            CREATEDAT : {
+            created_at : {
                 type: DataTypes.DATE,
                 allowNull: false,
                 defaultValue: DataTypes.NOW
             },
-            IDUSERUPDATE: {
+            updater_user_id: {
                 type: DataTypes.BIGINT.UNSIGNED,
             },
-            UPDATEDAT : {
+            updated_at : {
                 type: DataTypes.DATE,
                 allowNull: true
             },
-            IDORIGINDATA: {
+            data_origin_id: {
                 type: DataTypes.BIGINT.UNSIGNED,                
                 allowNull: false,
                 defaultValue:1
             },
-            IDONORIGINDATA: {
+            id_at_origin: {
                 type: DataTypes.STRING(256)
             },
-            DELETEDAT:{
+            deleted_at:{
                 type: DataTypes.DATE,
                 allowNull : true
             },
-            ISSYSTEMREG: {
+            is_sys_rec: {
                 type: DataTypes.INTEGER(1),
                 allowNull: false,
                 defaultValue:0
@@ -75,10 +74,10 @@ class BaseTableModel extends Model {
     static getBaseTableModelConstraints = () => {
         return [
             {
-                fields:['ISSYSTEMREG'],
+                fields:['is_sys_rec'],
                 type:"check",
                 where:{
-                    ISSYSTEMREG: {
+                    is_sys_rec: {
                         [Op.in]: [0,1]
                     }
                 }
@@ -88,41 +87,41 @@ class BaseTableModel extends Model {
 
     static getBaseTableModelUniqueFields = () => {
         return [
-            'IDSTATUSREG',
-            'IDORIGINDATA'
+            'status_reg_id',
+            'data_origin_id'
         ];
     };   
     
     static baseTableModelForeignsKeys = [{
-        fields: ['IDSTATUSREG'],
+        fields: ['status_reg_id'],
         type: 'foreign key',
         references: { 
             table: 'StatusRegs',
-            field: 'ID'
+            field: 'id'
         },
         onUpdate: 'cascade'
     },{
-        fields: ['IDUSERCREATE'],
+        fields: ['creator_user_id'],
         type: 'foreign key',
         references: { 
             table: 'Users',
-            field: 'ID'
+            field: 'id'
         },
         onUpdate: 'cascade'
     },{
-        fields: ['IDUSERUPDATE'],
+        fields: ['updater_user_id'],
         type: 'foreign key',
         references: { 
             table: 'Users',
-            field: 'ID'
+            field: 'id'
         },
         onUpdate: 'cascade'
     },{
-        fields: ['IDORIGINDATA'],
+        fields: ['data_origin_id'],
         type: 'foreign key',
         references: { 
             table: 'OriginsDatas',
-            field: 'ID'
+            field: 'id'
         },
         onUpdate: 'cascade'
     }];
@@ -134,10 +133,10 @@ class BaseTableModel extends Model {
     static getBaseTableModelInitHooks = () => {
         return {
             beforeCreate : (record, options) => {
-                record.dataValues.CREATEDAT = Sequelize.literal('current_timestamp');//new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');                
+                record.dataValues.created_at = Sequelize.literal('current_timestamp');//new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');                
             },
             beforeUpdate : (record, options) => {
-                record.dataValues.UPDATEDAT = Sequelize.literal('current_timestamp');//new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');        
+                record.dataValues.updated_at = Sequelize.literal('current_timestamp');//new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');        
             }
         };
     }
@@ -153,12 +152,12 @@ class BaseTableModel extends Model {
             for(let i in this.constraints) {
                 if (typeof this.constraints[i] === 'object') {
                     if (!this.constraints[i].name) {
-                        this.constraints[i].name = this.name.toUpperCase() + '_C' + i;
+                        this.constraints[i].name = this.name.toLowerCase() + '_c' + i;
                     }
-                    Utils.log(' add constraint',this.name.toUpperCase(), this.constraints[i]);
-                    await queryInterface.addConstraint(this.name.toUpperCase(), this.constraints[i]);
+                    Utils.log(' add constraint',this.name.toLowerCase(), this.constraints[i]);
+                    await queryInterface.addConstraint(this.name.toLowerCase(), this.constraints[i]);
                 } else {
-                    Utils.log(' add constraint',this.name.toUpperCase(), this.constraints[i]);
+                    Utils.log(' add constraint',this.name.toLowerCase(), this.constraints[i]);
                     await queryInterface.sequelize.query(this.constraints[i]);
                 }
             }
@@ -186,9 +185,9 @@ class BaseTableModel extends Model {
                             foreignKey[key].field = this.foreignsKeys[i][key].field;
                         }
                         if (typeof this.foreignsKeys[i][key].table == 'string') {
-                            foreignKey[key].table = this.foreignsKeys[i][key].table.toUpperCase();
+                            foreignKey[key].table = this.foreignsKeys[i][key].table.toLowerCase();
                         } else {
-                            foreignKey[key].table = this.foreignsKeys[i][key].table.name.toUpperCase();
+                            foreignKey[key].table = this.foreignsKeys[i][key].table.name.toLowerCase();
                         }
                     }
                 }
@@ -196,15 +195,15 @@ class BaseTableModel extends Model {
                 foreignKey.references.table = foreignKey.references.table[1] || foreignKey.references.table[0];
 
                 //migrate all foreign keys or only specific model ref parameter
-                if (!pClassModelRef || (foreignKey.references.table.trim().toUpperCase() == pClassModelRef.name.toUpperCase().trim())) {
+                if (!pClassModelRef || (foreignKey.references.table.trim().toLowerCase() == pClassModelRef.name.toLowerCase().trim())) {
                     if (!foreignKey.name) {
-                        foreignKey.name = this.name.toUpperCase() + '_FK' + i;
+                        foreignKey.name = this.name.toLowerCase() + '_fk' + i;
                     }
-                    Utils.log(' add constraint',this.name.toUpperCase(), foreignKey);
-                    await queryInterface.addConstraint(this.name.toUpperCase(), foreignKey);                
+                    Utils.log(' add constraint',this.name.toLowerCase(), foreignKey);
+                    await queryInterface.addConstraint(this.name.toLowerCase(), foreignKey);                
                 }
             } else {
-                Utils.log(' add constraint',this.name.toUpperCase(), this.foreignsKeys[i]);
+                Utils.log(' add constraint',this.name.toLowerCase(), this.foreignsKeys[i]);
                 await queryInterface.sequelize.query(this.foreignsKeys[i]);  
             }
         }        
@@ -219,16 +218,16 @@ class BaseTableModel extends Model {
      */
     static async runUpMigration(queryInterface, options) {
         options = options || {};
-        Utils.log('creating table',this.name.toUpperCase(), Object.keys(this.fields));
-        await queryInterface.createTable(this.name.toUpperCase(), this.fields);
+        Utils.log('creating table',this.name.toLowerCase(), Object.keys(this.fields));
+        await queryInterface.createTable(this.name.toLowerCase(), this.fields);
         await this.migrateConstraints(queryInterface);    
-        await queryInterface.bulkInsert('DATATABLES',[{      
-            ID:this.ID,
-            CREATEDAT: new Date(),
-            ISSYSTEMREG : 1,
-            IDDATACONNECTION : configDB[process.env.NODE_ENV || 'development'].ID,
-            IDSCHEMA : configDB[process.env.NODE_ENV || 'development'].ID,
-            NAME : this.name.toUpperCase()
+        await queryInterface.bulkInsert('datatables',[{      
+            id:this.id,
+            created_at: new Date(),
+            is_sys_rec : 1,
+            IDDATACONNECTION : configDB[process.env.NODE_ENV || 'development'].id,
+            IDSCHEMA : configDB[process.env.NODE_ENV || 'development'].id,
+            NAME : this.name.toLowerCase()
         }],{
             ignoreDuplicates:true,
             updateOnDuplicate:null
@@ -250,27 +249,27 @@ class BaseTableModel extends Model {
         let tableRefClassModel = null;
         try {
             for(let i in (this.foreignsKeys || [])) {
-                //if (this.name.toUpperCase().indexOf('PC') === 0)
-                    //Utils.log(' associating',this.name.toUpperCase(),i,this.foreignsKeys[i]);
+                //if (this.name.toLowerCase().indexOf('pc') === 0)
+                    //Utils.log(' associating',this.name.toLowerCase(),i,this.foreignsKeys[i]);
 
                 tableRefClassModel = this.foreignsKeys[i].references.table; //for re-declare if necessary
                 if (typeof tableRefClassModel == 'string') {
 
                     //require.cache is case sensitive, avoid reload cached model
-                    let path = require.resolve(`./${tableRefClassModel.toUpperCase().indexOf('PC') === 0 ? 'winthor/':''}${tableRefClassModel}`).toLowerCase();
+                    let path = require.resolve(`./${tableRefClassModel.toLowerCase().indexOf('pc') === 0 ? 'winthor/':''}${tableRefClassModel}`).toLowerCase();
                     let ind = Object.keys(require.cache).join(',').toLowerCase().split(',').indexOf(path);
-                    Utils.log('loading module dinamic',path,ind);
+                    //Utils.log('loading module dinamic',path,ind);
                     if (ind > -1) {
                         let keyCache = Object.keys(require.cache)[ind];                        
                         let realKey = Utils.getKey(require.cache[keyCache].exports,tableRefClassModel);
-                        console.log('keys',require.cache[keyCache].exports,tableRefClassModel, realKey);
+                        //console.log('keys',require.cache[keyCache].exports,tableRefClassModel, realKey);
                         if (Utils.hasValue(realKey)) {
                             tableRefClassModel = require.cache[keyCache].exports[realKey];
                         } else {
                             tableRefClassModel = require.cache[keyCache].exports;
                         }
                     } else {
-                        let tempp = require(`./${tableRefClassModel.toUpperCase().indexOf('PC') === 0 ? 'winthor/' : ''}${tableRefClassModel}`);
+                        let tempp = require(`./${tableRefClassModel.toLowerCase().indexOf('pc') === 0 ? 'winthor/' : ''}${tableRefClassModel}`);
                         let realKey = Utils.getKey(tempp,tableRefClassModel);
                         if (Utils.hasValue(realKey)) {
                             tableRefClassModel = tempp[realKey];
@@ -289,19 +288,19 @@ class BaseTableModel extends Model {
                     sourceKey: this.foreignsKeys[i].references.fields?.join(',') || this.foreignsKeys[i].references.field,
                     foreignKey : columnForeign
                 };
-                if (tableRefClassModel.name.toUpperCase().trim() == this.model.tableName.trim().toUpperCase()) {
+                if (tableRefClassModel.name.toLowerCase().trim() == this.model.tableName.trim().toLowerCase()) {
                     model = this.model;
                 } else {
                     model = tableRefClassModel.getModel();
                 }                
                 //belongsToParams.targetKey = this.foreignsKeys[i].references.field;
-                //if (this.model.tableName.toUpperCase().indexOf('PC') === 0) {
+                //if (this.model.tableName.toLowerCase().indexOf('pc') === 0) {
                     //Utils.log(model.tableName,'hasMany',this.model,hasManyParams);
                     //Utils.log(this.model.tableName,'belongsTo',model,belongsToParams);
                 //}
                 if (model) {
-                    Utils.log(`associating ${model.name} hasMany ${this.model.name} ${JSON.stringify(hasManyParams)} ${model && model.prototype} ${model && model.prototype && model.prototype instanceof Model} ${this.model && this.model.prototype} ${this.model && this.model.prototype && this.model.prototype instanceof Model}`);
-                    Utils.log(`associating ${this.model.name} belongs to ${model.name} ${JSON.stringify(belongsToParams)} ${this.model && this.model.prototype} ${this.model && this.model.prototype && this.model.prototype instanceof Model} ${model && model.prototype} ${model && model.prototype && model.prototype instanceof Model}`);
+                    //Utils.log(`associating ${model.name} hasMany ${this.model.name} ${JSON.stringify(hasManyParams)} ${model && model.prototype} ${model && model.prototype && model.prototype instanceof Model} ${this.model && this.model.prototype} ${this.model && this.model.prototype && this.model.prototype instanceof Model}`);
+                    //Utils.log(`associating ${this.model.name} belongs to ${model.name} ${JSON.stringify(belongsToParams)} ${this.model && this.model.prototype} ${this.model && this.model.prototype && this.model.prototype instanceof Model} ${model && model.prototype} ${model && model.prototype && model.prototype instanceof Model}`);
                     let hasMany = model.hasMany(this.model,hasManyParams);
                     let belongsTo = this.model.belongsTo(model,belongsToParams);
                     //console.log('belongsTo',belongsTo);
@@ -330,11 +329,11 @@ class BaseTableModel extends Model {
                     sequelize: pSequelize,
                     underscore:false,
                     freezeTableName:true,
-                    modelName:this.name.toUpperCase(),
-                    tableName:this.name.toUpperCase(),
+                    modelName:this.name.toLowerCase(),
+                    tableName:this.name.toLowerCase(),
                     name:{
-                        singular:this.name.toUpperCase(),
-                        plural:this.name.toUpperCase()
+                        singular:this.name.toLowerCase(),
+                        plural:this.name.toLowerCase()
                     },
                     timestamps:false,
                     hooks: this.getBaseTableModelInitHooks(),
@@ -400,7 +399,7 @@ class BaseTableModel extends Model {
     }
 
     static async getOneByID(id) {
-        let result = await this.getData({queryParams:{where:{ID:id}}});
+        let result = await this.getData({queryParams:{where:{id:id}}});
         if (result && result.length) {
             result = result[0];
         }
@@ -416,7 +415,7 @@ class BaseTableModel extends Model {
     static async createData(params,returnRaw) {
         let queryParams = params.queryParams?.values || params.queryParams || params || {};
         let result = await this.getModel().create(queryParams);
-        if (typeof this.getData === 'function' && returnRaw !== false && Object.keys(this.fields).indexOf('ID') > -1) return await this.getOneByID(result.ID) || result
+        if (typeof this.getData === 'function' && returnRaw !== false && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(result.id) || result
         else return result;
     }
     static putData = this.createData;
@@ -453,8 +452,8 @@ class BaseTableModel extends Model {
         whereClause = whereClause || queryParams.where;
         if (whereClause) {
             reg = await this.getModel().findOne({where:whereClause});
-        } else if (queryParams.ID) { 
-            reg = await this.getModel().findOne({where:{ID:queryParams.ID}});
+        } else if (queryParams.id) { 
+            reg = await this.getModel().findOne({where:{id:queryParams.id}});
         } else {
             let primaryKeys = [];
             for(let k in this.fields) {
@@ -464,11 +463,11 @@ class BaseTableModel extends Model {
             } 
             if (primaryKeys.length > 0) {
                 let where = {};
-                let keys = Object.keys(queryParams).join(',').trim().toUpperCase().split(',');
+                let keys = Object.keys(queryParams).join(',').trim().toLowerCase().split(',');
                 let ind = -1;
                 //Utils.log(primaryKeys,keys);
                 for(let k in primaryKeys) {
-                    ind =keys.indexOf(k.trim().toUpperCase());
+                    ind =keys.indexOf(k.trim().toLowerCase());
                     if (ind > -1) {
                         where[Object.keys(queryParams)[ind]] = queryParams[Object.keys(queryParams)[ind]];
                     }
@@ -486,13 +485,13 @@ class BaseTableModel extends Model {
         if (reg) {
             let values = queryParams.values || queryParams;
             for(let key in values) {
-                if (key != 'ID') {
+                if (key != 'id') {
                     reg[key] = values[key];
                 }
             }
             //Utils.log(reg);
             await reg.save();
-            if (typeof this.getData === 'function' && Object.keys(this.fields).indexOf('ID') > -1) return await this.getOneByID(reg.ID) || reg.dataValues
+            if (typeof this.getData === 'function' && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(reg.id) || reg.dataValues
             else return reg.dataValues;
         } else {
             throw new Error('no data found');
@@ -510,19 +509,19 @@ class BaseTableModel extends Model {
      */
     static async deleteData(params){
         let queryParams = DatabaseUtils.prepareQueryParams(params.queryParams || params || {});
-        if (Utils.hasValue(queryParams.where) || Utils.hasValue(queryParams.ID) || Utils.hasValue(queryParams.identifiers)) {
+        if (Utils.hasValue(queryParams.where) || Utils.hasValue(queryParams.id) || Utils.hasValue(queryParams.identifiers)) {
             let where = {};
             if (Utils.hasValue(queryParams.where)) {
                 where = queryParams.where;
-            } else if (Utils.hasValue(queryParams.ID)) {
+            } else if (Utils.hasValue(queryParams.id)) {
                 where = {
-                    ID: {
-                        [Op.in]: Utils.toArray(queryParams.ID)
+                    id: {
+                        [Op.in]: Utils.toArray(queryParams.id)
                     } 
                 }
             } else if (Utils.hasValue(queryParams.identifiers)) {
                 where = {
-                    ID: {
+                    id: {
                         [Op.in]: Utils.toArray(queryParams.identifiers)
                     } 
                 }
@@ -601,8 +600,4 @@ class BaseTableModel extends Model {
 
 };
 
-console.log('BaseTableModel - apos declaracao classe, antes exportacao');
-
 module.exports = {BaseTableModel}
-
-console.log('BaseTableModel - apos declaracao classe, apos exportacao');

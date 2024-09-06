@@ -10,6 +10,6 @@ module.exports = {
     await ItemsMovsAmountsRestrictions.runUpMigration(queryInterface);     
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(ItemsMovsAmountsRestrictions.name.toUpperCase());
+    await queryInterface.dropTable(ItemsMovsAmountsRestrictions.name.toLowerCase());
   }
 };

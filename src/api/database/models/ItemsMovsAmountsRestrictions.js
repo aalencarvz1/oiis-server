@@ -12,7 +12,7 @@ const { IdentifiersTypes } = require("./IdentifiersTypes");
  * class model
  */
 class ItemsMovsAmountsRestrictions extends BaseTableModel {
-  static ID = 9037;
+  static id = 9037;
   static model = null;
   static fields = {
     ...ItemsMovsAmountsRestrictions.getBaseTableModelFields(),...{                 
@@ -45,7 +45,7 @@ class ItemsMovsAmountsRestrictions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: ItemsMovsAmounts,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -55,7 +55,7 @@ class ItemsMovsAmountsRestrictions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: IdentifiersTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -64,7 +64,7 @@ class ItemsMovsAmountsRestrictions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: ValuesNames,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

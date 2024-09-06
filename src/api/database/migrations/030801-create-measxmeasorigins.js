@@ -11,6 +11,6 @@ module.exports = {
     await MeasXMeasOrigins.runUpMigration(queryInterface);     
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(MeasXMeasOrigins.name.toUpperCase());
+    await queryInterface.dropTable(MeasXMeasOrigins.name.toLowerCase());
   }
 };

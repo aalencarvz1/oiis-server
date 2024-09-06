@@ -10,7 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class StatusRun extends BaseTableModel {
-  static ID = 67;
+  static id = 67;
   static model = null;
 
   static NOT_STARTED = 1;
@@ -60,11 +60,11 @@ class StatusRun extends BaseTableModel {
 
   static constraints = [...(StatusRun.getBaseTableModelConstraints() || []),...[
     {
-      name: StatusRun.name.toUpperCase() + '_U1',
+      name: StatusRun.name.toLowerCase() + '_u1',
       fields: [...StatusRun.getBaseTableModelUniqueFields(),...StatusRun.uniqueFields],
       type:"unique"
     },{
-      name: StatusRun.name.toUpperCase() + '_C_1',
+      name: StatusRun.name.toLowerCase() + '_c_1',
       fields:['ISRUNNING'],
       type:"check",
       where:{
@@ -73,7 +73,7 @@ class StatusRun extends BaseTableModel {
         }
       }
     },{
-      name: StatusRun.name.toUpperCase() + '_C_2',
+      name: StatusRun.name.toLowerCase() + '_c_2',
       fields:['ISSTOPED'],
       type:"check",
       where:{
@@ -82,7 +82,7 @@ class StatusRun extends BaseTableModel {
         }
       }
     },{
-      name: StatusRun.name.toUpperCase() + '_C_3',
+      name: StatusRun.name.toLowerCase() + '_c_3',
       fields:['ISCANCELED'],
       type:"check",
       where:{
@@ -91,7 +91,7 @@ class StatusRun extends BaseTableModel {
         }
       }
     },{
-      name: StatusRun.name.toUpperCase() + '_C_4',
+      name: StatusRun.name.toLowerCase() + '_c_4',
       fields:['ISCONCLUDED'],
       type:"check",
       where:{

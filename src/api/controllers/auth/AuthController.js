@@ -57,8 +57,8 @@ class AuthController extends RegistersController{
         });        
         if (!user) return res.sendResponse(401,false,'user not found'); 
         if (!bcrypt.compareSync(body.password, user.PASSWORD)) return res.sendResponse(401,false,'password not match'); 
-        let token = jwt.sign({ID: user.ID,IDACCESSPROFILE:user.IDACCESSPROFILE},process.env.API_SECRET, {expiresIn:/*process.env.API_TOKEN_EXPIRATION*/10});
-        let refreshToken = jwt.sign({ID: user.ID,IDACCESSPROFILE:user.IDACCESSPROFILE}, process.env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
+        let token = jwt.sign({id: user.id,IDACCESSPROFILE:user.IDACCESSPROFILE},process.env.API_SECRET, {expiresIn:/*process.env.API_TOKEN_EXPIRATION*/10});
+        let refreshToken = jwt.sign({id: user.id,IDACCESSPROFILE:user.IDACCESSPROFILE}, process.env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
         
         user.LASTTOKEN = token;
         user.LASTTIMEZONEOFFSET = body?.currentTimeZoneOffset || 0;
@@ -66,14 +66,14 @@ class AuthController extends RegistersController{
 
         let userToken = await UsersTokens.getModel().findOne({
             where:{
-                IDUSER: user.ID,
+                IDUSER: user.id,
                 TOKEN: token            
             }
         })
         if (!Utils.hasValue(userToken)) {
             try {
                 await UsersTokens.getModel().create({
-                    IDUSER: user.ID,
+                    IDUSER: user.id,
                     TOKEN: token,
                     TIMEZONEOFFSET: user.LASTTIMEZONEOFFSET
                 });
@@ -131,13 +131,13 @@ class AuthController extends RegistersController{
         if (!refreshToken) return res.status(401).json({success:false,message:'no refresh token'});
         jwt.verify(refreshToken,process.env.API_REFRESH_SECRET,async function(error,decoded) {
             if (error) return res.status(401).json({success:false,message:error.message || error});
-            req.user = {ID:decoded.ID};  
+            req.user = {id:decoded.id};  
             Utils.log("in refresh token",req.user,decoded);
-            let user = await Users.getModel().findOne({where:{ID:req.user.ID}});
+            let user = await Users.getModel().findOne({where:{id:req.user.id}});
             if (!user) return res.sendResponse(401,false,'user not found'); 
 
-            let token = jwt.sign({ID: decoded.ID},process.env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});            
-            let newRefreshToken = jwt.sign({ID: user.ID,IDACCESSPROFILE:user.IDACCESSPROFILE}, process.env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
+            let token = jwt.sign({id: decoded.id},process.env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});            
+            let newRefreshToken = jwt.sign({id: user.id,IDACCESSPROFILE:user.IDACCESSPROFILE}, process.env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
 
             user.LASTTOKEN = token;
             user.LASTTIMEZONEOFFSET = req.body?.currentTimeZoneOffset || 0;
@@ -145,7 +145,7 @@ class AuthController extends RegistersController{
 
             let userToken = await UsersTokens.getModel().findOne({
                 where:{
-                    IDUSER: user.ID,
+                    IDUSER: user.id,
                     TOKEN: token            
                 }
             });
@@ -153,7 +153,7 @@ class AuthController extends RegistersController{
             if (!userToken) {
                 try {
                     await UsersTokens.getModel().create({
-                        IDUSER: user.ID,
+                        IDUSER: user.id,
                         TOKEN: token,
                         TIMEZONEOFFSET: user.LASTTIMEZONEOFFSET
                     });
@@ -188,20 +188,20 @@ class AuthController extends RegistersController{
         let user = await Users.getModel().findOne({where:{email:(body.email||'').trim().toLowerCase()}},{raw:true});
         if (user) return res.sendResponse(401,false,'user already register'); 
         user = await Users.getModel().create({
-            IDUSERCREATE : Users.SYSTEM,
+            creator_user_id : Users.SYSTEM,
             IDACCESSPROFILE : AccessesProfiles.DEFAULT,
             EMAIL:(req.body.email||'').trim().toLowerCase(),
             PASSWORD: bcrypt.hashSync(req.body.password,(process.env.API_USER_PASSWORD_CRIPTSALT||10)-0)
         });
-        let token = jwt.sign({ID: user.ID,IDACCESSPROFILE:user.IDACCESSPROFILE},process.env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});
-        let refreshToken = jwt.sign({ID: user.ID,IDACCESSPROFILE:user.IDACCESSPROFILE}, process.env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
+        let token = jwt.sign({id: user.id,IDACCESSPROFILE:user.IDACCESSPROFILE},process.env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});
+        let refreshToken = jwt.sign({id: user.id,IDACCESSPROFILE:user.IDACCESSPROFILE}, process.env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
 
         user.LASTTOKEN = token;
         user.LASTTIMEZONEOFFSET = req.body?.currentTimeZoneOffset || 0;
         await user.save();
 
         await UsersTokens.getModel().create({
-            IDUSER: user.ID,
+            IDUSER: user.id,
             TOKEN: token,
             TIMEZONEOFFSET: user.LASTTIMEZONEOFFSET
         });
@@ -270,7 +270,7 @@ class AuthController extends RegistersController{
                         Utils.log('verify',verify);
                         if (verify === true) {
 
-                            let token = jwt.sign({ID: user.ID},process.env.API_RECOVER_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});
+                            let token = jwt.sign({id: user.id},process.env.API_RECOVER_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});
 
                             let response = await AuthController.#mailTransport.sendMail({
                                 from:config[`smtp_${process.env.NODE_ENV||'development'}`]?.auth?.user || process.env.EMAIL,
@@ -319,7 +319,7 @@ class AuthController extends RegistersController{
                     if (error) return res.status(401).json({success:false,message:error.message || error});
                     let user = await Users.getModel().findOne({
                         where:{
-                            ID:decoded.ID
+                            id:decoded.id
                         }
                     });
                     if (user) {

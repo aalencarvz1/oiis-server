@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class PowersTypes extends BaseTableModel {
-  static ID = 7002;
+  static id = 7002;
   static model = null;
 
   static SYSTEM = 1;
@@ -33,7 +33,7 @@ class PowersTypes extends BaseTableModel {
 
   static constraints = [...(PowersTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: PowersTypes.name.toUpperCase() + '_U1',
+      name: PowersTypes.name.toLowerCase() + '_u1',
       fields: [...PowersTypes.getBaseTableModelUniqueFields(),...PowersTypes.uniqueFields],
       type:"unique"
     }

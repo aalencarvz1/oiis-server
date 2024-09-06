@@ -10,7 +10,7 @@ const { SqlObjectsTypes } = require("./SqlObjectsTypes");
  * class model
  */
 class SqlProcesses extends BaseTableModel {
-  static ID = 10001;
+  static id = 10001;
   static model = null;
 
   static REPORT_SALES_COST_AND_PROFIT = 1;
@@ -38,7 +38,7 @@ class SqlProcesses extends BaseTableModel {
 
   static constraints = [...(SqlProcesses.getBaseTableModelConstraints() || []),...[
     {
-      name: SqlProcesses.name.toUpperCase() + '_U1',
+      name: SqlProcesses.name.toLowerCase() + '_u1',
       fields: SqlProcesses.uniqueFields,
       type:"unique"
     }
@@ -50,7 +50,7 @@ class SqlProcesses extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: SqlObjectsTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

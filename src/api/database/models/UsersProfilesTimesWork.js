@@ -9,7 +9,7 @@ const { Users } = require("./Users");
  * class model
  */
 class UsersProfilesTimesWork extends BaseTableModel {
-  static ID = 122;
+  static id = 122;
   static model = null;
 
   
@@ -33,7 +33,7 @@ class UsersProfilesTimesWork extends BaseTableModel {
 
   static constraints = [...(UsersProfilesTimesWork.getBaseTableModelConstraints() || []),...[
     {
-      name: UsersProfilesTimesWork.name.toUpperCase() + '_U1',
+      name: UsersProfilesTimesWork.name.toLowerCase() + '_u1',
       fields: UsersProfilesTimesWork.uniqueFields,
       type:"unique"
     }
@@ -45,7 +45,7 @@ class UsersProfilesTimesWork extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Users,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'

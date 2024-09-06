@@ -11,11 +11,11 @@ const { Suppliers } = require("./Suppliers");
  * class model
  */
 class MeasXMeasOrigins extends BaseTableModel {
-  static ID = 30801;
+  static id = 30801;
   static model = null;
   static fields = {
     ...MeasXMeasOrigins.getBaseTableModelFields(),...{           
-      /*idorigindata:{
+      /*data_origin_id:{
         type: DataTypes.BIGINT.UNSIGNED
       }, already exists*/
       IDSUPPLIER:{
@@ -39,7 +39,7 @@ class MeasXMeasOrigins extends BaseTableModel {
 
   static constraints = [...(MeasXMeasOrigins.getBaseTableModelConstraints() || []),...[
     {
-      name: MeasXMeasOrigins.name.toUpperCase() + '_U1',
+      name: MeasXMeasOrigins.name.toLowerCase() + '_u1',
       fields: [...MeasXMeasOrigins.getBaseTableModelUniqueFields(),...MeasXMeasOrigins.uniqueFields],
       type:"unique"
     }
@@ -47,11 +47,11 @@ class MeasXMeasOrigins extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     /*{
-      fields: ['idorigindata'],
+      fields: ['data_origin_id'],
       type: 'foreign key',
       references: { 
           table: OriginsDatas,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },*/
@@ -60,7 +60,7 @@ class MeasXMeasOrigins extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Suppliers,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },{
@@ -68,7 +68,7 @@ class MeasXMeasOrigins extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: MeasurementsUnits,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

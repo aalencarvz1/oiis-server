@@ -10,6 +10,6 @@ module.exports = {
     await WarehousesAddressesTypes.runUpMigration(queryInterface);     
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(WarehousesAddressesTypes.name.toUpperCase());
+    await queryInterface.dropTable(WarehousesAddressesTypes.name.toLowerCase());
   }
 };

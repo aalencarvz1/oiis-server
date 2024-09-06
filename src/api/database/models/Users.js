@@ -12,7 +12,7 @@ const { BasePeopleModel } = require("./BasePeopleModel");
  * class model
  */
 class Users extends BasePeopleModel {
-  static ID = 120;
+  static id = 120;
   static model = null;
 
   static SYSTEM = 1;
@@ -54,7 +54,7 @@ class Users extends BasePeopleModel {
 
   static constraints = [...(Users.getBaseTableModelConstraints() || []),...[
     {
-      name: Users.name.toUpperCase() + '_U1',
+      name: Users.name.toLowerCase() + '_u1',
       fields: Users.uniqueFields,
       type:"unique"
     }
@@ -66,7 +66,7 @@ class Users extends BasePeopleModel {
       type: 'foreign key',
       references: { 
           table: Collaborators,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -75,7 +75,7 @@ class Users extends BasePeopleModel {
       type: 'foreign key',
       references: { 
           table: AccessesProfiles,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

@@ -11,7 +11,7 @@ const { WarehousesAddressesTypes } = require("./WarehousesAddressesTypes");
  * class model
  */
 class WarehousesAddressesCoordinates extends BaseTableModel {
-  static ID = 3005;
+  static id = 3005;
   static model = null;
   static fields = {
     ...WarehousesAddressesCoordinates.getBaseTableModelFields(),...{           
@@ -37,7 +37,7 @@ class WarehousesAddressesCoordinates extends BaseTableModel {
 
   static constraints = [...(WarehousesAddressesCoordinates.getBaseTableModelConstraints() || []),...[
     {
-      name: WarehousesAddressesCoordinates.name.toUpperCase() + '_U1',
+      name: WarehousesAddressesCoordinates.name.toLowerCase() + '_u1',
       fields: [...WarehousesAddressesCoordinates.getBaseTableModelUniqueFields(),...WarehousesAddressesCoordinates.uniqueFields],
       type:"unique"
     }
@@ -49,7 +49,7 @@ class WarehousesAddressesCoordinates extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: WarehousesAddresses,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -58,7 +58,7 @@ class WarehousesAddressesCoordinates extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: WarehousesAddressesTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

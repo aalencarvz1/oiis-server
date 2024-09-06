@@ -31,9 +31,9 @@ const { BaseEndPointController } = require("../../../../../endpoints/BaseEndPoin
  */
 class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController{
 
-    static getIdOriginData(idOriginData) {
+    static getDataOriginId(data_origin_id) {
         let result = OriginsDatas.DEFAULT_ORIGINDATA;
-        switch(idOriginData) {
+        switch(data_origin_id) {
             case 0:
                 result = OriginsDatas.WINTHOR;
                 break;
@@ -83,17 +83,17 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                             let logOrder = await LogisticOrders.getModel().findAll({
                                 raw:true,
                                 attributes:[
-                                    Sequelize.col(`${LogisticOrders.name.toUpperCase()}.IDONORIGINDATA`),
+                                    Sequelize.col(`${LogisticOrders.name.toLowerCase()}.id_at_origin`),
                                     [Sequelize.col('LOGISTICORDERSXMOVS.IDLOGISTICSTATUS'), 'IDLOGISTICSTATUS'],
-                                    [Sequelize.col('LOGISTICORDERSXMOVS->MOVEMENTS.IDORIGINDATA'), 'IDORIGINDATANF'],
-                                    [Sequelize.col('LOGISTICORDERSXMOVS->MOVEMENTS.IDONORIGINDATA'), 'NUMTRANSVENDA'],
-                                    [Sequelize.fn('COUNT',Sequelize.col('LOGISTICORDERSXMOVS->LOGISTICORDERSXITEMSMOVAMT.ID')),'QTITEMS'],
+                                    [Sequelize.col('LOGISTICORDERSXMOVS->MOVEMENTS.data_origin_id'), 'data_origin_idNF'],
+                                    [Sequelize.col('LOGISTICORDERSXMOVS->MOVEMENTS.id_at_origin'), 'NUMTRANSVENDA'],
+                                    [Sequelize.fn('COUNT',Sequelize.col('LOGISTICORDERSXMOVS->LOGISTICORDERSXITEMSMOVAMT.id')),'QTITEMS'],
                                     [Sequelize.fn('COUNT',Sequelize.literal(`CASE WHEN \`LOGISTICORDERSXMOVS->LOGISTICORDERSXITEMSMOVAMT\`.IDLOGISTICSTATUS = ${LogisticStatus.DELIVERED} THEN 1 ELSE NULL END`)),'QTITEMSFINALIZEDS']
                                 ],
                                 where:{
                                     [Op.and]:[{
-                                        ID:ids[key]
-                                    },Sequelize.where(Sequelize.literal('`LOGISTICORDERSXMOVS->MOVEMENTS`.IDORIGINDATA'),Sequelize.literal(OriginsDatas.WINTHOR))
+                                        id:ids[key]
+                                    },Sequelize.where(Sequelize.literal('`LOGISTICORDERSXMOVS->MOVEMENTS`.data_origin_id'),Sequelize.literal(OriginsDatas.WINTHOR))
                                     ]
                                 },
                                 include:[{                                
@@ -102,24 +102,24 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                     include: [{
                                         model: Movements.getModel(),
                                         attributes:[],
-                                        on:Sequelize.where(Sequelize.col(`LOGISTICORDERSXMOVS->MOVEMENTS.ID`),Sequelize.col(`${LogisticOrdersXMovs.name.toUpperCase()}.IDMOV`))
+                                        on:Sequelize.where(Sequelize.col(`LOGISTICORDERSXMOVS->MOVEMENTS.id`),Sequelize.col(`${LogisticOrdersXMovs.name.toLowerCase()}.IDMOV`))
                                     },{
                                         model: LogisticOrdersXItemsMovAmt.getModel(),
                                         attributes:[],
-                                        on:Sequelize.where(Sequelize.col(`LOGISTICORDERSXMOVS->LOGISTICORDERSXITEMSMOVAMT.IDLOGISTICORDERXMOV`),Sequelize.col(`${LogisticOrdersXMovs.name.toUpperCase()}.ID`))
+                                        on:Sequelize.where(Sequelize.col(`LOGISTICORDERSXMOVS->LOGISTICORDERSXITEMSMOVAMT.IDLOGISTICORDERXMOV`),Sequelize.col(`${LogisticOrdersXMovs.name.toLowerCase()}.id`))
                                         
                                     }]
                                 }],
                                 group:[
-                                    Sequelize.col(`${LogisticOrders.name.toUpperCase()}.IDONORIGINDATA`),
+                                    Sequelize.col(`${LogisticOrders.name.toLowerCase()}.id_at_origin`),
                                     Sequelize.col('LOGISTICORDERSXMOVS.IDLOGISTICSTATUS'),
-                                    Sequelize.col('LOGISTICORDERSXMOVS->MOVEMENTS.IDORIGINDATA'),
-                                    Sequelize.col('LOGISTICORDERSXMOVS->MOVEMENTS.IDONORIGINDATA')
+                                    Sequelize.col('LOGISTICORDERSXMOVS->MOVEMENTS.data_origin_id'),
+                                    Sequelize.col('LOGISTICORDERSXMOVS->MOVEMENTS.id_at_origin')
                                 ]
                             });
                             if (logOrder && logOrder.length) {
                                 for(let kl in logOrder) {
-                                    if (logOrder[kl].IDORIGINDATANF == OriginsDatas.WINTHOR) {
+                                    if (logOrder[kl].data_origin_idNF == OriginsDatas.WINTHOR) {
                                         let wintConnection = DBConnectionManager.getWinthorDBConnection();
 
                                         let nfWint = await PcNfsaid.getModel().findOne({
@@ -139,7 +139,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                                     select 
                                                         count(1) as "EXISTS" 
                                                     FROM 
-                                                        jumbo.PCFECHAMENTOMAP 
+                                                        JUMBO.PCFECHAMENTOMAP 
                                                     where 
                                                         NUMTRANSVENDA = ${nfWint.NUMTRANSVENDA} `,
                                                     {raw:true,queryType:QueryTypes.SELECT});
@@ -162,7 +162,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                                                 P.CODFUNCULTALTER,        
                                                                 P.TIPOOPERACAOTEF   
                                                             from 
-                                                                jumbo.PCPREST P 
+                                                                JUMBO.PCPREST P 
                                                             WHERE P.NUMTRANSVENDA = ${logOrder[kl].NUMTRANSVENDA}
                                                                 AND P.CODCLI = ${nfWint.CODCLI}
                                                                 AND P.CODFILIAL = ${nfWint.CODFILIAL}
@@ -348,10 +348,10 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
         try {
             if (numcarsWint) {
                 let where = {
-                    IDORIGINDATA : OriginsDatas.WINTHOR
+                    data_origin_id : OriginsDatas.WINTHOR
                 };
                 if (Utils.typeOf(numcarsWint) != 'array') numcarsWint = numcarsWint.toString().split(',');
-                where.IDONORIGINDATA = {
+                where.id_at_origin = {
                     [Sequelize.Op.in] : numcarsWint
                 }
 
@@ -378,9 +378,9 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                     if (Utils.typeOf(originsIds) != 'array') originsIds = originsIds.toString().split(',');      
                     result = originsIds.map(el=>{
                         return {
-                            IDUSERCREATE: Users.SYSTEM,
-                            IDORIGINDATA: OriginsDatas.WINTHOR,
-                            IDONORIGINDATA:el,
+                            creator_user_id: Users.SYSTEM,
+                            data_origin_id: OriginsDatas.WINTHOR,
+                            id_at_origin:el,
                             IDLOGISTICMOVTYPE: LogisticMovTypes.DELIVERY,
                             IDIDENTIFIERTYPE: IdentifiersTypes.CODE,
                             IDENTIFIER: el,
@@ -422,14 +422,14 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                     ]
                 }
 
-                //check relationship pccarreg (codmotorista) for olny allow download with relationed driver
+                //check relationship PCCARREG (codmotorista) for olny allow download with relationed driver
                 let dataRels = await DatasRelationships.getModel().findAll({
                     raw:true,
                     where:{
-                        IDTABLE1: Users.ID,
-                        IDREG1: req.user.ID,
-                        IDTABLE2: PcCarreg.ID,
-                        IDSTATUSREG: StatusRegs.ACTIVE
+                        IDTABLE1: Users.id,
+                        IDREG1: req.user.id,
+                        IDTABLE2: PcCarreg.id,
+                        status_reg_id: StatusRegs.ACTIVE
                     }
                 });
                 if (dataRels && dataRels.length) {
@@ -460,7 +460,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                 res.data = await PcCarreg.getModel().findAll({
                     raw:true,
                     attributes: [
-                        Sequelize.literal('0 AS IDORIGINDATA'),
+                        Sequelize.literal('0 AS data_origin_id'),
                         ['NUMCAR','IDLOADORIGIN'],
                         'DTSAIDA',
                         ['CODMOTORISTA','IDMOTORISTAORIGEM'],
@@ -506,7 +506,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                             from
                                 (
                                     select
-                                        0 as IDORIGINDATA,
+                                        0 as data_origin_id,
                                         c.CODCLI AS IDCLIENTORIGIN,
                                         to_number(regexp_replace(c.CGCENT,'[^0-9]','')) as CGC,
                                         c.CLIENTE AS NOME,
@@ -520,21 +520,21 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                         c.CODUSUR1 as IDVENDEDOR1ORIGEM,
                                         c.CODUSUR2 as IDVENDEDOR2ORIGEM
                                     from
-                                        jumbo.pccarreg cr 
-                                        join jumbo.pcnfsaid s on (
+                                        JUMBO.PCCARREG cr 
+                                        join JUMBO.PCNFSAID s on (
                                             s.numcar = cr.numcar
                                             and s.dtcancel is null
                                         )
-                                        join jumbo.pcmov m on (                                            
+                                        join JUMBO.PCMOV m on (                                            
                                             m.numtransvenda = s.numtransvenda
                                             and m.dtcancel is null
                                         )
-                                        join jumbo.pcclient c on c.codcli = s.codcli
+                                        join JUMBO.PCCLIENT c on c.codcli = s.codcli
                                     where
                                         cr.numcar = ${res.data[key].IDLOADORIGIN}
                                     union 
                                     select
-                                        decode(cj.codcli,null,1,0) as IDORIGINDATA,
+                                        decode(cj.codcli,null,1,0) as data_origin_id,
                                         nvl(cj.codcli,p.COD) AS IDCLIENTORIGIN,
                                         to_number(regexp_replace(nvl(cj.cgcent,p.coddocidentificador),'[^0-9]','')) as CGC,
                                         nvl(cj.cliente,p.NOMERAZAO) AS NOME,
@@ -548,21 +548,21 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                         nvl(cj.codusur1,c.codvendedor1) AS IDVENDEDOR1ORIGEM,
                                         nvl(cj.codusur2,c.codvendedor2) AS IDVENDEDOR2ORIGEM
                                     from
-                                        ep.epunifcargas u 
-                                        join ep.epnfssaida s on (
+                                        EP.EPUNIFCARGAS u 
+                                        join EP.EPNFSSAIDA s on (
                                             s.nrcarga = u.nrcarga
                                             and s.dtcancel is null
                                         )
-                                        join ep.epmovimentacoessaida m on (                                            
+                                        join EP.EPMOVIMENTACOESSAIDA m on (                                            
                                             m.codnfsaida = s.cod
                                             and m.dtcancel is null
                                         )
-                                        join ep.epclientes c on c.cod = s.codcliente
-                                        join ep.eppessoas p on p.cod = c.codpessoa
-                                        left outer join ep.epcidades ci on ci.cod = p.codcidade
-                                        left outer join jumbo.pcclient cj on cj.codcli = p.cod
+                                        join EP.EPCLIENTES c on c.cod = s.codcliente
+                                        join EP.EPPESSOAS p on p.cod = c.codpessoa
+                                        left outer join EP.EPCIDADES ci on ci.cod = p.codcidade
+                                        left outer join JUMBO.PCCLIENT cj on cj.codcli = p.cod
                                     where
-                                        u.ID = (select u2.ID from ep.epunifcargas u2 where u2.NRCARGA = ${res.data[key].IDLOADORIGIN})
+                                        u.id = (select u2.id from EP.EPUNIFCARGAS u2 where u2.NRCARGA = ${res.data[key].IDLOADORIGIN})
                                         and u.IDORIGEMINFO = 1
                                 )
                             order by
@@ -579,8 +579,8 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                             let nfsWinthor = await PcNfsaid.getModel().findAll({
                                 raw:true,
                                 attributes:[
-                                    Sequelize.literal('0 as IDORIGINDATA'),
-                                    ['NUMTRANSVENDA','IDONORIGINDATA'],
+                                    Sequelize.literal('0 as data_origin_id'),
+                                    ['NUMTRANSVENDA','id_at_origin'],
                                     ['NUMNOTA','IDINVOICEORIGIN'],
                                     ['DTSAIDA','DTEMISSAO'],
                                     ['CODCOB','IDFINANCIALCOLLECTIONORIGIN'],
@@ -629,8 +629,8 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                         '[' || (SELECT
                                             listagg('{"IDLOTEORIGEM":"'||l.numlote||'","DTVALIDADE":"'||l.dtvalidade||'","QT":'||replace(to_char(coalesce(m2.qt,m2.qtcont,0),'999999999990.9999990'),',','.')||'}',',') within group (order by m.numtransvenda,m.codprod)
                                         FROM
-                                            jumbo.pclote l 
-                                            join jumbo.pcmov m2 on (
+                                            JUMBO.PCLOTE l 
+                                            join JUMBO.PCMOV m2 on (
                                                 m2.codprod = l.codprod
                                                 and m2.numtransvenda = m.numtransvenda
                                                 and m2.codprod = m.codprod
@@ -642,14 +642,14 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                         ) || ']' AS LOTS,
                                         m.NUMTRANSVENDA
                                     from
-                                        jumbo.pcnfsaid s
-                                        join jumbo.pcmov m on (
+                                        JUMBO.PCNFSAID s
+                                        join JUMBO.PCMOV m on (
                                             m.numtransvenda = s.numtransvenda
                                             and m.dtcancel is null
                                             and coalesce(m.qt,m.qtcont) > 0
                                         )
-                                        join jumbo.pcprodut p on p.codprod = m.codprod
-                                        left outer join jumbo.pclote l on (
+                                        join JUMBO.PCPRODUT p on p.codprod = m.codprod
+                                        left outer join JUMBO.PCLOTE l on (
                                             l.codfilial = coalesce(m.codfilialretira,m.codfilial) 
                                             and l.codprod = m.codprod 
                                             and l.numlote = m.numlote
@@ -705,8 +705,8 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                             //find invoice data on broker (aurora)
                             query = `
                                 select
-                                    1 AS IDORIGINDATA,
-                                    s.cod as IDONORIGINDATA,
+                                    1 AS data_origin_id,
+                                    s.cod as id_at_origin,
                                     s.NUMNOTAORIGEM AS IDINVOICEORIGIN,
                                     s.DTEMISSAO,
                                     null as IDFINANCIALCOLLECTIONORIGIN,
@@ -718,10 +718,10 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                     S.CODCLIENTE,
                                     s.CHAVENFE
                                 from
-                                    ep.epnfssaida s
+                                    EP.EPNFSSAIDA s
                                     JOIN EP.EPMOVIMENTACOESSAIDA ms on ms.codnfsaida = s.cod
                                 where
-                                    s.nrcarga = (select u2.nrcarga from ep.epunifcargas u2 where u2.idorigeminfo = 1 and u2.id = (select u.id from ep.epunifcargas u where u.idorigeminfo = 0 and u.nrcarga = ${res.data[key].IDLOADORIGIN}) and u2.idorigeminfo = 1)
+                                    s.nrcarga = (select u2.nrcarga from EP.EPUNIFCARGAS u2 where u2.idorigeminfo = 1 and u2.id = (select u.id from EP.EPUNIFCARGAS u where u.idorigeminfo = 0 and u.nrcarga = ${res.data[key].IDLOADORIGIN}) and u2.idorigeminfo = 1)
                                 GROUP BY
                                     1,
                                     s.NUMNOTAORIGEM,
@@ -755,15 +755,15 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                         '[]' AS LOTS,
                                         m.CODNFSAIDA
                                     from
-                                        ep.epnfssaida s
-                                        join ep.epmovimentacoessaida m on (
+                                        EP.EPNFSSAIDA s
+                                        join EP.EPMOVIMENTACOESSAIDA m on (
                                             m.codnfsaida = s.cod
                                             and m.dtcancel is null
                                             and coalesce(m.qtsaida,0) > 0
                                         )
-                                        left outer join jumbo.pcprodut p on p.codprod = m.codprod
+                                        left outer join JUMBO.PCPRODUT p on p.codprod = m.codprod
                                     where
-                                        s.nrcarga = (select u2.nrcarga from ep.epunifcargas u2 where u2.idorigeminfo = 1 and u2.id = (select u.id from ep.epunifcargas u where u.idorigeminfo = 0 and u.nrcarga = ${res.data[key].IDLOADORIGIN}))
+                                        s.nrcarga = (select u2.nrcarga from EP.EPUNIFCARGAS u2 where u2.idorigeminfo = 1 and u2.id = (select u.id from EP.EPUNIFCARGAS u where u.idorigeminfo = 0 and u.nrcarga = ${res.data[key].IDLOADORIGIN}))
                                         and s.dtcancel is null     
                                     group by
                                         m.CODPROD,

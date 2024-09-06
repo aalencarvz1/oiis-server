@@ -24,23 +24,23 @@ class MidiasController extends RegistersController{
                 let midia = null;
 
                 for(let key in registers) {
-                    let file = req.files.filter(el=>el.originalname.trim().toUpperCase() == registers[key].NAME.trim().toUpperCase())[0];
+                    let file = req.files.filter(el=>el.originalname.trim().name.toLowerCase() == registers[key].NAME.trim().name.toLowerCase())[0];
                     if (Utils.hasValue(file)) {
                         console.log('FL','file',file);
                         tablesRefs[registers[key].TABLENAME] = tablesRefs[registers[key].TABLENAME] || await DataTables.getModel().findOne({
                             raw:true,
                             where:{
-                                NAME: registers[key].TABLENAME.trim().toUpperCase()
+                                NAME: registers[key].TABLENAME.trim().name.toLowerCase()
                             }
                         });
 
                         if (registers[key].IDONSERVER) {
                             midia = await Midias.getModel().findOne({
                                 where:{
-                                    ID:registers[key].IDONSERVER
+                                    id:registers[key].IDONSERVER
                                 }
                             });
-                            midia.IDTABLEREF = tablesRefs[registers[key].TABLENAME].ID;
+                            midia.IDTABLEREF = tablesRefs[registers[key].TABLENAME].id;
                             midia.IDREGISTERREF= registers[key].IDREGISTERREF;
                             midia.NAME= file.filename;
                             midia.TYPE= registers[key].TYPE || file.mimetype;
@@ -49,7 +49,7 @@ class MidiasController extends RegistersController{
                             await midia.save();
                         } else {
                             midia = await Midias.getModel().create({
-                                IDTABLEREF : tablesRefs[registers[key].TABLENAME].ID,
+                                IDTABLEREF : tablesRefs[registers[key].TABLENAME].id,
                                 IDREGISTERREF: registers[key].IDREGISTERREF,
                                 NAME: file.filename,
                                 TYPE: registers[key].TYPE || file.mimetype,
@@ -58,8 +58,8 @@ class MidiasController extends RegistersController{
                             });                    
                         }
                         rMidias.push({
-                            ID:registers[key].ID,
-                            IDONSERVER: midia.ID
+                            id:registers[key].id,
+                            IDONSERVER: midia.id
                         });
                     }
                 }            

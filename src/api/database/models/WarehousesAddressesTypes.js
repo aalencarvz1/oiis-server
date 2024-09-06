@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class WarehousesAddressesTypes extends BaseTableModel {
-  static ID = 3003;
+  static id = 3003;
   static model = null;
   static fields = {
     ...WarehousesAddressesTypes.getBaseTableModelFields(),...{           
@@ -36,11 +36,11 @@ class WarehousesAddressesTypes extends BaseTableModel {
 
   static constraints = [...(WarehousesAddressesTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: WarehousesAddressesTypes.name.toUpperCase() + '_U1',
+      name: WarehousesAddressesTypes.name.toLowerCase() + '_u1',
       fields: [...WarehousesAddressesTypes.getBaseTableModelUniqueFields(),...WarehousesAddressesTypes.uniqueFields],
       type:"unique"
     },{
-      name: WarehousesAddressesTypes.name.toUpperCase() + '_C_1',
+      name: WarehousesAddressesTypes.name.toLowerCase() + '_c_1',
       fields:['ISSTORABLE'],
       type:"check",
       where:{
@@ -49,7 +49,7 @@ class WarehousesAddressesTypes extends BaseTableModel {
           }
       }
     },{
-      name: WarehousesAddressesTypes.name.toUpperCase() + '_C_2',
+      name: WarehousesAddressesTypes.name.toLowerCase() + '_c_2',
       fields:['ISPASSABLE'],
       type:"check",
       where:{

@@ -8,13 +8,13 @@ const { Users } = require('../models/Users');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(ValuesNames.name.toUpperCase(),[{      
-      ID:ValuesNames.INVOICENUM,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+    await queryInterface.bulkInsert(ValuesNames.name.toLowerCase(),[{      
+      id:ValuesNames.INVOICENUM,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'INVOICENUM'
     }],{
       ignoreDuplicates:true,
@@ -24,6 +24,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(ValuesNames.name.toUpperCase(), null, {});
+     await queryInterface.bulkDelete(ValuesNames.name.toLowerCase(), null, {});
   }
 };

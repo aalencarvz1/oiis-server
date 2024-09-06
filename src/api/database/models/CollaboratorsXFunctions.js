@@ -11,7 +11,7 @@ const { CollaboratorsContracts } = require("./CollaboratorsContracts");
  * class model
  */
 class CollaboratorsXFunctions extends BaseTableModel {
-  static ID = 6003;
+  static id = 6003;
   static model = null;
   static fields = {
     ...CollaboratorsXFunctions.getBaseTableModelFields(),...{           
@@ -48,11 +48,11 @@ class CollaboratorsXFunctions extends BaseTableModel {
 
   static constraints = [...(CollaboratorsXFunctions.getBaseTableModelConstraints() || []),...[
     {
-      name: CollaboratorsXFunctions.name.toUpperCase() + '_U1',
+      name: CollaboratorsXFunctions.name.toLowerCase() + '_u1',
       fields: [...CollaboratorsXFunctions.getBaseTableModelUniqueFields(),...CollaboratorsXFunctions.uniqueFields],
       type:"unique"
     },{
-      name: CollaboratorsXFunctions.name.toUpperCase() + '_C_1',
+      name: CollaboratorsXFunctions.name.toLowerCase() + '_c_1',
       fields:['ISTIMECONTROLLED'],
       type:"check",
       where:{
@@ -69,7 +69,7 @@ class CollaboratorsXFunctions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: CollaboratorsContracts,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -78,7 +78,7 @@ class CollaboratorsXFunctions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: CollaboratorsFunctions,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

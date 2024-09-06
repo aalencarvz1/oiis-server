@@ -11,7 +11,7 @@ const { AddressesTypes } = require("./AddressesTypes");
  * class model
  */
 class PostalCodes extends BaseTableModel {
-  static ID = 2008;
+  static id = 2008;
   static model = null;
   static fields = {
     ...PostalCodes.getBaseTableModelFields(),...{           
@@ -41,7 +41,7 @@ class PostalCodes extends BaseTableModel {
 
   static constraints = [...(PostalCodes.getBaseTableModelConstraints() || []),...[
     {
-      name: PostalCodes.name.toUpperCase() + '_U1',
+      name: PostalCodes.name.toLowerCase() + '_u1',
       fields: [...PostalCodes.getBaseTableModelUniqueFields(),...PostalCodes.uniqueFields],
       type:"unique"
     }
@@ -53,7 +53,7 @@ class PostalCodes extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: AddressesTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -62,7 +62,7 @@ class PostalCodes extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Cities,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

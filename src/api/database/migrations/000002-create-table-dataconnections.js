@@ -17,40 +17,40 @@ module.exports = {
   
   async up(queryInterface, Sequelize) {
     await DataConnections.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});          
-    await queryInterface.bulkInsert(DataConnections.name.toUpperCase(),[{      
-      ID:configDB[`${process.env.NODE_ENV||'development'}`].ID,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+    await queryInterface.bulkInsert(DataConnections.name.toLowerCase(),[{      
+      id:configDB[`${process.env.NODE_ENV||'development'}`].id,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : process.env.NODE_ENV,
       ISDEFAULT : 1
     },{      
-      ID:configDB[`${process.env.NODE_ENV||'development'}_winthor`].ID,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.WINTHOR,
-      ISSYSTEMREG : 1,
+      id:configDB[`${process.env.NODE_ENV||'development'}_winthor`].id,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.WINTHOR,
+      is_sys_rec : 1,
       NAME : `WINTHOR`,
       ISDEFAULT : 0
     },{      
-      ID:configDB[`${process.env.NODE_ENV||'development'}_consult`].ID,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.CONSULTA,
-      ISSYSTEMREG : 1,
+      id:configDB[`${process.env.NODE_ENV||'development'}_consult`].id,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.CONSULTA,
+      is_sys_rec : 1,
       NAME : `CONSULTA`,
       ISDEFAULT : 0
     },{      
-      ID:configDB[`${process.env.NODE_ENV||'development'}_ep`].ID,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.EP,
-      ISSYSTEMREG : 1,
+      id:configDB[`${process.env.NODE_ENV||'development'}_ep`].id,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.EP,
+      is_sys_rec : 1,
       NAME : `EP`,
       ISDEFAULT : 0
     }],{
@@ -60,6 +60,6 @@ module.exports = {
     await DataTables.migrateForeignKeyContraint(queryInterface,DataConnections);
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(DataConnections.name.toUpperCase());
+    await queryInterface.dropTable(DataConnections.name.toLowerCase());
   }
 };

@@ -19,22 +19,22 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await StatusRegs.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});         
 
-    await queryInterface.bulkInsert(StatusRegs.name.toUpperCase(),[{
-      ID: StatusRegs.ACTIVE,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+    await queryInterface.bulkInsert(StatusRegs.name.toLowerCase(),[{
+      id: StatusRegs.ACTIVE,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'ACTIVE',
       ISACTIVE:1      
     },{
-      ID: StatusRegs.INACTIVE,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id: StatusRegs.INACTIVE,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'INACTIVE',
       ISACTIVE:1     
     }],{
@@ -56,6 +56,6 @@ module.exports = {
     await StatusRegs.migrateForeignKeyContraint(queryInterface,OriginsDatas);  
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(StatusRegs.name.toUpperCase());
+    await queryInterface.dropTable(StatusRegs.name.toLowerCase());
   }
 };

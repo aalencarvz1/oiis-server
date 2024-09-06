@@ -22,7 +22,7 @@ class CompaniesIntegrationsController extends RegistersController{
                 raw : true,
                 attributes:[
                     ...Object.keys(PcFilial.fields),
-                    [Sequelize.literal(`(select c.CGCENT from jumbo.pcclient c where c.CODCLI = PCFILIAL.CODCLI)`), 'CGCENT']
+                    [Sequelize.literal(`(select c.CGCENT from JUMBO.PCCLIENT c where c.CODCLI = PCFILIAL.CODCLI)`), 'CGCENT']
                 ],
                 where:{
                     CODIGO:winthorFilialCode
@@ -101,7 +101,7 @@ class CompaniesIntegrationsController extends RegistersController{
 
             let queryParams = {
                 where: {
-                    IDPEOPLE: people.ID
+                    IDPEOPLE: people.id
                 }
             };
             if (transaction) queryParams.transaction = transaction;
@@ -110,7 +110,7 @@ class CompaniesIntegrationsController extends RegistersController{
             if (!Utils.hasValue(company)) {
                 queryParams = {
                     where: {
-                        ID: pcFilialCompany.CODIGO
+                        id: pcFilialCompany.CODIGO
                     }
                 };
                 company = await Companies.getModel().findOne(queryParams);
@@ -120,14 +120,14 @@ class CompaniesIntegrationsController extends RegistersController{
 
             //try preserve winthor code, if unique or primary key viloated, then raise exception here
             if (Utils.hasValue(company)) {
-                if (company.ID != pcFilialCompany.CODIGO) company.ID = pcFilialCompany.CODIGO; 
-                if (company.IDPEOPLE != people.ID) company.IDPEOPLE = people.ID;                    
+                if (company.id != pcFilialCompany.CODIGO) company.id = pcFilialCompany.CODIGO; 
+                if (company.IDPEOPLE != people.id) company.IDPEOPLE = people.id;                    
                 await company.save(options);                
             } else {
                 company = await Companies.getModel().create({                    
-                    ID : pcFilialCompany.CODIGO,
-                    IDORIGINDATA: OriginsDatas.WINTHOR,
-                    IDPEOPLE: people.ID
+                    id : pcFilialCompany.CODIGO,
+                    data_origin_id: OriginsDatas.WINTHOR,
+                    IDPEOPLE: people.id
                 },options)
             }
             return company;

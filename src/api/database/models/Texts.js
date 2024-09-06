@@ -10,7 +10,7 @@ const { Languages } = require("./Languages");
  * class model
  */
 class Texts extends BaseTableModel {
-  static ID = 249;
+  static id = 249;
   static model = null;
   static fields = {
     ...Texts.getBaseTableModelFields(),...{     
@@ -35,7 +35,7 @@ class Texts extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Languages,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

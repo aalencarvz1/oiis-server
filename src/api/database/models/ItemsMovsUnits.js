@@ -14,7 +14,7 @@ const { IdentifiersTypes } = require("./IdentifiersTypes");
  * class model
  */
 class ItemsMovsUnits extends BaseTableModel {
-  static ID = 9036;
+  static id = 9036;
   static model = null;
   static fields = {
     ...ItemsMovsUnits.getBaseTableModelFields(),...{                 
@@ -89,7 +89,7 @@ class ItemsMovsUnits extends BaseTableModel {
 
   static constraints = [...(ItemsMovsUnits.getBaseTableModelConstraints() || []),...[
     {
-      name: ItemsMovsUnits.name.toUpperCase() + '_U1',
+      name: ItemsMovsUnits.name.toLowerCase() + '_u1',
       fields: [...ItemsMovsUnits.getBaseTableModelUniqueFields(),...ItemsMovsUnits.uniqueFields],
       type:"unique"
     }
@@ -101,7 +101,7 @@ class ItemsMovsUnits extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: ItemsMovsAmounts,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -111,7 +111,7 @@ class ItemsMovsUnits extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: IdentifiersTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -120,7 +120,7 @@ class ItemsMovsUnits extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: MeasurementsUnits,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -129,7 +129,7 @@ class ItemsMovsUnits extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Packagings,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -138,7 +138,7 @@ class ItemsMovsUnits extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: MovementsStatus,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -147,7 +147,7 @@ class ItemsMovsUnits extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: MeasurementsUnits,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

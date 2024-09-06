@@ -10,7 +10,7 @@ const { SqlObjectsTypes } = require("./SqlObjectsTypes");
  * class model
  */
 class SqlObjects extends BaseTableModel {
-  static ID = 10004;
+  static id = 10004;
   static model = null;
 
   static fields = {
@@ -40,7 +40,7 @@ class SqlObjects extends BaseTableModel {
 
   static constraints = [...(SqlObjects.getBaseTableModelConstraints() || []),...[
     {
-      name: SqlObjects.name.toUpperCase() + '_U1',
+      name: SqlObjects.name.toLowerCase() + '_u1',
       fields: SqlObjects.uniqueFields,
       type:"unique"
     }
@@ -52,7 +52,7 @@ class SqlObjects extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: SqlObjectsTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -61,7 +61,7 @@ class SqlObjects extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: SqlObjects,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'

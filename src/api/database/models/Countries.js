@@ -10,7 +10,7 @@ const { Continents } = require("./Continents");
  * class model
  */
 class Countries extends BaseTableModel {
-  static ID = 2001;
+  static id = 2001;
   static model = null;
   static fields = {
     ...Countries.getBaseTableModelFields(),...{           
@@ -35,7 +35,7 @@ class Countries extends BaseTableModel {
 
   static constraints = [...(Countries.getBaseTableModelConstraints() || []),...[
     {
-      name: Countries.name.toUpperCase() + '_U1',
+      name: Countries.name.toLowerCase() + '_u1',
       fields: [...Countries.getBaseTableModelUniqueFields(),...Countries.uniqueFields],
       type:"unique"
     }
@@ -47,7 +47,7 @@ class Countries extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Continents,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

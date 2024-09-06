@@ -12,11 +12,11 @@ const { Suppliers } = require("./Suppliers");
  * class model
  */
 class PacksXPacksOrigins extends BaseTableModel {
-  static ID = 30800;
+  static id = 30800;
   static model = null;
   static fields = {
     ...PacksXPacksOrigins.getBaseTableModelFields(),...{                 
-      /*idorigindata:{
+      /*data_origin_id:{
         type: DataTypes.BIGINT.UNSIGNED
       }, already exists*/
       IDSUPPLIER:{
@@ -40,7 +40,7 @@ class PacksXPacksOrigins extends BaseTableModel {
 
   static constraints = [...(PacksXPacksOrigins.getBaseTableModelConstraints() || []),...[
     {
-      name: PacksXPacksOrigins.name.toUpperCase() + '_U1',
+      name: PacksXPacksOrigins.name.toLowerCase() + '_u1',
       fields: [...PacksXPacksOrigins.getBaseTableModelUniqueFields(),...PacksXPacksOrigins.uniqueFields],
       type:"unique"
     }
@@ -48,11 +48,11 @@ class PacksXPacksOrigins extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     /*{
-      fields: ['idorigindata'],
+      fields: ['data_origin_id'],
       type: 'foreign key',
       references: { 
           table: OriginsDatas,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },*/
@@ -61,7 +61,7 @@ class PacksXPacksOrigins extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Suppliers,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },{
@@ -69,7 +69,7 @@ class PacksXPacksOrigins extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Packagings,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

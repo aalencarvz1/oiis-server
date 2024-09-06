@@ -12,7 +12,7 @@ const { IdentifiersTypes } = require("./IdentifiersTypes");
  * class model
  */
 class WarehousesAddressesDimensions extends BaseTableModel {
-  static ID = 3006;
+  static id = 3006;
   static model = null;
   static fields = {
     ...WarehousesAddressesDimensions.getBaseTableModelFields(),...{           
@@ -46,7 +46,7 @@ class WarehousesAddressesDimensions extends BaseTableModel {
 
   static constraints = [...(WarehousesAddressesDimensions.getBaseTableModelConstraints() || []),...[
     {
-      name: WarehousesAddressesDimensions.name.toUpperCase() + '_U1',
+      name: WarehousesAddressesDimensions.name.toLowerCase() + '_u1',
       fields: [...WarehousesAddressesDimensions.getBaseTableModelUniqueFields(),...WarehousesAddressesDimensions.uniqueFields],
       type:"unique"
     }
@@ -58,7 +58,7 @@ class WarehousesAddressesDimensions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: WarehousesAddresses,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -67,7 +67,7 @@ class WarehousesAddressesDimensions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: IdentifiersTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -76,7 +76,7 @@ class WarehousesAddressesDimensions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: MeasurementsUnits,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

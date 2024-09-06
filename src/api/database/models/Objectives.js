@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class Objectives extends BaseTableModel {
-  static ID = 9060;
+  static id = 9060;
   static model = null;
   static fields = {
     ...Objectives.getBaseTableModelFields(),...{                 
@@ -64,7 +64,7 @@ class Objectives extends BaseTableModel {
     type: 'foreign key',
     references: { 
         table: Objectives,
-        field: 'ID'
+        field: 'id'
     },
     onUpdate: 'cascade',
     onDelete: 'cascade'

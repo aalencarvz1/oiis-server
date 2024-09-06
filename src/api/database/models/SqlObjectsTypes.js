@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class SqlObjectsTypes extends BaseTableModel {
-  static ID = 10000;
+  static id = 10000;
   static model = null;
 
   static DATABASE = 1;
@@ -53,7 +53,7 @@ class SqlObjectsTypes extends BaseTableModel {
 
   static constraints = [...(SqlObjectsTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: SqlObjectsTypes.name.toUpperCase() + '_U1',
+      name: SqlObjectsTypes.name.toLowerCase() + '_u1',
       fields: SqlObjectsTypes.uniqueFields,
       type:"unique"
     }
@@ -65,7 +65,7 @@ class SqlObjectsTypes extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: SqlObjectsTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'

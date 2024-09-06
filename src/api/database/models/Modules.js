@@ -10,11 +10,11 @@ const modulesJson = require("../catalogs/modules.json");
  * class model
  */
 class Modules extends BaseTableModel {
-  static ID = 230;
+  static id = 230;
   static model = null;
 
-  static WMS = modulesJson.find((el) => el.NAME == "WMS")?.ID;
-  static LOGISTIC = modulesJson.find((el) => el.NAME == "LOGISTIC")?.ID;
+  static WMS = modulesJson.find((el) => el.NAME == "WMS")?.id;
+  static LOGISTIC = modulesJson.find((el) => el.NAME == "LOGISTIC")?.id;
 
   static fields = {
     ...Modules.getBaseTableModelFields(),...{     
@@ -47,7 +47,7 @@ class Modules extends BaseTableModel {
 
   static constraints = [...(Modules.getBaseTableModelConstraints() || []),...[
     {
-      name: Modules.name.toUpperCase() + '_U1',
+      name: Modules.name.toLowerCase() + '_u1',
       fields: Modules.uniqueFields,
       type:"unique"
     }
@@ -59,7 +59,7 @@ class Modules extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Modules,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

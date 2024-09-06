@@ -231,7 +231,7 @@ class EndPointsController extends BaseEndPointController{
                     res.sendResponse(200,true);
                     break;
                 case '/api/endpoints': 
-                    res.data = req.user?.ID ? this.#allEndPoints : this.#unsecureEndPoints;
+                    res.data = req.user?.id ? this.#allEndPoints : this.#unsecureEndPoints;
                     res.sendResponse(200,true);
                     break;
                 default:

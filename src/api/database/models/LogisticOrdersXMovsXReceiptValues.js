@@ -13,7 +13,7 @@ const { CurrenciesTypes } = require("./CurrenciesTypes");
  * class model
  */
 class LogisticOrdersXMovsXReceiptValues extends BaseTableModel {
-  static ID = 12006;
+  static id = 12006;
   static model = null;
   static fields = {
     ...LogisticOrdersXMovsXReceiptValues.getBaseTableModelFields(),...{    
@@ -85,7 +85,7 @@ class LogisticOrdersXMovsXReceiptValues extends BaseTableModel {
 
   static constraints = [...(LogisticOrdersXMovsXReceiptValues.getBaseTableModelConstraints() || []),...[
     {
-      name: LogisticOrdersXMovsXReceiptValues.name.toUpperCase() + '_U1',
+      name: LogisticOrdersXMovsXReceiptValues.name.toLowerCase() + '_u1',
       fields: [...LogisticOrdersXMovsXReceiptValues.getBaseTableModelUniqueFields(),...LogisticOrdersXMovsXReceiptValues.uniqueFields],
       type:"unique"
     }
@@ -97,7 +97,7 @@ class LogisticOrdersXMovsXReceiptValues extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: LogisticOrdersXMovsXReceiptValues,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -106,7 +106,7 @@ class LogisticOrdersXMovsXReceiptValues extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: LogisticOrders,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -115,7 +115,7 @@ class LogisticOrdersXMovsXReceiptValues extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: LogisticOrdersXMovs,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -125,7 +125,7 @@ class LogisticOrdersXMovsXReceiptValues extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: FinancialValueForms,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -134,7 +134,7 @@ class LogisticOrdersXMovsXReceiptValues extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: LogisticOrdersXItemsMovAmt,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -144,7 +144,7 @@ class LogisticOrdersXMovsXReceiptValues extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: CurrenciesTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -153,7 +153,7 @@ class LogisticOrdersXMovsXReceiptValues extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: CurrenciesTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

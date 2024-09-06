@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class TasksStatus extends BaseTableModel {
-  static ID = 15005;
+  static id = 15005;
   static model = null;
 
   static NOT_STARTED = 1;
@@ -60,7 +60,7 @@ class TasksStatus extends BaseTableModel {
 
   static constraints = [...(TasksStatus.getBaseTableModelConstraints() || []),...[
     {
-      name: TasksStatus.name.toUpperCase() + '_U1',
+      name: TasksStatus.name.toLowerCase() + '_u1',
       fields: TasksStatus.uniqueFields,
       type:"unique"
     }

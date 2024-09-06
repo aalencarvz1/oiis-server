@@ -15,7 +15,7 @@ const { LogisticReasons } = require("./LogisticReasons");
  * class model
  */
 class LogisticOrdersXMovs extends BaseTableModel {
-  static ID = 12004;
+  static id = 12004;
   static model = null;
   static fields = {
     ...LogisticOrdersXMovs.getBaseTableModelFields(),...{           
@@ -65,7 +65,7 @@ class LogisticOrdersXMovs extends BaseTableModel {
 
   static constraints = [...(LogisticOrdersXMovs.getBaseTableModelConstraints() || []),...[
     {
-      name: LogisticOrdersXMovs.name.toUpperCase() + '_U1',
+      name: LogisticOrdersXMovs.name.toLowerCase() + '_u1',
       fields: [...LogisticOrdersXMovs.getBaseTableModelUniqueFields(),...LogisticOrdersXMovs.uniqueFields],
       type:"unique"
     }
@@ -77,7 +77,7 @@ class LogisticOrdersXMovs extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: LogisticOrders,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -87,7 +87,7 @@ class LogisticOrdersXMovs extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Movements,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -97,7 +97,7 @@ class LogisticOrdersXMovs extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: ActionsStatus,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -106,7 +106,7 @@ class LogisticOrdersXMovs extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: LogisticStatus,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -115,7 +115,7 @@ class LogisticOrdersXMovs extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: LogisticReasons,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -124,7 +124,7 @@ class LogisticOrdersXMovs extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: LogisticReasons,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

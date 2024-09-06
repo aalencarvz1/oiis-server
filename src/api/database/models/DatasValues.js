@@ -12,7 +12,7 @@ const { Contexts } = require("./Contexts");
  * class model
  */
 class DatasValues extends BaseTableModel {
-  static ID = 1004;
+  static id = 1004;
   static model = null;
   static fields = {
     ...DatasValues.getBaseTableModelFields(),...{     
@@ -58,7 +58,7 @@ class DatasValues extends BaseTableModel {
 
   static constraints = [...(DatasValues.getBaseTableModelConstraints() || []),...[
     {
-      name: DatasValues.name.toUpperCase() + '_U1',
+      name: DatasValues.name.toLowerCase() + '_u1',
       fields: [...DatasValues.getBaseTableModelUniqueFields(),...DatasValues.uniqueFields],
       type:"unique"
     }
@@ -70,7 +70,7 @@ class DatasValues extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: DataTables,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },{
@@ -78,7 +78,7 @@ class DatasValues extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: ValuesNames,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },{
@@ -86,7 +86,7 @@ class DatasValues extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Contexts,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

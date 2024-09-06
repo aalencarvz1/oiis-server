@@ -80,9 +80,9 @@ class EpIntegrationsRegistersController extends RegistersController{
             result = await EpIntegrationsRegistersController.getPeopleByIdentifiersDocs(
                 identifiersDocs,{
                     attributes:[
-                        ['COD','ID'],
-                        [Sequelize.literal(`${OriginsDatas.EP}`),'IDORIGINDATA'],
-                        ['COD','IDONORIGINDATA'],
+                        ['COD','id'],
+                        [Sequelize.literal(`${OriginsDatas.EP}`),'data_origin_id'],
+                        ['COD','id_at_origin'],
                         [Sequelize.literal(`case when EPPESSOAS.CODTIPODOCIDENTIFICADOR = 1 AND LENGTH(EPPESSOAS.CODDOCIDENTIFICADOR) <= 11 then ${IdentifiersTypes.CPF} else ${IdentifiersTypes.CNPJ} end`),'IDIDENTIFIERDOCTYPE'],
                         [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CODDOCIDENTIFICADOR'),'[^0-9]',''),'DECIMAL(32)'),'IDENTIFIERDOC'],
                         ['NOMERAZAO','NAME'],
@@ -173,9 +173,9 @@ class EpIntegrationsRegistersController extends RegistersController{
             result = await EpIntegrationsRegistersController.getClientsByIdentifiersDocs(
                 identifiersDocs,{
                     attributes:[
-                        ['COD','ID'],
-                        [Sequelize.literal(`${OriginsDatas.EP}`),'IDORIGINDATA'],
-                        ['CODPESSOA','IDONORIGINDATA'],
+                        ['COD','id'],
+                        [Sequelize.literal(`${OriginsDatas.EP}`),'data_origin_id'],
+                        ['CODPESSOA','id_at_origin'],
                         ['CODPESSOA','IDPEOPLE']
                     ]
                 }
@@ -197,9 +197,9 @@ class EpIntegrationsRegistersController extends RegistersController{
                 raw:true,
                 where:{
                     IDRELATIONSHIPTYPE: [DataRelationshipTypes.EP_ID],
-                    IDTABLE1: Users.ID,
-                    IDREG1: req.user.ID,
-                    IDTABLE2: EpTrabalhadores.ID
+                    IDTABLE1: Users.id,
+                    IDREG1: req.user.id,
+                    IDTABLE2: EpTrabalhadores.id
                 }
             });
             if (dataRel && dataRel.length) {
@@ -232,16 +232,16 @@ class EpIntegrationsRegistersController extends RegistersController{
                 raw:true,
                 where:{
                     IDRELATIONSHIPTYPE: [DataRelationshipTypes.EP_ID],
-                    IDTABLE1: Users.ID,
-                    IDREG1: req?.user.ID ,
-                    IDTABLE2: EpVendedores.ID
+                    IDTABLE1: Users.id,
+                    IDREG1: req?.user.id ,
+                    IDTABLE2: EpVendedores.id
                 }
             });
             if (dataRel && dataRel.length) {
                 rcas = dataRel.map(el=>el.IDREG2).join(',');
             }
         }
-        if (!rcas) rcas = `select ev.cod from ep.epvendedores ev`;
+        if (!rcas) rcas = `select ev.cod from EP.EPVENDEDORES ev`;
         return rcas;
     }
 }

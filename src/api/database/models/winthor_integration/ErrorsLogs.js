@@ -8,7 +8,7 @@ const { BaseWinthorIntegrationTableModel } = require("./BaseWinthorIntegrationTa
  * class model
  */
 class ErrorsLogs extends BaseWinthorIntegrationTableModel {
-  static ID = 35000;
+  static id = 35000;
   static model = null;
   static fields = {
     ...ErrorsLogs.getBaseTableModelFields(),...{                 

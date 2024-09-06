@@ -10,7 +10,7 @@ const { CommissionsItems } = require('./CommissionsItems');
  * class model
  */
 class CommissionsValues extends BaseTableModel {
-  static ID = 9052;
+  static id = 9052;
   static model = null;
   static fields = {
     ...CommissionsValues.getBaseTableModelFields(),...{                 
@@ -45,7 +45,7 @@ class CommissionsValues extends BaseTableModel {
     type: 'foreign key',
     references: { 
         table: CommissionsItems,
-        field: 'ID'
+        field: 'id'
     },
     onUpdate: 'cascade',
     onDelete: 'cascade'

@@ -11,13 +11,13 @@ const { AccessesProfiles } = require('../models/AccessesProfiles');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(Permissions.name.toUpperCase(),[{      
-      ID:Users.SYSTEM,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+    await queryInterface.bulkInsert(Permissions.name.toLowerCase(),[{      
+      id:Users.SYSTEM,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       IDPOWERTYPE: PowersTypes.SYSTEM,
       IDACCESSPROFILE: AccessesProfiles.SYSTEM,
       ALLOWEDACCESS: 1,
@@ -33,6 +33,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(Permissions.name.toUpperCase(), null, {});
+     await queryInterface.bulkDelete(Permissions.name.toLowerCase(), null, {});
   }
 };

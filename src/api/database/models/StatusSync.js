@@ -10,7 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class StatusSync extends BaseTableModel {
-  static ID = 66;
+  static id = 66;
   static model = null;
   static fields = {
     ...StatusSync.getBaseTableModelFields(),...{
@@ -32,11 +32,11 @@ class StatusSync extends BaseTableModel {
 
   static constraints = [...(StatusSync.getBaseTableModelConstraints() || []),...[
     {
-      name: StatusSync.name.toUpperCase() + '_U1',
+      name: StatusSync.name.toLowerCase() + '_u1',
       fields: [...StatusSync.getBaseTableModelUniqueFields(),...StatusSync.uniqueFields],
       type:"unique"
     },{
-      name: StatusSync.name.toUpperCase() + '_C_1',
+      name: StatusSync.name.toLowerCase() + '_c_1',
       fields:['SYNCRONIZED'],
       type:"check",
       where:{

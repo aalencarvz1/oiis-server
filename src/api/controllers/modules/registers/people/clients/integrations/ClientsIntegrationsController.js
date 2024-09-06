@@ -64,7 +64,7 @@ class ClientsIntegrationsController extends RegistersController{
                     });
                 }
 
-                if (!pcClient) throw new Error(`cgcent not found in pcclient: ${winthorCgc}`);           
+                if (!pcClient) throw new Error(`cgcent not found in PCCLIENT: ${winthorCgc}`);           
 
                 let people = await PeopleIntegrationsController.integrateWinthorPeople([{
                     TIPOFJ: pcClient.TIPOFJ,
@@ -80,7 +80,7 @@ class ClientsIntegrationsController extends RegistersController{
                 let queryParams = {};
                 if (transaction) queryParams.transaction = transaction;
                 queryParams.where = {
-                    IDPEOPLE: people.ID
+                    IDPEOPLE: people.id
                 }
 
                 let client = await Clients.getModel().findOne(queryParams);
@@ -98,15 +98,15 @@ class ClientsIntegrationsController extends RegistersController{
 
                 //preserve winthor code, if violate primary key or unique, raise here
                 if (client) {
-                    if (client.ID != pcClient.CODCLI) client.ID = pcClient.CODCLI;
-                    if (client.IDPEOPLE != people.ID) client.IDPEOPLE = people.ID;
+                    if (client.id != pcClient.CODCLI) client.id = pcClient.CODCLI;
+                    if (client.IDPEOPLE != people.id) client.IDPEOPLE = people.id;
                     await client.save(options);
                 } else {
                     client = await Clients.getModel().create({
-                        ID: pcClient.CODCLI,
-                        IDORIGINDATA: OriginsDatas.WINTHOR,
-                        IDONORIGINDATA: pcClient.CODCLI,
-                        IDPEOPLE: people.ID
+                        id: pcClient.CODCLI,
+                        data_origin_id: OriginsDatas.WINTHOR,
+                        id_at_origin: pcClient.CODCLI,
+                        IDPEOPLE: people.id
                     },options)
                 }
                 result.data = client;
@@ -164,7 +164,7 @@ class ClientsIntegrationsController extends RegistersController{
                         businessUnit = await BusinessesUnits.getModel().findOne({
                             raw: true,
                             where:{
-                                ID:integrations[key]?.CODFILIALNF || 1
+                                id:integrations[key]?.CODFILIALNF || 1
                             },
                             transaction: transaction
                         });
@@ -173,7 +173,7 @@ class ClientsIntegrationsController extends RegistersController{
                         let warehouse = await Warehouses.getModel().findOne({
                             raw: true,
                             where:{
-                                ID:integrations[key]?.CODFILIALNF || 1
+                                id:integrations[key]?.CODFILIALNF || 1
                             },
                             transaction: transaction
                         });
@@ -192,47 +192,47 @@ class ClientsIntegrationsController extends RegistersController{
                         //relationships
                         let rel = await DatasRelationships.createIfNotExists({
                             where: {
-                                IDSTATUSREG: StatusRegs.ACTIVE,                                    
+                                status_reg_id: StatusRegs.ACTIVE,                                    
                                 IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-                                IDTABLE1 : Companies.ID,
-                                IDREG1: company.ID,
-                                IDTABLE2 : Clients.ID,
-                                IDREG2: client.ID                            
+                                IDTABLE1 : Companies.id,
+                                IDREG1: company.id,
+                                IDTABLE2 : Clients.id,
+                                IDREG2: client.id                            
                             },
                             transaction:transaction
                         });
 
                         rel = await DatasRelationships.createIfNotExists({
                             where: {
-                                IDSTATUSREG: StatusRegs.ACTIVE,
+                                status_reg_id: StatusRegs.ACTIVE,
                                 IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-                                IDTABLE1 : BusinessesUnits.ID,
-                                IDREG1: businessUnit.ID,
-                                IDTABLE2 : Clients.ID,
-                                IDREG2: client.ID                            
+                                IDTABLE1 : BusinessesUnits.id,
+                                IDREG1: businessUnit.id,
+                                IDTABLE2 : Clients.id,
+                                IDREG2: client.id                            
                             },
                             transaction:transaction
                         });
                         
                         rel = await DatasRelationships.createIfNotExists({
                             where: {
-                                IDSTATUSREG: StatusRegs.ACTIVE,
+                                status_reg_id: StatusRegs.ACTIVE,
                                 IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-                                IDTABLE1 : Warehouses.ID,
-                                IDREG1: warehouse.ID,
-                                IDTABLE2 : Clients.ID,
-                                IDREG2: client.ID                            
+                                IDTABLE1 : Warehouses.id,
+                                IDREG1: warehouse.id,
+                                IDTABLE2 : Clients.id,
+                                IDREG2: client.id                            
                             },
                             transaction: transaction
                         });
 
                         rel = await DatasRelationships.createIfNotExists({
                             where: {
-                                IDSTATUSREG: StatusRegs.ACTIVE,
+                                status_reg_id: StatusRegs.ACTIVE,
                                 IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-                                IDTABLE1 : Clients.ID,
-                                IDREG1: client.ID,
-                                IDTABLE2 : Modules.ID,
+                                IDTABLE1 : Clients.id,
+                                IDREG1: client.id,
+                                IDTABLE2 : Modules.id,
                                 IDREG2: Modules.WMS
                             },
                             transaction: transaction
@@ -310,22 +310,22 @@ class ClientsIntegrationsController extends RegistersController{
                         for(let k in originalPeople) {
                             await DatasRelationships.createIfNotExists({
                                 where: {
-                                    IDSTATUSREG: StatusRegs.ACTIVE,
+                                    status_reg_id: StatusRegs.ACTIVE,
                                     IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-                                    IDTABLE1 : People.ID,
-                                    IDREG1: originalPeople[k].ID,
-                                    IDTABLE2 : Modules.ID,
+                                    IDTABLE1 : People.id,
+                                    IDREG1: originalPeople[k].id,
+                                    IDTABLE2 : Modules.id,
                                     IDREG2: Modules.WMS
                                 }
                             });
 
                             await DatasRelationships.createIfNotExists({
                                 where: {
-                                    IDSTATUSREG: StatusRegs.ACTIVE,
+                                    status_reg_id: StatusRegs.ACTIVE,
                                     IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-                                    IDTABLE1 : People.ID,
-                                    IDREG1: originalPeople[k].ID,
-                                    IDTABLE2 : Modules.ID,
+                                    IDTABLE1 : People.id,
+                                    IDREG1: originalPeople[k].id,
+                                    IDTABLE2 : Modules.id,
                                     IDREG2: Modules.LOGISTIC
                                 }
                             });
@@ -418,7 +418,7 @@ class ClientsIntegrationsController extends RegistersController{
                     lc1.datalog,
                     lc1.nomeaplicacao
                 FROM
-                    jumbo.pclogcadastro lc1
+                    JUMBO.PCLOGCADASTRO lc1
                 WHERE
                         lc1.nomeobjeto = 'PCCLIENT'
                     AND lc1.valornew LIKE '%LATITUDE%'
@@ -427,7 +427,7 @@ class ClientsIntegrationsController extends RegistersController{
                         SELECT
                             MAX(lc2.datalog) AS datalog
                         FROM
-                            jumbo.pclogcadastro lc2
+                            JUMBO.PCLOGCADASTRO lc2
                         WHERE
                                 lc2.nomeobjeto = lc1.nomeobjeto
                             AND lc2.rowidcampo = lc1.rowidcampo

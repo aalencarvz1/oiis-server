@@ -11,7 +11,7 @@ const { Movements } = require("./Movements");
  * class model
  */
 class GroupedsMovements extends BaseTableModel {
-  static ID = 9012;
+  static id = 9012;
   static model = null;
   static fields = {
     ...GroupedsMovements.getBaseTableModelFields(),...{           
@@ -46,7 +46,7 @@ class GroupedsMovements extends BaseTableModel {
 
   static constraints = [...(GroupedsMovements.getBaseTableModelConstraints() || []),...[
     {
-      name: GroupedsMovements.name.toUpperCase() + '_U1',
+      name: GroupedsMovements.name.toLowerCase() + '_u1',
       fields: [...GroupedsMovements.getBaseTableModelUniqueFields(),...GroupedsMovements.uniqueFields],
       type:"unique"
     }
@@ -58,7 +58,7 @@ class GroupedsMovements extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: GroupsMovements,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -67,7 +67,7 @@ class GroupedsMovements extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Movements,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

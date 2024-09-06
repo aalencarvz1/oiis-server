@@ -8,7 +8,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class StatusRegs extends BaseTableModel {
-  static ID = 65;
+  static id = 65;
   static model = null;
 
   static ACTIVE = 1;
@@ -37,11 +37,11 @@ class StatusRegs extends BaseTableModel {
 
   static constraints = [...(StatusRegs.getBaseTableModelConstraints() || []),...[
     {
-      name: StatusRegs.name.toUpperCase() + '_U1',
+      name: StatusRegs.name.toLowerCase() + '_u1',
       fields: [...StatusRegs.getBaseTableModelUniqueFields(),...StatusRegs.uniqueFields],
       type:"unique"
     },{
-      name: StatusRegs.name.toUpperCase() + '_C_1',
+      name: StatusRegs.name.toLowerCase() + '_c_1',
       fields:['ISACTIVE'],
       type:"check",
       where:{

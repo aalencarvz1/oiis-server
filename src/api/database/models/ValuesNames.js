@@ -10,7 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class ValuesNames extends BaseTableModel {
-  static ID = 1002;
+  static id = 1002;
   static model = null;
 
   static INVOICENUM = 1;
@@ -30,7 +30,7 @@ class ValuesNames extends BaseTableModel {
 
   static constraints = [...(ValuesNames.getBaseTableModelConstraints() || []),...[
     {
-      name: ValuesNames.name.toUpperCase() + '_U1',
+      name: ValuesNames.name.toLowerCase() + '_u1',
       fields: [...ValuesNames.getBaseTableModelUniqueFields(),...ValuesNames.uniqueFields],
       type:"unique"
     }

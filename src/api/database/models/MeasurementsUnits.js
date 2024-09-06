@@ -10,7 +10,7 @@ const { Greatnesses } = require("./Greatnesses");
  * class model
  */
 class MeasurementsUnits extends BaseTableModel {
-  static ID = 80;
+  static id = 80;
   static model = null;
 
   static UN = 1;
@@ -68,11 +68,11 @@ class MeasurementsUnits extends BaseTableModel {
 
   static constraints = [...(MeasurementsUnits.getBaseTableModelConstraints() || []),...[
     {
-      name: MeasurementsUnits.name.toUpperCase() + '_U1',
+      name: MeasurementsUnits.name.toLowerCase() + '_u1',
       fields: [...MeasurementsUnits.getBaseTableModelUniqueFields(),...MeasurementsUnits.uniqueFields],
       type:"unique"
     },{
-      name: MeasurementsUnits.name.toUpperCase() + '_C_1',
+      name: MeasurementsUnits.name.toLowerCase() + '_c_1',
       fields:['ISSCALAR'],
       type:"check",
       where:{
@@ -81,7 +81,7 @@ class MeasurementsUnits extends BaseTableModel {
           }
       }
     },{
-      name: MeasurementsUnits.name.toUpperCase() + '_C_2',
+      name: MeasurementsUnits.name.toLowerCase() + '_c_2',
       fields:['ISVETORIAL'],
       type:"check",
       where:{
@@ -99,7 +99,7 @@ class MeasurementsUnits extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Greatnesses,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

@@ -10,7 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class RoutinesTypes extends BaseTableModel {
-  static ID = 210;
+  static id = 210;
   static model = null;
 
   static SYSTEM = 1;
@@ -35,7 +35,7 @@ class RoutinesTypes extends BaseTableModel {
 
   static constraints = [...(RoutinesTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: RoutinesTypes.name.toUpperCase() + '_U1',
+      name: RoutinesTypes.name.toLowerCase() + '_u1',
       fields: RoutinesTypes.uniqueFields,
       type:"unique"
     }

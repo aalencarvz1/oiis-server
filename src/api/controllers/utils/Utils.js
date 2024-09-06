@@ -270,8 +270,10 @@ class Utils {
     }
 
     static deleteNotExistsProperty(object,properties){
+        properties = Utils.toArray(properties || []);
+        properties = properties.join(',').toLowerCase().split(',');
         for(let k2 in object) {
-            if (properties.indexOf(k2.toUpperCase().trim()) == -1) {
+            if (properties.indexOf(k2.toLowerCase().trim()) == -1) {
               delete object[k2];
             }
         }

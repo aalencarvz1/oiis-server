@@ -24,7 +24,7 @@ const { FinancialValueForms } = require("./FinancialValueForms");
  * class model
  */
 class Movements extends BaseTableModel {
-  static ID = 9010;
+  static id = 9010;
   static model = null;
   static fields = {
     ...Movements.getBaseTableModelFields(),...{           
@@ -84,7 +84,7 @@ class Movements extends BaseTableModel {
 
   static constraints = [...(Movements.getBaseTableModelConstraints() || []),...[
     {
-      name: Movements.name.toUpperCase() + '_U1',
+      name: Movements.name.toLowerCase() + '_u1',
       fields: [...Movements.getBaseTableModelUniqueFields(),...Movements.uniqueFields],
       type:"unique"
     }
@@ -96,7 +96,7 @@ class Movements extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: MovementsTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -105,7 +105,7 @@ class Movements extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: IdentifiersTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -114,7 +114,7 @@ class Movements extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: ActionsStatus,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -123,7 +123,7 @@ class Movements extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: ConferencesTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -132,7 +132,7 @@ class Movements extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Companies,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -141,7 +141,7 @@ class Movements extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Warehouses,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -150,7 +150,7 @@ class Movements extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: BusinessesUnits,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -159,7 +159,7 @@ class Movements extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Suppliers,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -168,7 +168,7 @@ class Movements extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Clients,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -177,7 +177,7 @@ class Movements extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Collaborators,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -186,7 +186,7 @@ class Movements extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: FinancialValueForms,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }    
@@ -198,21 +198,21 @@ class Movements extends BaseTableModel {
       if (businessUnit) {
         let relationshipQueryParams  = {
           where:{
-            IDSTATUSREG: StatusRegs.ACTIVE,
+            status_reg_id: StatusRegs.ACTIVE,
             IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-            IDTABLE1: Movements.ID,
-            IDREG1: reg.ID,
-            IDTABLE2: BusinessesUnits.ID,
-            IDREG2: businessUnit.ID
+            IDTABLE1: Movements.id,
+            IDREG1: reg.id,
+            IDTABLE2: BusinessesUnits.id,
+            IDREG2: businessUnit.id
           }
         };
         let relationshipQueryCheckParams  = {
           where:{
-            IDSTATUSREG: StatusRegs.ACTIVE,
+            status_reg_id: StatusRegs.ACTIVE,
             IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-            IDTABLE1: BusinessesUnits.ID,
-            IDREG1: businessUnit.ID,
-            IDTABLE2: Modules.ID,
+            IDTABLE1: BusinessesUnits.id,
+            IDREG1: businessUnit.id,
+            IDTABLE2: Modules.id,
             IDREG2: Modules.WMS
           }
         };
@@ -227,21 +227,21 @@ class Movements extends BaseTableModel {
       if (warehouse) {
         let relationshipQueryParams  = {
           where:{
-            IDSTATUSREG: StatusRegs.ACTIVE,
+            status_reg_id: StatusRegs.ACTIVE,
             IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-            IDTABLE1: Movements.ID,
-            IDREG1: reg.ID,
-            IDTABLE2: Warehouses.ID,
-            IDREG2: warehouse.ID
+            IDTABLE1: Movements.id,
+            IDREG1: reg.id,
+            IDTABLE2: Warehouses.id,
+            IDREG2: warehouse.id
           }
         };
         let relationshipQueryCheckParams = [{
           where:{
-            IDSTATUSREG: StatusRegs.ACTIVE,
+            status_reg_id: StatusRegs.ACTIVE,
             IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-            IDTABLE1: Warehouses.ID,
-            IDREG1: warehouse.ID,
-            IDTABLE2: Modules.ID,
+            IDTABLE1: Warehouses.id,
+            IDREG1: warehouse.id,
+            IDTABLE2: Modules.id,
             IDREG2: Modules.WMS
           }
         }];
@@ -249,12 +249,12 @@ class Movements extends BaseTableModel {
         if (businessUnit) {
           relationshipQueryCheckParams.push({
             where:{
-              IDSTATUSREG: StatusRegs.ACTIVE,
+              status_reg_id: StatusRegs.ACTIVE,
               IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-              IDTABLE1: BusinessesUnits.ID,
-              IDREG1: businessUnit.ID,
-              IDTABLE2: Warehouses.ID,
-              IDREG2: warehouse.ID
+              IDTABLE1: BusinessesUnits.id,
+              IDREG1: businessUnit.id,
+              IDTABLE2: Warehouses.id,
+              IDREG2: warehouse.id
             }
           })
         }
@@ -271,21 +271,21 @@ class Movements extends BaseTableModel {
       if (client) {
         let relationshipQueryParams  = {
           where:{
-            IDSTATUSREG: StatusRegs.ACTIVE,
+            status_reg_id: StatusRegs.ACTIVE,
             IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-            IDTABLE1: Movements.ID,
-            IDREG1: reg.ID,
-            IDTABLE2: Clients.ID,
-            IDREG2: client.ID
+            IDTABLE1: Movements.id,
+            IDREG1: reg.id,
+            IDTABLE2: Clients.id,
+            IDREG2: client.id
           }
         };
         let relationshipQueryCheckParams = [{
           where:{
-            IDSTATUSREG: StatusRegs.ACTIVE,
+            status_reg_id: StatusRegs.ACTIVE,
             IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-            IDTABLE1: Clients.ID,
-            IDREG1: client.ID,
-            IDTABLE2: Modules.ID,
+            IDTABLE1: Clients.id,
+            IDREG1: client.id,
+            IDTABLE2: Modules.id,
             IDREG2: Modules.WMS
           }
         }];
@@ -293,12 +293,12 @@ class Movements extends BaseTableModel {
         if (businessUnit) {
           relationshipQueryCheckParams.push({
             where:{
-              IDSTATUSREG: StatusRegs.ACTIVE,
+              status_reg_id: StatusRegs.ACTIVE,
               IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-              IDTABLE1: BusinessesUnits.ID,
-              IDREG1: businessUnit.ID,
-              IDTABLE2: Clients.ID,
-              IDREG2: client.ID
+              IDTABLE1: BusinessesUnits.id,
+              IDREG1: businessUnit.id,
+              IDTABLE2: Clients.id,
+              IDREG2: client.id
             }
           })
         }
@@ -306,12 +306,12 @@ class Movements extends BaseTableModel {
         if (warehouse) {
           relationshipQueryCheckParams.push({
             where:{
-              IDSTATUSREG: StatusRegs.ACTIVE,
+              status_reg_id: StatusRegs.ACTIVE,
               IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-              IDTABLE1: Warehouses.ID,
-              IDREG1: warehouse.ID,
-              IDTABLE2: Clients.ID,
-              IDREG2: client.ID
+              IDTABLE1: Warehouses.id,
+              IDREG1: warehouse.id,
+              IDTABLE2: Clients.id,
+              IDREG2: client.id
             }
           })
         }

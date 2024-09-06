@@ -11,7 +11,7 @@ const { DataSchemas } = require("./DataSchemas");
  * class model
  */
 class DataTables extends BaseTableModel {
-  static ID = 1;
+  static id = 1;
   static model = null;
   static fields = {
     ...DataTables.getBaseTableModelFields(),...{
@@ -41,7 +41,7 @@ class DataTables extends BaseTableModel {
 
   static constraints = [...(DataTables.getBaseTableModelConstraints() || []),...[
     {
-      name: DataTables.name.toUpperCase() + '_U1',
+      name: DataTables.name.toLowerCase() + '_u1',
       fields: [...DataTables.getBaseTableModelUniqueFields(),...DataTables.uniqueFields],
       type:"unique"
     }
@@ -53,7 +53,7 @@ class DataTables extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: DataConnections,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },{
@@ -61,7 +61,7 @@ class DataTables extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: DataSchemas,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

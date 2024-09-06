@@ -11,7 +11,7 @@ const { StreetTypes } = require("./StreetTypes");
  * class model
  */
 class Streets extends BaseTableModel {
-  static ID = 2006;
+  static id = 2006;
   static model = null;
   static fields = {
     ...Streets.getBaseTableModelFields(),...{           
@@ -39,7 +39,7 @@ class Streets extends BaseTableModel {
 
   static constraints = [...(Streets.getBaseTableModelConstraints() || []),...[
     {
-      name: Streets.name.toUpperCase() + '_U1',
+      name: Streets.name.toLowerCase() + '_u1',
       fields: [...Streets.getBaseTableModelUniqueFields(),...Streets.uniqueFields],
       type:"unique"
     }
@@ -51,7 +51,7 @@ class Streets extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: StreetTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -60,7 +60,7 @@ class Streets extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Cities,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

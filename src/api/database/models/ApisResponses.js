@@ -10,7 +10,7 @@ const { ApisRequestsCalls } = require("./ApisRequestsCalls");
  * class model
  */
 class ApisResponses extends BaseTableModel {
-  static ID = 20005;
+  static id = 20005;
   static model = null;
 
   static fields = {
@@ -37,7 +37,7 @@ class ApisResponses extends BaseTableModel {
     type: 'foreign key',
     references: { 
         table: ApisRequestsCalls,
-        field: 'ID'
+        field: 'id'
     },    
     onUpdate: 'cascade',
     onDelete: 'cascade'

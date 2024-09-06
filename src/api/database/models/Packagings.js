@@ -10,7 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class Packagings extends BaseTableModel {
-  static ID = 8001;
+  static id = 8001;
   static model = null;
 
   static BULK = 1; // GRANEL
@@ -61,7 +61,7 @@ class Packagings extends BaseTableModel {
 
   static constraints = [...(Packagings.getBaseTableModelConstraints() || []),...[
     {
-      name: Packagings.name.toUpperCase() + '_U1',
+      name: Packagings.name.toLowerCase() + '_u1',
       fields: [...Packagings.getBaseTableModelUniqueFields(),...Packagings.uniqueFields],
       type:"unique"
     }

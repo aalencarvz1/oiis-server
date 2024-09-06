@@ -10,7 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class EntitiesTypes extends BaseTableModel {
-  static ID = 5;
+  static id = 5;
   static model = null;
 
   static DATABASE = 1;
@@ -37,7 +37,7 @@ class EntitiesTypes extends BaseTableModel {
 
   static constraints = [...(EntitiesTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: EntitiesTypes.name.toUpperCase() + '_U1',
+      name: EntitiesTypes.name.toLowerCase() + '_U1',
       fields: [...EntitiesTypes.getBaseTableModelUniqueFields(),...EntitiesTypes.uniqueFields],
       type:"unique"
     }

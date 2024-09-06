@@ -10,7 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class DataConnections extends BaseTableModel {
-  static ID = 2;
+  static id = 2;
   static model = null;
   static fields = {
     ...DataConnections.getBaseTableModelFields(),...{
@@ -35,11 +35,11 @@ class DataConnections extends BaseTableModel {
 
   static constraints = [...(DataConnections.getBaseTableModelConstraints() || []),...[
     {
-      name: DataConnections.name.toUpperCase() + '_U1',
+      name: DataConnections.name.toLowerCase() + '_u1',
       fields: [...DataConnections.getBaseTableModelUniqueFields(),...DataConnections.uniqueFields],
       type:"unique"
     },{
-      name: DataConnections.name.toUpperCase() + '_C_1',
+      name: DataConnections.name.toLowerCase() + '_c_1',
       fields:['ISDEFAULT'],
       type:"check",
       where:{

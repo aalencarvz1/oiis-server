@@ -13,7 +13,7 @@ const { Items } = require("./Items");
  * class model
  */
 class ItemsMovsXMLImportIdsConversions extends BaseTableModel {
-  static ID = 9038;
+  static id = 9038;
   static model = null;
   static fields = {
     ...ItemsMovsXMLImportIdsConversions.getBaseTableModelFields(),...{                 
@@ -68,7 +68,7 @@ class ItemsMovsXMLImportIdsConversions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Clients,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -77,7 +77,7 @@ class ItemsMovsXMLImportIdsConversions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Items,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -86,7 +86,7 @@ class ItemsMovsXMLImportIdsConversions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Packagings,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -95,7 +95,7 @@ class ItemsMovsXMLImportIdsConversions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: MeasurementsUnits,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

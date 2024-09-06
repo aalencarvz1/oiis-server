@@ -13,7 +13,7 @@ const { IdentifiersTypes } = require("./IdentifiersTypes");
  * class model
  */
 class DatasRelationshipsValues extends BaseTableModel {
-  static ID = 1003;
+  static id = 1003;
   static model = null;
   static fields = {
     ...DatasRelationshipsValues.getBaseTableModelFields(),...{           
@@ -59,7 +59,7 @@ class DatasRelationshipsValues extends BaseTableModel {
 
   static constraints = [...(DatasRelationshipsValues.getBaseTableModelConstraints() || []),...[
     {
-      name: DatasRelationshipsValues.name.toUpperCase() + '_U1',
+      name: DatasRelationshipsValues.name.toLowerCase() + '_u1',
       fields: [...DatasRelationshipsValues.getBaseTableModelUniqueFields(),...DatasRelationshipsValues.uniqueFields],
       type:"unique"
     }
@@ -71,7 +71,7 @@ class DatasRelationshipsValues extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: DatasRelationships,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },{
@@ -79,7 +79,7 @@ class DatasRelationshipsValues extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Contexts,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },{
@@ -87,7 +87,7 @@ class DatasRelationshipsValues extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: IdentifiersTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },{
@@ -95,7 +95,7 @@ class DatasRelationshipsValues extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: DataTypesModel,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

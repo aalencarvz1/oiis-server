@@ -10,7 +10,7 @@ const { IdentifiersTypes } = require("./IdentifiersTypes");
  * class model
  */
 class GroupsMovements extends BaseTableModel {
-  static ID = 9011;
+  static id = 9011;
   static model = null;
   static fields = {
     ...GroupsMovements.getBaseTableModelFields(),...{           
@@ -30,7 +30,7 @@ class GroupsMovements extends BaseTableModel {
 
   static constraints = [...(GroupsMovements.getBaseTableModelConstraints() || []),...[
     {
-      name: GroupsMovements.name.toUpperCase() + '_U1',
+      name: GroupsMovements.name.toLowerCase() + '_u1',
       fields: [...GroupsMovements.getBaseTableModelUniqueFields(),...GroupsMovements.uniqueFields],
       type:"unique"
     }
@@ -42,7 +42,7 @@ class GroupsMovements extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: IdentifiersTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

@@ -8,21 +8,21 @@ const { PowersTypes } = require('../models/PowersTypes');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(PowersTypes.name.toUpperCase(),[{      
-      ID:PowersTypes.SYSTEM,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+    await queryInterface.bulkInsert(PowersTypes.name.toLowerCase(),[{      
+      id:PowersTypes.SYSTEM,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME:'SYSTEM'
     },{      
-      ID:PowersTypes.ACCESS,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id:PowersTypes.ACCESS,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME: 'ACCESS',
     }],{
       ignoreDuplicates:true,
@@ -31,6 +31,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(PowersTypes.name.toUpperCase(), null, {});
+     await queryInterface.bulkDelete(PowersTypes.name.toLowerCase(), null, {});
   }
 };

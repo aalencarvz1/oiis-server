@@ -12,13 +12,13 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await AccessesProfiles.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});
 
-    await queryInterface.bulkInsert(AccessesProfiles.name.toUpperCase(),[{      
-      ID:AccessesProfiles.SYSTEM,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+    await queryInterface.bulkInsert(AccessesProfiles.name.toLowerCase(),[{      
+      id:AccessesProfiles.SYSTEM,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME:'SYSTEM',
       ALLOWACESSALLROUTINESOFMODULE:1
     }],{
@@ -31,6 +31,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(AccessesProfiles.name.toUpperCase());
+    await queryInterface.dropTable(AccessesProfiles.name.toLowerCase());
   }
 };

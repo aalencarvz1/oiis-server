@@ -16,7 +16,7 @@ const { Modules } = require("./Modules");
  * class model
  */
 class Permissions extends BaseTableModel {
-  static ID = 7003;
+  static id = 7003;
   static model = null;
 
   static SYSTEM = 1;
@@ -100,11 +100,11 @@ class Permissions extends BaseTableModel {
 
   static constraints = [...(Permissions.getBaseTableModelConstraints() || []),...[
     {
-      name: Permissions.name.toUpperCase() + '_U1',
+      name: Permissions.name.toLowerCase() + '_u1',
       fields: [...Permissions.getBaseTableModelUniqueFields(),...Permissions.uniqueFields],
       type:"unique"
     },{
-      name: Permissions.name.toUpperCase() + '_C_1',
+      name: Permissions.name.toLowerCase() + '_c_1',
       fields:['ALLOWEDACCESS'],
       type:"check",
       where:{
@@ -113,7 +113,7 @@ class Permissions extends BaseTableModel {
           }
       }
     },{
-      name: Permissions.name.toUpperCase() + '_C_2',
+      name: Permissions.name.toLowerCase() + '_c_2',
       fields:['ALLOWEDSEARCH'],
       type:"check",
       where:{
@@ -122,7 +122,7 @@ class Permissions extends BaseTableModel {
           }
       }
     },{
-      name: Permissions.name.toUpperCase() + '_C_3',
+      name: Permissions.name.toLowerCase() + '_c_3',
       fields:['ALLOWEDREAD'],
       type:"check",
       where:{
@@ -131,7 +131,7 @@ class Permissions extends BaseTableModel {
           }
       }
     },{
-      name: Permissions.name.toUpperCase() + '_C_4',
+      name: Permissions.name.toLowerCase() + '_c_4',
       fields:['ALLOWEDUPDATE'],
       type:"check",
       where:{
@@ -140,7 +140,7 @@ class Permissions extends BaseTableModel {
           }
       }
     },{
-      name: Permissions.name.toUpperCase() + '_C_5',
+      name: Permissions.name.toLowerCase() + '_c_5',
       fields:['ALLOWEDCREATE'],
       type:"check",
       where:{
@@ -149,7 +149,7 @@ class Permissions extends BaseTableModel {
           }
       }
     },{
-      name: Permissions.name.toUpperCase() + '_C_6',
+      name: Permissions.name.toLowerCase() + '_c_6',
       fields:['ALLOWEDDELETE'],
       type:"check",
       where:{
@@ -166,7 +166,7 @@ class Permissions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: PowersTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -175,7 +175,7 @@ class Permissions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: AccessesProfiles,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -184,7 +184,7 @@ class Permissions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Users,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -193,7 +193,7 @@ class Permissions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Contexts,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -202,7 +202,7 @@ class Permissions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: DataTables,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -211,7 +211,7 @@ class Permissions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Modules,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -220,7 +220,7 @@ class Permissions extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Routines,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

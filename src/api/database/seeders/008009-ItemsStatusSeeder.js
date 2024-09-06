@@ -8,23 +8,23 @@ const { ItemsStatus } = require('../models/ItemsStatus');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(ItemsStatus.name.toUpperCase(),[{
-      ID: ItemsStatus.NORMAL,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+    await queryInterface.bulkInsert(ItemsStatus.name.toLowerCase(),[{
+      id: ItemsStatus.NORMAL,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'NORMAL',
       ISDISPONIBLE: 1,
       ISDAMAGED: 0
     },{
-      ID: ItemsStatus.DAMAGED,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id: ItemsStatus.DAMAGED,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'DAMAGED',
       ISDISPONIBLE: 0,
       ISDAMAGED: 1
@@ -35,6 +35,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(ItemsStatus.name.toUpperCase(), null, {});
+     await queryInterface.bulkDelete(ItemsStatus.name.toLowerCase(), null, {});
   }
 };

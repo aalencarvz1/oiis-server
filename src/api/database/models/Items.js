@@ -15,7 +15,7 @@ const { DataSwap } = require("../../controllers/data/DataSwap");
  * class model
  */
 class Items extends BaseTableModel {
-  static ID = 8010;
+  static id = 8010;
   static model = null;
   static fields = {
     ...Items.getBaseTableModelFields(),...{           
@@ -52,7 +52,7 @@ class Items extends BaseTableModel {
 
   static constraints = [...(Items.getBaseTableModelConstraints() || []),...[
     {
-      name: Items.name.toUpperCase() + '_U1',
+      name: Items.name.toLowerCase() + '_u1',
       fields: [...Items.getBaseTableModelUniqueFields(),...Items.uniqueFields],
       type:"unique"
     }
@@ -64,7 +64,7 @@ class Items extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: IdentifiersTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -73,7 +73,7 @@ class Items extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Ncms,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }
@@ -107,26 +107,26 @@ class Items extends BaseTableModel {
       let winthorData = await PcProdut.getModel().findOne({
         raw:true,
         where:{
-          CODPROD: queryParams.IDONORIGINDATA || queryParams.IDITEM || queryParams.ID || queryParams.CODPROD
+          CODPROD: queryParams.id_at_origin || queryParams.IDITEM || queryParams.id || queryParams.CODPROD
         }
       });
       if (winthorData) {
-        queryParams.IDORIGINDATA = OriginsDatas.WINTHOR;
-        queryParams.IDONORIGINDATA = queryParams.IDONORIGINDATA || winthorData.CODPROD;
+        queryParams.data_origin_id = OriginsDatas.WINTHOR;
+        queryParams.id_at_origin = queryParams.id_at_origin || winthorData.CODPROD;
         queryParams.IDIDENTIFIERTYPE = queryParams.IDIDENTIFIERTYPE || IdentifiersTypes.CODE;
         queryParams.IDENTIFIER = queryParams.IDENTIFIER || winthorData.CODPROD;
         if (!Utils.hasValue(queryParams.IDNCM)) {
           let ncm = await Ncms.getOrCreate({
             raw:true,
             where:{
-              IDORIGINDATA: OriginsDatas.WINTHOR,
+              data_origin_id: OriginsDatas.WINTHOR,
               NCM: winthorData.NBM,
               EXCEPTION: Utils.hasValue(winthorData.CODNCMEX.split('.')[1]) ? winthorData.CODNCMEX.split('.')[1] : null
             },
             createMethod: Ncms.integrateByWinthor
           });
           if (ncm.success) {
-            queryParams.IDNCM = ncm.data.ID;
+            queryParams.IDNCM = ncm.data.id;
           } else {
             return ncm;                
           }
@@ -140,7 +140,7 @@ class Items extends BaseTableModel {
           result.success = true;
         }
       } else {
-        throw new Error(`winthor item ${queryParams.IDONORIGINDATA || queryParams.IDITEM || queryParams.ID || queryParams.CODPROD} not found`)
+        throw new Error(`winthor item ${queryParams.id_at_origin || queryParams.IDITEM || queryParams.id || queryParams.CODPROD} not found`)
       }
     } catch (e) {
       result.setException(e);
@@ -157,10 +157,10 @@ class Items extends BaseTableModel {
         select
           * 
         from
-          ep.epprodutos
+          EP.EPPRODUTOS
         where
           codorigeminfo = 1
-          and cod = ${queryParams.IDONORIGINDATA || queryParams.IDITEM || queryParams.ID || queryParams.CODPROD}
+          and cod = ${queryParams.id_at_origin || queryParams.IDITEM || queryParams.id || queryParams.CODPROD}
       `;
       let auroraData = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
       if (auroraData && auroraData.length) 
@@ -172,9 +172,9 @@ class Items extends BaseTableModel {
           select
             * 
           from
-            ep.epprodutos
+            EP.EPPRODUTOS
           where
-            cod = ${queryParams.IDONORIGINDATA || queryParams.IDITEM || queryParams.ID || queryParams.CODPROD}
+            cod = ${queryParams.id_at_origin || queryParams.IDITEM || queryParams.id || queryParams.CODPROD}
         `;
         auroraData = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
         if (auroraData && auroraData.length) 
@@ -183,21 +183,21 @@ class Items extends BaseTableModel {
           auroraData = auroraData[0];
       }
       if (Utils.hasValue(auroraData)) {
-        queryParams.IDORIGINDATA = OriginsDatas.AURORA;
-        queryParams.IDONORIGINDATA = queryParams.IDONORIGINDATA || auroraData.COD;
+        queryParams.data_origin_id = OriginsDatas.AURORA;
+        queryParams.id_at_origin = queryParams.id_at_origin || auroraData.COD;
         queryParams.IDIDENTIFIERTYPE = queryParams.IDIDENTIFIERTYPE || IdentifiersTypes.CODE;
         queryParams.IDENTIFIER = queryParams.IDENTIFIER || auroraData.COD;
         if (!Utils.hasValue(queryParams.IDNCM)) {
           let ncm = await Ncms.getOrCreate({
             raw:true,
             where:{
-              IDORIGINDATA: OriginsDatas.WINTHOR,
+              data_origin_id: OriginsDatas.WINTHOR,
               NCM: 1
             },
             createMethod: Ncms.integrateByWinthor
           });
           if (ncm.success) {
-            queryParams.IDNCM = ncm.data.ID;
+            queryParams.IDNCM = ncm.data.id;
           } else {
             return ncm;                
           }
@@ -211,7 +211,7 @@ class Items extends BaseTableModel {
           result.success = true;
         }
       } else {
-        throw new Error(`aurora item ${queryParams.IDONORIGINDATA || queryParams.IDITEM || queryParams.ID || queryParams.CODPROD} not found`)
+        throw new Error(`aurora item ${queryParams.id_at_origin || queryParams.IDITEM || queryParams.id || queryParams.CODPROD} not found`)
       }
     } catch (e) {
       result.setException(e);

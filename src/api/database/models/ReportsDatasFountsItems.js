@@ -12,7 +12,7 @@ const { DataTypes } = require("./DataTypes");
  * class model
  */
 class ReportsDatasFountsItems extends BaseTableModel {
-  static ID = 10006;
+  static id = 10006;
   static model = null;
   static fields = {
     ...ReportsDatasFountsItems.getBaseTableModelFields(),...{                 
@@ -81,7 +81,7 @@ class ReportsDatasFountsItems extends BaseTableModel {
   static uniqueFields = [];
 
   static constraints = [...(ReportsDatasFountsItems.getBaseTableModelConstraints() || []),...[{
-    name: ReportsDatasFountsItems.name.toUpperCase() + '_C_1',
+    name: ReportsDatasFountsItems.name.toLowerCase() + '_c_1',
     fields:['UNIQUEINGROUPMENT'],
     type:"check",
     where:{
@@ -90,7 +90,7 @@ class ReportsDatasFountsItems extends BaseTableModel {
         }
     }
   },{
-    name: ReportsDatasFountsItems.name.toUpperCase() + '_C_2',
+    name: ReportsDatasFountsItems.name.toLowerCase() + '_c_2',
     fields:['DATAGROUPMENT'],
     type:"check",
     where:{
@@ -99,7 +99,7 @@ class ReportsDatasFountsItems extends BaseTableModel {
         }
     }
   },{
-    name: ReportsDatasFountsItems.name.toUpperCase() + '_C_3',
+    name: ReportsDatasFountsItems.name.toLowerCase() + '_c_3',
     fields:['VALUEGROUPMENT'],
     type:"check",
     where:{
@@ -114,7 +114,7 @@ class ReportsDatasFountsItems extends BaseTableModel {
     type: 'foreign key',
     references: { 
         table: ReportsDatasFountsItems,
-        field: 'ID'
+        field: 'id'
     },    
     onUpdate: 'cascade',
     onDelete: 'cascade'
@@ -123,7 +123,7 @@ class ReportsDatasFountsItems extends BaseTableModel {
     type: 'foreign key',
     references: { 
         table: ReportsDatasFounts,
-        field: 'ID'
+        field: 'id'
     },    
     onUpdate: 'cascade',
     onDelete: 'cascade'
@@ -132,7 +132,7 @@ class ReportsDatasFountsItems extends BaseTableModel {
     type: 'foreign key',
     references: { 
         table: SqlObjectsTypes,
-        field: 'ID'
+        field: 'id'
     },    
     onUpdate: 'cascade'
   },{
@@ -140,7 +140,7 @@ class ReportsDatasFountsItems extends BaseTableModel {
     type: 'foreign key',
     references: { 
         table: DataTypes,
-        field: 'ID'
+        field: 'id'
     },    
     onUpdate: 'cascade'
   }]];

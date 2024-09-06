@@ -8,29 +8,29 @@ const { Users } = require('../models/Users');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(FinancialValueLocalizationsTypes.name.toUpperCase(),[{      
-      ID:FinancialValueLocalizationsTypes.UNKNOWN,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+    await queryInterface.bulkInsert(FinancialValueLocalizationsTypes.name.toLowerCase(),[{      
+      id:FinancialValueLocalizationsTypes.UNKNOWN,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'UNKNOWN'
     },{      
-      ID:FinancialValueLocalizationsTypes.ACCOUNT,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id:FinancialValueLocalizationsTypes.ACCOUNT,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'ACCOUNT'
     },{      
-      ID:FinancialValueLocalizationsTypes.POUCH,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id:FinancialValueLocalizationsTypes.POUCH,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'POUCH',
       ISPHYSICAL: 1
     }],{
@@ -41,6 +41,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(FinancialValueLocalizationsTypes.name.toUpperCase(), null, {});
+     await queryInterface.bulkDelete(FinancialValueLocalizationsTypes.name.toLowerCase(), null, {});
   }
 };

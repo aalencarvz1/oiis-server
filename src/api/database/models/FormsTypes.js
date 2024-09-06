@@ -10,7 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class FormsTypes extends BaseTableModel {
-  static ID = 1031;
+  static id = 1031;
   static model = null;
   static fields = {
     ...FormsTypes.getBaseTableModelFields(),...{           
@@ -30,7 +30,7 @@ class FormsTypes extends BaseTableModel {
 
   static constraints = [...(FormsTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: FormsTypes.name.toUpperCase() + '_U1',
+      name: FormsTypes.name.toLowerCase() + '_u1',
       fields: [...FormsTypes.getBaseTableModelUniqueFields(),...FormsTypes.uniqueFields],
       type:"unique"
     }

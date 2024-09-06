@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class LogisticStatus extends BaseTableModel {
-  static ID = 12001;
+  static id = 12001;
   static model = null;
 
   static TO_DELIVERY = 1;
@@ -61,11 +61,11 @@ class LogisticStatus extends BaseTableModel {
 
   static constraints = [...(LogisticStatus.getBaseTableModelConstraints() || []),...[
     {
-      name: LogisticStatus.name.toUpperCase() + '_U1',
+      name: LogisticStatus.name.toLowerCase() + '_u1',
       fields: [...LogisticStatus.getBaseTableModelUniqueFields(),...LogisticStatus.uniqueFields],
       type:"unique"
     },{
-      name: LogisticStatus.name.toUpperCase() + '_C_1',
+      name: LogisticStatus.name.toLowerCase() + '_c_1',
       fields:['ISTODELIVERY'],
       type:"check",
       where:{
@@ -74,7 +74,7 @@ class LogisticStatus extends BaseTableModel {
           }
       }
     },{
-      name: LogisticStatus.name.toUpperCase() + '_C_2',
+      name: LogisticStatus.name.toLowerCase() + '_c_2',
       fields:['ISDELIVERING'],
       type:"check",
       where:{
@@ -83,7 +83,7 @@ class LogisticStatus extends BaseTableModel {
           }
       }
     },{
-      name: LogisticStatus.name.toUpperCase() + '_C_3',
+      name: LogisticStatus.name.toLowerCase() + '_c_3',
       fields:['ISDELIVERED'],
       type:"check",
       where:{
@@ -92,7 +92,7 @@ class LogisticStatus extends BaseTableModel {
           }
       }
     },{
-      name: LogisticStatus.name.toUpperCase() + '_C_4',
+      name: LogisticStatus.name.toLowerCase() + '_c_4',
       fields:['ISPARTIALRETURNED'],
       type:"check",
       where:{
@@ -101,7 +101,7 @@ class LogisticStatus extends BaseTableModel {
           }
       }
     },{
-      name: LogisticStatus.name.toUpperCase() + '_C_5',
+      name: LogisticStatus.name.toLowerCase() + '_c_5',
       fields:['ISTOTALRETURNED'],
       type:"check",
       where:{

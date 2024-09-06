@@ -13,7 +13,7 @@ const { Utils } = require("../../controllers/utils/Utils");
  * class model
  */
 class DatasRelationships extends BaseTableModel {
-  static ID = 1001;
+  static id = 1001;
   static model = null;
   static fields = {
     ...DatasRelationships.getBaseTableModelFields(),...{     
@@ -69,8 +69,8 @@ class DatasRelationships extends BaseTableModel {
     'IDRELATIONSHIPTYPE',
     'IDTABLE1',
     'IDTABLE2',
-    Sequelize.literal(`(COALESCE(COLUMNREG1,'ID'))`),
-    Sequelize.literal(`(COALESCE(COLUMNREG2,'ID'))`),
+    Sequelize.literal(`(COALESCE(COLUMNREG1,'id'))`),
+    Sequelize.literal(`(COALESCE(COLUMNREG2,'id'))`),
     Sequelize.literal(`(COALESCE(IDREG1,0))`),
     Sequelize.literal(`(COALESCE(IDREG2,0))`),
     Sequelize.literal(`(COALESCE(IDCONTEXT,0))`),
@@ -81,7 +81,7 @@ class DatasRelationships extends BaseTableModel {
 
   static constraints = [...(DatasRelationships.getBaseTableModelConstraints() || []),...[
     {
-      name: DatasRelationships.name.toUpperCase() + '_U1',
+      name: DatasRelationships.name.toLowerCase() + '_u1',
       fields: [...DatasRelationships.getBaseTableModelUniqueFields(),...DatasRelationships.uniqueFields],
       type:"unique"
     }
@@ -93,7 +93,7 @@ class DatasRelationships extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: DataRelationshipTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },{
@@ -101,7 +101,7 @@ class DatasRelationships extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: DataTables,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },{
@@ -109,7 +109,7 @@ class DatasRelationships extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: DataTables,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },{
@@ -117,7 +117,7 @@ class DatasRelationships extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Contexts,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

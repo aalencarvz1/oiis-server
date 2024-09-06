@@ -10,7 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class DataSchemas extends BaseTableModel {
-  static ID = 3;
+  static id = 3;
   static model = null;
   static fields = {
     ...DataSchemas.getBaseTableModelFields(),...{
@@ -35,11 +35,11 @@ class DataSchemas extends BaseTableModel {
 
   static constraints = [...(DataSchemas.getBaseTableModelConstraints() || []),...[
     {
-      name: DataSchemas.name.toUpperCase() + '_U1',
+      name: DataSchemas.name.toLowerCase() + '_u1',
       fields: [...DataSchemas.getBaseTableModelUniqueFields(),...DataSchemas.uniqueFields],
       type:"unique"
     },{
-      name: DataSchemas.name.toUpperCase() + '_C_1',
+      name: DataSchemas.name.toLowerCase() + '_c_1',
       fields:['ISDEFAULT'],
       type:"check",
       where:{

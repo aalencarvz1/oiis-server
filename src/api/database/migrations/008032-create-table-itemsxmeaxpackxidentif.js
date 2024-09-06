@@ -10,6 +10,6 @@ module.exports = {
     await ItemsXMeaXPackXIdentif.runUpMigration(queryInterface);     
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(ItemsXMeaXPackXIdentif.name.toUpperCase());
+    await queryInterface.dropTable(ItemsXMeaXPackXIdentif.name.toLowerCase());
   }
 };

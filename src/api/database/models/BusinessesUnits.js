@@ -9,7 +9,7 @@ const { BasePeopleModel } = require("./BasePeopleModel");
  * class model
  */
 class BusinessesUnits extends BasePeopleModel {
-  static ID = 3001;
+  static id = 3001;
   static model = null;
 
   static fields = {
@@ -26,7 +26,7 @@ class BusinessesUnits extends BasePeopleModel {
 
   static constraints = [...(BusinessesUnits.getBaseTableModelConstraints() || []),...[
     {
-      name: BusinessesUnits.name.toUpperCase() + '_U1',
+      name: BusinessesUnits.name.toLowerCase() + '_u1',
       fields: [...BusinessesUnits.getBaseTableModelUniqueFields(),...BusinessesUnits.uniqueFields],
       type:"unique"
     }
@@ -38,7 +38,7 @@ class BusinessesUnits extends BasePeopleModel {
       type: 'foreign key',
       references: { 
           table: Companies,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

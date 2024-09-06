@@ -13,13 +13,13 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await People.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});         
     
-    await queryInterface.bulkInsert(People.name.toUpperCase(),[{      
-      ID:People.SYSTEM,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+    await queryInterface.bulkInsert(People.name.toLowerCase(),[{      
+      id:People.SYSTEM,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       IDIDENTIFIERDOCTYPE : IdentifiersTypes.CODE,
       IDENTIFIERDOC: People.SYSTEM,
       NAME : 'SYSTEM'
@@ -34,6 +34,6 @@ module.exports = {
         
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(People.name.toUpperCase());
+    await queryInterface.dropTable(People.name.toLowerCase());
   }
 };

@@ -11,7 +11,7 @@ const { Utils } = require("../../../controllers/utils/Utils");
  * class model
  */
 class PcPrest extends BaseWinthorTableModel {
-  static ID = 30215;
+  static id = 30215;
   static model = null;
 
 

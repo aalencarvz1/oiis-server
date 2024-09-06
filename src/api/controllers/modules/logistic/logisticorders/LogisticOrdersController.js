@@ -97,12 +97,12 @@ class LogisticOrdersController extends RegistersController {
                         case when s.codcob in ('CH','CHP','CHV') then '0'||s.numtransvenda ELSE NULL end as CHEQUENFSARECEBER,
                         case when s.codcob in ('CH','CHP','CHV') then nvl(m.qt,m.qtcont) * nvl(m.punit,m.punitcont) ELSE NULL end as CHEQUEARECEBER
                     from
-                        jumbo.pccarreg c
-                        left outer join jumbo.pcempr e on e.matricula = c.codmotorista
-                        left outer join jumbo.pcveicul v on v.codveiculo = c.codveiculo
-                        left outer join jumbo.pcnfsaid s on s.numcar = c.numcar and s.dtcancel is null
-                        left outer join jumbo.pcmov m on m.numtransvenda = s.numtransvenda and m.dtcancel is null
-                        left outer join jumbo.pcprodut p on p.codprod = m.codprod
+                        JUMBO.PCCARREG c
+                        left outer join JUMBO.PCEMPR e on e.matricula = c.codmotorista
+                        left outer join JUMBO.PCVEICUL v on v.codveiculo = c.codveiculo
+                        left outer join JUMBO.PCNFSAID s on s.numcar = c.numcar and s.dtcancel is null
+                        left outer join JUMBO.PCMOV m on m.numtransvenda = s.numtransvenda and m.dtcancel is null
+                        left outer join JUMBO.PCPRODUT p on p.codprod = m.codprod
                     ${where}                        
                     union all
                     select       
@@ -126,16 +126,16 @@ class LogisticOrdersController extends RegistersController {
                         NULL as CHEQUENFSARECEBER,
                         NULL as CHEQUEARECEBER
                     from
-                        jumbo.pccarreg c                                
-                        join ep.epunifcargas u on u.nrcarga = c.numcar
-                        join ep.epunifcargas u2 on u2.id = u.id and u2.idorigeminfo > 0
-                        left outer join jumbo.pcempr e on e.matricula = c.codmotorista
-                        left outer join jumbo.pcveicul v on v.codveiculo = c.codveiculo
-                        left outer join ep.epnfssaida s on s.nrcarga = u2.nrcarga and s.codorigeminfo > 0 and s.dtcancel is null
-                        left outer join ep.epclientes cl on cl.cod = s.codcliente
-                        left outer join ep.eppessoas ps on ps.cod = cl.codpessoa
-                        left outer join ep.epmovimentacoessaida m on m.codnfsaida = s.cod and m.dtcancel is null
-                        left outer join jumbo.pcprodut p on p.codprod = m.codprod
+                        JUMBO.PCCARREG c                                
+                        join EP.EPUNIFCARGAS u on u.nrcarga = c.numcar
+                        join EP.EPUNIFCARGAS u2 on u2.id = u.id and u2.idorigeminfo > 0
+                        left outer join JUMBO.PCEMPR e on e.matricula = c.codmotorista
+                        left outer join JUMBO.PCVEICUL v on v.codveiculo = c.codveiculo
+                        left outer join EP.EPNFSSAIDA s on s.nrcarga = u2.nrcarga and s.codorigeminfo > 0 and s.dtcancel is null
+                        left outer join EP.EPCLIENTES cl on cl.cod = s.codcliente
+                        left outer join EP.EPPESSOAS ps on ps.cod = cl.codpessoa
+                        left outer join EP.EPMOVIMENTACOESSAIDA m on m.codnfsaida = s.cod and m.dtcancel is null
+                        left outer join JUMBO.PCPRODUT p on p.codprod = m.codprod
                     ${where} 
                 )                       
                 group by
@@ -158,7 +158,7 @@ class LogisticOrdersController extends RegistersController {
                 let numCars = res.data.map(el=>el.NUMCAR);
                 query = `
                     select
-                        l.ID,
+                        l.id,
                         l.IDENTIFIER,
                         l.IDLOGISTICSTATUS,
                         ls.NAME as LOGISTICSTATUS
@@ -175,7 +175,7 @@ class LogisticOrdersController extends RegistersController {
                     Utils.log(logData);
                     for(let kj in res.data) {                                
                         if (logData[res.data[kj].NUMCAR.toString()]) {
-                            res.data[kj].IDLOGISTICORDER = logData[res.data[kj].NUMCAR.toString()].ID;
+                            res.data[kj].IDLOGISTICORDER = logData[res.data[kj].NUMCAR.toString()].id;
                             res.data[kj].IDLOGISTICSTATUS = logData[res.data[kj].NUMCAR.toString()].IDLOGISTICSTATUS;
                             res.data[kj].LOGISTICSTATUS = logData[res.data[kj].NUMCAR.toString()].LOGISTICSTATUS;
                         }

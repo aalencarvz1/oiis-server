@@ -8,7 +8,7 @@ const { BaseWinthorTableModel } = require('./BaseWinthorTableModel');
  * class model
  */
 class PcEstcr extends BaseWinthorTableModel {
-  static ID = 30220;
+  static id = 30220;
   static model = null;
 
 

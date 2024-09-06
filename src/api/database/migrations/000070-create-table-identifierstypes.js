@@ -12,13 +12,13 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await IdentifiersTypes.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});                 
     
-    await queryInterface.bulkInsert(IdentifiersTypes.name.toUpperCase(),[{      
-      ID:IdentifiersTypes.CODE,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+    await queryInterface.bulkInsert(IdentifiersTypes.name.toLowerCase(),[{      
+      id:IdentifiersTypes.CODE,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'CODE'
     }],{
       ignoreDuplicates:true,
@@ -30,6 +30,6 @@ module.exports = {
         
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(IdentifiersTypes.name.toUpperCase());
+    await queryInterface.dropTable(IdentifiersTypes.name.toLowerCase());
   }
 };

@@ -13,7 +13,7 @@ const { FormsTypes } = require("./FormsTypes");
  * class model
  */
 class WarehousesAddresses extends BaseTableModel {
-  static ID = 3004;
+  static id = 3004;
   static model = null;
   static fields = {
     ...WarehousesAddresses.getBaseTableModelFields(),...{           
@@ -64,11 +64,11 @@ class WarehousesAddresses extends BaseTableModel {
 
   static constraints = [...(WarehousesAddresses.getBaseTableModelConstraints() || []),...[
     {
-      name: WarehousesAddresses.name.toUpperCase() + '_U1',
+      name: WarehousesAddresses.name.toLowerCase() + '_u1',
       fields: [...WarehousesAddresses.getBaseTableModelUniqueFields(),...WarehousesAddresses.uniqueFields],
       type:"unique"
     },{
-      name: WarehousesAddresses.name.toUpperCase() + '_C_1',
+      name: WarehousesAddresses.name.toLowerCase() + '_c_1',
       fields:['ISSTORABLE'],
       type:"check",
       where:{
@@ -77,7 +77,7 @@ class WarehousesAddresses extends BaseTableModel {
           }
       }
     },{
-      name: WarehousesAddresses.name.toUpperCase() + '_C_2',
+      name: WarehousesAddresses.name.toLowerCase() + '_c_2',
       fields:['ISPASSABLE'],
       type:"check",
       where:{
@@ -86,7 +86,7 @@ class WarehousesAddresses extends BaseTableModel {
           }
       }
     },{
-      name: WarehousesAddresses.name.toUpperCase() + '_C_3',
+      name: WarehousesAddresses.name.toLowerCase() + '_c_3',
       fields:['ISDISPONIBLE'],
       type:"check",
       where:{
@@ -103,7 +103,7 @@ class WarehousesAddresses extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Warehouses,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -112,7 +112,7 @@ class WarehousesAddresses extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: WarehousesAddressesTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -121,7 +121,7 @@ class WarehousesAddresses extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: IdentifiersTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -130,7 +130,7 @@ class WarehousesAddresses extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: FormsTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

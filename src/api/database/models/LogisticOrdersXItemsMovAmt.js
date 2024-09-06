@@ -18,7 +18,7 @@ const { Packagings } = require("./Packagings");
  * class model
  */
 class LogisticOrdersXItemsMovAmt extends BaseTableModel {
-  static ID = 12005;
+  static id = 12005;
   static model = null;
   static fields = {
     ...LogisticOrdersXItemsMovAmt.getBaseTableModelFields(),...{           
@@ -115,7 +115,7 @@ class LogisticOrdersXItemsMovAmt extends BaseTableModel {
 
   static constraints = [...(LogisticOrdersXItemsMovAmt.getBaseTableModelConstraints() || []),...[
     {
-      name: LogisticOrdersXItemsMovAmt.name.toUpperCase() + '_U1',
+      name: LogisticOrdersXItemsMovAmt.name.toLowerCase() + '_u1',
       fields: [...LogisticOrdersXItemsMovAmt.getBaseTableModelUniqueFields(),...LogisticOrdersXItemsMovAmt.uniqueFields],
       type:"unique"
     }
@@ -127,7 +127,7 @@ class LogisticOrdersXItemsMovAmt extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: LogisticOrdersXMovs,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -136,7 +136,7 @@ class LogisticOrdersXItemsMovAmt extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: ItemsMovsAmounts,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -145,7 +145,7 @@ class LogisticOrdersXItemsMovAmt extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: LogisticMovTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -154,7 +154,7 @@ class LogisticOrdersXItemsMovAmt extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: ActionsStatus,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -163,7 +163,7 @@ class LogisticOrdersXItemsMovAmt extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: MovementsTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -172,7 +172,7 @@ class LogisticOrdersXItemsMovAmt extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: MeasurementsUnits,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -181,7 +181,7 @@ class LogisticOrdersXItemsMovAmt extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: LogisticStatus,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -190,7 +190,7 @@ class LogisticOrdersXItemsMovAmt extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Packagings,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -199,7 +199,7 @@ class LogisticOrdersXItemsMovAmt extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: LogisticReasons,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -208,7 +208,7 @@ class LogisticOrdersXItemsMovAmt extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: LogisticReasons,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

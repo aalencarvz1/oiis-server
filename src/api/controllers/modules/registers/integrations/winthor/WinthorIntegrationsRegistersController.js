@@ -98,9 +98,9 @@ class WinthorIntegrationsRegistersController extends RegistersController {
             result = await this.getPeopleByIdentifiersDocs(
                 identifiersDocs,{
                     attributes:[
-                        [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CGCENT'),'[^0-9]',''),'DECIMAL(32)'),'ID'], //for people, use document as id to avoid duplicate registers
-                        [Sequelize.literal(`${OriginsDatas.WINTHOR}`),'IDORIGINDATA'],
-                        ['CODCLI','IDONORIGINDATA'],
+                        [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CGCENT'),'[^0-9]',''),'DECIMAL(32)'),'id'], //for people, use document as id to avoid duplicate registers
+                        [Sequelize.literal(`${OriginsDatas.WINTHOR}`),'data_origin_id'],
+                        ['CODCLI','id_at_origin'],
                         [Sequelize.literal(`case when PCCLIENT.TIPOFJ = 'F' then ${IdentifiersTypes.CPF} else ${IdentifiersTypes.CNPJ} end`),'IDIDENTIFIERDOCTYPE'],
                         [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CGCENT'),'[^0-9]',''),'DECIMAL(32)'),'IDENTIFIERDOC'],
                         ['CLIENTE','NAME'],
@@ -129,9 +129,9 @@ class WinthorIntegrationsRegistersController extends RegistersController {
             result = await this.getPeopleByIdentifiersDocs(
                 identifiersDocs,{
                     attributes:[
-                        [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CGCENT'),'[^0-9]',''),'DECIMAL(32)'),'ID'], //for people, use document as id to avoid duplicate registers
-                        [Sequelize.literal(`${OriginsDatas.WINTHOR}`),'IDORIGINDATA'],
-                        ['CODCLI','IDONORIGINDATA'],
+                        [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CGCENT'),'[^0-9]',''),'DECIMAL(32)'),'id'], //for people, use document as id to avoid duplicate registers
+                        [Sequelize.literal(`${OriginsDatas.WINTHOR}`),'data_origin_id'],
+                        ['CODCLI','id_at_origin'],
                         [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CGCENT'),'[^0-9]',''),'DECIMAL(32)'),'IDPEOPLE'] //for people, use document as id to avoid duplicate registers
                     ]
                 }

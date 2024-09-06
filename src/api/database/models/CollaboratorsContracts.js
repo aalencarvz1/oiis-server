@@ -12,7 +12,7 @@ const { ContractsTypes } = require("./ContractsTypes");
  * class model
  */
 class CollaboratorsContracts extends BaseTableModel {
-  static ID = 6002;
+  static id = 6002;
   static model = null;
   static fields = {
     ...CollaboratorsContracts.getBaseTableModelFields(),...{           
@@ -49,11 +49,11 @@ class CollaboratorsContracts extends BaseTableModel {
 
   static constraints = [...(CollaboratorsContracts.getBaseTableModelConstraints() || []),...[
     {
-      name: CollaboratorsContracts.name.toUpperCase() + '_U1',
+      name: CollaboratorsContracts.name.toLowerCase() + '_u1',
       fields: [...CollaboratorsContracts.getBaseTableModelUniqueFields(),...CollaboratorsContracts.uniqueFields],
       type:"unique"
     },{
-      name: CollaboratorsContracts.name.toUpperCase() + '_C_1',
+      name: CollaboratorsContracts.name.toLowerCase() + '_c_1',
       fields:['ISTIMECONTROLLED'],
       type:"check",
       where:{
@@ -70,7 +70,7 @@ class CollaboratorsContracts extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Collaborators,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -79,7 +79,7 @@ class CollaboratorsContracts extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: ContractsTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

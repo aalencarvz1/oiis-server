@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class ReportsDatasFounts extends BaseTableModel {
-  static ID = 10005;
+  static id = 10005;
   static model = null;
   static fields = {
     ...ReportsDatasFounts.getBaseTableModelFields(),...{                 

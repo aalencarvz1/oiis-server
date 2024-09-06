@@ -19,45 +19,45 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await OriginsDatas.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});       
 
-    await queryInterface.bulkInsert(OriginsDatas.name.toUpperCase(),[{
-      ID: OriginsDatas.DEFAULT_ORIGINDATA,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+    await queryInterface.bulkInsert(OriginsDatas.name.toLowerCase(),[{
+      id: OriginsDatas.DEFAULT_ORIGINDATA,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       NAME : 'DEFAULT_ORIGINDATA'      
     },{
-      ID: OriginsDatas.WINTHOR,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.WINTHOR,
-      ISSYSTEMREG : 1,
+      id: OriginsDatas.WINTHOR,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.WINTHOR,
+      is_sys_rec : 1,
       NAME : 'WINTHOR'      
     },{
-      ID: OriginsDatas.AURORA,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.AURORA,
-      ISSYSTEMREG : 1,
+      id: OriginsDatas.AURORA,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.AURORA,
+      is_sys_rec : 1,
       NAME : 'AURORA'      
     },{
-      ID: OriginsDatas.CONSULTA,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.CONSULTA,
-      ISSYSTEMREG : 1,
+      id: OriginsDatas.CONSULTA,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.CONSULTA,
+      is_sys_rec : 1,
       NAME : 'CONSULTA'      
     },{
-      ID: OriginsDatas.EP,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.EP,
-      ISSYSTEMREG : 1,
+      id: OriginsDatas.EP,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.EP,
+      is_sys_rec : 1,
       NAME : 'EP'      
     }],{
       ignoreDuplicates:true,
@@ -76,6 +76,6 @@ module.exports = {
     await OriginsDatas.migrateForeignKeyContraint(queryInterface,OriginsDatas);  
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(OriginsDatas.name.toUpperCase());
+    await queryInterface.dropTable(OriginsDatas.name.toLowerCase());
   }
 };

@@ -39,7 +39,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
             
             let query = `
                 select 
-                    u.id as ID,
+                    u.id as id,
                     o.cod as IDORIGIN,
                     o.nome as ORIGIN,
                     c.codfilial as CODFILIAL,
@@ -52,11 +52,11 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                     cj.nument  AS DELIVERIESAMT,
                     cj.qtitens AS ITEMSAMT
                 from 
-                    jumbo.pccarreg cj 
-                    join jumbo.pcpedc c on c.numcar = cj.numcar 
-                    left outer join ep.eporigensinfo o on o.cod = 0 
-                    left outer join jumbo.pcveicul v on (v.codveiculo = cj.codveiculo) 
-                    left outer join ep.epunifcargas u on (u.idorigeminfo = 0 and u.nrcarga = cj.numcar) 
+                    JUMBO.PCCARREG cj 
+                    join JUMBO.PCPEDC c on c.numcar = cj.numcar 
+                    left outer join EP.EPORIGENSINFO o on o.cod = 0 
+                    left outer join JUMBO.PCVEICUL v on (v.codveiculo = cj.codveiculo) 
+                    left outer join EP.EPUNIFCARGAS u on (u.idorigeminfo = 0 and u.nrcarga = cj.numcar) 
                 where 
                     1=1
                     ${id?.length ? ` and u.id in (${id.join(',')}) ` : ' ' }
@@ -91,9 +91,9 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                     count(distinct ca.cd_item)                
                 from 
                     consulta.sjdcargaaur_import ca 
-                    left outer join ep.eporigensinfo o on o.cod = 1 
-                    left outer join ep.epnfssaida s on (s.nrcarga = ca.nro_carga and s.codorigeminfo = 1) 
-                    left outer join ep.epunifcargas u on (u.idorigeminfo = 1 and u.nrcarga = ca.nro_carga) 
+                    left outer join EP.EPORIGENSINFO o on o.cod = 1 
+                    left outer join EP.EPNFSSAIDA s on (s.nrcarga = ca.nro_carga and s.codorigeminfo = 1) 
+                    left outer join EP.EPUNIFCARGAS u on (u.idorigeminfo = 1 and u.nrcarga = ca.nro_carga) 
                 where 
                     1=1
                     ${id?.length ? ` and u.id in (${id.join(',')}) ` : ' ' }
@@ -131,7 +131,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                     select
                         1
                     from
-                        ep.epunifcargas u
+                        EP.EPUNIFCARGAS u
                     where                        
                         ${identifiers.map(el=>`(u.IDORIGEMINFO = ${el.IDORIGIN} AND u.NRCARGA = ${el.LOADINGNUMBER})`).join(' or ')}
                 `
@@ -157,7 +157,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                             select distinct
                                 CODUSUR
                             from
-                                jumbo.pcpedc 
+                                JUMBO.PCPEDC 
                             where
                                 numcar in (${loadingsWinthor.join(',')})
                         `;
@@ -174,7 +174,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                                 pr.idrca as CODUSUR
                             from
                                 consulta.PLACAWINTXPLACABROKER pb
-                                join consulta.PLACASXRCAS pr on pr.IDPLACAX = pb.ID 
+                                join consulta.PLACASXRCAS pr on pr.IDPLACAX = pb.id 
                             WHERE
                                 pb.PLACABROKER in (
                                     select distinct
@@ -207,12 +207,12 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                     }
                 }
 
-                query = `select max(coalesce(id,0))+1 as PROXID from ep.epunifcargas`;
+                query = `select max(coalesce(id,0))+1 as PROXID from EP.EPUNIFCARGAS`;
                 data = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
                 data = data[0] || [];
                 let proxId = data[0].PROXID || 1;
                 res.data = proxId;
-                let queries = identifiers.map(el=>`insert into ep.epunifcargas values (${proxId},${el.IDORIGIN},${el.LOADINGNUMBER},sysdate,${req.user.ID})`);
+                let queries = identifiers.map(el=>`insert into EP.EPUNIFCARGAS values (${proxId},${el.IDORIGIN},${el.LOADINGNUMBER},sysdate,${req.user.id})`);
                 for (let key in queries) {
                     await DBConnectionManager.getConsultDBConnection().query(queries[key],{queryType:Sequelize.QueryTypes.INSERT});
                 }
@@ -250,7 +250,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                         count(1) as UNIFIEDS,
                         count(distinct id) as DISTID
                     from
-                        ep.epunifcargas
+                        EP.EPUNIFCARGAS
                     where
                         ${identifiers.map(el=>` (IDORIGEMINFO=${el.IDORIGIN} AND NRCARGA=${el.LOADINGNUMBER}) `).join(' OR ')}
                 `
@@ -281,7 +281,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
 
                 if (winthorLoads.length > 0) {
                     query = `
-                        select max(codfilial) as CODFILIAL from jumbo.pcpedc where numcar in (${winthorLoads.join(',')})
+                        select max(codfilial) as CODFILIAL from JUMBO.PCPEDC where numcar in (${winthorLoads.join(',')})
                     `;
                     data = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
                     data = data[0] || [];
@@ -352,16 +352,16 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                             sum(nvl(pi.qt,0)) as qt,
                             SUM(nvl(pi.qt, 0) * nvl(pi.pesobruto, p.pesobruto)) as pesobruto 
                         from 
-                            jumbo.pccarreg cr 
-                            JOIN jumbo.pcpedc pc ON ( pc.numcar = cr.numcar ) 
-                            JOIN jumbo.pcpedi pi ON ( pi.numped = pc.numped ) 
-                            LEFT OUTER JOIN jumbo.pcprodut p ON ( p.codprod = pi.codprod )     
-                            LEFT OUTER JOIN jumbo.pcest e on (e.codprod = pi.codprod and e.codfilial = nvl(pi.codfilialretira, pc.codfilial))                             
-                            left outer join jumbo.pcprodfilial pf on (pf.codfilial = nvl(pi.codfilialretira, pc.codfilial) and pf.codprod = pi.codprod)  
-                            LEFT OUTER JOIN jumbo.pcveicul v on (v.codveiculo = cr.codveiculo) 
-                            LEFT OUTER JOIN jumbo.pcconsum cs ON ( 1 = 1 ) 	 
-                            left outer join ep.epunifcargas uc on (uc.nrcarga = cr.numcar and uc.idorigeminfo = 0)
-                            left outer join jumbo.pclote l on (l.codfilial = e.codfilial and l.codprod = p.codprod and l.numlote = pi.numlote)
+                            JUMBO.PCCARREG cr 
+                            JOIN JUMBO.PCPEDC pc ON ( pc.numcar = cr.numcar ) 
+                            JOIN JUMBO.PCPEDI pi ON ( pi.numped = pc.numped ) 
+                            LEFT OUTER JOIN JUMBO.PCPRODUT p ON ( p.codprod = pi.codprod )     
+                            LEFT OUTER JOIN JUMBO.PCEST e on (e.codprod = pi.codprod and e.codfilial = nvl(pi.codfilialretira, pc.codfilial))                             
+                            left outer join JUMBO.PCPRODFILIAL pf on (pf.codfilial = nvl(pi.codfilialretira, pc.codfilial) and pf.codprod = pi.codprod)  
+                            LEFT OUTER JOIN JUMBO.PCVEICUL v on (v.codveiculo = cr.codveiculo) 
+                            LEFT OUTER JOIN JUMBO.PCCONSUM cs ON ( 1 = 1 ) 	 
+                            left outer join EP.EPUNIFCARGAS uc on (uc.nrcarga = cr.numcar and uc.idorigeminfo = 0)
+                            left outer join JUMBO.PCLOTE l on (l.codfilial = e.codfilial and l.codprod = p.codprod and l.numlote = pi.numlote)
                         where 
                             cr.numcar in (${winthorLoads.join(',')}) 
                             AND pi.qt > 0 
@@ -380,11 +380,11 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                         select 
                                 max(uc.id) as idunifcarga,
                             to_char(${codFilial}) as codfilial,
-                            (select max(cr.numcar) from jumbo.pccarreg cr where cr.numcar in (${winthorLoads.join(',')})) as numcarjumbo,
+                            (select max(cr.numcar) from JUMBO.PCCARREG cr where cr.numcar in (${winthorLoads.join(',')})) as numcarjumbo,
                             max(ca.nro_carga) as numcarbroker,
                             max(ca.dt_saida) as dtsaida,
-                            (select max(cr.destino) from jumbo.pccarreg cr where cr.numcar in (${winthorLoads.join(',')})) as destino,
-                            (select max(v.placa) from jumbo.pccarreg cr left outer join jumbo.pcveicul v on (v.codveiculo = cr.codveiculo) where cr.numcar in (${winthorLoads.join(',')})) as placajumbo,   
+                            (select max(cr.destino) from JUMBO.PCCARREG cr where cr.numcar in (${winthorLoads.join(',')})) as destino,
+                            (select max(v.placa) from JUMBO.PCCARREG cr left outer join JUMBO.PCVEICUL v on (v.codveiculo = cr.codveiculo) where cr.numcar in (${winthorLoads.join(',')})) as placajumbo,   
                             max(ca.placa) as placabroker,
                             max(CASE 
                                 WHEN nvl(cs.utilizaendporfilial,'N') = 'S' THEN coalesce(e.rua,e.modulo,e.numero,e.apto) 
@@ -401,10 +401,10 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                             SUM(nvl(ca.qtde, 0) + nvl(ca.qtde_emb, 0)) pesobruto 
                         from 
                             consulta.sjdcargaaur_import ca 
-                            LEFT OUTER JOIN jumbo.pcprodut p on (p.codprod = ca.cd_item) 
-                            left outer join jumbo.pcest e on (e.codprod = ca.cd_item and e.codfilial = ${codFilial}) 
-                            join jumbo.pcconsum cs on 1=1 
-                            left outer join ep.epunifcargas uc on (uc.nrcarga = ca.nro_carga and uc.idorigeminfo = 1)
+                            LEFT OUTER JOIN JUMBO.PCPRODUT p on (p.codprod = ca.cd_item) 
+                            left outer join JUMBO.PCEST e on (e.codprod = ca.cd_item and e.codfilial = ${codFilial}) 
+                            join JUMBO.PCCONSUM cs on 1=1 
+                            left outer join EP.EPUNIFCARGAS uc on (uc.nrcarga = ca.nro_carga and uc.idorigeminfo = 1)
                         where 
                             ca.nro_carga in (${brokerLoads.join(',')})     
                         group by 

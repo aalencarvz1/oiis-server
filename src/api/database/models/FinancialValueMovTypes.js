@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class FinancialValueMovTypes extends BaseTableModel {
-  static ID = 1034;
+  static id = 1034;
   static model = null;
 
   static TRANSFERENCE = 1; 
@@ -49,11 +49,11 @@ class FinancialValueMovTypes extends BaseTableModel {
 
   static constraints = [...(FinancialValueMovTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: FinancialValueMovTypes.name.toUpperCase() + '_U1',
+      name: FinancialValueMovTypes.name.toLowerCase() + '_u1',
       fields: [...FinancialValueMovTypes.getBaseTableModelUniqueFields(),...FinancialValueMovTypes.uniqueFields],
       type:"unique"
     },{
-      name: FinancialValueMovTypes.name.toUpperCase() + '_C_1',
+      name: FinancialValueMovTypes.name.toLowerCase() + '_c_1',
       fields:['ISPHYSICAL'],
       type:"check",
       where:{
@@ -62,7 +62,7 @@ class FinancialValueMovTypes extends BaseTableModel {
           }
       }
     },{
-      name: FinancialValueMovTypes.name.toUpperCase() + '_C_3',
+      name: FinancialValueMovTypes.name.toLowerCase() + '_c_3',
       fields:['ISELETRONIC'],
       type:"check",
       where:{
@@ -78,7 +78,7 @@ class FinancialValueMovTypes extends BaseTableModel {
     type: 'foreign key',
     references: { 
         table: FinancialValueMovTypes,
-        field: 'ID'
+        field: 'id'
     },
     onUpdate: 'cascade',
     onDelete: 'cascade'
@@ -87,7 +87,7 @@ class FinancialValueMovTypes extends BaseTableModel {
 
   static getIdByIntegrationId(idOnOrigin) {
     let result = FinancialValueMovTypes.DEPOSIT;
-    switch(idOnOrigin.trim().toUpperCase()) {
+    switch(idOnOrigin.trim().toLowerCase()) {
       case 'DEPÓSITO':
       case 'DEPOSITO':
       case 'DEP':

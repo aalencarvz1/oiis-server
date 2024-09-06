@@ -14,7 +14,7 @@ const { LogisticReasons } = require("./LogisticReasons");
  * class model
  */
 class LogisticOrders extends BaseTableModel {
-  static ID = 12003;
+  static id = 12003;
   static model = null;
   static fields = {
     ...LogisticOrders.getBaseTableModelFields(),...{           
@@ -67,7 +67,7 @@ class LogisticOrders extends BaseTableModel {
 
   static constraints = [...(LogisticOrders.getBaseTableModelConstraints() || []),...[
     {
-      name: LogisticOrders.name.toUpperCase() + '_U1',
+      name: LogisticOrders.name.toLowerCase() + '_u1',
       fields: [...LogisticOrders.getBaseTableModelUniqueFields(),...LogisticOrders.uniqueFields],
       type:"unique"
     }
@@ -79,7 +79,7 @@ class LogisticOrders extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: LogisticMovTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -88,7 +88,7 @@ class LogisticOrders extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: IdentifiersTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -97,7 +97,7 @@ class LogisticOrders extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: ActionsStatus,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -106,7 +106,7 @@ class LogisticOrders extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: LogisticStatus,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -115,7 +115,7 @@ class LogisticOrders extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: LogisticReasons,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -124,7 +124,7 @@ class LogisticOrders extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: LogisticReasons,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

@@ -29,12 +29,12 @@ module.exports = {
             if (routine.IDROUTINETYPE || routine.VIEWPATH) {
               Utils.log('FL',routine.NAME,' is routine');
               registersRoutines.push({
-                ID:routine.ID-0,
-                IDSTATUSREG: StatusRegs.ACTIVE,
-                IDUSERCREATE : Users.SYSTEM,
-                CREATEDAT: new Date(),
-                IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-                ISSYSTEMREG : 1,
+                id:routine.id-0,
+                status_reg_id: StatusRegs.ACTIVE,
+                creator_user_id : Users.SYSTEM,
+                created_at: new Date(),
+                data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+                is_sys_rec : 1,
                 IDMODULE: idModuleSup,
                 IDSUP: idRoutineSup,
                 IDROUTINETYPE : (Utils.firstValid([routine.IDROUTINETYPE,1]))-0,
@@ -45,17 +45,17 @@ module.exports = {
                 SHOWINMENU: Utils.firstValid([routine.SHOWINMENU,1]),
               });
               for(let i = 0; i < routine.SUBS.length; i++) {
-                seedRoutine(routine.SUBS[i],idModuleSup,routine.ID);
+                seedRoutine(routine.SUBS[i],idModuleSup,routine.id);
               } 
             } else {
               Utils.log('FL',routine.NAME,' is module');
               registersModules.push({
-                ID:routine.ID-0,
-                IDSTATUSREG: StatusRegs.ACTIVE,
-                IDUSERCREATE : Users.SYSTEM,
-                CREATEDAT: new Date(),
-                IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-                ISSYSTEMREG : 1,
+                id:routine.id-0,
+                status_reg_id: StatusRegs.ACTIVE,
+                creator_user_id : Users.SYSTEM,
+                created_at: new Date(),
+                data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+                is_sys_rec : 1,
                 IDSUP: idModuleSup,
                 NAME:routine.NAME,
                 ORDERNUM: routine.ORDERNUM,
@@ -63,19 +63,19 @@ module.exports = {
               });
 
               for(let i = 0; i < routine.SUBS.length; i++) {
-                seedRoutine(routine.SUBS[i],routine.ID);
+                seedRoutine(routine.SUBS[i],routine.id);
               } 
             }
 
           } else {
             Utils.log('FL',routine.NAME,' no has subs');
             registersRoutines.push({
-              ID:routine.ID-0,
-              IDSTATUSREG: StatusRegs.ACTIVE,
-              IDUSERCREATE : Users.SYSTEM,
-              CREATEDAT: new Date(),
-              IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-              ISSYSTEMREG : 1,
+              id:routine.id-0,
+              status_reg_id: StatusRegs.ACTIVE,
+              creator_user_id : Users.SYSTEM,
+              created_at: new Date(),
+              data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+              is_sys_rec : 1,
               IDMODULE: idModuleSup,
               IDSUP: idRoutineSup,
               IDROUTINETYPE : routine.IDROUTINETYPE-0,
@@ -96,19 +96,19 @@ module.exports = {
     //Utils.log('FL',registersModules);
     //Utils.log('FL',registersRoutines);
 
-    await queryInterface.bulkInsert(Modules.name.toUpperCase(),registersModules,{
+    await queryInterface.bulkInsert(Modules.name.toLowerCase(),registersModules,{
       ignoreDuplicates:true,
-      updateOnDuplicate:['IDSTATUSREG','IDSUP','NAME','ICON']
+      updateOnDuplicate:['status_reg_id','IDSUP','NAME','ICON']
     });  
 
-    await queryInterface.bulkInsert(Routines.name.toUpperCase(),registersRoutines,{
+    await queryInterface.bulkInsert(Routines.name.toLowerCase(),registersRoutines,{
       ignoreDuplicates:true,
-      updateOnDuplicate:['IDSTATUSREG','IDMODULE','NAME','ICON','VIEWPATH']
+      updateOnDuplicate:['status_reg_id','IDMODULE','NAME','ICON','VIEWPATH']
     });  
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(Routines.name.toUpperCase(), null, {});
-     await queryInterface.bulkDelete(Modules.name.toUpperCase(), null, {});
+     await queryInterface.bulkDelete(Routines.name.toLowerCase(), null, {});
+     await queryInterface.bulkDelete(Modules.name.toLowerCase(), null, {});
   }
 };

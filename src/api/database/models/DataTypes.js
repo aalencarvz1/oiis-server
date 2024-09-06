@@ -10,7 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class DataTypes extends BaseTableModel {
-  static ID = 50;
+  static id = 50;
 
   static ANY = 1;
   static STRING = 2;
@@ -86,11 +86,11 @@ class DataTypes extends BaseTableModel {
   ];
 
   static constraints = [...(DataTypes.getBaseTableModelConstraints() || []),...[{
-    name: DataTypes.name.toUpperCase() + '_U1',
+    name: DataTypes.name.toLowerCase() + '_u1',
     fields: [...DataTypes.getBaseTableModelUniqueFields(),...DataTypes.uniqueFields],
     type:"unique"
   },{
-    name: DataTypes.name.toUpperCase() + '_C_1',
+    name: DataTypes.name.toLowerCase() + '_c_1',
     fields:['ISBOOLEAN'],
     type:"check",
     where:{
@@ -99,7 +99,7 @@ class DataTypes extends BaseTableModel {
       }
     }
   },{
-    name: DataTypes.name.toUpperCase() + '_C_2',
+    name: DataTypes.name.toLowerCase() + '_c_2',
     fields:['ISTEXT'],
     type:"check",
     where:{
@@ -108,7 +108,7 @@ class DataTypes extends BaseTableModel {
       }
     }
   },{
-    name: DataTypes.name.toUpperCase() + '_C_3',
+    name: DataTypes.name.toLowerCase() + '_c_3',
     fields:['ISNUMBER'],
     type:"check",
     where:{
@@ -117,7 +117,7 @@ class DataTypes extends BaseTableModel {
       }
     }
   },{
-    name: DataTypes.name.toUpperCase() + '_C_4',
+    name: DataTypes.name.toLowerCase() + '_c_4',
     fields:['ISARRAY'],
     type:"check",
     where:{
@@ -126,7 +126,7 @@ class DataTypes extends BaseTableModel {
       }
     }
   },{
-    name: DataTypes.name.toUpperCase() + '_C_5',
+    name: DataTypes.name.toLowerCase() + '_c_5',
     fields:['ISOBJECT'],
     type:"check",
     where:{
@@ -135,7 +135,7 @@ class DataTypes extends BaseTableModel {
       }
     }
   },{
-    name: DataTypes.name.toUpperCase() + '_C_6',
+    name: DataTypes.name.toLowerCase() + '_c_6',
     fields:['ISDECIMAL'],
     type:"check",
     where:{
@@ -144,7 +144,7 @@ class DataTypes extends BaseTableModel {
       }
     }
   },{
-    name: DataTypes.name.toUpperCase() + '_C_7',
+    name: DataTypes.name.toLowerCase() + '_c_7',
     fields:['ISDATE'],
     type:"check",
     where:{
@@ -153,7 +153,7 @@ class DataTypes extends BaseTableModel {
       }
     }
   },{
-    name: DataTypes.name.toUpperCase() + '_C_8',
+    name: DataTypes.name.toLowerCase() + '_c_8',
     fields:['ISTIME'],
     type:"check",
     where:{
@@ -162,7 +162,7 @@ class DataTypes extends BaseTableModel {
       }
     }
   },{
-    name: DataTypes.name.toUpperCase() + '_C_9',
+    name: DataTypes.name.toLowerCase() + '_c_9',
     fields:['ISOTHER'],
     type:"check",
     where:{

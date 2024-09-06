@@ -8,7 +8,7 @@ const { BasePeopleModel } = require("./BasePeopleModel");
  * class model
  */
 class Companies extends BasePeopleModel {
-  static ID = 3000;
+  static id = 3000;
   static model = null;
 
   static #defaultCompany = null;
@@ -21,7 +21,7 @@ class Companies extends BasePeopleModel {
 
   static constraints = [...(Companies.getBaseTableModelConstraints() || []),...[
     {
-      name: Companies.name.toUpperCase() + '_U1',
+      name: Companies.name.toLowerCase() + '_u1',
       fields: [...Companies.getBaseTableModelUniqueFields(),...Companies.uniqueFields],
       type:"unique"
     }
@@ -33,7 +33,7 @@ class Companies extends BasePeopleModel {
     if (Companies.#defaultCompany == null) {
       Companies.#defaultCompany = await Companies.getModel().findOne({
         where:{
-          IDSTATUSREG : StatusRegs.ACTIVE
+          status_reg_id : StatusRegs.ACTIVE
         }
       });
     }

@@ -12,7 +12,7 @@ const { TasksStatus } = require("./TasksStatus");
  * class model
  */
 class TasksXStatusXUsers extends BaseTableModel {
-  static ID = 15050;
+  static id = 15050;
   static model = null;
 
   static fields = {
@@ -71,7 +71,7 @@ class TasksXStatusXUsers extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Tasks,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -80,7 +80,7 @@ class TasksXStatusXUsers extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Users,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -89,7 +89,7 @@ class TasksXStatusXUsers extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: TasksStatus,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },{
@@ -97,7 +97,7 @@ class TasksXStatusXUsers extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Tasks,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'set null'

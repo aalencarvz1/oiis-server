@@ -8,7 +8,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class OriginsDatas extends BaseTableModel {
-  static ID = 60;
+  static id = 60;
   static model = null;
 
   static DEFAULT_ORIGINDATA = 1;
@@ -37,7 +37,7 @@ class OriginsDatas extends BaseTableModel {
 
   static constraints = [...(OriginsDatas.getBaseTableModelConstraints() || []),...[
     {
-      name: OriginsDatas.name.toUpperCase() + '_U1',
+      name: OriginsDatas.name.toLowerCase() + '_u1',
       fields: [...OriginsDatas.getBaseTableModelUniqueFields(),...OriginsDatas.uniqueFields],
       type:"unique"
     }

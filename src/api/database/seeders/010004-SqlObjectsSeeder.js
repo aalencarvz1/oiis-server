@@ -15,42 +15,42 @@ module.exports = {
 
     let registers = [];
 
-    await queryInterface.bulkInsert(SqlObjects.name.toUpperCase(),[{      
-      ID: configDB[`${process.env.NODE_ENV||'development'}`].ID,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+    await queryInterface.bulkInsert(SqlObjects.name.toLowerCase(),[{      
+      id: configDB[`${process.env.NODE_ENV||'development'}`].id,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       IDSQLOBJECTTYPE : SqlObjectsTypes.DATABASE,
       NAME : configDB[`${process.env.NODE_ENV||'development'}`].database,
     },{            
-      ID: configDB[`${process.env.NODE_ENV||'development'}`].ID + 1,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id: configDB[`${process.env.NODE_ENV||'development'}`].id + 1,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       IDSQLOBJECTTYPE : SqlObjectsTypes.USER,
-      IDSUP : configDB[`${process.env.NODE_ENV||'development'}`].ID,
+      IDSUP : configDB[`${process.env.NODE_ENV||'development'}`].id,
       NAME : configDB[`${process.env.NODE_ENV||'development'}`].user || configDB[`${process.env.NODE_ENV||'development'}`].database,
     },{      
-      ID: configDB[`${process.env.NODE_ENV||'development'}`].ID + 2,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id: configDB[`${process.env.NODE_ENV||'development'}`].id + 2,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       IDSQLOBJECTTYPE : SqlObjectsTypes.SCHEMA,
-      IDSUP : configDB[`${process.env.NODE_ENV||'development'}`].ID + 1,
+      IDSUP : configDB[`${process.env.NODE_ENV||'development'}`].id + 1,
       NAME : configDB[`${process.env.NODE_ENV||'development'}`].schema || configDB[`${process.env.NODE_ENV||'development'}`]?.dialectOptions?.schema || configDB[`${process.env.NODE_ENV||'development'}`].database
     },{
-      ID: configDB["development_winthor"]?.ID,      
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id: configDB["development_winthor"]?.id,      
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       IDSQLOBJECTTYPE : SqlObjectsTypes.DATABASE,
       NAME : 'WINT',
     }],{
@@ -68,12 +68,12 @@ module.exports = {
       }
     });
     if (Object.keys(wintObject||{}).length == 0) {
-      await queryInterface.bulkInsert(SqlObjects.name.toUpperCase(),[{
-        IDSTATUSREG: StatusRegs.ACTIVE,
-        IDUSERCREATE : Users.SYSTEM,
-        CREATEDAT: new Date(),
-        IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-        ISSYSTEMREG : 1,
+      await queryInterface.bulkInsert(SqlObjects.name.toLowerCase(),[{
+        status_reg_id: StatusRegs.ACTIVE,
+        creator_user_id : Users.SYSTEM,
+        created_at: new Date(),
+        data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+        is_sys_rec : 1,
         IDSQLOBJECTTYPE : SqlObjectsTypes.DATABASE,
         NAME : 'WINT',
       }],{
@@ -92,19 +92,19 @@ module.exports = {
     
     let wintUserObject = await SqlObjects.getModel().findOne({raw:true,where: {
       IDSQLOBJECTTYPE : SqlObjectsTypes.USER, 
-      IDSUP:wintObject.ID, 
+      IDSUP:wintObject.id, 
       NAME: 'JUMBO'
     }});
 
     if (Object.keys(wintUserObject||{}).length == 0) {
-      await queryInterface.bulkInsert(SqlObjects.name.toUpperCase(),[{      
-        IDSTATUSREG: StatusRegs.ACTIVE,
-        IDUSERCREATE : Users.SYSTEM,
-        CREATEDAT: new Date(),
-        IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-        ISSYSTEMREG : 1,
+      await queryInterface.bulkInsert(SqlObjects.name.toLowerCase(),[{      
+        status_reg_id: StatusRegs.ACTIVE,
+        creator_user_id : Users.SYSTEM,
+        created_at: new Date(),
+        data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+        is_sys_rec : 1,
         IDSQLOBJECTTYPE : SqlObjectsTypes.USER,
-        IDSUP : wintObject.ID,
+        IDSUP : wintObject.id,
         NAME : 'JUMBO',
       }],{
         ignoreDuplicates:true,
@@ -113,25 +113,25 @@ module.exports = {
 
       wintUserObject = await SqlObjects.getModel().findOne({raw:true,where: {
         IDSQLOBJECTTYPE : SqlObjectsTypes.USER, 
-        IDSUP:wintObject.ID, 
+        IDSUP:wintObject.id, 
         NAME: 'JUMBO'
       }});
     }
 
     let wintSchemaObject = await SqlObjects.getModel().findOne({raw:true,where: {
       IDSQLOBJECTTYPE : SqlObjectsTypes.SCHEMA, 
-      IDSUP:wintUserObject.ID, 
+      IDSUP:wintUserObject.id, 
       NAME: 'JUMBO'
     }});
     if (Object.keys(wintSchemaObject||{}).length == 0) {
-      await queryInterface.bulkInsert(SqlObjects.name.toUpperCase(),[{      
-        IDSTATUSREG: StatusRegs.ACTIVE,
-        IDUSERCREATE : Users.SYSTEM,
-        CREATEDAT: new Date(),
-        IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-        ISSYSTEMREG : 1,
+      await queryInterface.bulkInsert(SqlObjects.name.toLowerCase(),[{      
+        status_reg_id: StatusRegs.ACTIVE,
+        creator_user_id : Users.SYSTEM,
+        created_at: new Date(),
+        data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+        is_sys_rec : 1,
         IDSQLOBJECTTYPE : SqlObjectsTypes.SCHEMA,
-        IDSUP : wintUserObject.ID,
+        IDSUP : wintUserObject.id,
         NAME : 'JUMBO',
       }],{
         ignoreDuplicates:true,
@@ -140,22 +140,22 @@ module.exports = {
 
       wintSchemaObject = await SqlObjects.getModel().findOne({raw:true,where: {
         IDSQLOBJECTTYPE : SqlObjectsTypes.SCHEMA, 
-        IDSUP:wintUserObject.ID, 
+        IDSUP:wintUserObject.id, 
         NAME: 'JUMBO'
       }});
     }
 
     //CONTINUAR AQUI, INCLUIR OS OPJETOS NECESSARIOS PARA FAZER OS COMANDOS SQL DIRETO DO WINTHOR (PCFILIAL, PCPRODUT,PCNFSAID,PCMOV,PCNFENT,PCEST,ETC. POR HORA FAZER SO DA JUMBO, MONTAR COMO MONTADO NO EP (INCLUIR PROCESSOS DE CUSTO/LUCRO E OBJETOS DESTES PROCESSOS (UTILIZANDO O SCHEMA JUMBO)))
     Utils.log('FL',wintSchemaObject);
-    await queryInterface.bulkInsert(SqlObjects.name.toUpperCase(),[{      
-      ID: PcFilial.ID,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,      
+    await queryInterface.bulkInsert(SqlObjects.name.toLowerCase(),[{      
+      id: PcFilial.id,
+      status_reg_id: StatusRegs.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,      
       IDSQLOBJECTTYPE : SqlObjectsTypes.TABLE,
-      IDSUP: wintSchemaObject.ID,
+      IDSUP: wintSchemaObject.id,
       NAME : PcFilial.name.toUpperCase(),
     }],{
       ignoreDuplicates:true,
@@ -166,6 +166,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(SqlObjects.name.toUpperCase(), null, {});
+     await queryInterface.bulkDelete(SqlObjects.name.toLowerCase(), null, {});
   }
 };

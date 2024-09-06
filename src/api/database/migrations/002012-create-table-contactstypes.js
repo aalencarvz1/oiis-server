@@ -11,6 +11,6 @@ module.exports = {
     await ContactsTypes.runUpMigration(queryInterface);     
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(ContactsTypes.name.toUpperCase());
+    await queryInterface.dropTable(ContactsTypes.name.toLowerCase());
   }
 };

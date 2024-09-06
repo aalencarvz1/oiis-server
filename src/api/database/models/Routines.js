@@ -11,7 +11,7 @@ const { Modules } = require("./Modules");
  * class model
  */
 class Routines extends BaseTableModel {
-  static ID = 240;
+  static id = 240;
   static model = null;
   static fields = {
     ...Routines.getBaseTableModelFields(),...{     
@@ -57,11 +57,11 @@ class Routines extends BaseTableModel {
 
   static constraints = [...(Routines.getBaseTableModelConstraints() || []),...[
     {
-      name: Routines.name.toUpperCase() + '_U1',
+      name: Routines.name.toLowerCase() + '_u1',
       fields: Routines.uniqueFields,
       type:"unique"
     },{
-      name: Routines.name.toUpperCase() + '_C_1',
+      name: Routines.name.toLowerCase() + '_c_1',
       fields:['SHOWINMENU'],
       type:"check",
       where:{
@@ -78,7 +78,7 @@ class Routines extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Routines,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },{
@@ -86,7 +86,7 @@ class Routines extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: RoutinesTypes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },{
@@ -94,7 +94,7 @@ class Routines extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Modules,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

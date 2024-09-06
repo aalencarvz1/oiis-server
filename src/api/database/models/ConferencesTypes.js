@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class ConferencesTypes extends BaseTableModel {
-  static ID = 9004;
+  static id = 9004;
   static model = null;
 
   static NORMAL = 1;
@@ -51,11 +51,11 @@ class ConferencesTypes extends BaseTableModel {
 
   static constraints = [...(ConferencesTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: ConferencesTypes.name.toUpperCase() + '_U1',
+      name: ConferencesTypes.name.toLowerCase() + '_u1',
       fields: [...ConferencesTypes.getBaseTableModelUniqueFields(),...ConferencesTypes.uniqueFields],
       type:"unique"
     },{
-      name: ConferencesTypes.name.toUpperCase() + '_C_1',
+      name: ConferencesTypes.name.toLowerCase() + '_c_1',
       fields:['CEGA'],
       type:"check",
       where:{
@@ -64,7 +64,7 @@ class ConferencesTypes extends BaseTableModel {
           }
       }
     },{
-      name: ConferencesTypes.name.toUpperCase() + '_C_2',
+      name: ConferencesTypes.name.toLowerCase() + '_c_2',
       fields:['SEMICEGA'],
       type:"check",
       where:{
@@ -73,7 +73,7 @@ class ConferencesTypes extends BaseTableModel {
           }
       }
     },{
-      name: ConferencesTypes.name.toUpperCase() + '_C_3',
+      name: ConferencesTypes.name.toLowerCase() + '_c_3',
       fields:['NORMAL'],
       type:"check",
       where:{

@@ -9,7 +9,7 @@ const { Users } = require("./Users");
  * class model
  */
 class UsersTokens extends BaseTableModel {
-  static ID = 121;
+  static id = 121;
   static model = null;
 
   
@@ -48,11 +48,11 @@ class UsersTokens extends BaseTableModel {
 
   static constraints = [...(UsersTokens.getBaseTableModelConstraints() || []),...[
     {
-      name: UsersTokens.name.toUpperCase() + '_U1',
+      name: UsersTokens.name.toLowerCase() + '_u1',
       fields: UsersTokens.uniqueFields,
       type:"unique"
     },{
-      name: UsersTokens.name.toUpperCase() + '_C_1',
+      name: UsersTokens.name.toLowerCase() + '_c_1',
       fields:['EXPIRED'],
       type:"check",
       where:{
@@ -69,7 +69,7 @@ class UsersTokens extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Users,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'

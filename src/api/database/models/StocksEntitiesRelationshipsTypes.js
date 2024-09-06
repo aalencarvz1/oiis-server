@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class StocksEntitiesRelationshipsTypes extends BaseTableModel {
-  static ID = 8026;
+  static id = 8026;
   static model = null;
   static OWNER = 1;
   static fields = {
@@ -50,11 +50,11 @@ class StocksEntitiesRelationshipsTypes extends BaseTableModel {
 
   static constraints = [...(StocksEntitiesRelationshipsTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: StocksEntitiesRelationshipsTypes.name.toUpperCase() + '_U1',
+      name: StocksEntitiesRelationshipsTypes.name.toLowerCase() + '_u1',
       fields: [...StocksEntitiesRelationshipsTypes.getBaseTableModelUniqueFields(),...StocksEntitiesRelationshipsTypes.uniqueFields],
       type:"unique"
     },{
-      name: StocksEntitiesRelationshipsTypes.name.toUpperCase() + '_C_1',
+      name: StocksEntitiesRelationshipsTypes.name.toLowerCase() + '_c_1',
       fields:['ISORIGIN'],
       type:"check",
       where:{
@@ -63,7 +63,7 @@ class StocksEntitiesRelationshipsTypes extends BaseTableModel {
           }
       }
     },{
-      name: StocksEntitiesRelationshipsTypes.name.toUpperCase() + '_C_2',
+      name: StocksEntitiesRelationshipsTypes.name.toLowerCase() + '_c_2',
       fields:['ISOWNER'],
       type:"check",
       where:{
@@ -72,7 +72,7 @@ class StocksEntitiesRelationshipsTypes extends BaseTableModel {
           }
       }
     },{
-      name: StocksEntitiesRelationshipsTypes.name.toUpperCase() + '_C_3',
+      name: StocksEntitiesRelationshipsTypes.name.toLowerCase() + '_c_3',
       fields:['ISRESERVED'],
       type:"check",
       where:{
@@ -81,7 +81,7 @@ class StocksEntitiesRelationshipsTypes extends BaseTableModel {
           }
       }
     },{
-      name: StocksEntitiesRelationshipsTypes.name.toUpperCase() + '_C_4',
+      name: StocksEntitiesRelationshipsTypes.name.toLowerCase() + '_c_4',
       fields:['ISTARGET'],
       type:"check",
       where:{

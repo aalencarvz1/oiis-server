@@ -11,7 +11,7 @@ const { PostalCodesXStreets } = require("./PostalCodesXStreets");
  * class model
  */
 class PostalCodesXPaths extends BaseTableModel {
-  static ID = 2010;
+  static id = 2010;
   static model = null;
   static fields = {
     ...PostalCodesXPaths.getBaseTableModelFields(),...{                 
@@ -48,7 +48,7 @@ class PostalCodesXPaths extends BaseTableModel {
 
   static constraints = [...(PostalCodesXPaths.getBaseTableModelConstraints() || []),...[
     {
-      name: PostalCodesXPaths.name.toUpperCase() + '_U1',
+      name: PostalCodesXPaths.name.toLowerCase() + '_u1',
       fields: [...PostalCodesXPaths.getBaseTableModelUniqueFields(),...PostalCodesXPaths.uniqueFields],
       type:"unique"
     }
@@ -60,7 +60,7 @@ class PostalCodesXPaths extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: PostalCodes,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -69,7 +69,7 @@ class PostalCodesXPaths extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: PostalCodesXStreets,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

@@ -45,10 +45,10 @@ class DeliveryController extends RegistersController{
                     COUNT(DISTINCT CASE WHEN ls.ISDELIVERING = 1 THEN m.IDCLIENT ELSE NULL END) AS QTENTREGASENTREGANDO,
                     COUNT(DISTINCT CASE WHEN ls.ISDELIVERED = 1 THEN m.IDCLIENT ELSE NULL END) AS QTENTREGASENTREGUES,
                     COUNT(DISTINCT CASE WHEN ls.ISPARTIALRETURNED = 1 OR ls.ISTOTALRETURNED = 1 THEN m.IDCLIENT ELSE NULL END) AS QTENTREGASDEVOLVIDAS,
-                    COUNT(DISTINCT CASE WHEN ls.ISTODELIVERY = 1 THEN m.ID ELSE NULL END) AS QTNOTASFISCAISAENTREGAR,
-                    COUNT(DISTINCT CASE WHEN ls.ISDELIVERING = 1 THEN m.ID ELSE NULL END) AS QTNOTASFISCAISENTREGANDO,
-                    COUNT(DISTINCT CASE WHEN ls.ISDELIVERED = 1 THEN m.ID ELSE NULL END) AS QTNOTASFISCAISENTREGUES,
-                    COUNT(DISTINCT CASE WHEN ls.ISPARTIALRETURNED = 1 OR ls.ISTOTALRETURNED = 1 THEN m.ID ELSE NULL END) AS QTNOTASFISCAISDEVOLVIDAS,
+                    COUNT(DISTINCT CASE WHEN ls.ISTODELIVERY = 1 THEN m.id ELSE NULL END) AS QTNOTASFISCAISAENTREGAR,
+                    COUNT(DISTINCT CASE WHEN ls.ISDELIVERING = 1 THEN m.id ELSE NULL END) AS QTNOTASFISCAISENTREGANDO,
+                    COUNT(DISTINCT CASE WHEN ls.ISDELIVERED = 1 THEN m.id ELSE NULL END) AS QTNOTASFISCAISENTREGUES,
+                    COUNT(DISTINCT CASE WHEN ls.ISPARTIALRETURNED = 1 OR ls.ISTOTALRETURNED = 1 THEN m.id ELSE NULL END) AS QTNOTASFISCAISDEVOLVIDAS,
                     SUM((
                             COALESCE(lim.EXPECTEDAMT,0)   
                             - COALESCE(lim.NOTMOVIMENTEDAMT,0)                                   
@@ -91,7 +91,7 @@ class DeliveryController extends RegistersController{
                         COALESCE(lim.NOTMOVIMENTEDAMT,0)                                      
                         * COALESCE(ima.UNITVALUE,0)
                     ) AS VALUERETURNED,                            
-                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.MONEY} THEN m.ID ELSE NULL END) AS DNFSARECEBER,
+                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.MONEY} THEN m.id ELSE NULL END) AS DNFSARECEBER,
                     SUM(
                         CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.MONEY} THEN
                             (
@@ -104,21 +104,21 @@ class DeliveryController extends RegistersController{
                         COUNT(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.MONEY} then lxm.IDMOV else null end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
-                        join LogisticOrdersXMovs lxm on lxm.ID = lxmr.IDLOGISTICORDERXMOV
+                        join LogisticOrdersXMovs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
                     WHERE
-                        lxm.IDLOGISTICORDER = l.ID
+                        lxm.IDLOGISTICORDER = l.id
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS QTMOVMONEYRECEIVED,
                     (SELECT
                         sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.MONEY} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
-                        join LogisticOrdersXMovs lxm on lxm.ID = lxmr.IDLOGISTICORDERXMOV
+                        join LogisticOrdersXMovs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
                     WHERE
-                        lxm.IDLOGISTICORDER = l.ID
+                        lxm.IDLOGISTICORDER = l.id
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS MONEYRECEIVED,
-                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.CARD} THEN m.ID ELSE NULL END) AS CARTAONFSARECEBER,
+                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.CARD} THEN m.id ELSE NULL END) AS CARTAONFSARECEBER,
                     SUM(
                         CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.CARD} THEN
                             (
@@ -131,21 +131,21 @@ class DeliveryController extends RegistersController{
                         COUNT(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.CARD} then lxm.IDMOV else null end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
-                        join LogisticOrdersXMovs lxm on lxm.ID = lxmr.IDLOGISTICORDERXMOV
+                        join LogisticOrdersXMovs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
                     WHERE
-                        lxm.IDLOGISTICORDER = l.ID
+                        lxm.IDLOGISTICORDER = l.id
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS QTMOVCARDRECEIVED,
                     (SELECT
                         sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.CARD} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
-                        join LogisticOrdersXMovs lxm on lxm.ID = lxmr.IDLOGISTICORDERXMOV
+                        join LogisticOrdersXMovs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
                     WHERE
-                        lxm.IDLOGISTICORDER = l.ID
+                        lxm.IDLOGISTICORDER = l.id
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS CARDRECEIVED,
-                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.CHECK} THEN m.ID ELSE NULL END) AS CHEQUENFSARECEBER,
+                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.CHECK} THEN m.id ELSE NULL END) AS CHEQUENFSARECEBER,
                     SUM(
                         CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.CHECK} THEN
                             (
@@ -158,21 +158,21 @@ class DeliveryController extends RegistersController{
                         COUNT(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.CHECK} then lxm.IDMOV else null end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
-                        join LogisticOrdersXMovs lxm on lxm.ID = lxmr.IDLOGISTICORDERXMOV
+                        join LogisticOrdersXMovs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
                     WHERE
-                        lxm.IDLOGISTICORDER = l.ID
+                        lxm.IDLOGISTICORDER = l.id
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS QTMOVCHECKRECEIVED,
                     (SELECT
                         sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.CHECK} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
-                        join LogisticOrdersXMovs lxm on lxm.ID = lxmr.IDLOGISTICORDERXMOV
+                        join LogisticOrdersXMovs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
                     WHERE
-                        lxm.IDLOGISTICORDER = l.ID
+                        lxm.IDLOGISTICORDER = l.id
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS CHECKRECEIVED,
-                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.PIX} THEN m.ID ELSE NULL END) AS PIXNFSARECEBER,
+                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.PIX} THEN m.id ELSE NULL END) AS PIXNFSARECEBER,
                     SUM(
                         CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.PIX} THEN
                             (
@@ -185,27 +185,27 @@ class DeliveryController extends RegistersController{
                         COUNT(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.PIX} then lxm.IDMOV else null end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
-                        join LogisticOrdersXMovs lxm on lxm.ID = lxmr.IDLOGISTICORDERXMOV
+                        join LogisticOrdersXMovs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
                     WHERE
-                        lxm.IDLOGISTICORDER = l.ID
+                        lxm.IDLOGISTICORDER = l.id
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS QTMOVPIXRECEIVED,
                     (SELECT
                         sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.PIX} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
-                        join LogisticOrdersXMovs lxm on lxm.ID = lxmr.IDLOGISTICORDERXMOV
+                        join LogisticOrdersXMovs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
                     WHERE
-                        lxm.IDLOGISTICORDER = l.ID
+                        lxm.IDLOGISTICORDER = l.id
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS PIXRECEIVED
                 from
                     LogisticOrders l
-                    LEFT OUTER JOIN logisticstatus lsl on lsl.ID = l.IDLOGISTICSTATUS
-                    LEFT OUTER JOIN logisticordersxmovs lm on lm.IDLOGISTICORDER = l.ID
-                    LEFT OUTER JOIN logisticstatus ls on ls.ID = lm.IDLOGISTICSTATUS
-                    LEFT OUTER JOIN Movements m on m.ID = lm.IDMOV
-                    LEFT OUTER JOIN logisticordersxitemsmovamt lim on lim.IDLOGISTICORDERXMOV = lm.ID
+                    LEFT OUTER JOIN logisticstatus lsl on lsl.id = l.IDLOGISTICSTATUS
+                    LEFT OUTER JOIN logisticordersxmovs lm on lm.IDLOGISTICORDER = l.id
+                    LEFT OUTER JOIN logisticstatus ls on ls.id = lm.IDLOGISTICSTATUS
+                    LEFT OUTER JOIN Movements m on m.id = lm.IDMOV
+                    LEFT OUTER JOIN logisticordersxitemsmovamt lim on lim.IDLOGISTICORDERXMOV = lm.id
                     LEFT OUTER JOIN itemsmovsamounts ima on ima.id = lim.IDITEMMOVAMT                            
                 ${where || ''}
                 group by
@@ -237,7 +237,7 @@ class DeliveryController extends RegistersController{
                 idsItemsOnOriginData = idsItemsOnOriginData.toString().split(",");
                 idsItemsOnOriginData = idsItemsOnOriginData.map(el=>Utils.hasValue(el)?el:'null');
             }
-            if (req.body.IDORIGINDATA == OriginsDatas.WINTHOR) {
+            if (req.body.data_origin_id == OriginsDatas.WINTHOR) {
                 query = `
                     select                                        
                         m.CODPROD,
@@ -254,8 +254,8 @@ class DeliveryController extends RegistersController{
                         '[' || (SELECT
                             listagg('{"IDLOTEORIGEM":"'||l.numlote||'","DTVALIDADE":"'||l.dtvalidade||'","QT":'||replace(to_char(coalesce(m2.qt,m2.qtcont,0)),',','.')||'}',',') within group (order by m.numtransvenda,m.codprod)
                         FROM
-                            jumbo.pclote l 
-                            join jumbo.pcmov m2 on (
+                            JUMBO.PCLOTE l 
+                            join JUMBO.PCMOV m2 on (
                                 m2.codprod = l.codprod
                                 and m2.numtransvenda = m.numtransvenda
                                 and m2.codprod = m.codprod
@@ -267,14 +267,14 @@ class DeliveryController extends RegistersController{
                         ) || ']' AS LOTS,
                         m.NUMTRANSVENDA                                
                     from
-                        jumbo.pcnfsaid s
-                        join jumbo.pcmov m on (
+                        JUMBO.PCNFSAID s
+                        join JUMBO.PCMOV m on (
                             m.numtransvenda = s.numtransvenda
                             and m.dtcancel is null
                             and coalesce(m.qt,m.qtcont) > 0
                         )
-                        join jumbo.pcprodut p on p.codprod = m.codprod
-                        left outer join jumbo.pclote l on (
+                        join JUMBO.PCPRODUT p on p.codprod = m.codprod
+                        left outer join JUMBO.PCLOTE l on (
                             l.codfilial = coalesce(m.codfilialretira,m.codfilial) 
                             and l.codprod = m.codprod 
                             and l.numlote = m.numlote
@@ -300,7 +300,7 @@ class DeliveryController extends RegistersController{
                     order by
                         m.NUMTRANSVENDA,1
                 `;
-            } else if (req.body.IDORIGINDATA == OriginsDatas.AURORA) {
+            } else if (req.body.data_origin_id == OriginsDatas.AURORA) {
                 query = `
                     select                                        
                         m.CODPROD,
@@ -317,15 +317,15 @@ class DeliveryController extends RegistersController{
                         '[]' AS LOTS,
                         m.CODNFSAIDA AS NUMTRANSVENDA
                     from
-                        ep.epnfssaida s
-                        join ep.epmovimentacoessaida m on (
+                        EP.EPNFSSAIDA s
+                        join EP.EPMOVIMENTACOESSAIDA m on (
                             m.codnfsaida = s.cod
                             and m.dtcancel is null
                             and coalesce(m.qtsaida,0) > 0
                         )
-                        left outer join ep.epunidades u on u.COD = m.CODUNIDADE
-                        left outer join ep.epprodutos ep on ep.cod = m.codprod
-                        left outer join jumbo.pcprodut p on p.codprod = m.codprod                                
+                        left outer join EP.EPUNIDADES u on u.COD = m.CODUNIDADE
+                        left outer join EP.EPPRODUTOS ep on ep.cod = m.codprod
+                        left outer join JUMBO.PCPRODUT p on p.codprod = m.codprod                                
                     where
                         s.CODORIGEMINFO = 1
                         AND s.COD = ${req.body.NUMTRANSVENDA}
@@ -350,16 +350,16 @@ class DeliveryController extends RegistersController{
                 `;
 
             } else {
-                throw new Error(`origin data not expected: ${req.body.IDORIGINDATA}`);
+                throw new Error(`origin data not expected: ${req.body.data_origin_id}`);
             }
             res.data = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
             res.data = res.data[0] || [];
 
             query = `
                 select
-                    i.ID,
-                    i.IDORIGINDATA,
-                    i.IDONORIGINDATA,                    
+                    i.id,
+                    i.data_origin_id,
+                    i.id_at_origin,                    
                     lxim.IDLOGISTICSTATUS,
                     ls.NAME AS LOGISTICSTATUS,
                     lxim.IDREASONNOTMOVIMENTEDAMT,
@@ -420,21 +420,21 @@ class DeliveryController extends RegistersController{
                     join items i on i.id = ix.iditem
                     join itemsmovsamounts im on im.idmovxitemstock = mxis.id
                     join logisticordersxitemsmovamt lxim on lxim.idlogisticorderxmov = lxm.id and lxim.iditemmovamt = im.id                        
-                    left outer join logisticstatus ls on ls.ID = lxim.IDLOGISTICSTATUS
+                    left outer join logisticstatus ls on ls.id = lxim.IDLOGISTICSTATUS
                     left outer join logisticreasons lr on lr.id = lxim.IDREASONNOTMOVIMENTEDAMT
                 where
-                    m.IDORIGINDATA = ${req.body.IDORIGINDATA}
-                    and m.IDONORIGINDATA = ${req.body.NUMTRANSVENDA}
-                    ${Utils.hasValue(idsItemsOnOriginData) ? ` and i.IDONORIGINDATA in (${idsItemsOnOriginData.join(',')}) ` : ''}     
+                    m.data_origin_id = ${req.body.data_origin_id}
+                    and m.id_at_origin = ${req.body.NUMTRANSVENDA}
+                    ${Utils.hasValue(idsItemsOnOriginData) ? ` and i.id_at_origin in (${idsItemsOnOriginData.join(',')}) ` : ''}     
                 group by                        
-                    i.ID,
+                    i.id,
                     lxim.IDLOGISTICSTATUS,
                     ls.NAME,
                     lxim.IDREASONNOTMOVIMENTEDAMT,
                     lxim.OBSERVATIONSNOTMOVIMENTEDAMT,
                     lr.name
                 order by    
-                    i.ID                                
+                    i.id                                
             `;
 
             let delivereds = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
@@ -443,7 +443,7 @@ class DeliveryController extends RegistersController{
             if (delivereds && delivereds.length) {
                 for(let kd in delivereds) {
                     for(let k in res.data) {
-                        if (res.data[k].CODPROD == delivereds[kd].IDONORIGINDATA) {                                    
+                        if (res.data[k].CODPROD == delivereds[kd].id_at_origin) {                                    
                             res.data[k].IDLOGISTICSTATUS = delivereds[kd].IDLOGISTICSTATUS;
                             res.data[k].LOGISTICSTATUS = delivereds[kd].LOGISTICSTATUS;                                    
                             res.data[k].QT = res.data[k].QT || delivereds[kd].EXPECTEDAMT;
@@ -513,10 +513,10 @@ class DeliveryController extends RegistersController{
             let where = null;
             if (Utils.hasValue(queryParams.where)) {
                 queryParams.raw = true;
-                queryParams.attributes = ['ID'];
+                queryParams.attributes = ['id'];
                 let idsMovs = await Movements.getData(queryParams);
                 if (idsMovs && idsMovs.length) {
-                    idsMovs = idsMovs.map(el=>el.ID);
+                    idsMovs = idsMovs.map(el=>el.id);
                 } else {
                     idsMovs = [-1]
                 }
@@ -527,7 +527,7 @@ class DeliveryController extends RegistersController{
                     lxm.*,
                     ls.NAME AS LOGISTICSTATUS,
                     o.NAME as ORIGINDATA,
-                    m.IDONORIGINDATA AS IDONORIGINDATAMOV,
+                    m.id_at_origin AS id_at_originMOV,
                     m.IDENTIFIER,
                     m.IDCLIENT,
                     p.NAME AS CLIENTNAME,
@@ -600,7 +600,7 @@ class DeliveryController extends RegistersController{
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
                     WHERE
-                        lxmr.IDLOGISTICORDERXMOV = lxm.ID
+                        lxmr.IDLOGISTICORDERXMOV = lxm.id
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS MONEYRECEIVED,
                     SUM(
@@ -616,7 +616,7 @@ class DeliveryController extends RegistersController{
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
                     WHERE
-                        lxmr.IDLOGISTICORDERXMOV = lxm.ID
+                        lxmr.IDLOGISTICORDERXMOV = lxm.id
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS CARDRECEIVED,
                     SUM(
@@ -632,7 +632,7 @@ class DeliveryController extends RegistersController{
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
                     WHERE
-                        lxmr.IDLOGISTICORDERXMOV = lxm.ID
+                        lxmr.IDLOGISTICORDERXMOV = lxm.id
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS CHECKRECEIVED,
                     SUM(
@@ -648,35 +648,35 @@ class DeliveryController extends RegistersController{
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
                     WHERE
-                        lxmr.IDLOGISTICORDERXMOV = lxm.ID
+                        lxmr.IDLOGISTICORDERXMOV = lxm.id
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS PIXRECEIVED
                 from
                     LogisticOrdersXMovs lxm 
                     left outer join LogisticStatus ls on ls.id = lxm.idlogisticstatus
                     left outer join Movements m on m.id = lxm.idmov                            
-                    left outer join OriginsDatas o on o.id = m.idorigindata
+                    left outer join OriginsDatas o on o.id = m.data_origin_id
                     left outer join Clients c on c.id = m.idclient
                     left outer join People p on p.id = c.idpeople
                     left outer join FinancialValueForms rt on rt.id = m.IDFINANCIALVALUEFORM
                     left outer join Collaborators cl on cl.id = m.idseller
                     left outer join People ps on ps.id = cl.idpeople
-                    left outer join movsxitemsstocks mxis on mxis.IDMOV = m.ID
-                    left outer join itemsmovsamounts im on im.IDMOVXITEMSTOCK = mxis.ID
-                    left outer join itemsstocks ist on ist.ID = mxis.IDITEMSTOCK
-                    left outer join ItemsXLotsXConteiners ix on ix.ID = ist.IDITEMXLOTXCONTEINER
-                    left outer join items i on i.ID = iX.IDITEM
+                    left outer join movsxitemsstocks mxis on mxis.IDMOV = m.id
+                    left outer join itemsmovsamounts im on im.IDMOVXITEMSTOCK = mxis.id
+                    left outer join itemsstocks ist on ist.id = mxis.IDITEMSTOCK
+                    left outer join ItemsXLotsXConteiners ix on ix.id = ist.IDITEMXLOTXCONTEINER
+                    left outer join items i on i.id = iX.IDITEM
                     left outer join logisticordersxitemsmovamt lxim on (
-                        lxim.IDLOGISTICORDERXMOV = lxm.ID
-                        AND lxim.IDITEMMOVAMT = im.ID
+                        lxim.IDLOGISTICORDERXMOV = lxm.id
+                        AND lxim.IDITEMMOVAMT = im.id
                     )
-                    left outer join LogisticStatus lsxi on lsxi.ID = lxim.IDLOGISTICSTATUS
+                    left outer join LogisticStatus lsxi on lsxi.id = lxim.IDLOGISTICSTATUS
                 ${where||''}
                 GROUP BY
                     ${Object.keys(LogisticOrdersXMovs.fields).map(el=>`lxm.${el}`).join(',')},
                     ls.NAME,
                     o.NAME,
-                    m.IDONORIGINDATA,
+                    m.id_at_origin,
                     m.IDENTIFIER,
                     m.IDCLIENT,
                     p.NAME,
@@ -734,12 +734,12 @@ class DeliveryController extends RegistersController{
      */
     static async getInvoicesWithIntegrationsDatas(req,res,next) {
         try {
-            if (req.body.IDONORIGINDATA) {
+            if (req.body.id_at_origin) {
                 let query = `
                     select
-                        ${OriginsDatas.WINTHOR} as IDORIGINDATA,
+                        ${OriginsDatas.WINTHOR} as data_origin_id,
                         'WINTHOR' AS ORIGINDATA,
-                        s.numtransvenda as IDONORIGINDATA,
+                        s.numtransvenda as id_at_origin,
                         s.NUMTRANSVENDA,
                         s.CODCLI as IDCLIENTORIGIN,
                         s.CODCLI,
@@ -752,15 +752,15 @@ class DeliveryController extends RegistersController{
                         s.VLTOTAL,
                         s.CHAVENFE
                     from
-                        jumbo.pcnfsaid s 
+                        JUMBO.PCNFSAID s 
                     where
-                        s.NUMCAR = ${req.body.IDONORIGINDATA}
+                        s.NUMCAR = ${req.body.id_at_origin}
                         and s.dtcancel is null                        
                     union all
                     select
-                        ${OriginsDatas.AURORA} as IDORIGINDATA,
+                        ${OriginsDatas.AURORA} as data_origin_id,
                         'AURORA' AS ORIGINDATA,
-                        s.COD as IDONORIGINDATA,
+                        s.COD as id_at_origin,
                         s.COD AS NUMTRANSVENDA,
                         s.CODCLIENTE as IDCLIENTORIGIN,
                         s.CODCLIENTE AS CODCLI,
@@ -769,25 +769,25 @@ class DeliveryController extends RegistersController{
                         s.DTEMISSAO AS DTEMISSAO,
                         null AS IDFINANCIALCOLLECTIONORIGIN,
                         null AS IDPRAZOPAGAMENTOORIGEM,
-                        (select sum(coalesce(ms.qtsaida,0) * coalesce(ms.pesoliqun,1)) from ep.epmovimentacoessaida ms where ms.CODNFSAIDA = s.COD) as PESOTOTAL,
-                        (select sum(coalesce(ms.qtsaida,0) * coalesce(ms.vlun,0)) from ep.epmovimentacoessaida ms where ms.CODNFSAIDA = s.COD) as VLTOTAL,
+                        (select sum(coalesce(ms.qtsaida,0) * coalesce(ms.pesoliqun,1)) from EP.EPMOVIMENTACOESSAIDA ms where ms.CODNFSAIDA = s.COD) as PESOTOTAL,
+                        (select sum(coalesce(ms.qtsaida,0) * coalesce(ms.vlun,0)) from EP.EPMOVIMENTACOESSAIDA ms where ms.CODNFSAIDA = s.COD) as VLTOTAL,
                         s.CHAVENFE
                     from
-                        ep.epnfssaida s
+                        EP.EPNFSSAIDA s
                     where
                         s.nrcarga in (
                             select 
                                 u2.NRCARGA
                             from
-                                ep.epunifcargas u2
+                                EP.EPUNIFCARGAS u2
                             where
-                                u2.ID in (
+                                u2.id in (
                                     select 
-                                        distinct u.ID
+                                        distinct u.id
                                     from
-                                        ep.epunifcargas u
+                                        EP.EPUNIFCARGAS u
                                     where
-                                        u.NRCARGA = ${req.body.IDONORIGINDATA}
+                                        u.NRCARGA = ${req.body.id_at_origin}
                                         and u.IDORIGEMINFO = 0 
                                 )
                                 and u2.IDORIGEMINFO = 1
@@ -805,27 +805,27 @@ class DeliveryController extends RegistersController{
                 if (res.data.length) {
                     query = `
                         select
-                            m.IDORIGINDATA,
-                            m.IDONORIGINDATA,
+                            m.data_origin_id,
+                            m.id_at_origin,
                             lxm.IDLOGISTICSTATUS,
                             ls.NAME AS LOGISTICSTATUS
                         from
                             LogisticOrders l
-                            join LogisticOrdersXMovs lxm on lxm.IDLOGISTICORDER = l.ID
-                            left outer join Movements m on m.ID = lxm.IDMOV
-                            left outer join LogisticStatus ls on ls.ID = lxm.IDLOGISTICSTATUS
+                            join LogisticOrdersXMovs lxm on lxm.IDLOGISTICORDER = l.id
+                            left outer join Movements m on m.id = lxm.IDMOV
+                            left outer join LogisticStatus ls on ls.id = lxm.IDLOGISTICSTATUS
                         where
-                            l.IDONORIGINDATA = ${req.body.IDONORIGINDATA}
+                            l.id_at_origin = ${req.body.id_at_origin}
                     `;
                     let dataTemp = await DBConnectionManager.getDefaultDBConnection().query(query,{
                         raw:true,
                         queryType: QueryTypes.SELECT
                     });
-                    dataTemp = Utils.arrayToObject(dataTemp[0] || [],['IDORIGINDATA','IDONORIGINDATA']);
+                    dataTemp = Utils.arrayToObject(dataTemp[0] || [],['data_origin_id','id_at_origin']);
                     Utils.log(dataTemp);
                     for(let key in res.data) {
-                        res.data[key].IDLOGISTICSTATUS = ((dataTemp[res.data[key].IDORIGINDATA.toString()]||{})[res.data[key].IDONORIGINDATA.toString()]||{})[0]?.IDLOGISTICSTATUS;
-                        res.data[key].LOGISTICSTATUS = ((dataTemp[res.data[key].IDORIGINDATA.toString()]||{})[res.data[key].IDONORIGINDATA.toString()]||{})[0]?.LOGISTICSTATUS;
+                        res.data[key].IDLOGISTICSTATUS = ((dataTemp[res.data[key].data_origin_id.toString()]||{})[res.data[key].id_at_origin.toString()]||{})[0]?.IDLOGISTICSTATUS;
+                        res.data[key].LOGISTICSTATUS = ((dataTemp[res.data[key].data_origin_id.toString()]||{})[res.data[key].id_at_origin.toString()]||{})[0]?.LOGISTICSTATUS;
                     }
                 }
                 
@@ -871,10 +871,10 @@ class DeliveryController extends RegistersController{
 
     static async getRoute(req,res,next){
         try {
-            if (req.body.IDONORIGINDATA) {
+            if (req.body.id_at_origin) {
                 let query = `
                     select
-                        date_format(lg.CREATEDAT,'%Y-%m-%d %H:%i') as CREATEDAT,
+                        date_format(lg.created_at,'%Y-%m-%d %H:%i') as created_at,
                         MAX(lg.LATITUDE) as LATITUDE,
                         MAX(lg.LONGITUDE) AS LONGITUDE,
                         cast(regexp_replace(p.IDENTIFIERDOC,'[^0-9]','') as decimal(32)) as "IDENTIFIERDOC",
@@ -892,7 +892,7 @@ class DeliveryController extends RegistersController{
                         concat(st.name,',',a.number,',',ct.name,' - ',stt.SIGLA,',',ctr.name) as GOOGLEADDRESS
                     from
                         logisticlogs lg 
-                        join datatables t on LOWER(t.NAME) = LOWER('LOGISTICORDERSXITEMSMOVAMT') and lg.IDTABLEREF = t.ID
+                        join datatables t on LOWER(t.NAME) = LOWER('LOGISTICORDERSXITEMSMOVAMT') and lg.IDTABLEREF = t.id
                         join LOGISTICORDERSXITEMSMOVAMT lxim on lxim.id = lg.idregisterref
                         join logisticordersxmovs lxm on lxm.id = lxim.IDLOGISTICORDERXMOV
                         join logisticorders l on l.id = lxm.idlogisticorder
@@ -908,12 +908,12 @@ class DeliveryController extends RegistersController{
                         left outer join states stt on stt.id = ct.idstate
                         left outer join countries ctr on ctr.id = stt.idcountry
                     where
-                        l.IDONORIGINDATA = ${req.body.IDONORIGINDATA}
+                        l.id_at_origin = ${req.body.id_at_origin}
                         AND lg.COLUMNNAME = 'IDSTATUSENTREGA'
                         and lg.OPERATION in ('UPDATE','INSERT')
                         and lg.NEWVALUE IN (3,4,5)
                     group by
-                        date_format(lg.CREATEDAT,'%Y-%m-%d %H:%i'),
+                        date_format(lg.created_at,'%Y-%m-%d %H:%i'),
                         cast(regexp_replace(p.IDENTIFIERDOC,'[^0-9]','') as decimal(32)),
                         p.NAME,
                         p.FANTASY,
@@ -928,7 +928,7 @@ class DeliveryController extends RegistersController{
                         pc.postalcode,
                         concat(st.name,',',a.number,',',ct.name,' - ',stt.SIGLA,',',ctr.name)
                     order by
-                        date_format(lg.CREATEDAT,'%Y-%m-%d %H:%i'),
+                        date_format(lg.created_at,'%Y-%m-%d %H:%i'),
                         "IDENTIFIERDOC"
                 `;
                 res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{

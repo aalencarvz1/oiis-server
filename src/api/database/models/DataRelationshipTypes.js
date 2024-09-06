@@ -10,7 +10,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class DataRelationshipTypes extends BaseTableModel {
-  static ID = 1000;
+  static id = 1000;
   static model = null;
 
   static RELATIONSHIP = 1;
@@ -37,7 +37,7 @@ class DataRelationshipTypes extends BaseTableModel {
 
   static constraints = [...(DataRelationshipTypes.getBaseTableModelConstraints() || []),...[
     {
-      name: DataRelationshipTypes.name.toUpperCase() + '_U1',
+      name: DataRelationshipTypes.name.toLowerCase() + '_u1',
       fields: [...DataRelationshipTypes.getBaseTableModelUniqueFields(),...DataRelationshipTypes.uniqueFields],
       type:"unique"
     }

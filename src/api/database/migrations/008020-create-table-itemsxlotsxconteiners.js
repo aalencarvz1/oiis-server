@@ -10,6 +10,6 @@ module.exports = {
     await ItemsXLotsXConteiners.runUpMigration(queryInterface);     
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(ItemsXLotsXConteiners.name.toUpperCase());
+    await queryInterface.dropTable(ItemsXLotsXConteiners.name.toLowerCase());
   }
 };

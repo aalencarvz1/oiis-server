@@ -11,7 +11,7 @@ const { Conteiners } = require("./Conteiners");
  * class model
  */
 class ItemsXLotsXConteiners extends BaseTableModel {
-  static ID = 8020;
+  static id = 8020;
   static model = null;
 
   static WITHOUT_CONTEINER = 1;
@@ -44,7 +44,7 @@ class ItemsXLotsXConteiners extends BaseTableModel {
 
   static constraints = [...(ItemsXLotsXConteiners.getBaseTableModelConstraints() || []),...[
     {
-      name: ItemsXLotsXConteiners.name.toUpperCase() + '_U1',
+      name: ItemsXLotsXConteiners.name.toLowerCase() + '_u1',
       fields: [...ItemsXLotsXConteiners.getBaseTableModelUniqueFields(),...ItemsXLotsXConteiners.uniqueFields],
       type:"unique"
     }
@@ -56,7 +56,7 @@ class ItemsXLotsXConteiners extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Items,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -65,7 +65,7 @@ class ItemsXLotsXConteiners extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Lots,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -74,7 +74,7 @@ class ItemsXLotsXConteiners extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Conteiners,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }
