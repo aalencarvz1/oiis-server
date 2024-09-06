@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'EQUAL'
+      name : 'EQUAL'
     },{      
       id:Comparators.DIFFERENT,
       status_reg_id: StatusRegs.ACTIVE,
@@ -23,7 +23,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'DIFFERENT'
+      name : 'DIFFERENT'
     },{      
       id:Comparators.IN,
       status_reg_id: StatusRegs.ACTIVE,
@@ -31,7 +31,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'IN'
+      name : 'IN'
     },{      
       id:Comparators.NOT_IN,
       status_reg_id: StatusRegs.ACTIVE,
@@ -39,7 +39,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'NOT_IN'
+      name : 'NOT_IN'
     },{      
       id:Comparators.LIKE,
       status_reg_id: StatusRegs.ACTIVE,
@@ -47,7 +47,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'LIKE'
+      name : 'LIKE'
     },{      
       id:Comparators.NOT_LIKE,
       status_reg_id: StatusRegs.ACTIVE,
@@ -55,7 +55,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'NOT_LIKE'
+      name : 'NOT_LIKE'
     },{      
       id:Comparators.GREATER,
       status_reg_id: StatusRegs.ACTIVE,
@@ -63,7 +63,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'GREATER'
+      name : 'GREATER'
     },{      
       id:Comparators.GREATER_EQUAL,
       status_reg_id: StatusRegs.ACTIVE,
@@ -71,7 +71,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'GREATER_EQUAL'
+      name : 'GREATER_EQUAL'
     },{      
       id:Comparators.SMALLER,
       status_reg_id: StatusRegs.ACTIVE,
@@ -79,7 +79,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'SMALLER'
+      name : 'SMALLER'
     },{      
       id:Comparators.SMALLER_EQUAL,
       status_reg_id: StatusRegs.ACTIVE,
@@ -87,7 +87,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'SMALLER_EQUAL'
+      name : 'SMALLER_EQUAL'
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

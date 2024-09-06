@@ -20,7 +20,7 @@ class Continents extends BaseTableModel {
       IDSUP:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -31,7 +31,7 @@ class Continents extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(Continents.getBaseTableModelConstraints() || []),...[

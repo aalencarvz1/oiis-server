@@ -27,7 +27,7 @@ class BaseEpTableModel extends BaseTableModel {
             is_sys_rec : 1,
             IDDATACONNECTION : configDB[`${process.env.NODE_ENV||'development'}_ep`].id,
             IDSCHEMA : configDB[`${process.env.NODE_ENV||'development'}_ep`].id,
-            NAME : this.name.toUpperCase()
+            name : this.name.toUpperCase()
         }],{
             ignoreDuplicates:true,
             updateOnDuplicate:null

@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'DATABASE',
+      name : 'DATABASE',
     },{      
       id:EntitiesTypes.DATABASE_CONNECTION,
       status_reg_id: StatusRegs.ACTIVE,
@@ -23,7 +23,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'DATABASE CONNECTION',
+      name : 'DATABASE CONNECTION',
     },{      
       id:EntitiesTypes.DATABASE_SCHEMA,
       status_reg_id: StatusRegs.ACTIVE,
@@ -31,7 +31,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'DATABASE SCHEMA',
+      name : 'DATABASE SCHEMA',
     },{      
       id:EntitiesTypes.DATABASE_USER,
       status_reg_id: StatusRegs.ACTIVE,
@@ -39,7 +39,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'DATABASE USER',
+      name : 'DATABASE USER',
     },{      
       id:EntitiesTypes.DATABASE_TABLE,
       status_reg_id: StatusRegs.ACTIVE,
@@ -47,7 +47,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'DATABASE TABLE',
+      name : 'DATABASE TABLE',
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

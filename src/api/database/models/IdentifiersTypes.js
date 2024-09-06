@@ -27,7 +27,7 @@ class IdentifiersTypes extends BaseTableModel {
   
   static fields = {
     ...IdentifiersTypes.getBaseTableModelFields(),...{
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull: false
       },
@@ -41,7 +41,7 @@ class IdentifiersTypes extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(IdentifiersTypes.getBaseTableModelConstraints() || []),...[

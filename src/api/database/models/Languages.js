@@ -14,7 +14,7 @@ class Languages extends BaseTableModel {
   static model = null;
   static fields = {
     ...Languages.getBaseTableModelFields(),...{     
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull:false
       }
@@ -22,7 +22,7 @@ class Languages extends BaseTableModel {
   };
   
   static uniqueFields = [ 
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(Languages.getBaseTableModelConstraints() || []),...[

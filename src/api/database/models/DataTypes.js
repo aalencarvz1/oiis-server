@@ -26,7 +26,7 @@ class DataTypes extends BaseTableModel {
   static model = null;
   static fields = {
     ...DataTypes.getBaseTableModelFields(),...{
-      NAME: {
+      name: {
         type: DataTypesSeq.STRING(256),
         allowNull: false
       },
@@ -82,7 +82,7 @@ class DataTypes extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(DataTypes.getBaseTableModelConstraints() || []),...[{

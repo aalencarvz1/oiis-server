@@ -227,7 +227,7 @@ class BaseTableModel extends Model {
             is_sys_rec : 1,
             IDDATACONNECTION : configDB[process.env.NODE_ENV || 'development'].id,
             IDSCHEMA : configDB[process.env.NODE_ENV || 'development'].id,
-            NAME : this.name.toLowerCase()
+            name : this.name.toLowerCase()
         }],{
             ignoreDuplicates:true,
             updateOnDuplicate:null

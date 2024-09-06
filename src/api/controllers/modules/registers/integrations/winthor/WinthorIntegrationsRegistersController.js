@@ -103,7 +103,7 @@ class WinthorIntegrationsRegistersController extends RegistersController {
                         ['CODCLI','id_at_origin'],
                         [Sequelize.literal(`case when PCCLIENT.TIPOFJ = 'F' then ${IdentifiersTypes.CPF} else ${IdentifiersTypes.CNPJ} end`),'IDIDENTIFIERDOCTYPE'],
                         [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CGCENT'),'[^0-9]',''),'DECIMAL(32)'),'IDENTIFIERDOC'],
-                        ['CLIENTE','NAME'],
+                        ['CLIENTE','name'],
                         ['FANTASIA','FANTASY'],
                         [Sequelize.fn('coalesce','CODFILIALNF','1'),'CODFILIALNF']
                     ]

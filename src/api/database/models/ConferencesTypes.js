@@ -20,7 +20,7 @@ class ConferencesTypes extends BaseTableModel {
 
   static fields = {
     ...ConferencesTypes.getBaseTableModelFields(),...{           
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -46,7 +46,7 @@ class ConferencesTypes extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(ConferencesTypes.getBaseTableModelConstraints() || []),...[

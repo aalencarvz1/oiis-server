@@ -19,7 +19,7 @@ class RoutinesTypes extends BaseTableModel {
 
   static fields = {
     ...RoutinesTypes.getBaseTableModelFields(),...{      
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull:false
       },      
@@ -30,7 +30,7 @@ class RoutinesTypes extends BaseTableModel {
   };
   
   static uniqueFields = [    
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(RoutinesTypes.getBaseTableModelConstraints() || []),...[

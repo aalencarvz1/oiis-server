@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME:'SYSTEM'
+      name:'SYSTEM'
     },{      
       id:RoutinesTypes.REGISTER,
       status_reg_id: StatusRegs.ACTIVE,
@@ -23,7 +23,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME:'REGISTER'
+      name:'REGISTER'
     },{      
       id:RoutinesTypes.REPORT,
       status_reg_id: StatusRegs.ACTIVE,
@@ -31,10 +31,10 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME:'REPORT'
+      name:'REPORT'
     }],{
       ignoreDuplicates:true,
-      updateOnDuplicate:['status_reg_id','NAME']
+      updateOnDuplicate:['status_reg_id','name']
     });  
   },
 

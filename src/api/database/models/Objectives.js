@@ -16,7 +16,7 @@ class Objectives extends BaseTableModel {
       IDSUP:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false,
       },

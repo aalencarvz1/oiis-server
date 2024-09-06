@@ -25,7 +25,7 @@ class People extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull: false
       },
-      NAME: {
+      name: {
         type: DataTypes.STRING(2000),
         allowNull: false
       },
@@ -74,7 +74,7 @@ class People extends BaseTableModel {
     queryParams.attributes = queryParams.attributes || [`${pClassModelParent.name.toLowerCase()}.*`],
     queryParams.attributes.push([Sequelize.col(`${People.name.toLowerCase()}.IDIDENTIFIERDOCTYPE`),'IDIDENTIFIERDOCTYPE']);
     queryParams.attributes.push([Sequelize.col(`${People.name.toLowerCase()}.IDENTIFIERDOC`),'IDENTIFIERDOC']);
-    queryParams.attributes.push([Sequelize.col(`${People.name.toLowerCase()}.NAME`),'NAME']);
+    queryParams.attributes.push([Sequelize.col(`${People.name.toLowerCase()}.name`),'name']);
     queryParams.attributes.push([Sequelize.col(`${People.name.toLowerCase()}.FANTASY`),'FANTASY']);
     queryParams.include = queryParams.include || [];
     queryParams.include.push({

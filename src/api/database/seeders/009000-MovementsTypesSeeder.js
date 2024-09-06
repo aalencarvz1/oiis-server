@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'INPUT',
+      name : 'INPUT',
       ISINPUT : 1
     },{      
       id:MovementsTypes.OUTPUT,
@@ -24,7 +24,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'OUTPUT',
+      name : 'OUTPUT',
       ISOUTPUT : 1
     },{      
       id:MovementsTypes.CONFERENCE,
@@ -33,7 +33,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'CONFERENCE',
+      name : 'CONFERENCE',
       ISCONFERENCE : 1
     },{      
       id:MovementsTypes.INTERNAL,
@@ -42,7 +42,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'INTERNAL',
+      name : 'INTERNAL',
       ISINTERNAL : 1
     }],{
       ignoreDuplicates:true,

@@ -18,7 +18,7 @@ class RoutinesContent extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull:false
       }, 
@@ -39,7 +39,7 @@ class RoutinesContent extends BaseTableModel {
   
   static uniqueFields = [ 
     'IDROUTINE',
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(RoutinesContent.getBaseTableModelConstraints() || []),...[

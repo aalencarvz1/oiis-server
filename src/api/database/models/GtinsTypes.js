@@ -21,7 +21,7 @@ class GtinsTypes extends BaseTableModel {
 
   static fields = {
     ...GtinsTypes.getBaseTableModelFields(),...{
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull: false
       },
@@ -35,7 +35,7 @@ class GtinsTypes extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME',
+    'name',
     Sequelize.literal(`(COALESCE(CHARACTERS,0))`)
   ];
 

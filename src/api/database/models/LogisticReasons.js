@@ -13,7 +13,7 @@ class LogisticReasons extends BaseTableModel {
   static model = null;
   static fields = {
     ...LogisticReasons.getBaseTableModelFields(),...{                 
-      NAME:{
+      name:{
         type: DataTypes.STRING(2000),
         allowNull: false
       },

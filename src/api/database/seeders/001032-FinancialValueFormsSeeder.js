@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'NONE'
+      name : 'NONE'
     },{      
       id:FinancialValueForms.MONEY,
       status_reg_id: StatusRegs.ACTIVE,
@@ -23,7 +23,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'MONEY',
+      name : 'MONEY',
       ISPHYSICAL: 1
     },{      
       id:FinancialValueForms.BOLET,
@@ -32,7 +32,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'BOLET',
+      name : 'BOLET',
       ISELETRONIC: 1,
       ISBOLET: 1
     },{      
@@ -42,7 +42,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'CHECK',
+      name : 'CHECK',
       ISELETRONIC: 1
     },{      
       id:FinancialValueForms.PIX,
@@ -51,7 +51,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'PIX',
+      name : 'PIX',
       ISELETRONIC: 1
     },{      
       id:FinancialValueForms.CARD,
@@ -60,7 +60,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'CARD',
+      name : 'CARD',
       ISELETRONIC: 1,
       ISCARD: 1
     },{      
@@ -70,7 +70,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'DEPOSIT',
+      name : 'DEPOSIT',
       ISELETRONIC: 1
     }],{
       ignoreDuplicates:true,

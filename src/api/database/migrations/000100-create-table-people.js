@@ -22,7 +22,7 @@ module.exports = {
       is_sys_rec : 1,
       IDIDENTIFIERDOCTYPE : IdentifiersTypes.CODE,
       IDENTIFIERDOC: People.SYSTEM,
-      NAME : 'SYSTEM'
+      name : 'SYSTEM'
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

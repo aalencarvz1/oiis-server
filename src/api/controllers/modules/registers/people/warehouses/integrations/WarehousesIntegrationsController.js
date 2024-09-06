@@ -209,7 +209,7 @@ class WarehousesIntegrationsController extends RegistersController {
                 case 'get':                    
                     let queryParams = DatabaseUtils.prepareQueryParams(req.body.queryParams || {});
                     queryParams.raw = true;
-                    switch((origin.NAME || origin).trim().toLowerCase()) {
+                    switch((origin.name || origin).trim().toLowerCase()) {
                         case "winthor":                            
                             queryParams.where = queryParams.where || {};
                             queryParams.where.CODIGO = {
@@ -224,7 +224,7 @@ class WarehousesIntegrationsController extends RegistersController {
                     break;
                 case 'create':   
                 case 'integrate':                                    
-                    switch((origin.NAME || origin).trim().toLowerCase()) {                        
+                    switch((origin.name || origin).trim().toLowerCase()) {                        
                         case "winthor":
                             await WarehousesIntegrationsController.integrateWinthorWarehouses(req,res,next);
                             break; 
@@ -264,7 +264,7 @@ class WarehousesIntegrationsController extends RegistersController {
             switch(methodName.trim().toLowerCase()) {
                 case 'create':
                 case 'integrate':
-                    switch((origin.NAME || origin).trim().toLowerCase()) {                        
+                    switch((origin.name || origin).trim().toLowerCase()) {                        
                         case "winthor":
                             return this.integrateWinthorWarehouses(req,res,next);
                             break; 

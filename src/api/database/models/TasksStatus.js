@@ -20,7 +20,7 @@ class TasksStatus extends BaseTableModel {
 
   static fields = {
     ...TasksStatus.getBaseTableModelFields(),...{            
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull: false
       },
@@ -54,7 +54,7 @@ class TasksStatus extends BaseTableModel {
   };
   
   static uniqueFields = [     
-    'NAME',
+    'name',
     Sequelize.literal(`(COALESCE(SIGLA,'NULL'))`)
   ];
 

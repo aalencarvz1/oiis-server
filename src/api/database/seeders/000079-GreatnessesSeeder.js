@@ -16,7 +16,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'QUANTITY',
+      name : 'QUANTITY',
       SIGLA: 'QT',
       ISSCALAR:1
     },{
@@ -26,7 +26,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'MASS',
+      name : 'MASS',
       SIGLA: 'M',
       ISSCALAR:1
     },{
@@ -36,7 +36,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'VOLUM',
+      name : 'VOLUM',
       SIGLA: 'V',
       ISSCALAR:1
     },{
@@ -46,7 +46,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'LENGTH',
+      name : 'LENGTH',
       SIGLA: 'L',
       ISSCALAR:1
     }],{

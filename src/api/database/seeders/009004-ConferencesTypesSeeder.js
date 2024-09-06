@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'NORMAL',
+      name : 'NORMAL',
       NORMAL: 1
     },{      
       id:ConferencesTypes.CEGA,
@@ -24,7 +24,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'CEGA',
+      name : 'CEGA',
       CEGA: 1
     },{      
       id:ConferencesTypes.SEMICEGA,
@@ -33,7 +33,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'SEMICEGA',
+      name : 'SEMICEGA',
       SEMICEGA: 1
     },{      
       id:ConferencesTypes.XML_WITH_LOT,
@@ -42,7 +42,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'XML_WITH_LOT',
+      name : 'XML_WITH_LOT',
       NORMAL: 1
     },{      
       id:ConferencesTypes.XML_WITHOUT_LOT,
@@ -51,7 +51,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'XML_WITHOUT_LOT',
+      name : 'XML_WITHOUT_LOT',
       SEMICEGA: 1
     }],{
       ignoreDuplicates:true,

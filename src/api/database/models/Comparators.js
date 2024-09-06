@@ -25,7 +25,7 @@ class Comparators extends BaseTableModel {
 
   static fields = {
     ...Comparators.getBaseTableModelFields(),...{           
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       }
@@ -33,7 +33,7 @@ class Comparators extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME',
+    'name',
   ];
 
   static constraints = [...(Comparators.getBaseTableModelConstraints() || []),...[

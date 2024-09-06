@@ -24,13 +24,13 @@ class MidiasController extends RegistersController{
                 let midia = null;
 
                 for(let key in registers) {
-                    let file = req.files.filter(el=>el.originalname.trim().name.toLowerCase() == registers[key].NAME.trim().name.toLowerCase())[0];
+                    let file = req.files.filter(el=>el.originalname.trim().name.toLowerCase() == registers[key].name.trim().name.toLowerCase())[0];
                     if (Utils.hasValue(file)) {
                         console.log('FL','file',file);
                         tablesRefs[registers[key].TABLENAME] = tablesRefs[registers[key].TABLENAME] || await DataTables.getModel().findOne({
                             raw:true,
                             where:{
-                                NAME: registers[key].TABLENAME.trim().name.toLowerCase()
+                                name: registers[key].TABLENAME.trim().name.toLowerCase()
                             }
                         });
 
@@ -42,7 +42,7 @@ class MidiasController extends RegistersController{
                             });
                             midia.IDTABLEREF = tablesRefs[registers[key].TABLENAME].id;
                             midia.IDREGISTERREF= registers[key].IDREGISTERREF;
-                            midia.NAME= file.filename;
+                            midia.name= file.filename;
                             midia.TYPE= registers[key].TYPE || file.mimetype;
                             midia.ORDERNUM= registers[key].ORDERNUM || 0;
                             midia.LOCALPATH=file.path;
@@ -51,7 +51,7 @@ class MidiasController extends RegistersController{
                             midia = await Midias.getModel().create({
                                 IDTABLEREF : tablesRefs[registers[key].TABLENAME].id,
                                 IDREGISTERREF: registers[key].IDREGISTERREF,
-                                NAME: file.filename,
+                                name: file.filename,
                                 TYPE: registers[key].TYPE || file.mimetype,
                                 ORDERNUM: registers[key].ORDERNUM || 0,
                                 LOCALPATH:file.path

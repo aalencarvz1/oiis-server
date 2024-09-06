@@ -85,7 +85,7 @@ class EpIntegrationsRegistersController extends RegistersController{
                         ['COD','id_at_origin'],
                         [Sequelize.literal(`case when EPPESSOAS.CODTIPODOCIDENTIFICADOR = 1 AND LENGTH(EPPESSOAS.CODDOCIDENTIFICADOR) <= 11 then ${IdentifiersTypes.CPF} else ${IdentifiersTypes.CNPJ} end`),'IDIDENTIFIERDOCTYPE'],
                         [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CODDOCIDENTIFICADOR'),'[^0-9]',''),'DECIMAL(32)'),'IDENTIFIERDOC'],
-                        ['NOMERAZAO','NAME'],
+                        ['NOMERAZAO','name'],
                         ['FANTASIA','FANTASY']
                     ]
                 }

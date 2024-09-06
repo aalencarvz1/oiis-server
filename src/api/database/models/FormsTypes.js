@@ -14,7 +14,7 @@ class FormsTypes extends BaseTableModel {
   static model = null;
   static fields = {
     ...FormsTypes.getBaseTableModelFields(),...{           
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -25,7 +25,7 @@ class FormsTypes extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(FormsTypes.getBaseTableModelConstraints() || []),...[

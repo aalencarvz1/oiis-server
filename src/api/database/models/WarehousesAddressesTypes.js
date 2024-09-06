@@ -13,7 +13,7 @@ class WarehousesAddressesTypes extends BaseTableModel {
   static model = null;
   static fields = {
     ...WarehousesAddressesTypes.getBaseTableModelFields(),...{           
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -31,7 +31,7 @@ class WarehousesAddressesTypes extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(WarehousesAddressesTypes.getBaseTableModelConstraints() || []),...[

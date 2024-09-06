@@ -21,7 +21,7 @@ class ActionsStatus extends BaseTableModel {
 
   static fields = {
     ...ActionsStatus.getBaseTableModelFields(),...{           
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -57,7 +57,7 @@ class ActionsStatus extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(ActionsStatus.getBaseTableModelConstraints() || []),...[

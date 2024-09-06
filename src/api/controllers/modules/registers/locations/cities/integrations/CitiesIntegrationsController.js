@@ -51,8 +51,8 @@ class CitiesIntegrationsController extends RegistersController{
 
             //try preserve winthor code, if unique or primary key viloated, then raise exception here
             if (city) {
-                if (city.NAME != pccidade.NOMECIDADE) {
-                    city.NAME = pccidade.NOMECIDADE;
+                if (city.name != pccidade.NOMECIDADE) {
+                    city.name = pccidade.NOMECIDADE;
                     await city.save(options);                
                 }
             } else {
@@ -61,7 +61,7 @@ class CitiesIntegrationsController extends RegistersController{
                     data_origin_id: OriginsDatas.WINTHOR,
                     id_at_origin: pccidade.CODCIDADE,
                     IDSTATE: state.id,
-                    NAME: pccidade.NOMECIDADE,
+                    name: pccidade.NOMECIDADE,
                     POPULATION: pccidade.POPULACAO,
                     LATITUDE: pccidade.LATITUDE,
                     LONGITUDE: pccidade.LONGITUDE
@@ -121,7 +121,7 @@ class CitiesIntegrationsController extends RegistersController{
             switch(methodName.trim().toLowerCase()) {
                 case 'create':   
                 case 'integrate':                                    
-                    switch((origin.NAME || origin).trim().toLowerCase()) {                        
+                    switch((origin.name || origin).trim().toLowerCase()) {                        
                         case "winthor":
                             return this.integrateWinthorCities(req,res,next);
                             break; 

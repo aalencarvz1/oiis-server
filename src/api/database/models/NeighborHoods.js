@@ -18,7 +18,7 @@ class NeighborHoods extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       }
@@ -27,7 +27,7 @@ class NeighborHoods extends BaseTableModel {
   
   static uniqueFields = [
     'IDCITY',
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(NeighborHoods.getBaseTableModelConstraints() || []),...[

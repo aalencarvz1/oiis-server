@@ -18,7 +18,7 @@ class Countries extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -30,7 +30,7 @@ class Countries extends BaseTableModel {
   
   static uniqueFields = [
     'IDCONTINENT',
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(Countries.getBaseTableModelConstraints() || []),...[

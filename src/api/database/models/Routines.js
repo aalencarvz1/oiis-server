@@ -26,7 +26,7 @@ class Routines extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       }, 
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull:false
       }, 
@@ -52,7 +52,7 @@ class Routines extends BaseTableModel {
   
   static uniqueFields = [ 
     Sequelize.literal(`(COALESCE(IDSUP,0))`),
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(Routines.getBaseTableModelConstraints() || []),...[

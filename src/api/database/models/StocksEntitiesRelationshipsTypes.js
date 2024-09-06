@@ -14,7 +14,7 @@ class StocksEntitiesRelationshipsTypes extends BaseTableModel {
   static OWNER = 1;
   static fields = {
     ...StocksEntitiesRelationshipsTypes.getBaseTableModelFields(),...{           
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -45,7 +45,7 @@ class StocksEntitiesRelationshipsTypes extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(StocksEntitiesRelationshipsTypes.getBaseTableModelConstraints() || []),...[

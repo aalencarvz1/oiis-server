@@ -20,7 +20,7 @@ class Greatnesses extends BaseTableModel {
   
   static fields = {
     ...Greatnesses.getBaseTableModelFields(),...{
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull: false
       },
@@ -45,7 +45,7 @@ class Greatnesses extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME',
+    'name',
     'SIGLA'
   ];
 

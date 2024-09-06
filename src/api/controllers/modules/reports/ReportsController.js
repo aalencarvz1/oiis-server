@@ -32,9 +32,9 @@ class ReportsController extends RegistersController{
         if (id) {
             queryParams.where.id = id;
         } 
-        let name = req.body.NAME || req.body.REPORTNAME || req.body.REPORTDATANAME || req.query?.NAME || req.query?.REPORTNAME || req.query?.REPORTDATANAME;
+        let name = req.body.name || req.body.REPORTNAME || req.body.REPORTDATANAME || req.query?.name || req.query?.REPORTNAME || req.query?.REPORTDATANAME;
         if (name) {
-            queryParams.where.NAME = name;
+            queryParams.where.name = name;
         } 
 
         if (dates && dates.length) {

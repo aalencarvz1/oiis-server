@@ -14,7 +14,7 @@ class ContractsTypes extends BaseTableModel {
   static model = null;
   static fields = {
     ...ContractsTypes.getBaseTableModelFields(),...{           
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       }
@@ -22,7 +22,7 @@ class ContractsTypes extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(ContractsTypes.getBaseTableModelConstraints() || []),...[

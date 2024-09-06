@@ -42,7 +42,7 @@ class Clients extends BasePeopleModel {
         attributes:[
           'IDIDENTIFIERDOCTYPE',
           'IDENTIFIERDOC',
-          'NAME',
+          'name',
           'FANTASY'
         ],
         on:{

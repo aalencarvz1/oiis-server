@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'AMERICA',
+      name : 'AMERICA',
       SIGLA:'AM'
     },{      
       id:Continents.SOUTH_AMERICA,
@@ -25,7 +25,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSUP: Continents.AMERICA,
-      NAME : 'SOUTH AMERICA',
+      name : 'SOUTH AMERICA',
       SIGLA:'AL'
     }],{
       ignoreDuplicates:true,

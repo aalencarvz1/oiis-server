@@ -16,7 +16,7 @@ class StatusRegs extends BaseTableModel {
 
   static fields = {
     ...StatusRegs.getBaseTableModelFields(),...{
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull: false
       },
@@ -32,7 +32,7 @@ class StatusRegs extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(StatusRegs.getBaseTableModelConstraints() || []),...[

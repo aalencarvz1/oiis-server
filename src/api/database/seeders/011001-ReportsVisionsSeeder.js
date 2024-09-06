@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'VALUES',
+      name : 'VALUES',
       VISIBLE : 0,
     },{      
       id:ReportsVisions.ORIGIN_DATA,
@@ -24,7 +24,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'ORIGIN DATA',
+      name : 'ORIGIN DATA',
       VISIBLE : 1,
     },{      
       id:ReportsVisions.COMPANY,
@@ -33,7 +33,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'COMPANY',
+      name : 'COMPANY',
       VISIBLE : 1,
     },{      
       id:ReportsVisions.BUSINESS_UNIT,
@@ -42,7 +42,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'BUSINESS UNIT',
+      name : 'BUSINESS UNIT',
       VISIBLE : 1,
     },{      
       id:ReportsVisions.SUPPLIER,
@@ -51,7 +51,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'SUPPLIER',
+      name : 'SUPPLIER',
       VISIBLE : 1,
     },{      
       id:ReportsVisions.CITY,
@@ -60,7 +60,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'CITY',
+      name : 'CITY',
       VISIBLE : 1,
     },{      
       id:ReportsVisions.SUPERVISOR,
@@ -69,7 +69,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'SUPERVISOR',
+      name : 'SUPERVISOR',
       VISIBLE : 1,
     },{      
       id:ReportsVisions.SELLER,
@@ -78,7 +78,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'SELLER',
+      name : 'SELLER',
       VISIBLE : 1,
     },{      
       id:ReportsVisions.BUSINESS_AREA,
@@ -87,7 +87,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'BUSINESS AREA',
+      name : 'BUSINESS AREA',
       VISIBLE : 1,
     },{      
       id:ReportsVisions.DEPARTMENT,
@@ -96,7 +96,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'DEPARTMENT',
+      name : 'DEPARTMENT',
       VISIBLE : 1,
     },{      
       id:ReportsVisions.PRODUCT,
@@ -105,7 +105,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'PRODUCT',
+      name : 'PRODUCT',
       VISIBLE : 1,
     },{      
       id:ReportsVisions.EVOLUTION,
@@ -114,7 +114,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'EVOLUTION',
+      name : 'EVOLUTION',
       VISIBLE : 1,
     },{      
       id:ReportsVisions.CLIENT,
@@ -123,7 +123,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'CLIENT',
+      name : 'CLIENT',
       VISIBLE : 1,
     },{      
       id:ReportsVisions.NETWORK_CLIENT,
@@ -132,7 +132,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'NETWORK CLIENT',
+      name : 'NETWORK CLIENT',
       VISIBLE : 1,
     },{      
       id:ReportsVisions.ROUTE,
@@ -141,7 +141,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'ROUTE',
+      name : 'ROUTE',
       VISIBLE : 1,
     },{      
       id:ReportsVisions.SQUARE,
@@ -150,7 +150,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'SQUARE',
+      name : 'SQUARE',
       VISIBLE : 1,
     },{      
       id:ReportsVisions.INVOICE,
@@ -159,7 +159,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'INVOICE',
+      name : 'INVOICE',
       VISIBLE : 1,
     },{      
       id:ReportsVisions.ITEM_INVOICE,
@@ -168,7 +168,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'ITEM INVOICE',
+      name : 'ITEM INVOICE',
       VISIBLE : 1,
     },{      
       id:ReportsVisions.ORIGIN_BUSINESS,
@@ -177,7 +177,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'ORIGIN BUSINESS',
+      name : 'ORIGIN BUSINESS',
       VISIBLE : 1,
     },{      
       id:ReportsVisions.ORIGIN_CATEGORY,
@@ -186,7 +186,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'ORIGIN CATEGORY',
+      name : 'ORIGIN CATEGORY',
       VISIBLE : 1,
     },{      
       id:ReportsVisions.PLATE,
@@ -195,7 +195,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'PLATE',
+      name : 'PLATE',
       VISIBLE : 1,
     }],{
       ignoreDuplicates:true,

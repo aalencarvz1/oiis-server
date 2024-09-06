@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'RELATIONSHIP'
+      name : 'RELATIONSHIP'
     },{      
       id:DataRelationshipTypes.IDENTIFIER,
       status_reg_id: StatusRegs.ACTIVE,
@@ -23,7 +23,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'IDENTIFIER'
+      name : 'IDENTIFIER'
     },{      
       id:DataRelationshipTypes.SUBORDINATED,
       status_reg_id: StatusRegs.ACTIVE,
@@ -31,7 +31,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'SUBORDINATED'
+      name : 'SUBORDINATED'
     },{      
       id:DataRelationshipTypes.WINTHOR_ID,
       status_reg_id: StatusRegs.ACTIVE,
@@ -39,7 +39,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'WINTHOR id'
+      name : 'WINTHOR id'
     },{      
       id:DataRelationshipTypes.EP_ID,
       status_reg_id: StatusRegs.ACTIVE,
@@ -47,7 +47,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'EP id'
+      name : 'EP id'
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

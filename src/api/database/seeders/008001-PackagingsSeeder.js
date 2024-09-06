@@ -16,7 +16,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'BULK',
+      name : 'BULK',
       SIGLA: 'BK'
     },{
       id: Packagings.BOX,
@@ -25,7 +25,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'BOX',
+      name : 'BOX',
       SIGLA: 'BX'
     },{
       id: Packagings.PACK,
@@ -34,7 +34,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'PACK',
+      name : 'PACK',
       SIGLA: 'PK'
     },{
       id: Packagings.BUCKET,
@@ -43,7 +43,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'BUCKET',
+      name : 'BUCKET',
       SIGLA: 'BC'
     },{
       id: Packagings.BAG,
@@ -52,7 +52,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'BAG',
+      name : 'BAG',
       SIGLA: 'BG'
     },{
       id: Packagings.BALE,
@@ -61,7 +61,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'BALE',
+      name : 'BALE',
       SIGLA: 'BL'
     },{
       id: Packagings.CUP,
@@ -70,7 +70,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'CUP',
+      name : 'CUP',
       SIGLA: 'CP'
     },{
       id: Packagings.CAN,
@@ -79,7 +79,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'CAN',
+      name : 'CAN',
       SIGLA: 'CN'
     },{
       id: Packagings.TUBE,
@@ -88,7 +88,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'TUBE',
+      name : 'TUBE',
       SIGLA: 'TB'
     },{
       id: Packagings.ROLL,
@@ -97,7 +97,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'ROLL',
+      name : 'ROLL',
       SIGLA: 'RL'
     },{
       id: Packagings.REAM,
@@ -106,7 +106,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'REAM',
+      name : 'REAM',
       SIGLA: 'RM'
     }],{
       ignoreDuplicates:true,

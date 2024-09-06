@@ -161,7 +161,7 @@ class LogisticOrdersController extends RegistersController {
                         l.id,
                         l.IDENTIFIER,
                         l.IDLOGISTICSTATUS,
-                        ls.NAME as LOGISTICSTATUS
+                        ls.name as LOGISTICSTATUS
                     from
                         logisticorders l
                         left outer join logisticstatus ls on ls.id = l.idlogisticstatus

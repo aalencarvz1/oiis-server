@@ -28,7 +28,7 @@ class Parameters extends BaseTableModel {
         type: DataTypesSeq.BIGINT.UNSIGNED,
         allowNull : false,
       },
-      NAME: {
+      name: {
         type: DataTypesSeq.STRING(256),
         allowNull: false
       },
@@ -42,7 +42,7 @@ class Parameters extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(Parameters.getBaseTableModelConstraints() || []),...[

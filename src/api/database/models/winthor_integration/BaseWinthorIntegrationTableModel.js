@@ -58,7 +58,7 @@ class BaseWinthorIntegrationTableModel extends BaseTableModel {
                 is_sys_rec : 1,
                 IDDATACONNECTION : configDB[`${process.env.NODE_ENV||'development'}_winthor_integration`].id,
                 IDSCHEMA : configDB[`${process.env.NODE_ENV||'development'}_winthor_integration`].id,
-                NAME : this.name.toLowerCase()
+                name : this.name.toLowerCase()
             }],{
                 ignoreDuplicates:true,
                 updateOnDuplicate:null

@@ -184,7 +184,7 @@ class CompaniesIntegrationsController extends RegistersController{
             switch(methodName.trim().toLowerCase()) {
                 case 'create':
                 case 'integrate':
-                    switch((origin.NAME || origin).trim().toLowerCase()) {                        
+                    switch((origin.name || origin).trim().toLowerCase()) {                        
                         case "winthor":
                             return this.integrateWinthorCompanies(req,res,next);
                             break; 

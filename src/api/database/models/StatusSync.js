@@ -14,7 +14,7 @@ class StatusSync extends BaseTableModel {
   static model = null;
   static fields = {
     ...StatusSync.getBaseTableModelFields(),...{
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull: false
       },
@@ -27,7 +27,7 @@ class StatusSync extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(StatusSync.getBaseTableModelConstraints() || []),...[

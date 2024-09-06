@@ -18,7 +18,7 @@ class ConteinersTypes extends BaseTableModel {
 
   static fields = {
     ...ConteinersTypes.getBaseTableModelFields(),...{
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull: false
       },
@@ -35,7 +35,7 @@ class ConteinersTypes extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME',
+    'name',
     Sequelize.literal(`(COALESCE(SIGLA,'NULL'))`)
   ];
 

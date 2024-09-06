@@ -51,15 +51,15 @@ class StatesIntegrationsController extends RegistersController {
 
             //try preserve winthor code, if unique or primary key viloated, then raise exception here
             if (state) {
-                if (state.NAME != pcestado.ESTADO) {
-                    state.NAME = pcestado.ESTADO;
+                if (state.name != pcestado.ESTADO) {
+                    state.name = pcestado.ESTADO;
                     await state.save(options);                
                 }
             } else {
                 state = await States.getModel().create({                    
                     data_origin_id: OriginsDatas.WINTHOR,
                     IDCOUNTRY: country.id,
-                    NAME: pcestado.ESTADO,
+                    name: pcestado.ESTADO,
                     SIGLA: pcestado.UF
                 },options)
             }
@@ -117,7 +117,7 @@ class StatesIntegrationsController extends RegistersController {
             switch(methodName.trim().toLowerCase()) {
                 case 'create':        
                 case 'integrate':                               
-                    switch((origin.NAME || origin).trim().toLowerCase()) {                        
+                    switch((origin.name || origin).trim().toLowerCase()) {                        
                         case "winthor":
                             return this.integrateWinthorStates(req,res,next);
                             break; 

@@ -17,7 +17,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
-      NAME : 'UNIT',
+      name : 'UNIT',
       SIGLA: 'UN',
       ISSCALAR: 1
     },{
@@ -28,7 +28,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.MASS,
-      NAME : 'KILOGRAM',
+      name : 'KILOGRAM',
       SIGLA: 'KG',
       ISSCALAR: 1
     },{
@@ -39,7 +39,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.VOLUM,
-      NAME : 'LITER',
+      name : 'LITER',
       SIGLA: 'L',
       ISSCALAR: 1
     },{
@@ -50,7 +50,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
-      NAME : 'PIECE',
+      name : 'PIECE',
       SIGLA: 'PC',
       ISSCALAR: 1
     },{
@@ -61,7 +61,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
-      NAME : 'PACKAGE',
+      name : 'PACKAGE',
       SIGLA: 'PK',
       ISSCALAR: 1
     },{
@@ -72,7 +72,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
-      NAME : 'BOX',
+      name : 'BOX',
       SIGLA: 'BX',
       ISSCALAR: 1
     },{
@@ -83,7 +83,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
-      NAME : 'BUCKET',
+      name : 'BUCKET',
       SIGLA: 'BK',
       ISSCALAR: 1
     },{
@@ -94,7 +94,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
-      NAME : 'CAN',
+      name : 'CAN',
       SIGLA: 'CN',
       ISSCALAR: 1
     },{
@@ -105,7 +105,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
-      NAME : 'BAG',
+      name : 'BAG',
       SIGLA: 'BG',
       ISSCALAR: 1
     }],{

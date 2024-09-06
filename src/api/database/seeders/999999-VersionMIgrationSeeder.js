@@ -169,7 +169,7 @@ module.exports = {
       if (tables && tables.length) {
         let oldConfig = configDB[`${process.env.NODE_ENV||'development'}_old`] || {};
         for(let key in tables) {
-          await migrateDataOldTable(oldConnection,oldConfig.database.toLowerCase(),tables[key].NAME.toLowerCase(),tables[key].NAME.toLowerCase());  
+          await migrateDataOldTable(oldConnection,oldConfig.database.toLowerCase(),tables[key].name.toLowerCase(),tables[key].name.toLowerCase());  
         }
       }
     }     

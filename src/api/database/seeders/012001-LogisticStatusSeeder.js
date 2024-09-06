@@ -16,7 +16,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'TO DELIVERY',
+      name : 'TO DELIVERY',
       ISTODELIVERY:1
     },{
       id: LogisticStatus.DELIVERING,
@@ -25,7 +25,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'DELIVERING',
+      name : 'DELIVERING',
       ISDELIVERING:1
     },{
       id: LogisticStatus.DELIVERED,
@@ -34,7 +34,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'DELIVERED',
+      name : 'DELIVERED',
       ISDELIVERED:1
     },{
       id: LogisticStatus.PARTIAL_RETURNED,
@@ -43,7 +43,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'PARTIAL RETURNED',
+      name : 'PARTIAL RETURNED',
       ISPARTIALRETURNED:1,
     },{
       id: LogisticStatus.TOTAL_RETURNED,
@@ -52,7 +52,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'TOTAL RETURNED',
+      name : 'TOTAL RETURNED',
       ISTOTALRETURNED:1
     }],{
       ignoreDuplicates:true,

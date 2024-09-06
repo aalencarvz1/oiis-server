@@ -24,7 +24,7 @@ class AccessesProfiles extends BaseTableModel {
 
   static fields = {
     ...AccessesProfiles.getBaseTableModelFields(),...{           
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -40,7 +40,7 @@ class AccessesProfiles extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];  
 
   static constraints = [...(AccessesProfiles.getBaseTableModelConstraints() || []),...[

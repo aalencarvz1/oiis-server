@@ -16,7 +16,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'DELIVERY',
+      name : 'DELIVERY',
       ISOUTPUT:1
     },{
       id: LogisticMovTypes.COLLECT,
@@ -25,7 +25,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : LogisticMovTypes.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'COLLECT',
+      name : 'COLLECT',
       ISINPUT: 1
     },{
       id: LogisticMovTypes.RETREAT,
@@ -34,7 +34,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : LogisticMovTypes.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'RETREAT',
+      name : 'RETREAT',
       ISINPUT: 1
     }],{
       ignoreDuplicates:true,

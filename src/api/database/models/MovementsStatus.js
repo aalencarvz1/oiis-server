@@ -20,7 +20,7 @@ class MovementsStatus extends BaseTableModel {
 
   static fields = {
     ...MovementsStatus.getBaseTableModelFields(),...{           
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -56,7 +56,7 @@ class MovementsStatus extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(MovementsStatus.getBaseTableModelConstraints() || []),...[

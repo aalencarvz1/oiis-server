@@ -23,11 +23,11 @@ module.exports = {
             seedRoutine(routine[i],idModuleSup);
           }
         } else {
-          Utils.log('FL','passing routine ',routine.NAME);
+          Utils.log('FL','passing routine ',routine.name);
           if (Utils.hasValue(routine?.SUBS)) {
-            Utils.log('FL',routine.NAME,' has subs');
+            Utils.log('FL',routine.name,' has subs');
             if (routine.IDROUTINETYPE || routine.VIEWPATH) {
-              Utils.log('FL',routine.NAME,' is routine');
+              Utils.log('FL',routine.name,' is routine');
               registersRoutines.push({
                 id:routine.id-0,
                 status_reg_id: StatusRegs.ACTIVE,
@@ -38,7 +38,7 @@ module.exports = {
                 IDMODULE: idModuleSup,
                 IDSUP: idRoutineSup,
                 IDROUTINETYPE : (Utils.firstValid([routine.IDROUTINETYPE,1]))-0,
-                NAME:routine.NAME,
+                name:routine.name,
                 ICON:routine.ICON,
                 VIEWPATH:routine.VIEWPATH,
                 ORDERNUM: routine.ORDERNUM,
@@ -48,7 +48,7 @@ module.exports = {
                 seedRoutine(routine.SUBS[i],idModuleSup,routine.id);
               } 
             } else {
-              Utils.log('FL',routine.NAME,' is module');
+              Utils.log('FL',routine.name,' is module');
               registersModules.push({
                 id:routine.id-0,
                 status_reg_id: StatusRegs.ACTIVE,
@@ -57,7 +57,7 @@ module.exports = {
                 data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
                 is_sys_rec : 1,
                 IDSUP: idModuleSup,
-                NAME:routine.NAME,
+                name:routine.name,
                 ORDERNUM: routine.ORDERNUM,
                 ICON:routine.ICON
               });
@@ -68,7 +68,7 @@ module.exports = {
             }
 
           } else {
-            Utils.log('FL',routine.NAME,' no has subs');
+            Utils.log('FL',routine.name,' no has subs');
             registersRoutines.push({
               id:routine.id-0,
               status_reg_id: StatusRegs.ACTIVE,
@@ -79,7 +79,7 @@ module.exports = {
               IDMODULE: idModuleSup,
               IDSUP: idRoutineSup,
               IDROUTINETYPE : routine.IDROUTINETYPE-0,
-              NAME:routine.NAME,
+              name:routine.name,
               ICON:routine.ICON,
               VIEWPATH:routine.VIEWPATH,
               ORDERNUM: routine.ORDERNUM,
@@ -98,12 +98,12 @@ module.exports = {
 
     await queryInterface.bulkInsert(Modules.name.toLowerCase(),registersModules,{
       ignoreDuplicates:true,
-      updateOnDuplicate:['status_reg_id','IDSUP','NAME','ICON']
+      updateOnDuplicate:['status_reg_id','IDSUP','name','ICON']
     });  
 
     await queryInterface.bulkInsert(Routines.name.toLowerCase(),registersRoutines,{
       ignoreDuplicates:true,
-      updateOnDuplicate:['status_reg_id','IDMODULE','NAME','ICON','VIEWPATH']
+      updateOnDuplicate:['status_reg_id','IDMODULE','name','ICON','VIEWPATH']
     });  
   },
 

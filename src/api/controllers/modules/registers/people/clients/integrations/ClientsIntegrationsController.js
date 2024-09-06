@@ -353,7 +353,7 @@ class ClientsIntegrationsController extends RegistersController{
             }
             for(let o in origin) {
                 Utils.log(origin[o]);
-                switch((origin[o].NAME || origin[o].name || origin[o].label || origin[o]).trim().toLowerCase()) {
+                switch((origin[o].name || origin[o].name || origin[o].label || origin[o]).trim().toLowerCase()) {
                     case "winthor":                            
                         queryParams.where = queryParams.where || {};
 
@@ -384,7 +384,7 @@ class ClientsIntegrationsController extends RegistersController{
                         res.sendResponse(200,true);
                         break; 
                     default:
-                        throw new Error(`origin not expected: ${(origin[o].NAME || origin[o].name || origin[o].label || origin[o])}`);
+                        throw new Error(`origin not expected: ${(origin[o].name || origin[o].name || origin[o].label || origin[o])}`);
                 }
             }
             //res.sendResponse(200,true);
@@ -450,12 +450,12 @@ class ClientsIntegrationsController extends RegistersController{
     static integrate(req,res,next) {
         try {
             let origin = req.body.origin || ["WINTHOR"];
-            switch((origin.NAME || origin).trim().toLowerCase()) {
+            switch((origin.name || origin).trim().toLowerCase()) {
                 case "winthor":
                     return this.integrateWinthorClients(req,res,next);
                     break; 
                 default:
-                    throw new Error(`origin not expected: ${(origin.NAME || origin)}`);
+                    throw new Error(`origin not expected: ${(origin.name || origin)}`);
             }
         } catch (e) {
             res.setException(e);
@@ -486,7 +486,7 @@ class ClientsIntegrationsController extends RegistersController{
             switch(methodName.trim().toLowerCase()) {
                 case 'create':
                 case 'integrate':
-                    switch((origin.NAME || origin).trim().toLowerCase()) {                        
+                    switch((origin.name || origin).trim().toLowerCase()) {                        
                         case "winthor":
                             return this.integrateWinthorClients(req,res,next);
                             break; 

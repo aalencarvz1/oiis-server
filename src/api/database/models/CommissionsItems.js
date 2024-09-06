@@ -19,7 +19,7 @@ class CommissionsItems extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -31,7 +31,7 @@ class CommissionsItems extends BaseTableModel {
   
   static uniqueFields = [
     'IDCOMMISSIONENTITYCODE',
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(CommissionsItems.getBaseTableModelConstraints() || []),...[

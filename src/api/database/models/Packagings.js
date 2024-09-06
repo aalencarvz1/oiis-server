@@ -40,7 +40,7 @@ class Packagings extends BaseTableModel {
 
   static fields = {
     ...Packagings.getBaseTableModelFields(),...{
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull: false
       },
@@ -55,7 +55,7 @@ class Packagings extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME',
+    'name',
     'SIGLA'
   ];
 

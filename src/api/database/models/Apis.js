@@ -14,7 +14,7 @@ class Apis extends BaseTableModel {
 
   static fields = {
     ...Apis.getBaseTableModelFields(),...{            
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull: false
       },
@@ -43,7 +43,7 @@ class Apis extends BaseTableModel {
   };
   
   static uniqueFields = [     
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(Apis.getBaseTableModelConstraints() || []),...[

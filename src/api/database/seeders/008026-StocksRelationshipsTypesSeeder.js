@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'OWNER',
+      name : 'OWNER',
       ISOWNER: 1
     }],{
       ignoreDuplicates:true,

@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'WINTHOR'      
+      name : 'WINTHOR'      
     },{
       id: OriginsDatas.AURORA,
       status_reg_id: StatusRegs.ACTIVE,
@@ -23,7 +23,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'AURORA'      
+      name : 'AURORA'      
     },{
       id: OriginsDatas.EP,
       status_reg_id: StatusRegs.ACTIVE,
@@ -31,7 +31,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'EP'      
+      name : 'EP'      
     },{
       id: OriginsDatas.CONSULTA,
       status_reg_id: StatusRegs.ACTIVE,
@@ -39,7 +39,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'CONSULTA'      
+      name : 'CONSULTA'      
     },{
       id: OriginsDatas.APP_COLLECTOR,
       status_reg_id: StatusRegs.ACTIVE,
@@ -47,7 +47,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'APP_COLLECTOR'      
+      name : 'APP_COLLECTOR'      
     },{
       id: OriginsDatas.APP_DELIVERY,
       status_reg_id: StatusRegs.ACTIVE,
@@ -55,7 +55,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'APP_DELIVERY'      
+      name : 'APP_DELIVERY'      
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

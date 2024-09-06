@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'ANY',
+      name : 'ANY',
       ISOTHER: 1
     },{
       id: DataTypes.STRING,
@@ -24,7 +24,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'STRING',
+      name : 'STRING',
       ISTEXT:1
     },{
       id: DataTypes.INTEGER,
@@ -33,7 +33,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'INTEGER',
+      name : 'INTEGER',
       ISNUMBER:1
     },{
       id: DataTypes.BOOLEAN,
@@ -42,7 +42,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'BOOLEAN',
+      name : 'BOOLEAN',
       ISBOOLEAN: 1
     },{
       id: DataTypes.ARRAY,
@@ -51,7 +51,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'ARRAY',
+      name : 'ARRAY',
       ISARRAY: 1
     },{
       id: DataTypes.OBJECT,
@@ -60,7 +60,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'OBJECT',
+      name : 'OBJECT',
       ISOBJECT: 1
     },{
       id: DataTypes.NUMBER,
@@ -69,7 +69,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'NUMBER',
+      name : 'NUMBER',
       ISNUMBER:1,
       ISDECIMAL:1
     },{
@@ -79,7 +79,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'DATE',
+      name : 'DATE',
       ISDATE:1
     },{
       id: DataTypes.TIME,
@@ -88,7 +88,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'TIME',
+      name : 'TIME',
       ISTIME:1
     },{
       id: DataTypes.DATETIME,
@@ -97,7 +97,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'DATETIME',
+      name : 'DATETIME',
       ISDATE:1,
       ISTIME:1
     }],{

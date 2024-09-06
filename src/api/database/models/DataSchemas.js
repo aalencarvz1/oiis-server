@@ -14,7 +14,7 @@ class DataSchemas extends BaseTableModel {
   static model = null;
   static fields = {
     ...DataSchemas.getBaseTableModelFields(),...{
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull: false
       },
@@ -30,7 +30,7 @@ class DataSchemas extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(DataSchemas.getBaseTableModelConstraints() || []),...[

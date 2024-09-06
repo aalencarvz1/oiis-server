@@ -22,7 +22,7 @@ class FinancialValueMovTypes extends BaseTableModel {
       IDSUP:{
         type : DataTypes.BIGINT.UNSIGNED,                
       },
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -44,7 +44,7 @@ class FinancialValueMovTypes extends BaseTableModel {
   
   static uniqueFields = [
     Sequelize.literal(`(COALESCE(IDSUP,0))`),
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(FinancialValueMovTypes.getBaseTableModelConstraints() || []),...[

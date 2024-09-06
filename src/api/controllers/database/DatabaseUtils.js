@@ -98,7 +98,7 @@ class DatabaseUtils {
                     let inValues = [];
                     compare = compare || Sequelize.Op.in;
                     for(let i = 0; i < values.length; i++) {
-                        inValues.push(valuesFunc ? Sequelize.fn(valuesFunc,values[i].id || values[i].id || values[i].name || values[i].NAME || values[i].label || values[i]) : values[i].id || values[i].id || values[i].name || values[i].NAME || values[i].label || values[i]);
+                        inValues.push(valuesFunc ? Sequelize.fn(valuesFunc,values[i].id || values[i].id || values[i].name || values[i].name || values[i].label || values[i]) : values[i].id || values[i].id || values[i].name || values[i].name || values[i].label || values[i]);
                     }
                     if (typeof field != 'string') {
                         whereClause[Sequelize.Op.and] = whereClause[Sequelize.Op.and] || [];
@@ -143,18 +143,18 @@ class DatabaseUtils {
                 if (compare) {
                     if (typeof field != 'string') {
                         whereClause[Sequelize.Op.and] = whereClause[Sequelize.Op.and] || [];
-                        whereClause[Sequelize.Op.and].push(Sequelize.where(field,DatabaseUtils.getSequelizeOperation(compare), valuesFunc ? Sequelize.fn(valuesFunc,values.id || values.id || values.name || values.NAME || values.label || values) : values.id || values.id || values.name || values.NAME || values.label || values));
+                        whereClause[Sequelize.Op.and].push(Sequelize.where(field,DatabaseUtils.getSequelizeOperation(compare), valuesFunc ? Sequelize.fn(valuesFunc,values.id || values.id || values.name || values.name || values.label || values) : values.id || values.id || values.name || values.name || values.label || values));
                     } else {
                         whereClause[field] = {
-                            [DatabaseUtils.getSequelizeOperation(compare)] : valuesFunc ? Sequelize.fn(valuesFunc,values.id || values.id || values.name || values.NAME || values.label || values) : values.id || values.id || values.name || values.NAME || values.label || values
+                            [DatabaseUtils.getSequelizeOperation(compare)] : valuesFunc ? Sequelize.fn(valuesFunc,values.id || values.id || values.name || values.name || values.label || values) : values.id || values.id || values.name || values.name || values.label || values
                         }
                     }
                 } else {
                     if (typeof field != 'string') {
                         whereClause[Sequelize.Op.and] = whereClause[Sequelize.Op.and] || [];
-                        whereClause[Sequelize.Op.and].push(Sequelize.where(field,valuesFunc ? Sequelize.fn(valuesFunc,values.id || values.id || values.name || values.NAME || values.label || values) : values.id || values.id || values.name || values.NAME || values.label || values));
+                        whereClause[Sequelize.Op.and].push(Sequelize.where(field,valuesFunc ? Sequelize.fn(valuesFunc,values.id || values.id || values.name || values.name || values.label || values) : values.id || values.id || values.name || values.name || values.label || values));
                     } else {
-                        whereClause[field] = valuesFunc ? Sequelize.fn(valuesFunc,values.id || values.id || values.name || values.NAME || values.label || values) : values.id || values.id || values.name || values.NAME || values.label || values;
+                        whereClause[field] = valuesFunc ? Sequelize.fn(valuesFunc,values.id || values.id || values.name || values.name || values.label || values) : values.id || values.id || values.name || values.name || values.label || values;
                     }
                 }
             }

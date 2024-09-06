@@ -17,7 +17,7 @@ class ValuesNames extends BaseTableModel {
 
   static fields = {
     ...ValuesNames.getBaseTableModelFields(),...{           
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       }
@@ -25,7 +25,7 @@ class ValuesNames extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(ValuesNames.getBaseTableModelConstraints() || []),...[

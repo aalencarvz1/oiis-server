@@ -24,7 +24,7 @@ class Streets extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       }
@@ -34,7 +34,7 @@ class Streets extends BaseTableModel {
   static uniqueFields = [
     'IDSTREETTYPE',
     'IDCITY',
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(Streets.getBaseTableModelConstraints() || []),...[

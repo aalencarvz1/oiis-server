@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'TRANSFERENCE',
+      name : 'TRANSFERENCE',
       ISELETRONIC: 1
     },{      
       id:FinancialValueMovTypes.DEPOSIT,
@@ -24,7 +24,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'DEPOSIT'
+      name : 'DEPOSIT'
     },{      
       id:FinancialValueMovTypes.POUCH,
       status_reg_id: StatusRegs.ACTIVE,
@@ -32,7 +32,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'POUCH',
+      name : 'POUCH',
       ISPHYSICAL: 1
     }],{
       ignoreDuplicates:true,

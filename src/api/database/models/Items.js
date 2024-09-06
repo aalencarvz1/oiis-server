@@ -31,7 +31,7 @@ class Items extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },      
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },      
@@ -131,7 +131,7 @@ class Items extends BaseTableModel {
             return ncm;                
           }
         }
-        queryParams.NAME = queryParams.NAME || winthorData.DESCRICAO;
+        queryParams.name = queryParams.name || winthorData.DESCRICAO;
         queryParams.DESCRIPTION = queryParams.DESCRIPTION;
         queryParams.DEFAULTEXPIRATIONTIME = queryParams.DEFAULTEXPIRATIONTIME || winthorData.PRAZOVAL;
         result.data = await Items.getModel().create(queryParams);
@@ -202,7 +202,7 @@ class Items extends BaseTableModel {
             return ncm;                
           }
         }
-        queryParams.NAME = queryParams.NAME || auroraData.DESCRICAO;
+        queryParams.name = queryParams.name || auroraData.DESCRICAO;
         queryParams.DESCRIPTION = queryParams.DESCRIPTION;
         queryParams.DEFAULTEXPIRATIONTIME = queryParams.DEFAULTEXPIRATIONTIME || 1;
         result.data = await Items.getModel().create(queryParams);

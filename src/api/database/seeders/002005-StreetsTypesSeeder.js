@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'STREET'
+      name : 'STREET'
     },{      
       id:StreetTypes.AVENUE,
       status_reg_id: StatusRegs.ACTIVE,
@@ -23,7 +23,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'AVENUE'
+      name : 'AVENUE'
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

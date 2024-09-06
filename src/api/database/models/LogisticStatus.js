@@ -20,7 +20,7 @@ class LogisticStatus extends BaseTableModel {
 
   static fields = {
     ...LogisticStatus.getBaseTableModelFields(),...{           
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -56,7 +56,7 @@ class LogisticStatus extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(LogisticStatus.getBaseTableModelConstraints() || []),...[

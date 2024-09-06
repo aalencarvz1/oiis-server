@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'UNKNOWN'
+      name : 'UNKNOWN'
     },{      
       id:FinancialValueLocalizationsTypes.ACCOUNT,
       status_reg_id: StatusRegs.ACTIVE,
@@ -23,7 +23,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'ACCOUNT'
+      name : 'ACCOUNT'
     },{      
       id:FinancialValueLocalizationsTypes.POUCH,
       status_reg_id: StatusRegs.ACTIVE,
@@ -31,7 +31,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'POUCH',
+      name : 'POUCH',
       ISPHYSICAL: 1
     }],{
       ignoreDuplicates:true,

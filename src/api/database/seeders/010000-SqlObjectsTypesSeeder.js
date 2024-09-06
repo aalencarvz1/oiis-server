@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'DATABASE',
+      name : 'DATABASE',
     },{      
       id:SqlObjectsTypes.USER,
       status_reg_id: StatusRegs.ACTIVE,
@@ -24,7 +24,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSUP : SqlObjectsTypes.DATABASE,
-      NAME : 'USER',
+      name : 'USER',
     },{      
       id:SqlObjectsTypes.SCHEMA,
       status_reg_id: StatusRegs.ACTIVE,
@@ -33,7 +33,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSUP : SqlObjectsTypes.DATABASE,
-      NAME : 'SCHEMA',
+      name : 'SCHEMA',
     },{      
       id:SqlObjectsTypes.TABLE,
       status_reg_id: StatusRegs.ACTIVE,
@@ -42,7 +42,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSUP : SqlObjectsTypes.SCHEMA,
-      NAME : 'TABLE',
+      name : 'TABLE',
     },{      
       id:SqlObjectsTypes.FIELD,
       status_reg_id: StatusRegs.ACTIVE,
@@ -51,7 +51,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSUP : SqlObjectsTypes.TABLE,
-      NAME : 'FIELD',
+      name : 'FIELD',
     },{      
       id:SqlObjectsTypes.SELECT,
       status_reg_id: StatusRegs.ACTIVE,
@@ -59,7 +59,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'SELECT',
+      name : 'SELECT',
     },{      
       id:SqlObjectsTypes.FROM,
       status_reg_id: StatusRegs.ACTIVE,
@@ -68,7 +68,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSUP : SqlObjectsTypes.SELECT,
-      NAME : 'FROM',
+      name : 'FROM',
     },{      
       id:SqlObjectsTypes.JOIN,
       status_reg_id: StatusRegs.ACTIVE,
@@ -77,7 +77,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSUP : SqlObjectsTypes.FROM,
-      NAME : 'JOIN',
+      name : 'JOIN',
     },{      
       id:SqlObjectsTypes.ON,
       status_reg_id: StatusRegs.ACTIVE,
@@ -86,7 +86,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSUP : SqlObjectsTypes.JOIN,
-      NAME : 'ON',
+      name : 'ON',
     },{      
       id:SqlObjectsTypes.WHERE,
       status_reg_id: StatusRegs.ACTIVE,
@@ -95,7 +95,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSUP : SqlObjectsTypes.SELECT,      
-      NAME : 'WHERE',
+      name : 'WHERE',
     },{      
       id:SqlObjectsTypes.GROUP_BY,
       status_reg_id: StatusRegs.ACTIVE,
@@ -104,7 +104,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSUP : SqlObjectsTypes.SELECT,      
-      NAME : 'GROUP BY',
+      name : 'GROUP BY',
     },{      
       id:SqlObjectsTypes.HAVING,
       status_reg_id: StatusRegs.ACTIVE,
@@ -113,7 +113,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSUP : SqlObjectsTypes.SELECT,      
-      NAME : 'HAVING',
+      name : 'HAVING',
     },{      
       id:SqlObjectsTypes.ORDER_BY,
       status_reg_id: StatusRegs.ACTIVE,
@@ -122,7 +122,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSUP : SqlObjectsTypes.SELECT,      
-      NAME : 'ORDER BY',
+      name : 'ORDER BY',
     },{      
       id:SqlObjectsTypes.PIVOT,
       status_reg_id: StatusRegs.ACTIVE,
@@ -131,7 +131,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSUP : SqlObjectsTypes.SELECT,      
-      NAME : 'PIVOT',
+      name : 'PIVOT',
     },{      
       id:SqlObjectsTypes.FOR,
       status_reg_id: StatusRegs.ACTIVE,
@@ -140,7 +140,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSUP : SqlObjectsTypes.PIVOT,      
-      NAME : 'FOR',
+      name : 'FOR',
     },{      
       id:SqlObjectsTypes.IN,
       status_reg_id: StatusRegs.ACTIVE,
@@ -149,7 +149,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSUP : SqlObjectsTypes.PIVOT,      
-      NAME : 'IN',
+      name : 'IN',
     },{      
       id:SqlObjectsTypes.TEXT,
       status_reg_id: StatusRegs.ACTIVE,
@@ -157,7 +157,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'TEXT',
+      name : 'TEXT',
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

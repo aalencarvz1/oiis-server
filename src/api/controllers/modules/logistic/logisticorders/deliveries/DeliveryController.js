@@ -40,7 +40,7 @@ class DeliveryController extends RegistersController{
             let query = `
                 select
                     l.*,
-                    lsl.NAME AS LOGISTICSTATUS,
+                    lsl.name AS LOGISTICSTATUS,
                     COUNT(DISTINCT CASE WHEN ls.ISTODELIVERY = 1 THEN m.IDCLIENT ELSE NULL END) AS QTENTREGASAENTREGAR,
                     COUNT(DISTINCT CASE WHEN ls.ISDELIVERING = 1 THEN m.IDCLIENT ELSE NULL END) AS QTENTREGASENTREGANDO,
                     COUNT(DISTINCT CASE WHEN ls.ISDELIVERED = 1 THEN m.IDCLIENT ELSE NULL END) AS QTENTREGASENTREGUES,
@@ -210,7 +210,7 @@ class DeliveryController extends RegistersController{
                 ${where || ''}
                 group by
                     ${Object.keys(LogisticOrders.fields).map(el=>`l.${el}`).join(',')},
-                    lsl.NAME
+                    lsl.name
             `;
 
             result = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
@@ -361,7 +361,7 @@ class DeliveryController extends RegistersController{
                     i.data_origin_id,
                     i.id_at_origin,                    
                     lxim.IDLOGISTICSTATUS,
-                    ls.NAME AS LOGISTICSTATUS,
+                    ls.name AS LOGISTICSTATUS,
                     lxim.IDREASONNOTMOVIMENTEDAMT,
                     lxim.OBSERVATIONSNOTMOVIMENTEDAMT,
                     lr.name as REASONNOTMOVIMENTEDAMT,
@@ -429,7 +429,7 @@ class DeliveryController extends RegistersController{
                 group by                        
                     i.id,
                     lxim.IDLOGISTICSTATUS,
-                    ls.NAME,
+                    ls.name,
                     lxim.IDREASONNOTMOVIMENTEDAMT,
                     lxim.OBSERVATIONSNOTMOVIMENTEDAMT,
                     lr.name
@@ -525,16 +525,16 @@ class DeliveryController extends RegistersController{
             let query = `
                 select
                     lxm.*,
-                    ls.NAME AS LOGISTICSTATUS,
-                    o.NAME as ORIGINDATA,
+                    ls.name AS LOGISTICSTATUS,
+                    o.name as ORIGINDATA,
                     m.id_at_origin AS id_at_originMOV,
                     m.IDENTIFIER,
                     m.IDCLIENT,
-                    p.NAME AS CLIENTNAME,
+                    p.name AS CLIENTNAME,
                     m.IDFINANCIALVALUEFORM,
-                    rt.NAME AS FINANCIALVALUEFORM,
+                    rt.name AS FINANCIALVALUEFORM,
                     m.IDSELLER,
-                    ps.NAME AS SELLERNAME,
+                    ps.name AS SELLERNAME,
                     CASE WHEN max(coalesce(lxim.IDREASONNOTMOVIMENTEDAMT,-1)) > -1 then max(coalesce(lxim.IDREASONNOTMOVIMENTEDAMT,-1)) else null end as IDREASONNOTMOVIMENTEDAMTITEMS,
                     CASE WHEN max(coalesce(lxim.IDREASONNOTMOVIMENTEDAMT,-1)) > -1 then (SELECT lt.name from LogisticReasons lt where lt.id = max(coalesce(lxim.IDREASONNOTMOVIMENTEDAMT,-1))) else null end as REASONNOTMOVIMENTEDAMTITEMS,
                     COUNT(ix.IDITEM) AS QTITEMS,
@@ -674,16 +674,16 @@ class DeliveryController extends RegistersController{
                 ${where||''}
                 GROUP BY
                     ${Object.keys(LogisticOrdersXMovs.fields).map(el=>`lxm.${el}`).join(',')},
-                    ls.NAME,
-                    o.NAME,
+                    ls.name,
+                    o.name,
                     m.id_at_origin,
                     m.IDENTIFIER,
                     m.IDCLIENT,
-                    p.NAME,
+                    p.name,
                     m.IDFINANCIALVALUEFORM,
-                    rt.NAME,
+                    rt.name,
                     m.IDSELLER,
-                    ps.NAME
+                    ps.name
             `;
             res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
             res.data = res.data[0] || [];
@@ -808,7 +808,7 @@ class DeliveryController extends RegistersController{
                             m.data_origin_id,
                             m.id_at_origin,
                             lxm.IDLOGISTICSTATUS,
-                            ls.NAME AS LOGISTICSTATUS
+                            ls.name AS LOGISTICSTATUS
                         from
                             LogisticOrders l
                             join LogisticOrdersXMovs lxm on lxm.IDLOGISTICORDER = l.id
@@ -878,7 +878,7 @@ class DeliveryController extends RegistersController{
                         MAX(lg.LATITUDE) as LATITUDE,
                         MAX(lg.LONGITUDE) AS LONGITUDE,
                         cast(regexp_replace(p.IDENTIFIERDOC,'[^0-9]','') as decimal(32)) as "IDENTIFIERDOC",
-                        p.NAME,
+                        p.name,
                         p.FANTASY,
                         ctr.name as COUNTRY,
                         stt.name as STATE,
@@ -892,7 +892,7 @@ class DeliveryController extends RegistersController{
                         concat(st.name,',',a.number,',',ct.name,' - ',stt.SIGLA,',',ctr.name) as GOOGLEADDRESS
                     from
                         logisticlogs lg 
-                        join datatables t on LOWER(t.NAME) = LOWER('LOGISTICORDERSXITEMSMOVAMT') and lg.IDTABLEREF = t.id
+                        join datatables t on LOWER(t.name) = LOWER('LOGISTICORDERSXITEMSMOVAMT') and lg.IDTABLEREF = t.id
                         join LOGISTICORDERSXITEMSMOVAMT lxim on lxim.id = lg.idregisterref
                         join logisticordersxmovs lxm on lxm.id = lxim.IDLOGISTICORDERXMOV
                         join logisticorders l on l.id = lxm.idlogisticorder
@@ -915,7 +915,7 @@ class DeliveryController extends RegistersController{
                     group by
                         date_format(lg.created_at,'%Y-%m-%d %H:%i'),
                         cast(regexp_replace(p.IDENTIFIERDOC,'[^0-9]','') as decimal(32)),
-                        p.NAME,
+                        p.name,
                         p.FANTASY,
                         ctr.name,
                         stt.name,

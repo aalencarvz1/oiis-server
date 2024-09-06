@@ -18,7 +18,7 @@ class Contacts extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       }
@@ -27,7 +27,7 @@ class Contacts extends BaseTableModel {
   
   static uniqueFields = [
     'IDCONTACTTYPE',
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(Contacts.getBaseTableModelConstraints() || []),...[

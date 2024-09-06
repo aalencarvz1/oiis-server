@@ -23,7 +23,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSQLOBJECTTYPE : SqlObjectsTypes.DATABASE,
-      NAME : configDB[`${process.env.NODE_ENV||'development'}`].database,
+      name : configDB[`${process.env.NODE_ENV||'development'}`].database,
     },{            
       id: configDB[`${process.env.NODE_ENV||'development'}`].id + 1,
       status_reg_id: StatusRegs.ACTIVE,
@@ -33,7 +33,7 @@ module.exports = {
       is_sys_rec : 1,
       IDSQLOBJECTTYPE : SqlObjectsTypes.USER,
       IDSUP : configDB[`${process.env.NODE_ENV||'development'}`].id,
-      NAME : configDB[`${process.env.NODE_ENV||'development'}`].user || configDB[`${process.env.NODE_ENV||'development'}`].database,
+      name : configDB[`${process.env.NODE_ENV||'development'}`].user || configDB[`${process.env.NODE_ENV||'development'}`].database,
     },{      
       id: configDB[`${process.env.NODE_ENV||'development'}`].id + 2,
       status_reg_id: StatusRegs.ACTIVE,
@@ -43,7 +43,7 @@ module.exports = {
       is_sys_rec : 1,
       IDSQLOBJECTTYPE : SqlObjectsTypes.SCHEMA,
       IDSUP : configDB[`${process.env.NODE_ENV||'development'}`].id + 1,
-      NAME : configDB[`${process.env.NODE_ENV||'development'}`].schema || configDB[`${process.env.NODE_ENV||'development'}`]?.dialectOptions?.schema || configDB[`${process.env.NODE_ENV||'development'}`].database
+      name : configDB[`${process.env.NODE_ENV||'development'}`].schema || configDB[`${process.env.NODE_ENV||'development'}`]?.dialectOptions?.schema || configDB[`${process.env.NODE_ENV||'development'}`].database
     },{
       id: configDB["development_winthor"]?.id,      
       status_reg_id: StatusRegs.ACTIVE,
@@ -52,7 +52,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSQLOBJECTTYPE : SqlObjectsTypes.DATABASE,
-      NAME : 'WINT',
+      name : 'WINT',
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null
@@ -64,7 +64,7 @@ module.exports = {
       raw:true,
       where: {
         IDSQLOBJECTTYPE : SqlObjectsTypes.DATABASE, 
-        NAME: 'WINT',      
+        name: 'WINT',      
       }
     });
     if (Object.keys(wintObject||{}).length == 0) {
@@ -75,7 +75,7 @@ module.exports = {
         data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
         is_sys_rec : 1,
         IDSQLOBJECTTYPE : SqlObjectsTypes.DATABASE,
-        NAME : 'WINT',
+        name : 'WINT',
       }],{
         ignoreDuplicates:true,
         updateOnDuplicate:null
@@ -85,7 +85,7 @@ module.exports = {
         raw:true,
         where: {
           IDSQLOBJECTTYPE : SqlObjectsTypes.DATABASE, 
-          NAME: 'WINT',      
+          name: 'WINT',      
         }
       });
     }
@@ -93,7 +93,7 @@ module.exports = {
     let wintUserObject = await SqlObjects.getModel().findOne({raw:true,where: {
       IDSQLOBJECTTYPE : SqlObjectsTypes.USER, 
       IDSUP:wintObject.id, 
-      NAME: 'JUMBO'
+      name: 'JUMBO'
     }});
 
     if (Object.keys(wintUserObject||{}).length == 0) {
@@ -105,7 +105,7 @@ module.exports = {
         is_sys_rec : 1,
         IDSQLOBJECTTYPE : SqlObjectsTypes.USER,
         IDSUP : wintObject.id,
-        NAME : 'JUMBO',
+        name : 'JUMBO',
       }],{
         ignoreDuplicates:true,
         updateOnDuplicate:null
@@ -114,14 +114,14 @@ module.exports = {
       wintUserObject = await SqlObjects.getModel().findOne({raw:true,where: {
         IDSQLOBJECTTYPE : SqlObjectsTypes.USER, 
         IDSUP:wintObject.id, 
-        NAME: 'JUMBO'
+        name: 'JUMBO'
       }});
     }
 
     let wintSchemaObject = await SqlObjects.getModel().findOne({raw:true,where: {
       IDSQLOBJECTTYPE : SqlObjectsTypes.SCHEMA, 
       IDSUP:wintUserObject.id, 
-      NAME: 'JUMBO'
+      name: 'JUMBO'
     }});
     if (Object.keys(wintSchemaObject||{}).length == 0) {
       await queryInterface.bulkInsert(SqlObjects.name.toLowerCase(),[{      
@@ -132,7 +132,7 @@ module.exports = {
         is_sys_rec : 1,
         IDSQLOBJECTTYPE : SqlObjectsTypes.SCHEMA,
         IDSUP : wintUserObject.id,
-        NAME : 'JUMBO',
+        name : 'JUMBO',
       }],{
         ignoreDuplicates:true,
         updateOnDuplicate:null
@@ -141,7 +141,7 @@ module.exports = {
       wintSchemaObject = await SqlObjects.getModel().findOne({raw:true,where: {
         IDSQLOBJECTTYPE : SqlObjectsTypes.SCHEMA, 
         IDSUP:wintUserObject.id, 
-        NAME: 'JUMBO'
+        name: 'JUMBO'
       }});
     }
 
@@ -156,7 +156,7 @@ module.exports = {
       is_sys_rec : 1,      
       IDSQLOBJECTTYPE : SqlObjectsTypes.TABLE,
       IDSUP: wintSchemaObject.id,
-      NAME : PcFilial.name.toUpperCase(),
+      name : PcFilial.name.toUpperCase(),
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

@@ -17,7 +17,7 @@ module.exports = {
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSQLOBJECTTYPE: SqlObjectsTypes.SELECT,
-      NAME : 'REPORT SALES COST AND PROFIT',
+      name : 'REPORT SALES COST AND PROFIT',
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

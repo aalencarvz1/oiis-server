@@ -154,7 +154,7 @@ class PeopleIntegrationsController extends RegistersController{
                                             raw:true,
                                             where:{
                                                 IDCITY: city.id,
-                                                NAME: winthorRegs[people[k].id_at_origin].BAIRROENT
+                                                name: winthorRegs[people[k].id_at_origin].BAIRROENT
                                             }
                                         }
                                     }
@@ -173,7 +173,7 @@ class PeopleIntegrationsController extends RegistersController{
                                             raw:true,
                                             where:{
                                                 IDCITY: city.id,
-                                                NAME: winthorRegs[people[k].id_at_origin].ENDERENT
+                                                name: winthorRegs[people[k].id_at_origin].ENDERENT
                                             }
                                         });
                                         if (street && street.success) {
@@ -474,7 +474,7 @@ class PeopleIntegrationsController extends RegistersController{
                 case 'get':                    
                     let queryParams = DatabaseUtils.prepareQueryParams(req.body.queryParams || {});
                     queryParams.raw = true;
-                    switch((origin.NAME || origin).trim().toLowerCase()) {
+                    switch((origin.name || origin).trim().toLowerCase()) {
                         case "winthor":                            
                             queryParams.where = queryParams.where || {};                            
                             res.data = await PcClient.getModel().findAll(queryParams);
@@ -486,7 +486,7 @@ class PeopleIntegrationsController extends RegistersController{
                     break;
                 case 'create':          
                 case 'integrate':                             
-                    switch((origin.NAME || origin).trim().toLowerCase()) {
+                    switch((origin.name || origin).trim().toLowerCase()) {
                         case "winthor":
                             res.setDataSwap(await PeopleIntegrationsController.integrateWinthorPeople(req.body));
                             res.sendResponse();
@@ -496,7 +496,7 @@ class PeopleIntegrationsController extends RegistersController{
                     }
                     break;
                 case 'addresses':
-                    switch((origin.NAME || origin).trim().toLowerCase()) {
+                    switch((origin.name || origin).trim().toLowerCase()) {
                         case "winthor":
                             res.setDataSwap(await PeopleIntegrationsController.integrateWinthorAddressesPeople(req.body));
                             res.sendResponse();
@@ -539,7 +539,7 @@ class PeopleIntegrationsController extends RegistersController{
             switch(methodName.trim().toLowerCase()) {
                 case 'create':
                 case 'integrate':
-                    switch((origin.NAME || origin).trim().toLowerCase()) {                        
+                    switch((origin.name || origin).trim().toLowerCase()) {                        
                         case "winthor":
                             res.setDataSwap(await this.integrateWinthorPeople(req.body));
                             return res.sendResponse();
@@ -549,7 +549,7 @@ class PeopleIntegrationsController extends RegistersController{
                     }
                     break;
                 case 'addresses':
-                    switch((origin.NAME || origin).trim().toLowerCase()) {
+                    switch((origin.name || origin).trim().toLowerCase()) {
                         case "winthor":
                             res.setDataSwap(await this.integrateWinthorAddressesPeople(req.body));
                             res.sendResponse();

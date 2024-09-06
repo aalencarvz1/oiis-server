@@ -19,7 +19,7 @@ class MovementsEntitiesRelationshipsTypes extends BaseTableModel {
 
   static fields = {
     ...MovementsEntitiesRelationshipsTypes.getBaseTableModelFields(),...{           
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -50,7 +50,7 @@ class MovementsEntitiesRelationshipsTypes extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(MovementsEntitiesRelationshipsTypes.getBaseTableModelConstraints() || []),...[

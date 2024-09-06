@@ -241,7 +241,7 @@ class BusinessesUnitsIntegrationsController extends RegistersController {
             let origin = req.body.origin || "";
             let queryParams = DatabaseUtils.prepareQueryParams(req.body.queryParams || {});
             queryParams.raw = true;
-            switch((origin.NAME || origin).trim().toLowerCase()) {
+            switch((origin.name || origin).trim().toLowerCase()) {
                 case "winthor":                            
                     queryParams.where = queryParams.where || {};
                     queryParams.where.CODIGO = {
@@ -251,7 +251,7 @@ class BusinessesUnitsIntegrationsController extends RegistersController {
                     res.sendResponse(200,true);
                     break; 
                 default:
-                    throw new Error(`origin not expected: ${(origin.NAME || origin)}`);
+                    throw new Error(`origin not expected: ${(origin.name || origin)}`);
             }
         } catch (e) {
             res.setException(e);
@@ -262,12 +262,12 @@ class BusinessesUnitsIntegrationsController extends RegistersController {
     static async integrate(req,res,next) {
         try {
             let origin = req.body.origin || "";
-            switch((origin.NAME || origin).trim().toLowerCase()) {
+            switch((origin.name || origin).trim().toLowerCase()) {
                 case "winthor":
                     this.integrateWinthorBusinessesUnits(req,res,next);
                     break; 
                 default:
-                    throw new Error(`origin not expected: ${(origin.NAME || origin)}`);
+                    throw new Error(`origin not expected: ${(origin.name || origin)}`);
             }
         } catch (e) {
             res.setException(e);
@@ -298,7 +298,7 @@ class BusinessesUnitsIntegrationsController extends RegistersController {
             switch(methodName.trim().toLowerCase()) {
                 case 'create':
                 case 'integrate':
-                    switch((origin.NAME || origin).trim().toLowerCase()) {                        
+                    switch((origin.name || origin).trim().toLowerCase()) {                        
                         case "winthor":
                             return this.integrateWinthorBusinessesUnits(req,res,next);
                             break; 

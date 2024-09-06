@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'DOLAR',
+      name : 'DOLAR',
       SYMBOL:'$',
       ISPHYSICAL: 1
     },{      
@@ -25,7 +25,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'BRAZILIAN REAL',
+      name : 'BRAZILIAN REAL',
       SYMBOL:'R$',
       ISPHYSICAL: 1
     }],{

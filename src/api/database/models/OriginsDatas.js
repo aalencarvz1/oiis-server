@@ -21,7 +21,7 @@ class OriginsDatas extends BaseTableModel {
 
   static fields = {
     ...OriginsDatas.getBaseTableModelFields(),...{
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull: false
       },
@@ -32,7 +32,7 @@ class OriginsDatas extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(OriginsDatas.getBaseTableModelConstraints() || []),...[

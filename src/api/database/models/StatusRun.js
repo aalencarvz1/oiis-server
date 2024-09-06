@@ -21,7 +21,7 @@ class StatusRun extends BaseTableModel {
 
   static fields = {
     ...StatusRun.getBaseTableModelFields(),...{
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull: false
       },
@@ -55,7 +55,7 @@ class StatusRun extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(StatusRun.getBaseTableModelConstraints() || []),...[

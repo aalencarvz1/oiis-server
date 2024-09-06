@@ -38,7 +38,7 @@ class LogisticReasonsIntegrationsController extends RegistersController {
 
             //preserve winthor code, if violate primary key or unique, raise here
             if (logisticReason) {
-                if (logisticReason.NAME != pcTabDev.MOTIVO) logisticReason.NAME = pcTabDev.MOTIVO;
+                if (logisticReason.name != pcTabDev.MOTIVO) logisticReason.name = pcTabDev.MOTIVO;
                 if (logisticReason.SIGLAMOVTYPE != pcTabDev.TIPO) logisticReason.SIGLAMOVTYPE = pcTabDev.TIPO;            
                 await logisticReason.save(options);
             } else {
@@ -46,7 +46,7 @@ class LogisticReasonsIntegrationsController extends RegistersController {
                     id: pcTabDev.CODDEVOL,
                     data_origin_id: OriginsDatas.WINTHOR,
                     id_at_origin: pcTabDev.CODDEVOL,                    
-                    NAME: pcTabDev.MOTIVO,
+                    name: pcTabDev.MOTIVO,
                     SIGLAMOVTYPE: pcTabDev.TIPO
                 },options);
             }
@@ -96,7 +96,7 @@ class LogisticReasonsIntegrationsController extends RegistersController {
             let origin = req.body.origin || "";
             let queryParams = DatabaseUtils.prepareQueryParams(req.body.queryParams || {});
             queryParams.raw = true;
-            switch((origin.NAME || origin).trim().toLowerCase()) {
+            switch((origin.name || origin).trim().toLowerCase()) {
                 case "winthor":                            
                     queryParams.where = queryParams.where || {};     
                     queryParams.raw = true;                       
@@ -104,7 +104,7 @@ class LogisticReasonsIntegrationsController extends RegistersController {
                     res.sendResponse(200,true);
                     break; 
                 default:
-                    throw new Error(`origin not expected: ${(origin.NAME || origin)}`);
+                    throw new Error(`origin not expected: ${(origin.name || origin)}`);
             }
         } catch (e) {
             res.setException(e);
@@ -115,12 +115,12 @@ class LogisticReasonsIntegrationsController extends RegistersController {
     static integrate(req,res,next) {
         try {
             let origin = req.body.origin || "";
-            switch((origin.NAME || origin).trim().toLowerCase()) {
+            switch((origin.name || origin).trim().toLowerCase()) {
                 case "winthor":
                     this.integrateByWinthor(req,res,next);
                     break; 
                 default:
-                    throw new Error(`origin not expected: ${(origin.NAME || origin)}`);
+                    throw new Error(`origin not expected: ${(origin.name || origin)}`);
             }
         } catch (e) {
             res.setException(e);

@@ -17,7 +17,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : process.env.NODE_ENV,
+      name : process.env.NODE_ENV,
       ISDEFAULT : 1
     },{      
       id:configDB[`${process.env.NODE_ENV||'development'}_winthor`].id,
@@ -26,7 +26,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.WINTHOR,
       is_sys_rec : 1,
-      NAME : `WINTHOR`,
+      name : `WINTHOR`,
       ISDEFAULT : 1
     },{      
       id:configDB[`${process.env.NODE_ENV||'development'}_consult`].id,
@@ -35,7 +35,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.CONSULTA,
       is_sys_rec : 1,
-      NAME : `CONSULTA`,
+      name : `CONSULTA`,
       ISDEFAULT : 1
     },{      
       id:configDB[`${process.env.NODE_ENV||'development'}_ep`].id,
@@ -44,7 +44,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.EP,
       is_sys_rec : 1,
-      NAME : `EP`,
+      name : `EP`,
       ISDEFAULT : 1
     }],{
       ignoreDuplicates:true,

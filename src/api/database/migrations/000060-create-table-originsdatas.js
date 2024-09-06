@@ -26,7 +26,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'DEFAULT_ORIGINDATA'      
+      name : 'DEFAULT_ORIGINDATA'      
     },{
       id: OriginsDatas.WINTHOR,
       status_reg_id: StatusRegs.ACTIVE,
@@ -34,7 +34,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.WINTHOR,
       is_sys_rec : 1,
-      NAME : 'WINTHOR'      
+      name : 'WINTHOR'      
     },{
       id: OriginsDatas.AURORA,
       status_reg_id: StatusRegs.ACTIVE,
@@ -42,7 +42,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.AURORA,
       is_sys_rec : 1,
-      NAME : 'AURORA'      
+      name : 'AURORA'      
     },{
       id: OriginsDatas.CONSULTA,
       status_reg_id: StatusRegs.ACTIVE,
@@ -50,7 +50,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.CONSULTA,
       is_sys_rec : 1,
-      NAME : 'CONSULTA'      
+      name : 'CONSULTA'      
     },{
       id: OriginsDatas.EP,
       status_reg_id: StatusRegs.ACTIVE,
@@ -58,7 +58,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.EP,
       is_sys_rec : 1,
-      NAME : 'EP'      
+      name : 'EP'      
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

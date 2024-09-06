@@ -21,7 +21,7 @@ class EntitiesTypes extends BaseTableModel {
 
   static fields = {
     ...EntitiesTypes.getBaseTableModelFields(),...{
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull: false
       },
@@ -32,7 +32,7 @@ class EntitiesTypes extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(EntitiesTypes.getBaseTableModelConstraints() || []),...[

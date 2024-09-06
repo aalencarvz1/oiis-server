@@ -24,7 +24,7 @@ class Midias extends BaseTableModel {
       ORDERNUM: {
         type: DataTypes.INTEGER
       },
-      NAME:{
+      name:{
         type: DataTypes.STRING(256)
       },
       TYPE:{

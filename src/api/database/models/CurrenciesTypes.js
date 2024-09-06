@@ -18,7 +18,7 @@ class CurrenciesTypes extends BaseTableModel {
   static model = null;
   static fields = {
     ...CurrenciesTypes.getBaseTableModelFields(),...{           
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -37,7 +37,7 @@ class CurrenciesTypes extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(CurrenciesTypes.getBaseTableModelConstraints() || []),...[

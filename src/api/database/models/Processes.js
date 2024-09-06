@@ -14,7 +14,7 @@ class Processes extends BaseTableModel {
   static model = null;
   static fields = {
     ...Processes.getBaseTableModelFields(),...{      
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull:false
       },      
@@ -25,7 +25,7 @@ class Processes extends BaseTableModel {
   };
   
   static uniqueFields = [    
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(Processes.getBaseTableModelConstraints() || []),...[

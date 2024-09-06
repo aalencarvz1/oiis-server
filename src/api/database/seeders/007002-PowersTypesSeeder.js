@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME:'SYSTEM'
+      name:'SYSTEM'
     },{      
       id:PowersTypes.ACCESS,
       status_reg_id: StatusRegs.ACTIVE,
@@ -23,7 +23,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME: 'ACCESS',
+      name: 'ACCESS',
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

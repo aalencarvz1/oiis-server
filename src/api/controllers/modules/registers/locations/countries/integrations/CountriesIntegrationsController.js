@@ -33,7 +33,7 @@ class CountriesIntegrationsController extends RegistersController {
                 continent = await Continents.getModel().create({
                     id: Continents.SOUTH_AMERICA,
                     SIGLA: 'AL',
-                    NAME: 'SOUTH AMERICA'
+                    name: 'SOUTH AMERICA'
                 });
             }
                                        
@@ -51,8 +51,8 @@ class CountriesIntegrationsController extends RegistersController {
 
             //try preserve winthor code, if unique or primary key viloated, then raise exception here
             if (country) {
-                if (country.NAME != pcpais.DESCRICAO) {
-                    country.NAME = pcpais.DESCRICAO;
+                if (country.name != pcpais.DESCRICAO) {
+                    country.name = pcpais.DESCRICAO;
                     await country.save(options);                
                 }
             } else {
@@ -60,7 +60,7 @@ class CountriesIntegrationsController extends RegistersController {
                     id : winthorCountryCode,
                     data_origin_id: OriginsDatas.WINTHOR,
                     IDCONTINENT: continent.id,
-                    NAME: pcpais.DESCRICAO,
+                    name: pcpais.DESCRICAO,
                     SIGLA: pcpais.DESCRICAO.substring(0,2)
                 },options)
             }
@@ -118,7 +118,7 @@ class CountriesIntegrationsController extends RegistersController {
             switch(methodName.trim().toLowerCase()) {
                 case 'create':
                 case 'integrate':
-                    switch((origin.NAME || origin).trim().toLowerCase()) {                        
+                    switch((origin.name || origin).trim().toLowerCase()) {                        
                         case "winthor":
                             return this.integrateWinthorCountries(req,res,next);
                             break; 

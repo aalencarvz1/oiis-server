@@ -17,7 +17,7 @@ class PowersTypes extends BaseTableModel {
 
   static fields = {
     ...PowersTypes.getBaseTableModelFields(),...{           
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -28,7 +28,7 @@ class PowersTypes extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(PowersTypes.getBaseTableModelConstraints() || []),...[

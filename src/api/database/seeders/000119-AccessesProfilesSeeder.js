@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME:'DEFAULT',
+      name:'DEFAULT',
       ALLOWACESSALLROUTINESOFMODULE:0
     },{      
       id:AccessesProfiles.ADMINISTRATIVE,
@@ -24,7 +24,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME:'ADMINISTRATIVE',
+      name:'ADMINISTRATIVE',
       ALLOWACESSALLROUTINESOFMODULE:0
     },{      
       id:AccessesProfiles.GERENCIAL,
@@ -33,7 +33,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME:'GERENCIAL',
+      name:'GERENCIAL',
       ALLOWACESSALLROUTINESOFMODULE:0
     },{      
       id:AccessesProfiles.INVOICING,
@@ -42,7 +42,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME:'INVOICING',
+      name:'INVOICING',
       ALLOWACESSALLROUTINESOFMODULE:0
     },{      
       id:AccessesProfiles.FINANCIAL,
@@ -51,7 +51,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME:'FINANCIAL',
+      name:'FINANCIAL',
       ALLOWACESSALLROUTINESOFMODULE:0
     },{      
       id:AccessesProfiles.SUPERVISOR,
@@ -60,7 +60,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME:'SUPERVISOR',
+      name:'SUPERVISOR',
       ALLOWACESSALLROUTINESOFMODULE:0
     },{      
       id:AccessesProfiles.SELLER,
@@ -69,7 +69,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME:'SELLER',
+      name:'SELLER',
       ALLOWACESSALLROUTINESOFMODULE:0
     },{      
       id:AccessesProfiles.SUPLIER,
@@ -78,7 +78,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME:'SUPLIER',
+      name:'SUPLIER',
       ALLOWACESSALLROUTINESOFMODULE:0
     }],{
       ignoreDuplicates:true,

@@ -26,7 +26,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'ACTIVE',
+      name : 'ACTIVE',
       ISACTIVE:1      
     },{
       id: StatusRegs.INACTIVE,
@@ -35,7 +35,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'INACTIVE',
+      name : 'INACTIVE',
       ISACTIVE:1     
     }],{
       ignoreDuplicates:true,

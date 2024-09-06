@@ -18,7 +18,7 @@ class LogisticMovTypes extends BaseTableModel {
 
   static fields = {
     ...LogisticMovTypes.getBaseTableModelFields(),...{           
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -39,7 +39,7 @@ class LogisticMovTypes extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(LogisticMovTypes.getBaseTableModelConstraints() || []),...[

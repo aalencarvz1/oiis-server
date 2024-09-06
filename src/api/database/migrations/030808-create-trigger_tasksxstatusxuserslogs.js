@@ -33,7 +33,7 @@ module.exports = {
                           join userstimeswork ut on ut.iduserprofiletimework = up.id
                         where
                           up.iduser = new.IDUSER
-                          and up.NAME = 'DEFAULT'
+                          and up.name = 'DEFAULT'
                       ),0)  
                     else
                       0
@@ -48,7 +48,7 @@ module.exports = {
                     join userstimeswork ut on ut.iduserprofiletimework = up.id
                   where
                     up.iduser = new.IDUSER
-                    and up.NAME = 'DEFAULT'
+                    and up.name = 'DEFAULT'
                     AND (
                       weekday(new.LASTRUN) > 0 
                       or DATEDIFF(utc_timestamp,new.lastrun) <= 7
@@ -66,7 +66,7 @@ module.exports = {
                     join userstimeswork ut on ut.iduserprofiletimework = up.id
                   where
                     up.iduser = new.IDUSER
-                    and up.NAME = 'DEFAULT'
+                    and up.name = 'DEFAULT'
                     AND (
                       weekday(utc_timestamp) < 6 
                       or DATEDIFF(utc_timestamp,new.lastrun) <= 7
@@ -114,7 +114,7 @@ module.exports = {
                     join userstimeswork ut on ut.iduserprofiletimework = up.id
                   where
                     up.iduser = new.IDUSER
-                    and up.NAME = 'DEFAULT'
+                    and up.name = 'DEFAULT'
                     AND (
                       weekday(new.LASTRUN) > 0 
                       or DATEDIFF(utc_timestamp,new.lastrun) <= 7
@@ -142,7 +142,7 @@ module.exports = {
                     join userstimeswork ut on ut.iduserprofiletimework = up.id
                   where 
                     up.iduser = new.IDUSER
-                    and up.NAME = 'DEFAULT'
+                    and up.name = 'DEFAULT'
                     AND (
                       weekday(utc_timestamp) < 6 
                       or DATEDIFF(utc_timestamp,new.lastrun) <= 7

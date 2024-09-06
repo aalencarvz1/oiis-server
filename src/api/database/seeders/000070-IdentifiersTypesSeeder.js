@@ -15,7 +15,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'IDENTIFIER'
+      name : 'IDENTIFIER'
     },{      
       id:IdentifiersTypes.CNPJ,
       status_reg_id: StatusRegs.ACTIVE,
@@ -23,7 +23,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'CNPJ'
+      name : 'CNPJ'
     },{      
       id:IdentifiersTypes.CPF,
       status_reg_id: StatusRegs.ACTIVE,
@@ -31,7 +31,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'CPF'
+      name : 'CPF'
     },{      
       id:IdentifiersTypes.CHAVENFE,
       status_reg_id: StatusRegs.ACTIVE,
@@ -39,7 +39,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'CHAVENFE'
+      name : 'CHAVENFE'
     },{      
       id:IdentifiersTypes.GTIN,
       status_reg_id: StatusRegs.ACTIVE,
@@ -47,7 +47,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'GTIN'
+      name : 'GTIN'
     },{      
       id:IdentifiersTypes.GTINTYPE,
       status_reg_id: StatusRegs.ACTIVE,
@@ -55,7 +55,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'GTINTYPE'
+      name : 'GTINTYPE'
     },{      
       id:IdentifiersTypes.PACKAGING,
       status_reg_id: StatusRegs.ACTIVE,
@@ -63,7 +63,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'PACKAGING'
+      name : 'PACKAGING'
     },{      
       id:IdentifiersTypes.SUPPLIER,
       status_reg_id: StatusRegs.ACTIVE,
@@ -71,7 +71,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'SUPPLIER'
+      name : 'SUPPLIER'
     },{      
       id:IdentifiersTypes.VALUE,
       status_reg_id: StatusRegs.ACTIVE,
@@ -79,7 +79,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'VALUE'
+      name : 'VALUE'
     },{      
       id:IdentifiersTypes.WINTHORCODE,
       status_reg_id: StatusRegs.ACTIVE,
@@ -87,7 +87,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'WINTHORCODE'
+      name : 'WINTHORCODE'
     },{      
       id:IdentifiersTypes.WINTHORCODEFAB,
       status_reg_id: StatusRegs.ACTIVE,
@@ -95,7 +95,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      NAME : 'WINTHORCODEFAB'
+      name : 'WINTHORCODEFAB'
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

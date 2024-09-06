@@ -13,15 +13,15 @@ class Modules extends BaseTableModel {
   static id = 230;
   static model = null;
 
-  static WMS = modulesJson.find((el) => el.NAME == "WMS")?.id;
-  static LOGISTIC = modulesJson.find((el) => el.NAME == "LOGISTIC")?.id;
+  static WMS = modulesJson.find((el) => el.name == "WMS")?.id;
+  static LOGISTIC = modulesJson.find((el) => el.name == "LOGISTIC")?.id;
 
   static fields = {
     ...Modules.getBaseTableModelFields(),...{     
       IDSUP: {
         type: DataTypes.BIGINT.UNSIGNED
       }, 
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull:false
       }, 
@@ -42,7 +42,7 @@ class Modules extends BaseTableModel {
   
   static uniqueFields = [ 
     Sequelize.literal(`(COALESCE(IDSUP,0))`),  
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(Modules.getBaseTableModelConstraints() || []),...[

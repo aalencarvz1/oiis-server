@@ -39,7 +39,7 @@ class ReportsVisions extends BaseTableModel {
 
   static fields = {
     ...ReportsVisions.getBaseTableModelFields(),...{                 
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false,
       },
@@ -55,7 +55,7 @@ class ReportsVisions extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(ReportsVisions.getBaseTableModelConstraints() || []),...[{
@@ -96,13 +96,13 @@ class ReportsVisions extends BaseTableModel {
           result = result[0] || [];
           break;
         case 3: //enterprise
-          result = [{id:1,NAME:'JUMBO ALIMENTOS LTDA'}];
+          result = [{id:1,name:'JUMBO ALIMENTOS LTDA'}];
           break;
         case 4: //business unit          
           query = `
             select
               n.cod as id,
-              n.cod || '-' || s.nome  as NAME,
+              n.cod || '-' || s.nome  as name,
               n.cod as BUTTON_TEXT
             from
               EP.EPFILIAIS n
@@ -118,7 +118,7 @@ class ReportsVisions extends BaseTableModel {
           query = `
             select
               n.cod as id,
-              n.cod || '-' || p.nomerazao  as NAME,
+              n.cod || '-' || p.nomerazao  as name,
               n.cod as BUTTON_TEXT
             from
               EP.EPFORNECEDORES n
@@ -146,7 +146,7 @@ class ReportsVisions extends BaseTableModel {
           query = `
             select 
               n.codsupervisor as id,
-              n.codsupervisor || '-' || n.nome as NAME,
+              n.codsupervisor || '-' || n.nome as name,
               n.codsupervisor  as BUTTON_TEXT
             from
               JUMBO.PCSUPERV n                            
@@ -160,7 +160,7 @@ class ReportsVisions extends BaseTableModel {
           query = `
             select 
               n.codusur as id,
-              n.codusur || '-' || n.nome as NAME,
+              n.codusur || '-' || n.nome as name,
               n.codusur as BUTTON_TEXT
             from
               JUMBO.PCUSUARI n
@@ -174,7 +174,7 @@ class ReportsVisions extends BaseTableModel {
           query = `
             select 
               n.cod as id,
-              n.cod || '-' || n.descricao  as NAME,
+              n.cod || '-' || n.descricao  as name,
               n.cod  as BUTTON_TEXT
             from
               EP.EPATIVIDADESCLIENTES n
@@ -188,7 +188,7 @@ class ReportsVisions extends BaseTableModel {
           query = `
             select 
               n.cod as id,
-              n.cod || '-' || n.descricao as NAME,
+              n.cod || '-' || n.descricao as name,
               n.cod  as BUTTON_TEXT
             from
               EP.EPDEPARTAMENTOSPROD n
@@ -202,7 +202,7 @@ class ReportsVisions extends BaseTableModel {
           query = `
             select 
               n.cod as id,
-              n.cod || '-' || n.descricao as NAME,
+              n.cod || '-' || n.descricao as name,
               n.cod as BUTTON_TEXT
             from
               EP.EPPRODUTOS n
@@ -216,7 +216,7 @@ class ReportsVisions extends BaseTableModel {
           query = `
             select
               cl.cod as id,
-              cl.cod || '-' || cl_ps.coddocidentificador || '-' || cl_ps.nomerazao as NAME,
+              cl.cod || '-' || cl_ps.coddocidentificador || '-' || cl_ps.nomerazao as name,
               cl.cod as BUTTON_TEXT
             from
               EP.EPCLIENTES cl
@@ -231,7 +231,7 @@ class ReportsVisions extends BaseTableModel {
           query = `
             select 
               n.cod as id,
-              n.cod || '-' || n.descricao as NAME,
+              n.cod || '-' || n.descricao as name,
               n.cod  as BUTTON_TEXT
             from
               EP.EPREDESCLIENTES n
@@ -245,7 +245,7 @@ class ReportsVisions extends BaseTableModel {
           query = `
             select 
               n.cod as id,
-              n.cod || '-' || n.descricao  as NAME,
+              n.cod || '-' || n.descricao  as name,
               n.cod  as BUTTON_TEXT
             from
               EP.EPROTASCLIENTES n
@@ -259,7 +259,7 @@ class ReportsVisions extends BaseTableModel {
           query = `
             select 
               n.cod as id,
-              n.cod || '-' || n.descricao as NAME,
+              n.cod || '-' || n.descricao as name,
               n.cod as BUTTON_TEXT
             from
               EP.EPPRACASCLIENTES n
@@ -273,7 +273,7 @@ class ReportsVisions extends BaseTableModel {
           query = `
             select
               n.cod as id,
-              n.cod || '-' || n.descricao as NAME,
+              n.cod || '-' || n.descricao as name,
               n.cod as BUTTON_TEXT
             from
               EP.EPNEGOCIOSORIGEM n
@@ -287,7 +287,7 @@ class ReportsVisions extends BaseTableModel {
           query = `
             select
               c.cod as id,
-              c.cod || '-' || c.descricao as NAME,
+              c.cod || '-' || c.descricao as name,
               c.cod as BUTTON_TEXT
             from
               EP.EPCATEGORIASORIGEM c
