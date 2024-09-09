@@ -4,7 +4,7 @@ const { LogisticReasons } = require("../../../../../../database/models/LogisticR
 const { Utils } = require("../../../../../utils/Utils");
 const { DatabaseUtils } = require("../../../../../database/DatabaseUtils");
 const DBConnectionManager = require("../../../../../../database/DBConnectionManager");
-const { OriginsDatas } = require("../../../../../../database/models/OriginsDatas");
+const { Data_Origins } = require("../../../../../../database/models/Data_Origins");
 const { RegistersController } = require("../../../RegistersController");
 
 /**
@@ -44,7 +44,7 @@ class LogisticReasonsIntegrationsController extends RegistersController {
             } else {
                 logisticReason = await LogisticReasons.getModel().create({
                     id: pcTabDev.CODDEVOL,
-                    data_origin_id: OriginsDatas.WINTHOR,
+                    data_origin_id: Data_Origins.WINTHOR,
                     id_at_origin: pcTabDev.CODDEVOL,                    
                     name: pcTabDev.MOTIVO,
                     SIGLAMOVTYPE: pcTabDev.TIPO

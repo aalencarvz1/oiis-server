@@ -52,7 +52,7 @@ class BaseWinthorIntegrationTableModel extends BaseTableModel {
         if (!tableExists) {
             await originQueryInterface.createTable(this.tableName, this.fields);
             await this.migrateConstraints(originQueryInterface);   
-            await queryInterface.bulkInsert('datatables',[{      
+            await queryInterface.bulkInsert('tables',[{      
                 id:this.id,
                 created_at: new Date(),
                 is_sys_rec : 1,

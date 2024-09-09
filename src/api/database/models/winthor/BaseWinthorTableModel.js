@@ -26,7 +26,7 @@ class BaseWinthorTableModel extends BaseTableModel {
     static async runUpMigration(queryInterface, options) {
         options = options || {};
         Utils.log('migrating table',this.tableName, Object.keys(this.fields));
-        await queryInterface.bulkInsert('datatables',[{      
+        await queryInterface.bulkInsert('tables',[{      
             id:this.id,
             created_at: new Date(),
             is_sys_rec : 1,

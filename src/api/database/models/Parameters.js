@@ -1,9 +1,9 @@
 'use strict';
 
 /*imports*/
-const { DataTypes : DataTypesSeq } = require("sequelize");
+const { DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
-const { DataTypes } = require("./DataTypes");
+const { Data_Types } = require("./Data_Types");
 
 /**
  * class model
@@ -27,18 +27,18 @@ class Parameters extends BaseTableModel {
   static fields = {
     ...Parameters.getBaseTableModelFields(),...{
       IDDATATYPE: {
-        type: DataTypesSeq.BIGINT.UNSIGNED,
+        type: DataTypes.BIGINT.UNSIGNED,
         allowNull : false,
       },
       name: {
-        type: DataTypesSeq.STRING(256),
+        type: DataTypes.STRING(256),
         allowNull: false
       },
       DEFAULTVALUE: {
-        type: DataTypesSeq.STRING(256)
+        type: DataTypes.STRING(256)
       },
       description: {
-        type: DataTypesSeq.TEXT
+        type: DataTypes.TEXT
       }
     }
   };
@@ -61,7 +61,7 @@ class Parameters extends BaseTableModel {
       fields: ['IDDATATYPE'],
       type: 'foreign key',
       references: { 
-          table: DataTypes,
+          table: Data_Types,
           field: 'id'
       },
       onUpdate: 'cascade',

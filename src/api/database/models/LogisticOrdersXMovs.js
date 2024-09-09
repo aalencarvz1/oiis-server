@@ -6,7 +6,7 @@ const { BaseTableModel } = require('./BaseTableModel');
 const { LogisticOrders } = require("./LogisticOrders");
 const { MovementsStatus } = require("./MovementsStatus");
 const { LogisticStatus } = require("./LogisticStatus");
-const { ActionStatus } = require("./ActionStatus");
+const { Action_Status } = require("./Action_Status");
 const { Movements } = require("./Movements");
 const { LogisticReasons } = require("./LogisticReasons");
 
@@ -97,7 +97,7 @@ class LogisticOrdersXMovs extends BaseTableModel {
       fields: ['IDACTIONSTATUS'],
       type: 'foreign key',
       references: { 
-          table: ActionStatus,
+          table: Action_Status,
           field: 'id'
       },
       onUpdate: 'cascade'

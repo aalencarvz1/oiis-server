@@ -9,7 +9,7 @@ const { PcEstcr } = require('../../../../../../../../database/models/winthor/PcE
 const { PcConsum } = require('../../../../../../../../database/models/winthor/PcConsum');
 const { PcCob } = require('../../../../../../../../database/models/winthor/PcCob');
 const { PcNfsaid } = require("../../../../../../../../database/models/winthor/PcNfsaid");
-const { ParametersValues } = require("../../../../../../../../database/models/ParametersValues");
+const { Parameter_Values } = require("../../../../../../../../database/models/Parameter_Values");
 const { Parameters } = require("../../../../../../../../database/models/Parameters");
 const { RegistersController } = require("../../../../../../registers/RegistersController");
 
@@ -56,7 +56,7 @@ class SicrediIntegrationsPixController extends RegistersController{
             if (!pixParams.valor.original || pixParams.valor.original < 0) throw new Error("value invalid");
 
 
-            let integrateWinthor = Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION));
+            let integrateWinthor = Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION));
 
 
             //ESTA RETORNANDO false, VER PORQUE
@@ -234,7 +234,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                 }
                 res.data.push(responseJson?.data || responseJson);                    
 
-                if (Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION))) {
+                if (Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION))) {
                     let pixWinthor = await PcPixCobrancaDados.getModel().findOne({
                         where:{
                             NUMTRANSPAGDIGITAL: txIdentifiers[key]
@@ -1019,7 +1019,7 @@ class SicrediIntegrationsPixController extends RegistersController{
             });
             if (result?.success) {
                 Utils.log('cobs concluidas: ',result?.data?.cobs?.length);
-                if (Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true) {
+                if (Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true) {
                     for(let key in result?.data?.cobs) {
                         let numtrans = null;
                         let numnf = null;
@@ -1086,7 +1086,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                 for(let key in pix) {
                     let txid = pix[key].txid;
                     let value = pix[key].valor;
-                    if (Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true) {
+                    if (Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true) {
                         pixWinthor = await PcPixCobrancaDados.getModel().findOne({
                             where:{
                                 NUMTRANSPAGDIGITAL: txid

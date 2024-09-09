@@ -2,7 +2,7 @@
 const _ = require('lodash');
 const { LogisticOrders } = require('../../../../../database/models/LogisticOrders');
 const { Sequelize, QueryTypes } = require('sequelize');
-const { OriginsDatas } = require('../../../../../database/models/OriginsDatas');
+const { Data_Origins } = require('../../../../../database/models/Data_Origins');
 const DBConnectionManager = require('../../../../../database/DBConnectionManager');
 const { LogisticOrdersXMovs } = require('../../../../../database/models/LogisticOrdersXMovs');
 const { Utils } = require('../../../../utils/Utils');
@@ -237,7 +237,7 @@ class DeliveryController extends RegistersController{
                 idsItemsOnOriginData = idsItemsOnOriginData.toString().split(",");
                 idsItemsOnOriginData = idsItemsOnOriginData.map(el=>Utils.hasValue(el)?el:'null');
             }
-            if (req.body.data_origin_id == OriginsDatas.WINTHOR) {
+            if (req.body.data_origin_id == Data_Origins.WINTHOR) {
                 query = `
                     select                                        
                         m.CODPROD,
@@ -300,7 +300,7 @@ class DeliveryController extends RegistersController{
                     order by
                         m.NUMTRANSVENDA,1
                 `;
-            } else if (req.body.data_origin_id == OriginsDatas.AURORA) {
+            } else if (req.body.data_origin_id == Data_Origins.AURORA) {
                 query = `
                     select                                        
                         m.CODPROD,
@@ -655,7 +655,7 @@ class DeliveryController extends RegistersController{
                     LogisticOrdersXMovs lxm 
                     left outer join LogisticStatus ls on ls.id = lxm.idlogisticstatus
                     left outer join Movements m on m.id = lxm.idmov                            
-                    left outer join OriginsDatas o on o.id = m.data_origin_id
+                    left outer join Data_Origins o on o.id = m.data_origin_id
                     left outer join Clients c on c.id = m.idclient
                     left outer join People p on p.id = c.idpeople
                     left outer join FinancialValueForms rt on rt.id = m.IDFINANCIALVALUEFORM
@@ -737,7 +737,7 @@ class DeliveryController extends RegistersController{
             if (req.body.id_at_origin) {
                 let query = `
                     select
-                        ${OriginsDatas.WINTHOR} as data_origin_id,
+                        ${Data_Origins.WINTHOR} as data_origin_id,
                         'WINTHOR' AS ORIGINDATA,
                         s.numtransvenda as id_at_origin,
                         s.NUMTRANSVENDA,
@@ -758,7 +758,7 @@ class DeliveryController extends RegistersController{
                         and s.dtcancel is null                        
                     union all
                     select
-                        ${OriginsDatas.AURORA} as data_origin_id,
+                        ${Data_Origins.AURORA} as data_origin_id,
                         'AURORA' AS ORIGINDATA,
                         s.COD as id_at_origin,
                         s.COD AS NUMTRANSVENDA,
@@ -892,7 +892,7 @@ class DeliveryController extends RegistersController{
                         concat(st.name,',',a.number,',',ct.name,' - ',stt.SIGLA,',',ctr.name) as GOOGLEADDRESS
                     from
                         logisticlogs lg 
-                        join datatables t on LOWER(t.name) = LOWER('LOGISTICORDERSXITEMSMOVAMT') and lg.IDTABLEREF = t.id
+                        join tables t on LOWER(t.name) = LOWER('LOGISTICORDERSXITEMSMOVAMT') and lg.IDTABLEREF = t.id
                         join LOGISTICORDERSXITEMSMOVAMT lxim on lxim.id = lg.idregisterref
                         join logisticordersxmovs lxm on lxm.id = lxim.IDLOGISTICORDERXMOV
                         join logisticorders l on l.id = lxm.idlogisticorder

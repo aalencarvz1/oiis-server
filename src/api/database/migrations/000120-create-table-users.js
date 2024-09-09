@@ -4,23 +4,23 @@
 require('dotenv').config({ path: __dirname + "/../../../../.env" });
 const bcrypt = require("bcrypt");
 const { Users } = require('../models/Users');
-const { DataTables } = require('../models/DataTables');
-const { OriginsDatas } = require('../models/OriginsDatas');
+const { Tables } = require('../models/Tables');
+const { Data_Origins } = require('../models/Data_Origins');
 const { StatusRegs } = require('../models/StatusRegs');
 const { People } = require('../models/People');
 const { Collaborators } = require('../models/Collaborators');
-const { DataConnections } = require('../models/DataConnections');
-const { DataSchemas } = require('../models/DataSchemas');
+const { Connections } = require('../models/Connections');
+const { Schemas } = require('../models/Schemas');
 const { Contexts } = require('../models/Contexts');
-const { EntitiesTypes } = require('../models/EntitiesTypes');
-const { DataTypes } = require('../models/DataTypes');
+const { Entities_Types } = require('../models/Entities_Types');
+const { Data_Types } = require('../models/Data_Types');
 const { Parameters } = require('../models/Parameters');
-const { ParametersValues } = require('../models/ParametersValues');
+const { Parameter_Values } = require('../models/Parameter_Values');
 const { StatusSync } = require('../models/StatusSync');
 const { IdentifiersTypes } = require('../models/IdentifiersTypes');
 const { Greatnesses } = require('../models/Greatnesses');
 const { MeasurementsUnits } = require('../models/MeasurementsUnits');
-const { AccessProfiles } = require('../models/AccessProfiles');
+const { Access_Profiles } = require('../models/Access_Profiles');
 const { AuthController } = require('../../controllers/auth/AuthController');
 const { StatusRun } = require('../models/StatusRun');
 /** @type {import('sequelize-cli').Migration} */
@@ -35,10 +35,10 @@ module.exports = {
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,      
       IDPEOPLE : People.SYSTEM,
-      IDACCESSPROFILE : AccessProfiles.SYSTEM,
+      IDACCESSPROFILE : Access_Profiles.SYSTEM,
       EMAIL:process.env.SYSTEM_EMAIL || 'system@system',
       PASSWORD: bcrypt.hashSync(process.env.SYSTEM_EMAIL_PASSWORD ||'system',(process.env.API_USER_PASSWORD_CRIPTSALT||10)-0)
     }],{
@@ -46,15 +46,15 @@ module.exports = {
       updateOnDuplicate:null
     });     
 
-    await DataTables.migrateForeignKeyContraint(queryInterface,Users);  
-    await DataConnections.migrateForeignKeyContraint(queryInterface,Users);  
-    await DataSchemas.migrateForeignKeyContraint(queryInterface,Users);  
+    await Tables.migrateForeignKeyContraint(queryInterface,Users);  
+    await Connections.migrateForeignKeyContraint(queryInterface,Users);  
+    await Schemas.migrateForeignKeyContraint(queryInterface,Users);  
     await Contexts.migrateForeignKeyContraint(queryInterface,Users);  
-    await EntitiesTypes.migrateForeignKeyContraint(queryInterface,Users);      
-    await DataTypes.migrateForeignKeyContraint(queryInterface,Users);  
+    await Entities_Types.migrateForeignKeyContraint(queryInterface,Users);      
+    await Data_Types.migrateForeignKeyContraint(queryInterface,Users);  
     await Parameters.migrateForeignKeyContraint(queryInterface,Users);  
-    await ParametersValues.migrateForeignKeyContraint(queryInterface,Users);  
-    await OriginsDatas.migrateForeignKeyContraint(queryInterface,Users);  
+    await Parameter_Values.migrateForeignKeyContraint(queryInterface,Users);  
+    await Data_Origins.migrateForeignKeyContraint(queryInterface,Users);  
     await StatusRegs.migrateForeignKeyContraint(queryInterface,Users);  
     await StatusSync.migrateForeignKeyContraint(queryInterface,Users);  
     await StatusRun.migrateForeignKeyContraint(queryInterface,Users);  
@@ -63,7 +63,7 @@ module.exports = {
     await MeasurementsUnits.migrateForeignKeyContraint(queryInterface,Users);  
     await People.migrateForeignKeyContraint(queryInterface,Users);  
     await Collaborators.migrateForeignKeyContraint(queryInterface,Users);  
-    await AccessProfiles.migrateForeignKeyContraint(queryInterface,Users);  
+    await Access_Profiles.migrateForeignKeyContraint(queryInterface,Users);  
     await Users.migrateForeignKeyContraint(queryInterface);  
         
   },

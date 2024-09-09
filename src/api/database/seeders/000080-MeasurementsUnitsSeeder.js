@@ -2,7 +2,7 @@
 
 const { Greatnesses } = require('../models/Greatnesses');
 const { MeasurementsUnits } = require('../models/MeasurementsUnits');
-const { OriginsDatas } = require('../models/OriginsDatas');
+const { Data_Origins } = require('../models/Data_Origins');
 const { StatusRegs } = require('../models/StatusRegs');
 const { Users } = require('../models/Users');
 
@@ -14,7 +14,7 @@ module.exports = {
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'UNIT',
@@ -25,7 +25,7 @@ module.exports = {
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.MASS,
       name : 'KILOGRAM',
@@ -36,7 +36,7 @@ module.exports = {
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.VOLUM,
       name : 'LITER',
@@ -47,7 +47,7 @@ module.exports = {
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'PIECE',
@@ -58,7 +58,7 @@ module.exports = {
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'PACKAGE',
@@ -69,7 +69,7 @@ module.exports = {
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'BOX',
@@ -80,7 +80,7 @@ module.exports = {
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'BUCKET',
@@ -91,7 +91,7 @@ module.exports = {
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'CAN',
@@ -102,7 +102,7 @@ module.exports = {
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'BAG',
@@ -115,6 +115,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(OriginsDatas.tableName, null, {});
+     await queryInterface.bulkDelete(Data_Origins.tableName, null, {});
   }
 };

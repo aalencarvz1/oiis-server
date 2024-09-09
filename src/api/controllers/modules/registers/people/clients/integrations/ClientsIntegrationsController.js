@@ -12,7 +12,7 @@ const { DataRelationshipTypes } = require("../../../../../../database/models/Dat
 const { StatusRegs } = require("../../../../../../database/models/StatusRegs");
 const { DatasRelationships } = require("../../../../../../database/models/DatasRelationships");
 const { Modules } = require("../../../../../../database/models/Modules");
-const { OriginsDatas } = require("../../../../../../database/models/OriginsDatas");
+const { Data_Origins } = require("../../../../../../database/models/Data_Origins");
 const { DatabaseUtils } = require("../../../../../database/DatabaseUtils");
 const { DataSwap } = require("../../../../../data/DataSwap");
 const { EpIntegrationsRegistersController } = require("../../../integrations/ep/EpIntegrationsRegistersController");
@@ -104,7 +104,7 @@ class ClientsIntegrationsController extends RegistersController{
                 } else {
                     client = await Clients.getModel().create({
                         id: pcClient.CODCLI,
-                        data_origin_id: OriginsDatas.WINTHOR,
+                        data_origin_id: Data_Origins.WINTHOR,
                         id_at_origin: pcClient.CODCLI,
                         IDPEOPLE: people.id
                     },options)

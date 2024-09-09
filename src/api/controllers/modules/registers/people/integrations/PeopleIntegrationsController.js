@@ -21,7 +21,7 @@ const { NeighborHoods } = require("../../../../../database/models/NeighborHoods"
 const { Streets } = require("../../../../../database/models/Streets");
 const { PostalCodes } = require("../../../../../database/models/PostalCodes");
 const { Addresses } = require("../../../../../database/models/Addresses");
-const { AddressTypes } = require("../../../../../database/models/AddressTypes");
+const { Address_Types } = require("../../../../../database/models/Address_Types");
 const { PeopleXAddresses } = require("../../../../../database/models/PeopleXAddresses");
 const { RegistersController } = require("../../RegistersController");
 const { CitiesIntegrationsController } = require("../../locations/cities/integrations/CitiesIntegrationsController");
@@ -187,7 +187,7 @@ class PeopleIntegrationsController extends RegistersController{
                                                 POSTALCODE: winthorRegs[people[k].id_at_origin].CEPENT
                                             },
                                             values:{
-                                                IDADDRESSTYPE: people[k].IDIDENTIFIERDOCTYPE == IdentifiersTypes.CPF ? AddressTypes.RESIDENTIAL : AddressTypes.BUSINESS
+                                                IDADDRESSTYPE: people[k].IDIDENTIFIERDOCTYPE == IdentifiersTypes.CPF ? Address_Types.RESIDENTIAL : Address_Types.BUSINESS
                                             }
                                         });
                                         if (postalCode && postalCode.success) {
@@ -207,7 +207,7 @@ class PeopleIntegrationsController extends RegistersController{
                                             COMPLEMENT: winthorRegs[people[k].id_at_origin].COMPLEMENTOENT,
                                         },
                                         values:{
-                                            IDADDRESSTYPE: people[k].IDIDENTIFIERDOCTYPE == IdentifiersTypes.CPF ? AddressTypes.RESIDENTIAL : AddressTypes.BUSINESS
+                                            IDADDRESSTYPE: people[k].IDIDENTIFIERDOCTYPE == IdentifiersTypes.CPF ? Address_Types.RESIDENTIAL : Address_Types.BUSINESS
                                         }
                                     });
                                     if (address && address.success) {

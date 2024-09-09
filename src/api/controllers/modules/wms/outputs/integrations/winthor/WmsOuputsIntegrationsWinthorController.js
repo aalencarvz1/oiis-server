@@ -2,7 +2,7 @@ const { Sequelize } = require("sequelize");
 const DBConnectionManager = require("../../../../../../database/DBConnectionManager");
 const { Utils } = require("../../../../../utils/Utils");
 const _ = require('lodash');
-const { ParametersValues } = require("../../../../../../database/models/ParametersValues");
+const { Parameter_Values } = require("../../../../../../database/models/Parameter_Values");
 const { Parameters } = require("../../../../../../database/models/Parameters");
 const { RegistersController } = require("../../../../registers/RegistersController");
 
@@ -143,7 +143,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
 
 
                 //check if is same rca
-                if (Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true && Utils.toBool(await ParametersValues.get(Parameters.WMS_OUTPUT_INTEGRATION_CHECK_RCA)) == true) {
+                if (Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true && Utils.toBool(await Parameter_Values.get(Parameters.WMS_OUTPUT_INTEGRATION_CHECK_RCA)) == true) {
                     let loadingsWinthor = [];
                     let loadingsBroker = [];
                     for(let key in identifiers) {

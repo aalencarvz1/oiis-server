@@ -8,8 +8,8 @@ const { Users } = require("./Users");
 const { Contexts } = require("./Contexts");
 const { Routines } = require("./Routines");
 const { PowersTypes } = require("./PowersTypes");
-const { AccessProfiles } = require("./AccessProfiles");
-const { DataTables } = require("./DataTables");
+const { Access_Profiles } = require("./Access_Profiles");
+const { Tables } = require("./Tables");
 const { Modules } = require("./Modules");
 
 /**
@@ -175,7 +175,7 @@ class Permissions extends BaseTableModel {
       fields: ['IDACCESSPROFILE'],
       type: 'foreign key',
       references: { 
-          table: AccessProfiles,
+          table: Access_Profiles,
           field: 'id'
       },
       onUpdate: 'cascade'
@@ -202,7 +202,7 @@ class Permissions extends BaseTableModel {
       fields: ['IDTABLE'],
       type: 'foreign key',
       references: { 
-          table: DataTables,
+          table: Tables,
           field: 'id'
       },
       onUpdate: 'cascade'

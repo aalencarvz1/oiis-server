@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { Users } = require("../../database/models/Users");
-const { AccessProfiles } = require("../../database/models/AccessProfiles");
+const { Access_Profiles } = require("../../database/models/Access_Profiles");
 const { Utils } = require("../utils/Utils");
 const { UsersTokens } = require("../../database/models/UsersTokens");
 const { createTransport } = require("nodemailer");
@@ -36,7 +36,7 @@ class AuthController extends RegistersController{
         "/api/controllers/modules/outputs/sales/financial_collection/pix/integrations/sicredi/webhooks/5545991334657",
         "/api/controllers/modules/outputs/sales/financial_collection/pix/integrations/sicredi/webhooks/5545991334657/pix",
         "/api/controllers/modules/registers/midias/midiascontroller/uploadfile",
-        '/api/controllers/modules/webhooks/apisrequests',
+        '/api/controllers/modules/webhooks/api_requests',
         '/api/test/'
     ];
 
@@ -189,7 +189,7 @@ class AuthController extends RegistersController{
         if (user) return res.sendResponse(401,false,'user already register'); 
         user = await Users.getModel().create({
             creator_user_id : Users.SYSTEM,
-            IDACCESSPROFILE : AccessProfiles.DEFAULT,
+            IDACCESSPROFILE : Access_Profiles.DEFAULT,
             EMAIL:(req.body.email||'').trim().toLowerCase(),
             PASSWORD: bcrypt.hashSync(req.body.password,(process.env.API_USER_PASSWORD_CRIPTSALT||10)-0)
         });

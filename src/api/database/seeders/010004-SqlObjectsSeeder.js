@@ -2,7 +2,7 @@
 require('dotenv').config({ path: __dirname + "/../../../../.env" });
 const configDB  = require("../../database/config/config");
 const { SqlObjectsTypes } = require('../models/SqlObjectsTypes');
-const { OriginsDatas } = require('../models/OriginsDatas');
+const { Data_Origins } = require('../models/Data_Origins');
 const { StatusRegs } = require('../models/StatusRegs');
 const { Users } = require('../models/Users');
 const { SqlObjects } = require('../models/SqlObjects');
@@ -20,7 +20,7 @@ module.exports = {
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSQLOBJECTTYPE : SqlObjectsTypes.DATABASE,
       name : configDB[`${process.env.NODE_ENV||'development'}`].database,
@@ -29,7 +29,7 @@ module.exports = {
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSQLOBJECTTYPE : SqlObjectsTypes.USER,
       IDSUP : configDB[`${process.env.NODE_ENV||'development'}`].id,
@@ -39,7 +39,7 @@ module.exports = {
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSQLOBJECTTYPE : SqlObjectsTypes.SCHEMA,
       IDSUP : configDB[`${process.env.NODE_ENV||'development'}`].id + 1,
@@ -49,7 +49,7 @@ module.exports = {
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSQLOBJECTTYPE : SqlObjectsTypes.DATABASE,
       name : 'WINT',
@@ -72,7 +72,7 @@ module.exports = {
         status_reg_id: StatusRegs.ACTIVE,
         creator_user_id : Users.SYSTEM,
         created_at: new Date(),
-        data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+        data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
         is_sys_rec : 1,
         IDSQLOBJECTTYPE : SqlObjectsTypes.DATABASE,
         name : 'WINT',
@@ -101,7 +101,7 @@ module.exports = {
         status_reg_id: StatusRegs.ACTIVE,
         creator_user_id : Users.SYSTEM,
         created_at: new Date(),
-        data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+        data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
         is_sys_rec : 1,
         IDSQLOBJECTTYPE : SqlObjectsTypes.USER,
         IDSUP : wintObject.id,
@@ -128,7 +128,7 @@ module.exports = {
         status_reg_id: StatusRegs.ACTIVE,
         creator_user_id : Users.SYSTEM,
         created_at: new Date(),
-        data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+        data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
         is_sys_rec : 1,
         IDSQLOBJECTTYPE : SqlObjectsTypes.SCHEMA,
         IDSUP : wintUserObject.id,
@@ -152,7 +152,7 @@ module.exports = {
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,      
       IDSQLOBJECTTYPE : SqlObjectsTypes.TABLE,
       IDSUP: wintSchemaObject.id,

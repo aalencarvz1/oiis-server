@@ -1,12 +1,12 @@
 'use strict';
 
 const { Modules } = require('../models/Modules');
-const { OriginsDatas } = require('../models/OriginsDatas');
+const { Data_Origins } = require('../models/Data_Origins');
 const { StatusRegs } = require('../models/StatusRegs');
 const { Users } = require('../models/Users');
 const { Permissions } = require('../models/Permissions');
 const { PowersTypes } = require('../models/PowersTypes');
-const { AccessProfiles } = require('../models/AccessProfiles');
+const { Access_Profiles } = require('../models/Access_Profiles');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -16,10 +16,10 @@ module.exports = {
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDPOWERTYPE: PowersTypes.SYSTEM,
-      IDACCESSPROFILE: AccessProfiles.SYSTEM,
+      IDACCESSPROFILE: Access_Profiles.SYSTEM,
       ALLOWEDACCESS: 1,
       ALLOWEDSEARCH: 1,
       ALLOWEDREAD: 1,

@@ -10,7 +10,7 @@ const { StatusRegs } = require("./StatusRegs");
 const { DataRelationshipTypes } = require("./DataRelationshipTypes");
 const { Modules } = require("./Modules");
 const { DatasRelationships } = require("./DatasRelationships");
-const { ActionStatus } = require("./ActionStatus");
+const { Action_Status } = require("./Action_Status");
 const { BusinessesUnits } = require("./BusinessesUnits");
 const { Clients } = require("./Clients");
 const { Warehouses } = require("./Warehouses");
@@ -42,7 +42,7 @@ class Movements extends BaseTableModel {
       IDSTATUSMOV:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
-        defaultValue:ActionStatus.NOT_STARTED
+        defaultValue:Action_Status.NOT_STARTED
       },
       IDCONFERENCETYPE:{
         type: DataTypes.BIGINT.UNSIGNED
@@ -114,7 +114,7 @@ class Movements extends BaseTableModel {
       fields: ['IDSTATUSMOV'],
       type: 'foreign key',
       references: { 
-          table: ActionStatus,
+          table: Action_Status,
           field: 'id'
       },
       onUpdate: 'cascade'

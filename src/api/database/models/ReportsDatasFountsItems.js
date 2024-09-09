@@ -1,11 +1,11 @@
 'use strict';
 
 /*imports*/
-const { DataTypes: DataTypesSeq, Sequelize } = require("sequelize");
+const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 const { ReportsDatasFounts } = require("./ReportsDatasFounts");
 const { SqlObjectsTypes } = require("./SqlObjectsTypes");
-const { DataTypes } = require("./DataTypes");
+const { Data_Types } = require("./Data_Types");
 
 
 /**
@@ -18,63 +18,63 @@ class ReportsDatasFountsItems extends BaseTableModel {
   static fields = {
     ...ReportsDatasFountsItems.getBaseTableModelFields(),...{                 
       IDSUP: {
-        type: DataTypesSeq.BIGINT.UNSIGNED,
+        type: DataTypes.BIGINT.UNSIGNED,
       },
       IDREPORTDATAFOUNT: {
-        type: DataTypesSeq.BIGINT.UNSIGNED,
+        type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
       },
       IDSQLOBJECTTYPE: {
-        type: DataTypesSeq.BIGINT.UNSIGNED,
+        type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
       },
       IDSQLOBJECT: {
-        type: DataTypesSeq.BIGINT.UNSIGNED
+        type: DataTypes.BIGINT.UNSIGNED
       },
       BEFORESQLTEXT:{
-        type: DataTypesSeq.TEXT,
+        type: DataTypes.TEXT,
       },
       SQLTEXT:{
-        type: DataTypesSeq.TEXT,
+        type: DataTypes.TEXT,
         allowNull:false,
       },
       SQLTEXTAFTERCHILDREN:{
-        type: DataTypesSeq.TEXT
+        type: DataTypes.TEXT
       },
       ORDERNUM: {
-        type: DataTypesSeq.BIGINT.UNSIGNED,
+        type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false,
         defaultValue: 1
       },
       SQLALIAS:{
-        type: DataTypesSeq.STRING(2000)
+        type: DataTypes.STRING(2000)
       },
       IDDATATYPE:{
-        type: DataTypesSeq.BIGINT.UNSIGNED
+        type: DataTypes.BIGINT.UNSIGNED
       },
       EXISTENCECRITERY:{
-        type: DataTypesSeq.TEXT
+        type: DataTypes.TEXT
       },
       ACCESSCRITERY:{
-        type: DataTypesSeq.TEXT
+        type: DataTypes.TEXT
       },
       UNIQUEINGROUPMENT:{
-        type: DataTypesSeq.INTEGER(1),
+        type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
       DATAGROUPMENT:{
-        type: DataTypesSeq.INTEGER(1),
+        type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
       VALUEGROUPMENT:{
-        type: DataTypesSeq.INTEGER(1),
+        type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
       OBSERVATIONS:{
-        type: DataTypesSeq.TEXT
+        type: DataTypes.TEXT
       }
     }
   };
@@ -140,7 +140,7 @@ class ReportsDatasFountsItems extends BaseTableModel {
     fields: ['IDDATATYPE'],
     type: 'foreign key',
     references: { 
-        table: DataTypes,
+        table: Data_Types,
         field: 'id'
     },    
     onUpdate: 'cascade'

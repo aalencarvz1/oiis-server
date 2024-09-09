@@ -6,7 +6,7 @@ const { BaseTableModel } = require('./BaseTableModel');
 
 const { DatasRelationships } = require("./DatasRelationships");
 const { Contexts } = require("./Contexts");
-const { DataTypes : DataTypesModel } = require("./DataTypes");
+const { Data_Types } = require("./Data_Types");
 const { IdentifiersTypes } = require("./IdentifiersTypes");
 
 /**
@@ -95,7 +95,7 @@ class DatasRelationshipsValues extends BaseTableModel {
       fields: ['IDDATATYPE'],
       type: 'foreign key',
       references: { 
-          table: DataTypesModel,
+          table: Data_Types,
           field: 'id'
       },
       onUpdate: 'cascade'

@@ -1,6 +1,6 @@
 'use strict';
 
-const { OriginsDatas } = require('../models/OriginsDatas');
+const { Data_Origins } = require('../models/Data_Origins');
 /*imports*/
 const { PowersTypes } = require('../models/PowersTypes');
 const { StatusRegs } = require('../models/StatusRegs');
@@ -17,7 +17,7 @@ module.exports = {
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name:'SYSTEM'
     }],{

@@ -5,7 +5,7 @@ const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
 const { DataRelationshipTypes } = require("./DataRelationshipTypes");
-const { DataTables } = require("./DataTables");
+const { Tables } = require("./Tables");
 const { Contexts } = require("./Contexts");
 const { Utils } = require("../../controllers/utils/Utils");
 
@@ -101,7 +101,7 @@ class DatasRelationships extends BaseTableModel {
       fields: ['IDTABLE1'],
       type: 'foreign key',
       references: { 
-          table: DataTables,
+          table: Tables,
           field: 'id'
       },
       onUpdate: 'cascade'
@@ -109,7 +109,7 @@ class DatasRelationships extends BaseTableModel {
       fields: ['IDTABLE2'],
       type: 'foreign key',
       references: { 
-          table: DataTables,
+          table: Tables,
           field: 'id'
       },
       onUpdate: 'cascade'

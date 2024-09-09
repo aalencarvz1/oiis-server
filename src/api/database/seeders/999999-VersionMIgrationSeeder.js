@@ -5,10 +5,10 @@ const configDB  = require("../../database/config/config");
 const DBConnectionManager = require('../DBConnectionManager');
 const { QueryTypes } = require('sequelize');
 const { Utils } = require('../../controllers/utils/Utils');
-const { DataTables } = require('../models/DataTables');
+const { Tables } = require('../models/Tables');
 const { Modules } = require('../models/Modules');
 const { Routines } = require('../models/Routines');
-const { DataConnections } = require('../models/DataConnections');
+const { Connections } = require('../models/Connections');
 
 /** @type {import('sequelize-cli').Migration} */
 
@@ -28,17 +28,51 @@ let oldTables = {
       ISSYSTEMREG: 'is_sys_rec'
     }
   },
+  tables:{
+    tableName:"DATATABLES"
+  },
+  connections:{
+    tableName:"DATACONNECTIONS"
+  },
+  schemas:{
+    tableName:"DATASCHEMAS"
+  },
+  entities_types:{
+    tableName:"ENTITIESTYPES"
+  },
+  data_types:{
+    tableName:"DATATYPES"
+  },  
+  action_status:{
+    tableName:"ACTIONSSTATUS"
+  },
+  parameter_values:{
+    tableName:"PARAMETERSVALUES"
+  },
+  data_origins:{
+    tableName:"ORIGINSDATAS"
+  },
   access_profiles:{
     tableName:"ACCESSESPROFILES"
-  },
-  action_status:{
-    tableName:"ACTIONSSTATUS"
-  },
-  action_status:{
-    tableName:"ACTIONSSTATUS"
-  },
+  },  
   address_types:{
     tableName:"ADDRESSESTYPES"
+  },
+  api_requests:{
+    tableName:"APISREQUESTS"
+  },
+  api_request_calls:{
+    tableName:"APISREQUESTSCALLS"
+  },
+  api_responses:{
+    tableName:"APISRESPONSES"
+  },
+  
+  maps_api_responses:{
+    tableName:"APISMAPSRESPONSES"
+  },
+  warehouse_address_types:{
+    tableName: "WAREHOUSESADDRESSESTYPES"
   }
 }
 
@@ -159,7 +193,7 @@ module.exports = {
     
     let oldConnection = DBConnectionManager.getOldDBConnection();
     if (oldConnection) {
-      let tables = await DataTables.getModel().findAll({
+      let tables = await Tables.getModel().findAll({
         raw:true,
         where:{
           IDDATACONNECTION: configDB[`${process.env.NODE_ENV||'development'}`].id,//only tables of this coonnections can be data migrated 
@@ -167,8 +201,8 @@ module.exports = {
 
             //configure here ids of tables that whant excluded of this migration
             [Sequelize.Op.notIn] : [
-              DataConnections.id,
-              DataTables.id,
+              Connections.id,
+              Tables.id,
               Modules.id,
               Routines.id
             ]

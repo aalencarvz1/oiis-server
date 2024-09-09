@@ -2,15 +2,15 @@
 
 /*imports*/
 const { StatusRegs } = require('../models/StatusRegs');
-const { DataTables } = require('../models/DataTables');
-const { DataTypes } = require('../models/DataTypes');
+const { Tables } = require('../models/Tables');
+const { Data_Types } = require('../models/Data_Types');
 const { Parameters } = require('../models/Parameters');
-const { DataConnections } = require('../models/DataConnections');
-const { DataSchemas } = require('../models/DataSchemas');
+const { Connections } = require('../models/Connections');
+const { Schemas } = require('../models/Schemas');
 const { Contexts } = require('../models/Contexts');
-const { EntitiesTypes } = require('../models/EntitiesTypes');
-const { ParametersValues } = require('../models/ParametersValues');
-const { OriginsDatas } = require('../models/OriginsDatas');
+const { Entities_Types } = require('../models/Entities_Types');
+const { Parameter_Values } = require('../models/Parameter_Values');
+const { Data_Origins } = require('../models/Data_Origins');
 const { Users } = require('../models/Users');
 /** @type {import('sequelize-cli').Migration} */
 
@@ -24,7 +24,7 @@ module.exports = {
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'ACTIVE',
       ISACTIVE:1      
@@ -33,7 +33,7 @@ module.exports = {
       status_reg_id: StatusRegs.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
-      data_origin_id : OriginsDatas.DEFAULT_ORIGINDATA,
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'INACTIVE',
       ISACTIVE:1     
@@ -43,17 +43,17 @@ module.exports = {
     });    
 
     
-    await DataTables.migrateForeignKeyContraint(queryInterface,StatusRegs);  
-    await DataConnections.migrateForeignKeyContraint(queryInterface,StatusRegs);  
-    await DataSchemas.migrateForeignKeyContraint(queryInterface,StatusRegs);  
+    await Tables.migrateForeignKeyContraint(queryInterface,StatusRegs);  
+    await Connections.migrateForeignKeyContraint(queryInterface,StatusRegs);  
+    await Schemas.migrateForeignKeyContraint(queryInterface,StatusRegs);  
     await Contexts.migrateForeignKeyContraint(queryInterface,StatusRegs);  
-    await EntitiesTypes.migrateForeignKeyContraint(queryInterface,StatusRegs);      
-    await DataTypes.migrateForeignKeyContraint(queryInterface,StatusRegs);  
+    await Entities_Types.migrateForeignKeyContraint(queryInterface,StatusRegs);      
+    await Data_Types.migrateForeignKeyContraint(queryInterface,StatusRegs);  
     await Parameters.migrateForeignKeyContraint(queryInterface,StatusRegs);  
-    await ParametersValues.migrateForeignKeyContraint(queryInterface,StatusRegs);  
-    await OriginsDatas.migrateForeignKeyContraint(queryInterface,StatusRegs);  
+    await Parameter_Values.migrateForeignKeyContraint(queryInterface,StatusRegs);  
+    await Data_Origins.migrateForeignKeyContraint(queryInterface,StatusRegs);  
     await StatusRegs.migrateForeignKeyContraint(queryInterface,StatusRegs);  
-    await StatusRegs.migrateForeignKeyContraint(queryInterface,OriginsDatas);  
+    await StatusRegs.migrateForeignKeyContraint(queryInterface,Data_Origins);  
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable(StatusRegs.tableName);

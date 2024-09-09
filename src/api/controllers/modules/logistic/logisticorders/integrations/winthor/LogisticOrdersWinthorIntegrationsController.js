@@ -1,7 +1,7 @@
 const { Sequelize, Op, QueryTypes } = require("sequelize");
 const DBConnectionManager = require("../../../../../../database/DBConnectionManager");
-const { ActionStatus } = require("../../../../../../database/models/ActionStatus");
-const { OriginsDatas } = require("../../../../../../database/models/OriginsDatas");
+const { Action_Status } = require("../../../../../../database/models/Action_Status");
+const { Data_Origins } = require("../../../../../../database/models/Data_Origins");
 const { PcCarreg } = require("../../../../../../database/models/winthor/PcCarreg");
 const { PcNfsaid } = require("../../../../../../database/models/winthor/PcNfsaid");
 const { PcDocEletronico } = require("../../../../../../database/models/winthor/PcDocEletronico");
@@ -11,7 +11,7 @@ const { Movements } = require("../../../../../../database/models/Movements");
 const { LogisticOrdersXMovs } = require("../../../../../../database/models/LogisticOrdersXMovs");
 const { LogisticOrders } = require("../../../../../../database/models/LogisticOrders");
 const { LogisticStatus } = require("../../../../../../database/models/LogisticStatus");
-const { ParametersValues } = require("../../../../../../database/models/ParametersValues");
+const { Parameter_Values } = require("../../../../../../database/models/Parameter_Values");
 const { PcEmpr } = require("../../../../../../database/models/winthor/PcEmpr");
 const { PcVeicul } = require("../../../../../../database/models/winthor/PcVeicul");
 const { Parameters } = require("../../../../../../database/models/Parameters");
@@ -32,26 +32,26 @@ const { BaseEndPointController } = require("../../../../../endpoints/BaseEndPoin
 class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController{
 
     static getDataOriginId(data_origin_id) {
-        let result = OriginsDatas.DEFAULT_ORIGINDATA;
+        let result = Data_Origins.DEFAULT_ORIGINDATA;
         switch(data_origin_id) {
             case 0:
-                result = OriginsDatas.WINTHOR;
+                result = Data_Origins.WINTHOR;
                 break;
             case 1:
-                result = OriginsDatas.AURORA;
+                result = Data_Origins.AURORA;
                 break;
         }
         return result;
     }
 
-    static getIdActionStatus(idStatus) {
-        let result = ActionStatus.NOT_STARTED;                    
+    static getIdAction_Status(idStatus) {
+        let result = Action_Status.NOT_STARTED;                    
         switch(idStatus) {
             case 2:
-                result = ActionStatus.RUNNING;
+                result = Action_Status.RUNNING;
                 break;
             case 3:
-                result = ActionStatus.CONCLUDED;
+                result = Action_Status.CONCLUDED;
                 break;
         }
         return result;
@@ -70,7 +70,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
             ERRORS : []
         }
         try {            
-            if (Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true) {            
+            if (Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true) {            
                 if (Utils.hasValue(ids)) {
                     if (Utils.typeOf(ids) !== 'array') {
                         ids = ids.toString().split(',');
@@ -93,7 +93,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                                 where:{
                                     [Op.and]:[{
                                         id:ids[key]
-                                    },Sequelize.where(Sequelize.literal('`LOGISTICORDERSXMOVS->MOVEMENTS`.data_origin_id'),Sequelize.literal(OriginsDatas.WINTHOR))
+                                    },Sequelize.where(Sequelize.literal('`LOGISTICORDERSXMOVS->MOVEMENTS`.data_origin_id'),Sequelize.literal(Data_Origins.WINTHOR))
                                     ]
                                 },
                                 include:[{                                
@@ -119,7 +119,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                             });
                             if (logOrder && logOrder.length) {
                                 for(let kl in logOrder) {
-                                    if (logOrder[kl].data_origin_idNF == OriginsDatas.WINTHOR) {
+                                    if (logOrder[kl].data_origin_idNF == Data_Origins.WINTHOR) {
                                         let wintConnection = DBConnectionManager.getWinthorDBConnection();
 
                                         let nfWint = await PcNfsaid.getModel().findOne({
@@ -348,7 +348,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
         try {
             if (numcarsWint) {
                 let where = {
-                    data_origin_id : OriginsDatas.WINTHOR
+                    data_origin_id : Data_Origins.WINTHOR
                 };
                 if (Utils.typeOf(numcarsWint) != 'array') numcarsWint = numcarsWint.toString().split(',');
                 where.id_at_origin = {
@@ -379,7 +379,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                     result = originsIds.map(el=>{
                         return {
                             creator_user_id: Users.SYSTEM,
-                            data_origin_id: OriginsDatas.WINTHOR,
+                            data_origin_id: Data_Origins.WINTHOR,
                             id_at_origin:el,
                             IDLOGISTICMOVTYPE: LogisticMovTypes.DELIVERY,
                             IDIDENTIFIERTYPE: IdentifiersTypes.CODE,

@@ -4,7 +4,7 @@
 const bcrypt = require("bcrypt");
 const { DataTypes } = require("sequelize");
 const { Collaborators } = require("./Collaborators");
-const { AccessProfiles } = require("./AccessProfiles");
+const { Access_Profiles } = require("./Access_Profiles");
 const { BasePeopleModel } = require("./BasePeopleModel");
 
 
@@ -30,7 +30,7 @@ class Users extends BasePeopleModel {
       IDACCESSPROFILE: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull : false,
-        defaultValue : AccessProfiles.DEFAULT
+        defaultValue : Access_Profiles.DEFAULT
       },
       EMAIL: {
         type: DataTypes.STRING(512),
@@ -75,7 +75,7 @@ class Users extends BasePeopleModel {
       fields: ['IDACCESSPROFILE'],
       type: 'foreign key',
       references: { 
-          table: AccessProfiles,
+          table: Access_Profiles,
           field: 'id'
       },
       onUpdate: 'cascade'

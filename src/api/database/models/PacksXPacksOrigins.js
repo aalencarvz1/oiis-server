@@ -52,7 +52,7 @@ class PacksXPacksOrigins extends BaseTableModel {
       fields: ['data_origin_id'],
       type: 'foreign key',
       references: { 
-          table: OriginsDatas,
+          table: Data_Origins,
           field: 'id'
       },
       onUpdate: 'cascade'

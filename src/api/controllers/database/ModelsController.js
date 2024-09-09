@@ -1,27 +1,27 @@
 const { BaseTableModel } = require("../../database/models/BaseTableModel");
 const { StatusRegs } = require("../../database/models/StatusRegs");
-const { OriginsDatas } = require("../../database/models/OriginsDatas");
+const { Data_Origins } = require("../../database/models/Data_Origins");
 const { Users } = require("../../database/models/Users");
 const { Utils } = require("../utils/Utils");
 /*
 const { Errors } = require("../../database/models/Errors");
 const { Logs } = require("../../database/models/Logs");
-const { DataTables } = require("../../database/models/DataTables");
-const { DataConnections } = require("../../database/models/DataConnections");
-const { DataSchemas } = require("../../database/models/DataSchemas");
+const { Tables } = require("../../database/models/Tables");
+const { Connections } = require("../../database/models/Connections");
+const { Schemas } = require("../../database/models/Schemas");
 const { Contexts } = require("../../database/models/Contexts");
-const { EntitiesTypes } = require("../../database/models/EntitiesTypes");
-const { DataTypes } = require("../../database/models/DataTypes");
-const { ActionStatus } = require("../../database/models/ActionStatus");
+const { Entities_Types } = require("../../database/models/Entities_Types");
+const { Data_Types } = require("../../database/models/Data_Types");
+const { Action_Status } = require("../../database/models/Action_Status");
 const { Parameters } = require("../../database/models/Parameters");
-const { ParametersValues } = require("../../database/models/ParametersValues");
+const { Parameter_Values } = require("../../database/models/Parameter_Values");
 const { StatusSync } = require("../../database/models/StatusSync");
 const { IdentifiersTypes } = require("../../database/models/IdentifiersTypes");
 const { Greatnesses } = require("../../database/models/Greatnesses");
 const { MeasurementsUnits } = require("../../database/models/MeasurementsUnits");
 const { People } = require("../../database/models/People");
 const { Collaborators } = require("../../database/models/Collaborators");
-const { AccessProfiles } = require("../../database/models/AccessProfiles");
+const { Access_Profiles } = require("../../database/models/Access_Profiles");
 const { Processes } = require("../../database/models/Processes");
 const { RoutinesTypes } = require("../../database/models/RoutinesTypes");
 const { Languages } = require("../../database/models/Languages");
@@ -43,7 +43,7 @@ const { States } = require("../../database/models/States");
 const { Cities } = require("../../database/models/Cities");
 const { NeighborHoods } = require("../../database/models/NeighborHoods");
 const { Countries } = require("../../database/models/Countries");
-const { AddressTypes } = require("../../database/models/AddressTypes");
+const { Address_Types } = require("../../database/models/Address_Types");
 const { Streets } = require("../../database/models/Streets");
 const { PostalCodesXStreets } = require("../../database/models/PostalCodesXStreets");
 const { PostalCodes } = require("../../database/models/PostalCodes");
@@ -55,7 +55,7 @@ const { Companies } = require("../../database/models/Companies");
 const { PeopleXAddresses } = require("../../database/models/PeopleXAddresses");
 const { PeopleXContacts } = require("../../database/models/PeopleXContacts");
 const { BusinessesUnits } = require("../../database/models/BusinessesUnits");
-const { WarehousesAddressTypes } = require("../../database/models/WarehousesAddressTypes");
+const { Warehouse_Address_Types } = require("../../database/models/Warehouse_Address_Types");
 const { Warehouses } = require("../../database/models/Warehouses");
 const { WarehousesAddresses } = require("../../database/models/WarehousesAddresses");
 const { WarehousesAddressesCoordinates } = require("../../database/models/WarehousesAddressesCoordinates");
@@ -128,8 +128,8 @@ const { PcCarreg } = require("../../database/models/winthor/PcCarreg");
 const { PcVeicul } = require("../../database/models/winthor/PcVeicul");
 const { FinancialValueForms } = require("../../database/models/FinancialValueForms");
 const { Apis } = require("../../database/models/Apis");
-const { ApisRequests } = require("../../database/models/ApisRequests");
-const { ApisResponses } = require("../../database/models/ApisResponses");
+const { Api_Requests } = require("../../database/models/Api_Requests");
+const { Api_Responses } = require("../../database/models/Api_Responses");
 const { PcAtivi } = require("../../database/models/winthor/PcAtivi");
 const { Midias } = require("../../database/models/Midias");
 const { LogisticOrdersXDestValues } = require("../../database/models/LogisticOrdersXDestValues");
@@ -141,7 +141,7 @@ const { EpVendedores } = require("../../database/models/ep/EpVendedores");
 const { EpClientes } = require("../../database/models/ep/EpClientes");
 const { EpPessoas } = require("../../database/models/ep/EpPessoas");
 const { StatusRun } = require("../../database/models/StatusRun");
-const { ApisRequestsCalls } = require("../../database/models/ApisRequestsCalls");
+const { Api_Request_Calls } = require("../../database/models/Api_Request_Calls");
 const { ReportsDatasFounts } = require("../../database/models/ReportsDatasFounts");
 const { PcBairro } = require("../../database/models/winthor/PcBairro");
 const { SjdTabpr_Origem } = require("../../database/models/sjd/SjdTabpr_Origem");
@@ -190,8 +190,8 @@ class ModelsController{
         if (typeof BaseTableModel.baseTableModelForeignsKeys[2].references.table == 'string')
             BaseTableModel.baseTableModelForeignsKeys[2].references.table = Users;
         if (typeof BaseTableModel.baseTableModelForeignsKeys[3].references.table == 'string')
-            BaseTableModel.baseTableModelForeignsKeys[3].references.table = OriginsDatas;
-        let cycleModels = [StatusRegs,Users,OriginsDatas];
+            BaseTableModel.baseTableModelForeignsKeys[3].references.table = Data_Origins;
+        let cycleModels = [StatusRegs,Users,Data_Origins];
         for(let k in cycleModels) {
             console.log('cycleModel',cycleModels[k]);
             if (typeof cycleModels[k].foreignsKeys[0].references.table == 'string')
@@ -201,7 +201,7 @@ class ModelsController{
             if (typeof cycleModels[k].foreignsKeys[2].references.table == 'string')
                 cycleModels[k].foreignsKeys[2].references.table = Users;
             if (typeof cycleModels[k].foreignsKeys[3].references.table == 'string')
-                cycleModels[k].foreignsKeys[3].references.table = OriginsDatas;
+                cycleModels[k].foreignsKeys[3].references.table = Data_Origins;
         }        
         Utils.logf(`${this.name}`,`adjustModelsCycleImport`);
     }
@@ -215,16 +215,16 @@ class ModelsController{
         this.adjustModelsCycleImport();       
         /*Errors.getModel();
         Logs.getModel();
-        DataTables.getModel();
-        DataConnections.getModel();
-        DataSchemas.getModel();
+        Tables.getModel();
+        Connections.getModel();
+        Schemas.getModel();
         Contexts.getModel();
-        EntitiesTypes.getModel();
-        DataTypes.getModel();
-        ActionStatus.getModel();
+        Entities_Types.getModel();
+        Data_Types.getModel();
+        Action_Status.getModel();
         Parameters.getModel();
-        ParametersValues.getModel();
-        OriginsDatas.getModel();
+        Parameter_Values.getModel();
+        Data_Origins.getModel();
         StatusRegs.getModel();
         StatusSync.getModel();
         StatusRun.getModel();
@@ -233,7 +233,7 @@ class ModelsController{
         MeasurementsUnits.getModel();
         People.getModel();
         Collaborators.getModel();
-        AccessProfiles.getModel();
+        Access_Profiles.getModel();
         Users.getModel();
         UsersTokens.getModel();
         UsersProfilesTimesWork.getModel();
@@ -262,7 +262,7 @@ class ModelsController{
         Cities.getModel();
         NeighborHoods.getModel();
         Countries.getModel();
-        AddressTypes.getModel();
+        Address_Types.getModel();
         Streets.getModel();
         PostalCodesXStreets.getModel();
         PostalCodes.getModel();
@@ -274,7 +274,7 @@ class ModelsController{
         PeopleXAddresses.getModel();
         PeopleXContacts.getModel();
         BusinessesUnits.getModel();
-        WarehousesAddressTypes.getModel();
+        Warehouse_Address_Types.getModel();
         Warehouses.getModel();
         WarehousesAddresses.getModel();
         WarehousesAddressesCoordinates.getModel();
@@ -337,9 +337,9 @@ class ModelsController{
         TasksXStatusXUsers.getModel();
         TasksXStatusXUsersLogs.getModel();
         Apis.getModel();
-        ApisRequests.getModel();
-        ApisRequestsCalls.getModel();
-        ApisResponses.getModel();
+        Api_Requests.getModel();
+        Api_Request_Calls.getModel();
+        Api_Responses.getModel();
         MeasXMeasOrigins.getModel();
         PacksXPacksOrigins.getModel();   
         Midias.getModel();
@@ -394,16 +394,16 @@ class ModelsController{
     static initAssociations(){
         /*Errors.initAssociations();
         Logs.initAssociations();
-        DataTables.initAssociations();
-        DataConnections.initAssociations();
-        DataSchemas.initAssociations();
+        Tables.initAssociations();
+        Connections.initAssociations();
+        Schemas.initAssociations();
         Contexts.initAssociations();
-        EntitiesTypes.initAssociations();
-        DataTypes.initAssociations();
-        ActionStatus.initAssociations();
+        Entities_Types.initAssociations();
+        Data_Types.initAssociations();
+        Action_Status.initAssociations();
         Parameters.initAssociations();
-        ParametersValues.initAssociations();
-        OriginsDatas.initAssociations();
+        Parameter_Values.initAssociations();
+        Data_Origins.initAssociations();
         StatusRegs.initAssociations();
         StatusSync.initAssociations();
         StatusRun.initAssociations();
@@ -412,7 +412,7 @@ class ModelsController{
         MeasurementsUnits.initAssociations();
         People.initAssociations();
         Collaborators.initAssociations();
-        AccessProfiles.initAssociations();
+        Access_Profiles.initAssociations();
         Users.initAssociations();
         UsersTokens.initAssociations();
         UsersProfilesTimesWork.initAssociations();
@@ -441,7 +441,7 @@ class ModelsController{
         Cities.initAssociations();
         NeighborHoods.initAssociations();
         Countries.initAssociations();
-        AddressTypes.initAssociations();
+        Address_Types.initAssociations();
         Streets.initAssociations();
         PostalCodesXStreets.initAssociations();
         PostalCodes.initAssociations();
@@ -453,7 +453,7 @@ class ModelsController{
         PeopleXAddresses.initAssociations();
         PeopleXContacts.initAssociations();
         BusinessesUnits.initAssociations();
-        WarehousesAddressTypes.initAssociations();
+        Warehouse_Address_Types.initAssociations();
         Warehouses.initAssociations();
         WarehousesAddresses.initAssociations();
         WarehousesAddressesCoordinates.initAssociations();
@@ -514,9 +514,9 @@ class ModelsController{
         TasksXStatusXUsers.initAssociations();
         TasksXStatusXUsersLogs.initAssociations();
         Apis.initAssociations();
-        ApisRequests.initAssociations();
-        ApisRequestsCalls.initAssociations();
-        ApisResponses.initAssociations();
+        Api_Requests.initAssociations();
+        Api_Request_Calls.initAssociations();
+        Api_Responses.initAssociations();
         MeasXMeasOrigins.initAssociations();
         PacksXPacksOrigins.initAssociations();  
         Midias.initAssociations();

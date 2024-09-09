@@ -5,7 +5,7 @@ const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
 const { People } = require("./People");
-const { AddressTypes } = require("./AddressTypes");
+const { Address_Types } = require("./Address_Types");
 const { Addresses } = require("./Addresses");
 
 /**
@@ -66,7 +66,7 @@ class PeopleXAddresses extends BaseTableModel {
       fields: ['IDADDRESSTYPE'],
       type: 'foreign key',
       references: { 
-          table: AddressTypes,
+          table: Address_Types,
           field: 'id'
       },
       onUpdate: 'cascade'

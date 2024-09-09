@@ -4,7 +4,7 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
-const { EntitiesTypes } = require("./EntitiesTypes");
+const { Entities_Types } = require("./Entities_Types");
 const { Comparators } = require("./Comparators");
 
 
@@ -68,7 +68,7 @@ class Condictions extends BaseTableModel {
       fields: ['IDENTITYTYPE'],
       type: 'foreign key',
       references: { 
-          table: EntitiesTypes,
+          table: Entities_Types,
           field: 'id'
       },
       onUpdate: 'cascade'

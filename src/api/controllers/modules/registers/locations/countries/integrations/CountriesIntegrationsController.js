@@ -1,5 +1,5 @@
 const { Utils } = require("../../../../../utils/Utils");
-const { OriginsDatas } = require("../../../../../../database/models/OriginsDatas");
+const { Data_Origins } = require("../../../../../../database/models/Data_Origins");
 const { PcPais } = require("../../../../../../database/models/winthor/PcPais");
 const { Countries } = require("../../../../../../database/models/Countries");
 const { Continents } = require("../../../../../../database/models/Continents");
@@ -58,7 +58,7 @@ class CountriesIntegrationsController extends RegistersController {
             } else {
                 country = await Countries.getModel().create({                    
                     id : winthorCountryCode,
-                    data_origin_id: OriginsDatas.WINTHOR,
+                    data_origin_id: Data_Origins.WINTHOR,
                     IDCONTINENT: continent.id,
                     name: pcpais.DESCRICAO,
                     SIGLA: pcpais.DESCRICAO.substring(0,2)

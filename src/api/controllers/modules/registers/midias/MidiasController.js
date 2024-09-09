@@ -1,6 +1,6 @@
 const { Utils } = require("../../../utils/Utils");
 const { Midias } = require("../../../../database/models/Midias");
-const { DataTables } = require("../../../../database/models/DataTables");
+const { Tables } = require("../../../../database/models/Tables");
 const { RegistersController } = require("../RegistersController");
 
 /**
@@ -27,7 +27,7 @@ class MidiasController extends RegistersController{
                     let file = req.files.filter(el=>el.originalname.trim().name.toLowerCase() == registers[key].name.trim().name.toLowerCase())[0];
                     if (Utils.hasValue(file)) {
                         console.log('FL','file',file);
-                        tablesRefs[registers[key].TABLENAME] = tablesRefs[registers[key].TABLENAME] || await DataTables.getModel().findOne({
+                        tablesRefs[registers[key].TABLENAME] = tablesRefs[registers[key].TABLENAME] || await Tables.getModel().findOne({
                             raw:true,
                             where:{
                                 name: registers[key].TABLENAME.trim().name.toLowerCase()

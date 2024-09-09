@@ -2,7 +2,7 @@
 
 /*imports*/
 const { MeasurementsUnits } = require('../models/MeasurementsUnits');
-const { OriginsDatas } = require('../models/OriginsDatas');
+const { Data_Origins } = require('../models/Data_Origins');
 const { StatusRegs } = require('../models/StatusRegs');
 const { Greatnesses } = require('../models/Greatnesses');
 /** @type {import('sequelize-cli').Migration} */
@@ -13,7 +13,7 @@ module.exports = {
     await MeasurementsUnits.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});         
     
     await MeasurementsUnits.migrateForeignKeyContraint(queryInterface,StatusRegs);  
-    await MeasurementsUnits.migrateForeignKeyContraint(queryInterface,OriginsDatas);  
+    await MeasurementsUnits.migrateForeignKeyContraint(queryInterface,Data_Origins);  
     await MeasurementsUnits.migrateForeignKeyContraint(queryInterface,Greatnesses);  
         
   },

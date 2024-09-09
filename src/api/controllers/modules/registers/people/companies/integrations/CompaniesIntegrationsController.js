@@ -4,7 +4,7 @@ const { PcFilial } = require("../../../../../../database/models/winthor/PcFilial
 const { PeopleIntegrationsController } = require("../../integrations/PeopleIntegrationsController");
 const { Companies } = require("../../../../../../database/models/Companies");
 const { Utils } = require("../../../../../utils/Utils");
-const { OriginsDatas } = require("../../../../../../database/models/OriginsDatas");
+const { Data_Origins } = require("../../../../../../database/models/Data_Origins");
 const { RegistersController } = require("../../../RegistersController");
 
 /**
@@ -126,7 +126,7 @@ class CompaniesIntegrationsController extends RegistersController{
             } else {
                 company = await Companies.getModel().create({                    
                     id : pcFilialCompany.CODIGO,
-                    data_origin_id: OriginsDatas.WINTHOR,
+                    data_origin_id: Data_Origins.WINTHOR,
                     IDPEOPLE: people.id
                 },options)
             }

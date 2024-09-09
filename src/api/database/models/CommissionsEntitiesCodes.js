@@ -3,7 +3,7 @@
 /*imports*/
 const { DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
-const { DataTables } = require("./DataTables");
+const { Tables } = require("./Tables");
 
 
 /**
@@ -48,7 +48,7 @@ class CommissionsEntitiesCodes extends BaseTableModel {
     fields: ['IDTABLEENTITY'],
     type: 'foreign key',
     references: { 
-        table: DataTables,
+        table: Tables,
         field: 'id'
     },
     onUpdate: 'cascade'

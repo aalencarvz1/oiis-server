@@ -4,7 +4,7 @@ const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 const { MovementsStatus } = require("./MovementsStatus");
 const { LogisticMovTypes } = require("./LogisticMovTypes");
-const { ActionStatus } = require("./ActionStatus");
+const { Action_Status } = require("./Action_Status");
 const { ItemsMovsAmounts } = require("./ItemsMovsAmounts");
 const { LogisticOrdersXMovs } = require("./LogisticOrdersXMovs");
 const { LogisticReasons } = require("./LogisticReasons");
@@ -154,7 +154,7 @@ class LogisticOrdersXItemsMovAmt extends BaseTableModel {
       fields: ['IDACTIONSTATUS'],
       type: 'foreign key',
       references: { 
-          table: ActionStatus,
+          table: Action_Status,
           field: 'id'
       },
       onUpdate: 'cascade'

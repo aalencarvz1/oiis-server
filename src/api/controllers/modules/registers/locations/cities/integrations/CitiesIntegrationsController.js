@@ -1,5 +1,5 @@
 const { Utils } = require("../../../../../utils/Utils");
-const { OriginsDatas } = require("../../../../../../database/models/OriginsDatas");
+const { Data_Origins } = require("../../../../../../database/models/Data_Origins");
 const { States } = require("../../../../../../database/models/States");
 const { PcCidade } = require("../../../../../../database/models/winthor/PcCidade");
 const { Cities } = require("../../../../../../database/models/Cities");
@@ -58,7 +58,7 @@ class CitiesIntegrationsController extends RegistersController{
             } else {
                 city = await Cities.getModel().create({   
                     id:pccidade.CODCIDADE,                 
-                    data_origin_id: OriginsDatas.WINTHOR,
+                    data_origin_id: Data_Origins.WINTHOR,
                     id_at_origin: pccidade.CODCIDADE,
                     IDSTATE: state.id,
                     name: pccidade.NOMECIDADE,

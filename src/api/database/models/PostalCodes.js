@@ -5,7 +5,7 @@ const { DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
 const { Cities } = require("./Cities");
-const { AddressTypes } = require("./AddressTypes");
+const { Address_Types } = require("./Address_Types");
 
 /**
  * class model
@@ -53,7 +53,7 @@ class PostalCodes extends BaseTableModel {
       fields: ['IDADDRESSTYPE'],
       type: 'foreign key',
       references: { 
-          table: AddressTypes,
+          table: Address_Types,
           field: 'id'
       },
       onUpdate: 'cascade'

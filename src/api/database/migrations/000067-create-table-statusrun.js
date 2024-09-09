@@ -2,7 +2,7 @@
 
 /*imports*/
 const { StatusRun } = require('../models/StatusRun');
-const { OriginsDatas } = require('../models/OriginsDatas');
+const { Data_Origins } = require('../models/Data_Origins');
 const { StatusRegs } = require('../models/StatusRegs');
 /** @type {import('sequelize-cli').Migration} */
 
@@ -12,7 +12,7 @@ module.exports = {
     await StatusRun.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});                
     
     await StatusRun.migrateForeignKeyContraint(queryInterface, StatusRegs);  
-    await StatusRun.migrateForeignKeyContraint(queryInterface, OriginsDatas);      
+    await StatusRun.migrateForeignKeyContraint(queryInterface, Data_Origins);      
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable(StatusRun.tableName);

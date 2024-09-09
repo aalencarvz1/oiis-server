@@ -3,7 +3,7 @@
 const { DataTypes, QueryTypes } = require("sequelize");
 const { Utils } = require("../../controllers/utils/Utils");
 const { BaseTableModel } = require("./BaseTableModel");
-const { OriginsDatas } = require("./OriginsDatas");
+const { Data_Origins } = require("./Data_Origins");
 const { IdentifiersTypes } = require("./IdentifiersTypes");
 const { PcProdut } = require("./winthor/PcProdut");
 const { Ncms } = require("./Ncms");
@@ -112,7 +112,7 @@ class Items extends BaseTableModel {
         }
       });
       if (winthorData) {
-        queryParams.data_origin_id = OriginsDatas.WINTHOR;
+        queryParams.data_origin_id = Data_Origins.WINTHOR;
         queryParams.id_at_origin = queryParams.id_at_origin || winthorData.CODPROD;
         queryParams.IDIDENTIFIERTYPE = queryParams.IDIDENTIFIERTYPE || IdentifiersTypes.CODE;
         queryParams.IDENTIFIER = queryParams.IDENTIFIER || winthorData.CODPROD;
@@ -120,7 +120,7 @@ class Items extends BaseTableModel {
           let ncm = await Ncms.getOrCreate({
             raw:true,
             where:{
-              data_origin_id: OriginsDatas.WINTHOR,
+              data_origin_id: Data_Origins.WINTHOR,
               NCM: winthorData.NBM,
               EXCEPTION: Utils.hasValue(winthorData.CODNCMEX.split('.')[1]) ? winthorData.CODNCMEX.split('.')[1] : null
             },
@@ -184,7 +184,7 @@ class Items extends BaseTableModel {
           auroraData = auroraData[0];
       }
       if (Utils.hasValue(auroraData)) {
-        queryParams.data_origin_id = OriginsDatas.AURORA;
+        queryParams.data_origin_id = Data_Origins.AURORA;
         queryParams.id_at_origin = queryParams.id_at_origin || auroraData.COD;
         queryParams.IDIDENTIFIERTYPE = queryParams.IDIDENTIFIERTYPE || IdentifiersTypes.CODE;
         queryParams.IDENTIFIER = queryParams.IDENTIFIER || auroraData.COD;
@@ -192,7 +192,7 @@ class Items extends BaseTableModel {
           let ncm = await Ncms.getOrCreate({
             raw:true,
             where:{
-              data_origin_id: OriginsDatas.WINTHOR,
+              data_origin_id: Data_Origins.WINTHOR,
               NCM: 1
             },
             createMethod: Ncms.integrateByWinthor

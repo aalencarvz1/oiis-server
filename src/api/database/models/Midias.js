@@ -3,7 +3,7 @@
 /*imports*/
 const { Sequelize, DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
-const { DataTables } = require("./DataTables");
+const { Tables } = require("./Tables");
 
 
 /**
@@ -51,7 +51,7 @@ class Midias extends BaseTableModel {
     fields: ['IDTABLEREF'],
     type: 'foreign key',
     references: { 
-        table: DataTables,
+        table: Tables,
         field: 'id'
     },
     onUpdate: 'cascade'

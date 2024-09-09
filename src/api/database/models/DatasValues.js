@@ -5,7 +5,7 @@ const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
 const { ValuesNames } = require("./ValuesNames");
-const { DataTables } = require("./DataTables");
+const { Tables } = require("./Tables");
 const { Contexts } = require("./Contexts");
 
 /**
@@ -70,7 +70,7 @@ class DatasValues extends BaseTableModel {
       fields: ['IDTABLE'],
       type: 'foreign key',
       references: { 
-          table: DataTables,
+          table: Tables,
           field: 'id'
       },
       onUpdate: 'cascade'

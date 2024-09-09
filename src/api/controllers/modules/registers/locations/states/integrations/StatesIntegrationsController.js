@@ -1,5 +1,5 @@
 const { Utils } = require("../../../../../utils/Utils");
-const { OriginsDatas } = require("../../../../../../database/models/OriginsDatas");
+const { Data_Origins } = require("../../../../../../database/models/Data_Origins");
 const { Countries } = require("../../../../../../database/models/Countries");
 const { PcEstado } = require("../../../../../../database/models/winthor/PcEstado");
 const { CountriesIntegrationsController } = require("../../countries/integrations/CountriesIntegrationsController");
@@ -57,7 +57,7 @@ class StatesIntegrationsController extends RegistersController {
                 }
             } else {
                 state = await States.getModel().create({                    
-                    data_origin_id: OriginsDatas.WINTHOR,
+                    data_origin_id: Data_Origins.WINTHOR,
                     IDCOUNTRY: country.id,
                     name: pcestado.ESTADO,
                     SIGLA: pcestado.UF

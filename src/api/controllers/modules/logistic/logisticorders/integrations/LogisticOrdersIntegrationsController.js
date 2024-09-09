@@ -1,13 +1,13 @@
 const { Sequelize } = require("sequelize");
 const DBConnectionManager = require("../../../../../database/DBConnectionManager");
-const { ActionStatus } = require("../../../../../database/models/ActionStatus");
+const { Action_Status } = require("../../../../../database/models/Action_Status");
 const { IdentifiersTypes } = require("../../../../../database/models/IdentifiersTypes");
 const { ItemsStocks } = require("../../../../../database/models/ItemsStocks");
 const { LogisticOrders } = require("../../../../../database/models/LogisticOrders");
 const { LogisticMovTypes } = require("../../../../../database/models/LogisticMovTypes");
 const { Movements } = require("../../../../../database/models/Movements");
 const { MovementsTypes } = require("../../../../../database/models/MovementsTypes");
-const { OriginsDatas } = require("../../../../../database/models/OriginsDatas");
+const { Data_Origins } = require("../../../../../database/models/Data_Origins");
 const { Companies } = require("../../../../../database/models/Companies");
 const { Items } = require("../../../../../database/models/Items");
 const { StocksEntities } = require("../../../../../database/models/StocksEntities");
@@ -23,7 +23,7 @@ const { LogisticOrdersXItemsMovAmt } = require("../../../../../database/models/L
 const { Utils } = require("../../../../utils/Utils");
 const { LogisticOrdersXMovs } = require("../../../../../database/models/LogisticOrdersXMovs");
 const { LogisticOrdersWinthorIntegrationsController } = require("./winthor/LogisticOrdersWinthorIntegrationsController");
-const { ParametersValues } = require("../../../../../database/models/ParametersValues");
+const { Parameter_Values } = require("../../../../../database/models/Parameter_Values");
 const { Parameters } = require("../../../../../database/models/Parameters");
 const { LogisticOrdersXMovsXReceiptValues } = require("../../../../../database/models/LogisticOrdersXMovsXReceiptValues");
 const { FinancialValueForms } = require("../../../../../database/models/FinancialValueForms");
@@ -46,26 +46,26 @@ const { BaseEndPointController } = require("../../../../endpoints/BaseEndPointCo
 class LogisticOrdersIntegrationsController extends BaseEndPointController{
 
     static getDataOriginId(data_origin_id) {
-        let result = OriginsDatas.DEFAULT_ORIGINDATA;
+        let result = Data_Origins.DEFAULT_ORIGINDATA;
         switch(data_origin_id) {
             case 0:
-                result = OriginsDatas.WINTHOR;
+                result = Data_Origins.WINTHOR;
                 break;
             case 1:
-                result = OriginsDatas.AURORA;
+                result = Data_Origins.AURORA;
                 break;
         }
         return result;
     }
 
-    static getIdActionStatus(idStatus) {
-        let result = ActionStatus.NOT_STARTED;                    
+    static getIdAction_Status(idStatus) {
+        let result = Action_Status.NOT_STARTED;                    
         switch(idStatus) {
             case 2:
-                result = ActionStatus.RUNNING;
+                result = Action_Status.RUNNING;
                 break;
             case 3:
-                result = ActionStatus.CONCLUDED;
+                result = Action_Status.CONCLUDED;
                 break;
         }
         return result;
@@ -300,7 +300,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                     data_origin_id: mov.data_origin_id,
                                     id_at_origin: loadings[key].NOTASFISCAIS[kn].ITEMS[ki].IDITEMORIGEM,   
                                 },
-                                createMethod: mov.data_origin_id == OriginsDatas.AURORA ? Items.integrateByAurora : Items.integrateByWinthor
+                                createMethod: mov.data_origin_id == Data_Origins.AURORA ? Items.integrateByAurora : Items.integrateByWinthor
                             });
                             if (item.success) item = item.data
                             else {
@@ -590,7 +590,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                 },{
                                     [Sequelize.Op.and]:[
                                         {
-                                            data_origin_id: OriginsDatas.APP_DELIVERY
+                                            data_origin_id: Data_Origins.APP_DELIVERY
                                         },{
                                             IDLOGISTICORDER: logisticOrder.id
                                         },{
@@ -606,7 +606,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                         if (!logDestVal) {
                             logDestVal = await LogisticOrdersXDestValues.getModel().create({
                                 creator_user_id: req.user.id,
-                                data_origin_id: OriginsDatas.APP_DELIVERY,
+                                data_origin_id: Data_Origins.APP_DELIVERY,
                                 IDLOGISTICORDER: logisticOrder.id,
                                 IDLOGORDFINANCIALVALUEFORM: idFinValForm,
                                 IDFINANCIALVALUEMOVTYPEDEST: idFinValMovType,
@@ -643,7 +643,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                     res.data = loadings;
                     res.sendResponse(200,true);    
                     try {
-                        if (idsLogOrders.length > 0 && Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true && Utils.toBool(await ParametersValues.get(Parameters.LOGISTIC_INTEGRATE_AUTOMATIC_CLOSE_BOX_DRIVER)) == true) {
+                        if (idsLogOrders.length > 0 && Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true && Utils.toBool(await Parameter_Values.get(Parameters.LOGISTIC_INTEGRATE_AUTOMATIC_CLOSE_BOX_DRIVER)) == true) {
                             await LogisticOrdersWinthorIntegrationsController.integrateBoxClosing(idsLogOrders);
                         }   
                     } catch (ex) {

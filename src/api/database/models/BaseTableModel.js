@@ -120,7 +120,7 @@ class BaseTableModel extends Model {
         fields: ['data_origin_id'],
         type: 'foreign key',
         references: { 
-            table: 'OriginsDatas',
+            table: 'Data_Origins',
             field: 'id'
         },
         onUpdate: 'cascade'
@@ -221,7 +221,7 @@ class BaseTableModel extends Model {
         Utils.log('creating table',this.tableName, Object.keys(this.fields));
         await queryInterface.createTable(this.tableName, this.fields);
         await this.migrateConstraints(queryInterface);    
-        await queryInterface.bulkInsert('datatables',[{      
+        await queryInterface.bulkInsert('tables',[{      
             id:this.id,
             created_at: new Date(),
             is_sys_rec : 1,

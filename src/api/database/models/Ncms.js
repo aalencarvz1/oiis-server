@@ -1,13 +1,13 @@
 'use strict';
 /*imports*/
 const { DataTypes, Sequelize } = require("sequelize");
-const { OriginsDatas } = require('./OriginsDatas');
+const { Data_Origins } = require('./Data_Origins');
 const { PcNcm } = require('./winthor/PcNcm');
 const { DataSwap } = require("../../controllers/data/DataSwap");
 const { BaseTableModel } = require("./BaseTableModel");
 const { Utils } = require("../../controllers/utils/Utils");
 const { Parameters } = require("./Parameters");
-const { ParametersValues } = require("./ParametersValues");
+const { Parameter_Values } = require("./Parameter_Values");
 
 
 /**
@@ -57,7 +57,7 @@ class Ncms extends BaseTableModel {
         }
       });
       if (!winthorData && (
-        Utils.hasValue(queryParams.EXCEPTION) && Utils.toBool(await ParametersValues.get(Parameters.WINTHOR_INTEGRATION_NCM_CONSIDER_EXCEPTION_NULL_IF_NOT_EXISTS)) == true
+        Utils.hasValue(queryParams.EXCEPTION) && Utils.toBool(await Parameter_Values.get(Parameters.WINTHOR_INTEGRATION_NCM_CONSIDER_EXCEPTION_NULL_IF_NOT_EXISTS)) == true
       )) { 
         winthorData = await PcNcm.getModel().findOne({
           where:{
@@ -67,7 +67,7 @@ class Ncms extends BaseTableModel {
         });
       }
       if (winthorData) {
-        queryParams.data_origin_id = OriginsDatas.WINTHOR;
+        queryParams.data_origin_id = Data_Origins.WINTHOR;
         queryParams.CHAPTER = queryParams.CHAPTER || winthorData.CAPITULO;
         queryParams.description = queryParams.description || winthorData.DESCRICAO;
         result.data = await Ncms.getModel().create(queryParams);

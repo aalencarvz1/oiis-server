@@ -14,7 +14,7 @@ const { StatusRegs } = require("../../../../../../database/models/StatusRegs");
 const { ClientsIntegrationsController } = require("../../clients/integrations/ClientsIntegrationsController");
 const { Clients } = require("../../../../../../database/models/Clients");
 const { Modules } = require("../../../../../../database/models/Modules");
-const { OriginsDatas } = require("../../../../../../database/models/OriginsDatas");
+const { Data_Origins } = require("../../../../../../database/models/Data_Origins");
 const { DatabaseUtils } = require("../../../../../database/DatabaseUtils");
 const { RegistersController } = require("../../../RegistersController");
 
@@ -81,7 +81,7 @@ class BusinessesUnitsIntegrationsController extends RegistersController {
                         } else {
                             businessUnit = await BusinessesUnits.getModel().create({
                                 id: integrations[key].CODIGO,
-                                data_origin_id: OriginsDatas.WINTHOR,
+                                data_origin_id: Data_Origins.WINTHOR,
                                 IDPEOPLE : people.id,
                                 IDCOMPANY : company.id
                             },{transaction:transaction});

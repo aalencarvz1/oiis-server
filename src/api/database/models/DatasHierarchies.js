@@ -5,7 +5,7 @@ const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
 const { Contexts } = require("./Contexts");
-const { DataTables } = require("./DataTables");
+const { Tables } = require("./Tables");
 
 /**
  * class model
@@ -73,7 +73,7 @@ class DatasHierarchies extends BaseTableModel {
       fields: ['IDTABLEPARENT'],
       type: 'foreign key',
       references: { 
-          table: DataTables,
+          table: Tables,
           field: 'id'
       },
       onUpdate: 'cascade'
@@ -81,7 +81,7 @@ class DatasHierarchies extends BaseTableModel {
       fields: ['IDTABLESUBORDINATED'],
       type: 'foreign key',
       references: { 
-          table: DataTables,
+          table: Tables,
           field: 'id'
       },
       onUpdate: 'cascade'

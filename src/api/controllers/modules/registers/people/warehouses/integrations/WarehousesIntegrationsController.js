@@ -5,7 +5,7 @@ const { PeopleIntegrationsController } = require("../../integrations/PeopleInteg
 const { Warehouses } = require("../../../../../../database/models/Warehouses");
 const { People } = require("../../../../../../database/models/People");
 const { Utils } = require("../../../../../utils/Utils");
-const { OriginsDatas } = require("../../../../../../database/models/OriginsDatas");
+const { Data_Origins } = require("../../../../../../database/models/Data_Origins");
 const { DatabaseUtils } = require("../../../../../database/DatabaseUtils");
 const DBConnectionManager = require("../../../../../../database/DBConnectionManager");
 const { CompaniesIntegrationsController } = require("../../companies/integrations/CompaniesIntegrationsController");
@@ -68,7 +68,7 @@ class WarehousesIntegrationsController extends RegistersController {
                 } else {
                     warehouse = await Warehouses.getModel().create({
                         id: pcfilial.CODIGO,
-                        data_origin_id: OriginsDatas.WINTHOR,
+                        data_origin_id: Data_Origins.WINTHOR,
                         IDPEOPLE : people.id,
                         IDCOMPANY : company.id
                     },{transaction:transaction});

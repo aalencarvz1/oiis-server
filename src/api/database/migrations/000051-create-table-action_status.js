@@ -1,15 +1,15 @@
 'use strict';
 
 /*imports*/
-const { ActionStatus } = require('../models/ActionStatus');
+const { Action_Status } = require('../models/Action_Status');
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await ActionStatus.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});                       
+    await Action_Status.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});                       
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(ActionStatus.tableName);
+    await queryInterface.dropTable(Action_Status.tableName);
   }
 };

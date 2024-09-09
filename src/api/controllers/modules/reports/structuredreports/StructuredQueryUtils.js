@@ -6,7 +6,7 @@ const DBConnectionManager = require("../../../../database/DBConnectionManager");
 const { StatusRegs } = require("../../../../database/models/StatusRegs");
 const moment = require("moment");
 const { SqlObjectsTypes } = require("../../../../database/models/SqlObjectsTypes");
-const { EntitiesTypes } = require("../../../../database/models/EntitiesTypes");
+const { Entities_Types } = require("../../../../database/models/Entities_Types");
 const { Permissions } = require("../../../../database/models/Permissions");
 const { EpIntegrationsRegistersController } = require("../../registers/integrations/ep/EpIntegrationsRegistersController");
 
@@ -51,7 +51,7 @@ class StructuredQueryUtils {
                 C.EXPRESSION
             FROM
                 REPORTSDATASFOUNTSITEMS RFI 
-                LEFT OUTER JOIN datatables T ON (   
+                LEFT OUTER JOIN tables T ON (   
                     RFI.IDSQLOBJECTTYPE = ${SqlObjectsTypes.TABLE}
                     AND T.id = RFI.IDSQLOBJECT
                 )
@@ -70,7 +70,7 @@ class StructuredQueryUtils {
                     )
                 )
                 LEFT OUTER JOIN CONDICTIONS C ON (
-                    C.IDENTITYTYPE = ${EntitiesTypes.DATABASE_TABLE}
+                    C.IDENTITYTYPE = ${Entities_Types.DATABASE_TABLE}
                     AND C.IDENTITY = ${Permissions.id}
                     AND C.IDREGISTER = P.id
                 )
