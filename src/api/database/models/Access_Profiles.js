@@ -18,6 +18,7 @@ class Access_Profiles extends BaseTableModel {
   static ADMINISTRATIVE = 3;
   static GERENCIAL = 4;
   static SUPERVISOR = 5;
+  static HUMAN_RESOURCES = 6;
   static INVOICING = 10;
   static FINANCIAL = 20;  
   static SELLER = 50;  

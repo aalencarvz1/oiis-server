@@ -4,8 +4,8 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
-const { IdentifiersTypes } = require("./IdentifiersTypes");
-const { ConteinersTypes } = require("./ConteinersTypes");
+const { Identifier_Types } = require("./Identifier_Types");
+const { Conteiner_Types } = require("./Conteiner_Types");
 
 /**
  * class model
@@ -73,7 +73,7 @@ class Conteiners extends BaseTableModel {
       fields: ['IDCONTENIERTYPE'],
       type: 'foreign key',
       references: { 
-          table: ConteinersTypes,
+          table: Conteiner_Types,
           field: 'id'
       },
       onUpdate: 'cascade'
@@ -82,7 +82,7 @@ class Conteiners extends BaseTableModel {
       fields: ['IDIDENTIFIERTYPE'],
       type: 'foreign key',
       references: { 
-          table: IdentifiersTypes,
+          table: Identifier_Types,
           field: 'id'
       },
       onUpdate: 'cascade'

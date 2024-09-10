@@ -2,9 +2,9 @@ const { Sequelize, QueryTypes } = require("sequelize");
 const { ReportsDatasFounts } = require("../../../database/models/ReportsDatasFounts");
 const { Utils } = require("../../utils/Utils");
 const DBConnectionManager = require("../../../database/DBConnectionManager");
-const { ReportsVisions } = require("../../../database/models/ReportsVisions");
-const { DataRelationshipTypes } = require("../../../database/models/DataRelationshipTypes");
-const { StatusRegs } = require("../../../database/models/StatusRegs");
+const { Report_Visions } = require("../../../database/models/Report_Visions");
+const { Relationship_Types } = require("../../../database/models/Relationship_Types");
+const { Record_Status } = require("../../../database/models/Record_Status");
 const _ = require('lodash');
 const { StructuredQueryUtils } = require("./structuredreports/StructuredQueryUtils");
 const { RegistersController } = require("../registers/RegistersController");
@@ -190,19 +190,19 @@ class ReportsController extends RegistersController{
                     CASE WHEN RV.id IN (${visionsIds.join(',')}) THEN 1 ELSE 0 END AS ISVISION,
                     CASE WHEN RV.id IN (${condictionsVisionsIds.length ? condictionsVisionsIds.join(',') : '-1'}) THEN 1 ELSE 0 END AS ISCONDICTIONVISION
                 FROM
-                    REPORTSVISIONS RV
-                    JOIN DATASRELATIONSHIPS DR ON (
-                        DR.IDRELATIONSHIPTYPE = ${DataRelationshipTypes.RELATIONSHIP}
-                        AND DR.IDTABLE1 = ${ReportsVisions.id}
+                    report_visions RV
+                    JOIN relationships DR ON (
+                        DR.IDRELATIONSHIPTYPE = ${Relationship_Types.RELATIONSHIP}
+                        AND DR.IDTABLE1 = ${Report_Visions.id}
                         AND DR.IDREG1 = RV.id
                         AND DR.IDTABLE2 = ${ReportsDatasFounts.id}
-                        AND DR.status_reg_id = ${StatusRegs.ACTIVE}
+                        AND DR.status_reg_id = ${Record_Status.ACTIVE}
                         AND COALESCE(DR.STARTMOMENT,STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
                         AND COALESCE(DR.ENDMOMENT,STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
                     )
                     JOIN REPORTSDATASFOUNTS RF ON (
                         RF.id = DR.IDREG2
-                        AND RF.status_reg_id = ${StatusRegs.ACTIVE}
+                        AND RF.status_reg_id = ${Record_Status.ACTIVE}
                         AND COALESCE(RF.STARTDATE,STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
                         AND COALESCE(RF.ENDDATE,STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
                     )
@@ -211,7 +211,7 @@ class ReportsController extends RegistersController{
                         RV.id IN (${visionsIds.join(',')})
                         ${condictionsVisionsIds.length ? `OR RV.id IN (${condictionsVisionsIds.join(',')}) ` : ''}
                     )
-                    AND RV.status_reg_id = ${StatusRegs.ACTIVE}
+                    AND RV.status_reg_id = ${Record_Status.ACTIVE}
                 ORDER BY
                     RV.id,
                     COALESCE(DR.ORDERNUM,DR.id)

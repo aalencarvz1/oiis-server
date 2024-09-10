@@ -1,10 +1,9 @@
 'use strict';
 require('dotenv').config({ path: __dirname + "/../../../../.env" });
 const configDB  = require("../config/config");
-const { DatasValues } = require('../models/DatasValues');
 /*imports*/
 const { Movements } = require('../models/Movements');
-const { DatasRelationships } = require("../models/DatasRelationships");
+const { Relationships } = require("../models/Relationships");
 const { Utils } = require('../../controllers/utils/Utils');
 /** @type {import('sequelize-cli').Migration} */
 
@@ -17,8 +16,7 @@ module.exports = {
       CREATE TRIGGER ${Movements.schema}.${Movements.tableName}_deleted AFTER DELETE on ${Movements.schema}.${Movements.tableName}
       FOR EACH ROW 
       BEGIN
-        DELETE FROM ${Movements.schema}.${DatasValues.tableName} WHERE ${DatasValues.tableName}.IDTABLE = ${Movements.id} AND ${DatasValues.tableName}.IDREG = OLD.id;      
-        DELETE FROM ${Movements.schema}.${DatasRelationships.tableName} WHERE (${DatasRelationships.tableName}.IDTABLE1 = ${Movements.id} AND ${DatasRelationships.tableName}.IDREG1 = OLD.id) OR (${DatasRelationships.tableName}.IDTABLE2 = ${Movements.id} AND ${DatasRelationships.tableName}.IDREG2 = OLD.id);      
+        DELETE FROM ${Movements.schema}.${Relationships.tableName} WHERE (${Relationships.tableName}.IDTABLE1 = ${Movements.id} AND ${Relationships.tableName}.IDREG1 = OLD.id) OR (${Relationships.tableName}.IDTABLE2 = ${Movements.id} AND ${Relationships.tableName}.IDREG2 = OLD.id);      
       END
     `;
     if ((connectionConfig?.dialect || '').toLowerCase().trim() == 'mysql' ) {

@@ -2,8 +2,8 @@
 /*imports*/
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
-const { IdentifiersTypes } = require("./IdentifiersTypes");
-const { MovementsStatus } = require("./MovementsStatus");
+const { Identifier_Types } = require("./Identifier_Types");
+const { Movement_Status } = require("./Movement_Status");
 const { LogisticMovTypes } = require("./LogisticMovTypes");
 const { Action_Status } = require("./Action_Status");
 const { LogisticStatus } = require("./LogisticStatus");
@@ -32,12 +32,12 @@ class LogisticOrders extends BaseTableModel {
       IDACTIONSTATUS:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
-        defaultValue:MovementsStatus.NOT_STARTED
+        defaultValue:Movement_Status.NOT_STARTED
       },
       IDLOGISTICSTATUS:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
-        defaultValue:MovementsStatus.NOT_STARTED
+        defaultValue:Movement_Status.NOT_STARTED
       },
       IDREASONNOTMOVIMENTEDAMT:{
         type: DataTypes.BIGINT.UNSIGNED
@@ -88,7 +88,7 @@ class LogisticOrders extends BaseTableModel {
       fields: ['IDIDENTIFIERTYPE'],
       type: 'foreign key',
       references: { 
-          table: IdentifiersTypes,
+          table: Identifier_Types,
           field: 'id'
       },
       onUpdate: 'cascade'

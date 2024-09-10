@@ -4,7 +4,7 @@ const { DataTypes, QueryTypes } = require("sequelize");
 const { Utils } = require("../../controllers/utils/Utils");
 const { BaseTableModel } = require("./BaseTableModel");
 const { Data_Origins } = require("./Data_Origins");
-const { IdentifiersTypes } = require("./IdentifiersTypes");
+const { Identifier_Types } = require("./Identifier_Types");
 const { PcProdut } = require("./winthor/PcProdut");
 const { Ncms } = require("./Ncms");
 const DBConnectionManager = require("../DBConnectionManager");
@@ -64,7 +64,7 @@ class Items extends BaseTableModel {
       fields: ['IDIDENTIFIERTYPE'],
       type: 'foreign key',
       references: { 
-          table: IdentifiersTypes,
+          table: Identifier_Types,
           field: 'id'
       },
       onUpdate: 'cascade'
@@ -114,7 +114,7 @@ class Items extends BaseTableModel {
       if (winthorData) {
         queryParams.data_origin_id = Data_Origins.WINTHOR;
         queryParams.id_at_origin = queryParams.id_at_origin || winthorData.CODPROD;
-        queryParams.IDIDENTIFIERTYPE = queryParams.IDIDENTIFIERTYPE || IdentifiersTypes.CODE;
+        queryParams.IDIDENTIFIERTYPE = queryParams.IDIDENTIFIERTYPE || Identifier_Types.CODE;
         queryParams.IDENTIFIER = queryParams.IDENTIFIER || winthorData.CODPROD;
         if (!Utils.hasValue(queryParams.IDNCM)) {
           let ncm = await Ncms.getOrCreate({
@@ -186,7 +186,7 @@ class Items extends BaseTableModel {
       if (Utils.hasValue(auroraData)) {
         queryParams.data_origin_id = Data_Origins.AURORA;
         queryParams.id_at_origin = queryParams.id_at_origin || auroraData.COD;
-        queryParams.IDIDENTIFIERTYPE = queryParams.IDIDENTIFIERTYPE || IdentifiersTypes.CODE;
+        queryParams.IDIDENTIFIERTYPE = queryParams.IDIDENTIFIERTYPE || Identifier_Types.CODE;
         queryParams.IDENTIFIER = queryParams.IDENTIFIER || auroraData.COD;
         if (!Utils.hasValue(queryParams.IDNCM)) {
           let ncm = await Ncms.getOrCreate({

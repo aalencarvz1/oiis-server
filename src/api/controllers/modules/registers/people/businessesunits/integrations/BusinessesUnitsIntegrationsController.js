@@ -3,14 +3,14 @@ const { PcFilial } = require("../../../../../../database/models/winthor/PcFilial
 const { Utils } = require("../../../../../utils/Utils");
 const { PeopleIntegrationsController } = require("../../integrations/PeopleIntegrationsController");
 const { CompaniesIntegrationsController } = require("../../companies/integrations/CompaniesIntegrationsController");
-const { BusinessesUnits } = require("../../../../../../database/models/BusinessesUnits");
+const { Business_Units } = require("../../../../../../database/models/Business_Units");
 const DBConnectionManager = require("../../../../../../database/DBConnectionManager");
 const { WarehousesIntegrationsController } = require("../../warehouses/integrations/WarehousesIntegrationsController");
-const { DatasRelationships } = require("../../../../../../database/models/DatasRelationships");
-const { DataRelationshipTypes } = require("../../../../../../database/models/DataRelationshipTypes");
+const { Relationships } = require("../../../../../../database/models/Relationships");
+const { Relationship_Types } = require("../../../../../../database/models/Relationship_Types");
 const { Companies } = require("../../../../../../database/models/Companies");
 const { Warehouses } = require("../../../../../../database/models/Warehouses");
-const { StatusRegs } = require("../../../../../../database/models/StatusRegs");
+const { Record_Status } = require("../../../../../../database/models/Record_Status");
 const { ClientsIntegrationsController } = require("../../clients/integrations/ClientsIntegrationsController");
 const { Clients } = require("../../../../../../database/models/Clients");
 const { Modules } = require("../../../../../../database/models/Modules");
@@ -68,7 +68,7 @@ class BusinessesUnitsIntegrationsController extends RegistersController {
 
                         company = await CompaniesIntegrationsController.integrateWinthorPcFilialToCompany(integrations[key].CODIGO,transaction);
                         if (!company) throw new Error("company is null as return of integration company"); 
-                        businessUnit = await BusinessesUnits.getModel().findOne({
+                        businessUnit = await Business_Units.getModel().findOne({
                             where:{
                                 id:integrations[key].CODIGO
                             },
@@ -79,7 +79,7 @@ class BusinessesUnitsIntegrationsController extends RegistersController {
                             if (businessUnit.IDCOMPANY != company.id) businessUnit.IDCOMPANY = company.id;
                             await businessUnit.save({transaction:transaction});
                         } else {
-                            businessUnit = await BusinessesUnits.getModel().create({
+                            businessUnit = await Business_Units.getModel().create({
                                 id: integrations[key].CODIGO,
                                 data_origin_id: Data_Origins.WINTHOR,
                                 IDPEOPLE : people.id,
@@ -102,10 +102,10 @@ class BusinessesUnitsIntegrationsController extends RegistersController {
 
 
                         //relationships
-                        let rel = await DatasRelationships.createIfNotExists({
+                        let rel = await Relationships.createIfNotExists({
                             where: {
-                                status_reg_id: StatusRegs.ACTIVE,
-                                IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
+                                status_reg_id: Record_Status.ACTIVE,
+                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
                                 IDTABLE1 : Companies.id,
                                 IDREG1: company.id,
                                 IDTABLE2 : Warehouses.id,
@@ -114,22 +114,22 @@ class BusinessesUnitsIntegrationsController extends RegistersController {
                             transaction:transaction
                         });
 
-                        rel = await DatasRelationships.createIfNotExists({
+                        rel = await Relationships.createIfNotExists({
                             where: {
-                                status_reg_id: StatusRegs.ACTIVE,
-                                IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
+                                status_reg_id: Record_Status.ACTIVE,
+                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
                                 IDTABLE1 : Companies.id,
                                 IDREG1: company.id,
-                                IDTABLE2 : BusinessesUnits.id,
+                                IDTABLE2 : Business_Units.id,
                                 IDREG2: businessUnit.id                            
                             },
                             transaction:transaction
                         });
 
-                        rel = await DatasRelationships.createIfNotExists({
+                        rel = await Relationships.createIfNotExists({
                             where: {
-                                status_reg_id: StatusRegs.ACTIVE,
-                                IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
+                                status_reg_id: Record_Status.ACTIVE,
+                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
                                 IDTABLE1 : Companies.id,
                                 IDREG1: company.id,
                                 IDTABLE2 : Clients.id,
@@ -138,11 +138,11 @@ class BusinessesUnitsIntegrationsController extends RegistersController {
                             transaction:transaction
                         });
                         
-                        rel = await DatasRelationships.createIfNotExists({
+                        rel = await Relationships.createIfNotExists({
                             where:{
-                                status_reg_id: StatusRegs.ACTIVE,
-                                IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-                                IDTABLE1 : BusinessesUnits.id,
+                                status_reg_id: Record_Status.ACTIVE,
+                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
+                                IDTABLE1 : Business_Units.id,
                                 IDREG1: businessUnit.id,
                                 IDTABLE2 : Warehouses.id,
                                 IDREG2: warehouse.id                            
@@ -150,11 +150,11 @@ class BusinessesUnitsIntegrationsController extends RegistersController {
                             transaction: transaction
                         });
 
-                        rel = await DatasRelationships.createIfNotExists({
+                        rel = await Relationships.createIfNotExists({
                             where:{
-                                status_reg_id: StatusRegs.ACTIVE,
-                                IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-                                IDTABLE1 : BusinessesUnits.id,
+                                status_reg_id: Record_Status.ACTIVE,
+                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
+                                IDTABLE1 : Business_Units.id,
                                 IDREG1: businessUnit.id,
                                 IDTABLE2 : Clients.id,
                                 IDREG2: client.id                            
@@ -162,10 +162,10 @@ class BusinessesUnitsIntegrationsController extends RegistersController {
                             transaction: transaction
                         });
 
-                        rel = await DatasRelationships.createIfNotExists({
+                        rel = await Relationships.createIfNotExists({
                             where:{
-                                status_reg_id: StatusRegs.ACTIVE,
-                                IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
+                                status_reg_id: Record_Status.ACTIVE,
+                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
                                 IDTABLE1 : Warehouses.id,
                                 IDREG1: warehouse.id,
                                 IDTABLE2 : Clients.id,
@@ -174,10 +174,10 @@ class BusinessesUnitsIntegrationsController extends RegistersController {
                             transaction: transaction
                         });
 
-                        rel = await DatasRelationships.createIfNotExists({
+                        rel = await Relationships.createIfNotExists({
                             where:{
-                                status_reg_id: StatusRegs.ACTIVE,
-                                IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
+                                status_reg_id: Record_Status.ACTIVE,
+                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
                                 IDTABLE1 : Companies.id,
                                 IDREG1: company.id,
                                 IDTABLE2 : Modules.id,
@@ -186,11 +186,11 @@ class BusinessesUnitsIntegrationsController extends RegistersController {
                             transaction: transaction
                         });
 
-                        rel = await DatasRelationships.createIfNotExists({
+                        rel = await Relationships.createIfNotExists({
                             where:{
-                                status_reg_id: StatusRegs.ACTIVE,
-                                IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-                                IDTABLE1 : BusinessesUnits.id,
+                                status_reg_id: Record_Status.ACTIVE,
+                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
+                                IDTABLE1 : Business_Units.id,
                                 IDREG1: businessUnit.id,
                                 IDTABLE2 : Modules.id,
                                 IDREG2: Modules.WMS
@@ -198,10 +198,10 @@ class BusinessesUnitsIntegrationsController extends RegistersController {
                             transaction: transaction
                         });
 
-                        rel = await DatasRelationships.createIfNotExists({
+                        rel = await Relationships.createIfNotExists({
                             where:{
-                                status_reg_id: StatusRegs.ACTIVE,
-                                IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
+                                status_reg_id: Record_Status.ACTIVE,
+                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
                                 IDTABLE1 : Warehouses.id,
                                 IDREG1: warehouse.id,
                                 IDTABLE2 : Modules.id,
@@ -210,10 +210,10 @@ class BusinessesUnitsIntegrationsController extends RegistersController {
                             transaction: transaction
                         });
 
-                        rel = await DatasRelationships.createIfNotExists({
+                        rel = await Relationships.createIfNotExists({
                             where:{
-                                status_reg_id: StatusRegs.ACTIVE,
-                                IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
+                                status_reg_id: Record_Status.ACTIVE,
+                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
                                 IDTABLE1 : Clients.id,
                                 IDREG1: client.id,
                                 IDTABLE2 : Modules.id,

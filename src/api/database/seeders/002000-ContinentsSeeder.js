@@ -2,7 +2,7 @@
 
 const { Continents } = require('../models/Continents');
 const { Data_Origins } = require('../models/Data_Origins');
-const { StatusRegs } = require('../models/StatusRegs');
+const { Record_Status } = require('../models/Record_Status');
 const { Users } = require('../models/Users');
 
 /** @type {import('sequelize-cli').Migration} */
@@ -10,7 +10,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {    
     await queryInterface.bulkInsert(Continents.tableName,[{      
       id:Continents.AMERICA,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -19,7 +19,7 @@ module.exports = {
       SIGLA:'AM'
     },{      
       id:Continents.SOUTH_AMERICA,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,

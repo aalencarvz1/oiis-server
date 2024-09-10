@@ -3,7 +3,7 @@
 /*imports*/
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require("./BaseTableModel");
-const { IdentifiersTypes } = require("./IdentifiersTypes");
+const { Identifier_Types } = require("./Identifier_Types");
 const { Utils } = require("../../controllers/utils/Utils");
 
 /**
@@ -63,7 +63,7 @@ class People extends BaseTableModel {
       fields: ['IDIDENTIFIERDOCTYPE'],
       type: 'foreign key',
       references: { 
-          table: IdentifiersTypes,
+          table: Identifier_Types,
           field: 'id'
       },
       onUpdate: 'cascade'

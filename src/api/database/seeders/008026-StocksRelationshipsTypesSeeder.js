@@ -1,16 +1,16 @@
 'use strict';
 
 const { Data_Origins } = require('../models/Data_Origins');
-const { StatusRegs } = require('../models/StatusRegs');
+const { Record_Status } = require('../models/Record_Status');
 const { Users } = require('../models/Users');
-const { StocksEntitiesRelationshipsTypes } = require('../models/StocksEntitiesRelationshipsTypes');
+const { Stock_Entity_Relationship_Types } = require('../models/Stock_Entity_Relationship_Types');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(StocksEntitiesRelationshipsTypes.tableName,[{
-      id: StocksEntitiesRelationshipsTypes.OWNER,
-      status_reg_id: StatusRegs.ACTIVE,
+    await queryInterface.bulkInsert(Stock_Entity_Relationship_Types.tableName,[{
+      id: Stock_Entity_Relationship_Types.OWNER,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -24,6 +24,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(StocksEntitiesRelationshipsTypes.tableName, null, {});
+     await queryInterface.bulkDelete(Stock_Entity_Relationship_Types.tableName, null, {});
   }
 };

@@ -96,7 +96,7 @@ class BaseTableModel extends Model {
         fields: ['status_reg_id'],
         type: 'foreign key',
         references: { 
-            table: 'StatusRegs',
+            table: 'Record_Status',
             field: 'id'
         },
         onUpdate: 'cascade'

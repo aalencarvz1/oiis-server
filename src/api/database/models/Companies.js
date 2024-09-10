@@ -1,7 +1,7 @@
 'use strict';
 
 /*imports*/
-const { StatusRegs } = require("./StatusRegs");
+const { Record_Status } = require("./Record_Status");
 const { BasePeopleModel } = require("./BasePeopleModel");
 
 /**
@@ -34,7 +34,7 @@ class Companies extends BasePeopleModel {
     if (Companies.#defaultCompany == null) {
       Companies.#defaultCompany = await Companies.getModel().findOne({
         where:{
-          status_reg_id : StatusRegs.ACTIVE
+          status_reg_id : Record_Status.ACTIVE
         }
       });
     }

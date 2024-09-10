@@ -1,15 +1,15 @@
 const { Sequelize, DataTypes, QueryTypes } = require("sequelize");
 const { PcClient } = require("../../../../../database/models/winthor/PcClient");
 const { People } = require("../../../../../database/models/People");
-const { IdentifiersTypes } = require("../../../../../database/models/IdentifiersTypes");
+const { Identifier_Types } = require("../../../../../database/models/Identifier_Types");
 const { DatabaseUtils } = require("../../../../database/DatabaseUtils");
 const DBConnectionManager = require("../../../../../database/DBConnectionManager");
 const { Companies } = require("../../../../../database/models/Companies");
-const { BusinessesUnits } = require("../../../../../database/models/BusinessesUnits");
+const { Business_Units } = require("../../../../../database/models/Business_Units");
 const { Warehouses } = require("../../../../../database/models/Warehouses");
-const { DatasRelationships } = require("../../../../../database/models/DatasRelationships");
-const { StatusRegs } = require("../../../../../database/models/StatusRegs");
-const { DataRelationshipTypes } = require("../../../../../database/models/DataRelationshipTypes");
+const { Relationships } = require("../../../../../database/models/Relationships");
+const { Record_Status } = require("../../../../../database/models/Record_Status");
+const { Relationship_Types } = require("../../../../../database/models/Relationship_Types");
 const { Modules } = require("../../../../../database/models/Modules");
 const { Utils } = require("../../../../utils/Utils");
 const { IntegrationsRegistersController } = require("../../integrations/IntegrationsRegistersController");
@@ -19,10 +19,10 @@ const { EpIntegrationsRegistersController } = require("../../integrations/ep/EpI
 const _ = require('lodash');
 const { NeighborHoods } = require("../../../../../database/models/NeighborHoods");
 const { Streets } = require("../../../../../database/models/Streets");
-const { PostalCodes } = require("../../../../../database/models/PostalCodes");
+const { Postal_Codes } = require("../../../../../database/models/Postal_Codes");
 const { Addresses } = require("../../../../../database/models/Addresses");
 const { Address_Types } = require("../../../../../database/models/Address_Types");
-const { PeopleXAddresses } = require("../../../../../database/models/PeopleXAddresses");
+const { People_X_Addresses } = require("../../../../../database/models/People_X_Addresses");
 const { RegistersController } = require("../../RegistersController");
 const { CitiesIntegrationsController } = require("../../locations/cities/integrations/CitiesIntegrationsController");
 const { QueryBuilder } = require("../../../../database/QueryBuilder");
@@ -50,7 +50,7 @@ class PeopleIntegrationsController extends RegistersController{
                 for(let k in params.identifiers) {
                     if (Utils.typeOf(params.identifiers[k]) == 'object') {
                         let doc = params.identifiers[k].IDENTIFIERDOC || params.identifiers[k].CNPJ || params.identifiers[k].CGC || params.identifiers[k].CGCENT || params.identifiers[k].CPF;
-                        let idTpDoc = params.identifiers[k].IDIDENTIFIERDOCTYPE || (params.identifiers[k].TIPOFJ == 'F' ? IdentifiersTypes.CPF : IdentifiersTypes.CNPJ);
+                        let idTpDoc = params.identifiers[k].IDIDENTIFIERDOCTYPE || (params.identifiers[k].TIPOFJ == 'F' ? Identifier_Types.CPF : Identifier_Types.CNPJ);
                         whereDocs.push({
                             IDENTIFIERDOC: doc.toString().replace(/[^\d]/,'')-0,
                             IDIDENTIFIERDOCTYPE: idTpDoc
@@ -180,14 +180,14 @@ class PeopleIntegrationsController extends RegistersController{
                                             street = street.data;
                                         }
 
-                                        postalCode = await PostalCodes.getModel().getOrCreate({
+                                        postalCode = await Postal_Codes.getModel().getOrCreate({
                                             raw:true,
                                             where:{
                                                 IDCITY: city.id,
                                                 POSTALCODE: winthorRegs[people[k].id_at_origin].CEPENT
                                             },
                                             values:{
-                                                IDADDRESSTYPE: people[k].IDIDENTIFIERDOCTYPE == IdentifiersTypes.CPF ? Address_Types.RESIDENTIAL : Address_Types.BUSINESS
+                                                IDADDRESSTYPE: people[k].IDIDENTIFIERDOCTYPE == Identifier_Types.CPF ? Address_Types.RESIDENTIAL : Address_Types.BUSINESS
                                             }
                                         });
                                         if (postalCode && postalCode.success) {
@@ -207,12 +207,12 @@ class PeopleIntegrationsController extends RegistersController{
                                             COMPLEMENT: winthorRegs[people[k].id_at_origin].COMPLEMENTOENT,
                                         },
                                         values:{
-                                            IDADDRESSTYPE: people[k].IDIDENTIFIERDOCTYPE == IdentifiersTypes.CPF ? Address_Types.RESIDENTIAL : Address_Types.BUSINESS
+                                            IDADDRESSTYPE: people[k].IDIDENTIFIERDOCTYPE == Identifier_Types.CPF ? Address_Types.RESIDENTIAL : Address_Types.BUSINESS
                                         }
                                     });
                                     if (address && address.success) {
                                         address = address.data;
-                                        await PeopleXAddresses.getModel().getOrCreate({
+                                        await People_X_Addresses.getModel().getOrCreate({
                                             raw:true,
                                             where:{
                                                 IDPEOPLE : people[k].id,
@@ -261,7 +261,7 @@ class PeopleIntegrationsController extends RegistersController{
                     getIntegratedsByOriginIds: async (registersIdentifiersDocs,options) => {
                         let peopleRegsIdentifiers = registersIdentifiersDocs.map(el=>{
                             return {
-                                IDIDENTIFIERDOCTYPE: el?.TIPOFJ == 'F' ? IdentifiersTypes.CPF : IdentifiersTypes.CNPJ,
+                                IDIDENTIFIERDOCTYPE: el?.TIPOFJ == 'F' ? Identifier_Types.CPF : Identifier_Types.CNPJ,
                                 IDENTIFIERDOC: el?.CGCENT || el
                             }
                         });
@@ -270,7 +270,7 @@ class PeopleIntegrationsController extends RegistersController{
                     getBulkDataToCreate: WinthorIntegrationsRegistersController.getPeopleByIdentifierDocToIntegrate.bind(WinthorIntegrationsRegistersController),
                     getDataToUpdate: async (row) => {
                         return await WinthorIntegrationsRegistersController.getPeopleByIdentifierDocToIntegrate.bind(WinthorIntegrationsRegistersController)([{
-                            TIPOFJ: row.IDIDENTIFIERDOCTYPE == IdentifiersTypes.CPF ? 'F' : 'J',
+                            TIPOFJ: row.IDIDENTIFIERDOCTYPE == Identifier_Types.CPF ? 'F' : 'J',
                             CGCENT: row.IDENTIFIERDOC
                         }]);
                     }
@@ -299,7 +299,7 @@ class PeopleIntegrationsController extends RegistersController{
                                 id:originalPeople[k].CODFILIALNF
                             }
                         });
-                        let businessUnit = businessesUnits[originalPeople[k].CODFILIALNF.toString()] || await BusinessesUnits.getModel().findOne({
+                        let businessUnit = businessesUnits[originalPeople[k].CODFILIALNF.toString()] || await Business_Units.getModel().findOne({
                             raw:true,
                             where:{
                                 id:originalPeople[k].CODFILIALNF
@@ -313,10 +313,10 @@ class PeopleIntegrationsController extends RegistersController{
                         });
                                     
                         if (company) {
-                            await DatasRelationships.createIfNotExists({
+                            await Relationships.createIfNotExists({
                                 where: {
-                                    status_reg_id: StatusRegs.ACTIVE,
-                                    IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
+                                    status_reg_id: Record_Status.ACTIVE,
+                                    IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
                                     IDTABLE1 : Companies.id,
                                     IDREG1: company.id,
                                     IDTABLE2 : People.id,
@@ -325,11 +325,11 @@ class PeopleIntegrationsController extends RegistersController{
                             });
                         }
                         if (businessUnit) {
-                            await DatasRelationships.createIfNotExists({
+                            await Relationships.createIfNotExists({
                                 where: {
-                                    status_reg_id: StatusRegs.ACTIVE,
-                                    IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-                                    IDTABLE1 : BusinessesUnits.id,
+                                    status_reg_id: Record_Status.ACTIVE,
+                                    IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
+                                    IDTABLE1 : Business_Units.id,
                                     IDREG1: businessUnit.id,
                                     IDTABLE2 : People.id,
                                     IDREG2: originalPeople[k].id                            
@@ -337,10 +337,10 @@ class PeopleIntegrationsController extends RegistersController{
                             });
                         };
                         if(warehouse) {
-                            await DatasRelationships.createIfNotExists({
+                            await Relationships.createIfNotExists({
                                 where: {
-                                    status_reg_id: StatusRegs.ACTIVE,
-                                    IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
+                                    status_reg_id: Record_Status.ACTIVE,
+                                    IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
                                     IDTABLE1 : Warehouses.id,
                                     IDREG1: warehouse.id,
                                     IDTABLE2 : People.id,
@@ -349,10 +349,10 @@ class PeopleIntegrationsController extends RegistersController{
                             });
                         }
             
-                        await DatasRelationships.createIfNotExists({
+                        await Relationships.createIfNotExists({
                             where: {
-                                status_reg_id: StatusRegs.ACTIVE,
-                                IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
+                                status_reg_id: Record_Status.ACTIVE,
+                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
                                 IDTABLE1 : People.id,
                                 IDREG1: originalPeople[k].id,
                                 IDTABLE2 : Modules.id,
@@ -360,10 +360,10 @@ class PeopleIntegrationsController extends RegistersController{
                             }
                         });
 
-                        await DatasRelationships.createIfNotExists({
+                        await Relationships.createIfNotExists({
                             where: {
-                                status_reg_id: StatusRegs.ACTIVE,
-                                IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
+                                status_reg_id: Record_Status.ACTIVE,
+                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
                                 IDTABLE1 : People.id,
                                 IDREG1: originalPeople[k].id,
                                 IDTABLE2 : Modules.id,
@@ -402,7 +402,7 @@ class PeopleIntegrationsController extends RegistersController{
                     getIntegratedsByOriginIds: async (registersIdentifiersDocs,options) => {
                         let peopleRegsIdentifiers = registersIdentifiersDocs.map(el=>{
                             return {
-                                IDIDENTIFIERDOCTYPE: el?.CODTIPODOCIDENTIFICADOR == 1 && (el.CODDOCIDENTIFICADOR || '').length() <= 11 ? IdentifiersTypes.CPF : IdentifiersTypes.CNPJ,
+                                IDIDENTIFIERDOCTYPE: el?.CODTIPODOCIDENTIFICADOR == 1 && (el.CODDOCIDENTIFICADOR || '').length() <= 11 ? Identifier_Types.CPF : Identifier_Types.CNPJ,
                                 IDENTIFIERDOC: el?.CODDOCIDENTIFICADOR || el
                             }
                         });
@@ -411,7 +411,7 @@ class PeopleIntegrationsController extends RegistersController{
                     getBulkDataToCreate: EpIntegrationsRegistersController.getPeopleByIdentifierDocToIntegrate,
                     getDataToUpdate: async (row) => {
                         return await EpIntegrationsRegistersController.getPeopleByIdentifierDocToIntegrate([{
-                            CODTIPODOCIDENTIFICADOR: row.IDIDENTIFIERDOCTYPE == IdentifiersTypes.CPF ? 1 : 2,
+                            CODTIPODOCIDENTIFICADOR: row.IDIDENTIFIERDOCTYPE == Identifier_Types.CPF ? 1 : 2,
                             CODDOCIDENTIFICADOR: row.IDENTIFIERDOC
                         }]);
                     }
@@ -422,10 +422,10 @@ class PeopleIntegrationsController extends RegistersController{
                 if (result.success) {
                     let originalPeople = await EpIntegrationsRegistersController.getPeopleByIdentifierDocToIntegrate(params.registersIdentifiersDocs);
                     for(let k in originalPeople) {
-                        await DatasRelationships.createIfNotExists({
+                        await Relationships.createIfNotExists({
                             where: {
-                                status_reg_id: StatusRegs.ACTIVE,
-                                IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
+                                status_reg_id: Record_Status.ACTIVE,
+                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
                                 IDTABLE1 : People.id,
                                 IDREG1: originalPeople[k].id,
                                 IDTABLE2 : Modules.id,
@@ -433,10 +433,10 @@ class PeopleIntegrationsController extends RegistersController{
                             }
                         });
 
-                        await DatasRelationships.createIfNotExists({
+                        await Relationships.createIfNotExists({
                             where: {
-                                status_reg_id: StatusRegs.ACTIVE,
-                                IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
+                                status_reg_id: Record_Status.ACTIVE,
+                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
                                 IDTABLE1 : People.id,
                                 IDREG1: originalPeople[k].id,
                                 IDTABLE2 : Modules.id,

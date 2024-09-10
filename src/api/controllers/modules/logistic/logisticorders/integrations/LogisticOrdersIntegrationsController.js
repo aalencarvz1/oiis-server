@@ -1,24 +1,24 @@
 const { Sequelize } = require("sequelize");
 const DBConnectionManager = require("../../../../../database/DBConnectionManager");
 const { Action_Status } = require("../../../../../database/models/Action_Status");
-const { IdentifiersTypes } = require("../../../../../database/models/IdentifiersTypes");
-const { ItemsStocks } = require("../../../../../database/models/ItemsStocks");
+const { Identifier_Types } = require("../../../../../database/models/Identifier_Types");
+const { Item_Stocks } = require("../../../../../database/models/Item_Stocks");
 const { LogisticOrders } = require("../../../../../database/models/LogisticOrders");
 const { LogisticMovTypes } = require("../../../../../database/models/LogisticMovTypes");
 const { Movements } = require("../../../../../database/models/Movements");
-const { MovementsTypes } = require("../../../../../database/models/MovementsTypes");
+const { Movement_Types } = require("../../../../../database/models/Movement_Types");
 const { Data_Origins } = require("../../../../../database/models/Data_Origins");
 const { Companies } = require("../../../../../database/models/Companies");
 const { Items } = require("../../../../../database/models/Items");
-const { StocksEntities } = require("../../../../../database/models/StocksEntities");
-const { ItemsXLotsXConteiners } = require("../../../../../database/models/ItemsXLotsXConteiners");
+const { Stock_Entities } = require("../../../../../database/models/Stock_Entities");
+const { Items_X_Lots_X_Conteiners } = require("../../../../../database/models/Items_X_Lots_X_Conteiners");
 const { Lots } = require("../../../../../database/models/Lots");
 const { Conteiners } = require("../../../../../database/models/Conteiners");
-const { MeasurementsUnits } = require("../../../../../database/models/MeasurementsUnits");
+const { Measurement_Units } = require("../../../../../database/models/Measurement_Units");
 const { Packagings } = require("../../../../../database/models/Packagings");
-const { StocksEntitiesRelationshipsTypes } = require("../../../../../database/models/StocksEntitiesRelationshipsTypes");
-const { MovsXItemsStocks } = require("../../../../../database/models/MovsXItemsStocks");
-const { ItemsMovsAmounts } = require("../../../../../database/models/ItemsMovsAmounts");
+const { Stock_Entity_Relationship_Types } = require("../../../../../database/models/Stock_Entity_Relationship_Types");
+const { Movs_X_Items_Stocks } = require("../../../../../database/models/Movs_X_Items_Stocks");
+const { Item_Mov_Amounts } = require("../../../../../database/models/Item_Mov_Amounts");
 const { LogisticOrdersXItemsMovAmt } = require("../../../../../database/models/LogisticOrdersXItemsMovAmt");
 const { Utils } = require("../../../../utils/Utils");
 const { LogisticOrdersXMovs } = require("../../../../../database/models/LogisticOrdersXMovs");
@@ -26,14 +26,14 @@ const { LogisticOrdersWinthorIntegrationsController } = require("./winthor/Logis
 const { Parameter_Values } = require("../../../../../database/models/Parameter_Values");
 const { Parameters } = require("../../../../../database/models/Parameters");
 const { LogisticOrdersXMovsXReceiptValues } = require("../../../../../database/models/LogisticOrdersXMovsXReceiptValues");
-const { FinancialValueForms } = require("../../../../../database/models/FinancialValueForms");
-const { CurrenciesTypes } = require("../../../../../database/models/CurrenciesTypes");
-const { BusinessesUnits } = require("../../../../../database/models/BusinessesUnits");
+const { Financial_Value_Forms } = require("../../../../../database/models/Financial_Value_Forms");
+const { Currencies } = require("../../../../../database/models/Currencies");
+const { Business_Units } = require("../../../../../database/models/Business_Units");
 const { Warehouses } = require("../../../../../database/models/Warehouses");
 const { Clients } = require("../../../../../database/models/Clients");
 const { ClientsIntegrationsController } = require("../../../registers/people/clients/integrations/ClientsIntegrationsController");
 const { LogisticOrdersXDestValues } = require("../../../../../database/models/LogisticOrdersXDestValues");
-const { FinancialValueMovTypes } = require("../../../../../database/models/FinancialValueMovTypes");
+const { Financial_Value_Mov_Types } = require("../../../../../database/models/Financial_Value_Mov_Types");
 const { LogisticLogs } = require("../../../../../database/models/LogisticLogs");
 const { BaseEndPointController } = require("../../../../endpoints/BaseEndPointController");
 
@@ -72,17 +72,17 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
     }    
 
     static getFinancialValueFormID(idOnOrigin) {
-        let result = FinancialValueForms.MONEY;
+        let result = Financial_Value_Forms.MONEY;
         try {
             idOnOrigin = (idOnOrigin || '').toString().trim().toUpperCase();
             if (idOnOrigin.indexOf('CH') === 0) {
-                result = FinancialValueForms.CHECK;
+                result = Financial_Value_Forms.CHECK;
             } else if (idOnOrigin.indexOf('CD') === 0 || idOnOrigin.indexOf('CC') === 0 || idOnOrigin.indexOf('CT') === 0 || idOnOrigin.indexOf('CAR') === 0) {
-                result = FinancialValueForms.CARD;
+                result = Financial_Value_Forms.CARD;
             } else if (idOnOrigin.indexOf('PIX') === 0 || idOnOrigin.indexOf('PX') === 0) {
-                result = FinancialValueForms.PIX;
+                result = Financial_Value_Forms.PIX;
             } else if (idOnOrigin.indexOf('BOLET') > -1 || ['237','104','1299','1399','2399','748'].indexOf(idOnOrigin) > -1) {
-                result = FinancialValueForms.BOLET;
+                result = Financial_Value_Forms.BOLET;
             }
         } catch (e) {
             Utils.log(e);
@@ -145,7 +145,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                         codFilial = 1;
                     }
 
-                    let businessUnit = await BusinessesUnits.getModel().findOne({
+                    let businessUnit = await Business_Units.getModel().findOne({
                         raw:true,
                         where:{
                             id:codFilial
@@ -180,7 +180,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                             data_origin_id: data_origin_id,
                             id_at_origin:loadings[key].IDLOADORIGIN,
                             IDLOGISTICMOVTYPE: LogisticMovTypes.DELIVERY,
-                            IDIDENTIFIERTYPE: IdentifiersTypes.CODE,
+                            IDIDENTIFIERTYPE: Identifier_Types.CODE,
                             IDENTIFIER: loadings[key].IDLOADORIGIN,
                             IDLOGISTICSTATUS: loadings[key].IDSTATUSENTREGA
                         });
@@ -199,8 +199,8 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                             where:{
                                 data_origin_id: idOriginMov,
                                 IDBUSINESSUNIT: businessUnit.id,
-                                IDTYPEMOV: MovementsTypes.OUTPUT,
-                                IDIDENTIFIERTYPE: IdentifiersTypes.CODE,
+                                IDTYPEMOV: Movement_Types.OUTPUT,
+                                IDIDENTIFIERTYPE: Identifier_Types.CODE,
                                 IDENTIFIER: loadings[key].NOTASFISCAIS[kn].IDINVOICEORIGIN,
                             }
                         });
@@ -223,15 +223,15 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                             } else {
                                 client = client.data;
                             }
-                            let idFinancialValueForm = FinancialValueForms.getIdByIntegrationId(loadings[key].NOTASFISCAIS[kn].IDFINANCIALCOLLECTIONORIGIN||'');                            
+                            let idFinancialValueForm = Financial_Value_Forms.getIdByIntegrationId(loadings[key].NOTASFISCAIS[kn].IDFINANCIALCOLLECTIONORIGIN||'');                            
 
                             try {
                                 mov = await Movements.getModel().create({
                                     creator_user_id: req.user.id,
                                     data_origin_id: idOriginMov,
                                     id_at_origin: loadings[key].NOTASFISCAIS[kn].id_at_origin,
-                                    IDTYPEMOV: MovementsTypes.OUTPUT,
-                                    IDIDENTIFIERTYPE: IdentifiersTypes.CODE,
+                                    IDTYPEMOV: Movement_Types.OUTPUT,
+                                    IDIDENTIFIERTYPE: Identifier_Types.CODE,
                                     IDENTIFIER: loadings[key].NOTASFISCAIS[kn].IDINVOICEORIGIN,
                                     IDCOMPANY: company.id,
                                     IDWAREHOUSE: warehouse.id,
@@ -247,8 +247,8 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                         where:{
                                             data_origin_id: idOriginMov,
                                             IDBUSINESSUNIT: businessUnit.id,
-                                            IDTYPEMOV: MovementsTypes.OUTPUT,
-                                            IDIDENTIFIERTYPE: IdentifiersTypes.CODE,
+                                            IDTYPEMOV: Movement_Types.OUTPUT,
+                                            IDIDENTIFIERTYPE: Identifier_Types.CODE,
                                             IDENTIFIER: loadings[key].NOTASFISCAIS[kn].IDINVOICEORIGIN,
                                         }
                                     }); 
@@ -310,7 +310,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                             }
 
                             //stockEntity
-                            let stockEntity = await StocksEntities.getOrCreate({
+                            let stockEntity = await Stock_Entities.getOrCreate({
                                 raw:true,
                                 where:{
                                     IDCOMPANY: company.id,
@@ -343,7 +343,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                         },
                                         values:{
                                             creator_user_id: req.user.id,
-                                            IDIDENTIFIERTYPE: IdentifiersTypes.IDENTIFIER
+                                            IDIDENTIFIERTYPE: Identifier_Types.IDENTIFIER
                                         }
                                     });
                                     if (lot.success) {
@@ -368,7 +368,7 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
 
                             for(let kl in lots) {
                                 //itemXLotXConteiner
-                                let itemXLotXConteiner = await ItemsXLotsXConteiners.getOrCreate({
+                                let itemXLotXConteiner = await Items_X_Lots_X_Conteiners.getOrCreate({
                                     raw:true,
                                     where:{
                                         data_origin_id: item.data_origin_id,
@@ -388,14 +388,14 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                 }
                             
                                 //itemStock
-                                let itemStock = await ItemsStocks.getModel().findOne({
+                                let itemStock = await Item_Stocks.getModel().findOne({
                                     raw:true,
                                     where:{
                                         data_origin_id: itemXLotXConteiner.data_origin_id,
                                         IDITEMXLOTXCONTEINER: itemXLotXConteiner.id,
-                                        IDSTOCKRELATIONSHIPTYPE: StocksEntitiesRelationshipsTypes.OWNER,
+                                        IDSTOCKRELATIONSHIPTYPE: Stock_Entity_Relationship_Types.OWNER,
                                         IDSTOCKENTITY: stockEntity.id,
-                                        IDMEASUREMENTUNIT: MeasurementsUnits[loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE] || MeasurementsUnits.KG,
+                                        IDMEASUREMENTUNIT: Measurement_Units[loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE] || Measurement_Units.KG,
                                         IDPACKAGING: Packagings[loadings[key].NOTASFISCAIS[kn].ITEMS[ki].EMBALAGEM] || Packagings.BOX/*,
                                         [Sequelize.Op.and]:[
                                             Sequelize.where(
@@ -406,13 +406,13 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                     }
                                 });
                                 if (!itemStock) {
-                                    itemStock = await ItemsStocks.getModel().create({
+                                    itemStock = await Item_Stocks.getModel().create({
                                         creator_user_id: req.user.id,
                                         data_origin_id: itemXLotXConteiner.data_origin_id,
                                         IDITEMXLOTXCONTEINER: itemXLotXConteiner.id,
-                                        IDSTOCKRELATIONSHIPTYPE: StocksEntitiesRelationshipsTypes.OWNER,
+                                        IDSTOCKRELATIONSHIPTYPE: Stock_Entity_Relationship_Types.OWNER,
                                         IDSTOCKENTITY: stockEntity.id,
-                                        IDMEASUREMENTUNIT: MeasurementsUnits[loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE] || MeasurementsUnits.KG,
+                                        IDMEASUREMENTUNIT: Measurement_Units[loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE] || Measurement_Units.KG,
                                         IDPACKAGING: Packagings[loadings[key].NOTASFISCAIS[kn].ITEMS[ki].EMBALAGEM] || Packagings.BOX/*,
                                         UNITWEIGHT: Utils.toNumber(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE == 'KG' ? 1 : loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN)*/
                                     });
@@ -420,12 +420,12 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                 }                                
 
                                 //movXItemStock
-                                let movXItemStock = await MovsXItemsStocks.getOrCreate({
+                                let movXItemStock = await Movs_X_Items_Stocks.getOrCreate({
                                     raw:true,
                                     where:{
                                         data_origin_id: itemStock.data_origin_id,
                                         IDMOV: mov.id,
-                                        IDTYPEMOV: MovementsTypes.OUTPUT,
+                                        IDTYPEMOV: Movement_Types.OUTPUT,
                                         IDITEMSTOCK: itemStock.id
                                     }, 
                                     values:{
@@ -441,11 +441,11 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
 
                                 
 
-                                let itemMovAmt = await ItemsMovsAmounts.saveOrCreate({
+                                let itemMovAmt = await Item_Mov_Amounts.saveOrCreate({
                                     where:{
                                         data_origin_id: movXItemStock.data_origin_id,
                                         IDMOVXITEMSTOCK: movXItemStock.id,
-                                        IDTYPEMOV: MovementsTypes.OUTPUT,
+                                        IDTYPEMOV: Movement_Types.OUTPUT,
                                         IDMEASUREMENTUNIT: itemStock.IDMEASUREMENTUNIT,
                                         IDPACKAGING: itemStock.IDPACKAGING/*,
                                         [Sequelize.Op.and]:[
@@ -535,11 +535,11 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                             },{
                                                 IDFINANCIALVALUEFORM: this.getFinancialValueFormID(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].IDFINANCIALCOLLECTIONORIGIN)
                                             },{
-                                                IDCURRENCYTYPEEXPECTED: CurrenciesTypes.BRL
+                                                IDCURRENCYTYPEEXPECTED: Currencies.BRL
                                             },{
                                                 ORDERNUM: loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].ORDERNUM || 1
                                             },{
-                                                IDCURRENCYTYPERECEIVED: CurrenciesTypes.BRL
+                                                IDCURRENCYTYPERECEIVED: Currencies.BRL
                                             }
                                         ]
                                     }]
@@ -550,9 +550,9 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
                                     IDLOGISTICORDER: logisticOrder.id,
                                     IDLOGISTICORDERXMOV: logisticOrderXMov.id,
                                     IDFINANCIALVALUEFORM: this.getFinancialValueFormID(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].IDFINANCIALCOLLECTIONORIGIN),
-                                    IDCURRENCYTYPEEXPECTED: CurrenciesTypes.BRL,
+                                    IDCURRENCYTYPEEXPECTED: Currencies.BRL,
                                     ORDERNUM: loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].ORDERNUM || 1,   
-                                    IDCURRENCYTYPERECEIVED: CurrenciesTypes.BRL,
+                                    IDCURRENCYTYPERECEIVED: Currencies.BRL,
                                     EXPECTEDVALUE: Utils.toNumber(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].VLARECEBER || 0),
                                     RECEIVEDVALUE: Utils.toNumber(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].RECEIPTEDVALUE || 0),
                                     RECEIVED_AT: loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].RECEBIDOEM,
@@ -580,8 +580,8 @@ class LogisticOrdersIntegrationsController extends BaseEndPointController{
 
                     for(let kd in loadings[key].DESTINACAOVALORES || []) {
 
-                        let idFinValForm = FinancialValueForms.getIdByIntegrationId(loadings[key].DESTINACAOVALORES[kd].IDFINANCIALCOLLECTIONORIGIN || 'D');
-                        let idFinValMovType = FinancialValueMovTypes.getIdByIntegrationId(loadings[key].DESTINACAOVALORES[kd].FORMA || 'DEPÓSITO');
+                        let idFinValForm = Financial_Value_Forms.getIdByIntegrationId(loadings[key].DESTINACAOVALORES[kd].IDFINANCIALCOLLECTIONORIGIN || 'D');
+                        let idFinValMovType = Financial_Value_Mov_Types.getIdByIntegrationId(loadings[key].DESTINACAOVALORES[kd].FORMA || 'DEPÓSITO');
 
                         let logDestVal = await LogisticOrdersXDestValues.getModel().findOne({
                             where:{

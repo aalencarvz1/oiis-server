@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const { Users } = require("../../database/models/Users");
 const { Access_Profiles } = require("../../database/models/Access_Profiles");
 const { Utils } = require("../utils/Utils");
-const { UsersTokens } = require("../../database/models/UsersTokens");
+const { User_Tokens } = require("../../database/models/User_Tokens");
 const { createTransport } = require("nodemailer");
 const config = require("../../config");
 const validator = require("email-validator");
@@ -64,7 +64,7 @@ class AuthController extends RegistersController{
         user.LASTTIMEZONEOFFSET = body?.currentTimeZoneOffset || 0;
         await user.save();
 
-        let userToken = await UsersTokens.getModel().findOne({
+        let userToken = await User_Tokens.getModel().findOne({
             where:{
                 IDUSER: user.id,
                 TOKEN: token            
@@ -72,7 +72,7 @@ class AuthController extends RegistersController{
         })
         if (!Utils.hasValue(userToken)) {
             try {
-                await UsersTokens.getModel().create({
+                await User_Tokens.getModel().create({
                     IDUSER: user.id,
                     TOKEN: token,
                     TIMEZONEOFFSET: user.LASTTIMEZONEOFFSET
@@ -143,7 +143,7 @@ class AuthController extends RegistersController{
             user.LASTTIMEZONEOFFSET = req.body?.currentTimeZoneOffset || 0;
             await user.save();
 
-            let userToken = await UsersTokens.getModel().findOne({
+            let userToken = await User_Tokens.getModel().findOne({
                 where:{
                     IDUSER: user.id,
                     TOKEN: token            
@@ -152,7 +152,7 @@ class AuthController extends RegistersController{
             Utils.log('usertoekn',userToken);
             if (!userToken) {
                 try {
-                    await UsersTokens.getModel().create({
+                    await User_Tokens.getModel().create({
                         IDUSER: user.id,
                         TOKEN: token,
                         TIMEZONEOFFSET: user.LASTTIMEZONEOFFSET
@@ -200,7 +200,7 @@ class AuthController extends RegistersController{
         user.LASTTIMEZONEOFFSET = req.body?.currentTimeZoneOffset || 0;
         await user.save();
 
-        await UsersTokens.getModel().create({
+        await User_Tokens.getModel().create({
             IDUSER: user.id,
             TOKEN: token,
             TIMEZONEOFFSET: user.LASTTIMEZONEOFFSET

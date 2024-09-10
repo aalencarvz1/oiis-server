@@ -3,7 +3,7 @@
 const { LogisticStatus } = require('../models/LogisticStatus');
 const { Modules } = require('../models/Modules');
 const { Data_Origins } = require('../models/Data_Origins');
-const { StatusRegs } = require('../models/StatusRegs');
+const { Record_Status } = require('../models/Record_Status');
 const { Users } = require('../models/Users');
 
 /** @type {import('sequelize-cli').Migration} */
@@ -11,7 +11,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {    
     await queryInterface.bulkInsert(LogisticStatus.tableName,[{
       id: LogisticStatus.TO_DELIVERY,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -20,7 +20,7 @@ module.exports = {
       ISTODELIVERY:1
     },{
       id: LogisticStatus.DELIVERING,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -29,7 +29,7 @@ module.exports = {
       ISDELIVERING:1
     },{
       id: LogisticStatus.DELIVERED,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -38,7 +38,7 @@ module.exports = {
       ISDELIVERED:1
     },{
       id: LogisticStatus.PARTIAL_RETURNED,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -47,7 +47,7 @@ module.exports = {
       ISPARTIALRETURNED:1,
     },{
       id: LogisticStatus.TOTAL_RETURNED,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,

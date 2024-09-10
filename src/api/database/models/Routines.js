@@ -3,7 +3,7 @@
 /*imports*/
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
-const { RoutinesTypes } = require("./RoutinesTypes");
+const { Routine_Types } = require("./Routine_Types");
 const { Modules } = require("./Modules");
 
 
@@ -86,7 +86,7 @@ class Routines extends BaseTableModel {
       fields: ['IDROUTINETYPE'],
       type: 'foreign key',
       references: { 
-          table: RoutinesTypes,
+          table: Routine_Types,
           field: 'id'
       },
       onUpdate: 'cascade'

@@ -15,12 +15,12 @@ const { Parameter_Values } = require("../../../../../../database/models/Paramete
 const { PcEmpr } = require("../../../../../../database/models/winthor/PcEmpr");
 const { PcVeicul } = require("../../../../../../database/models/winthor/PcVeicul");
 const { Parameters } = require("../../../../../../database/models/Parameters");
-const { IdentifiersTypes } = require("../../../../../../database/models/IdentifiersTypes");
+const { Identifier_Types } = require("../../../../../../database/models/Identifier_Types");
 const { LogisticMovTypes } = require("../../../../../../database/models/LogisticMovTypes");
 const { Users } = require("../../../../../../database/models/Users");
 const { WinthorIntegrationsRegistersController } = require("../../../../registers/integrations/winthor/WinthorIntegrationsRegistersController");
-const { DatasRelationships } = require("../../../../../../database/models/DatasRelationships");
-const { StatusRegs } = require("../../../../../../database/models/StatusRegs");
+const { Relationships } = require("../../../../../../database/models/Relationships");
+const { Record_Status } = require("../../../../../../database/models/Record_Status");
 const { BaseEndPointController } = require("../../../../../endpoints/BaseEndPointController");
 
 
@@ -382,7 +382,7 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                             data_origin_id: Data_Origins.WINTHOR,
                             id_at_origin:el,
                             IDLOGISTICMOVTYPE: LogisticMovTypes.DELIVERY,
-                            IDIDENTIFIERTYPE: IdentifiersTypes.CODE,
+                            IDIDENTIFIERTYPE: Identifier_Types.CODE,
                             IDENTIFIER: el,
                             IDLOGISTICSTATUS: LogisticStatus.TO_DELIVERY
                         }
@@ -423,13 +423,13 @@ class LogisticOrdersWinthorIntegrationsController extends BaseEndPointController
                 }
 
                 //check relationship PCCARREG (codmotorista) for olny allow download with relationed driver
-                let dataRels = await DatasRelationships.getModel().findAll({
+                let dataRels = await Relationships.getModel().findAll({
                     raw:true,
                     where:{
                         IDTABLE1: Users.id,
                         IDREG1: req.user.id,
                         IDTABLE2: PcCarreg.id,
-                        status_reg_id: StatusRegs.ACTIVE
+                        status_reg_id: Record_Status.ACTIVE
                     }
                 });
                 if (dataRels && dataRels.length) {

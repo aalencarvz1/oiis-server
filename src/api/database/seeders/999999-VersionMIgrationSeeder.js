@@ -52,12 +52,213 @@ let oldTables = {
   data_origins:{
     tableName:"ORIGINSDATAS"
   },
+  record_status:{
+    tableName:"STATUSREGS"
+  },
+  sync_status:{
+    tableName:"STATUSSYNC"
+  },
+  run_status:{
+    tableName:"STATUSRUN"
+  },
+  identifier_types:{
+    tableName:"IDENTIFIERSTYPES"
+  },  
+  measurement_units:{
+    tableName:"MEASUREMENTSUNITS"
+  },  
   access_profiles:{
     tableName:"ACCESSESPROFILES"
   },  
+  user_tokens:{
+    tableName:"USERSTOKENS"
+  },  
+  user_profile_timeworks:{
+    tableName:"USERSPROFILESTIMESWORK"
+  },  
+  user_timeworks:{
+    tableName:"USERSTIMESWORK"
+  },    
+  routine_types:{
+    tableName:"ROUTINESTYPES"
+  }, 
+  routine_contents:{
+    tableName:"ROUTINESCONTENT"
+  },    
+  relationship_types:{
+    tableName:"DATARELATIONSHIPTYPES"
+  },    
+  relationship_values:{
+    tableName:"DATASRELATIONSHIPSVALUES"
+  },    
+  relationships:{
+    tableName:"DATASRELATIONSHIPS"
+  },    
+  contract_types:{
+    tableName:"CONTRACTSTYPES"
+  },    
+  currencies:{
+    tableName:"CURRENCIESTYPES"
+  },    
+  form_types:{
+    tableName:"FORMSTYPES"
+  },    
+  financial_value_forms:{
+    tableName:"FINANCIALVALUEFORMS"
+  },    
+  financial_value_localization_types:{
+    tableName:"FINANCIALVALUELOCALIZATIONSTYPES"
+  },     
+  financial_value_mov_types:{
+    tableName:"FINANCIALVALUEMOVTYPES"
+  },      
+  street_types:{
+    tableName:"STREETTYPES"
+  },        
   address_types:{
     tableName:"ADDRESSESTYPES"
   },
+  postal_codes:{
+    tableName:"POSTALCODES"
+  },
+  postal_codes_x_streets:{
+    tableName:"POSTALCODESXSTREETS"
+  },
+  postal_codes_x_paths:{
+    tableName:"POSTALCODESXPATHS"
+  },
+  contact_types:{
+    tableName:"CONTACTSTYPES"
+  },
+  people_x_addresses:{
+    tableName:"PEOPLEXADDRESSES"
+  },
+  people_x_contacts:{
+    tableName:"PEOPLEXCONTACTS"
+  },
+  business_units:{
+    tableName:"BUSINESSESUNITS"
+  },
+  warehouse_address_types:{
+    tableName: "WAREHOUSESADDRESSESTYPES"
+  },
+  warehouse_addresses:{
+    tableName:"WAREHOUSESADDRESSES"
+  },  
+  warehouse_address_coordinates:{
+    tableName:"WAREHOUSESADDRESSESCOORDINATES"
+  },  
+  warehouse_address_dimensions:{
+    tableName:"WAREHOUSESADDRESSESDIMENSIONS"
+  },  
+  warehouse_address_capacities:{
+    tableName:"WAREHOUSESADDRESSESCAPACITIES"
+  },    
+  collaborator_functions:{
+    tableName:"COLLABORATORSFUNCTIONS"
+  },    
+  collaborator_contracts:{
+    tableName:"COLLABORATORSCONTRACTS"
+  },      
+  collaborators_x_functions:{
+    tableName:"COLLABORATORSXFUNCTIONS"
+  },      
+  power_types:{
+    tableName:"POWERSTYPES"
+  },        
+  condiction_items:{
+    tableName:"CONDICTIONSITEMS"
+  },      
+  conteiner_types:{
+    tableName:"CONTEINERSTYPES"
+  },      
+  conteiner_type_dimensions:{
+    tableName:"CONTEINERSTYPESDIMENSIONS"
+  },      
+  conteiner_type_capacities:{
+    tableName:"CONTEINERSTYPESCAPACITIES"
+  },          
+  gtin_types:{
+    tableName:"GTINSTYPES"
+  },      
+  item_status:{
+    tableName:"ITEMSSTATUS"
+  },
+  items_x_lots_x_conteiners:{
+    tableName:"ITEMSXLOTSXCONTEINERS"
+  },
+  stock_entity_relationship_types:{
+    tableName:"STOCKSENTITIESRELATIONSHIPSTYPES"
+  },
+  stock_entities:{
+    tableName:"STOCKSENTITIES"
+  },
+  item_stock_units:{
+    tableName:"ITEMSSTOCKSUNITS"
+  },  
+  item_stocks:{
+    tableName:"ITEMSSTOCKS"
+  },       
+  item_x_meas_x_pack_x_identif:{
+    tableName:"ITEMSXMEAXPACKXIDENTIF"
+  },    
+  movement_types:{
+    tableName:"MOVEMENTSTYPES"
+  },    
+  movement_status:{
+    tableName:"MOVEMENTSSTATUS"
+  },
+  conference_types:{
+    tableName:"CONFERENCESTYPES"
+  },  
+  movs_x_items_stocks:{
+    tableName:"MOVSXITEMSSTOCKS"
+  },    
+  movement_groups:{
+    tableName:"GROUPSMOVEMENTS"
+  },      
+  movements_x_groups:{
+    tableName:"GROUPEDSMOVEMENTS"
+  },      
+  movement_entity_relationship_types:{
+    tableName:"MOVEMENTSENTITIESRELATIONSHIPSTYPES"
+  },  
+  movements_x_entities:{
+    tableName:"MOVEMENTSXENTITIES"
+  },  
+  item_mov_amount_restrictions:{
+    tableName:"ITEMSMOVSAMOUNTSRESTRICTIONS"
+  },  
+  item_mov_amounts:{
+    tableName:"ITEMSMOVSAMOUNTS"
+  },   
+  item_mov_units:{
+    tableName:"ITEMSMOVSUNITS"
+  },     
+  item_mov_xml_import_id_conversions:{
+    tableName:"ITEMSMOVSXMLIMPORTIDSCONVERSIONS"
+  },     
+  commission_entitiy_codes:{
+    tableName:"COMMISSIONSENTITIESCODES"
+  },
+  commission_items:{
+    tableName:"COMMISSIONSITEMS"
+  },  
+  commission_values:{
+    tableName:"COMMISSIONSVALUES"
+  },  
+  sql_object_types:{
+    tableName:"SQLOBJECTSTYPES"
+  },      
+  sql_processes:{
+    tableName:"SQLPROCESSES"
+  },    
+  report_visions:{
+    tableName:"REPORTSVISIONS"
+  },   
+  sql_objects:{
+    tableName:"SQLOBJECTS"
+  },      
   api_requests:{
     tableName:"APISREQUESTS"
   },
@@ -66,14 +267,10 @@ let oldTables = {
   },
   api_responses:{
     tableName:"APISRESPONSES"
-  },
-  
+  },  
   maps_api_responses:{
     tableName:"APISMAPSRESPONSES"
-  },
-  warehouse_address_types:{
-    tableName: "WAREHOUSESADDRESSESTYPES"
-  }
+  }  
 }
 
 module.exports = {

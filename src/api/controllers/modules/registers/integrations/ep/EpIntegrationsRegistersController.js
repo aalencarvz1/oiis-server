@@ -1,11 +1,11 @@
 const { Sequelize, Op } = require("sequelize");
 const { Utils } = require("../../../../utils/Utils");
-const { IdentifiersTypes } = require("../../../../../database/models/IdentifiersTypes");
+const { Identifier_Types } = require("../../../../../database/models/Identifier_Types");
 const { EpPessoas } = require("../../../../../database/models/ep/EpPessoas");
 const { EpClientes } = require("../../../../../database/models/ep/EpClientes");
 const { Data_Origins } = require("../../../../../database/models/Data_Origins");
-const { DatasRelationships } = require("../../../../../database/models/DatasRelationships");
-const { DataRelationshipTypes } = require("../../../../../database/models/DataRelationshipTypes");
+const { Relationships } = require("../../../../../database/models/Relationships");
+const { Relationship_Types } = require("../../../../../database/models/Relationship_Types");
 const { Users } = require("../../../../../database/models/Users");
 const { Access_Profiles } = require("../../../../../database/models/Access_Profiles");
 const { EpVendedores } = require("../../../../../database/models/ep/EpVendedores");
@@ -83,7 +83,7 @@ class EpIntegrationsRegistersController extends RegistersController{
                         ['COD','id'],
                         [Sequelize.literal(`${Data_Origins.EP}`),'data_origin_id'],
                         ['COD','id_at_origin'],
-                        [Sequelize.literal(`case when EPPESSOAS.CODTIPODOCIDENTIFICADOR = 1 AND LENGTH(EPPESSOAS.CODDOCIDENTIFICADOR) <= 11 then ${IdentifiersTypes.CPF} else ${IdentifiersTypes.CNPJ} end`),'IDIDENTIFIERDOCTYPE'],
+                        [Sequelize.literal(`case when EPPESSOAS.CODTIPODOCIDENTIFICADOR = 1 AND LENGTH(EPPESSOAS.CODDOCIDENTIFICADOR) <= 11 then ${Identifier_Types.CPF} else ${Identifier_Types.CNPJ} end`),'IDIDENTIFIERDOCTYPE'],
                         [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CODDOCIDENTIFICADOR'),'[^0-9]',''),'DECIMAL(32)'),'IDENTIFIERDOC'],
                         ['NOMERAZAO','name'],
                         ['FANTASIA','FANTASY']
@@ -193,10 +193,10 @@ class EpIntegrationsRegistersController extends RegistersController{
     static async getRcasCodes(req) {
         let rcas = null;
         if (req?.user.IDACCESSPROFILE == Access_Profiles.SUPERVISOR) {
-            let dataRel = await DatasRelationships.getModel().findAll({
+            let dataRel = await Relationships.getModel().findAll({
                 raw:true,
                 where:{
-                    IDRELATIONSHIPTYPE: [DataRelationshipTypes.EP_ID],
+                    IDRELATIONSHIPTYPE: [Relationship_Types.EP_ID],
                     IDTABLE1: Users.id,
                     IDREG1: req.user.id,
                     IDTABLE2: EpTrabalhadores.id
@@ -228,10 +228,10 @@ class EpIntegrationsRegistersController extends RegistersController{
                 }
             }
         } else {
-            let dataRel = await DatasRelationships.getModel().findAll({
+            let dataRel = await Relationships.getModel().findAll({
                 raw:true,
                 where:{
-                    IDRELATIONSHIPTYPE: [DataRelationshipTypes.EP_ID],
+                    IDRELATIONSHIPTYPE: [Relationship_Types.EP_ID],
                     IDTABLE1: Users.id,
                     IDREG1: req?.user.id ,
                     IDTABLE2: EpVendedores.id

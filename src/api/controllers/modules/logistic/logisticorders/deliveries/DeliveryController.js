@@ -7,7 +7,7 @@ const DBConnectionManager = require('../../../../../database/DBConnectionManager
 const { LogisticOrdersXMovs } = require('../../../../../database/models/LogisticOrdersXMovs');
 const { Utils } = require('../../../../utils/Utils');
 const { Movements } = require('../../../../../database/models/Movements');
-const { FinancialValueForms } = require('../../../../../database/models/FinancialValueForms');
+const { Financial_Value_Forms } = require('../../../../../database/models/Financial_Value_Forms');
 const { RegistersController } = require('../../../registers/RegistersController');
 
 /**
@@ -91,9 +91,9 @@ class DeliveryController extends RegistersController{
                         COALESCE(lim.NOTMOVIMENTEDAMT,0)                                      
                         * COALESCE(ima.UNITVALUE,0)
                     ) AS VALUERETURNED,                            
-                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.MONEY} THEN m.id ELSE NULL END) AS DNFSARECEBER,
+                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.MONEY} THEN m.id ELSE NULL END) AS DNFSARECEBER,
                     SUM(
-                        CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.MONEY} THEN
+                        CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.MONEY} THEN
                             (
                                 COALESCE(lim.EXPECTEDAMT,0) 
                                 - COALESCE(lim.NOTMOVIMENTEDAMT,0)
@@ -101,7 +101,7 @@ class DeliveryController extends RegistersController{
                         ELSE 0 END
                     ) AS DARECEBER,
                     (SELECT
-                        COUNT(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.MONEY} then lxm.IDMOV else null end)
+                        COUNT(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.MONEY} then lxm.IDMOV else null end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
                         join LogisticOrdersXMovs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
@@ -110,7 +110,7 @@ class DeliveryController extends RegistersController{
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS QTMOVMONEYRECEIVED,
                     (SELECT
-                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.MONEY} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
+                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.MONEY} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
                         join LogisticOrdersXMovs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
@@ -118,9 +118,9 @@ class DeliveryController extends RegistersController{
                         lxm.IDLOGISTICORDER = l.id
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS MONEYRECEIVED,
-                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.CARD} THEN m.id ELSE NULL END) AS CARTAONFSARECEBER,
+                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CARD} THEN m.id ELSE NULL END) AS CARTAONFSARECEBER,
                     SUM(
-                        CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.CARD} THEN
+                        CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CARD} THEN
                             (
                                 COALESCE(lim.EXPECTEDAMT,0) 
                                 - COALESCE(lim.NOTMOVIMENTEDAMT,0)
@@ -128,7 +128,7 @@ class DeliveryController extends RegistersController{
                         ELSE 0 END
                     ) AS CARTAOARECEBER,
                     (SELECT
-                        COUNT(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.CARD} then lxm.IDMOV else null end)
+                        COUNT(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CARD} then lxm.IDMOV else null end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
                         join LogisticOrdersXMovs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
@@ -137,7 +137,7 @@ class DeliveryController extends RegistersController{
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS QTMOVCARDRECEIVED,
                     (SELECT
-                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.CARD} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
+                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CARD} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
                         join LogisticOrdersXMovs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
@@ -145,9 +145,9 @@ class DeliveryController extends RegistersController{
                         lxm.IDLOGISTICORDER = l.id
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS CARDRECEIVED,
-                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.CHECK} THEN m.id ELSE NULL END) AS CHEQUENFSARECEBER,
+                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CHECK} THEN m.id ELSE NULL END) AS CHEQUENFSARECEBER,
                     SUM(
-                        CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.CHECK} THEN
+                        CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CHECK} THEN
                             (
                                 COALESCE(lim.EXPECTEDAMT,0) 
                                 - COALESCE(lim.NOTMOVIMENTEDAMT,0)
@@ -155,7 +155,7 @@ class DeliveryController extends RegistersController{
                         ELSE 0 END
                     ) AS CHEQUEARECEBER,
                     (SELECT
-                        COUNT(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.CHECK} then lxm.IDMOV else null end)
+                        COUNT(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CHECK} then lxm.IDMOV else null end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
                         join LogisticOrdersXMovs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
@@ -164,7 +164,7 @@ class DeliveryController extends RegistersController{
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS QTMOVCHECKRECEIVED,
                     (SELECT
-                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.CHECK} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
+                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CHECK} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
                         join LogisticOrdersXMovs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
@@ -172,9 +172,9 @@ class DeliveryController extends RegistersController{
                         lxm.IDLOGISTICORDER = l.id
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS CHECKRECEIVED,
-                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.PIX} THEN m.id ELSE NULL END) AS PIXNFSARECEBER,
+                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.PIX} THEN m.id ELSE NULL END) AS PIXNFSARECEBER,
                     SUM(
-                        CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.PIX} THEN
+                        CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.PIX} THEN
                             (
                                 COALESCE(lim.EXPECTEDAMT,0) 
                                 - COALESCE(lim.NOTMOVIMENTEDAMT,0)
@@ -182,7 +182,7 @@ class DeliveryController extends RegistersController{
                         ELSE 0 END
                     ) AS PIXARECEBER,
                     (SELECT
-                        COUNT(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.PIX} then lxm.IDMOV else null end)
+                        COUNT(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.PIX} then lxm.IDMOV else null end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
                         join LogisticOrdersXMovs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
@@ -191,7 +191,7 @@ class DeliveryController extends RegistersController{
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS QTMOVPIXRECEIVED,
                     (SELECT
-                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.PIX} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
+                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.PIX} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
                         join LogisticOrdersXMovs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
@@ -206,7 +206,7 @@ class DeliveryController extends RegistersController{
                     LEFT OUTER JOIN logisticstatus ls on ls.id = lm.IDLOGISTICSTATUS
                     LEFT OUTER JOIN Movements m on m.id = lm.IDMOV
                     LEFT OUTER JOIN logisticordersxitemsmovamt lim on lim.IDLOGISTICORDERXMOV = lm.id
-                    LEFT OUTER JOIN itemsmovsamounts ima on ima.id = lim.IDITEMMOVAMT                            
+                    LEFT OUTER JOIN item_mov_amounts ima on ima.id = lim.IDITEMMOVAMT                            
                 ${where || ''}
                 group by
                     ${Object.keys(LogisticOrders.fields).map(el=>`l.${el}`).join(',')},
@@ -414,11 +414,11 @@ class DeliveryController extends RegistersController{
                 from
                     movements m
                     join logisticordersxmovs lxm on lxm.idmov = m.id
-                    join movsxitemsstocks mxis on mxis.idmov = m.id
-                    join itemsstocks ist on ist.id = mxis.iditemstock
-                    join ItemsXLotsXConteiners ix on ix.id = ist.iditemxlotxconteiner
+                    join movs_x_items_stocks mxis on mxis.idmov = m.id
+                    join item_stocks ist on ist.id = mxis.iditemstock
+                    join Items_X_Lots_X_Conteiners ix on ix.id = ist.iditemxlotxconteiner
                     join items i on i.id = ix.iditem
-                    join itemsmovsamounts im on im.idmovxitemstock = mxis.id
+                    join item_mov_amounts im on im.idmovxitemstock = mxis.id
                     join logisticordersxitemsmovamt lxim on lxim.idlogisticorderxmov = lxm.id and lxim.iditemmovamt = im.id                        
                     left outer join logisticstatus ls on ls.id = lxim.IDLOGISTICSTATUS
                     left outer join logisticreasons lr on lr.id = lxim.IDREASONNOTMOVIMENTEDAMT
@@ -588,7 +588,7 @@ class DeliveryController extends RegistersController{
                         * coalesce(im.UNITVALUE,0)
                     ) AS VALUERETURNED,
                     SUM(
-                        CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.MONEY} THEN
+                        CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.MONEY} THEN
                             (
                                 COALESCE(lxim.EXPECTEDAMT,0) 
                                 - COALESCE(lxim.NOTMOVIMENTEDAMT,0)
@@ -596,7 +596,7 @@ class DeliveryController extends RegistersController{
                         ELSE 0 END
                     ) AS MONEY,
                     (SELECT
-                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.MONEY} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
+                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.MONEY} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
                     WHERE
@@ -604,7 +604,7 @@ class DeliveryController extends RegistersController{
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS MONEYRECEIVED,
                     SUM(
-                        CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.CARD} THEN
+                        CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CARD} THEN
                             (
                                 COALESCE(lxim.EXPECTEDAMT,0) 
                                 - COALESCE(lxim.NOTMOVIMENTEDAMT,0)
@@ -612,7 +612,7 @@ class DeliveryController extends RegistersController{
                         ELSE 0 END
                     ) AS CARD,
                     (SELECT
-                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.CARD} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
+                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CARD} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
                     WHERE
@@ -620,7 +620,7 @@ class DeliveryController extends RegistersController{
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS CARDRECEIVED,
                     SUM(
-                        CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.CHECK} THEN
+                        CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CHECK} THEN
                             (
                                 COALESCE(lxim.EXPECTEDAMT,0) 
                                 - COALESCE(lxim.NOTMOVIMENTEDAMT,0)
@@ -628,7 +628,7 @@ class DeliveryController extends RegistersController{
                         ELSE 0 END
                     ) AS "CHECK",
                     (SELECT
-                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.CHECK} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
+                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CHECK} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
                     WHERE
@@ -636,7 +636,7 @@ class DeliveryController extends RegistersController{
                         and coalesce(lxmr.RECEIVEDVALUE,0) > 0
                     ) AS CHECKRECEIVED,
                     SUM(
-                        CASE WHEN m.IDFINANCIALVALUEFORM = ${FinancialValueForms.PIX} THEN
+                        CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.PIX} THEN
                             (
                                 COALESCE(lxim.EXPECTEDAMT,0) 
                                 - COALESCE(lxim.NOTMOVIMENTEDAMT,0)
@@ -644,7 +644,7 @@ class DeliveryController extends RegistersController{
                         ELSE 0 END
                     ) AS PIX,
                     (SELECT
-                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${FinancialValueForms.PIX} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
+                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.PIX} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
                     FROM
                         LogisticOrdersXMovsXReceiptValues lxmr
                     WHERE
@@ -658,13 +658,13 @@ class DeliveryController extends RegistersController{
                     left outer join Data_Origins o on o.id = m.data_origin_id
                     left outer join Clients c on c.id = m.idclient
                     left outer join People p on p.id = c.idpeople
-                    left outer join FinancialValueForms rt on rt.id = m.IDFINANCIALVALUEFORM
+                    left outer join Financial_Value_Forms rt on rt.id = m.IDFINANCIALVALUEFORM
                     left outer join Collaborators cl on cl.id = m.idseller
                     left outer join People ps on ps.id = cl.idpeople
-                    left outer join movsxitemsstocks mxis on mxis.IDMOV = m.id
-                    left outer join itemsmovsamounts im on im.IDMOVXITEMSTOCK = mxis.id
-                    left outer join itemsstocks ist on ist.id = mxis.IDITEMSTOCK
-                    left outer join ItemsXLotsXConteiners ix on ix.id = ist.IDITEMXLOTXCONTEINER
+                    left outer join movs_x_items_stocks mxis on mxis.IDMOV = m.id
+                    left outer join item_mov_amounts im on im.IDMOVXITEMSTOCK = mxis.id
+                    left outer join item_stocks ist on ist.id = mxis.IDITEMSTOCK
+                    left outer join Items_X_Lots_X_Conteiners ix on ix.id = ist.IDITEMXLOTXCONTEINER
                     left outer join items i on i.id = iX.IDITEM
                     left outer join logisticordersxitemsmovamt lxim on (
                         lxim.IDLOGISTICORDERXMOV = lxm.id
@@ -899,9 +899,9 @@ class DeliveryController extends RegistersController{
                         join movements m on m.id = lxm.idmov
                         join clients c on c.id = m.idclient
                         join people p on p.id = c.idpeople
-                        left outer join peoplexaddresses x on x.IDPEOPLE = p.id
+                        left outer join people_x_addresses x on x.IDPEOPLE = p.id
                         left outer join addresses a on a.id = x.idaddress
-                        left outer join postalcodes pc on pc.id = a.idpostalcode
+                        left outer join postal_codes pc on pc.id = a.idpostalcode
                         left outer join neighborhoods nb on nb.id = a.IDNEIGHBORHOOD
                         left outer join streets st on st.id = a.idstreet    
                         left outer join cities ct on ct.id = coalesce(st.IDCITY,nb.idcity,pc.idcity)

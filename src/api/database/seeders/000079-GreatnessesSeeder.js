@@ -3,7 +3,7 @@
 const { Greatnesses } = require('../models/Greatnesses');
 const { Modules } = require('../models/Modules');
 const { Data_Origins } = require('../models/Data_Origins');
-const { StatusRegs } = require('../models/StatusRegs');
+const { Record_Status } = require('../models/Record_Status');
 const { Users } = require('../models/Users');
 
 /** @type {import('sequelize-cli').Migration} */
@@ -11,7 +11,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {    
     await queryInterface.bulkInsert(Greatnesses.tableName,[{
       id: Greatnesses.QUANTITY,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -21,7 +21,7 @@ module.exports = {
       ISSCALAR:1
     },{
       id: Greatnesses.MASS,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -31,7 +31,7 @@ module.exports = {
       ISSCALAR:1
     },{
       id: Greatnesses.VOLUM,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -41,7 +41,7 @@ module.exports = {
       ISSCALAR:1
     },{
       id: Greatnesses.LENGTH,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,

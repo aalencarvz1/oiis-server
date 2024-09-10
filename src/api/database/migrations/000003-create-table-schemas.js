@@ -6,7 +6,7 @@ const { Schemas } = require('../models/Schemas.js');
 const { Tables } = require('../models/Tables.js');
 const configDB  = require("../config/config.js");
 const { Data_Origins } = require('../models/Data_Origins.js');
-const { StatusRegs } = require('../models/StatusRegs.js');
+const { Record_Status } = require('../models/Record_Status.js');
 const { Users } = require('../models/Users.js');
 /** @type {import('sequelize-cli').Migration} */
 
@@ -16,7 +16,7 @@ module.exports = {
     await Schemas.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});           
     await queryInterface.bulkInsert(Schemas.tableName,[{      
       id:configDB[`${process.env.NODE_ENV||'development'}`].id,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -25,7 +25,7 @@ module.exports = {
       ISDEFAULT : 1
     },{      
       id:configDB[`${process.env.NODE_ENV||'development'}_winthor`].id,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -34,7 +34,7 @@ module.exports = {
       ISDEFAULT : 0
     },{      
       id:configDB[`${process.env.NODE_ENV||'development'}_consult`].id,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -43,7 +43,7 @@ module.exports = {
       ISDEFAULT : 0
     },{      
       id:configDB[`${process.env.NODE_ENV||'development'}_ep`].id,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,

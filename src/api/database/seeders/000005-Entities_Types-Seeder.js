@@ -2,7 +2,7 @@
 
 const { Entities_Types } = require('../models/Entities_Types');
 const { Data_Origins } = require('../models/Data_Origins');
-const { StatusRegs } = require('../models/StatusRegs');
+const { Record_Status } = require('../models/Record_Status');
 const { Users } = require('../models/Users');
 
 /** @type {import('sequelize-cli').Migration} */
@@ -10,7 +10,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {    
     await queryInterface.bulkInsert(Entities_Types.tableName,[{      
       id:Entities_Types.DATABASE,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -18,7 +18,7 @@ module.exports = {
       name : 'DATABASE',
     },{      
       id:Entities_Types.DATABASE_CONNECTION,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -26,7 +26,7 @@ module.exports = {
       name : 'DATABASE CONNECTION',
     },{      
       id:Entities_Types.DATABASE_SCHEMA,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -34,7 +34,7 @@ module.exports = {
       name : 'DATABASE SCHEMA',
     },{      
       id:Entities_Types.DATABASE_USER,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -42,7 +42,7 @@ module.exports = {
       name : 'DATABASE USER',
     },{      
       id:Entities_Types.DATABASE_TABLE,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,

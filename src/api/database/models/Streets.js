@@ -5,7 +5,7 @@ const { DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
 const { Cities } = require("./Cities");
-const { StreetTypes } = require("./StreetTypes");
+const { Street_Types } = require("./Street_Types");
 
 /**
  * class model
@@ -19,7 +19,7 @@ class Streets extends BaseTableModel {
       IDSTREETTYPE:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
-        defaultValue: StreetTypes.STREET
+        defaultValue: Street_Types.STREET
       },
       IDCITY:{
         type: DataTypes.BIGINT.UNSIGNED,
@@ -51,7 +51,7 @@ class Streets extends BaseTableModel {
       fields: ['IDSTREETTYPE'],
       type: 'foreign key',
       references: { 
-          table: StreetTypes,
+          table: Street_Types,
           field: 'id'
       },
       onUpdate: 'cascade'

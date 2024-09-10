@@ -2,7 +2,7 @@
 
 const { Comparators } = require('../models/Comparators');
 const { Data_Origins } = require('../models/Data_Origins');
-const { StatusRegs } = require('../models/StatusRegs');
+const { Record_Status } = require('../models/Record_Status');
 const { Users } = require('../models/Users');
 
 /** @type {import('sequelize-cli').Migration} */
@@ -10,7 +10,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {    
     await queryInterface.bulkInsert(Comparators.tableName,[{      
       id:Comparators.EQUAL,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -18,7 +18,7 @@ module.exports = {
       name : 'EQUAL'
     },{      
       id:Comparators.DIFFERENT,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -26,7 +26,7 @@ module.exports = {
       name : 'DIFFERENT'
     },{      
       id:Comparators.IN,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -34,7 +34,7 @@ module.exports = {
       name : 'IN'
     },{      
       id:Comparators.NOT_IN,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -42,7 +42,7 @@ module.exports = {
       name : 'NOT_IN'
     },{      
       id:Comparators.LIKE,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -50,7 +50,7 @@ module.exports = {
       name : 'LIKE'
     },{      
       id:Comparators.NOT_LIKE,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -58,7 +58,7 @@ module.exports = {
       name : 'NOT_LIKE'
     },{      
       id:Comparators.GREATER,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -66,7 +66,7 @@ module.exports = {
       name : 'GREATER'
     },{      
       id:Comparators.GREATER_EQUAL,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -74,7 +74,7 @@ module.exports = {
       name : 'GREATER_EQUAL'
     },{      
       id:Comparators.SMALLER,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -82,7 +82,7 @@ module.exports = {
       name : 'SMALLER'
     },{      
       id:Comparators.SMALLER_EQUAL,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,

@@ -10,7 +10,7 @@ const { Schemas } = require('../models/Schemas');
 const { Contexts } = require('../models/Contexts');
 const { Entities_Types } = require('../models/Entities_Types');
 const { Parameter_Values } = require('../models/Parameter_Values');
-const { StatusRegs } = require('../models/StatusRegs');
+const { Record_Status } = require('../models/Record_Status');
 const { Users } = require('../models/Users');
 /** @type {import('sequelize-cli').Migration} */
 
@@ -21,7 +21,7 @@ module.exports = {
 
     await queryInterface.bulkInsert(Data_Origins.tableName,[{
       id: Data_Origins.DEFAULT_ORIGINDATA,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -29,7 +29,7 @@ module.exports = {
       name : 'DEFAULT_ORIGINDATA'      
     },{
       id: Data_Origins.WINTHOR,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.WINTHOR,
@@ -37,7 +37,7 @@ module.exports = {
       name : 'WINTHOR'      
     },{
       id: Data_Origins.AURORA,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.AURORA,
@@ -45,7 +45,7 @@ module.exports = {
       name : 'AURORA'      
     },{
       id: Data_Origins.CONSULTA,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.CONSULTA,
@@ -53,7 +53,7 @@ module.exports = {
       name : 'CONSULTA'      
     },{
       id: Data_Origins.EP,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.EP,

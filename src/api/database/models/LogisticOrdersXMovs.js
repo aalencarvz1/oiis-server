@@ -4,7 +4,7 @@
 const { DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 const { LogisticOrders } = require("./LogisticOrders");
-const { MovementsStatus } = require("./MovementsStatus");
+const { Movement_Status } = require("./Movement_Status");
 const { LogisticStatus } = require("./LogisticStatus");
 const { Action_Status } = require("./Action_Status");
 const { Movements } = require("./Movements");
@@ -31,12 +31,12 @@ class LogisticOrdersXMovs extends BaseTableModel {
       IDACTIONSTATUS:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
-        defaultValue:MovementsStatus.NOT_STARTED
+        defaultValue:Movement_Status.NOT_STARTED
       },
       IDLOGISTICSTATUS:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
-        defaultValue:MovementsStatus.NOT_STARTED
+        defaultValue:Movement_Status.NOT_STARTED
       },
       IDREASONNOTMOVIMENTEDAMT:{
         type: DataTypes.BIGINT.UNSIGNED

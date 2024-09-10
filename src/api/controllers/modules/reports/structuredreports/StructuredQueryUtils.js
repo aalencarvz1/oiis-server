@@ -3,9 +3,9 @@ const { ReportsDatasFountsItems } = require("../../../../database/models/Reports
 const { Utils } = require("../../../utils/Utils")
 const _ = require('lodash');
 const DBConnectionManager = require("../../../../database/DBConnectionManager");
-const { StatusRegs } = require("../../../../database/models/StatusRegs");
+const { Record_Status } = require("../../../../database/models/Record_Status");
 const moment = require("moment");
-const { SqlObjectsTypes } = require("../../../../database/models/SqlObjectsTypes");
+const { Sql_Object_Types } = require("../../../../database/models/Sql_Object_Types");
 const { Entities_Types } = require("../../../../database/models/Entities_Types");
 const { Permissions } = require("../../../../database/models/Permissions");
 const { EpIntegrationsRegistersController } = require("../../registers/integrations/ep/EpIntegrationsRegistersController");
@@ -52,7 +52,7 @@ class StructuredQueryUtils {
             FROM
                 REPORTSDATASFOUNTSITEMS RFI 
                 LEFT OUTER JOIN tables T ON (   
-                    RFI.IDSQLOBJECTTYPE = ${SqlObjectsTypes.TABLE}
+                    RFI.IDSQLOBJECTTYPE = ${Sql_Object_Types.TABLE}
                     AND T.id = RFI.IDSQLOBJECT
                 )
                 LEFT OUTER JOIN USERS U ON (
@@ -76,17 +76,17 @@ class StructuredQueryUtils {
                 )
             WHERE
                 RFI.IDREPORTDATAFOUNT = ${reportDataFount.id}
-                AND RFI.status_reg_id = ${StatusRegs.ACTIVE}
+                AND RFI.status_reg_id = ${Record_Status.ACTIVE}
                 AND (
                     ${reportDataFount.ISVISION||0} = 1
                     OR (
                         ${reportDataFount.ISVISION||0} <> 1  
                         AND ${reportDataFount.ISCONDICTIONVISION||0} = 1 
                         AND (
-                            RFI.IDSQLOBJECTTYPE <> ${SqlObjectsTypes.FIELD}
+                            RFI.IDSQLOBJECTTYPE <> ${Sql_Object_Types.FIELD}
                             OR (
-                                RFI.IDSQLOBJECTTYPE = ${SqlObjectsTypes.FIELD}
-                                AND NOT EXISTS (SELECT 1 FROM REPORTSDATASFOUNTSITEMS RFI2 WHERE RFI2.id = RFI.IDSUP AND RFI2.IDSQLOBJECTTYPE = ${SqlObjectsTypes.SELECT})
+                                RFI.IDSQLOBJECTTYPE = ${Sql_Object_Types.FIELD}
+                                AND NOT EXISTS (SELECT 1 FROM REPORTSDATASFOUNTSITEMS RFI2 WHERE RFI2.id = RFI.IDSUP AND RFI2.IDSQLOBJECTTYPE = ${Sql_Object_Types.SELECT})
                             )
 
                         )
@@ -425,7 +425,7 @@ class StructuredQueryUtils {
                             text2 = text2 || '';
                             isEqual = text1.trim().replace(/\s/g,' ').toLowerCase() == text2.trim().replace(/\s/g,' ').toLowerCase();
 
-                            if (currentItems[k].IDSQLOBJECTTYPE == SqlObjectsTypes.JOIN && currentStructure[j].IDSQLOBJECTTYPE == SqlObjectsTypes.JOIN) {
+                            if (currentItems[k].IDSQLOBJECTTYPE == Sql_Object_Types.JOIN && currentStructure[j].IDSQLOBJECTTYPE == Sql_Object_Types.JOIN) {
                                 if (Utils.hasValue(currentItems[k].SUBS) && Utils.hasValue(currentStructure[j].SUBS)) {
 
                                     //Utils.log('y2k',currentItems[k].SUBS[0].SQLTEXT,currentStructure[j].SUBS[0].SQLTEXT,currentItems[k].SUBS[0].SQLALIAS,currentStructure[j].SUBS[0].SQLALIAS);
@@ -504,42 +504,42 @@ class StructuredQueryUtils {
                         let resultSubs = await StructuredQueryUtils.mountQueryItems(queryItems.SUBS,params);
                         if (Utils.hasValue(resultSubs)) {
                         let delimiter = ' ';
-                            if ([SqlObjectsTypes.SELECT,SqlObjectsTypes.GROUP_BY, SqlObjectsTypes.ORDER_BY].indexOf((queryItems.IDSQLOBJECTTYPE||0)-0) > -1) {
+                            if ([Sql_Object_Types.SELECT,Sql_Object_Types.GROUP_BY, Sql_Object_Types.ORDER_BY].indexOf((queryItems.IDSQLOBJECTTYPE||0)-0) > -1) {
                                 delimiter = ','
-                            }  else if ([SqlObjectsTypes.WHERE,SqlObjectsTypes.ON, SqlObjectsTypes.HAVING].indexOf((queryItems.IDSQLOBJECTTYPE||0)-0) > -1) {
+                            }  else if ([Sql_Object_Types.WHERE,Sql_Object_Types.ON, Sql_Object_Types.HAVING].indexOf((queryItems.IDSQLOBJECTTYPE||0)-0) > -1) {
                                 delimiter = ' AND '
                             }           
-                            if (queryItems.IDSQLOBJECTTYPE == SqlObjectsTypes.SELECT) {
+                            if (queryItems.IDSQLOBJECTTYPE == Sql_Object_Types.SELECT) {
                                 for (let i = 0; i < queryItems.SUBS.length; i++) {                                
                                     if (Utils.hasValue(queryItems.SUBS[i].MOUNTEDSQLTEXT)) {
                                         result += ` ${queryItems.SUBS[i].MOUNTEDSQLTEXT}`;
                                         if (i < queryItems.SUBS.length-1) {
-                                            if (queryItems.SUBS[i+1].IDSQLOBJECTTYPE == SqlObjectsTypes.FIELD) {
+                                            if (queryItems.SUBS[i+1].IDSQLOBJECTTYPE == Sql_Object_Types.FIELD) {
                                                 result += ` ${delimiter}`;
                                             } 
                                         }
                                     }
                                 }
-                            } else if (queryItems.IDSQLOBJECTTYPE == SqlObjectsTypes.FROM) {
+                            } else if (queryItems.IDSQLOBJECTTYPE == Sql_Object_Types.FROM) {
                                 let openedParents = false;
                                 for (let i = 0; i < queryItems.SUBS.length; i++) {
                                     if (Utils.hasValue(queryItems.SUBS[i].MOUNTEDSQLTEXT)) {
                                         //open subquery parentesis
-                                        if (queryItems.SUBS[i].IDSQLOBJECTTYPE == SqlObjectsTypes.SELECT && !openedParents) {
+                                        if (queryItems.SUBS[i].IDSQLOBJECTTYPE == Sql_Object_Types.SELECT && !openedParents) {
                                             result += ` ( `;
                                             openedParents = true;
                                         }
                                         result += ` ${queryItems.SUBS[i].MOUNTEDSQLTEXT}`;
                                         if (i < queryItems.SUBS.length-1) {
-                                            if (queryItems.SUBS[i+1].IDSQLOBJECTTYPE == SqlObjectsTypes.FIELD) {
+                                            if (queryItems.SUBS[i+1].IDSQLOBJECTTYPE == Sql_Object_Types.FIELD) {
                                                 result += ` ${delimiter}`;
                                             } 
                                         }
 
                                         //close subquery parentesis
-                                        if (queryItems.SUBS[i].IDSQLOBJECTTYPE == SqlObjectsTypes.SELECT && openedParents) {
+                                        if (queryItems.SUBS[i].IDSQLOBJECTTYPE == Sql_Object_Types.SELECT && openedParents) {
                                             if (i < queryItems.SUBS.length-1) {
-                                                if (queryItems.SUBS[i+1].IDSQLOBJECTTYPE == SqlObjectsTypes.SELECT) {
+                                                if (queryItems.SUBS[i+1].IDSQLOBJECTTYPE == Sql_Object_Types.SELECT) {
                                                     if (!(
                                                         (queryItems.SUBS[i].SQLTEXTAFTERCHILDREN||'').toLowerCase().indexOf('union') > -1 || (queryItems.SUBS[i].SQLTEXT||'').toLowerCase().indexOf('union') > -1
                                                         || (queryItems.SUBS[i+1].BEFORESQLTEXT||'').toLowerCase().indexOf('union') > -1 || (queryItems.SUBS[i+1].SQLTEXT||'').toLowerCase().indexOf('union') > -1
@@ -558,7 +558,7 @@ class StructuredQueryUtils {
                                         }
                                     }
                                 }
-                            } else if (queryItems.IDSQLOBJECTTYPE == SqlObjectsTypes.PIVOT) {
+                            } else if (queryItems.IDSQLOBJECTTYPE == Sql_Object_Types.PIVOT) {
                                 result += ` (${resultSubs.join(delimiter)})`;
                             } else {
                                 if (Utils.typeOf(resultSubs) == 'array') {
@@ -588,9 +588,9 @@ class StructuredQueryUtils {
     static orderStructuredQueryItems(structuredQuery,visionsSort,sup) {
         structuredQuery = structuredQuery.sort(function(a,b){
             let result = 0;
-            if (sup?.IDSQLOBJECTTYPE == SqlObjectsTypes.SELECT) {
-                if (a.IDSQLOBJECTTYPE == SqlObjectsTypes.FIELD) {
-                    if (b.IDSQLOBJECTTYPE == SqlObjectsTypes.FIELD) {
+            if (sup?.IDSQLOBJECTTYPE == Sql_Object_Types.SELECT) {
+                if (a.IDSQLOBJECTTYPE == Sql_Object_Types.FIELD) {
+                    if (b.IDSQLOBJECTTYPE == Sql_Object_Types.FIELD) {
                         if (Utils.toBool(a.VALUEGROUPMENT||false)) {
                             if (Utils.toBool(b.VALUEGROUPMENT||false)) {
                                 result = visionsSort[a.IDVISION] == visionsSort[b.IDVISION] ? a.ORDERNUM - b.ORDERNUM : visionsSort[a.IDVISION] - visionsSort[b.IDVISION];
@@ -607,12 +607,12 @@ class StructuredQueryUtils {
                     } else {
                         result = -1;
                     }
-                } else if (b.IDSQLOBJECTTYPE == SqlObjectsTypes.FIELD) {
+                } else if (b.IDSQLOBJECTTYPE == Sql_Object_Types.FIELD) {
                     result = 1;
                 } else {
                     result = visionsSort[a.IDVISION] == visionsSort[b.IDVISION] ? a.ORDERNUM - b.ORDERNUM : visionsSort[a.IDVISION] - visionsSort[b.IDVISION];
                 }
-            } else if (sup?.IDSQLOBJECTTYPE == SqlObjectsTypes.FROM) {
+            } else if (sup?.IDSQLOBJECTTYPE == Sql_Object_Types.FROM) {
                 result = a.ORDERNUM - b.ORDERNUM;
             } else {
                 result = visionsSort[a.IDVISION] == visionsSort[b.IDVISION] ? a.ORDERNUM - b.ORDERNUM : visionsSort[a.IDVISION] - visionsSort[b.IDVISION];
@@ -632,17 +632,17 @@ class StructuredQueryUtils {
         let currentSelect = pCurrentSelect;
         for(let k in structuredQuery) {
             //Utils.log('xxx',structuredQuery[k]);
-            if (structuredQuery[k].IDSQLOBJECTTYPE == SqlObjectsTypes.SELECT) {
+            if (structuredQuery[k].IDSQLOBJECTTYPE == Sql_Object_Types.SELECT) {
                 currentSelect = structuredQuery[k];
             }
-            if (structuredQuery[k].IDSQLOBJECTTYPE == SqlObjectsTypes.TABLE) {
+            if (structuredQuery[k].IDSQLOBJECTTYPE == Sql_Object_Types.TABLE) {
                 if (Utils.hasValue(structuredQuery[k].EXPRESSION)) {
                     structuredQuery[k].EXPRESSION = await StructuredQueryUtils.evalSqlText(structuredQuery[k].EXPRESSION, params);
                     structuredQuery[k].EXPRESSION = structuredQuery[k].EXPRESSION.replaceAll('__TABLE_ALIAS__',structuredQuery[k].SQLALIAS);
                     Utils.log('xxxxxxx', structuredQuery[k].EXPRESSION);
                     let injected = false;
                     for(let j in pCurrentSelect?.SUBS || []) {
-                        if (pCurrentSelect.SUBS[j].IDSQLOBJECTTYPE == SqlObjectsTypes.WHERE) {
+                        if (pCurrentSelect.SUBS[j].IDSQLOBJECTTYPE == Sql_Object_Types.WHERE) {
                             pCurrentSelect.SUBS[j].SUBS = pCurrentSelect.SUBS[j].SUBS || [];
                             pCurrentSelect.SUBS[j].SUBS.push(structuredQuery[k].EXPRESSION);
                             injected = true;
@@ -652,7 +652,7 @@ class StructuredQueryUtils {
                     if (!injected) {
                         pCurrentSelect.SUBS = pCurrentSelect.SUBS || [];
                         pCurrentSelect.SUBS.push({
-                            IDSQLOBJECTTYPE: SqlObjectsTypes.WHERE,
+                            IDSQLOBJECTTYPE: Sql_Object_Types.WHERE,
                             SUBS:[structuredQuery[k].EXPRESSION]
                         })
                     }

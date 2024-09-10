@@ -5,8 +5,8 @@ const { BaseTableModel } = require('./BaseTableModel');
 const { LogisticOrdersXMovs } = require("./LogisticOrdersXMovs");
 const { LogisticOrders } = require("./LogisticOrders");
 const { LogisticOrdersXItemsMovAmt } = require("./LogisticOrdersXItemsMovAmt");
-const { FinancialValueForms } = require("./FinancialValueForms");
-const { CurrenciesTypes } = require("./CurrenciesTypes");
+const { Financial_Value_Forms } = require("./Financial_Value_Forms");
+const { Currencies } = require("./Currencies");
 
 
 /**
@@ -125,7 +125,7 @@ class LogisticOrdersXMovsXReceiptValues extends BaseTableModel {
       fields: ['IDFINANCIALVALUEFORM'],
       type: 'foreign key',
       references: { 
-          table: FinancialValueForms,
+          table: Financial_Value_Forms,
           field: 'id'
       },
       onUpdate: 'cascade'
@@ -144,7 +144,7 @@ class LogisticOrdersXMovsXReceiptValues extends BaseTableModel {
       fields: ['IDCURRENCYTYPEEXPECTED'],
       type: 'foreign key',
       references: { 
-          table: CurrenciesTypes,
+          table: Currencies,
           field: 'id'
       },
       onUpdate: 'cascade'
@@ -153,7 +153,7 @@ class LogisticOrdersXMovsXReceiptValues extends BaseTableModel {
       fields: ['IDCURRENCYTYPERECEIVED'],
       type: 'foreign key',
       references: { 
-          table: CurrenciesTypes,
+          table: Currencies,
           field: 'id'
       },
       onUpdate: 'cascade'

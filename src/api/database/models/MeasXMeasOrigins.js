@@ -4,7 +4,7 @@
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
-const { MeasurementsUnits } = require("./MeasurementsUnits");
+const { Measurement_Units } = require("./Measurement_Units");
 const { Suppliers } = require("./Suppliers");
 
 /**
@@ -68,7 +68,7 @@ class MeasXMeasOrigins extends BaseTableModel {
       fields: ['IDMEASUREMENTUNIT'],
       type: 'foreign key',
       references: { 
-          table: MeasurementsUnits,
+          table: Measurement_Units,
           field: 'id'
       },
       onUpdate: 'cascade'

@@ -4,7 +4,7 @@
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 const { ReportsDatasFounts } = require("./ReportsDatasFounts");
-const { SqlObjectsTypes } = require("./SqlObjectsTypes");
+const { Sql_Object_Types } = require("./Sql_Object_Types");
 const { Data_Types } = require("./Data_Types");
 
 
@@ -132,7 +132,7 @@ class ReportsDatasFountsItems extends BaseTableModel {
     fields: ['IDSQLOBJECTTYPE'],
     type: 'foreign key',
     references: { 
-        table: SqlObjectsTypes,
+        table: Sql_Object_Types,
         field: 'id'
     },    
     onUpdate: 'cascade'

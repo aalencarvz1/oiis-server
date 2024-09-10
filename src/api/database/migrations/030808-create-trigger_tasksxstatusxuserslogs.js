@@ -15,7 +15,7 @@ module.exports = {
             /*UNWORKEDS TYMES, ACCORDING TIMES WORK OF USER*/
             (
           CASE
-            WHEN COALESCE((SELECT COUNT(1) FROM USERSPROFILESTIMESWORK UP JOIN userstimeswork ut ON ut.iduserprofiletimework = up.id WHERE UP.IDUSER = new.IDUSER and up.name = 'DEFAULT'),0) > 0 THEN
+            WHEN COALESCE((SELECT COUNT(1) FROM user_profile_timeworks UP JOIN user_timeworks ut ON ut.iduserprofiletimework = up.id WHERE UP.IDUSER = new.IDUSER and up.name = 'DEFAULT'),0) > 0 THEN
               COALESCE((
                 select 	
                             
@@ -29,8 +29,8 @@ module.exports = {
                         select 
                           sum(time_to_sec(timediff(coalesce(ut.ENDAT,0),coalesce(ut.STARTAT,0))))
                         from 
-                          USERSPROFILESTIMESWORK UP
-                          join userstimeswork ut on ut.iduserprofiletimework = up.id
+                          user_profile_timeworks UP
+                          join user_timeworks ut on ut.iduserprofiletimework = up.id
                         where
                           up.iduser = new.IDUSER
                           and up.name = 'DEFAULT'
@@ -44,8 +44,8 @@ module.exports = {
                   COALESCE((select 
                     sum(time_to_sec(timediff(coalesce(ut.ENDAT,0),coalesce(ut.STARTAT,0))))
                   from 
-                    USERSPROFILESTIMESWORK UP
-                    join userstimeswork ut on ut.iduserprofiletimework = up.id
+                    user_profile_timeworks UP
+                    join user_timeworks ut on ut.iduserprofiletimework = up.id
                   where
                     up.iduser = new.IDUSER
                     and up.name = 'DEFAULT'
@@ -62,8 +62,8 @@ module.exports = {
                   COALESCE((select 
                     sum(time_to_sec(timediff(coalesce(ut.ENDAT,0),coalesce(ut.STARTAT,0))))
                   from 
-                    USERSPROFILESTIMESWORK UP
-                    join userstimeswork ut on ut.iduserprofiletimework = up.id
+                    user_profile_timeworks UP
+                    join user_timeworks ut on ut.iduserprofiletimework = up.id
                   where
                     up.iduser = new.IDUSER
                     and up.name = 'DEFAULT'
@@ -109,9 +109,9 @@ module.exports = {
                       end
                     ,0))
                   from
-                    USERSPROFILESTIMESWORK UP
+                    user_profile_timeworks UP
                     join users u on u.id = up.iduser
-                    join userstimeswork ut on ut.iduserprofiletimework = up.id
+                    join user_timeworks ut on ut.iduserprofiletimework = up.id
                   where
                     up.iduser = new.IDUSER
                     and up.name = 'DEFAULT'
@@ -137,9 +137,9 @@ module.exports = {
                       end
                     ,0)) as tot
                   from
-                    USERSPROFILESTIMESWORK UP
+                    user_profile_timeworks UP
                     join users u on u.id = up.iduser
-                    join userstimeswork ut on ut.iduserprofiletimework = up.id
+                    join user_timeworks ut on ut.iduserprofiletimework = up.id
                   where 
                     up.iduser = new.IDUSER
                     and up.name = 'DEFAULT'

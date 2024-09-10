@@ -3,7 +3,7 @@
 /*imports*/
 const { Access_Profiles } = require('../models/Access_Profiles');
 const { Data_Origins } = require('../models/Data_Origins');
-const { StatusRegs } = require('../models/StatusRegs');
+const { Record_Status } = require('../models/Record_Status');
 const { Users } = require('../models/Users');
 /** @type {import('sequelize-cli').Migration} */
 
@@ -14,7 +14,7 @@ module.exports = {
 
     await queryInterface.bulkInsert(Access_Profiles.tableName,[{      
       id:Access_Profiles.SYSTEM,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -26,7 +26,7 @@ module.exports = {
       updateOnDuplicate:null
     }); 
 
-    await Access_Profiles.migrateForeignKeyContraint(queryInterface,StatusRegs);  
+    await Access_Profiles.migrateForeignKeyContraint(queryInterface,Record_Status);  
     await Access_Profiles.migrateForeignKeyContraint(queryInterface,Data_Origins);  
   },
 

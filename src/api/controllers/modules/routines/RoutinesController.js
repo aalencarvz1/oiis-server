@@ -1,5 +1,5 @@
 const { QueryTypes } = require("sequelize");
-const { StatusRegs } = require("../../../database/models/StatusRegs");
+const { Record_Status } = require("../../../database/models/Record_Status");
 const { Utils } = require("../../utils/Utils");
 const DBConnectionManager = require("../../../database/DBConnectionManager");
 const { RegistersController } = require("../registers/RegistersController");
@@ -50,16 +50,16 @@ class RoutinesController extends RegistersController{
                     MODULES	                    
                     INNER JOIN USERS ON (
                         USERS.id = ${req.user.id}
-                        AND USERS.status_reg_id = ${StatusRegs.ACTIVE}
+                        AND USERS.status_reg_id = ${Record_Status.ACTIVE}
                         AND USERS.deleted_at IS NULL
                     )
                     INNER JOIN access_profiles ON (
                         access_profiles.id = USERS.IDACCESSPROFILE
-                        AND access_profiles.status_reg_id = ${StatusRegs.ACTIVE}
+                        AND access_profiles.status_reg_id = ${Record_Status.ACTIVE}
                         AND access_profiles.deleted_at IS NULL
                     )
                     INNER JOIN PERMISSIONS ON (
-                        PERMISSIONS.status_reg_id = ${StatusRegs.ACTIVE}
+                        PERMISSIONS.status_reg_id = ${Record_Status.ACTIVE}
                         AND PERMISSIONS.deleted_at IS NULL
                         AND COALESCE(PERMISSIONS.IDACCESSPROFILE,
                             USERS.IDACCESSPROFILE) = USERS.IDACCESSPROFILE
@@ -71,16 +71,16 @@ class RoutinesController extends RegistersController{
                         ROUTINES
                         INNER JOIN USERS UR ON (
                             UR.id = ${req.user.id}
-                            AND UR.status_reg_id = ${StatusRegs.ACTIVE}
+                            AND UR.status_reg_id = ${Record_Status.ACTIVE}
                             AND UR.deleted_at IS NULL
                         )
                         INNER JOIN access_profiles AR ON (
                             AR.id = UR.IDACCESSPROFILE
-                            AND AR.status_reg_id = ${StatusRegs.ACTIVE}
+                            AND AR.status_reg_id = ${Record_Status.ACTIVE}
                             AND AR.deleted_at IS NULL
                         )
                         INNER JOIN PERMISSIONS P2 ON (
-                            P2.status_reg_id = ${StatusRegs.ACTIVE}
+                            P2.status_reg_id = ${Record_Status.ACTIVE}
                             AND P2.deleted_at IS NULL
                             AND COALESCE(P2.IDACCESSPROFILE,
                                 UR.IDACCESSPROFILE) = UR.IDACCESSPROFILE

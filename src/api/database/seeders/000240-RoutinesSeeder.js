@@ -2,7 +2,7 @@
 
 const { Routines } = require('../models/Routines');
 const { Data_Origins } = require('../models/Data_Origins');
-const { StatusRegs } = require('../models/StatusRegs');
+const { Record_Status } = require('../models/Record_Status');
 const { Users } = require('../models/Users');
 const modules = require('../catalogs/modules.json');
 const { Modules } = require('../models/Modules');
@@ -30,7 +30,7 @@ module.exports = {
               Utils.log('FL',routine.name,' is routine');
               registersRoutines.push({
                 id:routine.id-0,
-                status_reg_id: StatusRegs.ACTIVE,
+                status_reg_id: Record_Status.ACTIVE,
                 creator_user_id : Users.SYSTEM,
                 created_at: new Date(),
                 data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -51,7 +51,7 @@ module.exports = {
               Utils.log('FL',routine.name,' is module');
               registersModules.push({
                 id:routine.id-0,
-                status_reg_id: StatusRegs.ACTIVE,
+                status_reg_id: Record_Status.ACTIVE,
                 creator_user_id : Users.SYSTEM,
                 created_at: new Date(),
                 data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -71,7 +71,7 @@ module.exports = {
             Utils.log('FL',routine.name,' no has subs');
             registersRoutines.push({
               id:routine.id-0,
-              status_reg_id: StatusRegs.ACTIVE,
+              status_reg_id: Record_Status.ACTIVE,
               creator_user_id : Users.SYSTEM,
               created_at: new Date(),
               data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,

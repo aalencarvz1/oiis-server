@@ -7,7 +7,7 @@ const { BaseTableModel } = require('./BaseTableModel');
 const { Users } = require("./Users");
 const { Contexts } = require("./Contexts");
 const { Routines } = require("./Routines");
-const { PowersTypes } = require("./PowersTypes");
+const { Power_Types } = require("./Power_Types");
 const { Access_Profiles } = require("./Access_Profiles");
 const { Tables } = require("./Tables");
 const { Modules } = require("./Modules");
@@ -166,7 +166,7 @@ class Permissions extends BaseTableModel {
       fields: ['IDPOWERTYPE'],
       type: 'foreign key',
       references: { 
-          table: PowersTypes,
+          table: Power_Types,
           field: 'id'
       },
       onUpdate: 'cascade'

@@ -3,7 +3,7 @@
 /*imports*/
 const { Collaborators } = require('../models/Collaborators');
 const { Data_Origins } = require('../models/Data_Origins');
-const { StatusRegs } = require('../models/StatusRegs');
+const { Record_Status } = require('../models/Record_Status');
 const { People } = require('../models/People');
 const { Users } = require('../models/Users');
 /** @type {import('sequelize-cli').Migration} */
@@ -15,7 +15,7 @@ module.exports = {
     
     await queryInterface.bulkInsert(Collaborators.tableName,[{      
       id:Collaborators.SYSTEM,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -26,7 +26,7 @@ module.exports = {
       updateOnDuplicate:null
     }); 
     
-    await Collaborators.migrateForeignKeyContraint(queryInterface,StatusRegs);  
+    await Collaborators.migrateForeignKeyContraint(queryInterface,Record_Status);  
     await Collaborators.migrateForeignKeyContraint(queryInterface,Data_Origins);  
     await Collaborators.migrateForeignKeyContraint(queryInterface,People);  
         

@@ -4,7 +4,7 @@
 const { DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
-const { IdentifiersTypes } = require("./IdentifiersTypes");
+const { Identifier_Types } = require("./Identifier_Types");
 const { Suppliers } = require("./Suppliers");
 
 /**
@@ -67,7 +67,7 @@ class Lots extends BaseTableModel {
       fields: ['IDIDENTIFIERTYPE'],
       type: 'foreign key',
       references: { 
-          table: IdentifiersTypes,
+          table: Identifier_Types,
           field: 'id'
       },
       onUpdate: 'cascade'

@@ -4,7 +4,7 @@
 const { DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
-const { ContactsTypes } = require("./ContactsTypes");
+const { Contact_Types } = require("./Contact_Types");
 
 /**
  * class model
@@ -44,7 +44,7 @@ class Contacts extends BaseTableModel {
       fields: ['IDCONTACTTYPE'],
       type: 'foreign key',
       references: { 
-          table: ContactsTypes,
+          table: Contact_Types,
           field: 'id'
       },
       onUpdate: 'cascade'

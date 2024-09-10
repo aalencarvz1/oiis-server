@@ -3,7 +3,7 @@
 /*imports*/
 const { DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
-const { StatusRun } = require("./StatusRun");
+const { Run_Status } = require("./Run_Status");
 const { Api_Requests } = require("./Api_Requests");
 
 
@@ -24,7 +24,7 @@ class Api_Request_Calls extends BaseTableModel {
       IDSTATUSRUN: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
-        defaultValue: StatusRun.NOT_STARTED
+        defaultValue: Run_Status.NOT_STARTED
       },
       ONRECEIVEWEBHOOKRESPONSE:{
         type: DataTypes.TEXT
@@ -49,7 +49,7 @@ class Api_Request_Calls extends BaseTableModel {
     fields: ['IDSTATUSRUN'],
     type: 'foreign key',
     references: { 
-        table: StatusRun,
+        table: Run_Status,
         field: 'id'
     },    
     onUpdate: 'cascade'

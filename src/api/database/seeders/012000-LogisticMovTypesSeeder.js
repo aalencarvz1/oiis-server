@@ -3,7 +3,7 @@
 const { LogisticMovTypes } = require('../models/LogisticMovTypes');
 const { Modules } = require('../models/Modules');
 const { Data_Origins } = require('../models/Data_Origins');
-const { StatusRegs } = require('../models/StatusRegs');
+const { Record_Status } = require('../models/Record_Status');
 const { Users } = require('../models/Users');
 
 /** @type {import('sequelize-cli').Migration} */
@@ -11,7 +11,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {    
     await queryInterface.bulkInsert(LogisticMovTypes.tableName,[{
       id: LogisticMovTypes.DELIVERY,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -20,7 +20,7 @@ module.exports = {
       ISOUTPUT:1
     },{
       id: LogisticMovTypes.COLLECT,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : LogisticMovTypes.DEFAULT_ORIGINDATA,
@@ -29,7 +29,7 @@ module.exports = {
       ISINPUT: 1
     },{
       id: LogisticMovTypes.RETREAT,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : LogisticMovTypes.DEFAULT_ORIGINDATA,

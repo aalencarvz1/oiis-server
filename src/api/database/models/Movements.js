@@ -3,21 +3,21 @@
 /*imports*/
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
-const { ConferencesTypes } = require("./ConferencesTypes");
-const { IdentifiersTypes } = require("./IdentifiersTypes");
-const { MovementsTypes } = require("./MovementsTypes");
-const { StatusRegs } = require("./StatusRegs");
-const { DataRelationshipTypes } = require("./DataRelationshipTypes");
+const { Conference_Types } = require("./Conference_Types");
+const { Identifier_Types } = require("./Identifier_Types");
+const { Movement_Types } = require("./Movement_Types");
+const { Record_Status } = require("./Record_Status");
+const { Relationship_Types } = require("./Relationship_Types");
 const { Modules } = require("./Modules");
-const { DatasRelationships } = require("./DatasRelationships");
+const { Relationships } = require("./Relationships");
 const { Action_Status } = require("./Action_Status");
-const { BusinessesUnits } = require("./BusinessesUnits");
+const { Business_Units } = require("./Business_Units");
 const { Clients } = require("./Clients");
 const { Warehouses } = require("./Warehouses");
 const { Companies } = require("./Companies");
 const { Suppliers } = require("./Suppliers");
 const { Collaborators } = require("./Collaborators");
-const { FinancialValueForms } = require("./FinancialValueForms");
+const { Financial_Value_Forms } = require("./Financial_Value_Forms");
 
 
 /**
@@ -96,7 +96,7 @@ class Movements extends BaseTableModel {
       fields: ['IDTYPEMOV'],
       type: 'foreign key',
       references: { 
-          table: MovementsTypes,
+          table: Movement_Types,
           field: 'id'
       },
       onUpdate: 'cascade'
@@ -105,7 +105,7 @@ class Movements extends BaseTableModel {
       fields: ['IDIDENTIFIERTYPE'],
       type: 'foreign key',
       references: { 
-          table: IdentifiersTypes,
+          table: Identifier_Types,
           field: 'id'
       },
       onUpdate: 'cascade'
@@ -123,7 +123,7 @@ class Movements extends BaseTableModel {
       fields: ['IDCONFERENCETYPE'],
       type: 'foreign key',
       references: { 
-          table: ConferencesTypes,
+          table: Conference_Types,
           field: 'id'
       },
       onUpdate: 'cascade'
@@ -150,7 +150,7 @@ class Movements extends BaseTableModel {
       fields: ['IDBUSINESSUNIT'],
       type: 'foreign key',
       references: { 
-          table: BusinessesUnits,
+          table: Business_Units,
           field: 'id'
       },
       onUpdate: 'cascade'
@@ -186,7 +186,7 @@ class Movements extends BaseTableModel {
       fields: ['IDFINANCIALVALUEFORM'],
       type: 'foreign key',
       references: { 
-          table: FinancialValueForms,
+          table: Financial_Value_Forms,
           field: 'id'
       },
       onUpdate: 'cascade'
@@ -199,19 +199,19 @@ class Movements extends BaseTableModel {
       if (businessUnit) {
         let relationshipQueryParams  = {
           where:{
-            status_reg_id: StatusRegs.ACTIVE,
-            IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
+            status_reg_id: Record_Status.ACTIVE,
+            IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
             IDTABLE1: Movements.id,
             IDREG1: reg.id,
-            IDTABLE2: BusinessesUnits.id,
+            IDTABLE2: Business_Units.id,
             IDREG2: businessUnit.id
           }
         };
         let relationshipQueryCheckParams  = {
           where:{
-            status_reg_id: StatusRegs.ACTIVE,
-            IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-            IDTABLE1: BusinessesUnits.id,
+            status_reg_id: Record_Status.ACTIVE,
+            IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
+            IDTABLE1: Business_Units.id,
             IDREG1: businessUnit.id,
             IDTABLE2: Modules.id,
             IDREG2: Modules.WMS
@@ -221,15 +221,15 @@ class Movements extends BaseTableModel {
           relationshipQueryParams.transaction = queryParams.transaction;
           relationshipQueryCheckParams.transaction = queryParams.transaction;
         }
-        let relationship = await DatasRelationships.createIfNotExistsAndRelationed(relationshipQueryParams,null,relationshipQueryCheckParams);
+        let relationship = await Relationships.createIfNotExistsAndRelationed(relationshipQueryParams,null,relationshipQueryCheckParams);
         if (!relationship) throw new Error("relationship not created");
       }
 
       if (warehouse) {
         let relationshipQueryParams  = {
           where:{
-            status_reg_id: StatusRegs.ACTIVE,
-            IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
+            status_reg_id: Record_Status.ACTIVE,
+            IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
             IDTABLE1: Movements.id,
             IDREG1: reg.id,
             IDTABLE2: Warehouses.id,
@@ -238,8 +238,8 @@ class Movements extends BaseTableModel {
         };
         let relationshipQueryCheckParams = [{
           where:{
-            status_reg_id: StatusRegs.ACTIVE,
-            IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
+            status_reg_id: Record_Status.ACTIVE,
+            IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
             IDTABLE1: Warehouses.id,
             IDREG1: warehouse.id,
             IDTABLE2: Modules.id,
@@ -250,9 +250,9 @@ class Movements extends BaseTableModel {
         if (businessUnit) {
           relationshipQueryCheckParams.push({
             where:{
-              status_reg_id: StatusRegs.ACTIVE,
-              IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-              IDTABLE1: BusinessesUnits.id,
+              status_reg_id: Record_Status.ACTIVE,
+              IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
+              IDTABLE1: Business_Units.id,
               IDREG1: businessUnit.id,
               IDTABLE2: Warehouses.id,
               IDREG2: warehouse.id
@@ -264,7 +264,7 @@ class Movements extends BaseTableModel {
           relationshipQueryParams.transaction = queryParams.transaction;
           relationshipQueryCheckParams.forEach((el )=>el.transaction = queryParams.transaction);
         }
-        let relationship = await DatasRelationships.createIfNotExistsAndRelationed(relationshipQueryParams,null,relationshipQueryCheckParams);
+        let relationship = await Relationships.createIfNotExistsAndRelationed(relationshipQueryParams,null,relationshipQueryCheckParams);
         if (!relationship) throw new Error("relationship not created");
       }
 
@@ -272,8 +272,8 @@ class Movements extends BaseTableModel {
       if (client) {
         let relationshipQueryParams  = {
           where:{
-            status_reg_id: StatusRegs.ACTIVE,
-            IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
+            status_reg_id: Record_Status.ACTIVE,
+            IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
             IDTABLE1: Movements.id,
             IDREG1: reg.id,
             IDTABLE2: Clients.id,
@@ -282,8 +282,8 @@ class Movements extends BaseTableModel {
         };
         let relationshipQueryCheckParams = [{
           where:{
-            status_reg_id: StatusRegs.ACTIVE,
-            IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
+            status_reg_id: Record_Status.ACTIVE,
+            IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
             IDTABLE1: Clients.id,
             IDREG1: client.id,
             IDTABLE2: Modules.id,
@@ -294,9 +294,9 @@ class Movements extends BaseTableModel {
         if (businessUnit) {
           relationshipQueryCheckParams.push({
             where:{
-              status_reg_id: StatusRegs.ACTIVE,
-              IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
-              IDTABLE1: BusinessesUnits.id,
+              status_reg_id: Record_Status.ACTIVE,
+              IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
+              IDTABLE1: Business_Units.id,
               IDREG1: businessUnit.id,
               IDTABLE2: Clients.id,
               IDREG2: client.id
@@ -307,8 +307,8 @@ class Movements extends BaseTableModel {
         if (warehouse) {
           relationshipQueryCheckParams.push({
             where:{
-              status_reg_id: StatusRegs.ACTIVE,
-              IDRELATIONSHIPTYPE: DataRelationshipTypes.RELATIONSHIP,
+              status_reg_id: Record_Status.ACTIVE,
+              IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
               IDTABLE1: Warehouses.id,
               IDREG1: warehouse.id,
               IDTABLE2: Clients.id,
@@ -321,7 +321,7 @@ class Movements extends BaseTableModel {
             relationshipQueryParams.transaction = queryParams.transaction;
             relationshipQueryCheckParams.forEach((el ) =>el.transaction = queryParams.transaction);
         }
-        let relationship = await DatasRelationships.createIfNotExistsAndRelationed(relationshipQueryParams,null,relationshipQueryCheckParams);
+        let relationship = await Relationships.createIfNotExistsAndRelationed(relationshipQueryParams,null,relationshipQueryCheckParams);
         if (!relationship) throw new Error("relationship not created");
       }
     } else {

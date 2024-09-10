@@ -2,15 +2,15 @@
 /*imports*/
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
-const { MovementsStatus } = require("./MovementsStatus");
+const { Movement_Status } = require("./Movement_Status");
 const { LogisticMovTypes } = require("./LogisticMovTypes");
 const { Action_Status } = require("./Action_Status");
-const { ItemsMovsAmounts } = require("./ItemsMovsAmounts");
+const { Item_Mov_Amounts } = require("./Item_Mov_Amounts");
 const { LogisticOrdersXMovs } = require("./LogisticOrdersXMovs");
 const { LogisticReasons } = require("./LogisticReasons");
 const { LogisticStatus } = require("./LogisticStatus");
-const { MeasurementsUnits } = require("./MeasurementsUnits");
-const { MovementsTypes } = require("./MovementsTypes");
+const { Measurement_Units } = require("./Measurement_Units");
+const { Movement_Types } = require("./Movement_Types");
 const { Packagings } = require("./Packagings");
 
 
@@ -37,7 +37,7 @@ class LogisticOrdersXItemsMovAmt extends BaseTableModel {
       IDACTIONSTATUS:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
-        defaultValue:MovementsStatus.NOT_STARTED
+        defaultValue:Movement_Status.NOT_STARTED
       },
       IDTYPEMOV:{
         type: DataTypes.BIGINT.UNSIGNED
@@ -45,7 +45,7 @@ class LogisticOrdersXItemsMovAmt extends BaseTableModel {
       IDLOGISTICSTATUS:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
-        defaultValue:MovementsStatus.NOT_STARTED
+        defaultValue:Movement_Status.NOT_STARTED
       },
       IDMEASUREMENTUNIT:{
         type: DataTypes.BIGINT.UNSIGNED
@@ -136,7 +136,7 @@ class LogisticOrdersXItemsMovAmt extends BaseTableModel {
       fields: ['IDITEMMOVAMT'],
       type: 'foreign key',
       references: { 
-          table: ItemsMovsAmounts,
+          table: Item_Mov_Amounts,
           field: 'id'
       },
       onUpdate: 'cascade',
@@ -163,7 +163,7 @@ class LogisticOrdersXItemsMovAmt extends BaseTableModel {
       fields: ['IDTYPEMOV'],
       type: 'foreign key',
       references: { 
-          table: MovementsTypes,
+          table: Movement_Types,
           field: 'id'
       },
       onUpdate: 'cascade'
@@ -172,7 +172,7 @@ class LogisticOrdersXItemsMovAmt extends BaseTableModel {
       fields: ['IDMEASUREMENTUNIT'],
       type: 'foreign key',
       references: { 
-          table: MeasurementsUnits,
+          table: Measurement_Units,
           field: 'id'
       },
       onUpdate: 'cascade'

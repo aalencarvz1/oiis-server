@@ -2,7 +2,7 @@
 
 const { TasksStatus } = require('../models/TasksStatus');
 const { Data_Origins } = require('../models/Data_Origins');
-const { StatusRegs } = require('../models/StatusRegs');
+const { Record_Status } = require('../models/Record_Status');
 const { Users } = require('../models/Users');
 
 /** @type {import('sequelize-cli').Migration} */
@@ -11,7 +11,7 @@ module.exports = {
     
     await queryInterface.bulkInsert(TasksStatus.tableName,[{      
       id:TasksStatus.NOT_STARTED,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -19,7 +19,7 @@ module.exports = {
       name : 'NOT STARTED'
     },{      
       id:TasksStatus.RUNNING,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -28,7 +28,7 @@ module.exports = {
       ISRUNNING:1
     },{      
       id:TasksStatus.STOPED,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -37,7 +37,7 @@ module.exports = {
       ISSTOPED:1
     },{      
       id:TasksStatus.CANCELED,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
@@ -46,7 +46,7 @@ module.exports = {
       ISCANCELED:1
     },{      
       id:TasksStatus.CONCLUDED,
-      status_reg_id: StatusRegs.ACTIVE,
+      status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,

@@ -3,9 +3,9 @@
 const { DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 const { LogisticOrders } = require("./LogisticOrders");
-const { FinancialValueForms } = require("./FinancialValueForms");
-const { CurrenciesTypes } = require("./CurrenciesTypes");
-const { FinancialValueMovTypes } = require("./FinancialValueMovTypes");
+const { Financial_Value_Forms } = require("./Financial_Value_Forms");
+const { Currencies } = require("./Currencies");
+const { Financial_Value_Mov_Types } = require("./Financial_Value_Mov_Types");
 
 
 /**
@@ -75,7 +75,7 @@ class LogisticOrdersXDestValues extends BaseTableModel {
       fields: ['IDLOGORDFINANCIALVALUEFORM'],
       type: 'foreign key',
       references: { 
-          table: FinancialValueForms,
+          table: Financial_Value_Forms,
           field: 'id'
       },
       onUpdate: 'cascade'
@@ -84,7 +84,7 @@ class LogisticOrdersXDestValues extends BaseTableModel {
       fields: ['IDCURRENCYTYPE'],
       type: 'foreign key',
       references: { 
-          table: CurrenciesTypes,
+          table: Currencies,
           field: 'id'
       },
       onUpdate: 'cascade'
@@ -93,7 +93,7 @@ class LogisticOrdersXDestValues extends BaseTableModel {
       fields: ['IDFINANCIALVALUEMOVTYPEDEST'],
       type: 'foreign key',
       references: { 
-          table: FinancialValueMovTypes,
+          table: Financial_Value_Mov_Types,
           field: 'id'
       },
       onUpdate: 'cascade'
