@@ -11,7 +11,8 @@ const { States } = require("./States");
  * class model
  */
 class Cities extends BaseTableModel {
-  static ID = 2003;
+  static id = 2003;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...Cities.getBaseTableModelFields(),...{           
@@ -19,7 +20,7 @@ class Cities extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -40,12 +41,12 @@ class Cities extends BaseTableModel {
   
   static uniqueFields = [
     'IDSTATE',
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(Cities.getBaseTableModelConstraints() || []),...[
     {
-      name: Cities.name.toUpperCase() + '_U1',
+      name: Cities.tableName + '_u1',
       fields: [...Cities.getBaseTableModelUniqueFields(),...Cities.uniqueFields],
       type:"unique"
     }
@@ -57,7 +58,7 @@ class Cities extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: States,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

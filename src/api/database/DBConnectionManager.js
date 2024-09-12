@@ -209,17 +209,17 @@ module.exports = class DBConnectionManager {
 
     static getConnectionBySchemaName(schemaName) {
         let result = null;
-        switch((schemaName||'').trim().toUpperCase()) {
-            case 'EP':
+        switch((schemaName||'').trim().toLowerCase()) {
+            case 'ep':
                 result = DBConnectionManager.getEpDBConnection();
                 break;
-            case 'CONSULT':
+            case 'consult':
                 result = DBConnectionManager.getConsultDBConnection();
                 break;
-            case 'WINTHOR':
+            case 'winthor':
                 result = DBConnectionManager.getWinthorDBConnection();
                 break;
-            case 'DEFAULT':
+            case 'default':
                 result = DBConnectionManager.getDefaultDBConnection();
                 break;
         }

@@ -3,14 +3,15 @@
 /*imports*/
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require("./BaseTableModel");
-const { IdentifiersTypes } = require("./IdentifiersTypes");
+const { Identifier_Types } = require("./Identifier_Types");
 const { Utils } = require("../../controllers/utils/Utils");
 
 /**
  * class model
  */
 class People extends BaseTableModel {
-  static ID = 100;
+  static id = 100;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static SYSTEM = 1;
@@ -25,7 +26,7 @@ class People extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull: false
       },
-      NAME: {
+      name: {
         type: DataTypes.STRING(2000),
         allowNull: false
       },
@@ -51,7 +52,7 @@ class People extends BaseTableModel {
 
   static constraints = [...(People.getBaseTableModelConstraints() || []),...[
     {
-      name: People.name.toUpperCase() + '_U1',
+      name: People.tableName + '_u1',
       fields: [...People.getBaseTableModelUniqueFields(),...People.uniqueFields],
       type:"unique"
     }
@@ -62,8 +63,8 @@ class People extends BaseTableModel {
       fields: ['IDIDENTIFIERDOCTYPE'],
       type: 'foreign key',
       references: { 
-          table: IdentifiersTypes,
-          field: 'ID'
+          table: Identifier_Types,
+          field: 'id'
       },
       onUpdate: 'cascade'
     }
@@ -71,20 +72,20 @@ class People extends BaseTableModel {
   
   static include(queryParams,pClassModelParent) {
     queryParams = queryParams || {};
-    queryParams.attributes = queryParams.attributes || [`${pClassModelParent.name.toUpperCase()}.*`],
-    queryParams.attributes.push([Sequelize.col(`${People.name.toUpperCase()}.IDIDENTIFIERDOCTYPE`),'IDIDENTIFIERDOCTYPE']);
-    queryParams.attributes.push([Sequelize.col(`${People.name.toUpperCase()}.IDENTIFIERDOC`),'IDENTIFIERDOC']);
-    queryParams.attributes.push([Sequelize.col(`${People.name.toUpperCase()}.NAME`),'NAME']);
-    queryParams.attributes.push([Sequelize.col(`${People.name.toUpperCase()}.FANTASY`),'FANTASY']);
+    queryParams.attributes = queryParams.attributes || [`${pClassModelParent.tableName}.*`],
+    queryParams.attributes.push([Sequelize.col(`${People.tableName}.IDIDENTIFIERDOCTYPE`),'IDIDENTIFIERDOCTYPE']);
+    queryParams.attributes.push([Sequelize.col(`${People.tableName}.IDENTIFIERDOC`),'IDENTIFIERDOC']);
+    queryParams.attributes.push([Sequelize.col(`${People.tableName}.name`),'name']);
+    queryParams.attributes.push([Sequelize.col(`${People.tableName}.FANTASY`),'FANTASY']);
     queryParams.include = queryParams.include || [];
     queryParams.include.push({
         raw:true,
         model:People.getModel(),
         attributes:[],
         on:Sequelize.where(
-            Sequelize.col(`${People.name.toUpperCase()}.ID`),
+            Sequelize.col(`${People.tableName}.id`),
             '=',
-            Sequelize.col(`${pClassModelParent.name.toUpperCase()}.IDPEOPLE`)
+            Sequelize.col(`${pClassModelParent.tableName}.IDPEOPLE`)
         )
     });
     return queryParams;
@@ -101,18 +102,18 @@ class People extends BaseTableModel {
 
       let describeTable = await People.getModel().describe();
       let originalFieldsNames = Object.keys(describeTable);
-      let fieldsUpper = originalFieldsNames.join(',').toUpperCase().split(',');
+      let fieldsLower = originalFieldsNames.join(',').toLowerCase().split(',');
       let newParams  = {};
       let ind = null;
       for(let key in queryParams) {
-        ind = fieldsUpper.indexOf(key.trim().toUpperCase());
-        if (ind > -1 && key != 'ID') {
+        ind = fieldsLower.indexOf(key.trim().toLowerCase());
+        if (ind > -1 && key != 'id') {
           newParams[originalFieldsNames[ind]] = queryParams[key];
         }
       }
       if (people) {
         for(let key in newParams) {
-          if (key != 'ID') people[key] = newParams[key];
+          if (key != 'id') people[key] = newParams[key];
         }
         await people.save();
         return people;

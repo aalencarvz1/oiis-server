@@ -2,8 +2,8 @@
 
 /*imports*/
 const { Greatnesses } = require('../models/Greatnesses');
-const { OriginsDatas } = require('../models/OriginsDatas');
-const { StatusRegs } = require('../models/StatusRegs');
+const { Data_Origins } = require('../models/Data_Origins');
+const { Record_Status } = require('../models/Record_Status');
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/
@@ -11,11 +11,11 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await Greatnesses.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});     
     
-    await Greatnesses.migrateForeignKeyContraint(queryInterface,StatusRegs);  
-    await Greatnesses.migrateForeignKeyContraint(queryInterface,OriginsDatas);  
+    await Greatnesses.migrateForeignKeyContraint(queryInterface,Record_Status);  
+    await Greatnesses.migrateForeignKeyContraint(queryInterface,Data_Origins);  
         
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(Greatnesses.name.toUpperCase());
+    await queryInterface.dropTable(Greatnesses.tableName);
   }
 };

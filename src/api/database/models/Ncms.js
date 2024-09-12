@@ -1,20 +1,21 @@
 'use strict';
 /*imports*/
 const { DataTypes, Sequelize } = require("sequelize");
-const { OriginsDatas } = require('./OriginsDatas');
+const { Data_Origins } = require('./Data_Origins');
 const { PcNcm } = require('./winthor/PcNcm');
 const { DataSwap } = require("../../controllers/data/DataSwap");
 const { BaseTableModel } = require("./BaseTableModel");
 const { Utils } = require("../../controllers/utils/Utils");
 const { Parameters } = require("./Parameters");
-const { ParametersValues } = require("./ParametersValues");
+const { Parameter_Values } = require("./Parameter_Values");
 
 
 /**
  * class model
  */
 class Ncms extends BaseTableModel {
-  static ID = 8008;
+  static id = 8008;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...Ncms.getBaseTableModelFields(),...{           
@@ -29,14 +30,14 @@ class Ncms extends BaseTableModel {
       EXCEPTION:{
         type: DataTypes.BIGINT.UNSIGNED
       },      
-      DESCRIPTION:{
+      description:{
         type: DataTypes.TEXT,
         allowNull:false
       }
     }
   };
   
-  static uniqueFields = `create unique index ${Ncms.name.toUpperCase()}_U1 on ${Ncms.name.toUpperCase()} (${Ncms.getBaseTableModelUniqueFields().join(',')},NCM,(coalesce(EXCEPTION,-1))) `;
+  static uniqueFields = `create unique index ${Ncms.tableName}_u1 on ${Ncms.tableName} (${Ncms.getBaseTableModelUniqueFields().join(',')},NCM,(coalesce(EXCEPTION,-1))) `;
 
   static constraints = [...(Ncms.getBaseTableModelConstraints() || []),...[
     Ncms.uniqueFields
@@ -56,7 +57,7 @@ class Ncms extends BaseTableModel {
         }
       });
       if (!winthorData && (
-        Utils.hasValue(queryParams.EXCEPTION) && Utils.toBool(await ParametersValues.get(Parameters.WINTHOR_INTEGRATION_NCM_CONSIDER_EXCEPTION_NULL_IF_NOT_EXISTS)) == true
+        Utils.hasValue(queryParams.EXCEPTION) && Utils.toBool(await Parameter_Values.get(Parameters.WINTHOR_INTEGRATION_NCM_CONSIDER_EXCEPTION_NULL_IF_NOT_EXISTS)) == true
       )) { 
         winthorData = await PcNcm.getModel().findOne({
           where:{
@@ -66,9 +67,9 @@ class Ncms extends BaseTableModel {
         });
       }
       if (winthorData) {
-        queryParams.IDORIGINDATA = OriginsDatas.WINTHOR;
+        queryParams.data_origin_id = Data_Origins.WINTHOR;
         queryParams.CHAPTER = queryParams.CHAPTER || winthorData.CAPITULO;
-        queryParams.DESCRIPTION = queryParams.DESCRIPTION || winthorData.DESCRICAO;
+        queryParams.description = queryParams.description || winthorData.DESCRICAO;
         result.data = await Ncms.getModel().create(queryParams);
         if (result.data) {
           result.data = result.data.dataValues;

@@ -11,7 +11,8 @@ const { Texts } = require("./Texts");
  * class model
  */
 class Translates extends BaseTableModel {
-  static ID = 250;
+  static id = 250;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...Translates.getBaseTableModelFields(),...{     
@@ -37,7 +38,7 @@ class Translates extends BaseTableModel {
 
   static constraints = [...(Translates.getBaseTableModelConstraints() || []),...[
     {
-      name: Translates.name.toUpperCase() + '_U1',
+      name: Translates.tableName + '_u1',
       fields: [...Translates.getBaseTableModelUniqueFields(),...Translates.uniqueFields],
       type:"unique"
     }
@@ -49,7 +50,7 @@ class Translates extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Languages,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -58,7 +59,7 @@ class Translates extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Texts,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'

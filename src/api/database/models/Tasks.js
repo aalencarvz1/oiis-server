@@ -9,7 +9,8 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class Tasks extends BaseTableModel {
-  static ID = 15010;
+  static id = 15010;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static fields = {
@@ -17,11 +18,11 @@ class Tasks extends BaseTableModel {
       IDSUP: {
         type: DataTypes.BIGINT.UNSIGNED
       },       
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
       ANOTATIONS: {
@@ -52,7 +53,7 @@ class Tasks extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Tasks,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'

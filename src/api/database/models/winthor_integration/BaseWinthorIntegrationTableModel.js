@@ -27,21 +27,38 @@ class BaseWinthorIntegrationTableModel extends BaseTableModel {
      */
     static async runUpMigration(queryInterface, options) {
         options = options || {};
-        Utils.log('migrating table',this.name.toUpperCase(), Object.keys(this.fields));
-        //await queryInterface.createTable(this.name.toUpperCase(), this.fields);
+        Utils.log('migrating table',this.tableName, Object.keys(this.fields));
+        //await queryInterface.createTable(this.tableName, this.fields);
         let originQueryInterface = await this.getConnection().getQueryInterface();
-        let tableExists = await originQueryInterface.tableExists(this.name.toUpperCase());
-        Utils.log('tableExists',tableExists);
+        //let tableExists = await originQueryInterface.tableExists(this.tableName);
+        let tableExists = await originQueryInterface.sequelize.query(`
+            select 
+                count(1) as "exists"
+            from user_tables
+            where lower(table_name) = lower('${this.tableName}')
+        `);        
+        if (Utils.hasValue(tableExists)) {
+            tableExists = tableExists[0];
+        }
+        if (Utils.hasValue(tableExists)) {
+            tableExists = tableExists[0];
+        }
+        if (Utils.hasValue(tableExists)) {
+            tableExists = Utils.toBool((tableExists.exists-0) > 0);
+        } else {
+            tableExists = false;
+        }
+
         if (!tableExists) {
-            await originQueryInterface.createTable(this.name.toUpperCase(), this.fields);
+            await originQueryInterface.createTable(this.tableName, this.fields);
             await this.migrateConstraints(originQueryInterface);   
-            await queryInterface.bulkInsert('DATATABLES',[{      
-                ID:this.ID,
-                CREATEDAT: new Date(),
-                ISSYSTEMREG : 1,
-                IDDATACONNECTION : configDB[`${process.env.NODE_ENV||'development'}_winthor_integration`].ID,
-                IDSCHEMA : configDB[`${process.env.NODE_ENV||'development'}_winthor_integration`].ID,
-                NAME : this.name.toUpperCase()
+            await queryInterface.bulkInsert('tables',[{      
+                id:this.id,
+                created_at: new Date(),
+                is_sys_rec : 1,
+                IDDATACONNECTION : configDB[`${process.env.NODE_ENV||'development'}_winthor_integration`].id,
+                IDSCHEMA : configDB[`${process.env.NODE_ENV||'development'}_winthor_integration`].id,
+                name : this.tableName
             }],{
                 ignoreDuplicates:true,
                 updateOnDuplicate:null
@@ -57,10 +74,10 @@ class BaseWinthorIntegrationTableModel extends BaseTableModel {
 
     static async runDownMigration(queryInterface, options) {
         options = options || {};
-        Utils.log('migrating down table',this.name.toUpperCase(), Object.keys(this.fields));
-        //await queryInterface.createTable(this.name.toUpperCase(), this.fields);
+        Utils.log('migrating down table',this.tableName, Object.keys(this.fields));
+        //await queryInterface.createTable(this.tableName, this.fields);
         let originQueryInterface = this.getConnection().getQueryInterface();
-        await originQueryInterface.dropTable(ErrorsLogs.name.toUpperCase());
+        //await originQueryInterface.dropTable(Error_Logs.tableName);
     }
 
     
@@ -80,11 +97,11 @@ class BaseWinthorIntegrationTableModel extends BaseTableModel {
                     sequelize: pSequelize,
                     underscore:false,
                     freezeTableName:true,
-                    modelName:this.name.toUpperCase(),
-                    tableName:this.name.toUpperCase(),
+                    modelName:this.tableName,
+                    tableName:this.tableName,
                     name:{
-                        singular:this.name.toUpperCase(),
-                        plural:this.name.toUpperCase()
+                        singular:this.tableName,
+                        plural:this.tableName
                     },
                     timestamps:false,
                     hooks: this.getBaseTableModelInitHooks(),

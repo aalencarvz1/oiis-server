@@ -4,14 +4,15 @@
 const { DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
-const { IdentifiersTypes } = require("./IdentifiersTypes");
+const { Identifier_Types } = require("./Identifier_Types");
 const { Suppliers } = require("./Suppliers");
 
 /**
  * class model
  */
 class Lots extends BaseTableModel {
-  static ID = 8014;
+  static id = 8014;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static WITHOUT_LOT = 1;
@@ -46,7 +47,7 @@ class Lots extends BaseTableModel {
 
   static constraints = [...(Lots.getBaseTableModelConstraints() || []),...[
     {
-      name: Lots.name.toUpperCase() + '_U1',
+      name: Lots.tableName + '_u1',
       fields: [...Lots.getBaseTableModelUniqueFields(),...Lots.uniqueFields],
       type:"unique"
     }
@@ -58,7 +59,7 @@ class Lots extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Suppliers,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -66,8 +67,8 @@ class Lots extends BaseTableModel {
       fields: ['IDIDENTIFIERTYPE'],
       type: 'foreign key',
       references: { 
-          table: IdentifiersTypes,
-          field: 'ID'
+          table: Identifier_Types,
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

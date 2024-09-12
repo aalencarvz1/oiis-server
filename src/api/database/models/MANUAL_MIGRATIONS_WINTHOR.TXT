@@ -67,7 +67,7 @@ create or replace PACKAGE BODY pkg_oiis_api AS
         p_mailtarget VARCHAR2 DEFAULT NULL
     ) AS
         PRAGMA autonomous_transaction;
-        v_ler jumbo.OIISAPIERRORS%rowtype default NULL;
+        v_ler JUMBO.OIISAPIERRORS%rowtype default NULL;
     BEGIN
         v_ler.moment := sysdate;
         v_ler.objecttype := p_objecttype;
@@ -77,7 +77,7 @@ create or replace PACKAGE BODY pkg_oiis_api AS
         v_ler.msg := nvl(p_msg, sqlerrm);
         v_ler."VALUES" := p_vlrs;
         v_ler.mailtargets := p_mailtarget;
-        INSERT INTO jumbo.OIISAPIERRORS VALUES v_ler;
+        INSERT INTO JUMBO.OIISAPIERRORS VALUES v_ler;
 
         COMMIT;
     EXCEPTION
@@ -158,21 +158,21 @@ create or replace PACKAGE BODY pkg_oiis_api AS
     FUNCTION getapitoken(newToken integer default 0) RETURN VARCHAR2 AS
         PRAGMA autonomous_transaction;
         r         CLOB;
-        v_headers jumbo.pkg_oiis_api.keys_values;
+        v_headers JUMBO.PKG_OIIS_API.keys_values;
         jo        json_object_t;
         v_result  VARCHAR2(1000) DEFAULT NULL;
         v_exists integer default 0;
     BEGIN
         if newToken = 0 then
-            select count(1) into v_exists from jumbo.OIISAPIVALUES where valuename = 'token';
+            select count(1) into v_exists from JUMBO.OIISAPIVALUES where valuename = 'token';
             if v_exists > 0 then
-                select "VALUE" into v_result from jumbo.OIISAPIVALUES where valuename = 'token';
+                select "VALUE" into v_result from JUMBO.OIISAPIVALUES where valuename = 'token';
             end if;
         end if;
         if newToken = 1 or v_result is null then
             v_headers('Accept') := 'application/json';
             v_headers('Content-Type') := 'application/json';
-            r := jumbo.pkg_oiis_api.apirequest(
+            r := JUMBO.PKG_OIIS_API.apirequest(
                 p_method => 'POST', 
                 p_url => base_url || '/auth/login', 
                 p_headers => v_headers, 
@@ -182,7 +182,7 @@ create or replace PACKAGE BODY pkg_oiis_api AS
             jo := json_object_t.parse(r);
             v_result := jo.get_object('data').get_string('token');
             if v_result != null and length(v_result) > 0 then
-                insert into jumbo.OIISAPIVALUES values ('token',v_result);
+                insert into JUMBO.OIISAPIVALUES values ('token',v_result);
                 commit;
             end if;
         end if;
@@ -202,7 +202,7 @@ create or replace PACKAGE BODY pkg_oiis_api AS
     ) RETURN VARCHAR2 AS
         PRAGMA autonomous_transaction;
         r         CLOB;
-        v_headers jumbo.pkg_oiis_api.keys_values;
+        v_headers JUMBO.PKG_OIIS_API.keys_values;
         jo        json_object_t;
         v_parameters VARCHAR2(32767) DEFAULT NULL;
         v_result VARCHAR2(32767) DEFAULT NULL;
@@ -219,7 +219,7 @@ create or replace PACKAGE BODY pkg_oiis_api AS
             v_headers('Content-Type') := 'application/json';
             v_headers('x-access-token') := getApiToken();
             v_parameters := '{"codcli":'|| p_codcli || ',"value":' || REPLACE(TO_CHAR(p_value),',','.') || ',"numtrans":' || p_numtrans ||',"numnf":' || p_numnf || ',"prest": '|| p_prest ||'}' ;
-            r := jumbo.pkg_oiis_api.apirequest(
+            r := JUMBO.PKG_OIIS_API.apirequest(
                 p_method => 'POST', 
                 p_url => base_url || '/modules/outputs/sales/financial_collection/pix/integrations/sicredi/create', 
                 p_headers => v_headers,                
@@ -253,7 +253,7 @@ create or replace PACKAGE BODY pkg_oiis_api AS
     ) RETURN VARCHAR2 AS
         PRAGMA autonomous_transaction;
         r         CLOB;
-        v_headers jumbo.pkg_oiis_api.keys_values;
+        v_headers JUMBO.PKG_OIIS_API.keys_values;
         jo        json_object_t;
         v_parameters VARCHAR2(32767) DEFAULT NULL;
         v_result VARCHAR2(32767) DEFAULT NULL;
@@ -267,7 +267,7 @@ create or replace PACKAGE BODY pkg_oiis_api AS
             v_headers('Content-Type') := 'application/json';
             v_headers('x-access-token') := getApiToken();
             v_parameters := '{"identifiers":"' || p_txid || '"}' ;
-            r := jumbo.pkg_oiis_api.apirequest(
+            r := JUMBO.PKG_OIIS_API.apirequest(
                 p_method => 'POST', 
                 p_url => base_url || '/modules/outputs/sales/financial_collection/pix/integrations/sicredi/delete', 
                 p_headers => v_headers,                
@@ -305,7 +305,7 @@ create or replace TRIGGER api_oiis_pcprest_aft_ins_upd AFTER
     update 
         of dtpag,dtbaixa 
     OR INSERT 
-        ON jumbo.pcprest
+        ON JUMBO.PCPREST
     REFERENCING
         NEW AS new
         Old as old
@@ -345,9 +345,9 @@ BEGIN
                 AND CODCOB NOT LIKE '%DEV%';
 
             if v_exists > 0 then
-                v_result := jumbo.pkg_oiis_api.create_pix_of_trans(:new.codcli,:new.VALOR,:new.numtransvenda,:new.DUPLIC,:new.prest, v_message);
+                v_result := JUMBO.PKG_OIIS_API.create_pix_of_trans(:new.codcli,:new.VALOR,:new.numtransvenda,:new.DUPLIC,:new.prest, v_message);
                 IF length(nvl(v_result, '')) = 0 THEN
-                    jumbo.pkg_oiis_api.api_error_insert(
+                    JUMBO.PKG_OIIS_API.api_error_insert(
                         p_objecttype => 'trigger', 
                         p_objectname => 'JUMBO.API_OIIS_PCNFSAID_AFT_INS', 
                         p_line => $$plsql_line, 
@@ -409,10 +409,10 @@ BEGIN
                         and nvl(prest,1) = nvl(:new.prest,1)
                         and status = 'ATIVA';
 
-                    v_result := jumbo.pkg_oiis_api.delete_pix(v_pixcob.NUMTRANSPAGDIGITAL, v_message);
+                    v_result := JUMBO.PKG_OIIS_API.delete_pix(v_pixcob.NUMTRANSPAGDIGITAL, v_message);
 
                     IF length(nvl(v_result, '')) = 0 THEN
-                        jumbo.pkg_oiis_api.api_error_insert(
+                        JUMBO.PKG_OIIS_API.api_error_insert(
                             p_objecttype => 'trigger', 
                             p_objectname => 'JUMBO.api_oiis_pcprest_aft_upd', 
                             p_line => $$plsql_line, 
@@ -425,7 +425,7 @@ BEGIN
     END IF;
 EXCEPTION
     WHEN OTHERS THEN
-        jumbo.pkg_oiis_api.api_error_insert(
+        JUMBO.PKG_OIIS_API.api_error_insert(
             p_objecttype => 'trigger', 
             p_objectname => 'JUMBO.api_oiis_pcprest_aft_upd', 
             p_line => $$plsql_line, 
@@ -436,7 +436,7 @@ END api_oiis_pcprest_aft_ins_upd;
 /
 create or replace TRIGGER api_oiis_pcpixlog AFTER
     UPDATE OR INSERT OR DELETE
-        ON jumbo.pcpixcobrancadados
+        ON JUMBO.PCPIXCOBRANCADADOS
     REFERENCING
         NEW AS new
         Old as old
@@ -481,7 +481,7 @@ BEGIN
     commit;
 EXCEPTION
     WHEN OTHERS THEN
-        jumbo.pkg_oiis_api.api_error_insert(
+        JUMBO.PKG_OIIS_API.api_error_insert(
             p_objecttype => 'trigger', 
             p_objectname => 'JUMBO.api_oiis_pcpixlog', 
             p_line => $$plsql_line, 

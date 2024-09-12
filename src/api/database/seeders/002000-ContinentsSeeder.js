@@ -1,31 +1,31 @@
 'use strict';
 
 const { Continents } = require('../models/Continents');
-const { OriginsDatas } = require('../models/OriginsDatas');
-const { StatusRegs } = require('../models/StatusRegs');
+const { Data_Origins } = require('../models/Data_Origins');
+const { Record_Status } = require('../models/Record_Status');
 const { Users } = require('../models/Users');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(Continents.name.toUpperCase(),[{      
-      ID:Continents.AMERICA,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
-      NAME : 'AMERICA',
+    await queryInterface.bulkInsert(Continents.tableName,[{      
+      id:Continents.AMERICA,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'AMERICA',
       SIGLA:'AM'
     },{      
-      ID:Continents.SOUTH_AMERICA,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
+      id:Continents.SOUTH_AMERICA,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
       IDSUP: Continents.AMERICA,
-      NAME : 'SOUTH AMERICA',
+      name : 'SOUTH AMERICA',
       SIGLA:'AL'
     }],{
       ignoreDuplicates:true,
@@ -35,6 +35,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(Continents.name.toUpperCase(), null, {});
+     await queryInterface.bulkDelete(Continents.tableName, null, {});
   }
 };

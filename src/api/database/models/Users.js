@@ -4,7 +4,7 @@
 const bcrypt = require("bcrypt");
 const { DataTypes } = require("sequelize");
 const { Collaborators } = require("./Collaborators");
-const { AccessesProfiles } = require("./AccessesProfiles");
+const { Access_Profiles } = require("./Access_Profiles");
 const { BasePeopleModel } = require("./BasePeopleModel");
 
 
@@ -12,7 +12,8 @@ const { BasePeopleModel } = require("./BasePeopleModel");
  * class model
  */
 class Users extends BasePeopleModel {
-  static ID = 120;
+  static id = 120;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static SYSTEM = 1;
@@ -29,7 +30,7 @@ class Users extends BasePeopleModel {
       IDACCESSPROFILE: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull : false,
-        defaultValue : AccessesProfiles.DEFAULT
+        defaultValue : Access_Profiles.DEFAULT
       },
       EMAIL: {
         type: DataTypes.STRING(512),
@@ -54,7 +55,7 @@ class Users extends BasePeopleModel {
 
   static constraints = [...(Users.getBaseTableModelConstraints() || []),...[
     {
-      name: Users.name.toUpperCase() + '_U1',
+      name: Users.tableName + '_u1',
       fields: Users.uniqueFields,
       type:"unique"
     }
@@ -66,7 +67,7 @@ class Users extends BasePeopleModel {
       type: 'foreign key',
       references: { 
           table: Collaborators,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -74,8 +75,8 @@ class Users extends BasePeopleModel {
       fields: ['IDACCESSPROFILE'],
       type: 'foreign key',
       references: { 
-          table: AccessesProfiles,
-          field: 'ID'
+          table: Access_Profiles,
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

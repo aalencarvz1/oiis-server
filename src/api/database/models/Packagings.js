@@ -10,7 +10,8 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class Packagings extends BaseTableModel {
-  static ID = 8001;
+  static id = 8001;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static BULK = 1; // GRANEL
@@ -40,7 +41,7 @@ class Packagings extends BaseTableModel {
 
   static fields = {
     ...Packagings.getBaseTableModelFields(),...{
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull: false
       },
@@ -48,20 +49,20 @@ class Packagings extends BaseTableModel {
         type: DataTypes.STRING(10),
         allowNull: false
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       }
     }
   };
   
   static uniqueFields = [
-    'NAME',
+    'name',
     'SIGLA'
   ];
 
   static constraints = [...(Packagings.getBaseTableModelConstraints() || []),...[
     {
-      name: Packagings.name.toUpperCase() + '_U1',
+      name: Packagings.tableName + '_u1',
       fields: [...Packagings.getBaseTableModelUniqueFields(),...Packagings.uniqueFields],
       type:"unique"
     }

@@ -9,12 +9,13 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class Apis extends BaseTableModel {
-  static ID = 20000;
+  static id = 20000;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static fields = {
     ...Apis.getBaseTableModelFields(),...{            
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull: false
       },
@@ -36,19 +37,19 @@ class Apis extends BaseTableModel {
       DEFAULTWEBHOOK:{
         type: DataTypes.STRING(2000)
       }, 
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
     }
   };
   
   static uniqueFields = [     
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(Apis.getBaseTableModelConstraints() || []),...[
     {
-      name: Apis.name.toUpperCase() + '_U1',
+      name: Apis.tableName + '_u1',
       fields: Apis.uniqueFields,
       type:"unique"
     }

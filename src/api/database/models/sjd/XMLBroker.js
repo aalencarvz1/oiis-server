@@ -8,7 +8,8 @@ const { BaseSjdTableModel } = require("./BaseSjdTableModel");
  * class model
  */
 class XMLBroker extends BaseSjdTableModel {
-  static ID = 40800;
+  static id = 40800;
+  static tableName = this.name.toUpperCase();
   static model = null;
 
 

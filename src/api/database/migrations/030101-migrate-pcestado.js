@@ -14,6 +14,6 @@ module.exports = {
     }
   },
   async down(queryInterface, Sequelize) {
-    //await queryInterface.dropTable(PcEstado.name.toUpperCase());
+    //await queryInterface.dropTable(PcEstado.tableName);
   }
 };

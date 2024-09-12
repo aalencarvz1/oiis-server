@@ -8,9 +8,10 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class Logs extends BaseTableModel {
-  static model = null;
+  static tableName = this.name.toLowerCase();
+  static model = null;  
   static fields = {
-    ID: {
+    id: {
       type : DataTypes.BIGINT.UNSIGNED,                
       autoIncrement : true,
       primaryKey: true,               

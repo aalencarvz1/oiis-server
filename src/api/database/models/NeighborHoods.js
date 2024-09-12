@@ -10,7 +10,8 @@ const { Cities } = require("./Cities");
  * class model
  */
 class NeighborHoods extends BaseTableModel {
-  static ID = 2004;
+  static id = 2004;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...NeighborHoods.getBaseTableModelFields(),...{           
@@ -18,7 +19,7 @@ class NeighborHoods extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       }
@@ -27,12 +28,12 @@ class NeighborHoods extends BaseTableModel {
   
   static uniqueFields = [
     'IDCITY',
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(NeighborHoods.getBaseTableModelConstraints() || []),...[
     {
-      name: NeighborHoods.name.toUpperCase() + '_U1',
+      name: NeighborHoods.tableName + '_u1',
       fields: [...NeighborHoods.getBaseTableModelUniqueFields(),...NeighborHoods.uniqueFields],
       type:"unique"
     }
@@ -44,7 +45,7 @@ class NeighborHoods extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Cities,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

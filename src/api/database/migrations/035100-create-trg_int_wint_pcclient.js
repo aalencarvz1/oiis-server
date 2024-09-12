@@ -48,8 +48,8 @@ module.exports = {
         PRAGMA autonomous_transaction;    
         v_exists integer default 0;
         v_table_name varchar2(255) default 'PCCLIENT';
-        v_migrationtable_row migrationstables%rowtype default null;
-        v_error_log errorslogs%rowtype default NULL;
+        v_migrationtable_row migration_tables%rowtype default null;
+        v_error_log error_logs%rowtype default NULL;
         v_codcli integer default null;
         v_json_values json_object_t;
         v_blob_values blob default empty_blob();
@@ -58,9 +58,9 @@ module.exports = {
     BEGIN    
         v_exists := 0;
         hasValues := 0;
-        select count(1) into v_exists from migrationstables where upper(trim(tablename)) = v_table_name;
+        select count(1) into v_exists from migration_tables where lower(trim(tablename)) = v_table_name;
         IF v_exists > 0 THEN
-            select * into v_migrationtable_row from migrationstables where upper(trim(tablename)) = v_table_name;     
+            select * into v_migrationtable_row from migration_tables where lower(trim(tablename)) = v_table_name;     
             IF v_migrationtable_row.MIGRATEINTEGRATION = 1 THEN
                 v_json_values := new json_object_t();            
                 v_operation := 'MIGRATION';
@@ -207,9 +207,9 @@ module.exports = {
             END IF;
         
             IF DELETING OR hasValues = 1 THEN
-                INSERT INTO MIGRATIONSCONTROL (            
-                    CREATEDAT,
-                    IDSTATUSREG,
+                INSERT INTO migration_control (            
+                    created_at,
+                    status_reg_id,
                     OBJECTTYPE,
                     OBJECTNAME,
                     OBJECTREGISTERID,
@@ -229,11 +229,11 @@ module.exports = {
         end if;
     EXCEPTION
         WHEN OTHERS THEN
-            v_error_log.idusercreate := 1;        
-            v_error_log.createdat := sysdate;        
-            v_error_log.idstatusreg := 1;
-            v_error_log.idorigindata := 1;
-            v_error_log.issystemreg := 0;
+            v_error_log.creator_user_id := 1;        
+            v_error_log.created_at := sysdate;        
+            v_error_log.status_reg_id := 1;
+            v_error_log.data_origin_id := 1;
+            v_error_log.is_sys_rec := 0;
             v_error_log.objecttype := 'trigger';
             v_error_log.objectname := $$plsql_unit;
             v_error_log.objectline := $$plsql_line;
@@ -242,7 +242,7 @@ module.exports = {
                                         || ' '
                                         || dbms_utility.format_error_backtrace, 1, 4000);
             v_error_log.logvalues := 'codcli: ' || :new.codcli;
-            INSERT INTO errorslogs VALUES v_error_log;
+            INSERT INTO error_logs VALUES v_error_log;
             COMMIT;
             NULL;
     END;

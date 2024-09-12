@@ -191,11 +191,11 @@ async function crudDelete(params) {
     options.body = JSON.stringify({
         queryParams:{
             where:{
-                ID:params.ID
+                id:params.id
             }
         }
     });
-    //console.log('DELETING',`${params.endPoint}`,options);
+    //console.log('DELETING',`${params.endPoint}`,params,options);
     jsonData = await callApi(`${params.endPoint}`,options, true);    
     expect(tablesNamesIgnoresFKErrors.indexOf(params.tableName.trim().toLowerCase()) > -1 || jsonData.success).toBeTruthy();
     return jsonData;
@@ -203,7 +203,7 @@ async function crudDelete(params) {
 
 async function createData(tableName,valuesToCreate){
     //console.log('creating', tableName,valuesToCreate);
-    let fieldUpdate = Object.keys(valuesToCreate)[0] || 'NAME';
+    let fieldUpdate = Object.keys(valuesToCreate)[0] || 'name';
     valuesToCreate = valuesToCreate || {};
     let endPoint = `${baseApiEndPoint}${endPoints.registerscontroller.path}/${tableName}`;     
     let options = {...defaultLoggedOptions}
@@ -214,17 +214,17 @@ async function createData(tableName,valuesToCreate){
     });
     //console.log(options);
     let jsonDataCreate = await callApi(`${endPoint}`,options);
-    expect(hasValue(jsonDataCreate.data.ID)).toBeTruthy();
+    expect(hasValue(jsonDataCreate.data.id)).toBeTruthy();
     //delete
     let crudToDelete = crudsToDelete.find(el=>el.tableName == tableName);
     if (crudToDelete) {
-        crudToDelete.ID.in.push(jsonDataCreate.data.ID)
+        crudToDelete.id.in.push(jsonDataCreate.data.id)
     } else {
         crudsToDelete.push({
             tableName: tableName,
             endPoint: endPoint,
-            ID:{
-                in:[jsonDataCreate.data.ID]
+            id:{
+                in:[jsonDataCreate.data.id]
             },
             data: jsonDataCreate.data
         });
@@ -234,7 +234,7 @@ async function createData(tableName,valuesToCreate){
 }
 
 async function updateData(tableName,valuesToCreate){
-    let fieldUpdate = Object.keys(valuesToCreate)[0] || 'NAME';
+    let fieldUpdate = Object.keys(valuesToCreate)[0] || 'name';
     valuesToCreate = valuesToCreate || {};
     let endPoint = `${baseApiEndPoint}${endPoints.registerscontroller.path}/${tableName}`;     
     let options = {...defaultLoggedOptions}
@@ -250,7 +250,7 @@ async function updateData(tableName,valuesToCreate){
         options.body = JSON.stringify({
             queryParams:{
                 where:{
-                    ID: dataToUpdate.ID
+                    id: dataToUpdate.id
                 },
                 values:{
                     [fieldUpdate]: newValue
@@ -266,7 +266,7 @@ async function updateData(tableName,valuesToCreate){
 
 async function integrateDataFromWinthorTable(params) {
     let options = {...defaultLoggedOptions,method:'POST'}
-    let origin = datas['originsdatas'].find(el=>el.NAME == 'WINTHOR');
+    let origin = datas['data_origins'].find(el=>el.name == 'WINTHOR');
     let valuesToCreate = null;
     let data = await getDataFromWinthorTable(params);
     if (typeof params.identifierWithorField == 'function') {
@@ -280,7 +280,7 @@ async function integrateDataFromWinthorTable(params) {
     options.body = JSON.stringify(valuesToCreate);
     let jsonResponse = await callApi(params.endPointIntegration,options);
     jsonResponse.data = jsonResponse.data[0];
-    expect(hasValue(jsonResponse.data.ID)).toBeTruthy();
+    expect(hasValue(jsonResponse.data.id)).toBeTruthy();
 }
 
 describe('Running api call tests',()=>{
@@ -339,7 +339,7 @@ describe('Running api call tests',()=>{
     fileList = fileList.filter(el=>el.trim().toLowerCase().indexOf('create-table')>-1);
     fileList = fileList.map(el=>el.replace(/\d|\-create\-table\-|\.js/g,'').trim().toLowerCase());
     fileList.sort(function(a,b){
-        if (b == 'datatables' && ['dataconnections','dataschemas'].indexOf(a) > -1) 
+        if (b == 'tables' && ['connections','schemas'].indexOf(a) > -1) 
             return -1
         else return 0;
     });
@@ -350,11 +350,11 @@ describe('Running api call tests',()=>{
         //break;
         let modelName = fileList[i].replace(/\d|\-|create|\.js/g,'').trim().toLowerCase();
         
-        //if (['originsdatas','identifierstypes','people','companies','businessesunits'].indexOf(modelName) > -1)
+        //if (['maps_api_responses'].indexOf(modelName) > -1)
         describe(modelName,()=>{
             let getParamsToCreate = ()=>{
                 return {                    
-                    NAME:testString
+                    name:testString
                 }
             };
             let getParamsToIntegrate = null;
@@ -373,37 +373,37 @@ describe('Running api call tests',()=>{
                         }
                     };
                     break; 
-                case 'datatables':
+                case 'tables':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'dataconnections';
+                        let parentTableName = 'connections';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName); 
-                        let parentTableName2 = 'dataschemas';
+                        let parentTableName2 = 'schemas';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2); 
                         return {
-                            NAME:testString,                            
-                            IDDATACONNECTION:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDSCHEMA:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
+                            name:testString,                            
+                            IDDATACONNECTION:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDSCHEMA:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
                         }
                     }
                     
                     break;  
                 case 'parameters':            
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'datatypes';
+                        let parentTableName = 'data_types';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
-                            NAME:testString,                            
-                            IDDATATYPE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            name:testString,                            
+                            IDDATATYPE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'parametersvalues':
+                case 'parameter_values':
                     getParamsToCreate = () => {
                         let parentTableName = 'parameters';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
                             VALUE:testString,                            
-                            IDPARAMETER:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            IDPARAMETER:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
@@ -412,8 +412,8 @@ describe('Running api call tests',()=>{
                         let parentTableName = 'continents';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
-                            NAME:testString,                            
-                            IDCONTINENT:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            name:testString,                            
+                            IDCONTINENT:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     
@@ -421,11 +421,11 @@ describe('Running api call tests',()=>{
                         getParamsToIntegrate = ()=>{
                             return {
                                 tableName: modelName,
-                                winthorTableName: 'pcpais',
+                                winthorTableName: 'PCPAIS',
                                 winthorTableFields: ['CODPAIS','DESCRICAO'],
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}_integration_controller/integrate`,
                                 identifierWithorField: 'CODPAIS',
-                                fieldUpdate: 'NAME'
+                                fieldUpdate: 'name'
                             }
                         };
                     }
@@ -435,8 +435,8 @@ describe('Running api call tests',()=>{
                         let parentTableName = 'countries';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
-                            NAME:testString,                            
-                            IDCOUNTRY:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            name:testString,                            
+                            IDCOUNTRY:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                 
@@ -444,16 +444,16 @@ describe('Running api call tests',()=>{
                         getParamsToIntegrate = ()=>{
                             return {
                                 tableName: modelName,
-                                winthorTableName: 'pcestado',
+                                winthorTableName: 'PCESTADO',
                                 winthorTableFields: [
                                     'CODPAIS',
                                     '(SELECT P.DESCRICAO FROM JUMBO.PCPAIS P WHERE P.CODPAIS = PCESTADO.CODPAIS) AS PAIS',
                                     'UF',
                                     'ESTADO'
                                 ],
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}_integration_controller/integrate`,
                                 identifierWithorField: 'UF',
-                                fieldUpdate: 'NAME'
+                                fieldUpdate: 'name'
                             }
                         };               
                     }     
@@ -463,8 +463,8 @@ describe('Running api call tests',()=>{
                         let parentTableName = 'states';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
-                            NAME:testString,                            
-                            IDSTATE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            name:testString,                            
+                            IDSTATE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                 
@@ -472,15 +472,15 @@ describe('Running api call tests',()=>{
                         getParamsToIntegrate = ()=>{
                             return {
                                 tableName: modelName,
-                                winthorTableName: 'pccidade',
+                                winthorTableName: 'PCCIDADE',
                                 winthorTableFields: [
                                     'UF',
                                     'CODCIDADE',
                                     'NOMECIDADE'
                                 ],
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}_integration_controller/integrate`,
                                 identifierWithorField: 'CODCIDADE',
-                                fieldUpdate: 'NAME'
+                                fieldUpdate: 'name'
                             }
                         };
                     }
@@ -491,18 +491,18 @@ describe('Running api call tests',()=>{
                         let parentTableName = 'cities';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
-                            NAME:testString,                            
-                            IDCITY:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            name:testString,                            
+                            IDCITY:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;                
                 case 'people':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'identifierstypes';
+                        let parentTableName = 'identifier_types';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
-                            NAME:testString,                            
-                            IDIDENTIFIERDOCTYPE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
+                            name:testString,                            
+                            IDIDENTIFIERDOCTYPE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
                             IDENTIFIERDOC:testString
                         }
                     };
@@ -511,7 +511,7 @@ describe('Running api call tests',()=>{
                         getParamsToIntegrate = ()=>{
                             return {
                                 tableName: modelName,
-                                winthorTableName: 'pcclient',
+                                winthorTableName: 'PCCLIENT',
                                 winthorTableFields: [
                                     'CODCLI',
                                     'TIPOFJ',
@@ -520,7 +520,7 @@ describe('Running api call tests',()=>{
                                     'CLIENTE',
                                     'FANTASIA'
                                 ],
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/${modelName}/integrations/${modelName}_integration_controller/integrate`,
                                 identifierWithorField: (origin,data)=>{
                                     return {
                                         origin:origin,
@@ -531,13 +531,13 @@ describe('Running api call tests',()=>{
                                         }]
                                     }
                                 },
-                                fieldUpdate: 'NAME'
+                                fieldUpdate: 'name'
                             }
                         };                 
                     }   
                     break;
                 case 'warehouses':
-                case 'businessesunits':
+                case 'business_units':
                     getParamsToCreate = ()=>{
                         let parentTableName = 'people';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
@@ -545,8 +545,8 @@ describe('Running api call tests',()=>{
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             ALIAS:testString,                            
-                            IDPEOPLE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDCOMPANY:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
+                            IDPEOPLE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDCOMPANY:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
                         }
                     };
 
@@ -554,7 +554,7 @@ describe('Running api call tests',()=>{
                         getParamsToIntegrate = ()=>{
                             return {
                                 tableName: modelName,
-                                winthorTableName: 'pcfilial',
+                                winthorTableName: 'PCFILIAL',
                                 winthorTableFields: [
                                     'CODIGO',
                                     'CGC',
@@ -564,7 +564,7 @@ describe('Running api call tests',()=>{
                                     'UF',
                                     'CODCLI'
                                 ],
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}_integration_controller/integrate`,
                                 identifierWithorField: 'CODIGO',
                                 fieldUpdate: 'ALIAS'
                             }
@@ -575,12 +575,12 @@ describe('Running api call tests',()=>{
                     getParamsToCreate = ()=>{
                         let parentTableName = 'people';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'accessesprofiles';
+                        let parentTableName2 = 'access_profiles';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             ALIAS:testString,                            
-                            IDPEOPLE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDACCESSESPROFILE:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
+                            IDPEOPLE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDACCESSESPROFILE:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
                             EMAIL :`${testString}@${testString}`,
                             PASSWORD :`${testString}`,
                         }
@@ -590,15 +590,15 @@ describe('Running api call tests',()=>{
                     getParamsToCreate = ()=>{
                         let parentTableName = 'users';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'accessesprofiles';
+                        let parentTableName2 = 'access_profiles';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
-                        let parentTableName3 = 'powerstypes';
+                        let parentTableName3 = 'power_types';
                         let parent3 = crudsToDelete.find(el=>el.tableName == parentTableName3);        
                         return {
                             OBSERVATIONS:testString,                            
-                            IDUSER:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDACCESSESPROFILE:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
-                            IDPOWERTYPE:parent3?.ID.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).ID || undefined,
+                            IDUSER:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDACCESSESPROFILE:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
+                            IDPOWERTYPE:parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined,
                             ALLOWEDACCESS :1
                         }
                     };
@@ -611,7 +611,7 @@ describe('Running api call tests',()=>{
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
                             ALIAS:testString,                            
-                            IDPEOPLE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            IDPEOPLE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
 
@@ -620,9 +620,9 @@ describe('Running api call tests',()=>{
                             getParamsToIntegrate = ()=>{
                                 return {
                                     tableName: modelName,
-                                    winthorTableName: 'pcclient',
+                                    winthorTableName: 'PCCLIENT',
                                     winthorTableFields: undefined,
-                                    endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                    endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}_integration_controller/integrate`,
                                     identifierWithorField: 'CODCLI',
                                     fieldUpdate: 'ALIAS'
                                 }
@@ -631,7 +631,7 @@ describe('Running api call tests',()=>{
                             getParamsToIntegrate = ()=>{
                                 return {
                                     tableName: modelName,
-                                    winthorTableName: 'pcfilial',
+                                    winthorTableName: 'PCFILIAL',
                                     winthorTableFields: [
                                         'CODIGO',
                                         'CGC',
@@ -641,7 +641,7 @@ describe('Running api call tests',()=>{
                                         'UF',
                                         'CODCLI'
                                     ],
-                                    endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                    endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}_integration_controller/integrate`,
                                     identifierWithorField: 'CODIGO',
                                     fieldUpdate: 'ALIAS'
                                 }
@@ -652,101 +652,101 @@ describe('Running api call tests',()=>{
                 case 'objectives':
                     getParamsToCreate = ()=>{                        
                         return {
-                            NAME:testString,                            
+                            name:testString,                            
                             STARTDATE:new Date(),
                             ENDDATE:new Date(),
                         }
                     };
                     break;
-                case 'logisticreasons': 
+                case 'logistic_reasons': 
                     if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {                   
                         getParamsToIntegrate = ()=>{
                             return {
                                 tableName: modelName,
-                                winthorTableName: 'pctabdev',
+                                winthorTableName: 'PCTABDEV',
                                 winthorTableFields: [
                                     'CODDEVOL',
                                     'MOTIVO',
                                     'TIPO'
                                 ],
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/logistic/reasons/integrations/${modelName}integrationscontroller/integrate`,
+                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/logistic/reasons/integrations/${modelName}_integration_controller/integrate`,
                                 identifierWithorField: 'CODDEVOL',
-                                fieldUpdate: 'NAME'
+                                fieldUpdate: 'name'
                             }
                         };
                     }
                     break;
-                case 'reportsdatasfountsitems':
+                case 'report_data_fount_items':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'reportsdatasfounts';
+                        let parentTableName = 'report_data_founts';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'sqlobjectstypes';
+                        let parentTableName2 = 'sql_object_types';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             SQLTEXT:testString,                            
-                            IDREPORTDATAFOUNT:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDSQLOBJECTTYPE:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined
+                            IDREPORTDATAFOUNT:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDSQLOBJECTTYPE:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'apisrequests':
+                case 'api_requests':
                     getParamsToCreate = ()=>{
                         let parentTableName = 'apis';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
-                            NAME:testString,                            
-                            IDAPI:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            name:testString,                            
+                            IDAPI:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'apisrequestscalls':
+                case 'api_request_calls':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'apisrequests';
+                        let parentTableName = 'api_requests';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);  
                         return {
                             ONRECEIVEWEBHOOKRESPONSE:testString,                            
-                            IDAPIREQUEST:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            IDAPIREQUEST:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'apisresponses':
+                case 'api_responses':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'apisrequestscalls';
+                        let parentTableName = 'api_request_calls';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
                             RESPONSE:testString,                            
-                            IDAPIREQUESTCALL:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            IDAPIREQUESTCALL:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'apismapsresponses':
+                case 'maps_api_responses':
                     getParamsToCreate = ()=>{
                         return {
                             RESPONSE:testString
                         }
                     };
                     break;
-                case 'sqlprocesses': 
+                case 'sql_processes': 
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'sqlobjectstypes';
+                        let parentTableName = 'sql_object_types';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
-                            NAME:testString,                            
-                            IDSQLOBJECTTYPE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            name:testString,                            
+                            IDSQLOBJECTTYPE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'datasrelationships':
+                case 'relationships':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'datarelationshiptypes';
+                        let parentTableName = 'relationship_types';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'datatables';
+                        let parentTableName2 = 'tables';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             VALUE:testString,                            
-                            IDRELATIONSHIPTYPE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDTABLE1:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
-                            IDTABLE2:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined
+                            IDRELATIONSHIPTYPE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDTABLE1:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
+                            IDTABLE2:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
@@ -754,7 +754,7 @@ describe('Running api call tests',()=>{
                 case 'packagings':
                     getParamsToCreate = ()=>{
                         return {
-                            NAME:testString,                            
+                            name:testString,                            
                             SIGLA:testString
                         }
                     };
@@ -762,51 +762,51 @@ describe('Running api call tests',()=>{
                 case 'ncms':
                     getParamsToCreate = ()=>{
                         return {
-                            DESCRIPTION:testString,
+                            description:testString,
                             CHAPTER: 1,
                             NCM: 1                            
                         }
                     };
                     break;
-                case 'measurementsunits':
+                case 'measurement_units':
                     getParamsToCreate = ()=>{
                         let parentTableName = 'greatnesses';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
-                            NAME:testString,                            
-                            IDGREATNESS:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
+                            name:testString,                            
+                            IDGREATNESS:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
                             SIGLA: testString,
                         }
                     };
                     break;
-                case 'userstokens':
+                case 'user_tokens':
                     getParamsToCreate = ()=>{
                         let parentTableName = 'users';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
                             TOKEN:testString,                            
-                            IDUSER:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            IDUSER:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break; 
-                case 'usersprofilestimeswork':
+                case 'user_profile_timeworks':
                     getParamsToCreate = ()=>{
                         let parentTableName = 'users';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
-                            NAME:testString,                            
-                            IDUSER:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            name:testString,                            
+                            IDUSER:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;                            
-                case 'userstimeswork':
+                case 'user_timeworks':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'usersprofilestimeswork';
+                        let parentTableName = 'user_profile_timeworks';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
                             OBSERVATIONS:testString,                           
                             STARTAT:testString,                            
-                            IDUSERPROFILETIMEWORK:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
+                            IDUSERPROFILETIMEWORK:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
                             WEEKDAY:0,                            
                             ENDAT:testString
                         }
@@ -814,24 +814,24 @@ describe('Running api call tests',()=>{
                     break;  
                 case 'routines':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'routinestypes';
+                        let parentTableName = 'routine_types';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         let parentTableName2 = 'modules';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
-                            NAME:testString,                            
-                            IDROUTINETYPE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDMODULE:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined
+                            name:testString,                            
+                            IDROUTINETYPE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDMODULE:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;                           
-                case 'routinescontent':
+                case 'routine_contents':
                     getParamsToCreate = ()=>{
                         let parentTableName = 'routines';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
-                            NAME:testString,                            
-                            IDROUTINE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            name:testString,                            
+                            IDROUTINE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break; 
@@ -841,7 +841,7 @@ describe('Running api call tests',()=>{
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
                             TEXT:testString,                            
-                            IDLANGUAGE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            IDLANGUAGE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break; 
@@ -853,70 +853,70 @@ describe('Running api call tests',()=>{
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             TRANSLATED:testString,                            
-                            IDLANGUAGE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDTEXT:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined
+                            IDLANGUAGE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDTEXT:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;                                           
-                case 'datasrelationshipsvalues':
+                case 'relationship_values':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'datasrelationships';
+                        let parentTableName = 'relationships';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'identifierstypes';
+                        let parentTableName2 = 'identifier_types';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
-                        let parentTableName3 = 'datatypes';
+                        let parentTableName3 = 'data_types';
                         let parent3 = crudsToDelete.find(el=>el.tableName == parentTableName3);        
                         return {
                             VALUE:testString,                            
-                            IDDATARELATIONSHIP:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDIDENTIFIERTYPE:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
-                            IDDATATYPE:parent3?.ID.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).ID || undefined
+                            IDDATARELATIONSHIP:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDIDENTIFIERTYPE:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
+                            IDDATATYPE:parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;   
                 case 'datasvalues':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'datatables';
+                        let parentTableName = 'tables';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'valuesnames';
+                        let parentTableName2 = 'value_names';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             VALUE:testString,                            
-                            IDTABLE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDVALUENAME:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
+                            IDTABLE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDVALUENAME:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
                             IDREG:1
                         }
                     };
                     break; 
                 case 'datashierarchies':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'datatables';
+                        let parentTableName = 'tables';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
                             OBSERVATIONS:testString,                            
-                            IDTABLEPARENT:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDTABLESUBORDINATED:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
+                            IDTABLEPARENT:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDTABLESUBORDINATED:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
                             IDPARENT:1,
                             IDSUBORDINATED:1
                         }
                     };
                     break;
-                case 'postalcodes':
+                case 'postal_codes':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'addressestypes';
+                        let parentTableName = 'address_types';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         let parentTableName2 = 'cities';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             POSTALCODE:testString,                            
-                            IDADDRESSTYPE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDCITY:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined
+                            IDADDRESSTYPE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDCITY:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'postalcodesxstreets':
+                case 'postal_codes_x_streets':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'postalcodes';
+                        let parentTableName = 'postal_codes';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         let parentTableName2 = 'neighborhoods';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
@@ -924,43 +924,43 @@ describe('Running api call tests',()=>{
                         let parent3 = crudsToDelete.find(el=>el.tableName == parentTableName3);        
                         return {
                             OBSERVATIONS:testString,                            
-                            IDPOSTALCODE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDNEIGHBORHOOD:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
-                            IDSTREET:parent3?.ID.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).ID || undefined
+                            IDPOSTALCODE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDNEIGHBORHOOD:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
+                            IDSTREET:parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;   
-                case 'postalcodesxpaths':
+                case 'postal_codes_x_paths':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'postalcodes';
+                        let parentTableName = 'postal_codes';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
                             STARTNUMBER:testString,                            
-                            IDPOSTALCODE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            IDPOSTALCODE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
                 case 'addresses':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'addressestypes';
+                        let parentTableName = 'address_types';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
                             NUMBER:testString,                            
-                            IDADDRESSTYPE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            IDADDRESSTYPE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
                 case 'contacts':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'contactstypes';
+                        let parentTableName = 'contact_types';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
-                            NAME:testString,                            
-                            IDCONTACTTYPE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            name:testString,                            
+                            IDCONTACTTYPE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'peoplexaddresses':
+                case 'people_x_addresses':
                     getParamsToCreate = ()=>{
                         let parentTableName = 'people';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
@@ -968,12 +968,12 @@ describe('Running api call tests',()=>{
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             OBSERVATIONS:testString,                            
-                            IDPEOPLE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDADDRESS:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined
+                            IDPEOPLE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDADDRESS:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'peoplexcontacts':
+                case 'people_x_contacts':
                     getParamsToCreate = ()=>{
                         let parentTableName = 'people';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
@@ -981,69 +981,69 @@ describe('Running api call tests',()=>{
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             OBSERVATIONS:testString,                            
-                            IDPEOPLE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDCONTACT:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined
+                            IDPEOPLE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDCONTACT:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'warehousesaddresses':
+                case 'warehouse_addresses':
                     getParamsToCreate = ()=>{
                         let parentTableName = 'warehouses';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'warehousesaddressestypes';
+                        let parentTableName2 = 'warehouse_address_types';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);                 
-                        let parentTableName3 = 'identifierstypes';
+                        let parentTableName3 = 'identifier_types';
                         let parent3 = crudsToDelete.find(el=>el.tableName == parentTableName3);       
                         return {
                             IDENTIFIER:testString,                            
-                            IDWAREHOUSE: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDWAREHOUSEADDRESSTYPE: parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
-                            IDIDENTIFIERTYPE: parent3?.ID.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).ID || undefined
+                            IDWAREHOUSE: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDWAREHOUSEADDRESSTYPE: parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
+                            IDIDENTIFIERTYPE: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'warehousesaddressescoordinates':
+                case 'warehouse_address_coordinates':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'warehousesaddresses';
+                        let parentTableName = 'warehouse_addresses';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'warehousesaddressestypes';
+                        let parentTableName2 = 'warehouse_address_types';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             VALUE:testString,                            
-                            IDWAREHOUSEADDRESS:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDCOORDINATETYPE:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined
+                            IDWAREHOUSEADDRESS:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDCOORDINATETYPE:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'warehousesaddressesdimensions':
+                case 'warehouse_address_dimensions':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'warehousesaddresses';
+                        let parentTableName = 'warehouse_addresses';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'identifierstypes';
+                        let parentTableName2 = 'identifier_types';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);                 
-                        let parentTableName3 = 'measurementsunits';
+                        let parentTableName3 = 'measurement_units';
                         let parent3 = crudsToDelete.find(el=>el.tableName == parentTableName3);       
                         return {
                             OBSERVATIONS:testString,                            
-                            IDWAREHOUSEADDRESS: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDDIMENSIONTYPE: parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
-                            IDMEASUREMENTUNIT: parent3?.ID.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).ID || undefined
+                            IDWAREHOUSEADDRESS: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDDIMENSIONTYPE: parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
+                            IDMEASUREMENTUNIT: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'warehousesaddressescapacities':
+                case 'warehouse_address_capacities':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'warehousesaddresses';
+                        let parentTableName = 'warehouse_addresses';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'identifierstypes';
+                        let parentTableName2 = 'identifier_types';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);                 
-                        let parentTableName3 = 'measurementsunits';
+                        let parentTableName3 = 'measurement_units';
                         let parent3 = crudsToDelete.find(el=>el.tableName == parentTableName3);          
                         return {
                             OBSERVATIONS:testString,                            
-                            IDWAREHOUSEADDRESS: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDCAPACITYTYPE: parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
-                            IDMEASUREMENTUNIT: parent3?.ID.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).ID || undefined
+                            IDWAREHOUSEADDRESS: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDCAPACITYTYPE: parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
+                            IDMEASUREMENTUNIT: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
@@ -1053,131 +1053,131 @@ describe('Running api call tests',()=>{
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);           
                         return {
                             ALIAS:testString,                            
-                            IDPEOPLE: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            IDPEOPLE: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'collaboratorscontracts':
+                case 'collaborator_contracts':
                     getParamsToCreate = ()=>{
                         let parentTableName = 'collaborators';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'contractstypes';
+                        let parentTableName2 = 'contract_types';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             OBSERVATIONS:testString,                            
-                            IDCOLLABORATOR:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDCONTRACTTYPE:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined
+                            IDCOLLABORATOR:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDCONTRACTTYPE:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'collaboratorsxfunctions':
+                case 'collaborators_x_functions':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'collaboratorscontracts';
+                        let parentTableName = 'collaborator_contracts';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'collaboratorsfunctions';
+                        let parentTableName2 = 'collaborator_functions';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             OBSERVATIONS:testString,                            
-                            IDCONTRACT:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDFUNCTION:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined
+                            IDCONTRACT:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDFUNCTION:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
                 case 'condictions':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'entitiestypes';
+                        let parentTableName = 'entities_types';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);       
                         return {
                             OBSERVATIONS:testString,                            
-                            IDENTITYTYPE: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
+                            IDENTITYTYPE: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
                             IDENTITY:1
                         }
                     };
                     break;
-                case 'condictionsitems':
+                case 'condiction_items':
                     getParamsToCreate = ()=>{
                         let parentTableName = 'condictions';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);             
                         return {
                             VALUE:testString,                            
-                            IDCONDICTION: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            IDCONDICTION: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'conteinerstypesdimensions':
+                case 'conteiner_type_dimensions':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'conteinerstypes';
+                        let parentTableName = 'conteiner_types';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'identifierstypes';
+                        let parentTableName2 = 'identifier_types';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);                 
-                        let parentTableName3 = 'measurementsunits';
+                        let parentTableName3 = 'measurement_units';
                         let parent3 = crudsToDelete.find(el=>el.tableName == parentTableName3);             
                         return {
                             OBSERVATIONS:testString,                            
-                            IDCONTEINERTYPE: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDDIMENSIONTYPE: parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
-                            IDMEASUREMENTUNIT: parent3?.ID.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).ID || undefined
+                            IDCONTEINERTYPE: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDDIMENSIONTYPE: parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
+                            IDMEASUREMENTUNIT: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'conteinerstypescapacities':
+                case 'conteiner_type_capacities':
                     getParamsToCreate = ()=>{
-                        let tableName = 'conteinerstypescapacities';
-                        let parentTableName = 'conteinerstypes';
+                        let tableName = 'conteiner_type_capacities';
+                        let parentTableName = 'conteiner_types';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'identifierstypes';
+                        let parentTableName2 = 'identifier_types';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);                 
-                        let parentTableName3 = 'measurementsunits';
+                        let parentTableName3 = 'measurement_units';
                         let parent3 = crudsToDelete.find(el=>el.tableName == parentTableName3);           
                         return {
                             OBSERVATIONS:testString,                            
-                            IDCONTEINERTYPE: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDCAPACITYTYPE: parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
-                            IDMEASUREMENTUNIT: parent3?.ID.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).ID || undefined
+                            IDCONTEINERTYPE: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDCAPACITYTYPE: parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
+                            IDMEASUREMENTUNIT: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
                 case 'items':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'identifierstypes';
+                        let parentTableName = 'identifier_types';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         let parentTableName2 = 'ncms';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             IDENTIFIER:testString,                            
-                            IDIDENTIFIERTYPE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDNCM:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
-                            NAME: testString
+                            IDIDENTIFIERTYPE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDNCM:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
+                            name: testString
                         }
                     };
                     break;
                 case 'lots':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'identifierstypes';
+                        let parentTableName = 'identifier_types';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);           
                         return {
                             IDENTIFIER:testString,                            
-                            IDIDENTIFIERTYPE: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
+                            IDIDENTIFIERTYPE: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
                             IDENTITY:1
                         }
                     };
                     break;
                 case 'conteiners':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'conteinerstypes';
+                        let parentTableName = 'conteiner_types';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'identifierstypes';
+                        let parentTableName2 = 'identifier_types';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             IDENTIFIER:testString,                            
-                            IDCONTENIERTYPE:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDIDENTIFIERTYPE:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined
+                            IDCONTENIERTYPE:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDIDENTIFIERTYPE:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'itemsxlotsxconteiners':
+                case 'items_x_lots_x_conteiners':
                     getParamsToCreate = ()=>{
-                        let tableName = 'itemsxlotsxconteiners';
+                        let tableName = 'items_x_lots_x_conteiners';
                         let parentTableName = 'items';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         let parentTableName2 = 'lots';
@@ -1186,52 +1186,52 @@ describe('Running api call tests',()=>{
                         let parent3 = crudsToDelete.find(el=>el.tableName == parentTableName3);          
                         return {
                             OBSERVATIONS:testString,                            
-                            IDITEM: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDLOT: parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
-                            IDCONTEINER: parent3?.ID.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).ID || undefined
+                            IDITEM: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDLOT: parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
+                            IDCONTEINER: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'stocksentities':
+                case 'stock_entities':
                     getParamsToCreate = ()=>{
                         let parentTableName = 'companies';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);           
                         return {
                             OBSERVATIONS:testString,                            
-                            IDCOMPANY: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            IDCOMPANY: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'itemsstocks':
+                case 'item_stocks':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'itemsxlotsxconteiners';
+                        let parentTableName = 'items_x_lots_x_conteiners';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'stocksentities';
+                        let parentTableName2 = 'stock_entities';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
-                        let parentTableName3 = 'measurementsunits';
+                        let parentTableName3 = 'measurement_units';
                         let parent3 = crudsToDelete.find(el=>el.tableName == parentTableName3);        
                         let parentTableName4 = 'packagings';
                         let parent4 = crudsToDelete.find(el=>el.tableName == parentTableName4);     
                         return {
                             OBSERVATIONS:testString,                            
-                            IDITEMXLOTXCONTEINER: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDSTOCKENTITY: parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
-                            IDMEASUREMENTUNIT: parent3?.ID.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).ID || undefined,
-                            IDPACKAGING: parent4?.ID.in[0] || ((datas[parentTableName4]||[])[(datas[parentTableName4]||[]).length-1]||{}).ID || undefined
+                            IDITEMXLOTXCONTEINER: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDSTOCKENTITY: parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
+                            IDMEASUREMENTUNIT: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined,
+                            IDPACKAGING: parent4?.id.in[0] || ((datas[parentTableName4]||[])[(datas[parentTableName4]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'itemsstocksunits':
+                case 'item_stock_units':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'itemsstocks';
+                        let parentTableName = 'item_stocks';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);       
                         return {
                             IDENTIFIER:testString,                            
-                            IDITEMSTOCK: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            IDITEMSTOCK: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;                
-                case 'itemsxmeaxpackxidentif':
+                case 'item_x_meas_x_pack_x_identif':
                     getParamsToCreate = ()=>{
                         let parentTableName = 'items';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
@@ -1239,223 +1239,223 @@ describe('Running api call tests',()=>{
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             IDENTIFIER:testString,                            
-                            IDITEM:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDPACKAGING:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined
+                            IDITEM:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDPACKAGING:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;                
                 case 'movements':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'movementstypes';
+                        let parentTableName = 'movement_types';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);           
                         return {
                             IDENTIFIER:testString,                            
-                            IDTYPEMOV: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            IDTYPEMOV: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break; 
-                case 'groupsmovements':
+                case 'movement_groups':
                     getParamsToCreate = ()=>{
                         return {
                             IDENTIFIER:testString
                         }
                     };
                     break;
-                case 'groupedsmovements':
+                case 'movements_x_groups':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'groupsmovements';
+                        let parentTableName = 'movement_groups';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         let parentTableName2 = 'movements';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             OBSERVATIONS:testString,                            
-                            IDGROUPMOVEMENT:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDMOV:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined
+                            IDGROUPMOVEMENT:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDMOV:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'movementsxentities':
+                case 'movements_x_entities':
                     getParamsToCreate = ()=>{
                         let parentTableName = 'movements';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'movementsentitiesrelationshipstypes';
+                        let parentTableName2 = 'movement_entity_relationship_types';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
-                        let parentTableName3 = 'stocksentities';
+                        let parentTableName3 = 'stock_entities';
                         let parent3 = crudsToDelete.find(el=>el.tableName == parentTableName3);         
                         return {
                             OBSERVATIONS:testString,                            
-                            IDMOV: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDMOVENTITYRELATIONSHIPTYPE: parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
-                            IDSTOCKENTITY: parent3?.ID.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).ID || undefined
+                            IDMOV: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDMOVENTITYRELATIONSHIPTYPE: parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
+                            IDSTOCKENTITY: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'movsxitemsstocks':
+                case 'movs_x_items_stocks':
                     getParamsToCreate = ()=>{
                         let parentTableName = 'movements';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'movementstypes';
+                        let parentTableName2 = 'movement_types';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
-                        let parentTableName3 = 'itemsstocks';
+                        let parentTableName3 = 'item_stocks';
                         let parent3 = crudsToDelete.find(el=>el.tableName == parentTableName3);               
                         return {
                             OBSERVATIONS:testString,                            
-                            IDMOV: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDTYPEMOV: parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
-                            IDITEMSTOCK: parent3?.ID.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).ID || undefined
+                            IDMOV: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDTYPEMOV: parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
+                            IDITEMSTOCK: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;                
-                case 'itemsmovsamounts':
+                case 'item_mov_amounts':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'movsxitemsstocks';
+                        let parentTableName = 'movs_x_items_stocks';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'movementstypes';
+                        let parentTableName2 = 'movement_types';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
-                        let parentTableName3 = 'measurementsunits';
+                        let parentTableName3 = 'measurement_units';
                         let parent3 = crudsToDelete.find(el=>el.tableName == parentTableName3);        
                         let parentTableName4 = 'packagings';
                         let parent4 = crudsToDelete.find(el=>el.tableName == parentTableName4);        
                         return {
                             OBSERVATIONS:testString,                            
-                            IDMOVXITEMSTOCK: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDTYPEMOV: parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
-                            IDMEASUREMENTUNIT: parent3?.ID.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).ID || undefined,
-                            IDPACKAGING: parent4?.ID.in[0] || ((datas[parentTableName4]||[])[(datas[parentTableName4]||[]).length-1]||{}).ID || undefined
+                            IDMOVXITEMSTOCK: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDTYPEMOV: parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
+                            IDMEASUREMENTUNIT: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined,
+                            IDPACKAGING: parent4?.id.in[0] || ((datas[parentTableName4]||[])[(datas[parentTableName4]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'itemsmovsunits':
+                case 'item_mov_units':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'itemsmovsamounts';
+                        let parentTableName = 'item_mov_amounts';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);           
                         return {
                             OBSERVATIONS:testString,                            
-                            IDITEMMOVAMT: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            IDITEMMOVAMT: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break; 
-                case 'itemsmovsamountsrestrictions':
+                case 'item_mov_amount_restrictions':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'itemsmovsamounts';
+                        let parentTableName = 'item_mov_amounts';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);         
                         return {
                             VALUE:testString,                            
-                            IDITEMMOVAMT: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            IDITEMMOVAMT: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break; 
-                case 'itemsmovsxmlimportidsconversions':
+                case 'item_mov_xml_import_id_conversions':
                     getParamsToCreate = ()=>{
                         let parentTableName = 'clients';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         let parentTableName2 = 'items';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
-                        let parentTableName3 = 'measurementsunits';
+                        let parentTableName3 = 'measurement_units';
                         let parent3 = crudsToDelete.find(el=>el.tableName == parentTableName3);        
                         let parentTableName4 = 'packagings';
                         let parent4 = crudsToDelete.find(el=>el.tableName == parentTableName4);           
                         return {
                             DOCEMITENT:testString,                            
-                            IDOWNERCLIENT: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDITEM: parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
-                            IDMEASUREMENTUNIT: parent3?.ID.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).ID || undefined,
-                            IDPACKAGING: parent4?.ID.in[0] || ((datas[parentTableName4]||[])[(datas[parentTableName4]||[]).length-1]||{}).ID || undefined,
+                            IDOWNERCLIENT: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDITEM: parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
+                            IDMEASUREMENTUNIT: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined,
+                            IDPACKAGING: parent4?.id.in[0] || ((datas[parentTableName4]||[])[(datas[parentTableName4]||[]).length-1]||{}).id || undefined,
                             IDITEMORIGIN:testString,
                             FIELDXMLAMOUNT:testString
                         }
                     };
                     break;
-                case 'sqlobjects':
+                case 'sql_objects':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'sqlobjectstypes';
+                        let parentTableName = 'sql_object_types';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);          
                         return {
-                            NAME:testString,                            
-                            IDSQLOBJECTTYPE: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            name:testString,                            
+                            IDSQLOBJECTTYPE: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'logisticorders':
+                case 'logistic_orders':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'logisticmovtypes';
+                        let parentTableName = 'logistic_mov_types';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);           
                         return {
                             IDENTIFIER:testString,                            
-                            IDLOGISTICMOVTYPE: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            IDLOGISTICMOVTYPE: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'logisticordersxmovs':
+                case 'logistic_orders_x_movs':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'logisticorders';
+                        let parentTableName = 'logistic_orders';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         let parentTableName2 = 'movements';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             OBSERVATIONSNOTMOVIMENTEDAMT:testString,                            
-                            IDLOGISTICORDER:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDMOV:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined
+                            IDLOGISTICORDER:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDMOV:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'logisticordersxitemsmovamt':
+                case 'logistic_orders_x_items_mov_amt':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'logisticordersxmovs';
+                        let parentTableName = 'logistic_orders_x_movs';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'itemsmovsamounts';
+                        let parentTableName2 = 'item_mov_amounts';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             OBSERVATIONSNOTMOVIMENTEDAMT:testString,                            
-                            IDLOGISTICORDERXMOV:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDITEMMOVAMT:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined
+                            IDLOGISTICORDERXMOV:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDITEMMOVAMT:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;                
-                case 'logisticordersxmovsxreceiptvalues':
+                case 'logistic_orders_x_movs_x_receipt_values':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'logisticorders';
+                        let parentTableName = 'logistic_orders';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'financialvalueforms';
+                        let parentTableName2 = 'financial_value_forms';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
-                        let parentTableName3 = 'currenciestypes';
+                        let parentTableName3 = 'currencies';
                         let parent3 = crudsToDelete.find(el=>el.tableName == parentTableName3);        
                         return {
                             PROOFS:testString,                            
-                            IDLOGISTICORDER: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDFINANCIALVALUEFORM: parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
-                            IDCURRENCYTYPEEXPECTED: parent3?.ID.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).ID || undefined
+                            IDLOGISTICORDER: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDFINANCIALVALUEFORM: parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
+                            IDCURRENCYTYPEEXPECTED: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;                  
-                case 'logisticordersxdestvalues':
+                case 'logistic_orders_x_dest_values':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'logisticorders';
+                        let parentTableName = 'logistic_orders';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'financialvalueforms';
+                        let parentTableName2 = 'financial_value_forms';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
-                        let parentTableName3 = 'financialvaluemovtypes';
+                        let parentTableName3 = 'financial_value_mov_types';
                         let parent3 = crudsToDelete.find(el=>el.tableName == parentTableName3);        
                         return {
                             OBSERVATIONS:testString,                            
-                            IDLOGISTICORDER: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDLOGORDFINANCIALVALUEFORM: parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined,
-                            IDFINANCIALVALUEMOVTYPEDEST: parent3?.ID.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).ID || undefined
+                            IDLOGISTICORDER: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDLOGORDFINANCIALVALUEFORM: parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
+                            IDFINANCIALVALUEMOVTYPEDEST: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;                
-                case 'logisticlogs':
+                case 'logistic_logs':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'datatables';
+                        let parentTableName = 'tables';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);          
                         return {
                             JSONOBJECT:testString,                            
-                            IDTABLEREF: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
+                            IDTABLEREF: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
                             IDREGISTERREF:1
                         }
                     };
                     break;                
-                case 'tasksxstatusxusers':
+                case 'tasks_x_status_x_users':
                     getParamsToCreate = ()=>{
                         let parentTableName = 'tasks';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
@@ -1463,52 +1463,52 @@ describe('Running api call tests',()=>{
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             OBSERVATIONS:testString,                            
-                            IDTASK:parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
-                            IDUSER:parent2?.ID.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).ID || undefined
+                            IDTASK:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            IDUSER:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;
-                case 'tasksxstatusxuserslogs':
+                case 'tasks_x_status_x_users_logs':
                     getParamsToCreate = ()=>{
-                        let tableName = 'tasksxstatusxuserslogs';
-                        let parentTableName = 'tasksxstatusxusers';
+                        let tableName = 'tasks_x_status_x_users_logs';
+                        let parentTableName = 'tasks_x_status_x_users';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);           
                         return {
                             OPERATION:testString,                            
-                            IDTASKXSTATUSXUSER: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            IDTASKXSTATUSXUSER: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;     
-                case 'commissionsentitiescodes':
+                case 'commission_entitiy_codes':
                     getParamsToCreate = ()=>{
-                        let tableName = 'commissionsentitiescodes';
-                        let parentTableName = 'datatables';
+                        let tableName = 'commission_entitiy_codes';
+                        let parentTableName = 'tables';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);           
                         return {
-                            NAME:testString,                            
-                            IDTABLEENTITY: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined,
+                            name:testString,                            
+                            IDTABLEENTITY: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
                             IDREGISTERENTITY:1
                         }
                     };
                     break;             
-                case 'commissionsitems':
+                case 'commission_items':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'commissionsentitiescodes';
+                        let parentTableName = 'commission_entitiy_codes';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);             
                         return {
-                            NAME:testString,                            
-                            IDCOMMISSIONENTITYCODE: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            name:testString,                            
+                            IDCOMMISSIONENTITYCODE: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;             
-                case 'commissionsvalues':
+                case 'commission_values':
                     getParamsToCreate = ()=>{
-                        let tableName = 'commissionsvalues';
-                        let parentTableName = 'commissionsitems';
+                        let tableName = 'commission_values';
+                        let parentTableName = 'commission_items';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);         
                         return {
-                            NAME:testString,                            
-                            IDCOMMISSIONITEM: parent?.ID.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).ID || undefined
+                            name:testString,                            
+                            IDCOMMISSIONITEM: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break;          
@@ -1540,9 +1540,9 @@ describe('Running api call tests',()=>{
         });
         //break;
         
-        //if (modelName == 'originsdatas') break;
+        //if (modelName == 'data_origins') break;
         //if (modelName == 'people') break;
-        //if (modelName == 'peoplexcontacts') break;
+        //if (modelName == 'people_x_contacts') break;
         //if (modelName == 'companies') break;
         //if (modelName == 'clients') break;
     }

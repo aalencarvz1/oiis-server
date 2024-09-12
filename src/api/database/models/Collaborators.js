@@ -7,7 +7,8 @@ const { BasePeopleModel } = require("./BasePeopleModel");
  * class model
  */
 class Collaborators extends BasePeopleModel {
-  static ID = 110;
+  static id = 110;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static SYSTEM = 1;
@@ -20,7 +21,7 @@ class Collaborators extends BasePeopleModel {
 
   static constraints = [...(Collaborators.getBaseTableModelConstraints() || []),...[
     {
-      name: Collaborators.name.toUpperCase() + '_U1',
+      name: Collaborators.tableName + '_u1',
       fields: [...Collaborators.getBaseTableModelUniqueFields(),...Collaborators.uniqueFields],
       type:"unique"
     }
