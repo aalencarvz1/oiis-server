@@ -1,6 +1,6 @@
 'use strict';
 require('dotenv').config({ path: __dirname + "/../../../../.env" });
-const { TasksStatus } = require('../models/TasksStatus');
+const { Task_Status } = require('../models/Task_Status');
 const configDB  = require("../../database/config/config");
 const DBConnectionManager = require('../DBConnectionManager');
 const { QueryTypes } = require('sequelize');
@@ -64,6 +64,9 @@ let oldTables = {
   identifier_types:{
     tableName:"IDENTIFIERSTYPES"
   },  
+  value_names:{
+    tableName:"VALUESNAMES"
+  },
   measurement_units:{
     tableName:"MEASUREMENTSUNITS"
   },  
@@ -259,6 +262,48 @@ let oldTables = {
   sql_objects:{
     tableName:"SQLOBJECTS"
   },      
+  report_data_fount_items:{
+    tableName:"REPORTSDATASFOUNTSITEMS"
+  },
+  report_data_founts:{
+    tableName:"REPORTSDATASFOUNTS"
+  },
+  logistic_mov_types:{
+    tableName:"LOGISTICMOVTYPES"
+  },
+  logistic_status:{
+    tableName:"LOGISTICSTATUS"
+  },  
+  logistic_reasons:{
+    tableName:"LOGISTICREASONS"
+  },    
+  logistic_orders:{
+    tableName:"LOGISTICORDERS"
+  },   
+  logistic_orders_x_movs:{
+    tableName:"LOGISTICORDERSXMOVS"
+  },    
+  logistic_orders_x_movs_x_receipt_values:{
+    tableName:"LOGISTICORDERSXMOVSXRECEIPTVALUES"
+  },    
+  logistic_orders_x_items_mov_amt:{
+    tableName:"LOGISTICORDERSXITEMSMOVAMT"
+  },    
+  logistic_orders_x_dest_values:{
+    tableName:"LOGISTICORDERSXDESTVALUES"
+  }, 
+  logistic_logs:{
+    tableName:"LOGISTICLOGS"
+  },    
+  tasks_x_status_x_users:{
+    tableName:"TASKSXSTATUSXUSERS"
+  },    
+  tasks_x_status_x_users_logs:{
+    tableName:"TASKSXSTATUSXUSERSLOGS"
+  },    
+  task_status:{
+    tableName:"TASKSSTATUS"
+  },
   api_requests:{
     tableName:"APISREQUESTS"
   },
@@ -270,7 +315,26 @@ let oldTables = {
   },  
   maps_api_responses:{
     tableName:"APISMAPSRESPONSES"
-  }  
+  },
+  meas_x_meas_origins:{
+    tableName:"MEASXMEASORIGINS"
+  },
+  packs_x_packs_origins:{
+    tableName:"PACKSXPACKSORIGINS"
+  },
+  error_logs:{
+    tableName:"ERRORSLOGS"
+  },
+  migration_tables:{
+    tableName:"MIGRATIONSTABLES"
+  },  
+  migration_columns:{
+    tableName:"MIGRATIONSCOLUMNS"
+  },
+  migration_control:{
+    tableName:"MIGRATIONSCONTROL"
+  }        
+  
 }
 
 module.exports = {
@@ -417,6 +481,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(TasksStatus.tableName, null, {});
+     await queryInterface.bulkDelete(Task_Status.tableName, null, {});
   }
 };

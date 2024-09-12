@@ -77,7 +77,7 @@ class BaseWinthorIntegrationTableModel extends BaseTableModel {
         Utils.log('migrating down table',this.tableName, Object.keys(this.fields));
         //await queryInterface.createTable(this.tableName, this.fields);
         let originQueryInterface = this.getConnection().getQueryInterface();
-        //await originQueryInterface.dropTable(ErrorsLogs.tableName);
+        //await originQueryInterface.dropTable(Error_Logs.tableName);
     }
 
     

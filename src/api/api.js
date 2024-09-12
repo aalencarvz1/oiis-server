@@ -12,7 +12,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const compression = require('compression');
 const multer  = require('multer');
-const { MidiasController } = require('./controllers/modules/registers/midias/MidiasController');
+const { Midia_Controller } = require('./controllers/modules/registers/midias/Midia_Controller');
 
 //multer configure
 const storage = multer.diskStorage({
@@ -48,7 +48,7 @@ api.use(EndPointsController.getReqResMiddleware());
 api.use(AuthController.checkToken); //auth token check middleware
 
 //handle upload midias route
-api.post("/api/controllers/modules/registers/midias/midiascontroller/uploadfile",upload.array('files'),MidiasController.uploadFile);
+api.post("/api/controllers/modules/registers/midias/midia_controller/uploadfile",upload.array('files'),Midia_Controller.uploadFile);
 
 //handle all methods and routes
 api.all('*', EndPointsController.processRequest.bind(EndPointsController));

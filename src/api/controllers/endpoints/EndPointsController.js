@@ -101,25 +101,25 @@ class EndPointsController extends BaseEndPointController{
                 get:['GET']
             }
         },
-        logisticordersintegrationscontroller:{
+        logistic_orders_integration_controller:{
             logged:true,
-            path:'/api/controllers/modules/logistic/logisticorders/integrations/logisticordersintegrationscontroller',
+            path:'/api/controllers/modules/logistic/logistic_orders/integrations/logistic_orders_integration_controller',
             methods:{
                 get:['GET'],
                 post:['POST']
             }            
         },
-        logisticorderswinthorintegrationscontroller:{
+        logistic_orders_winthor_integration_controller:{
             logged:true,
-            path:'/api/controllers/modules/logistic/logisticorders/integrations/winthor/logisticorderswinthorintegrationscontroller',
+            path:'/api/controllers/modules/logistic/logistic_orders/integrations/winthor/logistic_orders_winthor_integration_controller',
             methods:{
                 get:['GET'],
                 post:['POST']
             }
         },
-        midiascontroller:{
+        midia_controller:{
             logged:true,
-            path:'/api/controllers/modules/registers/midias/midiascontroller',
+            path:'/api/controllers/modules/registers/midias/midia_controller',
             methods:{
                 get:['GET'],
                 post:['POST']

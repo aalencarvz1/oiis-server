@@ -1,5 +1,5 @@
 const { Sequelize, QueryTypes } = require("sequelize");
-const { ReportsDatasFountsItems } = require("../../../../database/models/ReportsDatasFountsItems");
+const { Report_Data_Fount_Items } = require("../../../../database/models/Report_Data_Fount_Items");
 const { Utils } = require("../../../utils/Utils")
 const _ = require('lodash');
 const DBConnectionManager = require("../../../../database/DBConnectionManager");
@@ -50,7 +50,7 @@ class StructuredQueryUtils {
                 P.id AS IDPERMISSION,
                 C.EXPRESSION
             FROM
-                REPORTSDATASFOUNTSITEMS RFI 
+                report_data_fount_items RFI 
                 LEFT OUTER JOIN tables T ON (   
                     RFI.IDSQLOBJECTTYPE = ${Sql_Object_Types.TABLE}
                     AND T.id = RFI.IDSQLOBJECT
@@ -86,7 +86,7 @@ class StructuredQueryUtils {
                             RFI.IDSQLOBJECTTYPE <> ${Sql_Object_Types.FIELD}
                             OR (
                                 RFI.IDSQLOBJECTTYPE = ${Sql_Object_Types.FIELD}
-                                AND NOT EXISTS (SELECT 1 FROM REPORTSDATASFOUNTSITEMS RFI2 WHERE RFI2.id = RFI.IDSUP AND RFI2.IDSQLOBJECTTYPE = ${Sql_Object_Types.SELECT})
+                                AND NOT EXISTS (SELECT 1 FROM report_data_fount_items RFI2 WHERE RFI2.id = RFI.IDSUP AND RFI2.IDSQLOBJECTTYPE = ${Sql_Object_Types.SELECT})
                             )
 
                         )

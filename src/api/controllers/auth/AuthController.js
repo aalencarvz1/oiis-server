@@ -35,7 +35,7 @@ class AuthController extends RegistersController{
         "/api/controllers/auth/authcontroller/passwordchange",
         "/api/controllers/modules/outputs/sales/financial_collection/pix/integrations/sicredi/webhooks/5545991334657",
         "/api/controllers/modules/outputs/sales/financial_collection/pix/integrations/sicredi/webhooks/5545991334657/pix",
-        "/api/controllers/modules/registers/midias/midiascontroller/uploadfile",
+        "/api/controllers/modules/registers/midias/midia_controller/uploadfile",
         '/api/controllers/modules/webhooks/api_requests',
         '/api/test/'
     ];

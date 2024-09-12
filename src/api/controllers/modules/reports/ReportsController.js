@@ -1,5 +1,5 @@
 const { Sequelize, QueryTypes } = require("sequelize");
-const { ReportsDatasFounts } = require("../../../database/models/ReportsDatasFounts");
+const { Report_Data_Founts } = require("../../../database/models/Report_Data_Founts");
 const { Utils } = require("../../utils/Utils");
 const DBConnectionManager = require("../../../database/DBConnectionManager");
 const { Report_Visions } = require("../../../database/models/Report_Visions");
@@ -44,7 +44,7 @@ class ReportsController extends RegistersController{
             queryParams.where.ENDDATE = {[Sequelize.Op.gte]: dates[1]};
         }
         //Utils.log(queryParams);
-        return await ReportsDatasFounts.getModel().findOne(queryParams);
+        return await Report_Data_Founts.getModel().findOne(queryParams);
     }
 
 
@@ -195,12 +195,12 @@ class ReportsController extends RegistersController{
                         DR.IDRELATIONSHIPTYPE = ${Relationship_Types.RELATIONSHIP}
                         AND DR.IDTABLE1 = ${Report_Visions.id}
                         AND DR.IDREG1 = RV.id
-                        AND DR.IDTABLE2 = ${ReportsDatasFounts.id}
+                        AND DR.IDTABLE2 = ${Report_Data_Founts.id}
                         AND DR.status_reg_id = ${Record_Status.ACTIVE}
                         AND COALESCE(DR.STARTMOMENT,STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
                         AND COALESCE(DR.ENDMOMENT,STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
                     )
-                    JOIN REPORTSDATASFOUNTS RF ON (
+                    JOIN report_data_founts RF ON (
                         RF.id = DR.IDREG2
                         AND RF.status_reg_id = ${Record_Status.ACTIVE}
                         AND COALESCE(RF.STARTDATE,STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')

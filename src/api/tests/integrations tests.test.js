@@ -423,7 +423,7 @@ describe('Running api call tests',()=>{
                                 tableName: modelName,
                                 winthorTableName: 'PCPAIS',
                                 winthorTableFields: ['CODPAIS','DESCRICAO'],
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}_integration_controller/integrate`,
                                 identifierWithorField: 'CODPAIS',
                                 fieldUpdate: 'name'
                             }
@@ -451,7 +451,7 @@ describe('Running api call tests',()=>{
                                     'UF',
                                     'ESTADO'
                                 ],
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}_integration_controller/integrate`,
                                 identifierWithorField: 'UF',
                                 fieldUpdate: 'name'
                             }
@@ -478,7 +478,7 @@ describe('Running api call tests',()=>{
                                     'CODCIDADE',
                                     'NOMECIDADE'
                                 ],
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}_integration_controller/integrate`,
                                 identifierWithorField: 'CODCIDADE',
                                 fieldUpdate: 'name'
                             }
@@ -520,7 +520,7 @@ describe('Running api call tests',()=>{
                                     'CLIENTE',
                                     'FANTASIA'
                                 ],
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/${modelName}/integrations/${modelName}_integration_controller/integrate`,
                                 identifierWithorField: (origin,data)=>{
                                     return {
                                         origin:origin,
@@ -564,7 +564,7 @@ describe('Running api call tests',()=>{
                                     'UF',
                                     'CODCLI'
                                 ],
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}_integration_controller/integrate`,
                                 identifierWithorField: 'CODIGO',
                                 fieldUpdate: 'ALIAS'
                             }
@@ -622,7 +622,7 @@ describe('Running api call tests',()=>{
                                     tableName: modelName,
                                     winthorTableName: 'PCCLIENT',
                                     winthorTableFields: undefined,
-                                    endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                    endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}_integration_controller/integrate`,
                                     identifierWithorField: 'CODCLI',
                                     fieldUpdate: 'ALIAS'
                                 }
@@ -641,7 +641,7 @@ describe('Running api call tests',()=>{
                                         'UF',
                                         'CODCLI'
                                     ],
-                                    endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}integrationscontroller/integrate`,
+                                    endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}_integration_controller/integrate`,
                                     identifierWithorField: 'CODIGO',
                                     fieldUpdate: 'ALIAS'
                                 }
@@ -658,7 +658,7 @@ describe('Running api call tests',()=>{
                         }
                     };
                     break;
-                case 'logisticreasons': 
+                case 'logistic_reasons': 
                     if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {                   
                         getParamsToIntegrate = ()=>{
                             return {
@@ -669,16 +669,16 @@ describe('Running api call tests',()=>{
                                     'MOTIVO',
                                     'TIPO'
                                 ],
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/logistic/reasons/integrations/${modelName}integrationscontroller/integrate`,
+                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/logistic/reasons/integrations/${modelName}_integration_controller/integrate`,
                                 identifierWithorField: 'CODDEVOL',
                                 fieldUpdate: 'name'
                             }
                         };
                     }
                     break;
-                case 'reportsdatasfountsitems':
+                case 'report_data_fount_items':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'reportsdatasfounts';
+                        let parentTableName = 'report_data_founts';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         let parentTableName2 = 'sql_object_types';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
@@ -878,7 +878,7 @@ describe('Running api call tests',()=>{
                     getParamsToCreate = ()=>{
                         let parentTableName = 'tables';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
-                        let parentTableName2 = 'valuesnames';
+                        let parentTableName2 = 'value_names';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
                             VALUE:testString,                            
@@ -1376,9 +1376,9 @@ describe('Running api call tests',()=>{
                         }
                     };
                     break;
-                case 'logisticorders':
+                case 'logistic_orders':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'logisticmovtypes';
+                        let parentTableName = 'logistic_mov_types';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);           
                         return {
                             IDENTIFIER:testString,                            
@@ -1386,9 +1386,9 @@ describe('Running api call tests',()=>{
                         }
                     };
                     break;
-                case 'logisticordersxmovs':
+                case 'logistic_orders_x_movs':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'logisticorders';
+                        let parentTableName = 'logistic_orders';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         let parentTableName2 = 'movements';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
@@ -1399,9 +1399,9 @@ describe('Running api call tests',()=>{
                         }
                     };
                     break;
-                case 'logisticordersxitemsmovamt':
+                case 'logistic_orders_x_items_mov_amt':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'logisticordersxmovs';
+                        let parentTableName = 'logistic_orders_x_movs';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         let parentTableName2 = 'item_mov_amounts';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
@@ -1412,9 +1412,9 @@ describe('Running api call tests',()=>{
                         }
                     };
                     break;                
-                case 'logisticordersxmovsxreceiptvalues':
+                case 'logistic_orders_x_movs_x_receipt_values':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'logisticorders';
+                        let parentTableName = 'logistic_orders';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         let parentTableName2 = 'financial_value_forms';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
@@ -1428,9 +1428,9 @@ describe('Running api call tests',()=>{
                         }
                     };
                     break;                  
-                case 'logisticordersxdestvalues':
+                case 'logistic_orders_x_dest_values':
                     getParamsToCreate = ()=>{
-                        let parentTableName = 'logisticorders';
+                        let parentTableName = 'logistic_orders';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         let parentTableName2 = 'financial_value_forms';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
@@ -1444,7 +1444,7 @@ describe('Running api call tests',()=>{
                         }
                     };
                     break;                
-                case 'logisticlogs':
+                case 'logistic_logs':
                     getParamsToCreate = ()=>{
                         let parentTableName = 'tables';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);          
@@ -1455,7 +1455,7 @@ describe('Running api call tests',()=>{
                         }
                     };
                     break;                
-                case 'tasksxstatusxusers':
+                case 'tasks_x_status_x_users':
                     getParamsToCreate = ()=>{
                         let parentTableName = 'tasks';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
@@ -1468,10 +1468,10 @@ describe('Running api call tests',()=>{
                         }
                     };
                     break;
-                case 'tasksxstatusxuserslogs':
+                case 'tasks_x_status_x_users_logs':
                     getParamsToCreate = ()=>{
-                        let tableName = 'tasksxstatusxuserslogs';
-                        let parentTableName = 'tasksxstatusxusers';
+                        let tableName = 'tasks_x_status_x_users_logs';
+                        let parentTableName = 'tasks_x_status_x_users';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);           
                         return {
                             OPERATION:testString,                            

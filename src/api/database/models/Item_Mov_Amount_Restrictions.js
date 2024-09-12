@@ -4,7 +4,7 @@
 const { DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
-const { ValuesNames } = require("./ValuesNames");
+const { Value_Names } = require("./Value_Names");
 const { Item_Mov_Amounts } = require("./Item_Mov_Amounts");
 const { Identifier_Types } = require("./Identifier_Types");
 
@@ -64,7 +64,7 @@ class Item_Mov_Amount_Restrictions extends BaseTableModel {
       fields: ['IDVALUENAME'],
       type: 'foreign key',
       references: { 
-          table: ValuesNames,
+          table: Value_Names,
           field: 'id'
       },
       onUpdate: 'cascade'
