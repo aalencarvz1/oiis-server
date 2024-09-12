@@ -1,0 +1,120 @@
+'use strict';
+
+const { Greatnesses } = require('../models/Greatnesses');
+const { Measurement_Units } = require('../models/Measurement_Units');
+const { Data_Origins } = require('../models/Data_Origins');
+const { Record_Status } = require('../models/Record_Status');
+const { Users } = require('../models/Users');
+
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+  async up (queryInterface, Sequelize) {    
+    await queryInterface.bulkInsert(Measurement_Units.tableName,[{
+      id: Measurement_Units.UN,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      IDGREATNESS: Greatnesses.QUANTITY,
+      name : 'UNIT',
+      SIGLA: 'UN',
+      ISSCALAR: 1
+    },{
+      id: Measurement_Units.KG,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      IDGREATNESS: Greatnesses.MASS,
+      name : 'KILOGRAM',
+      SIGLA: 'KG',
+      ISSCALAR: 1
+    },{
+      id: Measurement_Units.L,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      IDGREATNESS: Greatnesses.VOLUM,
+      name : 'LITER',
+      SIGLA: 'L',
+      ISSCALAR: 1
+    },{
+      id: Measurement_Units.PC,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      IDGREATNESS: Greatnesses.QUANTITY,
+      name : 'PIECE',
+      SIGLA: 'PC',
+      ISSCALAR: 1
+    },{
+      id: Measurement_Units.PKG,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      IDGREATNESS: Greatnesses.QUANTITY,
+      name : 'PACKAGE',
+      SIGLA: 'PK',
+      ISSCALAR: 1
+    },{
+      id: Measurement_Units.BOX,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      IDGREATNESS: Greatnesses.QUANTITY,
+      name : 'BOX',
+      SIGLA: 'BX',
+      ISSCALAR: 1
+    },{
+      id: Measurement_Units.BCK,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      IDGREATNESS: Greatnesses.QUANTITY,
+      name : 'BUCKET',
+      SIGLA: 'BK',
+      ISSCALAR: 1
+    },{
+      id: Measurement_Units.CAN,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      IDGREATNESS: Greatnesses.QUANTITY,
+      name : 'CAN',
+      SIGLA: 'CN',
+      ISSCALAR: 1
+    },{
+      id: Measurement_Units.BAG,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      IDGREATNESS: Greatnesses.QUANTITY,
+      name : 'BAG',
+      SIGLA: 'BG',
+      ISSCALAR: 1
+    }],{
+      ignoreDuplicates:true,
+      updateOnDuplicate:null
+    });  
+  },
+
+  async down (queryInterface, Sequelize) {
+     await queryInterface.bulkDelete(Data_Origins.tableName, null, {});
+  }
+};

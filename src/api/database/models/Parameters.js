@@ -1,16 +1,18 @@
 'use strict';
 
 /*imports*/
-const { DataTypes : DataTypesSeq } = require("sequelize");
+const { DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
-const { DataTypes } = require("./DataTypes");
+const { Data_Types } = require("./Data_Types");
 
 /**
  * class model
  */
 console.log('Parameters - antes declaracao classe, antes exportacao');
 class Parameters extends BaseTableModel {
-  static ID = 55;
+  static id = 55;
+
+  static tableName = this.name.toLowerCase();
 
   static HAS_WINTHOR_INTEGRATION = 1;
   static LOGISTIC_INTEGRATE_AUTOMATIC_CLOSE_BOX_DRIVER = 2;
@@ -25,29 +27,29 @@ class Parameters extends BaseTableModel {
   static fields = {
     ...Parameters.getBaseTableModelFields(),...{
       IDDATATYPE: {
-        type: DataTypesSeq.BIGINT.UNSIGNED,
+        type: DataTypes.BIGINT.UNSIGNED,
         allowNull : false,
       },
-      NAME: {
-        type: DataTypesSeq.STRING(256),
+      name: {
+        type: DataTypes.STRING(256),
         allowNull: false
       },
       DEFAULTVALUE: {
-        type: DataTypesSeq.STRING(256)
+        type: DataTypes.STRING(256)
       },
-      DESCRIPTION: {
-        type: DataTypesSeq.TEXT
+      description: {
+        type: DataTypes.TEXT
       }
     }
   };
   
   static uniqueFields = [
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(Parameters.getBaseTableModelConstraints() || []),...[
     {
-      name: Parameters.name.toUpperCase() + '_U1',
+      name: Parameters.tableName + '_u1',
       fields: [...Parameters.getBaseTableModelUniqueFields(),...Parameters.uniqueFields],
       type:"unique"
     }
@@ -59,8 +61,8 @@ class Parameters extends BaseTableModel {
       fields: ['IDDATATYPE'],
       type: 'foreign key',
       references: { 
-          table: DataTypes,
-          field: 'ID'
+          table: Data_Types,
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'

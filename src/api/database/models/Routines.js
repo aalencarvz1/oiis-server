@@ -3,7 +3,7 @@
 /*imports*/
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
-const { RoutinesTypes } = require("./RoutinesTypes");
+const { Routine_Types } = require("./Routine_Types");
 const { Modules } = require("./Modules");
 
 
@@ -11,7 +11,8 @@ const { Modules } = require("./Modules");
  * class model
  */
 class Routines extends BaseTableModel {
-  static ID = 240;
+  static id = 240;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...Routines.getBaseTableModelFields(),...{     
@@ -26,7 +27,7 @@ class Routines extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       }, 
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull:false
       }, 
@@ -44,7 +45,7 @@ class Routines extends BaseTableModel {
         allowNull: false,
         defaultValue:1
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       }
     }
@@ -52,16 +53,16 @@ class Routines extends BaseTableModel {
   
   static uniqueFields = [ 
     Sequelize.literal(`(COALESCE(IDSUP,0))`),
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(Routines.getBaseTableModelConstraints() || []),...[
     {
-      name: Routines.name.toUpperCase() + '_U1',
+      name: Routines.tableName + '_u1',
       fields: Routines.uniqueFields,
       type:"unique"
     },{
-      name: Routines.name.toUpperCase() + '_C_1',
+      name: Routines.tableName + '_c_1',
       fields:['SHOWINMENU'],
       type:"check",
       where:{
@@ -78,15 +79,15 @@ class Routines extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Routines,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },{
       fields: ['IDROUTINETYPE'],
       type: 'foreign key',
       references: { 
-          table: RoutinesTypes,
-          field: 'ID'
+          table: Routine_Types,
+          field: 'id'
       },
       onUpdate: 'cascade'
     },{
@@ -94,7 +95,7 @@ class Routines extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Modules,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

@@ -8,7 +8,8 @@ const { BaseWinthorTableModel } = require('./BaseWinthorTableModel');
  * class model
  */
 class PcNcm extends BaseWinthorTableModel {
-  static ID = 30200;
+  static id = 30200;
+  static tableName = this.name.toUpperCase();
   static model = null;
 
 

@@ -1,13 +1,13 @@
 const { Sequelize, Op } = require("sequelize");
 const { Utils } = require("../../../../utils/Utils");
-const { IdentifiersTypes } = require("../../../../../database/models/IdentifiersTypes");
+const { Identifier_Types } = require("../../../../../database/models/Identifier_Types");
 const { EpPessoas } = require("../../../../../database/models/ep/EpPessoas");
 const { EpClientes } = require("../../../../../database/models/ep/EpClientes");
-const { OriginsDatas } = require("../../../../../database/models/OriginsDatas");
-const { DatasRelationships } = require("../../../../../database/models/DatasRelationships");
-const { DataRelationshipTypes } = require("../../../../../database/models/DataRelationshipTypes");
+const { Data_Origins } = require("../../../../../database/models/Data_Origins");
+const { Relationships } = require("../../../../../database/models/Relationships");
+const { Relationship_Types } = require("../../../../../database/models/Relationship_Types");
 const { Users } = require("../../../../../database/models/Users");
-const { AccessesProfiles } = require("../../../../../database/models/AccessesProfiles");
+const { Access_Profiles } = require("../../../../../database/models/Access_Profiles");
 const { EpVendedores } = require("../../../../../database/models/ep/EpVendedores");
 const { EpTrabalhadores } = require("../../../../../database/models/ep/EpTrabalhadores");
 const { RegistersController } = require("../../RegistersController");
@@ -80,12 +80,12 @@ class EpIntegrationsRegistersController extends RegistersController{
             result = await EpIntegrationsRegistersController.getPeopleByIdentifiersDocs(
                 identifiersDocs,{
                     attributes:[
-                        ['COD','ID'],
-                        [Sequelize.literal(`${OriginsDatas.EP}`),'IDORIGINDATA'],
-                        ['COD','IDONORIGINDATA'],
-                        [Sequelize.literal(`case when EPPESSOAS.CODTIPODOCIDENTIFICADOR = 1 AND LENGTH(EPPESSOAS.CODDOCIDENTIFICADOR) <= 11 then ${IdentifiersTypes.CPF} else ${IdentifiersTypes.CNPJ} end`),'IDIDENTIFIERDOCTYPE'],
+                        ['COD','id'],
+                        [Sequelize.literal(`${Data_Origins.EP}`),'data_origin_id'],
+                        ['COD','id_at_origin'],
+                        [Sequelize.literal(`case when EPPESSOAS.CODTIPODOCIDENTIFICADOR = 1 AND LENGTH(EPPESSOAS.CODDOCIDENTIFICADOR) <= 11 then ${Identifier_Types.CPF} else ${Identifier_Types.CNPJ} end`),'IDIDENTIFIERDOCTYPE'],
                         [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CODDOCIDENTIFICADOR'),'[^0-9]',''),'DECIMAL(32)'),'IDENTIFIERDOC'],
-                        ['NOMERAZAO','NAME'],
+                        ['NOMERAZAO','name'],
                         ['FANTASIA','FANTASY']
                     ]
                 }
@@ -116,20 +116,20 @@ class EpIntegrationsRegistersController extends RegistersController{
                     if (typeof el == 'object') {
                         if (el.CODTIPODOCIDENTIFICADOR) {
                             and.push(Sequelize.where(
-                                Sequelize.col(`${EpPessoas.name.toUpperCase()}.CODTIPODOCIDENTIFICADOR`),
+                                Sequelize.col(`${EpPessoas.tableName}.CODTIPODOCIDENTIFICADOR`),
                                 el.CODTIPODOCIDENTIFICADOR
                             ));
                         }
                         if (el.CODDOCIDENTIFICADOR) {
                             and.push(Sequelize.where(
-                                Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`${EpPessoas.name.toUpperCase()}.CODDOCIDENTIFICADOR`),'[^0-9]',''),'DECIMAL(32)'),
+                                Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`${EpPessoas.tableName}.CODDOCIDENTIFICADOR`),'[^0-9]',''),'DECIMAL(32)'),
                                 '=',
                                 Sequelize.cast(Sequelize.fn('regexp_replace',el.CODDOCIDENTIFICADOR,'[^0-9]',''),'DECIMAL(32)')
                             ));
                         }
                     } else {
                         and.push(Sequelize.where(
-                            Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`${EpPessoas.name.toUpperCase()}.CODDOCIDENTIFICADOR`),'[^0-9]',''),'DECIMAL(32)'),
+                            Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`${EpPessoas.tableName}.CODDOCIDENTIFICADOR`),'[^0-9]',''),'DECIMAL(32)'),
                             '=',
                             Sequelize.cast(Sequelize.fn('regexp_replace',el,'[^0-9]',''),'DECIMAL(32)')
                         ));
@@ -150,7 +150,7 @@ class EpIntegrationsRegistersController extends RegistersController{
                         attributes:[],
                         on:{
                             [Op.and]: [
-                                Sequelize.where(Sequelize.col(`${EpPessoas.name.toUpperCase()}.COD`), Sequelize.col(`${EpClientes.name.toUpperCase()}.CODPESSOA`))
+                                Sequelize.where(Sequelize.col(`${EpPessoas.tableName}.COD`), Sequelize.col(`${EpClientes.tableName}.CODPESSOA`))
                             ]
                         }
                     }]
@@ -173,9 +173,9 @@ class EpIntegrationsRegistersController extends RegistersController{
             result = await EpIntegrationsRegistersController.getClientsByIdentifiersDocs(
                 identifiersDocs,{
                     attributes:[
-                        ['COD','ID'],
-                        [Sequelize.literal(`${OriginsDatas.EP}`),'IDORIGINDATA'],
-                        ['CODPESSOA','IDONORIGINDATA'],
+                        ['COD','id'],
+                        [Sequelize.literal(`${Data_Origins.EP}`),'data_origin_id'],
+                        ['CODPESSOA','id_at_origin'],
                         ['CODPESSOA','IDPEOPLE']
                     ]
                 }
@@ -192,14 +192,14 @@ class EpIntegrationsRegistersController extends RegistersController{
 
     static async getRcasCodes(req) {
         let rcas = null;
-        if (req?.user.IDACCESSPROFILE == AccessesProfiles.SUPERVISOR) {
-            let dataRel = await DatasRelationships.getModel().findAll({
+        if (req?.user.IDACCESSPROFILE == Access_Profiles.SUPERVISOR) {
+            let dataRel = await Relationships.getModel().findAll({
                 raw:true,
                 where:{
-                    IDRELATIONSHIPTYPE: [DataRelationshipTypes.EP_ID],
-                    IDTABLE1: Users.ID,
-                    IDREG1: req.user.ID,
-                    IDTABLE2: EpTrabalhadores.ID
+                    IDRELATIONSHIPTYPE: [Relationship_Types.EP_ID],
+                    IDTABLE1: Users.id,
+                    IDREG1: req.user.id,
+                    IDTABLE2: EpTrabalhadores.id
                 }
             });
             if (dataRel && dataRel.length) {
@@ -208,15 +208,15 @@ class EpIntegrationsRegistersController extends RegistersController{
                 let sellers = await EpVendedores.getModel().findAll({
                     raw:true,
                     attributes:[
-                        Sequelize.col(`${EpVendedores.name.toUpperCase()}.COD`)
+                        Sequelize.col(`${EpVendedores.tableName}.COD`)
                     ],
                     include:[{
                         required:true,
                         model:EpTrabalhadores.getModel(),
                         attributes:[],
                         on:[
-                            Sequelize.where(Sequelize.col(`${EpTrabalhadores.name.toUpperCase()}.COD`),Sequelize.col(`${EpVendedores.name.toUpperCase()}.CODTRABALHADOR`)),
-                            Sequelize.where(Sequelize.col(`${EpTrabalhadores.name.toUpperCase()}.CODSUP`),'in',dataRel),
+                            Sequelize.where(Sequelize.col(`${EpTrabalhadores.tableName}.COD`),Sequelize.col(`${EpVendedores.tableName}.CODTRABALHADOR`)),
+                            Sequelize.where(Sequelize.col(`${EpTrabalhadores.tableName}.CODSUP`),'in',dataRel),
                         ]
                     }],
                     where:{
@@ -228,20 +228,20 @@ class EpIntegrationsRegistersController extends RegistersController{
                 }
             }
         } else {
-            let dataRel = await DatasRelationships.getModel().findAll({
+            let dataRel = await Relationships.getModel().findAll({
                 raw:true,
                 where:{
-                    IDRELATIONSHIPTYPE: [DataRelationshipTypes.EP_ID],
-                    IDTABLE1: Users.ID,
-                    IDREG1: req?.user.ID ,
-                    IDTABLE2: EpVendedores.ID
+                    IDRELATIONSHIPTYPE: [Relationship_Types.EP_ID],
+                    IDTABLE1: Users.id,
+                    IDREG1: req?.user.id ,
+                    IDTABLE2: EpVendedores.id
                 }
             });
             if (dataRel && dataRel.length) {
                 rcas = dataRel.map(el=>el.IDREG2).join(',');
             }
         }
-        if (!rcas) rcas = `select ev.cod from ep.epvendedores ev`;
+        if (!rcas) rcas = `select ev.cod from EP.EPVENDEDORES ev`;
         return rcas;
     }
 }

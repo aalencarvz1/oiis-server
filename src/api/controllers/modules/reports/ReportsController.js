@@ -1,10 +1,10 @@
 const { Sequelize, QueryTypes } = require("sequelize");
-const { ReportsDatasFounts } = require("../../../database/models/ReportsDatasFounts");
+const { Report_Data_Founts } = require("../../../database/models/Report_Data_Founts");
 const { Utils } = require("../../utils/Utils");
 const DBConnectionManager = require("../../../database/DBConnectionManager");
-const { ReportsVisions } = require("../../../database/models/ReportsVisions");
-const { DataRelationshipTypes } = require("../../../database/models/DataRelationshipTypes");
-const { StatusRegs } = require("../../../database/models/StatusRegs");
+const { Report_Visions } = require("../../../database/models/Report_Visions");
+const { Relationship_Types } = require("../../../database/models/Relationship_Types");
+const { Record_Status } = require("../../../database/models/Record_Status");
 const _ = require('lodash');
 const { StructuredQueryUtils } = require("./structuredreports/StructuredQueryUtils");
 const { RegistersController } = require("../registers/RegistersController");
@@ -28,13 +28,13 @@ class ReportsController extends RegistersController{
         if (Utils.typeOf(dates) != 'array') {
             dates = dates.split(',');
         }
-        let id = req.body.ID || req.body.REPORTID || req.body.REPORTDATAFOUNTID || req.query?.ID || req.query?.REPORTID || req.query?.REPORTDATAFOUNTID;
+        let id = req.body.id || req.body.REPORTID || req.body.REPORTDATAFOUNTID || req.query?.id || req.query?.REPORTID || req.query?.REPORTDATAFOUNTID;
         if (id) {
-            queryParams.where.ID = id;
+            queryParams.where.id = id;
         } 
-        let name = req.body.NAME || req.body.REPORTNAME || req.body.REPORTDATANAME || req.query?.NAME || req.query?.REPORTNAME || req.query?.REPORTDATANAME;
+        let name = req.body.name || req.body.REPORTNAME || req.body.REPORTDATANAME || req.query?.name || req.query?.REPORTNAME || req.query?.REPORTDATANAME;
         if (name) {
-            queryParams.where.NAME = name;
+            queryParams.where.name = name;
         } 
 
         if (dates && dates.length) {
@@ -44,7 +44,7 @@ class ReportsController extends RegistersController{
             queryParams.where.ENDDATE = {[Sequelize.Op.gte]: dates[1]};
         }
         //Utils.log(queryParams);
-        return await ReportsDatasFounts.getModel().findOne(queryParams);
+        return await Report_Data_Founts.getModel().findOne(queryParams);
     }
 
 
@@ -175,8 +175,8 @@ class ReportsController extends RegistersController{
             //get report data fount
             let query = `
                 SELECT
-                    RF.ID,
-                    RV.ID AS IDVISION,                    
+                    RF.id,
+                    RV.id AS IDVISION,                    
                     RF.STARTDATE,
                     RF.ENDDATE,
                     RF.CONDICTIONS,
@@ -186,35 +186,35 @@ class ReportsController extends RegistersController{
                     RF.GETVALUEFROMTYPE,
                     RF.GETVALUEFROMORIGIN,
                     RF.GETVALUEFROM,
-                    COALESCE(DR.ORDERNUM,DR.ID) AS ORDERNUM,
-                    CASE WHEN RV.ID IN (${visionsIds.join(',')}) THEN 1 ELSE 0 END AS ISVISION,
-                    CASE WHEN RV.ID IN (${condictionsVisionsIds.length ? condictionsVisionsIds.join(',') : '-1'}) THEN 1 ELSE 0 END AS ISCONDICTIONVISION
+                    COALESCE(DR.ORDERNUM,DR.id) AS ORDERNUM,
+                    CASE WHEN RV.id IN (${visionsIds.join(',')}) THEN 1 ELSE 0 END AS ISVISION,
+                    CASE WHEN RV.id IN (${condictionsVisionsIds.length ? condictionsVisionsIds.join(',') : '-1'}) THEN 1 ELSE 0 END AS ISCONDICTIONVISION
                 FROM
-                    REPORTSVISIONS RV
-                    JOIN DATASRELATIONSHIPS DR ON (
-                        DR.IDRELATIONSHIPTYPE = ${DataRelationshipTypes.RELATIONSHIP}
-                        AND DR.IDTABLE1 = ${ReportsVisions.ID}
-                        AND DR.IDREG1 = RV.ID
-                        AND DR.IDTABLE2 = ${ReportsDatasFounts.ID}
-                        AND DR.IDSTATUSREG = ${StatusRegs.ACTIVE}
+                    report_visions RV
+                    JOIN relationships DR ON (
+                        DR.IDRELATIONSHIPTYPE = ${Relationship_Types.RELATIONSHIP}
+                        AND DR.IDTABLE1 = ${Report_Visions.id}
+                        AND DR.IDREG1 = RV.id
+                        AND DR.IDTABLE2 = ${Report_Data_Founts.id}
+                        AND DR.status_reg_id = ${Record_Status.ACTIVE}
                         AND COALESCE(DR.STARTMOMENT,STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
                         AND COALESCE(DR.ENDMOMENT,STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
                     )
-                    JOIN REPORTSDATASFOUNTS RF ON (
-                        RF.ID = DR.IDREG2
-                        AND RF.IDSTATUSREG = ${StatusRegs.ACTIVE}
+                    JOIN report_data_founts RF ON (
+                        RF.id = DR.IDREG2
+                        AND RF.status_reg_id = ${Record_Status.ACTIVE}
                         AND COALESCE(RF.STARTDATE,STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
                         AND COALESCE(RF.ENDDATE,STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
                     )
                 WHERE
                     (
-                        RV.ID IN (${visionsIds.join(',')})
-                        ${condictionsVisionsIds.length ? `OR RV.ID IN (${condictionsVisionsIds.join(',')}) ` : ''}
+                        RV.id IN (${visionsIds.join(',')})
+                        ${condictionsVisionsIds.length ? `OR RV.id IN (${condictionsVisionsIds.join(',')}) ` : ''}
                     )
-                    AND RV.IDSTATUSREG = ${StatusRegs.ACTIVE}
+                    AND RV.status_reg_id = ${Record_Status.ACTIVE}
                 ORDER BY
-                    RV.ID,
-                    COALESCE(DR.ORDERNUM,DR.ID)
+                    RV.id,
+                    COALESCE(DR.ORDERNUM,DR.id)
             `;
 
             let reportsDatasFounts = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
@@ -231,7 +231,7 @@ class ReportsController extends RegistersController{
                         result = result || [];
                         result = await StructuredQueryUtils.unifyStructuredQuery(result,reportsDatasFounts[k],params);                       
                     } else {
-                        throw new Error(`GETVALUEFROMTYPE of report data found id ${reportsDatasFounts[k].ID} not expected: ${reportsDatasFounts[k].GETVALUEFROMTYPE}`)
+                        throw new Error(`GETVALUEFROMTYPE of report data found id ${reportsDatasFounts[k].id} not expected: ${reportsDatasFounts[k].GETVALUEFROMTYPE}`)
                     }
                 }                     
             } else {
@@ -303,32 +303,33 @@ class ReportsController extends RegistersController{
                 SELECT
                     c.*
                 FROM
-                    ep.commissions c
+                    ep."commissions" c
                 where
-                    nvl(c.active,1) = 1
-                    and trunc(nvl(c.startdate,sysdate)) <= trunc(sysdate)
-                    and trunc(nvl(c.enddate,sysdate)) >= trunc(sysdate)
+                    nvl(c."active",1) = 1
+                    and trunc(nvl(c."startdate",sysdate)) <= trunc(sysdate)
+                    and trunc(nvl(c."enddate",sysdate)) >= trunc(sysdate)
             `;
             let commissionsData = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
             commissionsData = commissionsData[0] || [];
-            if (commissionsData && commissionsData.length > 0) {                    
+            if (commissionsData && commissionsData.length > 0) {                                    
                 let allCondictions = [];
                 let allCondictionsVisions = [];
                 for(let i = 0; i < commissionsData.length; i++) {
+                    console.log(commissionsData[i]);
                     let condiction = [];
-                    condiction.push(`cm.id = ${commissionsData[i].ID}`)
-                    switch((commissionsData[i].ENTITYNAME || 'rca').trim().toLowerCase()) {
+                    condiction.push(`cm."id" = ${commissionsData[i].id}`)
+                    switch((commissionsData[i].entityname || 'rca').trim().toLowerCase()) {
                         case 'rca':
-                            condiction.push(`v.cod = ${commissionsData[i].ENTITYID}`);
+                            condiction.push(`v.cod = ${commissionsData[i].entityid}`);
                             break;
                         default:
-                            throw new Error(`not expected entity name: ${commissionsData[i].ENTITYNAME}`)
+                            throw new Error(`not expected entity name: ${commissionsData[i].entityname}`)
                     }
-                    condiction.push(`(${commissionsData[i].CONDICTIONJOIN})`);                    
+                    condiction.push(`(${commissionsData[i].condictionjoin})`);                    
                     allCondictions.push(condiction.join(' and '));
-                    if (Utils.hasValue(commissionsData[i].CONDICTIONREPORTSVISIONSIDS)) {
-                        commissionsData[i].CONDICTIONREPORTSVISIONSIDS = Utils.toArray(commissionsData[i].CONDICTIONREPORTSVISIONSIDS);
-                        allCondictionsVisions = allCondictionsVisions.concat(commissionsData[i].CONDICTIONREPORTSVISIONSIDS);
+                    if (Utils.hasValue(commissionsData[i].condictionreportsvisionsids)) {
+                        commissionsData[i].condictionreportsvisionsids = Utils.toArray(commissionsData[i].condictionreportsvisionsids);
+                        allCondictionsVisions = allCondictionsVisions.concat(commissionsData[i].condictionreportsvisionsids);
                     }
                 }
                 allCondictions = [...new Set(allCondictions)];
@@ -356,34 +357,34 @@ class ReportsController extends RegistersController{
                 let reportQuery = await StructuredQueryUtils.mountQuery(structuredQueryData.structuredQuery,structuredQueryParams);
                 reportQuery = reportQuery.replace(/\s{2,}/g,' ').trim();                
                 reportQuery = reportQuery.split(' where ');
-                reportQuery[0] += ` join ep.commissions cm on (
-                    lower(nvl(cm.entityname,'rca')) = 'rca'
-                    and cm.entityid = s.codvendedor
+                reportQuery[0] += ` join ep."commissions" cm on (
+                    lower(nvl(cm."entityname",'rca')) = 'rca'
+                    and cm."entityid" = s.codvendedor
                     and (${allCondictions.join(') or (')})
                 ) `;
-                reportQuery[1] += ` join ep.commissions cm on (
-                    lower(nvl(cm.entityname,'rca')) = 'rca'
-                    and cm.entityid = e.codvendedor
+                reportQuery[1] += ` join ep."commissions" cm on (
+                    lower(nvl(cm."entityname",'rca')) = 'rca'
+                    and cm."entityid" = e.codvendedor
                     and (${allCondictions.join(') or (')})
                 ) `;
                 reportQuery = reportQuery.join(' where ');
 
                 let p1 = reportQuery.search(/\,\s*CASE\s+WHEN\s+s\.dtemissao/i);
                 reportQuery = reportQuery.substring(0,p1-1) + `,
-                    cm.NAME as COMMISSAO,
-                    cm.PERCENT1NAME,
-                    cm.PERCENT1,
-                    cm.PERCENT2NAME,
-                    cm.PERCENT2
+                    cm."name" as COMMISSAO,
+                    cm."percent1name",
+                    cm."percent1",
+                    cm."percent2name",
+                    cm."percent2"
                 ` + reportQuery.substring(p1);
 
                 p1 = reportQuery.search(/\,\s*CASE\s+WHEN\s+e\.dtemissao/i);
                 reportQuery = reportQuery.substring(0,p1-1) + `,
-                    cm.NAME as COMMISSAO,
-                    cm.PERCENT1NAME,
-                    cm.PERCENT1,
-                    cm.PERCENT2NAME,
-                    cm.PERCENT2
+                    cm."name" as COMMISSAO,
+                    cm."percent1name",
+                    cm."percent1",
+                    cm."percent2name",
+                    cm."percent2"
                 ` + reportQuery.substring(p1);
                 Utils.log('mounted query',reportQuery);
                 res.data = await DBConnectionManager.getEpDBConnection().query(reportQuery,{raw:true,queryType:QueryTypes.SELECT});

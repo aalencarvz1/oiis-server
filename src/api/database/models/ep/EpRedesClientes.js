@@ -9,7 +9,8 @@ const { EpOrigensInfo } = require("./EpOrigensInfo");
  * class model
  */
 class EpRedesClientes extends BaseEpTableModel {
-  static ID = 40018;
+  static id = 40018;
+  static tableName = this.name.toUpperCase();
   static model = null;
 
 

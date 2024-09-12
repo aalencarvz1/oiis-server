@@ -3,14 +3,15 @@
 /*imports*/
 const { Sequelize, DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
-const { DataTables } = require("./DataTables");
+const { Tables } = require("./Tables");
 
 
 /**
  * class model
  */
 class Midias extends BaseTableModel {
-  static ID = 50000;
+  static id = 50000;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static fields = {
@@ -24,7 +25,7 @@ class Midias extends BaseTableModel {
       ORDERNUM: {
         type: DataTypes.INTEGER
       },
-      NAME:{
+      name:{
         type: DataTypes.STRING(256)
       },
       TYPE:{
@@ -36,7 +37,7 @@ class Midias extends BaseTableModel {
       BASE64CONTENT:{
         type: DataTypes.TEXT
       },
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       },
     }
@@ -50,8 +51,8 @@ class Midias extends BaseTableModel {
     fields: ['IDTABLEREF'],
     type: 'foreign key',
     references: { 
-        table: DataTables,
-        field: 'ID'
+        table: Tables,
+        field: 'id'
     },
     onUpdate: 'cascade'
   }]];

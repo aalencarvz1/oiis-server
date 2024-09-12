@@ -11,7 +11,8 @@ const { Utils } = require("../../../controllers/utils/Utils");
  * class model
  */
 class PcPrest extends BaseWinthorTableModel {
-  static ID = 30215;
+  static id = 30215;
+  static tableName = this.name.toUpperCase();
   static model = null;
 
 
@@ -488,8 +489,8 @@ class PcPrest extends BaseWinthorTableModel {
         attributes:[],
         on:{
           [Sequelize.Op.and]: [
-            Sequelize.where(Sequelize.col(`${PcCob.name.toUpperCase()}.CODCOB`),'=',Sequelize.col(`${PcPrest.name.toUpperCase()}.CODCOB`)),
-            Sequelize.where(Sequelize.fn('coalesce',Sequelize.col(`${PcCob.name.toUpperCase()}.BOLETO`),'N'),'=',Sequelize.literal(`'N'`)),
+            Sequelize.where(Sequelize.col(`${PcCob.tableName}.CODCOB`),'=',Sequelize.col(`${PcPrest.tableName}.CODCOB`)),
+            Sequelize.where(Sequelize.fn('coalesce',Sequelize.col(`${PcCob.tableName}.BOLETO`),'N'),'=',Sequelize.literal(`'N'`)),
             {
               CODCOB: {
                 [Sequelize.Op.notIn] : ['DEP','DESD','ESTR','CANC'],        

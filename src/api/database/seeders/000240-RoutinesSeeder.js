@@ -1,8 +1,8 @@
 'use strict';
 
 const { Routines } = require('../models/Routines');
-const { OriginsDatas } = require('../models/OriginsDatas');
-const { StatusRegs } = require('../models/StatusRegs');
+const { Data_Origins } = require('../models/Data_Origins');
+const { Record_Status } = require('../models/Record_Status');
 const { Users } = require('../models/Users');
 const modules = require('../catalogs/modules.json');
 const { Modules } = require('../models/Modules');
@@ -23,63 +23,63 @@ module.exports = {
             seedRoutine(routine[i],idModuleSup);
           }
         } else {
-          Utils.log('FL','passing routine ',routine.NAME);
+          Utils.log('FL','passing routine ',routine.name);
           if (Utils.hasValue(routine?.SUBS)) {
-            Utils.log('FL',routine.NAME,' has subs');
+            Utils.log('FL',routine.name,' has subs');
             if (routine.IDROUTINETYPE || routine.VIEWPATH) {
-              Utils.log('FL',routine.NAME,' is routine');
+              Utils.log('FL',routine.name,' is routine');
               registersRoutines.push({
-                ID:routine.ID-0,
-                IDSTATUSREG: StatusRegs.ACTIVE,
-                IDUSERCREATE : Users.SYSTEM,
-                CREATEDAT: new Date(),
-                IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-                ISSYSTEMREG : 1,
+                id:routine.id-0,
+                status_reg_id: Record_Status.ACTIVE,
+                creator_user_id : Users.SYSTEM,
+                created_at: new Date(),
+                data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+                is_sys_rec : 1,
                 IDMODULE: idModuleSup,
                 IDSUP: idRoutineSup,
                 IDROUTINETYPE : (Utils.firstValid([routine.IDROUTINETYPE,1]))-0,
-                NAME:routine.NAME,
+                name:routine.name,
                 ICON:routine.ICON,
                 VIEWPATH:routine.VIEWPATH,
                 ORDERNUM: routine.ORDERNUM,
                 SHOWINMENU: Utils.firstValid([routine.SHOWINMENU,1]),
               });
               for(let i = 0; i < routine.SUBS.length; i++) {
-                seedRoutine(routine.SUBS[i],idModuleSup,routine.ID);
+                seedRoutine(routine.SUBS[i],idModuleSup,routine.id);
               } 
             } else {
-              Utils.log('FL',routine.NAME,' is module');
+              Utils.log('FL',routine.name,' is module');
               registersModules.push({
-                ID:routine.ID-0,
-                IDSTATUSREG: StatusRegs.ACTIVE,
-                IDUSERCREATE : Users.SYSTEM,
-                CREATEDAT: new Date(),
-                IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-                ISSYSTEMREG : 1,
+                id:routine.id-0,
+                status_reg_id: Record_Status.ACTIVE,
+                creator_user_id : Users.SYSTEM,
+                created_at: new Date(),
+                data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+                is_sys_rec : 1,
                 IDSUP: idModuleSup,
-                NAME:routine.NAME,
+                name:routine.name,
                 ORDERNUM: routine.ORDERNUM,
                 ICON:routine.ICON
               });
 
               for(let i = 0; i < routine.SUBS.length; i++) {
-                seedRoutine(routine.SUBS[i],routine.ID);
+                seedRoutine(routine.SUBS[i],routine.id);
               } 
             }
 
           } else {
-            Utils.log('FL',routine.NAME,' no has subs');
+            Utils.log('FL',routine.name,' no has subs');
             registersRoutines.push({
-              ID:routine.ID-0,
-              IDSTATUSREG: StatusRegs.ACTIVE,
-              IDUSERCREATE : Users.SYSTEM,
-              CREATEDAT: new Date(),
-              IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-              ISSYSTEMREG : 1,
+              id:routine.id-0,
+              status_reg_id: Record_Status.ACTIVE,
+              creator_user_id : Users.SYSTEM,
+              created_at: new Date(),
+              data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+              is_sys_rec : 1,
               IDMODULE: idModuleSup,
               IDSUP: idRoutineSup,
               IDROUTINETYPE : routine.IDROUTINETYPE-0,
-              NAME:routine.NAME,
+              name:routine.name,
               ICON:routine.ICON,
               VIEWPATH:routine.VIEWPATH,
               ORDERNUM: routine.ORDERNUM,
@@ -96,19 +96,19 @@ module.exports = {
     //Utils.log('FL',registersModules);
     //Utils.log('FL',registersRoutines);
 
-    await queryInterface.bulkInsert(Modules.name.toUpperCase(),registersModules,{
+    await queryInterface.bulkInsert(Modules.tableName,registersModules,{
       ignoreDuplicates:true,
-      updateOnDuplicate:['IDSTATUSREG','IDSUP','NAME','ICON']
+      updateOnDuplicate:['status_reg_id','IDSUP','name','ICON']
     });  
 
-    await queryInterface.bulkInsert(Routines.name.toUpperCase(),registersRoutines,{
+    await queryInterface.bulkInsert(Routines.tableName,registersRoutines,{
       ignoreDuplicates:true,
-      updateOnDuplicate:['IDSTATUSREG','IDMODULE','NAME','ICON','VIEWPATH']
+      updateOnDuplicate:['status_reg_id','IDMODULE','name','ICON','VIEWPATH']
     });  
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(Routines.name.toUpperCase(), null, {});
-     await queryInterface.bulkDelete(Modules.name.toUpperCase(), null, {});
+     await queryInterface.bulkDelete(Routines.tableName, null, {});
+     await queryInterface.bulkDelete(Modules.tableName, null, {});
   }
 };

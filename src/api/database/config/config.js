@@ -5,7 +5,7 @@ require('dotenv').config({ path: __dirname + "/../../../../.env" });
  */
 module.exports = {
   "production": {
-    "ID":1,
+    "id":1,
     "database": process.env.DB_NAME || "SERVER_API_DB", 
     "username": process.env.DB_USERNAME || "root",
     "password": process.env.DB_PASSWORD || "masterkey",
@@ -18,7 +18,7 @@ module.exports = {
     }
   },
   "production_old": {
-    "ID":1,
+    "id":1,
     "database": process.env.DB_OLD_NAME || "SERVER_API_DB", 
     "username": process.env.DB_OLD_USERNAME || "root",
     "password": process.env.DB_OLD_PASSWORD || "masterkey",
@@ -32,7 +32,7 @@ module.exports = {
     }
   },
   "development": {
-    "ID":10,
+    "id":10,
     "database": process.env.DB_DEV_NAME || "SERVER_API_DB", 
     "username": process.env.DB_DEV_USERNAME || "root",
     "password": process.env.DB_DEV_PASSWORD || "masterkey",
@@ -46,7 +46,7 @@ module.exports = {
     //"logging":true
   },
   "development_old": {
-    "ID":11,
+    "id":11,
     "database": process.env.DB_DEV_OLD_NAME || "SERVER_API_DB", 
     "username": process.env.DB_DEV_OLD_USERNAME || "root",
     "password": process.env.DB_DEV_OLD_PASSWORD || "masterkey",
@@ -59,7 +59,7 @@ module.exports = {
     }
   },
   "production_winthor": {
-    "ID":2,
+    "id":2,
     "database":"WINT",
     "username": "JUMBO",
     "password": "JUMBO",    
@@ -71,7 +71,7 @@ module.exports = {
     }
   },
   "development_winthor": {
-    "ID":20,
+    "id":20,
     "database":"WINT",
     "username": "JUMBO",
     "password": "JUMBO",    
@@ -83,7 +83,7 @@ module.exports = {
     }
   },
   "production_winthor_integration": {
-    "ID":3,
+    "id":3,
     "database":"WINT",
     "username": "OIIS",
     "password": "OIIS",    
@@ -95,7 +95,7 @@ module.exports = {
     }
   },
   "development_winthor_integration": {
-    "ID":30,
+    "id":30,
     "database":"WINT",
     "username": "OIIS",
     "password": "OIIS",    
@@ -107,7 +107,7 @@ module.exports = {
     }
   },
   "production_consult": {
-    "ID":5,
+    "id":5,
     "database":"WINT",
     "username": "CONSULTA",
     "password": "CONSULTA",    
@@ -119,7 +119,7 @@ module.exports = {
     }
   },
   "development_consult": {
-    "ID":50,
+    "id":50,
     "database":"WINT",
     "username": "CONSULTA",
     "password": "CONSULTA",    
@@ -131,7 +131,7 @@ module.exports = {
     }
   },
   "production_ep": {
-    "ID":4,
+    "id":4,
     "database":"WINT",
     "username": "EP",
     "password": "EP",    
@@ -143,7 +143,7 @@ module.exports = {
     }
   },
   "development_ep": {
-    "ID":40,
+    "id":40,
     "database":"WINT",
     "username": "EP",
     "password": "EP",    

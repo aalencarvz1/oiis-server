@@ -4,14 +4,15 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
-const { IdentifiersTypes } = require("./IdentifiersTypes");
-const { ConteinersTypes } = require("./ConteinersTypes");
+const { Identifier_Types } = require("./Identifier_Types");
+const { Conteiner_Types } = require("./Conteiner_Types");
 
 /**
  * class model
  */
 class Conteiners extends BaseTableModel {
-  static ID = 8015;
+  static id = 8015;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
   static WITHOUT_CONTEINER = 1;
@@ -52,11 +53,11 @@ class Conteiners extends BaseTableModel {
 
   static constraints = [...(Conteiners.getBaseTableModelConstraints() || []),...[
     {
-      name: Conteiners.name.toUpperCase() + '_U1',
+      name: Conteiners.tableName + '_u1',
       fields: [...Conteiners.getBaseTableModelUniqueFields(),...Conteiners.uniqueFields],
       type:"unique"
     },{
-      name: Conteiners.name.toUpperCase() + '_C_1',
+      name: Conteiners.tableName + '_c_1',
       fields:['ALLOWMULTIPLESADDRESSES'],
       type:"check",
       where:{
@@ -72,8 +73,8 @@ class Conteiners extends BaseTableModel {
       fields: ['IDCONTENIERTYPE'],
       type: 'foreign key',
       references: { 
-          table: ConteinersTypes,
-          field: 'ID'
+          table: Conteiner_Types,
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -81,8 +82,8 @@ class Conteiners extends BaseTableModel {
       fields: ['IDIDENTIFIERTYPE'],
       type: 'foreign key',
       references: { 
-          table: IdentifiersTypes,
-          field: 'ID'
+          table: Identifier_Types,
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

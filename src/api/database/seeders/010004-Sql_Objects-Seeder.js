@@ -1,0 +1,171 @@
+'use strict';
+require('dotenv').config({ path: __dirname + "/../../../../.env" });
+const configDB  = require("../config/config");
+const { Sql_Object_Types } = require('../models/Sql_Object_Types');
+const { Data_Origins } = require('../models/Data_Origins');
+const { Record_Status } = require('../models/Record_Status');
+const { Users } = require('../models/Users');
+const { Sql_Objects } = require('../models/Sql_Objects');
+const { PcFilial } = require('../models/winthor/PcFilial');
+const { Utils } = require('../../controllers/utils/Utils');
+
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+  async up (queryInterface, Sequelize) {    
+
+    let registers = [];
+
+    await queryInterface.bulkInsert(Sql_Objects.tableName,[{      
+      id: configDB[`${process.env.NODE_ENV||'development'}`].id,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      IDSQLOBJECTTYPE : Sql_Object_Types.DATABASE,
+      name : configDB[`${process.env.NODE_ENV||'development'}`].database,
+    },{            
+      id: configDB[`${process.env.NODE_ENV||'development'}`].id + 1,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      IDSQLOBJECTTYPE : Sql_Object_Types.USER,
+      IDSUP : configDB[`${process.env.NODE_ENV||'development'}`].id,
+      name : configDB[`${process.env.NODE_ENV||'development'}`].user || configDB[`${process.env.NODE_ENV||'development'}`].database,
+    },{      
+      id: configDB[`${process.env.NODE_ENV||'development'}`].id + 2,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      IDSQLOBJECTTYPE : Sql_Object_Types.SCHEMA,
+      IDSUP : configDB[`${process.env.NODE_ENV||'development'}`].id + 1,
+      name : configDB[`${process.env.NODE_ENV||'development'}`].schema || configDB[`${process.env.NODE_ENV||'development'}`]?.dialectOptions?.schema || configDB[`${process.env.NODE_ENV||'development'}`].database
+    },{
+      id: configDB["development_winthor"]?.id,      
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      IDSQLOBJECTTYPE : Sql_Object_Types.DATABASE,
+      name : 'WINT',
+    }],{
+      ignoreDuplicates:true,
+      updateOnDuplicate:null
+    });
+    
+
+    //JUMBO USER/SCHEMA
+    let wintObject = await Sql_Objects.getModel().findOne({
+      raw:true,
+      where: {
+        IDSQLOBJECTTYPE : Sql_Object_Types.DATABASE, 
+        name: 'WINT',      
+      }
+    });
+    if (Object.keys(wintObject||{}).length == 0) {
+      await queryInterface.bulkInsert(Sql_Objects.tableName,[{
+        status_reg_id: Record_Status.ACTIVE,
+        creator_user_id : Users.SYSTEM,
+        created_at: new Date(),
+        data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+        is_sys_rec : 1,
+        IDSQLOBJECTTYPE : Sql_Object_Types.DATABASE,
+        name : 'WINT',
+      }],{
+        ignoreDuplicates:true,
+        updateOnDuplicate:null
+      });
+
+      wintObject = await Sql_Objects.getModel().findOne({
+        raw:true,
+        where: {
+          IDSQLOBJECTTYPE : Sql_Object_Types.DATABASE, 
+          name: 'WINT',      
+        }
+      });
+    }
+    
+    let wintUserObject = await Sql_Objects.getModel().findOne({raw:true,where: {
+      IDSQLOBJECTTYPE : Sql_Object_Types.USER, 
+      IDSUP:wintObject.id, 
+      name: 'JUMBO'
+    }});
+
+    if (Object.keys(wintUserObject||{}).length == 0) {
+      await queryInterface.bulkInsert(Sql_Objects.tableName,[{      
+        status_reg_id: Record_Status.ACTIVE,
+        creator_user_id : Users.SYSTEM,
+        created_at: new Date(),
+        data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+        is_sys_rec : 1,
+        IDSQLOBJECTTYPE : Sql_Object_Types.USER,
+        IDSUP : wintObject.id,
+        name : 'JUMBO',
+      }],{
+        ignoreDuplicates:true,
+        updateOnDuplicate:null
+      });
+
+      wintUserObject = await Sql_Objects.getModel().findOne({raw:true,where: {
+        IDSQLOBJECTTYPE : Sql_Object_Types.USER, 
+        IDSUP:wintObject.id, 
+        name: 'JUMBO'
+      }});
+    }
+
+    let wintSchemaObject = await Sql_Objects.getModel().findOne({raw:true,where: {
+      IDSQLOBJECTTYPE : Sql_Object_Types.SCHEMA, 
+      IDSUP:wintUserObject.id, 
+      name: 'JUMBO'
+    }});
+    if (Object.keys(wintSchemaObject||{}).length == 0) {
+      await queryInterface.bulkInsert(Sql_Objects.tableName,[{      
+        status_reg_id: Record_Status.ACTIVE,
+        creator_user_id : Users.SYSTEM,
+        created_at: new Date(),
+        data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+        is_sys_rec : 1,
+        IDSQLOBJECTTYPE : Sql_Object_Types.SCHEMA,
+        IDSUP : wintUserObject.id,
+        name : 'JUMBO',
+      }],{
+        ignoreDuplicates:true,
+        updateOnDuplicate:null
+      });
+
+      wintSchemaObject = await Sql_Objects.getModel().findOne({raw:true,where: {
+        IDSQLOBJECTTYPE : Sql_Object_Types.SCHEMA, 
+        IDSUP:wintUserObject.id, 
+        name: 'JUMBO'
+      }});
+    }
+
+    //CONTINUAR AQUI, INCLUIR OS OPJETOS NECESSARIOS PARA FAZER OS COMANDOS SQL DIRETO DO WINTHOR (PCFILIAL, PCPRODUT,PCNFSAID,PCMOV,PCNFENT,PCEST,ETC. POR HORA FAZER SO DA JUMBO, MONTAR COMO MONTADO NO EP (INCLUIR PROCESSOS DE CUSTO/LUCRO E OBJETOS DESTES PROCESSOS (UTILIZANDO O SCHEMA JUMBO)))
+    Utils.log('FL',wintSchemaObject);
+    await queryInterface.bulkInsert(Sql_Objects.tableName,[{      
+      id: PcFilial.id,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,      
+      IDSQLOBJECTTYPE : Sql_Object_Types.TABLE,
+      IDSUP: wintSchemaObject.id,
+      name : PcFilial.tableName,
+    }],{
+      ignoreDuplicates:true,
+      updateOnDuplicate:null
+    });
+
+    
+  },
+
+  async down (queryInterface, Sequelize) {
+     await queryInterface.bulkDelete(Sql_Objects.tableName, null, {});
+  }
+};

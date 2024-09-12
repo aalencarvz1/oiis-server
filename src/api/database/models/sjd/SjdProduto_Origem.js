@@ -8,7 +8,8 @@ const { BaseSjdTableModel } = require("./BaseSjdTableModel");
  * class model
  */
 class SjdProduto_Origem extends BaseSjdTableModel {
-  static ID = 40100;
+  static id = 40100;
+  static tableName = this.name.toUpperCase();
   static model = null;
 
 

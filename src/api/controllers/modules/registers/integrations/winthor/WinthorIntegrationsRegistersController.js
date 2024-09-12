@@ -4,8 +4,8 @@ const { Utils } = require("../../../../utils/Utils");
 const { PcFilial } = require("../../../../../database/models/winthor/PcFilial");
 const { DatabaseUtils } = require("../../../../database/DatabaseUtils");
 const { PcClient } = require("../../../../../database/models/winthor/PcClient");
-const { IdentifiersTypes } = require("../../../../../database/models/IdentifiersTypes");
-const { OriginsDatas } = require("../../../../../database/models/OriginsDatas");
+const { Identifier_Types } = require("../../../../../database/models/Identifier_Types");
+const { Data_Origins } = require("../../../../../database/models/Data_Origins");
 const { RegistersController } = require("../../RegistersController");
 
 
@@ -82,7 +82,7 @@ class WinthorIntegrationsRegistersController extends RegistersController {
                 if (options && options?.attributes) {
                     findParams.attributes = options.attributes;
                 } else {
-                    findParams.attributes = Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.name.toUpperCase()}.${el}`));
+                    findParams.attributes = Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.tableName}.${el}`));
                 }
                 result = await PcClient.getModel().findAll(findParams);
             }
@@ -98,12 +98,12 @@ class WinthorIntegrationsRegistersController extends RegistersController {
             result = await this.getPeopleByIdentifiersDocs(
                 identifiersDocs,{
                     attributes:[
-                        [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CGCENT'),'[^0-9]',''),'DECIMAL(32)'),'ID'], //for people, use document as id to avoid duplicate registers
-                        [Sequelize.literal(`${OriginsDatas.WINTHOR}`),'IDORIGINDATA'],
-                        ['CODCLI','IDONORIGINDATA'],
-                        [Sequelize.literal(`case when PCCLIENT.TIPOFJ = 'F' then ${IdentifiersTypes.CPF} else ${IdentifiersTypes.CNPJ} end`),'IDIDENTIFIERDOCTYPE'],
+                        [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CGCENT'),'[^0-9]',''),'DECIMAL(32)'),'id'], //for people, use document as id to avoid duplicate registers
+                        [Sequelize.literal(`${Data_Origins.WINTHOR}`),'data_origin_id'],
+                        ['CODCLI','id_at_origin'],
+                        [Sequelize.literal(`case when PCCLIENT.TIPOFJ = 'F' then ${Identifier_Types.CPF} else ${Identifier_Types.CNPJ} end`),'IDIDENTIFIERDOCTYPE'],
                         [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CGCENT'),'[^0-9]',''),'DECIMAL(32)'),'IDENTIFIERDOC'],
-                        ['CLIENTE','NAME'],
+                        ['CLIENTE','name'],
                         ['FANTASIA','FANTASY'],
                         [Sequelize.fn('coalesce','CODFILIALNF','1'),'CODFILIALNF']
                     ]
@@ -129,9 +129,9 @@ class WinthorIntegrationsRegistersController extends RegistersController {
             result = await this.getPeopleByIdentifiersDocs(
                 identifiersDocs,{
                     attributes:[
-                        [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CGCENT'),'[^0-9]',''),'DECIMAL(32)'),'ID'], //for people, use document as id to avoid duplicate registers
-                        [Sequelize.literal(`${OriginsDatas.WINTHOR}`),'IDORIGINDATA'],
-                        ['CODCLI','IDONORIGINDATA'],
+                        [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CGCENT'),'[^0-9]',''),'DECIMAL(32)'),'id'], //for people, use document as id to avoid duplicate registers
+                        [Sequelize.literal(`${Data_Origins.WINTHOR}`),'data_origin_id'],
+                        ['CODCLI','id_at_origin'],
                         [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CGCENT'),'[^0-9]',''),'DECIMAL(32)'),'IDPEOPLE'] //for people, use document as id to avoid duplicate registers
                     ]
                 }
@@ -209,7 +209,7 @@ class WinthorIntegrationsRegistersController extends RegistersController {
                     switch(arrRoute[level+1].trim().toLowerCase()) {
                         case 'get':                            
                             queryParams.attributes = queryParams.attributes || [];
-                            if (!queryParams.attributes.length) queryParams.attributes.push(Sequelize.literal(`${PcClient.name.toUpperCase()}.*`));                            
+                            if (!queryParams.attributes.length) queryParams.attributes.push(Sequelize.literal(`${PcClient.tableName}.*`));                            
                             break;
                     }
                     break;

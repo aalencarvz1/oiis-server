@@ -10,18 +10,19 @@ const modulesJson = require("../catalogs/modules.json");
  * class model
  */
 class Modules extends BaseTableModel {
-  static ID = 230;
+  static id = 230;
+  static tableName = this.name.toLowerCase();
   static model = null;
 
-  static WMS = modulesJson.find((el) => el.NAME == "WMS")?.ID;
-  static LOGISTIC = modulesJson.find((el) => el.NAME == "LOGISTIC")?.ID;
+  static WMS = modulesJson.find((el) => el.name == "WMS")?.id;
+  static LOGISTIC = modulesJson.find((el) => el.name == "LOGISTIC")?.id;
 
   static fields = {
     ...Modules.getBaseTableModelFields(),...{     
       IDSUP: {
         type: DataTypes.BIGINT.UNSIGNED
       }, 
-      NAME: {
+      name: {
         type: DataTypes.STRING(256),
         allowNull:false
       }, 
@@ -34,7 +35,7 @@ class Modules extends BaseTableModel {
       ORDERNUM: {
         type: DataTypes.BIGINT.UNSIGNED
       },   
-      DESCRIPTION: {
+      description: {
         type: DataTypes.TEXT
       }
     }
@@ -42,12 +43,12 @@ class Modules extends BaseTableModel {
   
   static uniqueFields = [ 
     Sequelize.literal(`(COALESCE(IDSUP,0))`),  
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(Modules.getBaseTableModelConstraints() || []),...[
     {
-      name: Modules.name.toUpperCase() + '_U1',
+      name: Modules.tableName + '_u1',
       fields: Modules.uniqueFields,
       type:"unique"
     }
@@ -59,7 +60,7 @@ class Modules extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Modules,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

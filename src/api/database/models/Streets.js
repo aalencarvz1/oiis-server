@@ -5,26 +5,27 @@ const { DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
 const { Cities } = require("./Cities");
-const { StreetTypes } = require("./StreetTypes");
+const { Street_Types } = require("./Street_Types");
 
 /**
  * class model
  */
 class Streets extends BaseTableModel {
-  static ID = 2006;
+  static id = 2006;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...Streets.getBaseTableModelFields(),...{           
       IDSTREETTYPE:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
-        defaultValue: StreetTypes.STREET
+        defaultValue: Street_Types.STREET
       },
       IDCITY:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       }
@@ -34,12 +35,12 @@ class Streets extends BaseTableModel {
   static uniqueFields = [
     'IDSTREETTYPE',
     'IDCITY',
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(Streets.getBaseTableModelConstraints() || []),...[
     {
-      name: Streets.name.toUpperCase() + '_U1',
+      name: Streets.tableName + '_u1',
       fields: [...Streets.getBaseTableModelUniqueFields(),...Streets.uniqueFields],
       type:"unique"
     }
@@ -50,8 +51,8 @@ class Streets extends BaseTableModel {
       fields: ['IDSTREETTYPE'],
       type: 'foreign key',
       references: { 
-          table: StreetTypes,
-          field: 'ID'
+          table: Street_Types,
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -60,7 +61,7 @@ class Streets extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Cities,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

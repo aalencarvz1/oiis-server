@@ -3,17 +3,18 @@
 /*imports*/
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
-const { PostalCodes } = require("./PostalCodes");
+const { Postal_Codes } = require("./Postal_Codes");
 const { Streets } = require("./Streets");
 const { NeighborHoods } = require("./NeighborHoods");
-const { AddressesTypes } = require("./AddressesTypes");
+const { Address_Types } = require("./Address_Types");
 
 
 /**
  * class model
  */
 class Addresses extends BaseTableModel {
-  static ID = 2011;
+  static id = 2011;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...Addresses.getBaseTableModelFields(),...{                 
@@ -57,7 +58,7 @@ class Addresses extends BaseTableModel {
 
   static constraints = [...(Addresses.getBaseTableModelConstraints() || []),...[
     {
-      name: Addresses.name.toUpperCase() + '_U1',
+      name: Addresses.tableName + '_u1',
       fields: [...Addresses.getBaseTableModelUniqueFields(),...Addresses.uniqueFields],
       type:"unique"
     }
@@ -68,8 +69,8 @@ class Addresses extends BaseTableModel {
       fields: ['IDADDRESSTYPE'],
       type: 'foreign key',
       references: { 
-          table: AddressesTypes,
-          field: 'ID'
+          table: Address_Types,
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -78,7 +79,7 @@ class Addresses extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: NeighborHoods,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -87,7 +88,7 @@ class Addresses extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: Streets,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade'
     },
@@ -95,8 +96,8 @@ class Addresses extends BaseTableModel {
       fields: ['IDPOSTALCODE'],
       type: 'foreign key',
       references: { 
-          table: PostalCodes,
-          field: 'ID'
+          table: Postal_Codes,
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

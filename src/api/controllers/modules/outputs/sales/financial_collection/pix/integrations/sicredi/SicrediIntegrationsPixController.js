@@ -9,7 +9,7 @@ const { PcEstcr } = require('../../../../../../../../database/models/winthor/PcE
 const { PcConsum } = require('../../../../../../../../database/models/winthor/PcConsum');
 const { PcCob } = require('../../../../../../../../database/models/winthor/PcCob');
 const { PcNfsaid } = require("../../../../../../../../database/models/winthor/PcNfsaid");
-const { ParametersValues } = require("../../../../../../../../database/models/ParametersValues");
+const { Parameter_Values } = require("../../../../../../../../database/models/Parameter_Values");
 const { Parameters } = require("../../../../../../../../database/models/Parameters");
 const { RegistersController } = require("../../../../../../registers/RegistersController");
 
@@ -56,7 +56,7 @@ class SicrediIntegrationsPixController extends RegistersController{
             if (!pixParams.valor.original || pixParams.valor.original < 0) throw new Error("value invalid");
 
 
-            let integrateWinthor = Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION));
+            let integrateWinthor = Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION));
 
 
             //ESTA RETORNANDO false, VER PORQUE
@@ -67,7 +67,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                 if (integrateWinthor) {
                     pcClient = await PcClient.getModel().findOne({
                         raw:true,
-                        attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.name.toUpperCase()}.${el}`)),
+                        attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.tableName}.${el}`)),
                         where:{
                             CODCLI:bodyParams.codcli
                         }
@@ -234,7 +234,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                 }
                 res.data.push(responseJson?.data || responseJson);                    
 
-                if (Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION))) {
+                if (Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION))) {
                     let pixWinthor = await PcPixCobrancaDados.getModel().findOne({
                         where:{
                             NUMTRANSPAGDIGITAL: txIdentifiers[key]
@@ -351,7 +351,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                             select
                                 *
                             from 
-                                jumbo.pcprest p
+                                JUMBO.PCPREST p
                             where
                                 p.NUMTRANSVENDA = ${params.numtrans}
                                 and p.dtpag is null
@@ -386,7 +386,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                                     select
                                         * 
                                     from
-                                        jumbo.pcestcr
+                                        JUMBO.PCESTCR
                                     where
                                         codbanco=748
                                         and codcob='D'
@@ -406,7 +406,7 @@ class SicrediIntegrationsPixController extends RegistersController{
 
                                         let pcClient = await PcClient.getModel(wintConnection).findOne({
                                             raw:true,
-                                            attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.name.toUpperCase()}.${el}`)),
+                                            attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.tableName}.${el}`)),
                                             where:{
                                                 CODCLI: pcPrest.CODCLI
                                             }
@@ -414,7 +414,7 @@ class SicrediIntegrationsPixController extends RegistersController{
 
                                         //DESDOBRAMENTO
                                         await wintConnection.query(`
-                                            INSERT INTO pcprest (
+                                            INSERT INTO PCPREST (
                                                 numtransvenda,
                                                 codcli,
                                                 dtemissao,
@@ -697,7 +697,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                                                 trunc(sysdate),
                                                 p.nossonumbco
                                             from
-                                                pcprest p
+                                                PCPREST p
                                             where 
                                                 p.numtransvenda = ${pcPrest.NUMTRANSVENDA}
                                                 and nvl(p.prest,1) = ${Utils.firstValid([pcPrest.PREST,1])}                                    
@@ -780,7 +780,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                                         }
                                     }
                                 } else {
-                                    throw new Error(`pcestcr not found ${'748'} ${'D'}`);
+                                    throw new Error(`PCESTCR not found ${'748'} ${'D'}`);
                                 }
 
 
@@ -790,7 +790,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                                         nvl(PROXNUMTRANS,0) PROXNUMTRANS,
                                         nvl(PROXNUMLANC,0) PROXNUMLANC 
                                     from
-                                        jumbo.pcconsum
+                                        JUMBO.PCCONSUM
                                     where
                                         1=1
                                     FOR UPDATE                                    
@@ -929,7 +929,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                                     748,
                                     'D',
                                     'BAIXA DE PAGAMENTO VIA API PIX',        
-                                    SUBSTR(NVL((select c.cliente from jumbo.pcclient c where c.codcli=${pcPrest.CODCLI}),''),0,194) || ' (BI)',
+                                    SUBSTR(NVL((select c.cliente from JUMBO.PCCLIENT c where c.codcli=${pcPrest.CODCLI}),''),0,194) || ' (BI)',
                                     ${Utils.toNumber(params.pix.valor.original)},
                                     'D',             
                                     ${pcPrest.NUMTRANSVENDA||0},
@@ -956,7 +956,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                                 DESNECESSARIO, JA SALVO NO INICIO*/
                                 Utils.log("downWinthorTitle","ok10.4");
                             } else {
-                                throw new Error(`pccob ${pcPrest.CODCOB} not found`);
+                                throw new Error(`PCCOB ${pcPrest.CODCOB} not found`);
                             }
 
                             /*LEMBRAR O USUARIO DE FAZER A CONCILIAÇÃO NA 604*/
@@ -964,14 +964,14 @@ class SicrediIntegrationsPixController extends RegistersController{
                             dowed = true;
                             Utils.log("downWinthorTitle","ok11");
                         } else {
-                            Utils.log("downWinthorTitle","not found pcprest");
+                            Utils.log("downWinthorTitle","not found PCPREST");
                         } 
                         Utils.log("downWinthorTitle","okxxxxxx20");
                         return true; //if in here, no errors occured, commit transaction
                     });
                     result = dowed;
                 } else {
-                    Utils.log("downWinthorTitle","pcprest not found");
+                    Utils.log("downWinthorTitle","PCPREST not found");
                 }
             } 
         } catch (e) {
@@ -1019,7 +1019,7 @@ class SicrediIntegrationsPixController extends RegistersController{
             });
             if (result?.success) {
                 Utils.log('cobs concluidas: ',result?.data?.cobs?.length);
-                if (Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true) {
+                if (Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true) {
                     for(let key in result?.data?.cobs) {
                         let numtrans = null;
                         let numnf = null;
@@ -1086,7 +1086,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                 for(let key in pix) {
                     let txid = pix[key].txid;
                     let value = pix[key].valor;
-                    if (Utils.toBool(await ParametersValues.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true) {
+                    if (Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true) {
                         pixWinthor = await PcPixCobrancaDados.getModel().findOne({
                             where:{
                                 NUMTRANSPAGDIGITAL: txid

@@ -10,7 +10,8 @@ const { PcBairro } = require("./PcBairro");
  * class model
  */
 class PcClient extends BaseWinthorTableModel {
-  static ID = 30009;
+  static id = 30009;
+  static tableName = this.name.toUpperCase();
   static model = null;
 
 

@@ -4,13 +4,14 @@
 const { DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
-const { ContactsTypes } = require("./ContactsTypes");
+const { Contact_Types } = require("./Contact_Types");
 
 /**
  * class model
  */
 class Contacts extends BaseTableModel {
-  static ID = 2013;
+  static id = 2013;
+  static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
     ...Contacts.getBaseTableModelFields(),...{           
@@ -18,7 +19,7 @@ class Contacts extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      NAME:{
+      name:{
         type: DataTypes.STRING(256),
         allowNull:false
       }
@@ -27,12 +28,12 @@ class Contacts extends BaseTableModel {
   
   static uniqueFields = [
     'IDCONTACTTYPE',
-    'NAME'
+    'name'
   ];
 
   static constraints = [...(Contacts.getBaseTableModelConstraints() || []),...[
     {
-      name: Contacts.name.toUpperCase() + '_U1',
+      name: Contacts.tableName + '_u1',
       fields: [...Contacts.getBaseTableModelUniqueFields(),...Contacts.uniqueFields],
       type:"unique"
     }
@@ -43,8 +44,8 @@ class Contacts extends BaseTableModel {
       fields: ['IDCONTACTTYPE'],
       type: 'foreign key',
       references: { 
-          table: ContactsTypes,
-          field: 'ID'
+          table: Contact_Types,
+          field: 'id'
       },
       onUpdate: 'cascade'
     }

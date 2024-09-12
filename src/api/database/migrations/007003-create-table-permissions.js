@@ -10,6 +10,6 @@ module.exports = {
     await Permissions.runUpMigration(queryInterface);  
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(Permissions.name.toUpperCase());
+    await queryInterface.dropTable(Permissions.tableName);
   }
 };

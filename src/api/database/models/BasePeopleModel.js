@@ -54,7 +54,7 @@ class BasePeopleModel extends BaseTableModel {
       type: 'foreign key',
       references: { 
           table: People,
-          field: 'ID'
+          field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -69,9 +69,9 @@ class BasePeopleModel extends BaseTableModel {
     let queryParams = params.queryParams || params;
     let people = await People.updateOrCreatePeopleByIdentifierDocAndGet(queryParams);          
     if (params.queryParams) {
-      params.queryParams.IDPEOPLE = people.ID;
+      params.queryParams.IDPEOPLE = people.id;
     } else {
-      params.IDPEOPLE = people.ID;
+      params.IDPEOPLE = people.id;
     }
     return params;
   }

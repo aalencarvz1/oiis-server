@@ -2,9 +2,9 @@
 
 /*imports*/
 const { People } = require('../models/People');
-const { OriginsDatas } = require('../models/OriginsDatas');
-const { StatusRegs } = require('../models/StatusRegs');
-const { IdentifiersTypes } = require('../models/IdentifiersTypes');
+const { Data_Origins } = require('../models/Data_Origins');
+const { Record_Status } = require('../models/Record_Status');
+const { Identifier_Types } = require('../models/Identifier_Types');
 const { Users } = require('../models/Users');
 /** @type {import('sequelize-cli').Migration} */
 
@@ -13,27 +13,27 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await People.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});         
     
-    await queryInterface.bulkInsert(People.name.toUpperCase(),[{      
-      ID:People.SYSTEM,
-      IDSTATUSREG: StatusRegs.ACTIVE,
-      IDUSERCREATE : Users.SYSTEM,
-      CREATEDAT: new Date(),
-      IDORIGINDATA : OriginsDatas.DEFAULT_ORIGINDATA,
-      ISSYSTEMREG : 1,
-      IDIDENTIFIERDOCTYPE : IdentifiersTypes.CODE,
+    await queryInterface.bulkInsert(People.tableName,[{      
+      id:People.SYSTEM,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      IDIDENTIFIERDOCTYPE : Identifier_Types.CODE,
       IDENTIFIERDOC: People.SYSTEM,
-      NAME : 'SYSTEM'
+      name : 'SYSTEM'
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null
     }); 
     
-    await People.migrateForeignKeyContraint(queryInterface,StatusRegs);  
-    await People.migrateForeignKeyContraint(queryInterface,OriginsDatas);  
-    await People.migrateForeignKeyContraint(queryInterface,IdentifiersTypes);  
+    await People.migrateForeignKeyContraint(queryInterface,Record_Status);  
+    await People.migrateForeignKeyContraint(queryInterface,Data_Origins);  
+    await People.migrateForeignKeyContraint(queryInterface,Identifier_Types);  
         
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(People.name.toUpperCase());
+    await queryInterface.dropTable(People.tableName);
   }
 };

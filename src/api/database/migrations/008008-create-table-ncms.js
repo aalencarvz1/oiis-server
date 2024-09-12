@@ -10,6 +10,6 @@ module.exports = {
     await Ncms.runUpMigration(queryInterface);     
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(Ncms.name.toUpperCase());
+    await queryInterface.dropTable(Ncms.tableName);
   }
 };
