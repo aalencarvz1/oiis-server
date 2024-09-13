@@ -73,7 +73,7 @@ class Report_Data_Fount_Items extends BaseTableModel {
         allowNull: false,
         defaultValue:0
       },
-      OBSERVATIONS:{
+      observations:{
         type: DataTypes.TEXT
       }
     }

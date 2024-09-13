@@ -42,7 +42,7 @@ class Measurement_Units extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull: false
       },
-      SIGLA: {
+      sigla: {
         type: DataTypes.STRING(10),
         allowNull: false
       },
@@ -64,7 +64,7 @@ class Measurement_Units extends BaseTableModel {
   
   static uniqueFields = [
     'name',
-    'SIGLA'
+    'sigla'
   ];
 
   static constraints = [...(Measurement_Units.getBaseTableModelConstraints() || []),...[

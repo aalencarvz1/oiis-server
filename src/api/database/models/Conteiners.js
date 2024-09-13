@@ -39,7 +39,7 @@ class Conteiners extends BaseTableModel {
         allowNull: false,
         defaultValue:0
       },
-      OBSERVATIONS:{
+      observations:{
         type: DataTypes.TEXT
       },
     }

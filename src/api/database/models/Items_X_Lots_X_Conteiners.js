@@ -31,7 +31,7 @@ class Items_X_Lots_X_Conteiners extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      OBSERVATIONS:{
+      observations:{
         type: DataTypes.TEXT
       }
     }

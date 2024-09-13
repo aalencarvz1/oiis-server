@@ -22,7 +22,7 @@ class Item_Status extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull: false
       },
-      SIGLA: {
+      sigla: {
         type: DataTypes.STRING(10)
       },
       ISDISPONIBLE: {
@@ -43,7 +43,7 @@ class Item_Status extends BaseTableModel {
   
   static uniqueFields = [
     'name',
-    Sequelize.literal(`(COALESCE(SIGLA,'NULL'))`)
+    Sequelize.literal(`(COALESCE(sigla,'NULL'))`)
   ];
 
   static constraints = [...(Item_Status.getBaseTableModelConstraints() || []),...[

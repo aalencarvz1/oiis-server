@@ -47,7 +47,7 @@ class Movements extends BaseTableModel {
       IDCONFERENCETYPE:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDCOMPANY:{
+      company_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
       IDWAREHOUSE:{
@@ -129,7 +129,7 @@ class Movements extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDCOMPANY'],
+      fields: ['company_id'],
       type: 'foreign key',
       references: { 
           table: Companies,

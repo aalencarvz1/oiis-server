@@ -18,7 +18,7 @@ module.exports = {
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'UNIT',
-      SIGLA: 'UN',
+      sigla: 'UN',
       ISSCALAR: 1
     },{
       id: Measurement_Units.KG,
@@ -29,7 +29,7 @@ module.exports = {
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.MASS,
       name : 'KILOGRAM',
-      SIGLA: 'KG',
+      sigla: 'KG',
       ISSCALAR: 1
     },{
       id: Measurement_Units.L,
@@ -40,7 +40,7 @@ module.exports = {
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.VOLUM,
       name : 'LITER',
-      SIGLA: 'L',
+      sigla: 'L',
       ISSCALAR: 1
     },{
       id: Measurement_Units.PC,
@@ -51,7 +51,7 @@ module.exports = {
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'PIECE',
-      SIGLA: 'PC',
+      sigla: 'PC',
       ISSCALAR: 1
     },{
       id: Measurement_Units.PKG,
@@ -62,7 +62,7 @@ module.exports = {
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'PACKAGE',
-      SIGLA: 'PK',
+      sigla: 'PK',
       ISSCALAR: 1
     },{
       id: Measurement_Units.BOX,
@@ -73,7 +73,7 @@ module.exports = {
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'BOX',
-      SIGLA: 'BX',
+      sigla: 'BX',
       ISSCALAR: 1
     },{
       id: Measurement_Units.BCK,
@@ -84,7 +84,7 @@ module.exports = {
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'BUCKET',
-      SIGLA: 'BK',
+      sigla: 'BK',
       ISSCALAR: 1
     },{
       id: Measurement_Units.CAN,
@@ -95,7 +95,7 @@ module.exports = {
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'CAN',
-      SIGLA: 'CN',
+      sigla: 'CN',
       ISSCALAR: 1
     },{
       id: Measurement_Units.BAG,
@@ -106,7 +106,7 @@ module.exports = {
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'BAG',
-      SIGLA: 'BG',
+      sigla: 'BG',
       ISSCALAR: 1
     }],{
       ignoreDuplicates:true,

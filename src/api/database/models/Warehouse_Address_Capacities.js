@@ -34,7 +34,7 @@ class Warehouse_Address_Capacities extends BaseTableModel {
         allowNull:false,
         defaultValue:0
       },
-      OBSERVATIONS:{
+      observations:{
         type: DataTypes.TEXT
       }
     }

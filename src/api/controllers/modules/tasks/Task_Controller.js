@@ -124,20 +124,20 @@ class Task_Controller extends RegistersController{
                         join ${Task_Status.tableName} tsn on tsn.id = ${pIdNewStatus}
                     set
                         t1.IDSTATUS=${pIdNewStatus},
-                        t1.ENDMOMENT=CASE WHEN coalesce(tsn.ISCONCLUDED,0) = 1 then current_timestamp else t1.ENDMOMENT end
+                        t1.ENDMOMENT=CASE WHEN coalesce(tsn.is_concluded,0) = 1 then current_timestamp else t1.ENDMOMENT end
                     where
                         t1.id IN (${idsSubs.join(',')})
                         and t1.IDUSER = ${pUserId}
-                        and coalesce(tsn.ISRUNNING,0) = 0 
+                        and coalesce(tsn.is_running,0) = 0 
                         and (
-                            coalesce(ts.ISRUNNING,0) = 1
+                            coalesce(ts.is_running,0) = 1
                             or (
-                                1 in (coalesce(tsn.ISCONCLUDED,0),coalesce(tsn.ISCANCELED,0))
-                                and 1 not in (coalesce(ts.ISCONCLUDED,0),coalesce(ts.ISCANCELED,0))
+                                1 in (coalesce(tsn.is_concluded,0),coalesce(tsn.is_canceled,0))
+                                and 1 not in (coalesce(ts.is_concluded,0),coalesce(ts.is_canceled,0))
                             )
                             or (
-                                coalesce(tsn.ISSTOPED,0) = 1
-                                and coalesce(ts.ISRUNNING,0) = 1
+                                coalesce(tsn.is_stopped,0) = 1
+                                and coalesce(ts.is_running,0) = 1
                             )
                         )                                           
                 `;

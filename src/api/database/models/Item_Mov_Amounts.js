@@ -71,7 +71,7 @@ class Item_Mov_Amounts extends BaseTableModel {
         allowNull:false,
         defaultValue:0
       },
-      OBSERVATIONS:{
+      observations:{
         type:DataTypes.TEXT
       }
     }

@@ -34,7 +34,7 @@ class Conteiner_Type_Dimensions extends BaseTableModel {
         allowNull:false,
         defaultValue:0
       },
-      OBSERVATIONS:{
+      observations:{
         type:DataTypes.TEXT
       }
     }

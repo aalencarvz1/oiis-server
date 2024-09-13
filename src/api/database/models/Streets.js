@@ -16,7 +16,7 @@ class Streets extends BaseTableModel {
   static model = null;
   static fields = {
     ...Streets.getBaseTableModelFields(),...{           
-      IDSTREETTYPE:{
+      street_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue: Street_Types.STREET
@@ -33,7 +33,7 @@ class Streets extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDSTREETTYPE',
+    'street_type_id',
     'IDCITY',
     'name'
   ];
@@ -48,7 +48,7 @@ class Streets extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDSTREETTYPE'],
+      fields: ['street_type_id'],
       type: 'foreign key',
       references: { 
           table: Street_Types,

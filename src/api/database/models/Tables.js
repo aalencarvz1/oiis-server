@@ -16,11 +16,11 @@ class Tables extends BaseTableModel {
   static model = null;
   static fields = {
     ...Tables.getBaseTableModelFields(),...{
-      IDDATACONNECTION: {
+      data_connection_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
       },
-      IDSCHEMA: {
+      schema_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
       },
@@ -35,8 +35,8 @@ class Tables extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDDATACONNECTION',
-    'IDSCHEMA',
+    'data_connection_id',
+    'schema_id',
     'name'
   ];
 
@@ -50,7 +50,7 @@ class Tables extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys() || []),...[
     {
-      fields: ['IDDATACONNECTION'],
+      fields: ['data_connection_id'],
       type: 'foreign key',
       references: { 
           table: Connections,
@@ -58,7 +58,7 @@ class Tables extends BaseTableModel {
       },
       onUpdate: 'cascade'
     },{
-      fields: ['IDSCHEMA'],
+      fields: ['schema_id'],
       type: 'foreign key',
       references: { 
           table: Schemas,

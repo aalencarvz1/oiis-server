@@ -25,8 +25,8 @@ class BaseEpTableModel extends BaseTableModel {
             id:this.id,
             created_at: new Date(),
             is_sys_rec : 1,
-            IDDATACONNECTION : configDB[`${process.env.NODE_ENV||'development'}_ep`].id,
-            IDSCHEMA : configDB[`${process.env.NODE_ENV||'development'}_ep`].id,
+            data_connection_id : configDB[`${process.env.NODE_ENV||'development'}_ep`].id,
+            schema_id : configDB[`${process.env.NODE_ENV||'development'}_ep`].id,
             name : this.tableName
         }],{
             ignoreDuplicates:true,

@@ -657,10 +657,10 @@ class DeliveryController extends RegistersController{
                     left outer join Movements m on m.id = lxm.idmov                            
                     left outer join Data_Origins o on o.id = m.data_origin_id
                     left outer join Clients c on c.id = m.idclient
-                    left outer join People p on p.id = c.idpeople
+                    left outer join People p on p.id = c.people_id
                     left outer join Financial_Value_Forms rt on rt.id = m.IDFINANCIALVALUEFORM
                     left outer join Collaborators cl on cl.id = m.idseller
-                    left outer join People ps on ps.id = cl.idpeople
+                    left outer join People ps on ps.id = cl.people_id
                     left outer join movs_x_items_stocks mxis on mxis.IDMOV = m.id
                     left outer join item_mov_amounts im on im.IDMOVXITEMSTOCK = mxis.id
                     left outer join item_stocks ist on ist.id = mxis.IDITEMSTOCK
@@ -875,21 +875,21 @@ class DeliveryController extends RegistersController{
                 let query = `
                     select
                         date_format(lg.created_at,'%Y-%m-%d %H:%i') as created_at,
-                        MAX(lg.LATITUDE) as LATITUDE,
-                        MAX(lg.LONGITUDE) AS LONGITUDE,
-                        cast(regexp_replace(p.IDENTIFIERDOC,'[^0-9]','') as decimal(32)) as "IDENTIFIERDOC",
+                        MAX(lg.latitude) as latitude,
+                        MAX(lg.longitude) AS longitude,
+                        cast(regexp_replace(p.identifier_doc,'[^0-9]','') as decimal(32)) as "identifier_doc",
                         p.name,
-                        p.FANTASY,
+                        p.fantasy,
                         ctr.name as COUNTRY,
                         stt.name as STATE,
                         ct.name as CITY,
                         nb.name as NEIGHBOORHOOD,
                         st.name as STREET,
-                        a.NUMBER,
-                        a.LATITUDE as CLIENT_LATITUDE,
-                        a.LONGITUDE AS CLIENT_LONGITUDE,
+                        a.number,
+                        a.latitude as CLIENT_latitude,
+                        a.longitude AS CLIENT_longitude,
                         pc.POSTALCODE,
-                        concat(st.name,',',a.number,',',ct.name,' - ',stt.SIGLA,',',ctr.name) as GOOGLEADDRESS
+                        concat(st.name,',',a.number,',',ct.name,' - ',stt.sigla,',',ctr.name) as GOOGLEADDRESS
                     from
                         logistic_logs lg 
                         join tables t on LOWER(t.name) = LOWER('logistic_orders_x_items_mov_amt') and lg.IDTABLEREF = t.id
@@ -898,14 +898,14 @@ class DeliveryController extends RegistersController{
                         join logistic_orders l on l.id = lxm.idlogisticorder
                         join movements m on m.id = lxm.idmov
                         join clients c on c.id = m.idclient
-                        join people p on p.id = c.idpeople
-                        left outer join people_x_addresses x on x.IDPEOPLE = p.id
+                        join people p on p.id = c.people_id
+                        left outer join people_x_addresses x on x.people_id = p.id
                         left outer join addresses a on a.id = x.idaddress
-                        left outer join postal_codes pc on pc.id = a.idpostalcode
-                        left outer join neighborhoods nb on nb.id = a.IDNEIGHBORHOOD
-                        left outer join streets st on st.id = a.idstreet    
+                        left outer join postal_codes pc on pc.id = a.postal_code_id
+                        left outer join neighborhoods nb on nb.id = a.neighborhood_id
+                        left outer join streets st on st.id = a.street_id    
                         left outer join cities ct on ct.id = coalesce(st.IDCITY,nb.idcity,pc.idcity)
-                        left outer join states stt on stt.id = ct.idstate
+                        left outer join states stt on stt.id = ct.state_id
                         left outer join countries ctr on ctr.id = stt.idcountry
                     where
                         l.id_at_origin = ${req.body.id_at_origin}
@@ -914,9 +914,9 @@ class DeliveryController extends RegistersController{
                         and lg.NEWVALUE IN (3,4,5)
                     group by
                         date_format(lg.created_at,'%Y-%m-%d %H:%i'),
-                        cast(regexp_replace(p.IDENTIFIERDOC,'[^0-9]','') as decimal(32)),
+                        cast(regexp_replace(p.identifier_doc,'[^0-9]','') as decimal(32)),
                         p.name,
-                        p.FANTASY,
+                        p.fantasy,
                         ctr.name,
                         stt.name,
                         ct.name,
@@ -926,10 +926,10 @@ class DeliveryController extends RegistersController{
                         a.latitude,
                         a.longitude,
                         pc.postalcode,
-                        concat(st.name,',',a.number,',',ct.name,' - ',stt.SIGLA,',',ctr.name)
+                        concat(st.name,',',a.number,',',ct.name,' - ',stt.sigla,',',ctr.name)
                     order by
                         date_format(lg.created_at,'%Y-%m-%d %H:%i'),
-                        "IDENTIFIERDOC"
+                        "identifier_doc"
                 `;
                 res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{
                     raw:true,

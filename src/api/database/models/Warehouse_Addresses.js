@@ -52,7 +52,7 @@ class Warehouse_Addresses extends BaseTableModel {
         allowNull: false,
         defaultValue:1
       },
-      OBSERVATIONS:{
+      observations:{
         type: DataTypes.TEXT
       },
     }

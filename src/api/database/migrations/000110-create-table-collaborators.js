@@ -20,7 +20,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDPEOPLE : People.SYSTEM
+      people_id : People.SYSTEM
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

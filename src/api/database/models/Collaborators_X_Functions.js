@@ -35,7 +35,7 @@ class Collaborators_X_Functions extends BaseTableModel {
         allowNull: false,
         defaultValue:1
       },      
-      OBSERVATIONS:{
+      observations:{
         type: DataTypes.TEXT
       },
     }

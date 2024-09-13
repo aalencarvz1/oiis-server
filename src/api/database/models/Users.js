@@ -21,7 +21,7 @@ class Users extends BasePeopleModel {
   static fields = {
     ...(Users.getBaseTableModelFields() || {}),
     ...{ 
-      IDPEOPLE:{
+      people_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },          
       IDCOLLABORATOR: {

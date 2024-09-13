@@ -82,7 +82,7 @@ class Permissions extends BaseTableModel {
         allowNull: false,
         defaultValue:1
       },
-      OBSERVATIONS: {
+      observations: {
         type: DataTypes.TEXT
       }
     }

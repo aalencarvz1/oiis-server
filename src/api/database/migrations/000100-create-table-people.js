@@ -20,8 +20,8 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDIDENTIFIERDOCTYPE : Identifier_Types.CODE,
-      IDENTIFIERDOC: People.SYSTEM,
+      identifier_doc_type_id : Identifier_Types.CODE,
+      identifier_doc: People.SYSTEM,
       name : 'SYSTEM'
     }],{
       ignoreDuplicates:true,

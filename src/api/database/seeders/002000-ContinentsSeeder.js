@@ -16,7 +16,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'AMERICA',
-      SIGLA:'AM'
+      sigla:'AM'
     },{      
       id:Continents.SOUTH_AMERICA,
       status_reg_id: Record_Status.ACTIVE,
@@ -26,7 +26,7 @@ module.exports = {
       is_sys_rec : 1,
       IDSUP: Continents.AMERICA,
       name : 'SOUTH AMERICA',
-      SIGLA:'AL'
+      sigla:'AL'
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

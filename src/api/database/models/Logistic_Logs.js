@@ -39,13 +39,13 @@ class Logistic_Logs extends BaseTableModel {
       NEWVALUE: {
           type: DataTypes.TEXT,
       },
-      LATITUDE:{
+      latitude:{
           type: DataTypes.DECIMAL(18,10)
       },
-      LONGITUDE:{
+      longitude:{
           type: DataTypes.DECIMAL(18,10)
       },
-      OBSERVATIONS:{
+      observations:{
           type: DataTypes.TEXT
       },
     }

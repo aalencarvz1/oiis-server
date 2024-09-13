@@ -41,7 +41,7 @@ class Condictions extends BaseTableModel {
       ENDDATE:{
         type: DataTypes.DATE
       },
-      OBSERVATIONS:{
+      observations:{
         type: DataTypes.TEXT
       }
     }

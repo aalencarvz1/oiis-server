@@ -29,7 +29,11 @@ let oldTables = {
     }
   },
   tables:{
-    tableName:"DATATABLES"
+    tableName:"DATATABLES",
+    columns:{
+      IDDATACONNECTION:"data_connection_id",
+      IDSCHEMA:"schema_id"
+    }
   },
   connections:{
     tableName:"DATACONNECTIONS"
@@ -44,7 +48,14 @@ let oldTables = {
     tableName:"DATATYPES"
   },  
   action_status:{
-    tableName:"ACTIONSSTATUS"
+    tableName:"ACTIONSSTATUS",
+    columns:{
+      ISSTARTED: "is_started",
+      ISRUNNING: "is_running",
+      ISSTOPED: "is_stopped",
+      ISCANCELED: "is_canceled",
+      ISCONCLUDED: "is_concluded"
+    }
   },
   parameter_values:{
     tableName:"PARAMETERSVALUES"
@@ -59,7 +70,13 @@ let oldTables = {
     tableName:"STATUSSYNC"
   },
   run_status:{
-    tableName:"STATUSRUN"
+    tableName:"STATUSRUN",
+    columns:{
+      ISRUNNING:"is_running",
+      ISSTOPED:"is_stopped",
+      ISCANCELED:"is_canceled",
+      ISCONCLUDED:"is_canceled",
+    }
   },
   identifier_types:{
     tableName:"IDENTIFIERSTYPES"
@@ -71,7 +88,10 @@ let oldTables = {
     tableName:"MEASUREMENTSUNITS"
   },  
   access_profiles:{
-    tableName:"ACCESSESPROFILES"
+    tableName:"ACCESSESPROFILES",
+    columns:{
+      ALLOWACESSALLROUTINESOFMODULE:'allow_access_to_all_module_routines'
+    }
   },  
   user_tokens:{
     tableName:"USERSTOKENS"
@@ -114,33 +134,94 @@ let oldTables = {
   },     
   financial_value_mov_types:{
     tableName:"FINANCIALVALUEMOVTYPES"
-  },      
+  },    
+  cities:{
+    columns:{
+      IDSTATE:"state_id"
+    }
+  }, 
   street_types:{
     tableName:"STREETTYPES"
-  },        
+  },    
+  streets:{
+    columns:{
+      IDSTREETTYPE:"street_type_id"
+    }
+  },   
   address_types:{
     tableName:"ADDRESSESTYPES"
   },
   postal_codes:{
-    tableName:"POSTALCODES"
+    tableName:"POSTALCODES",
+    columns:{
+      IDADDRESSTYPE:"address_type_id"
+    }
   },
   postal_codes_x_streets:{
-    tableName:"POSTALCODESXSTREETS"
+    tableName:"POSTALCODESXSTREETS",
+    columns:{
+      IDPOSTALCODE:"postal_code_id",
+      IDNEIGHBORHOOD:"neighborhood_id",
+      IDSTREET:"street_id"
+    }
   },
   postal_codes_x_paths:{
-    tableName:"POSTALCODESXPATHS"
+    tableName:"POSTALCODESXPATHS",
+    columns:{
+      IDPOSTALCODE:"postal_code_id",
+      IDPOSTALCODEXSTREET:"postal_code_x_street_id",
+      STARTNUMBER:"state_number",
+      ENDNUMBER:"end_number"
+    }
   },
   contact_types:{
     tableName:"CONTACTSTYPES"
   },
+  addresses:{
+    columns:{
+      IDADDRESSTYPE:"address_type_id",
+      IDNEIGHBORHOOD:"neighborhood_id",
+      IDSTREET:"street_id",
+      IDPOSTALCODE:"postal_code_id",
+    }
+  },
+  people:{
+    columns:{
+      IDIDENTIFIERDOCTYPE:"identifier_doc_type_id",
+      IDENTIFIERDOC:"identifier_doc",
+      BIRTHDATE:"birth_date"
+    }
+  },
   people_x_addresses:{
-    tableName:"PEOPLEXADDRESSES"
+    tableName:"PEOPLEXADDRESSES",
+    columns:{
+      IDPEOPLE:"people_id",
+      IDADDRESSTYPE:"address_type_id"
+    }
   },
   people_x_contacts:{
-    tableName:"PEOPLEXCONTACTS"
+    tableName:"PEOPLEXCONTACTS",
+    columns:{
+      IDPEOPLE:"people_id"
+    }
+  },
+  companies:{
+    columns:{
+      IDPEOPLE:"people_id"
+    }
   },
   business_units:{
-    tableName:"BUSINESSESUNITS"
+    tableName:"BUSINESSESUNITS",
+    columns:{
+      IDPEOPLE:"people_id",
+      IDCOMPANY:"company_id"
+    }
+  },
+  warehouses:{
+    columns:{
+      IDPEOPLE:"people_id",
+      IDCOMPANY: "company_id"
+    }
   },
   warehouse_address_types:{
     tableName: "WAREHOUSESADDRESSESTYPES"
@@ -157,6 +238,16 @@ let oldTables = {
   warehouse_address_capacities:{
     tableName:"WAREHOUSESADDRESSESCAPACITIES"
   },    
+  suppliers:{
+    columns:{
+      IDPEOPLE:"people_id"
+    }
+  },
+  collaborators:{
+    columns:{
+      IDPEOPLE:"people_id"
+    }
+  },
   collaborator_functions:{
     tableName:"COLLABORATORSFUNCTIONS"
   },    
@@ -166,6 +257,16 @@ let oldTables = {
   collaborators_x_functions:{
     tableName:"COLLABORATORSXFUNCTIONS"
   },      
+  clients:{
+    columns:{
+      IDPEOPLE:"people_id"
+    }
+  },
+  users:{
+    columns:{
+      IDPEOPLE:"people_id"
+    }
+  },
   power_types:{
     tableName:"POWERSTYPES"
   },        
@@ -194,7 +295,10 @@ let oldTables = {
     tableName:"STOCKSENTITIESRELATIONSHIPSTYPES"
   },
   stock_entities:{
-    tableName:"STOCKSENTITIES"
+    tableName:"STOCKSENTITIES",
+    columns:{
+      IDCOMPANY: "company_id"
+    }
   },
   item_stock_units:{
     tableName:"ITEMSSTOCKSUNITS"
@@ -209,11 +313,23 @@ let oldTables = {
     tableName:"MOVEMENTSTYPES"
   },    
   movement_status:{
-    tableName:"MOVEMENTSSTATUS"
+    tableName:"MOVEMENTSSTATUS",
+    columns:{
+      ISSTARTED: "is_started",
+      ISRUNNING: "is_running",
+      ISSTOPED: "is_stopped",
+      ISCANCELED: "is_canceled",
+      ISCONCLUDED: "is_concluded"
+    }
   },
   conference_types:{
     tableName:"CONFERENCESTYPES"
-  },  
+  }, 
+  movements:{
+    columns:{
+      IDCOMPANY:"company_id"
+    }
+  },
   movs_x_items_stocks:{
     tableName:"MOVSXITEMSSTOCKS"
   },    
@@ -304,17 +420,47 @@ let oldTables = {
   task_status:{
     tableName:"TASKSSTATUS"
   },
+  apis:{
+    columns:{
+      DEFAULTMETHOD:"default_method",
+      DEFAULTENDPOINT:"default_end_point",
+      DEFAULTAUTHORIZATION:"default_authorization",
+      DEFAULTREQUESTPARAMS:"default_request_params",
+      DEFAULTREQUESTBODYPARAMS:"default_request_body_params",
+      DEFAULTWEBHOOK:"default_webhook"
+    }
+  },
   api_requests:{
-    tableName:"APISREQUESTS"
+    tableName:"APISREQUESTS",
+    columns:{
+      IDAPI:"api_id",
+      ENDPOINT:"end_point",
+      REQUESTPARAMS:"request_params",
+      BODYPARAMS:"body_params"
+    }
   },
   api_request_calls:{
-    tableName:"APISREQUESTSCALLS"
+    tableName:"APISREQUESTSCALLS",
+    columns:{
+      IDAPIREQUESTCALL:"api_request_id",
+      IDSTATUSRUN:"run_status_id",
+      ONRECEIVEWEBHOOKRESPONSE:"on_receive_response"
+    }
   },
   api_responses:{
-    tableName:"APISRESPONSES"
+    tableName:"APISRESPONSES",
+    columns:{
+      IDAPIREQUESTCALL:"api_request_call_id",
+      RESPONSESTATUSCODE:"response_status_code"
+    }
   },  
   maps_api_responses:{
-    tableName:"APISMAPSRESPONSES"
+    tableName:"APISMAPSRESPONSES",
+    columns:{
+      RESPONSESTATUSCODE:"response_status_code",
+      RESPONSESTATUS:"response_status",
+      RESPONSEEXPIREAT:"response_expire_at",
+    }
   },
   meas_x_meas_origins:{
     tableName:"MEASXMEASORIGINS"
@@ -437,6 +583,22 @@ module.exports = {
               ignoreDuplicates:true,
               updateOnDuplicate:null
             });
+
+
+            let qty = await DBConnectionManager.getDefaultDBConnection().query(`
+              select 
+                count(1) as qty
+              from 
+                \`${pNewTableName}\``,
+              {raw:true,queryType: QueryTypes.SELECT}
+            );
+            qty = qty[0] || [];
+            if ((qty[0]?.qty ||0) < newRegs.length) {
+              throw new Error(`${(qty[0]?.qty ||0)} register(s) migrated from old table ${oldTableName} to ${pNewTableName} of ${newRegs.length}`);
+            } else {
+              Utils.log(`${(qty[0]?.qty ||0)} register(s) migrated from old table ${oldTableName} to ${pNewTableName} of ${newRegs.length}`);
+            }
+
           } else {
             Utils.log('FL','no news regs');  
           }
@@ -457,7 +619,7 @@ module.exports = {
       let tables = await Tables.getModel().findAll({
         raw:true,
         where:{
-          IDDATACONNECTION: configDB[`${process.env.NODE_ENV||'development'}`].id,//only tables of this coonnections can be data migrated 
+          data_connection_id: configDB[`${process.env.NODE_ENV||'development'}`].id,//only tables of this coonnections can be data migrated 
           id:{
 
             //configure here ids of tables that whant excluded of this migration

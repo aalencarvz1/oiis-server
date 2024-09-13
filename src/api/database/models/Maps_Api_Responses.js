@@ -27,16 +27,16 @@ class Maps_Api_Responses extends BaseTableModel {
       PARAMETERS: {
         type: DataTypes.TEXT
       },
-      RESPONSESTATUSCODE: {
+      response_status_code: {
         type: DataTypes.INTEGER.UNSIGNED
       }, 
-      RESPONSESTATUS: {
+      response_status: {
         type: DataTypes.STRING(255)
       }, 
-      RESPONSE: {
+      response: {
         type: DataTypes.TEXT
       },
-      RESPONSEEXPIREAT: {
+      response_expire_at: {
         type: DataTypes.DATE
       }
     }

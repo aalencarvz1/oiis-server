@@ -23,7 +23,7 @@ class Conteiner_Types extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull: false
       },
-      SIGLA: {
+      sigla: {
         type: DataTypes.STRING(10)
       },
       TARA: {
@@ -37,7 +37,7 @@ class Conteiner_Types extends BaseTableModel {
   
   static uniqueFields = [
     'name',
-    Sequelize.literal(`(COALESCE(SIGLA,'NULL'))`)
+    Sequelize.literal(`(COALESCE(sigla,'NULL'))`)
   ];
 
   static constraints = [...(Conteiner_Types.getBaseTableModelConstraints() || []),...[

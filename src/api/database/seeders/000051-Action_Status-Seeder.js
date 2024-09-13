@@ -25,8 +25,8 @@ module.exports = {
       data_origin_id : Action_Status.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'RUNNING',
-      ISSTARTED: 1,
-      ISRUNNING: 1
+      is_started: 1,
+      is_running: 1
     },{
       id: Action_Status.STOPED,
       status_reg_id: Record_Status.ACTIVE,
@@ -35,8 +35,8 @@ module.exports = {
       data_origin_id : Action_Status.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'STOPED',
-      ISSTARTED: 1,
-      ISSTOPED: 1
+      is_started: 1,
+      is_stopped: 1
     },{
       id: Action_Status.CANCELED,
       status_reg_id: Record_Status.ACTIVE,
@@ -45,7 +45,7 @@ module.exports = {
       data_origin_id : Action_Status.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'CANCELED',
-      ISCANCELED: 1
+      is_canceled: 1
     },{
       id: Action_Status.CONCLUDED,
       status_reg_id: Record_Status.ACTIVE,
@@ -54,7 +54,7 @@ module.exports = {
       data_origin_id : Action_Status.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'CONCLUDED',
-      ISCONCLUDED: 1
+      is_concluded: 1
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

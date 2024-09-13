@@ -31,17 +31,17 @@ class MapsApiController extends BaseEndPointController {
                         PARAMETERS: apiParams,
                         [Sequelize.Op.and]:[{
                             [Sequelize.Op.or]:[{
-                                RESPONSESTATUSCODE:200
+                                response_status_code:200
                             },{
-                                RESPONSESTATUS:'OK'
+                                response_status:'OK'
                             }]
                         },{
                             [Sequelize.Op.or]:[{
-                                RESPONSEEXPIREAT:{                        
+                                response_expire_at:{                        
                                     [Sequelize.Op.is]:null
                                 }
                             },{
-                                RESPONSEEXPIREAT:{                        
+                                response_expire_at:{                        
                                     [Sequelize.Op.lt]:new Date()
                                 }
                             }]
@@ -70,9 +70,9 @@ class MapsApiController extends BaseEndPointController {
                             IDENTITY:bodyParams.IDENTITY,
                             LIBRARY:bodyParams.LIBRARY || 'geocoding',
                             PARAMETERS: apiParams,
-                            RESPONSESTATUSCODE:apiRes.status,
-                            RESPONSESTATUS:apiRes.statusText,
-                            RESPONSE:res.data
+                            response_status_code:apiRes.status,
+                            response_status:apiRes.statusText,
+                            response:res.data
                         });
                         res.success = true;
                     } else {
@@ -80,7 +80,7 @@ class MapsApiController extends BaseEndPointController {
                         res.success = false;
                     }                
                 } else {
-                    res.data = apiRes.RESPONSE;
+                    res.data = apiRes.response;
                     res.success = true;
                 }
             } else {

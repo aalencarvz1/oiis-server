@@ -25,7 +25,7 @@ class Greatnesses extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull: false
       },
-      SIGLA: {
+      sigla: {
         type: DataTypes.STRING(10),
         allowNull: false
       },
@@ -47,7 +47,7 @@ class Greatnesses extends BaseTableModel {
   
   static uniqueFields = [
     'name',
-    'SIGLA'
+    'sigla'
   ];
 
   static constraints = [...(Greatnesses.getBaseTableModelConstraints() || []),...[

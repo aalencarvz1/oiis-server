@@ -40,7 +40,7 @@ class Logistic_Orders_X_Dest_Values extends BaseTableModel {
         allowNull:false,
         defaultValue:1
       },
-      OBSERVATIONS:{
+      observations:{
         type: DataTypes.TEXT
       },
     }

@@ -108,8 +108,8 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                         COLUMNNAME: logs[kl].COLUMNNAME,
                         OLDVALUE: logs[kl].OLDVALUE,
                         NEWVALUE: logs[kl].NEWVALUE,
-                        LATITUDE: logs[kl].LATITUDE,
-                        LONGITUDE: logs[kl].LONGITUDE
+                        latitude: logs[kl].latitude,
+                        longitude: logs[kl].longitude
                     }
                 });
                 if (log.success) {
@@ -162,10 +162,10 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                     let company = await Companies.getModel().findOne({
                         raw:true,
                         where:{
-                            id:businessUnit.IDCOMPANY
+                            id:businessUnit.company_id
                         }
                     });
-                    if (!company) throw new Error(`company not found: ${businessUnit.IDCOMPANY}`);
+                    if (!company) throw new Error(`company not found: ${businessUnit.company_id}`);
                     
 
                     let logisticOrder = await Logistic_Orders.getModel().findOne({                        
@@ -233,7 +233,7 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                                     IDTYPEMOV: Movement_Types.OUTPUT,
                                     IDIDENTIFIERTYPE: Identifier_Types.CODE,
                                     IDENTIFIER: loadings[key].NOTASFISCAIS[kn].IDINVOICEORIGIN,
-                                    IDCOMPANY: company.id,
+                                    company_id: company.id,
                                     IDWAREHOUSE: warehouse.id,
                                     IDBUSINESSUNIT: businessUnit.id,
                                     IDCLIENT: client?.id,
@@ -313,7 +313,7 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                             let stockEntity = await Stock_Entities.getOrCreate({
                                 raw:true,
                                 where:{
-                                    IDCOMPANY: company.id,
+                                    company_id: company.id,
                                     IDBUSINESSUNIT: businessUnit.id,
                                     IDWAREHOUSE: warehouse.id,
                                     IDSUPPLIER: null,
@@ -611,7 +611,7 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                                 IDLOGORDFINANCIALVALUEFORM: idFinValForm,
                                 IDFINANCIALVALUEMOVTYPEDEST: idFinValMovType,
                                 DESTINATEDVALUE: Utils.toNumber(loadings[key].DESTINACAOVALORES[kd].VLFECHADO || 0),
-                                OBSERVATIONS: loadings[key].DESTINACAOVALORES[kd].OBSERVACOES
+                                observations: loadings[key].DESTINACAOVALORES[kd].OBSERVACOES
                             });
                         } else {                            
                             logDestVal.DESTINATEDVALUE = Utils.toNumber(loadings[key].DESTINACAOVALORES[kd].VLFECHADO || 0);

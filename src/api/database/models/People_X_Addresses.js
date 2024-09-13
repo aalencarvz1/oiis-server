@@ -17,11 +17,11 @@ class People_X_Addresses extends BaseTableModel {
   static model = null;
   static fields = {
     ...People_X_Addresses.getBaseTableModelFields(),...{           
-      IDPEOPLE:{
+      people_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDADDRESSTYPE:{
+      address_type_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
       IDADDRESS:{
@@ -31,15 +31,15 @@ class People_X_Addresses extends BaseTableModel {
       ORDERNUM:{
         type: DataTypes.BIGINT
       },
-      OBSERVATIONS:{
+      observations:{
         type: DataTypes.TEXT
       }
     }
   };
   
   static uniqueFields = [
-    'IDPEOPLE',
-    Sequelize.literal(`(COALESCE(IDADDRESSTYPE,0))`),
+    'people_id',
+    Sequelize.literal(`(COALESCE(address_type_id,0))`),
     'IDADDRESS'
   ];
 
@@ -53,7 +53,7 @@ class People_X_Addresses extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDPEOPLE'],
+      fields: ['people_id'],
       type: 'foreign key',
       references: { 
           table: People,
@@ -63,7 +63,7 @@ class People_X_Addresses extends BaseTableModel {
       onDelete: 'cascade'
     },
     {
-      fields: ['IDADDRESSTYPE'],
+      fields: ['address_type_id'],
       type: 'foreign key',
       references: { 
           table: Address_Types,

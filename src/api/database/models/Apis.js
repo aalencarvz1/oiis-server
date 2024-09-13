@@ -19,22 +19,22 @@ class Apis extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull: false
       },
-      DEFAULTMETHOD: {
+      default_method: {
         type: DataTypes.STRING(10),
       },
-      DEFAULTENDPOINT: {
+      default_end_point: {
         type: DataTypes.STRING(2000)
       },            
-      DEFAULTAUTHORIZATION:{
+      default_authorization:{
         type: DataTypes.STRING(2000)
       }, 
-      DEFAULTREQUESTPARAMS:{
+      default_request_params:{
         type: DataTypes.TEXT
       }, 
-      DEFAULTREQUESTBODYPARAMS:{
+      default_request_body_params:{
         type: DataTypes.TEXT
       }, 
-      DEFAULTWEBHOOK:{
+      default_webhook:{
         type: DataTypes.STRING(2000)
       }, 
       description: {

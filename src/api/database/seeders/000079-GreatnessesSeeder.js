@@ -17,7 +17,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'QUANTITY',
-      SIGLA: 'QT',
+      sigla: 'QT',
       ISSCALAR:1
     },{
       id: Greatnesses.MASS,
@@ -27,7 +27,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'MASS',
-      SIGLA: 'M',
+      sigla: 'M',
       ISSCALAR:1
     },{
       id: Greatnesses.VOLUM,
@@ -37,7 +37,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'VOLUM',
-      SIGLA: 'V',
+      sigla: 'V',
       ISSCALAR:1
     },{
       id: Greatnesses.LENGTH,
@@ -47,7 +47,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'LENGTH',
-      SIGLA: 'L',
+      sigla: 'L',
       ISSCALAR:1
     }],{
       ignoreDuplicates:true,

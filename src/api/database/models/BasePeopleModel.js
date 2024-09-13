@@ -21,14 +21,14 @@ class BasePeopleModel extends BaseTableModel {
     return {
       ...BaseTableModel.getBaseTableModelFields(),
       ...{
-        IDPEOPLE:{
+        people_id:{
           type: DataTypes.BIGINT.UNSIGNED,
           allowNull:false
         },
-        ALIAS: {
+        alias: {
           type: DataTypes.STRING(2000)
         },
-        OBSERVATIONS: {
+        observations: {
           type: DataTypes.TEXT
         }
       }
@@ -44,13 +44,13 @@ class BasePeopleModel extends BaseTableModel {
   static getBaseTableModelUniqueFields = () => {
       return [
           ...(BaseTableModel.getBaseTableModelUniqueFields() || []),
-          'IDPEOPLE'
+          'people_id'
       ];
   };
 
   static defaultPeopleForeignsKeys = [
     ...(this.getBaseTableModelForeignsKeys() || []),{
-      fields: ['IDPEOPLE'],
+      fields: ['people_id'],
       type: 'foreign key',
       references: { 
           table: People,
@@ -69,9 +69,9 @@ class BasePeopleModel extends BaseTableModel {
     let queryParams = params.queryParams || params;
     let people = await People.updateOrCreatePeopleByIdentifierDocAndGet(queryParams);          
     if (params.queryParams) {
-      params.queryParams.IDPEOPLE = people.id;
+      params.queryParams.people_id = people.id;
     } else {
-      params.IDPEOPLE = people.id;
+      params.people_id = people.id;
     }
     return params;
   }
@@ -102,7 +102,7 @@ class BasePeopleModel extends BaseTableModel {
    */
   static async createData(params) {
     let queryParams = params.queryParams || params || {};
-    if (!queryParams.IDPEOPLE) {
+    if (!queryParams.people_id) {
       await this.addIdPeopleToReqQueryParams(params);
     }
     return await BaseTableModel.createData.bind(this)(params);
@@ -118,7 +118,7 @@ class BasePeopleModel extends BaseTableModel {
    */
   static async updateData(params) {
     let queryParams = params.queryParams || params || {};
-    if (Object.keys(queryParams).indexOf('IDPEOPLE') > -1 && !Utils.hasValue(queryParams.IDPEOPLE)) {
+    if (Object.keys(queryParams).indexOf('people_id') > -1 && !Utils.hasValue(queryParams.people_id)) {
       await this.addIdPeopleToReqQueryParams(params);
     }
     return await BaseTableModel.updateData.bind(this)(params);

@@ -25,7 +25,7 @@ class Stock_Entities extends BaseTableModel {
 
   static fields = {
     ...Stock_Entities.getBaseTableModelFields(),...{           
-      IDCOMPANY:{
+      company_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -57,14 +57,14 @@ class Stock_Entities extends BaseTableModel {
         allowNull:false,
         defaultValue:0
       },
-      OBSERVATIONS:{
+      observations:{
         type:DataTypes.TEXT
       }
     }
   };
   
   static uniqueFields = [
-    'IDCOMPANY',
+    'company_id',
     Sequelize.literal(`(COALESCE(IDBUSINESSUNIT,0))`),
     Sequelize.literal(`(COALESCE(IDWAREHOUSE,0))`),
     Sequelize.literal(`(COALESCE(IDSUPPLIER,0))`),
@@ -83,7 +83,7 @@ class Stock_Entities extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDCOMPANY'],
+      fields: ['company_id'],
       type: 'foreign key',
       references: { 
           table: Companies,

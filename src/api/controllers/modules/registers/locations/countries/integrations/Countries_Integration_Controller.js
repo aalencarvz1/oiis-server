@@ -32,7 +32,7 @@ class Countries_Integration_Controller extends RegistersController {
             if (!continent) {
                 continent = await Continents.getModel().create({
                     id: Continents.SOUTH_AMERICA,
-                    SIGLA: 'AL',
+                    sigla: 'AL',
                     name: 'SOUTH AMERICA'
                 });
             }
@@ -61,7 +61,7 @@ class Countries_Integration_Controller extends RegistersController {
                     data_origin_id: Data_Origins.WINTHOR,
                     IDCONTINENT: continent.id,
                     name: pcpais.DESCRICAO,
-                    SIGLA: pcpais.DESCRICAO.substring(0,2)
+                    sigla: pcpais.DESCRICAO.substring(0,2)
                 },options)
             }
             return country;

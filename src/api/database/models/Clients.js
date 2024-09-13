@@ -41,14 +41,14 @@ class Clients extends BasePeopleModel {
         required:true,        
         model:People.getModel(),
         attributes:[
-          'IDIDENTIFIERDOCTYPE',
-          'IDENTIFIERDOC',
+          'identifier_doc_type_id',
+          'identifier_doc',
           'name',
-          'FANTASY'
+          'fantasy'
         ],
         on:{
             [Op.and]: [
-                Sequelize.where(Sequelize.col(`${People.tableName}.id`), Sequelize.col(`${Clients.tableName}.IDPEOPLE`))
+                Sequelize.where(Sequelize.col(`${People.tableName}.id`), Sequelize.col(`${Clients.tableName}.people_id`))
             ]
         }
     });
@@ -57,22 +57,22 @@ class Clients extends BasePeopleModel {
         let r = {};
         let and = [];
         if (typeof el == 'object') {
-          if (el.IDIDENTIFIERDOCTYPE) {
+          if (el.identifier_doc_type_id) {
             and.push(Sequelize.where(
-              Sequelize.col(`${People.tableName}.IDIDENTIFIERDOCTYPE`),
-              el.IDIDENTIFIERDOCTYPE
+              Sequelize.col(`${People.tableName}.identifier_doc_type_id`),
+              el.identifier_doc_type_id
             ));
           }
-          if (el.IDENTIFIERDOC) {
+          if (el.identifier_doc) {
             and.push(Sequelize.where(
-              Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`${People.tableName}.IDENTIFIERDOC`),'[^0-9]',''),'DECIMAL(32)'),
+              Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`${People.tableName}.identifier_doc`),'[^0-9]',''),'DECIMAL(32)'),
               '=',
-              Sequelize.cast(Sequelize.fn('regexp_replace',el.IDENTIFIERDOC,'[^0-9]',''),'DECIMAL(32)'),
+              Sequelize.cast(Sequelize.fn('regexp_replace',el.identifier_doc,'[^0-9]',''),'DECIMAL(32)'),
             ));
           }
         } else {
           and.push(Sequelize.where(
-            Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`${People.tableName}.IDENTIFIERDOC`),'[^0-9]',''),'DECIMAL(32)'),
+            Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`${People.tableName}.identifier_doc`),'[^0-9]',''),'DECIMAL(32)'),
             '=',
             Sequelize.cast(Sequelize.fn('regexp_replace',el,'[^0-9]',''),'DECIMAL(32)'),
           ));

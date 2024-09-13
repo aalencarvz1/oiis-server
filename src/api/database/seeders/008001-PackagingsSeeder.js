@@ -17,7 +17,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'BULK',
-      SIGLA: 'BK'
+      sigla: 'BK'
     },{
       id: Packagings.BOX,
       status_reg_id: Record_Status.ACTIVE,
@@ -26,7 +26,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'BOX',
-      SIGLA: 'BX'
+      sigla: 'BX'
     },{
       id: Packagings.PACK,
       status_reg_id: Record_Status.ACTIVE,
@@ -35,7 +35,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'PACK',
-      SIGLA: 'PK'
+      sigla: 'PK'
     },{
       id: Packagings.BUCKET,
       status_reg_id: Record_Status.ACTIVE,
@@ -44,7 +44,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'BUCKET',
-      SIGLA: 'BC'
+      sigla: 'BC'
     },{
       id: Packagings.BAG,
       status_reg_id: Record_Status.ACTIVE,
@@ -53,7 +53,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'BAG',
-      SIGLA: 'BG'
+      sigla: 'BG'
     },{
       id: Packagings.BALE,
       status_reg_id: Record_Status.ACTIVE,
@@ -62,7 +62,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'BALE',
-      SIGLA: 'BL'
+      sigla: 'BL'
     },{
       id: Packagings.CUP,
       status_reg_id: Record_Status.ACTIVE,
@@ -71,7 +71,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'CUP',
-      SIGLA: 'CP'
+      sigla: 'CP'
     },{
       id: Packagings.CAN,
       status_reg_id: Record_Status.ACTIVE,
@@ -80,7 +80,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'CAN',
-      SIGLA: 'CN'
+      sigla: 'CN'
     },{
       id: Packagings.TUBE,
       status_reg_id: Record_Status.ACTIVE,
@@ -89,7 +89,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'TUBE',
-      SIGLA: 'TB'
+      sigla: 'TB'
     },{
       id: Packagings.ROLL,
       status_reg_id: Record_Status.ACTIVE,
@@ -98,7 +98,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'ROLL',
-      SIGLA: 'RL'
+      sigla: 'RL'
     },{
       id: Packagings.REAM,
       status_reg_id: Record_Status.ACTIVE,
@@ -107,7 +107,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'REAM',
-      SIGLA: 'RM'
+      sigla: 'RM'
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

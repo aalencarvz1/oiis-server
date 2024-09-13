@@ -17,7 +17,7 @@ class People_X_Contacts extends BaseTableModel {
   static model = null;
   static fields = {
     ...People_X_Contacts.getBaseTableModelFields(),...{           
-      IDPEOPLE:{
+      people_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -31,14 +31,14 @@ class People_X_Contacts extends BaseTableModel {
       ORDERNUM:{
         type: DataTypes.BIGINT
       },
-      OBSERVATIONS:{
+      observations:{
         type: DataTypes.TEXT
       }
     }
   };
   
   static uniqueFields = [
-    'IDPEOPLE',
+    'people_id',
     Sequelize.literal(`(COALESCE(IDCONTACTTYPE,0))`),
     'IDCONTACT'
   ];
@@ -53,7 +53,7 @@ class People_X_Contacts extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDPEOPLE'],
+      fields: ['people_id'],
       type: 'foreign key',
       references: { 
           table: People,

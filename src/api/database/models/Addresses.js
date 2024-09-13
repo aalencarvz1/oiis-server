@@ -18,42 +18,42 @@ class Addresses extends BaseTableModel {
   static model = null;
   static fields = {
     ...Addresses.getBaseTableModelFields(),...{                 
-      IDADDRESSTYPE:{
+      address_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDNEIGHBORHOOD:{
+      neighborhood_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDSTREET:{
+      street_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDPOSTALCODE:{
+      postal_code_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      LATITUDE:{
+      latitude:{
         type: DataTypes.DECIMAL(18,10)
       },
-      LONGITUDE:{
+      longitude:{
         type: DataTypes.DECIMAL(18,10)
       },
-      NUMBER:{
+      number:{
         type: DataTypes.STRING(256)
       },
-      COMPLEMENT:{
+      complement:{
         type: DataTypes.STRING(2000)
       }
     }
   };
   
   static uniqueFields = [
-    'IDADDRESSTYPE',
-    Sequelize.literal(`(COALESCE(IDNEIGHBORHOOD,0))`),
-    Sequelize.literal(`(COALESCE(IDSTREET,0))`),
-    Sequelize.literal(`(COALESCE(IDPOSTALCODE,0))`),
-    Sequelize.literal(`(COALESCE(LATITUDE,0))`),
-    Sequelize.literal(`(COALESCE(LONGITUDE,0))`),
-    Sequelize.literal(`(COALESCE(NUMBER,'NULL'))`)
+    'address_type_id',
+    Sequelize.literal(`(COALESCE(neighborhood_id,0))`),
+    Sequelize.literal(`(COALESCE(street_id,0))`),
+    Sequelize.literal(`(COALESCE(postal_code_id,0))`),
+    Sequelize.literal(`(COALESCE(latitude,0))`),
+    Sequelize.literal(`(COALESCE(longitude,0))`),
+    Sequelize.literal(`(COALESCE(number,'NULL'))`)
   ];
 
   static constraints = [...(Addresses.getBaseTableModelConstraints() || []),...[
@@ -66,7 +66,7 @@ class Addresses extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDADDRESSTYPE'],
+      fields: ['address_type_id'],
       type: 'foreign key',
       references: { 
           table: Address_Types,
@@ -75,7 +75,7 @@ class Addresses extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDNEIGHBORHOOD'],
+      fields: ['neighborhood_id'],
       type: 'foreign key',
       references: { 
           table: NeighborHoods,
@@ -84,7 +84,7 @@ class Addresses extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDSTREET'],
+      fields: ['street_id'],
       type: 'foreign key',
       references: { 
           table: Streets,
@@ -93,7 +93,7 @@ class Addresses extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDPOSTALCODE'],
+      fields: ['postal_code_id'],
       type: 'foreign key',
       references: { 
           table: Postal_Codes,

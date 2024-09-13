@@ -77,7 +77,7 @@ class Item_Mov_Units extends BaseTableModel {
       VARIABLEMOVIMENTEDAMT:{
         type: DataTypes.DECIMAL(32,10)
       },
-      OBSERVATIONS:{
+      observations:{
         type:DataTypes.TEXT
       }      
     }

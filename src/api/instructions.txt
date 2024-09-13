@@ -116,7 +116,7 @@ SELECT
     CHR(9) || CHR(9) || c.column_name || ':{' 
         || chr(13) || CHR(9) ||CHR(9) ||CHR(9) || 'type: DataTypes.'
         || case c.data_type
-            when 'NUMBER' THEN
+            when 'number' THEN
                 case 
                     when nvl(c.data_scale,0) = 0 then 
                         'INTEGER'
