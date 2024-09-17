@@ -29,7 +29,7 @@ class Postal_Codes_X_Paths extends BaseTableModel {
       longitude:{
         type: DataTypes.DECIMAL(18,10)
       },
-      state_number:{
+      start_number:{
         type: DataTypes.STRING(256)
       },
       end_number:{
@@ -43,7 +43,7 @@ class Postal_Codes_X_Paths extends BaseTableModel {
     Sequelize.literal(`(COALESCE(postal_code_x_street_id,0))`),
     Sequelize.literal(`(COALESCE(latitude,0))`),
     Sequelize.literal(`(COALESCE(longitude,0))`),
-    Sequelize.literal(`(COALESCE(state_number,'NULL'))`),
+    Sequelize.literal(`(COALESCE(start_number,'NULL'))`),
     Sequelize.literal(`(COALESCE(end_number,'NULL'))`),
   ];
 

@@ -48,7 +48,10 @@ let oldTables = {
     }
   },
   schemas:{
-    tableName:"DATASCHEMAS"
+    tableName:"DATASCHEMAS",
+    columns:{
+      ISDEFAULT:"is_default",
+    }
   },
   entities_types:{
     tableName:"ENTITIESTYPES"
@@ -108,7 +111,11 @@ let oldTables = {
     tableName:"VALUESNAMES"
   },
   measurement_units:{
-    tableName:"MEASUREMENTSUNITS"
+    tableName:"MEASUREMENTSUNITS",
+    columns:{
+      ISSCALAR:"is_scalar",
+      ISVETORIAL:"is_vetorial",
+    }
   },  
   access_profiles:{
     tableName:"ACCESSESPROFILES",
@@ -124,10 +131,22 @@ let oldTables = {
   },  
   user_timeworks:{
     tableName:"USERSTIMESWORK"
-  },    
+  }, 
+  modules:{
+    columns:{
+      IDSUP:"parent_id",
+      ORDERNUM:"numeric_order"
+    }
+  },  
   routine_types:{
     tableName:"ROUTINESTYPES"
-  }, 
+  },   
+  routines:{
+    columns:{
+      IDSUP:"parent_id",
+      ORDERNUM:"numeric_order"
+    }
+  },
   routine_contents:{
     tableName:"ROUTINESCONTENT"
   },    
@@ -135,10 +154,17 @@ let oldTables = {
     tableName:"DATARELATIONSHIPTYPES"
   },    
   relationship_values:{
-    tableName:"DATASRELATIONSHIPSVALUES"
+    tableName:"DATASRELATIONSHIPSVALUES",
+    columns:{
+      IDIDENTIFIERTYPE:"identifier_type_id",
+      ORDERNUM:"numeric_order"
+    }
   },    
   relationships:{
-    tableName:"DATASRELATIONSHIPS"
+    tableName:"DATASRELATIONSHIPS",
+    columns:{
+      ORDERNUM:"numeric_order"
+    }
   },    
   contract_types:{
     tableName:"CONTRACTSTYPES"
@@ -215,7 +241,7 @@ let oldTables = {
     columns:{
       IDPOSTALCODE:"postal_code_id",
       IDPOSTALCODEXSTREET:"postal_code_x_street_id",
-      STARTNUMBER:"state_number",
+      STARTNUMBER:"start_number",
       ENDNUMBER:"end_number"
     }
   },
@@ -246,13 +272,16 @@ let oldTables = {
     tableName:"PEOPLEXADDRESSES",
     columns:{
       IDPEOPLE:"people_id",
-      IDADDRESSTYPE:"address_type_id"
+      IDADDRESSTYPE:"address_type_id",
+      ORDERNUM:"numeric_order"
     }
   },
   people_x_contacts:{
     tableName:"PEOPLEXCONTACTS",
     columns:{
-      IDPEOPLE:"people_id"
+      IDPEOPLE:"people_id",
+      IDCONTACTTYPE:"contact_type_id",
+      ORDERNUM:"numeric_order"
     }
   },
   companies:{
@@ -283,16 +312,33 @@ let oldTables = {
     tableName: "WAREHOUSESADDRESSESTYPES"
   },
   warehouse_addresses:{
-    tableName:"WAREHOUSESADDRESSES"
+    tableName:"WAREHOUSESADDRESSES",
+    columns:{
+      IDIDENTIFIERTYPE:"identifier_type_id",
+      ISDISPONIBLE:"is_disponible"
+    }
   },  
   warehouse_address_coordinates:{
-    tableName:"WAREHOUSESADDRESSESCOORDINATES"
+    tableName:"WAREHOUSESADDRESSESCOORDINATES",
+    columns:{
+      IDWAREHOUSEADDRESS:"warehouse_address_id"
+    }
   },  
   warehouse_address_dimensions:{
-    tableName:"WAREHOUSESADDRESSESDIMENSIONS"
+    tableName:"WAREHOUSESADDRESSESDIMENSIONS",
+    columns:{
+      IDWAREHOUSEADDRESS:"warehouse_address_id",
+      IDDIMENSIONTYPE:"dimension_type_id",
+      IDMEASUREMENTUNIT:"measurement_unit_id"
+    }
   },  
   warehouse_address_capacities:{
-    tableName:"WAREHOUSESADDRESSESCAPACITIES"
+    tableName:"WAREHOUSESADDRESSESCAPACITIES",
+    columns:{
+      IDWAREHOUSEADDRESS:"warehouse_address_id",
+      IDCAPACITYTYPE:"capacity_type_id",
+      IDMEASUREMENTUNIT:"measurement_unit_id"
+    }
   },    
   suppliers:{
     columns:{
@@ -338,12 +384,19 @@ let oldTables = {
   },
   users:{
     columns:{
-      IDPEOPLE:"people_id"
+      IDPEOPLE:"people_id",
+      IDCOLLABORATOR:"collaborator_id",
     }
   },
   power_types:{
     tableName:"POWERSTYPES"
-  },        
+  },
+  permissions:{
+    columns:{
+      STARTDATE:"start_date",
+      ENDDATE:"end_date"
+    }
+  },
   condictions:{
     columns:{
       IDENTITYTYPE:"entity_type_id",
@@ -414,6 +467,11 @@ let oldTables = {
       DEFAULTEXPIRATIONTIME:"default_expiration_time"
     }
   },
+  lots:{
+    columns:{
+      EXPIRATIONDATE:"expiration_date"
+    }
+  },
   items_x_lots_x_containers:{
     tableName:"ITEMSXLOTSXCONTEINERS",
     columns:{
@@ -428,7 +486,9 @@ let oldTables = {
   stock_entities:{
     tableName:"STOCKSENTITIES",
     columns:{
-      IDCOMPANY: "company_id"
+      IDCOMPANY: "company_id",
+      IDCOLLABORATOR: "collaborator_id",
+      ORDERNUM: "numeric_order",
     }
   },
   item_stock_units:{
@@ -481,7 +541,11 @@ let oldTables = {
     }
   },    
   movement_types:{
-    tableName:"MOVEMENTSTYPES"
+    tableName:"MOVEMENTSTYPES",
+    columns:{
+      ISINPUT: "is_input",
+      ISOUTPUT: "is_output"
+    }
   },    
   movement_status:{
     tableName:"MOVEMENTSSTATUS",
@@ -498,23 +562,54 @@ let oldTables = {
   }, 
   movements:{
     columns:{
-      IDCOMPANY:"company_id"
+      IDTYPEMOV:"type_mov_id",
+      IDIDENTIFIERTYPE:"identifier_type_id",
+      IDSTATUSMOV:"status_mov_id",
+      IDCOMPANY:"company_id",
+      IDFINANCIALVALUEFORM:"financial_value_form_id",      
+      MOVSTARTED_AT:"mov_started_at",
+      MOVENDED_AT:"mov_ended_at"
     }
   },
   movs_x_items_stocks:{
-    tableName:"MOVSXITEMSSTOCKS"
+    tableName:"MOVSXITEMSSTOCKS",
+    columns:{
+      IDMOV:"mov_id",
+      IDTYPEMOV:"type_mov_id",
+      IDITEMSTOCK:"stock_item_id",
+      IDSTATUSMOV:"status_mov_id",
+      MOVSTARTED_AT:"mov_started_at",
+      MOVENDED_AT:"mov_ended_at",
+      ORDERNUM:"numeric_order"
+    }
   },    
   movement_groups:{
-    tableName:"GROUPSMOVEMENTS"
+    tableName:"GROUPSMOVEMENTS",
+    columns:{
+      IDIDENTIFIERTYPE:"identifier_type_id"
+    }
   },      
   movements_x_groups:{
-    tableName:"GROUPEDSMOVEMENTS"
+    tableName:"GROUPEDSMOVEMENTS",
+    columns:{
+      IDMOV:"mov_id",
+      ORDERNUM:"numeric_order"
+    }
   },      
   movement_entity_relationship_types:{
-    tableName:"MOVEMENTSENTITIESRELATIONSHIPSTYPES"
+    tableName:"MOVEMENTSENTITIESRELATIONSHIPSTYPES",
+    columns:{
+      ISINPUT:"is_input",
+      ISOUTPUT:"is_output"
+    }
   },  
   movements_x_entities:{
-    tableName:"MOVEMENTSXENTITIES"
+    tableName:"MOVEMENTSXENTITIES",
+    columns:{
+      IDMOV:"mov_id",
+      IDSTOCKENTITY:"stock_entity_id",
+      ORDERNUM:"numeric_order"
+    }
   },  
   item_mov_amount_restrictions:{
     tableName:"ITEMSMOVSAMOUNTSRESTRICTIONS",
@@ -596,8 +691,18 @@ let oldTables = {
       IDCOMMISSIONITEM: "commission_item_id"
     }
   },  
+  objectives:{
+    columns:{
+      IDSUP: "parent_id",
+      STARTDATE: "start_date",
+      ENDDATE: "end_date"
+    }
+  },
   sql_object_types:{
-    tableName:"SQLOBJECTSTYPES"
+    tableName:"SQLOBJECTSTYPES",
+    columns:{
+      IDSUP: "parent_id"
+    }
   },      
   sql_processes:{
     tableName:"SQLPROCESSES"
@@ -606,13 +711,24 @@ let oldTables = {
     tableName:"REPORTSVISIONS"
   },   
   sql_objects:{
-    tableName:"SQLOBJECTS"
+    tableName:"SQLOBJECTS",
+    columns:{
+      IDSUP: "parent_id"
+    }
   },      
   report_data_fount_items:{
-    tableName:"REPORTSDATASFOUNTSITEMS"
+    tableName:"REPORTSDATASFOUNTSITEMS",
+    columns:{
+      IDSUP:"parent_id",
+      ORDERNUM:"numeric_order",
+    }
   },
   report_data_founts:{
-    tableName:"REPORTSDATASFOUNTS"
+    tableName:"REPORTSDATASFOUNTS",
+    columns:{
+      STARTDATE:"start_date",
+      ENDDATE:"end_date"
+    }
   },
   logistic_mov_types:{
     tableName:"LOGISTICMOVTYPES",
@@ -737,7 +853,12 @@ let oldTables = {
       NEWVALUE:"new_value",
 
     }
-  },    
+  },  
+  tasks:{
+    columns:{
+      IDSUP: "parent_id"
+    }
+  }, 
   tasks_x_status_x_users:{
     tableName:"TASKSXSTATUSXUSERS"
   },    
@@ -745,7 +866,13 @@ let oldTables = {
     tableName:"TASKSXSTATUSXUSERSLOGS"
   },    
   task_status:{
-    tableName:"TASKSSTATUS"
+    tableName:"TASKSSTATUS",
+    columns:{
+      ISRUNNING: "is_running",
+      ISSTOPED: "is_stopped",
+      ISCANCELED: "is_canceled",
+      ISCONCLUDED: "is_concluded"
+    }
   },
   apis:{
     columns:{
@@ -790,10 +917,22 @@ let oldTables = {
     }
   },
   meas_x_meas_origins:{
-    tableName:"MEASXMEASORIGINS"
+    tableName:"MEASXMEASORIGINS",
+    columns:{
+      IDMEASUREMENTUNIT: "measurement_unit_id"
+    }
   },
   packs_x_packs_origins:{
-    tableName:"PACKSXPACKSORIGINS"
+    tableName:"PACKSXPACKSORIGINS",columns:{
+      IDPACKAGING: "packaging_id"
+    }
+  },
+  midias:{
+    columns:{
+      IDTABLEREF:"table_ref_id",
+      IDREGISTERREF:"record_ref_id",
+      ORDERNUM:"numeric_order",
+    }
   },
   error_logs:{
     tableName:"ERRORSLOGS"

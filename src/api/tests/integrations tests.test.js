@@ -935,7 +935,7 @@ describe('Running api call tests',()=>{
                         let parentTableName = 'postal_codes';
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);        
                         return {
-                            state_number:testString,                            
+                            start_number:testString,                            
                             postal_code_id:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
