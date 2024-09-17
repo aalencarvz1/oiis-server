@@ -11,9 +11,9 @@ const { Data_Origins } = require("../../../../../database/models/Data_Origins");
 const { Companies } = require("../../../../../database/models/Companies");
 const { Items } = require("../../../../../database/models/Items");
 const { Stock_Entities } = require("../../../../../database/models/Stock_Entities");
-const { Items_X_Lots_X_Conteiners } = require("../../../../../database/models/Items_X_Lots_X_Conteiners");
+const { Items_X_Lots_X_Containers } = require("../../../../../database/models/Items_X_Lots_X_Containers");
 const { Lots } = require("../../../../../database/models/Lots");
-const { Conteiners } = require("../../../../../database/models/Conteiners");
+const { Containers } = require("../../../../../database/models/Containers");
 const { Measurement_Units } = require("../../../../../database/models/Measurement_Units");
 const { Packagings } = require("../../../../../database/models/Packagings");
 const { Stock_Entity_Relationship_Types } = require("../../../../../database/models/Stock_Entity_Relationship_Types");
@@ -101,13 +101,13 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                     values:{
                         id:undefined,
                         creator_user_id: creator_user_id,
-                        IDTABLEREF: idTableRef,
-                        IDREGISTERREF: idRegisterRef,
-                        OPERATION: logs[kl].OPERATION,
-                        JSONOBJECT: logs[kl].JSONOBJECT,
-                        COLUMNNAME: logs[kl].COLUMNNAME,
-                        OLDVALUE: logs[kl].OLDVALUE,
-                        NEWVALUE: logs[kl].NEWVALUE,
+                        table_ref_id: idTableRef,
+                        record_ref_id: idRegisterRef,
+                        operation: logs[kl].operation,
+                        json_object: logs[kl].json_object,
+                        column_name: logs[kl].column_name,
+                        old_value: logs[kl].old_value,
+                        new_value: logs[kl].new_value,
                         latitude: logs[kl].latitude,
                         longitude: logs[kl].longitude
                     }
@@ -179,14 +179,14 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                             creator_user_id: req.user.id,
                             data_origin_id: data_origin_id,
                             id_at_origin:loadings[key].IDLOADORIGIN,
-                            IDLOGISTICMOVTYPE: Logistic_Mov_Types.DELIVERY,
-                            IDIDENTIFIERTYPE: Identifier_Types.CODE,
-                            IDENTIFIER: loadings[key].IDLOADORIGIN,
-                            IDLOGISTICSTATUS: loadings[key].IDSTATUSENTREGA
+                            logistic_mov_type_id: Logistic_Mov_Types.DELIVERY,
+                            identifier_type_id: Identifier_Types.CODE,
+                            identifier: loadings[key].IDLOADORIGIN,
+                            logistic_status_id: loadings[key].IDSTATUSENTREGA
                         });
                     } else {
-                        if (logisticOrder.IDLOGISTICSTATUS != loadings[key].IDSTATUSENTREGA) {
-                            logisticOrder.IDLOGISTICSTATUS = loadings[key].IDSTATUSENTREGA;
+                        if (logisticOrder.logistic_status_id != loadings[key].IDSTATUSENTREGA) {
+                            logisticOrder.logistic_status_id = loadings[key].IDSTATUSENTREGA;
                             logisticOrder.updater_user_id = req.user.id;
                             await logisticOrder.save();
                         }
@@ -199,9 +199,9 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                             where:{
                                 data_origin_id: idOriginMov,
                                 IDBUSINESSUNIT: businessUnit.id,
-                                IDTYPEMOV: Movement_Types.OUTPUT,
-                                IDIDENTIFIERTYPE: Identifier_Types.CODE,
-                                IDENTIFIER: loadings[key].NOTASFISCAIS[kn].IDINVOICEORIGIN,
+                                type_mov_id: Movement_Types.OUTPUT,
+                                identifier_type_id: Identifier_Types.CODE,
+                                identifier: loadings[key].NOTASFISCAIS[kn].IDINVOICEORIGIN,
                             }
                         });
                         Utils.log('FL',mov);
@@ -230,14 +230,14 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                                     creator_user_id: req.user.id,
                                     data_origin_id: idOriginMov,
                                     id_at_origin: loadings[key].NOTASFISCAIS[kn].id_at_origin,
-                                    IDTYPEMOV: Movement_Types.OUTPUT,
-                                    IDIDENTIFIERTYPE: Identifier_Types.CODE,
-                                    IDENTIFIER: loadings[key].NOTASFISCAIS[kn].IDINVOICEORIGIN,
+                                    type_mov_id: Movement_Types.OUTPUT,
+                                    identifier_type_id: Identifier_Types.CODE,
+                                    identifier: loadings[key].NOTASFISCAIS[kn].IDINVOICEORIGIN,
                                     company_id: company.id,
                                     IDWAREHOUSE: warehouse.id,
                                     IDBUSINESSUNIT: businessUnit.id,
                                     IDCLIENT: client?.id,
-                                    IDFINANCIALVALUEFORM : idFinancialValueForm
+                                    financial_value_form_id : idFinancialValueForm
                                 });
                             } catch (eMov) {
                                 if (eMov.name == 'SequelizeUniqueConstraintError' || eMov instanceof SequelizeUniqueConstraintError 
@@ -247,9 +247,9 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                                         where:{
                                             data_origin_id: idOriginMov,
                                             IDBUSINESSUNIT: businessUnit.id,
-                                            IDTYPEMOV: Movement_Types.OUTPUT,
-                                            IDIDENTIFIERTYPE: Identifier_Types.CODE,
-                                            IDENTIFIER: loadings[key].NOTASFISCAIS[kn].IDINVOICEORIGIN,
+                                            type_mov_id: Movement_Types.OUTPUT,
+                                            identifier_type_id: Identifier_Types.CODE,
+                                            identifier: loadings[key].NOTASFISCAIS[kn].IDINVOICEORIGIN,
                                         }
                                     }); 
                                     if (!mov) {
@@ -267,18 +267,18 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                             raw:false,
                             where:{
                                 data_origin_id: mov.data_origin_id,
-                                IDLOGISTICORDER: logisticOrder.id,
-                                IDMOV: mov.id                                
+                                logistic_order_id: logisticOrder.id,
+                                mov_id: mov.id                                
                             },
                             values:{
                                 creator_user_id: req.user.id,
-                                IDLOGISTICSTATUS: loadings[key].NOTASFISCAIS[kn].IDSTATUSENTREGA
+                                logistic_status_id: loadings[key].NOTASFISCAIS[kn].IDSTATUSENTREGA
                             }
                         });
                         if (logisticOrderXMov.success) {
                             logisticOrderXMov = logisticOrderXMov.data;
-                            if (logisticOrderXMov.IDLOGISTICSTATUS != loadings[key].NOTASFISCAIS[kn].IDSTATUSENTREGA) {
-                                logisticOrderXMov.IDLOGISTICSTATUS = loadings[key].NOTASFISCAIS[kn].IDSTATUSENTREGA;
+                            if (logisticOrderXMov.logistic_status_id != loadings[key].NOTASFISCAIS[kn].IDSTATUSENTREGA) {
+                                logisticOrderXMov.logistic_status_id = loadings[key].NOTASFISCAIS[kn].IDSTATUSENTREGA;
                                 logisticOrderXMov.updater_user_id = req.user.id;
                                 console.log(logisticOrderXMov);
                                 await logisticOrderXMov.save();
@@ -319,7 +319,7 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                                     IDSUPPLIER: null,
                                     IDCLIENT:null,
                                     IDUSER:null,
-                                    IDCOLLABORATOR:null,
+                                    collaborator_id:null,
                                 },
                                 values: {
                                     creator_user_id: req.user.id
@@ -338,12 +338,12 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                                     let lot = await Lots.getOrCreate({
                                         raw:true,
                                         where:{
-                                            IDENTIFIER: loadings[key].NOTASFISCAIS[kn].ITEMS[ki].LOTES[kl].IDLOTEORIGEM,
-                                            EXPIRATIONDATE: loadings[key].NOTASFISCAIS[kn].ITEMS[ki].LOTES[kl].DTVALIDADE
+                                            identifier: loadings[key].NOTASFISCAIS[kn].ITEMS[ki].LOTES[kl].IDLOTEORIGEM,
+                                            expiration_date: loadings[key].NOTASFISCAIS[kn].ITEMS[ki].LOTES[kl].DTVALIDADE
                                         },
                                         values:{
                                             creator_user_id: req.user.id,
-                                            IDIDENTIFIERTYPE: Identifier_Types.IDENTIFIER
+                                            identifier_type_id: Identifier_Types.IDENTIFIER
                                         }
                                     });
                                     if (lot.success) {
@@ -368,13 +368,13 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
 
                             for(let kl in lots) {
                                 //itemXLotXConteiner
-                                let itemXLotXConteiner = await Items_X_Lots_X_Conteiners.getOrCreate({
+                                let itemXLotXConteiner = await Items_X_Lots_X_Containers.getOrCreate({
                                     raw:true,
                                     where:{
                                         data_origin_id: item.data_origin_id,
-                                        IDITEM: item.id,
-                                        IDLOT: lots[kl].LOT.id,
-                                        IDCONTEINER: Conteiners.WITHOUT_CONTEINER
+                                        item_id: item.id,
+                                        lot_id: lots[kl].LOT.id,
+                                        container_id: Containers.WITHOUT_CONTEINER
                                     },
                                     values: {
                                         creator_user_id: req.user.id,
@@ -392,14 +392,14 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                                     raw:true,
                                     where:{
                                         data_origin_id: itemXLotXConteiner.data_origin_id,
-                                        IDITEMXLOTXCONTEINER: itemXLotXConteiner.id,
-                                        IDSTOCKRELATIONSHIPTYPE: Stock_Entity_Relationship_Types.OWNER,
-                                        IDSTOCKENTITY: stockEntity.id,
-                                        IDMEASUREMENTUNIT: Measurement_Units[loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE] || Measurement_Units.KG,
-                                        IDPACKAGING: Packagings[loadings[key].NOTASFISCAIS[kn].ITEMS[ki].EMBALAGEM] || Packagings.BOX/*,
+                                        item_lot_container_id: itemXLotXConteiner.id,
+                                        stock_relationship_type_id: Stock_Entity_Relationship_Types.OWNER,
+                                        stock_entity_id: stockEntity.id,
+                                        measurement_unit_id: Measurement_Units[loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE] || Measurement_Units.KG,
+                                        packaging_id: Packagings[loadings[key].NOTASFISCAIS[kn].ITEMS[ki].EMBALAGEM] || Packagings.BOX/*,
                                         [Sequelize.Op.and]:[
                                             Sequelize.where(
-                                                Sequelize.fn('round',Sequelize.fn('coalesce',Sequelize.col('UNITWEIGHT'),Utils.toNumber(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE == 'KG' || !Utils.hasValue(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN) ? 1 : loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN || 1)),2),
+                                                Sequelize.fn('round',Sequelize.fn('coalesce',Sequelize.col('unit_weight'),Utils.toNumber(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE == 'KG' || !Utils.hasValue(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN) ? 1 : loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN || 1)),2),
                                                 Sequelize.fn('round',Sequelize.literal(Utils.toNumber(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE == 'KG' || !Utils.hasValue(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN) ? 1 : loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN || 1)),2)
                                             )
                                         ]*/
@@ -409,12 +409,12 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                                     itemStock = await Item_Stocks.getModel().create({
                                         creator_user_id: req.user.id,
                                         data_origin_id: itemXLotXConteiner.data_origin_id,
-                                        IDITEMXLOTXCONTEINER: itemXLotXConteiner.id,
-                                        IDSTOCKRELATIONSHIPTYPE: Stock_Entity_Relationship_Types.OWNER,
-                                        IDSTOCKENTITY: stockEntity.id,
-                                        IDMEASUREMENTUNIT: Measurement_Units[loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE] || Measurement_Units.KG,
-                                        IDPACKAGING: Packagings[loadings[key].NOTASFISCAIS[kn].ITEMS[ki].EMBALAGEM] || Packagings.BOX/*,
-                                        UNITWEIGHT: Utils.toNumber(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE == 'KG' ? 1 : loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN)*/
+                                        item_lot_container_id: itemXLotXConteiner.id,
+                                        stock_relationship_type_id: Stock_Entity_Relationship_Types.OWNER,
+                                        stock_entity_id: stockEntity.id,
+                                        measurement_unit_id: Measurement_Units[loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE] || Measurement_Units.KG,
+                                        packaging_id: Packagings[loadings[key].NOTASFISCAIS[kn].ITEMS[ki].EMBALAGEM] || Packagings.BOX/*,
+                                        unit_weight: Utils.toNumber(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE == 'KG' ? 1 : loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN)*/
                                     });
                                     itemStock = itemStock.dataValues;
                                 }                                
@@ -424,9 +424,9 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                                     raw:true,
                                     where:{
                                         data_origin_id: itemStock.data_origin_id,
-                                        IDMOV: mov.id,
-                                        IDTYPEMOV: Movement_Types.OUTPUT,
-                                        IDITEMSTOCK: itemStock.id
+                                        mov_id: mov.id,
+                                        type_mov_id: Movement_Types.OUTPUT,
+                                        stock_item_id: itemStock.id
                                     }, 
                                     values:{
                                         creator_user_id: req.user.id,
@@ -444,23 +444,23 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                                 let itemMovAmt = await Item_Mov_Amounts.saveOrCreate({
                                     where:{
                                         data_origin_id: movXItemStock.data_origin_id,
-                                        IDMOVXITEMSTOCK: movXItemStock.id,
-                                        IDTYPEMOV: Movement_Types.OUTPUT,
-                                        IDMEASUREMENTUNIT: itemStock.IDMEASUREMENTUNIT,
-                                        IDPACKAGING: itemStock.IDPACKAGING/*,
+                                        mov_x_item_stock_id: movXItemStock.id,
+                                        type_mov_id: Movement_Types.OUTPUT,
+                                        measurement_unit_id: itemStock.measurement_unit_id,
+                                        packaging_id: itemStock.packaging_id/*,
                                         [Sequelize.Op.and]:[
                                             Sequelize.where(
-                                                Sequelize.fn('round',Sequelize.fn('coalesce',Sequelize.col('UNITWEIGHT'),Utils.toNumber(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE == 'KG' || !Utils.hasValue(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN ) ? 1 : loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN  || 1)),2),
+                                                Sequelize.fn('round',Sequelize.fn('coalesce',Sequelize.col('unit_weight'),Utils.toNumber(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE == 'KG' || !Utils.hasValue(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN ) ? 1 : loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN  || 1)),2),
                                                 Sequelize.fn('round',Sequelize.literal(Utils.toNumber(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE == 'KG' || !Utils.hasValue(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN ) ? 1 : loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN  || 1)),2)
                                             )
                                         ]*/
                                     },
                                     values:{
                                         data_origin_id: movXItemStock.data_origin_id,
-                                        IDSTATUSMOV: movXItemStock.IDSTATUSMOV,
-                                        EXPECTEDAMT: lots[kl].LOTORIGIN.QT,
-                                        MOVIMENTEDAMT: lots[kl].LOTORIGIN.QTENTREGUE,
-                                        UNITVALUE: loadings[key].NOTASFISCAIS[kn].ITEMS[ki].VLUN
+                                        status_mov_id: movXItemStock.status_mov_id,
+                                        expected_amt: lots[kl].LOTORIGIN.QT,
+                                        moved_amt: lots[kl].LOTORIGIN.QTENTREGUE,
+                                        unit_value: loadings[key].NOTASFISCAIS[kn].ITEMS[ki].VLUN
                                     }
                                 });
                                 if (itemMovAmt.success) itemMovAmt = itemMovAmt.data
@@ -474,33 +474,33 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                                     raw:false,
                                     where:{
                                         data_origin_id: itemMovAmt.data_origin_id,
-                                        IDLOGISTICORDERXMOV: logisticOrderXMov.id,
-                                        IDITEMMOVAMT: itemMovAmt.id,
-                                        IDLOGISTICMOVTYPE: logisticOrder.IDLOGISTICMOVTYPE,
-                                        IDTYPEMOV: itemMovAmt.IDTYPEMOV,
-                                        IDMEASUREMENTUNIT: itemStock.IDMEASUREMENTUNIT,
-                                        IDPACKAGING: itemStock.IDPACKAGING/*,
+                                        mov_logistic_order_id: logisticOrderXMov.id,
+                                        item_mov_amt_id: itemMovAmt.id,
+                                        logistic_mov_type_id: logisticOrder.logistic_mov_type_id,
+                                        type_mov_id: itemMovAmt.type_mov_id,
+                                        measurement_unit_id: itemStock.measurement_unit_id,
+                                        packaging_id: itemStock.packaging_id/*,
                                         [Sequelize.Op.and]:[
                                             Sequelize.where(
-                                                Sequelize.fn('round',Sequelize.fn('coalesce',Sequelize.col('UNITWEIGHT'),Utils.toNumber(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE == 'KG' || !Utils.hasValue(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN) ? 1 : loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN || 1)),2),
+                                                Sequelize.fn('round',Sequelize.fn('coalesce',Sequelize.col('unit_weight'),Utils.toNumber(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE == 'KG' || !Utils.hasValue(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN) ? 1 : loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN || 1)),2),
                                                 Sequelize.fn('round',Sequelize.literal(Utils.toNumber(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].UNIDADE == 'KG' || !Utils.hasValue(loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN) ? 1 : loadings[key].NOTASFISCAIS[kn].ITEMS[ki].PESOLIQUN || 1)),2)
                                             )
                                         ]  */
                                     },
                                     values:{
-                                        IDACTIONSTATUS: logisticOrder.IDACTIONSTATUS,
-                                        IDSTATUSMOV: movXItemStock.IDSTATUSMOV,
-                                        EXPECTEDAMT: Utils.toNumber(lots[kl].LOTORIGIN.QT || 0),
-                                        MOVIMENTEDAMT: Utils.toNumber(lots[kl].LOTORIGIN.QTENTREGUE || 0),
-                                        NOTMOVIMENTEDAMT: Utils.toNumber(lots[kl].LOTORIGIN.QTNAOENTREGUE || 0),
-                                        RETREATMOVIMENTEDAMT: Utils.toNumber(lots[kl].LOTORIGIN.QTRECOLHIDA || 0),
-                                        IDLOGISTICSTATUS: lots[kl].LOTORIGIN.IDSTATUSENTREGA,
-                                        IDREASONNOTMOVIMENTEDAMT: lots[kl].LOTORIGIN.IDMOTIVONAOENTREGA,
-                                        IDREASONRETREATMOVIMENTEDAMT: lots[kl].LOTORIGIN.IDMOTIVORECOLHIMENTO,
-                                        OBSERVATIONSNOTMOVIMENTEDAMT: lots[kl].LOTORIGIN.OBSERVACOESNAOENTREGA,
-                                        OBSERVATIONSRETREATMOVIMENTEDAMT: lots[kl].LOTORIGIN.OBSERVACOESRECOLHIMENTO,
-                                        PHOTOSNOTMOVIMENTEDAMT: lots[kl].LOTORIGIN.FOTOSNAOENTREGA,
-                                        PHOTOSRETREATMOVIMENTEDAMT: lots[kl].LOTORIGIN.FOTOSRECOLHIMENTO,
+                                        action_status_id: logisticOrder.action_status_id,
+                                        status_mov_id: movXItemStock.status_mov_id,
+                                        expected_amt: Utils.toNumber(lots[kl].LOTORIGIN.QT || 0),
+                                        moved_amt: Utils.toNumber(lots[kl].LOTORIGIN.QTENTREGUE || 0),
+                                        unmoved_qty: Utils.toNumber(lots[kl].LOTORIGIN.QTNAOENTREGUE || 0),
+                                        collected_qty: Utils.toNumber(lots[kl].LOTORIGIN.QTRECOLHIDA || 0),
+                                        logistic_status_id: lots[kl].LOTORIGIN.IDSTATUSENTREGA,
+                                        unmoved_reason_id: lots[kl].LOTORIGIN.IDMOTIVONAOENTREGA,
+                                        collected_reason_id: lots[kl].LOTORIGIN.IDMOTIVORECOLHIMENTO,
+                                        unmoved_qty_notes: lots[kl].LOTORIGIN.OBSERVACOESNAOENTREGA,
+                                        collected_qty_notes: lots[kl].LOTORIGIN.OBSERVACOESRECOLHIMENTO,
+                                        unmoved_photos: lots[kl].LOTORIGIN.FOTOSNAOENTREGA,
+                                        collected_photos: lots[kl].LOTORIGIN.FOTOSRECOLHIMENTO,
                                     }
                                 });
                                 if (!logXItemMovAmt.success) {
@@ -529,17 +529,17 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                                             {
                                                 data_origin_id: mov.data_origin_id
                                             },{
-                                                IDLOGISTICORDER: logisticOrder.id
+                                                logistic_order_id: logisticOrder.id
                                             },{
-                                                IDLOGISTICORDERXMOV: logisticOrderXMov.id
+                                                mov_logistic_order_id: logisticOrderXMov.id
                                             },{
-                                                IDFINANCIALVALUEFORM: this.getFinancialValueFormID(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].IDFINANCIALCOLLECTIONORIGIN)
+                                                financial_value_form_id: this.getFinancialValueFormID(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].IDFINANCIALCOLLECTIONORIGIN)
                                             },{
-                                                IDCURRENCYTYPEEXPECTED: Currencies.BRL
+                                                expected_currency_id: Currencies.BRL
                                             },{
-                                                ORDERNUM: loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].ORDERNUM || 1
+                                                numeric_order: loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].numeric_order || 1
                                             },{
-                                                IDCURRENCYTYPERECEIVED: Currencies.BRL
+                                                received_currency_id: Currencies.BRL
                                             }
                                         ]
                                     }]
@@ -547,15 +547,15 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                                 values:{
                                     id: loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].IDONSERVER || undefined,
                                     data_origin_id: mov.data_origin_id,
-                                    IDLOGISTICORDER: logisticOrder.id,
-                                    IDLOGISTICORDERXMOV: logisticOrderXMov.id,
-                                    IDFINANCIALVALUEFORM: this.getFinancialValueFormID(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].IDFINANCIALCOLLECTIONORIGIN),
-                                    IDCURRENCYTYPEEXPECTED: Currencies.BRL,
-                                    ORDERNUM: loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].ORDERNUM || 1,   
-                                    IDCURRENCYTYPERECEIVED: Currencies.BRL,
-                                    EXPECTEDVALUE: Utils.toNumber(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].VLARECEBER || 0),
-                                    RECEIVEDVALUE: Utils.toNumber(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].RECEIPTEDVALUE || 0),
-                                    RECEIVED_AT: loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].RECEBIDOEM,
+                                    logistic_order_id: logisticOrder.id,
+                                    mov_logistic_order_id: logisticOrderXMov.id,
+                                    financial_value_form_id: this.getFinancialValueFormID(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].IDFINANCIALCOLLECTIONORIGIN),
+                                    expected_currency_id: Currencies.BRL,
+                                    numeric_order: loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].numeric_order || 1,   
+                                    received_currency_id: Currencies.BRL,
+                                    expected_value: Utils.toNumber(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].VLARECEBER || 0),
+                                    received_value: Utils.toNumber(loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].RECEIPTEDVALUE || 0),
+                                    received_at: loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].RECEBIDOEM,
                                     CANCELED_AT: loadings[key].NOTASFISCAIS[kn].RECEBIMENTOS[kr].EXCLUIDOEM
                                 }
                             });
@@ -592,11 +592,11 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                                         {
                                             data_origin_id: Data_Origins.APP_DELIVERY
                                         },{
-                                            IDLOGISTICORDER: logisticOrder.id
+                                            logistic_order_id: logisticOrder.id
                                         },{
-                                            IDLOGORDFINANCIALVALUEFORM: idFinValForm
+                                            logistic_order_financial_value_form_id: idFinValForm
                                         },{
-                                            IDFINANCIALVALUEMOVTYPEDEST: idFinValMovType
+                                            financial_value_mov_type_dest: idFinValMovType
                                         }
                                     ]
                                 }]
@@ -607,14 +607,14 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                             logDestVal = await Logistic_Orders_X_Dest_Values.getModel().create({
                                 creator_user_id: req.user.id,
                                 data_origin_id: Data_Origins.APP_DELIVERY,
-                                IDLOGISTICORDER: logisticOrder.id,
-                                IDLOGORDFINANCIALVALUEFORM: idFinValForm,
-                                IDFINANCIALVALUEMOVTYPEDEST: idFinValMovType,
-                                DESTINATEDVALUE: Utils.toNumber(loadings[key].DESTINACAOVALORES[kd].VLFECHADO || 0),
+                                logistic_order_id: logisticOrder.id,
+                                logistic_order_financial_value_form_id: idFinValForm,
+                                financial_value_mov_type_dest: idFinValMovType,
+                                destinated_value: Utils.toNumber(loadings[key].DESTINACAOVALORES[kd].VLFECHADO || 0),
                                 observations: loadings[key].DESTINACAOVALORES[kd].OBSERVACOES
                             });
                         } else {                            
-                            logDestVal.DESTINATEDVALUE = Utils.toNumber(loadings[key].DESTINACAOVALORES[kd].VLFECHADO || 0);
+                            logDestVal.destinated_value = Utils.toNumber(loadings[key].DESTINACAOVALORES[kd].VLFECHADO || 0);
                             logDestVal.updater_user_id = req.user.id;
                             await logDestVal.save();
                         }

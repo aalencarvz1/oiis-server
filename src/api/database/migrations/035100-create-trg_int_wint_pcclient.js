@@ -210,8 +210,8 @@ module.exports = {
                 INSERT INTO migration_control (            
                     created_at,
                     status_reg_id,
-                    OBJECTTYPE,
-                    OBJECTNAME,
+                    object_type,
+                    OBJECT_NAME,
                     OBJECTREGISTERID,
                     OBJECTOPERATION,
                     VALUESTOMIGRATE
@@ -234,8 +234,8 @@ module.exports = {
             v_error_log.status_reg_id := 1;
             v_error_log.data_origin_id := 1;
             v_error_log.is_sys_rec := 0;
-            v_error_log.objecttype := 'trigger';
-            v_error_log.objectname := $$plsql_unit;
+            v_error_log.object_type := 'trigger';
+            v_error_log.object_name := $$plsql_unit;
             v_error_log.objectline := $$plsql_line;
             v_error_log.errorcode := sqlcode;
             v_error_log.message := substr(sqlerrm

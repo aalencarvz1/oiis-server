@@ -40,20 +40,20 @@ class Midia_Controller extends RegistersController{
                                     id:registers[key].IDONSERVER
                                 }
                             });
-                            midia.IDTABLEREF = tablesRefs[registers[key].TABLENAME].id;
-                            midia.IDREGISTERREF= registers[key].IDREGISTERREF;
+                            midia.table_ref_id = tablesRefs[registers[key].TABLENAME].id;
+                            midia.record_ref_id= registers[key].record_ref_id;
                             midia.name= file.filename;
                             midia.TYPE= registers[key].TYPE || file.mimetype;
-                            midia.ORDERNUM= registers[key].ORDERNUM || 0;
+                            midia.numeric_order= registers[key].numeric_order || 0;
                             midia.LOCALPATH=file.path;
                             await midia.save();
                         } else {
                             midia = await Midias.getModel().create({
-                                IDTABLEREF : tablesRefs[registers[key].TABLENAME].id,
-                                IDREGISTERREF: registers[key].IDREGISTERREF,
+                                table_ref_id : tablesRefs[registers[key].TABLENAME].id,
+                                record_ref_id: registers[key].record_ref_id,
                                 name: file.filename,
                                 TYPE: registers[key].TYPE || file.mimetype,
-                                ORDERNUM: registers[key].ORDERNUM || 0,
+                                numeric_order: registers[key].numeric_order || 0,
                                 LOCALPATH:file.path
                             });                    
                         }

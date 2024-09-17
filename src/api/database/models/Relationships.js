@@ -51,10 +51,10 @@ class Relationships extends BaseTableModel {
       IDCONTEXT:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      VALUE:{
+      value:{
         type: DataTypes.STRING(255)
       },
-      ORDERNUM:{
+      numeric_order:{
         type: DataTypes.BIGINT
       },
       STARTMOMENT:{
@@ -75,8 +75,8 @@ class Relationships extends BaseTableModel {
     Sequelize.literal(`(COALESCE(IDREG1,0))`),
     Sequelize.literal(`(COALESCE(IDREG2,0))`),
     Sequelize.literal(`(COALESCE(IDCONTEXT,0))`),
-    //Sequelize.literal(`(COALESCE(VALUE,'NULL'))`),
-    Sequelize.literal(`(COALESCE(ORDERNUM,0))`),
+    //Sequelize.literal(`(COALESCE(value,'NULL'))`),
+    Sequelize.literal(`(COALESCE(numeric_order,0))`),
     Sequelize.literal(`(COALESCE(STARTMOMENT,'1900-01-01'))`)
   ];
 

@@ -16,21 +16,21 @@ class Collaborators_X_Functions extends BaseTableModel {
   static model = null;
   static fields = {
     ...Collaborators_X_Functions.getBaseTableModelFields(),...{           
-      IDCONTRACT:{
+      contrract_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDFUNCTION:{
+      function_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      STARTDATE:{
+      start_date:{
         type: DataTypes.DATE,
       },
-      ENDDATE:{
+      end_date:{
         type: DataTypes.DATE,
       },     
-      ISTIMECONTROLLED: {
+      is_time_controlled: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:1
@@ -42,9 +42,9 @@ class Collaborators_X_Functions extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDCONTRACT',
-    'IDFUNCTION',
-    Sequelize.literal(`(COALESCE(STARTDATE,'1900-01-01'))`)
+    'contrract_id',
+    'function_id',
+    Sequelize.literal(`(COALESCE(start_date,'1900-01-01'))`)
   ];
 
   static constraints = [...(Collaborators_X_Functions.getBaseTableModelConstraints() || []),...[
@@ -54,10 +54,10 @@ class Collaborators_X_Functions extends BaseTableModel {
       type:"unique"
     },{
       name: Collaborators_X_Functions.tableName + '_c_1',
-      fields:['ISTIMECONTROLLED'],
+      fields:['is_time_controlled'],
       type:"check",
       where:{
-        ISTIMECONTROLLED: {
+        is_time_controlled: {
               [Sequelize.Op.in]: [0,1]
           }
       }
@@ -66,7 +66,7 @@ class Collaborators_X_Functions extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDCONTRACT'],
+      fields: ['contrract_id'],
       type: 'foreign key',
       references: { 
           table: Collaborator_Contracts,
@@ -75,7 +75,7 @@ class Collaborators_X_Functions extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDFUNCTION'],
+      fields: ['function_id'],
       type: 'foreign key',
       references: { 
           table: Collaborator_Functions,

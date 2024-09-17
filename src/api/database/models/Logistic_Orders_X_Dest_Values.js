@@ -17,25 +17,25 @@ class Logistic_Orders_X_Dest_Values extends BaseTableModel {
   static model = null;
   static fields = {
     ...Logistic_Orders_X_Dest_Values.getBaseTableModelFields(),...{    
-      IDLOGISTICORDER:{
+      logistic_order_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },       
-      IDLOGORDFINANCIALVALUEFORM:{
+      logistic_order_financial_value_form_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDCURRENCYTYPE:{
+      currenty_type_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },      
-      IDFINANCIALVALUEMOVTYPEDEST:{
+      financial_value_mov_type_dest:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
       },      
-      DESTINATEDVALUE:{
+      destinated_value:{
         type: DataTypes.DECIMAL(32,10)
       },
-      ORDERNUM:{
+      numeric_order:{
         type:DataTypes.INTEGER.UNSIGNED,
         allowNull:false,
         defaultValue:1
@@ -47,10 +47,10 @@ class Logistic_Orders_X_Dest_Values extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDLOGISTICORDER',
-    'IDLOGORDFINANCIALVALUEFORM',
-    'IDFINANCIALVALUEMOVTYPEDEST',
-    'ORDERNUM'
+    'logistic_order_id',
+    'logistic_order_financial_value_form_id',
+    'financial_value_mov_type_dest',
+    'numeric_order'
   ];
 
   static constraints = [...(Logistic_Orders_X_Dest_Values.getBaseTableModelConstraints() || []),...[
@@ -63,7 +63,7 @@ class Logistic_Orders_X_Dest_Values extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDLOGISTICORDER'],
+      fields: ['logistic_order_id'],
       type: 'foreign key',
       references: { 
           table: Logistic_Orders,
@@ -72,7 +72,7 @@ class Logistic_Orders_X_Dest_Values extends BaseTableModel {
       onUpdate: 'cascade',
       onDelete: 'cascade'
     },{
-      fields: ['IDLOGORDFINANCIALVALUEFORM'],
+      fields: ['logistic_order_financial_value_form_id'],
       type: 'foreign key',
       references: { 
           table: Financial_Value_Forms,
@@ -81,7 +81,7 @@ class Logistic_Orders_X_Dest_Values extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDCURRENCYTYPE'],
+      fields: ['currenty_type_id'],
       type: 'foreign key',
       references: { 
           table: Currencies,
@@ -90,7 +90,7 @@ class Logistic_Orders_X_Dest_Values extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDFINANCIALVALUEMOVTYPEDEST'],
+      fields: ['financial_value_mov_type_dest'],
       type: 'foreign key',
       references: { 
           table: Financial_Value_Mov_Types,

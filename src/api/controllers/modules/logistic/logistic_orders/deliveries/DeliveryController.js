@@ -41,172 +41,172 @@ class DeliveryController extends RegistersController{
                 select
                     l.*,
                     lsl.name AS LOGISTICSTATUS,
-                    COUNT(DISTINCT CASE WHEN ls.ISTODELIVERY = 1 THEN m.IDCLIENT ELSE NULL END) AS QTENTREGASAENTREGAR,
-                    COUNT(DISTINCT CASE WHEN ls.ISDELIVERING = 1 THEN m.IDCLIENT ELSE NULL END) AS QTENTREGASENTREGANDO,
-                    COUNT(DISTINCT CASE WHEN ls.ISDELIVERED = 1 THEN m.IDCLIENT ELSE NULL END) AS QTENTREGASENTREGUES,
-                    COUNT(DISTINCT CASE WHEN ls.ISPARTIALRETURNED = 1 OR ls.ISTOTALRETURNED = 1 THEN m.IDCLIENT ELSE NULL END) AS QTENTREGASDEVOLVIDAS,
-                    COUNT(DISTINCT CASE WHEN ls.ISTODELIVERY = 1 THEN m.id ELSE NULL END) AS QTNOTASFISCAISAENTREGAR,
-                    COUNT(DISTINCT CASE WHEN ls.ISDELIVERING = 1 THEN m.id ELSE NULL END) AS QTNOTASFISCAISENTREGANDO,
-                    COUNT(DISTINCT CASE WHEN ls.ISDELIVERED = 1 THEN m.id ELSE NULL END) AS QTNOTASFISCAISENTREGUES,
-                    COUNT(DISTINCT CASE WHEN ls.ISPARTIALRETURNED = 1 OR ls.ISTOTALRETURNED = 1 THEN m.id ELSE NULL END) AS QTNOTASFISCAISDEVOLVIDAS,
+                    COUNT(DISTINCT CASE WHEN ls.is_to_delivery = 1 THEN m.IDCLIENT ELSE NULL END) AS QTENTREGASAENTREGAR,
+                    COUNT(DISTINCT CASE WHEN ls.is_delivering = 1 THEN m.IDCLIENT ELSE NULL END) AS QTENTREGASENTREGANDO,
+                    COUNT(DISTINCT CASE WHEN ls.id_delivered = 1 THEN m.IDCLIENT ELSE NULL END) AS QTENTREGASENTREGUES,
+                    COUNT(DISTINCT CASE WHEN ls.is_partial_returned = 1 OR ls.is_total_returned = 1 THEN m.IDCLIENT ELSE NULL END) AS QTENTREGASDEVOLVIDAS,
+                    COUNT(DISTINCT CASE WHEN ls.is_to_delivery = 1 THEN m.id ELSE NULL END) AS QTNOTASFISCAISAENTREGAR,
+                    COUNT(DISTINCT CASE WHEN ls.is_delivering = 1 THEN m.id ELSE NULL END) AS QTNOTASFISCAISENTREGANDO,
+                    COUNT(DISTINCT CASE WHEN ls.id_delivered = 1 THEN m.id ELSE NULL END) AS QTNOTASFISCAISENTREGUES,
+                    COUNT(DISTINCT CASE WHEN ls.is_partial_returned = 1 OR ls.is_total_returned = 1 THEN m.id ELSE NULL END) AS QTNOTASFISCAISDEVOLVIDAS,
                     SUM((
-                            COALESCE(lim.EXPECTEDAMT,0)   
-                            - COALESCE(lim.NOTMOVIMENTEDAMT,0)                                   
-                        ) * CASE WHEN lim.IDMEASUREMENTUNIT = 2 then 1 else COALESCE(lim.UNITWEIGHT,1) end
+                            COALESCE(lim.expected_amt,0)   
+                            - COALESCE(lim.unmoved_qty,0)                                   
+                        ) * CASE WHEN lim.measurement_unit_id = 2 then 1 else COALESCE(lim.unit_weight,1) end
                     ) AS WEIGHT,
                     SUM(
                         (
-                            COALESCE(lim.EXPECTEDAMT,0) - (
-                                COALESCE(lim.MOVIMENTEDAMT,0) 
-                                + COALESCE(lim.NOTMOVIMENTEDAMT,0)
+                            COALESCE(lim.expected_amt,0) - (
+                                COALESCE(lim.moved_amt,0) 
+                                + COALESCE(lim.unmoved_qty,0)
                             )
-                        ) * CASE WHEN lim.IDMEASUREMENTUNIT = 2 then 1 else COALESCE(lim.UNITWEIGHT,1) end
+                        ) * CASE WHEN lim.measurement_unit_id = 2 then 1 else COALESCE(lim.unit_weight,1) end
                     ) AS WEIGHTTODELIVERY,
                     SUM(
-                        COALESCE(lim.MOVIMENTEDAMT,0)                                      
-                        * CASE WHEN lim.IDMEASUREMENTUNIT = 2 then 1 else COALESCE(lim.UNITWEIGHT,1) end
+                        COALESCE(lim.moved_amt,0)                                      
+                        * CASE WHEN lim.measurement_unit_id = 2 then 1 else COALESCE(lim.unit_weight,1) end
                     ) AS WEIGHTDELIVERED,
                     SUM(
-                        COALESCE(lim.NOTMOVIMENTEDAMT,0)                                      
-                        * CASE WHEN lim.IDMEASUREMENTUNIT = 2 then 1 else COALESCE(lim.UNITWEIGHT,1) end
+                        COALESCE(lim.unmoved_qty,0)                                      
+                        * CASE WHEN lim.measurement_unit_id = 2 then 1 else COALESCE(lim.unit_weight,1) end
                     ) AS WEIGHTRETURNED,  
                     SUM((
-                            COALESCE(lim.EXPECTEDAMT,0)
-                            - COALESCE(lim.NOTMOVIMENTEDAMT,0)
-                        ) * COALESCE(ima.UNITVALUE,0)
-                    ) AS VALUE,                          
+                            COALESCE(lim.expected_amt,0)
+                            - COALESCE(lim.unmoved_qty,0)
+                        ) * COALESCE(ima.unit_value,0)
+                    ) AS value,                          
                     SUM(
                         (
-                            COALESCE(lim.EXPECTEDAMT,0) - (
-                                COALESCE(lim.MOVIMENTEDAMT,0) 
-                                + COALESCE(lim.NOTMOVIMENTEDAMT,0)
+                            COALESCE(lim.expected_amt,0) - (
+                                COALESCE(lim.moved_amt,0) 
+                                + COALESCE(lim.unmoved_qty,0)
                             )
-                        ) * COALESCE(ima.UNITVALUE,0)
+                        ) * COALESCE(ima.unit_value,0)
                     ) AS VALUETODELIVERY,
                     SUM(
-                        COALESCE(lim.MOVIMENTEDAMT,0)                                      
-                        * COALESCE(ima.UNITVALUE,0)
+                        COALESCE(lim.moved_amt,0)                                      
+                        * COALESCE(ima.unit_value,0)
                     ) AS VALUEDELIVERED,
                     SUM(
-                        COALESCE(lim.NOTMOVIMENTEDAMT,0)                                      
-                        * COALESCE(ima.UNITVALUE,0)
+                        COALESCE(lim.unmoved_qty,0)                                      
+                        * COALESCE(ima.unit_value,0)
                     ) AS VALUERETURNED,                            
-                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.MONEY} THEN m.id ELSE NULL END) AS DNFSARECEBER,
+                    COUNT(DISTINCT CASE WHEN m.financial_value_form_id = ${Financial_Value_Forms.MONEY} THEN m.id ELSE NULL END) AS DNFSARECEBER,
                     SUM(
-                        CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.MONEY} THEN
+                        CASE WHEN m.financial_value_form_id = ${Financial_Value_Forms.MONEY} THEN
                             (
-                                COALESCE(lim.EXPECTEDAMT,0) 
-                                - COALESCE(lim.NOTMOVIMENTEDAMT,0)
-                            ) * COALESCE(ima.UNITVALUE,0)
+                                COALESCE(lim.expected_amt,0) 
+                                - COALESCE(lim.unmoved_qty,0)
+                            ) * COALESCE(ima.unit_value,0)
                         ELSE 0 END
                     ) AS DARECEBER,
                     (SELECT
-                        COUNT(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.MONEY} then lxm.IDMOV else null end)
+                        COUNT(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.MONEY} then lxm.mov_id else null end)
                     FROM
                         Logistic_Orders_X_Movs_X_Receipt_Values lxmr
-                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
+                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
                     WHERE
-                        lxm.IDLOGISTICORDER = l.id
-                        and coalesce(lxmr.RECEIVEDVALUE,0) > 0
+                        lxm.logistic_order_id = l.id
+                        and coalesce(lxmr.received_value,0) > 0
                     ) AS QTMOVMONEYRECEIVED,
                     (SELECT
-                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.MONEY} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
+                        sum(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.MONEY} then coalesce(lxmr.received_value,0) else 0 end)
                     FROM
                         Logistic_Orders_X_Movs_X_Receipt_Values lxmr
-                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
+                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
                     WHERE
-                        lxm.IDLOGISTICORDER = l.id
-                        and coalesce(lxmr.RECEIVEDVALUE,0) > 0
+                        lxm.logistic_order_id = l.id
+                        and coalesce(lxmr.received_value,0) > 0
                     ) AS MONEYRECEIVED,
-                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CARD} THEN m.id ELSE NULL END) AS CARTAONFSARECEBER,
+                    COUNT(DISTINCT CASE WHEN m.financial_value_form_id = ${Financial_Value_Forms.CARD} THEN m.id ELSE NULL END) AS CARTAONFSARECEBER,
                     SUM(
-                        CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CARD} THEN
+                        CASE WHEN m.financial_value_form_id = ${Financial_Value_Forms.CARD} THEN
                             (
-                                COALESCE(lim.EXPECTEDAMT,0) 
-                                - COALESCE(lim.NOTMOVIMENTEDAMT,0)
-                            ) * COALESCE(ima.UNITVALUE,0)
+                                COALESCE(lim.expected_amt,0) 
+                                - COALESCE(lim.unmoved_qty,0)
+                            ) * COALESCE(ima.unit_value,0)
                         ELSE 0 END
                     ) AS CARTAOARECEBER,
                     (SELECT
-                        COUNT(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CARD} then lxm.IDMOV else null end)
+                        COUNT(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.CARD} then lxm.mov_id else null end)
                     FROM
                         Logistic_Orders_X_Movs_X_Receipt_Values lxmr
-                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
+                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
                     WHERE
-                        lxm.IDLOGISTICORDER = l.id
-                        and coalesce(lxmr.RECEIVEDVALUE,0) > 0
+                        lxm.logistic_order_id = l.id
+                        and coalesce(lxmr.received_value,0) > 0
                     ) AS QTMOVCARDRECEIVED,
                     (SELECT
-                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CARD} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
+                        sum(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.CARD} then coalesce(lxmr.received_value,0) else 0 end)
                     FROM
                         Logistic_Orders_X_Movs_X_Receipt_Values lxmr
-                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
+                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
                     WHERE
-                        lxm.IDLOGISTICORDER = l.id
-                        and coalesce(lxmr.RECEIVEDVALUE,0) > 0
+                        lxm.logistic_order_id = l.id
+                        and coalesce(lxmr.received_value,0) > 0
                     ) AS CARDRECEIVED,
-                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CHECK} THEN m.id ELSE NULL END) AS CHEQUENFSARECEBER,
+                    COUNT(DISTINCT CASE WHEN m.financial_value_form_id = ${Financial_Value_Forms.CHECK} THEN m.id ELSE NULL END) AS CHEQUENFSARECEBER,
                     SUM(
-                        CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CHECK} THEN
+                        CASE WHEN m.financial_value_form_id = ${Financial_Value_Forms.CHECK} THEN
                             (
-                                COALESCE(lim.EXPECTEDAMT,0) 
-                                - COALESCE(lim.NOTMOVIMENTEDAMT,0)
-                            ) * COALESCE(ima.UNITVALUE,0)
+                                COALESCE(lim.expected_amt,0) 
+                                - COALESCE(lim.unmoved_qty,0)
+                            ) * COALESCE(ima.unit_value,0)
                         ELSE 0 END
                     ) AS CHEQUEARECEBER,
                     (SELECT
-                        COUNT(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CHECK} then lxm.IDMOV else null end)
+                        COUNT(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.CHECK} then lxm.mov_id else null end)
                     FROM
                         Logistic_Orders_X_Movs_X_Receipt_Values lxmr
-                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
+                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
                     WHERE
-                        lxm.IDLOGISTICORDER = l.id
-                        and coalesce(lxmr.RECEIVEDVALUE,0) > 0
+                        lxm.logistic_order_id = l.id
+                        and coalesce(lxmr.received_value,0) > 0
                     ) AS QTMOVCHECKRECEIVED,
                     (SELECT
-                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CHECK} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
+                        sum(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.CHECK} then coalesce(lxmr.received_value,0) else 0 end)
                     FROM
                         Logistic_Orders_X_Movs_X_Receipt_Values lxmr
-                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
+                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
                     WHERE
-                        lxm.IDLOGISTICORDER = l.id
-                        and coalesce(lxmr.RECEIVEDVALUE,0) > 0
+                        lxm.logistic_order_id = l.id
+                        and coalesce(lxmr.received_value,0) > 0
                     ) AS CHECKRECEIVED,
-                    COUNT(DISTINCT CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.PIX} THEN m.id ELSE NULL END) AS PIXNFSARECEBER,
+                    COUNT(DISTINCT CASE WHEN m.financial_value_form_id = ${Financial_Value_Forms.PIX} THEN m.id ELSE NULL END) AS PIXNFSARECEBER,
                     SUM(
-                        CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.PIX} THEN
+                        CASE WHEN m.financial_value_form_id = ${Financial_Value_Forms.PIX} THEN
                             (
-                                COALESCE(lim.EXPECTEDAMT,0) 
-                                - COALESCE(lim.NOTMOVIMENTEDAMT,0)
-                            ) * COALESCE(ima.UNITVALUE,0)
+                                COALESCE(lim.expected_amt,0) 
+                                - COALESCE(lim.unmoved_qty,0)
+                            ) * COALESCE(ima.unit_value,0)
                         ELSE 0 END
                     ) AS PIXARECEBER,
                     (SELECT
-                        COUNT(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.PIX} then lxm.IDMOV else null end)
+                        COUNT(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.PIX} then lxm.mov_id else null end)
                     FROM
                         Logistic_Orders_X_Movs_X_Receipt_Values lxmr
-                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
+                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
                     WHERE
-                        lxm.IDLOGISTICORDER = l.id
-                        and coalesce(lxmr.RECEIVEDVALUE,0) > 0
+                        lxm.logistic_order_id = l.id
+                        and coalesce(lxmr.received_value,0) > 0
                     ) AS QTMOVPIXRECEIVED,
                     (SELECT
-                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.PIX} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
+                        sum(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.PIX} then coalesce(lxmr.received_value,0) else 0 end)
                     FROM
                         Logistic_Orders_X_Movs_X_Receipt_Values lxmr
-                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.IDLOGISTICORDERXMOV
+                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
                     WHERE
-                        lxm.IDLOGISTICORDER = l.id
-                        and coalesce(lxmr.RECEIVEDVALUE,0) > 0
+                        lxm.logistic_order_id = l.id
+                        and coalesce(lxmr.received_value,0) > 0
                     ) AS PIXRECEIVED
                 from
                     Logistic_Orders l
-                    LEFT OUTER JOIN logistic_status lsl on lsl.id = l.IDLOGISTICSTATUS
-                    LEFT OUTER JOIN logistic_orders_x_movs lm on lm.IDLOGISTICORDER = l.id
-                    LEFT OUTER JOIN logistic_status ls on ls.id = lm.IDLOGISTICSTATUS
-                    LEFT OUTER JOIN Movements m on m.id = lm.IDMOV
-                    LEFT OUTER JOIN logistic_orders_x_items_mov_amt lim on lim.IDLOGISTICORDERXMOV = lm.id
-                    LEFT OUTER JOIN item_mov_amounts ima on ima.id = lim.IDITEMMOVAMT                            
+                    LEFT OUTER JOIN logistic_status lsl on lsl.id = l.logistic_status_id
+                    LEFT OUTER JOIN logistic_orders_x_movs lm on lm.logistic_order_id = l.id
+                    LEFT OUTER JOIN logistic_status ls on ls.id = lm.logistic_status_id
+                    LEFT OUTER JOIN Movements m on m.id = lm.mov_id
+                    LEFT OUTER JOIN logistic_orders_x_items_mov_amt lim on lim.mov_logistic_order_id = lm.id
+                    LEFT OUTER JOIN item_mov_amounts ima on ima.id = lim.item_mov_amt_id                            
                 ${where || ''}
                 group by
                     ${Object.keys(Logistic_Orders.fields).map(el=>`l.${el}`).join(',')},
@@ -360,78 +360,78 @@ class DeliveryController extends RegistersController{
                     i.id,
                     i.data_origin_id,
                     i.id_at_origin,                    
-                    lxim.IDLOGISTICSTATUS,
+                    lxim.logistic_status_id,
                     ls.name AS LOGISTICSTATUS,
-                    lxim.IDREASONNOTMOVIMENTEDAMT,
-                    lxim.OBSERVATIONSNOTMOVIMENTEDAMT,
+                    lxim.unmoved_reason_id,
+                    lxim.unmoved_qty_notes,
                     lr.name as REASONNOTMOVIMENTEDAMT,
-                    sum(coalesce(lxim.expectedamt,0)) as EXPECTEDAMT,
-                    sum(coalesce(lxim.movimentedamt,0)) as MOVIMENTEDAMT,
+                    sum(coalesce(lxim.expected_amt,0)) as expected_amt,
+                    sum(coalesce(lxim.moved_amt,0)) as moved_amt,
                     SUM(
                         (
-                            COALESCE(lxim.EXPECTEDAMT,0) 
-                            - COALESCE(lxim.NOTMOVIMENTEDAMT,0)                                    
-                        ) * CASE WHEN coalesce(lxim.IDMEASUREMENTUNIT,im.IDMEASUREMENTUNIT,ist.IDMEASUREMENTUNIT,2) = 2 then 1 else COALESCE(lxim.UNITWEIGHT,im.UNITWEIGHT,ist.UNITWEIGHT,1) end
+                            COALESCE(lxim.expected_amt,0) 
+                            - COALESCE(lxim.unmoved_qty,0)                                    
+                        ) * CASE WHEN coalesce(lxim.measurement_unit_id,im.measurement_unit_id,ist.measurement_unit_id,2) = 2 then 1 else COALESCE(lxim.unit_weight,im.unit_weight,ist.unit_weight,1) end
                     ) AS WEIGHT,
                     SUM(
                         (
-                            COALESCE(lxim.EXPECTEDAMT,0) - (
-                                COALESCE(lxim.MOVIMENTEDAMT,0) 
-                                + COALESCE(lxim.NOTMOVIMENTEDAMT,0)
+                            COALESCE(lxim.expected_amt,0) - (
+                                COALESCE(lxim.moved_amt,0) 
+                                + COALESCE(lxim.unmoved_qty,0)
                             )
-                        ) * CASE WHEN coalesce(lxim.IDMEASUREMENTUNIT,im.IDMEASUREMENTUNIT,ist.IDMEASUREMENTUNIT,2) = 2 then 1 else COALESCE(lxim.UNITWEIGHT,im.UNITWEIGHT,ist.UNITWEIGHT,1) end
+                        ) * CASE WHEN coalesce(lxim.measurement_unit_id,im.measurement_unit_id,ist.measurement_unit_id,2) = 2 then 1 else COALESCE(lxim.unit_weight,im.unit_weight,ist.unit_weight,1) end
                     ) AS WEIGHTTODELIVERY,
                     SUM(
-                        COALESCE(lxim.MOVIMENTEDAMT,0) 
-                        * CASE WHEN coalesce(lxim.IDMEASUREMENTUNIT,im.IDMEASUREMENTUNIT,ist.IDMEASUREMENTUNIT,2) = 2 then 1 else COALESCE(lxim.UNITWEIGHT,im.UNITWEIGHT,ist.UNITWEIGHT,1) end
+                        COALESCE(lxim.moved_amt,0) 
+                        * CASE WHEN coalesce(lxim.measurement_unit_id,im.measurement_unit_id,ist.measurement_unit_id,2) = 2 then 1 else COALESCE(lxim.unit_weight,im.unit_weight,ist.unit_weight,1) end
                     ) AS WEIGHTDELIVERED,
                     SUM(
-                        COALESCE(lxim.NOTMOVIMENTEDAMT,0) 
-                        * CASE WHEN coalesce(lxim.IDMEASUREMENTUNIT,im.IDMEASUREMENTUNIT,ist.IDMEASUREMENTUNIT,2) = 2 then 1 else COALESCE(lxim.UNITWEIGHT,im.UNITWEIGHT,ist.UNITWEIGHT,1) end
+                        COALESCE(lxim.unmoved_qty,0) 
+                        * CASE WHEN coalesce(lxim.measurement_unit_id,im.measurement_unit_id,ist.measurement_unit_id,2) = 2 then 1 else COALESCE(lxim.unit_weight,im.unit_weight,ist.unit_weight,1) end
                     ) AS WEIGHTRETURNED,
                     SUM(
                         (
-                            COALESCE(lxim.EXPECTEDAMT,0) 
-                            - COALESCE(lxim.NOTMOVIMENTEDAMT,0)                                    
-                        ) * coalesce(im.UNITVALUE,0)
-                    ) AS VALUE,
+                            COALESCE(lxim.expected_amt,0) 
+                            - COALESCE(lxim.unmoved_qty,0)                                    
+                        ) * coalesce(im.unit_value,0)
+                    ) AS value,
                     SUM(
                         (
-                            COALESCE(lxim.EXPECTEDAMT,0) - (
-                                COALESCE(lxim.MOVIMENTEDAMT,0) 
-                                + COALESCE(lxim.NOTMOVIMENTEDAMT,0)
+                            COALESCE(lxim.expected_amt,0) - (
+                                COALESCE(lxim.moved_amt,0) 
+                                + COALESCE(lxim.unmoved_qty,0)
                             )
-                        ) * coalesce(im.UNITVALUE,0)
+                        ) * coalesce(im.unit_value,0)
                     ) AS VALUETODELIVERY,
                     SUM(
-                        COALESCE(lxim.MOVIMENTEDAMT,0) 
-                        * coalesce(im.UNITVALUE,0)
+                        COALESCE(lxim.moved_amt,0) 
+                        * coalesce(im.unit_value,0)
                     ) AS VALUEDELIVERED,
                     SUM(
-                        COALESCE(lxim.NOTMOVIMENTEDAMT,0) 
-                        * coalesce(im.UNITVALUE,0)
+                        COALESCE(lxim.unmoved_qty,0) 
+                        * coalesce(im.unit_value,0)
                     ) AS VALUERETURNED
                 from
                     movements m
-                    join logistic_orders_x_movs lxm on lxm.idmov = m.id
-                    join movs_x_items_stocks mxis on mxis.idmov = m.id
-                    join item_stocks ist on ist.id = mxis.iditemstock
-                    join Items_X_Lots_X_Conteiners ix on ix.id = ist.iditemxlotxconteiner
-                    join items i on i.id = ix.iditem
-                    join item_mov_amounts im on im.idmovxitemstock = mxis.id
-                    join logistic_orders_x_items_mov_amt lxim on lxim.idlogisticorderxmov = lxm.id and lxim.iditemmovamt = im.id                        
-                    left outer join logistic_status ls on ls.id = lxim.IDLOGISTICSTATUS
-                    left outer join logistic_reasons lr on lr.id = lxim.IDREASONNOTMOVIMENTEDAMT
+                    join logistic_orders_x_movs lxm on lxm.mov_id = m.id
+                    join movs_x_items_stocks mxis on mxis.mov_id = m.id
+                    join item_stocks ist on ist.id = mxis.stock_item_id
+                    join Items_X_Lots_X_Containers ix on ix.id = ist.iditemxlotxcontainer
+                    join items i on i.id = ix.item_id
+                    join item_mov_amounts im on im.mov_x_item_stock_id = mxis.id
+                    join logistic_orders_x_items_mov_amt lxim on lxim.mov_logistic_order_id = lxm.id and lxim.item_mov_amt_id = im.id                        
+                    left outer join logistic_status ls on ls.id = lxim.logistic_status_id
+                    left outer join logistic_reasons lr on lr.id = lxim.unmoved_reason_id
                 where
                     m.data_origin_id = ${req.body.data_origin_id}
                     and m.id_at_origin = ${req.body.NUMTRANSVENDA}
                     ${Utils.hasValue(idsItemsOnOriginData) ? ` and i.id_at_origin in (${idsItemsOnOriginData.join(',')}) ` : ''}     
                 group by                        
                     i.id,
-                    lxim.IDLOGISTICSTATUS,
+                    lxim.logistic_status_id,
                     ls.name,
-                    lxim.IDREASONNOTMOVIMENTEDAMT,
-                    lxim.OBSERVATIONSNOTMOVIMENTEDAMT,
+                    lxim.unmoved_reason_id,
+                    lxim.unmoved_qty_notes,
                     lr.name
                 order by    
                     i.id                                
@@ -444,18 +444,18 @@ class DeliveryController extends RegistersController{
                 for(let kd in delivereds) {
                     for(let k in res.data) {
                         if (res.data[k].CODPROD == delivereds[kd].id_at_origin) {                                    
-                            res.data[k].IDLOGISTICSTATUS = delivereds[kd].IDLOGISTICSTATUS;
+                            res.data[k].logistic_status_id = delivereds[kd].logistic_status_id;
                             res.data[k].LOGISTICSTATUS = delivereds[kd].LOGISTICSTATUS;                                    
-                            res.data[k].QT = res.data[k].QT || delivereds[kd].EXPECTEDAMT;
-                            res.data[k].QTENTREGUE = delivereds[kd].MOVIMENTEDAMT;
-                            res.data[k].IDREASONNOTMOVIMENTEDAMT = delivereds[kd].IDREASONNOTMOVIMENTEDAMT;
+                            res.data[k].QT = res.data[k].QT || delivereds[kd].expected_amt;
+                            res.data[k].QTENTREGUE = delivereds[kd].moved_amt;
+                            res.data[k].unmoved_reason_id = delivereds[kd].unmoved_reason_id;
                             res.data[k].REASONNOTMOVIMENTEDAMT = delivereds[kd].REASONNOTMOVIMENTEDAMT;
-                            res.data[k].OBSERVATIONSNOTMOVIMENTEDAMT = delivereds[kd].OBSERVATIONSNOTMOVIMENTEDAMT;                                    
+                            res.data[k].unmoved_qty_notes = delivereds[kd].unmoved_qty_notes;                                    
                             res.data[k].WEIGHT = delivereds[kd].WEIGHT;
                             res.data[k].WEIGHTTODELIVERY = delivereds[kd].WEIGHTTODELIVERY;
                             res.data[k].WEIGHTDELIVERED = delivereds[kd].WEIGHTDELIVERED;
                             res.data[k].WEIGHTRETURNED = delivereds[kd].WEIGHTRETURNED;
-                            res.data[k].VALUE = delivereds[kd].VALUE;
+                            res.data[k].value = delivereds[kd].value;
                             res.data[k].VALUETODELIVERY = delivereds[kd].VALUETODELIVERY;
                             res.data[k].VALUEDELIVERED = delivereds[kd].VALUEDELIVERED;
                             res.data[k].VALUERETURNED = delivereds[kd].VALUERETURNED;
@@ -520,7 +520,7 @@ class DeliveryController extends RegistersController{
                 } else {
                     idsMovs = [-1]
                 }
-                where = ` where lxm.idmov in (${idsMovs.join(',')}) `
+                where = ` where lxm.mov_id in (${idsMovs.join(',')}) `
             }
             let query = `
                 select
@@ -528,159 +528,159 @@ class DeliveryController extends RegistersController{
                     ls.name AS LOGISTICSTATUS,
                     o.name as ORIGINDATA,
                     m.id_at_origin AS id_at_originMOV,
-                    m.IDENTIFIER,
+                    m.identifier,
                     m.IDCLIENT,
                     p.name AS CLIENTNAME,
-                    m.IDFINANCIALVALUEFORM,
+                    m.financial_value_form_id,
                     rt.name AS FINANCIALVALUEFORM,
                     m.IDSELLER,
                     ps.name AS SELLERNAME,
-                    CASE WHEN max(coalesce(lxim.IDREASONNOTMOVIMENTEDAMT,-1)) > -1 then max(coalesce(lxim.IDREASONNOTMOVIMENTEDAMT,-1)) else null end as IDREASONNOTMOVIMENTEDAMTITEMS,
-                    CASE WHEN max(coalesce(lxim.IDREASONNOTMOVIMENTEDAMT,-1)) > -1 then (SELECT lt.name from Logistic_Reasons lt where lt.id = max(coalesce(lxim.IDREASONNOTMOVIMENTEDAMT,-1))) else null end as REASONNOTMOVIMENTEDAMTITEMS,
-                    COUNT(ix.IDITEM) AS QTITEMS,
-                    COUNT(DISTINCT CASE WHEN lsxi.ISTODELIVERY = 1 THEN ix.IDITEM ELSE NULL END) AS QTITEMSTODELIVERY,
-                    COUNT(DISTINCT CASE WHEN lsxi.ISDELIVERING = 1 THEN ix.IDITEM ELSE NULL END) AS QTITEMSDELIVERING,
-                    COUNT(DISTINCT CASE WHEN lsxi.ISDELIVERED = 1 THEN ix.IDITEM ELSE NULL END) AS QTITEMSDELIVEREDS,
-                    COUNT(DISTINCT CASE WHEN lsxi.ISPARTIALRETURNED = 1 THEN ix.IDITEM ELSE NULL END) AS QTITEMSPARTIALRETURNED,
-                    COUNT(DISTINCT CASE WHEN lsxi.ISTOTALRETURNED = 1 THEN ix.IDITEM ELSE NULL END) AS QTITEMSTOTLARETURNED,
+                    CASE WHEN max(coalesce(lxim.unmoved_reason_id,-1)) > -1 then max(coalesce(lxim.unmoved_reason_id,-1)) else null end as unmoved_reason_idITEMS,
+                    CASE WHEN max(coalesce(lxim.unmoved_reason_id,-1)) > -1 then (SELECT lt.name from Logistic_Reasons lt where lt.id = max(coalesce(lxim.unmoved_reason_id,-1))) else null end as REASONNOTMOVIMENTEDAMTITEMS,
+                    COUNT(ix.item_id) AS QTITEMS,
+                    COUNT(DISTINCT CASE WHEN lsxi.is_to_delivery = 1 THEN ix.item_id ELSE NULL END) AS QTITEMSTODELIVERY,
+                    COUNT(DISTINCT CASE WHEN lsxi.is_delivering = 1 THEN ix.item_id ELSE NULL END) AS QTITEMSDELIVERING,
+                    COUNT(DISTINCT CASE WHEN lsxi.id_delivered = 1 THEN ix.item_id ELSE NULL END) AS QTITEMSDELIVEREDS,
+                    COUNT(DISTINCT CASE WHEN lsxi.is_partial_returned = 1 THEN ix.item_id ELSE NULL END) AS QTITEMSPARTIALRETURNED,
+                    COUNT(DISTINCT CASE WHEN lsxi.is_total_returned = 1 THEN ix.item_id ELSE NULL END) AS QTITEMSTOTLARETURNED,
                     SUM(
                         (
-                            COALESCE(lxim.EXPECTEDAMT,0) 
-                            - COALESCE(lxim.NOTMOVIMENTEDAMT,0)                                    
-                        ) * CASE WHEN coalesce(lxim.IDMEASUREMENTUNIT,im.IDMEASUREMENTUNIT,ist.IDMEASUREMENTUNIT,2) = 2 then 1 else COALESCE(lxim.UNITWEIGHT,im.UNITWEIGHT,ist.UNITWEIGHT,1) end
+                            COALESCE(lxim.expected_amt,0) 
+                            - COALESCE(lxim.unmoved_qty,0)                                    
+                        ) * CASE WHEN coalesce(lxim.measurement_unit_id,im.measurement_unit_id,ist.measurement_unit_id,2) = 2 then 1 else COALESCE(lxim.unit_weight,im.unit_weight,ist.unit_weight,1) end
                     ) AS WEIGHT,
                     SUM(
                         (
-                            COALESCE(lxim.EXPECTEDAMT,0) - (
-                                COALESCE(lxim.MOVIMENTEDAMT,0) 
-                                + COALESCE(lxim.NOTMOVIMENTEDAMT,0)
+                            COALESCE(lxim.expected_amt,0) - (
+                                COALESCE(lxim.moved_amt,0) 
+                                + COALESCE(lxim.unmoved_qty,0)
                             )
-                        ) * CASE WHEN coalesce(lxim.IDMEASUREMENTUNIT,im.IDMEASUREMENTUNIT,ist.IDMEASUREMENTUNIT,2) = 2 then 1 else COALESCE(lxim.UNITWEIGHT,im.UNITWEIGHT,ist.UNITWEIGHT,1) end
+                        ) * CASE WHEN coalesce(lxim.measurement_unit_id,im.measurement_unit_id,ist.measurement_unit_id,2) = 2 then 1 else COALESCE(lxim.unit_weight,im.unit_weightt,ist.unit_weight,1) end
                     ) AS WEIGHTTODELIVERY,
                     SUM(
-                        COALESCE(lxim.MOVIMENTEDAMT,0) 
-                        * CASE WHEN coalesce(lxim.IDMEASUREMENTUNIT,im.IDMEASUREMENTUNIT,ist.IDMEASUREMENTUNIT,2) = 2 then 1 else COALESCE(lxim.UNITWEIGHT,im.UNITWEIGHT,ist.UNITWEIGHT,1) end
+                        COALESCE(lxim.moved_amt,0) 
+                        * CASE WHEN coalesce(lxim.measurement_unit_id,im.measurement_unit_id,ist.measurement_unit_id,2) = 2 then 1 else COALESCE(lxim.unit_weight,im.unit_weight,ist.unit_weight,1) end
                     ) AS WEIGHTDELIVERED,
                     SUM(
-                        COALESCE(lxim.NOTMOVIMENTEDAMT,0) 
-                        * CASE WHEN coalesce(lxim.IDMEASUREMENTUNIT,im.IDMEASUREMENTUNIT,ist.IDMEASUREMENTUNIT,2) = 2 then 1 else COALESCE(lxim.UNITWEIGHT,im.UNITWEIGHT,ist.UNITWEIGHT,1) end
+                        COALESCE(lxim.unmoved_qty,0) 
+                        * CASE WHEN coalesce(lxim.measurement_unit_id,im.measurement_unit_id,ist.measurement_unit_id,2) = 2 then 1 else COALESCE(lxim.unit_weight,im.unit_weight,ist.unit_weight,1) end
                     ) AS WEIGHTRETURNED,
                     SUM(
                         (
-                            COALESCE(lxim.EXPECTEDAMT,0) 
-                            - COALESCE(lxim.NOTMOVIMENTEDAMT,0)                                    
-                        ) * coalesce(im.UNITVALUE,0)
-                    ) AS VALUE,
+                            COALESCE(lxim.expected_amt,0) 
+                            - COALESCE(lxim.unmoved_qty,0)                                    
+                        ) * coalesce(im.unit_value,0)
+                    ) AS value,
                     SUM(
                         (
-                            COALESCE(lxim.EXPECTEDAMT,0) - (
-                                COALESCE(lxim.MOVIMENTEDAMT,0) 
-                                + COALESCE(lxim.NOTMOVIMENTEDAMT,0)
+                            COALESCE(lxim.expected_amt,0) - (
+                                COALESCE(lxim.moved_amt,0) 
+                                + COALESCE(lxim.unmoved_qty,0)
                             )
-                        ) * coalesce(im.UNITVALUE,0)
+                        ) * coalesce(im.unit_value,0)
                     ) AS VALUETODELIVERY,
                     SUM(
-                        COALESCE(lxim.MOVIMENTEDAMT,0) 
-                        * coalesce(im.UNITVALUE,0)
+                        COALESCE(lxim.moved_amt,0) 
+                        * coalesce(im.unit_value,0)
                     ) AS VALUEDELIVERED,
                     SUM(
-                        COALESCE(lxim.NOTMOVIMENTEDAMT,0) 
-                        * coalesce(im.UNITVALUE,0)
+                        COALESCE(lxim.unmoved_qty,0) 
+                        * coalesce(im.unit_value,0)
                     ) AS VALUERETURNED,
                     SUM(
-                        CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.MONEY} THEN
+                        CASE WHEN m.financial_value_form_id = ${Financial_Value_Forms.MONEY} THEN
                             (
-                                COALESCE(lxim.EXPECTEDAMT,0) 
-                                - COALESCE(lxim.NOTMOVIMENTEDAMT,0)
-                            ) * COALESCE(im.UNITVALUE,0)
+                                COALESCE(lxim.expected_amt,0) 
+                                - COALESCE(lxim.unmoved_qty,0)
+                            ) * COALESCE(im.unit_value,0)
                         ELSE 0 END
                     ) AS MONEY,
                     (SELECT
-                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.MONEY} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
+                        sum(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.MONEY} then coalesce(lxmr.received_value,0) else 0 end)
                     FROM
                         Logistic_Orders_X_Movs_X_Receipt_Values lxmr
                     WHERE
-                        lxmr.IDLOGISTICORDERXMOV = lxm.id
-                        and coalesce(lxmr.RECEIVEDVALUE,0) > 0
+                        lxmr.mov_logistic_order_id = lxm.id
+                        and coalesce(lxmr.received_value,0) > 0
                     ) AS MONEYRECEIVED,
                     SUM(
-                        CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CARD} THEN
+                        CASE WHEN m.financial_value_form_id = ${Financial_Value_Forms.CARD} THEN
                             (
-                                COALESCE(lxim.EXPECTEDAMT,0) 
-                                - COALESCE(lxim.NOTMOVIMENTEDAMT,0)
-                            ) * COALESCE(im.UNITVALUE,0)
+                                COALESCE(lxim.expected_amt,0) 
+                                - COALESCE(lxim.unmoved_qty,0)
+                            ) * COALESCE(im.unit_value,0)
                         ELSE 0 END
                     ) AS CARD,
                     (SELECT
-                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CARD} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
+                        sum(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.CARD} then coalesce(lxmr.received_value,0) else 0 end)
                     FROM
                         Logistic_Orders_X_Movs_X_Receipt_Values lxmr
                     WHERE
-                        lxmr.IDLOGISTICORDERXMOV = lxm.id
-                        and coalesce(lxmr.RECEIVEDVALUE,0) > 0
+                        lxmr.mov_logistic_order_id = lxm.id
+                        and coalesce(lxmr.received_value,0) > 0
                     ) AS CARDRECEIVED,
                     SUM(
-                        CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CHECK} THEN
+                        CASE WHEN m.financial_value_form_id = ${Financial_Value_Forms.CHECK} THEN
                             (
-                                COALESCE(lxim.EXPECTEDAMT,0) 
-                                - COALESCE(lxim.NOTMOVIMENTEDAMT,0)
-                            ) * COALESCE(im.UNITVALUE,0)
+                                COALESCE(lxim.expected_amt,0) 
+                                - COALESCE(lxim.unmoved_qty,0)
+                            ) * COALESCE(im.unit_value,0)
                         ELSE 0 END
                     ) AS "CHECK",
                     (SELECT
-                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.CHECK} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
+                        sum(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.CHECK} then coalesce(lxmr.received_value,0) else 0 end)
                     FROM
                         Logistic_Orders_X_Movs_X_Receipt_Values lxmr
                     WHERE
-                        lxmr.IDLOGISTICORDERXMOV = lxm.id
-                        and coalesce(lxmr.RECEIVEDVALUE,0) > 0
+                        lxmr.mov_logistic_order_id = lxm.id
+                        and coalesce(lxmr.received_value,0) > 0
                     ) AS CHECKRECEIVED,
                     SUM(
-                        CASE WHEN m.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.PIX} THEN
+                        CASE WHEN m.financial_value_form_id = ${Financial_Value_Forms.PIX} THEN
                             (
-                                COALESCE(lxim.EXPECTEDAMT,0) 
-                                - COALESCE(lxim.NOTMOVIMENTEDAMT,0)
-                            ) * COALESCE(im.UNITVALUE,0)
+                                COALESCE(lxim.expected_amt,0) 
+                                - COALESCE(lxim.unmoved_qty,0)
+                            ) * COALESCE(im.unit_value,0)
                         ELSE 0 END
                     ) AS PIX,
                     (SELECT
-                        sum(CASE WHEN lxmr.IDFINANCIALVALUEFORM = ${Financial_Value_Forms.PIX} then coalesce(lxmr.RECEIVEDVALUE,0) else 0 end)
+                        sum(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.PIX} then coalesce(lxmr.received_value,0) else 0 end)
                     FROM
                         Logistic_Orders_X_Movs_X_Receipt_Values lxmr
                     WHERE
-                        lxmr.IDLOGISTICORDERXMOV = lxm.id
-                        and coalesce(lxmr.RECEIVEDVALUE,0) > 0
+                        lxmr.mov_logistic_order_id = lxm.id
+                        and coalesce(lxmr.received_value,0) > 0
                     ) AS PIXRECEIVED
                 from
                     Logistic_Orders_X_Movs lxm 
-                    left outer join Logistic_Status ls on ls.id = lxm.idlogisticstatus
-                    left outer join Movements m on m.id = lxm.idmov                            
+                    left outer join Logistic_Status ls on ls.id = lxm.logistic_status_id
+                    left outer join Movements m on m.id = lxm.mov_id                            
                     left outer join Data_Origins o on o.id = m.data_origin_id
                     left outer join Clients c on c.id = m.idclient
                     left outer join People p on p.id = c.people_id
-                    left outer join Financial_Value_Forms rt on rt.id = m.IDFINANCIALVALUEFORM
+                    left outer join Financial_Value_Forms rt on rt.id = m.financial_value_form_id
                     left outer join Collaborators cl on cl.id = m.idseller
                     left outer join People ps on ps.id = cl.people_id
-                    left outer join movs_x_items_stocks mxis on mxis.IDMOV = m.id
-                    left outer join item_mov_amounts im on im.IDMOVXITEMSTOCK = mxis.id
-                    left outer join item_stocks ist on ist.id = mxis.IDITEMSTOCK
-                    left outer join Items_X_Lots_X_Conteiners ix on ix.id = ist.IDITEMXLOTXCONTEINER
-                    left outer join items i on i.id = iX.IDITEM
+                    left outer join movs_x_items_stocks mxis on mxis.mov_id = m.id
+                    left outer join item_mov_amounts im on im.mov_x_item_stock_id = mxis.id
+                    left outer join item_stocks ist on ist.id = mxis.stock_item_id
+                    left outer join Items_X_Lots_X_Containers ix on ix.id = ist.item_lot_container_id
+                    left outer join items i on i.id = iX.item_id
                     left outer join logistic_orders_x_items_mov_amt lxim on (
-                        lxim.IDLOGISTICORDERXMOV = lxm.id
-                        AND lxim.IDITEMMOVAMT = im.id
+                        lxim.mov_logistic_order_id = lxm.id
+                        AND lxim.item_mov_amt_id = im.id
                     )
-                    left outer join Logistic_Status lsxi on lsxi.id = lxim.IDLOGISTICSTATUS
+                    left outer join Logistic_Status lsxi on lsxi.id = lxim.logistic_status_id
                 ${where||''}
                 GROUP BY
                     ${Object.keys(Logistic_Orders_X_Movs.fields).map(el=>`lxm.${el}`).join(',')},
                     ls.name,
                     o.name,
                     m.id_at_origin,
-                    m.IDENTIFIER,
+                    m.identifier,
                     m.IDCLIENT,
                     p.name,
-                    m.IDFINANCIALVALUEFORM,
+                    m.financial_value_form_id,
                     rt.name,
                     m.IDSELLER,
                     ps.name
@@ -743,7 +743,7 @@ class DeliveryController extends RegistersController{
                         s.NUMTRANSVENDA,
                         s.CODCLI as IDCLIENTORIGIN,
                         s.CODCLI,
-                        s.NUMNOTA AS IDENTIFIER,
+                        s.NUMNOTA AS identifier,
                         s.NUMNOTA,
                         s.DTSAIDA AS DTEMISSAO,
                         s.CODCOB AS IDFINANCIALCOLLECTIONORIGIN,
@@ -764,7 +764,7 @@ class DeliveryController extends RegistersController{
                         s.COD AS NUMTRANSVENDA,
                         s.CODCLIENTE as IDCLIENTORIGIN,
                         s.CODCLIENTE AS CODCLI,
-                        s.NUMNOTAORIGEM AS IDENTIFIER,
+                        s.NUMNOTAORIGEM AS identifier,
                         s.NUMNOTAORIGEM AS NUMNOTA,
                         s.DTEMISSAO AS DTEMISSAO,
                         null AS IDFINANCIALCOLLECTIONORIGIN,
@@ -807,13 +807,13 @@ class DeliveryController extends RegistersController{
                         select
                             m.data_origin_id,
                             m.id_at_origin,
-                            lxm.IDLOGISTICSTATUS,
+                            lxm.logistic_status_id,
                             ls.name AS LOGISTICSTATUS
                         from
                             Logistic_Orders l
-                            join Logistic_Orders_X_Movs lxm on lxm.IDLOGISTICORDER = l.id
-                            left outer join Movements m on m.id = lxm.IDMOV
-                            left outer join Logistic_Status ls on ls.id = lxm.IDLOGISTICSTATUS
+                            join Logistic_Orders_X_Movs lxm on lxm.logistic_order_id = l.id
+                            left outer join Movements m on m.id = lxm.mov_id
+                            left outer join Logistic_Status ls on ls.id = lxm.logistic_status_id
                         where
                             l.id_at_origin = ${req.body.id_at_origin}
                     `;
@@ -824,7 +824,7 @@ class DeliveryController extends RegistersController{
                     dataTemp = Utils.arrayToObject(dataTemp[0] || [],['data_origin_id','id_at_origin']);
                     Utils.log(dataTemp);
                     for(let key in res.data) {
-                        res.data[key].IDLOGISTICSTATUS = ((dataTemp[res.data[key].data_origin_id.toString()]||{})[res.data[key].id_at_origin.toString()]||{})[0]?.IDLOGISTICSTATUS;
+                        res.data[key].logistic_status_id = ((dataTemp[res.data[key].data_origin_id.toString()]||{})[res.data[key].id_at_origin.toString()]||{})[0]?.logistic_status_id;
                         res.data[key].LOGISTICSTATUS = ((dataTemp[res.data[key].data_origin_id.toString()]||{})[res.data[key].id_at_origin.toString()]||{})[0]?.LOGISTICSTATUS;
                     }
                 }
@@ -892,11 +892,11 @@ class DeliveryController extends RegistersController{
                         concat(st.name,',',a.number,',',ct.name,' - ',stt.sigla,',',ctr.name) as GOOGLEADDRESS
                     from
                         logistic_logs lg 
-                        join tables t on LOWER(t.name) = LOWER('logistic_orders_x_items_mov_amt') and lg.IDTABLEREF = t.id
-                        join logistic_orders_x_items_mov_amt lxim on lxim.id = lg.idregisterref
-                        join logistic_orders_x_movs lxm on lxm.id = lxim.IDLOGISTICORDERXMOV
+                        join tables t on LOWER(t.name) = LOWER('logistic_orders_x_items_mov_amt') and lg.table_ref_id = t.id
+                        join logistic_orders_x_items_mov_amt lxim on lxim.id = lg.record_ref_id
+                        join logistic_orders_x_movs lxm on lxm.id = lxim.mov_logistic_order_id
                         join logistic_orders l on l.id = lxm.idlogisticorder
-                        join movements m on m.id = lxm.idmov
+                        join movements m on m.id = lxm.mov_id
                         join clients c on c.id = m.idclient
                         join people p on p.id = c.people_id
                         left outer join people_x_addresses x on x.people_id = p.id
@@ -909,9 +909,9 @@ class DeliveryController extends RegistersController{
                         left outer join countries ctr on ctr.id = stt.idcountry
                     where
                         l.id_at_origin = ${req.body.id_at_origin}
-                        AND lg.COLUMNNAME = 'IDSTATUSENTREGA'
-                        and lg.OPERATION in ('UPDATE','INSERT')
-                        and lg.NEWVALUE IN (3,4,5)
+                        AND lg.column_name = 'IDSTATUSENTREGA'
+                        and lg.operation in ('UPDATE','INSERT')
+                        and lg.new_value IN (3,4,5)
                     group by
                         date_format(lg.created_at,'%Y-%m-%d %H:%i'),
                         cast(regexp_replace(p.identifier_doc,'[^0-9]','') as decimal(32)),

@@ -44,15 +44,15 @@ class Stock_Entities extends BaseTableModel {
       IDUSER:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDCOLLABORATOR:{
+      collaborator_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      ORDERNUM:{
+      numeric_order:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:0
       },
-      PRECEDENCE:{
+      precedence:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:0
@@ -70,7 +70,7 @@ class Stock_Entities extends BaseTableModel {
     Sequelize.literal(`(COALESCE(IDSUPPLIER,0))`),
     Sequelize.literal(`(COALESCE(IDCLIENT,0))`),
     Sequelize.literal(`(COALESCE(IDUSER,0))`),
-    Sequelize.literal(`(COALESCE(IDCOLLABORATOR,0))`)
+    Sequelize.literal(`(COALESCE(collaborator_id,0))`)
   ];
 
   static constraints = [...(Stock_Entities.getBaseTableModelConstraints() || []),...[
@@ -137,7 +137,7 @@ class Stock_Entities extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDCOLLABORATOR'],
+      fields: ['collaborator_id'],
       type: 'foreign key',
       references: { 
           table: Collaborators,

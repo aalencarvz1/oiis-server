@@ -18,27 +18,27 @@ class Condictions extends BaseTableModel {
 
   static fields = {
     ...Condictions.getBaseTableModelFields(),...{           
-      IDENTITYTYPE:{
+      entity_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDENTITY:{
+      entity_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDREGISTER:{
+      record_id:{
         type: DataTypes.BIGINT.UNSIGNED,
       },
-      IDCOMPARATION:{
+      comparation_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      EXPRESSION: {
+      expression: {
         type: DataTypes.TEXT
       },
-      STARTDATE:{
+      start_date:{
         type: DataTypes.DATE
       },
-      ENDDATE:{
+      end_date:{
         type: DataTypes.DATE
       },
       observations:{
@@ -48,11 +48,11 @@ class Condictions extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDENTITYTYPE',
-    'IDENTITY',
-    Sequelize.literal(`(COALESCE(IDREGISTER,0))`),
-    Sequelize.literal(`(COALESCE(IDCOMPARATION,0))`),
-    Sequelize.literal(`(COALESCE(STARTDATE,'1900-01-01'))`)
+    'entity_type_id',
+    'entity_id',
+    Sequelize.literal(`(COALESCE(record_id,0))`),
+    Sequelize.literal(`(COALESCE(comparation_id,0))`),
+    Sequelize.literal(`(COALESCE(start_date,'1900-01-01'))`)
   ];
 
   static constraints = [...(Condictions.getBaseTableModelConstraints() || []),...[
@@ -65,7 +65,7 @@ class Condictions extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDENTITYTYPE'],
+      fields: ['entity_type_id'],
       type: 'foreign key',
       references: { 
           table: Entities_Types,
@@ -74,7 +74,7 @@ class Condictions extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDCOMPARATION'],
+      fields: ['comparation_id'],
       type: 'foreign key',
       references: { 
           table: Comparators,

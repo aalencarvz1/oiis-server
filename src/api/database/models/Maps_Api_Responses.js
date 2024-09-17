@@ -18,7 +18,7 @@ class Maps_Api_Responses extends BaseTableModel {
       ENTITY: {
         type: DataTypes.STRING(255)
       },
-      IDENTITY: {
+      entity_id: {
         type: DataTypes.STRING(255)
       },
       LIBRARY: {

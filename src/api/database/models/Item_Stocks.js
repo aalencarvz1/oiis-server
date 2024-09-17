@@ -8,7 +8,7 @@ const { Item_Status } = require("./Item_Status");
 const { Warehouse_Addresses } = require("./Warehouse_Addresses");
 const { Stock_Entity_Relationship_Types } = require("./Stock_Entity_Relationship_Types");
 const { Stock_Entities } = require("./Stock_Entities");
-const { Items_X_Lots_X_Conteiners } = require("./Items_X_Lots_X_Conteiners");
+const { Items_X_Lots_X_Containers } = require("./Items_X_Lots_X_Containers");
 
 
 
@@ -21,58 +21,58 @@ class Item_Stocks extends BaseTableModel{
   static model = null;
   static fields = {
     ...Item_Stocks.getBaseTableModelFields(),...{           
-      IDITEMXLOTXCONTEINER:{
+      item_lot_container_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDSTOCKRELATIONSHIPTYPE:{
+      stock_relationship_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:Stock_Entity_Relationship_Types.OWNER
       },
-      IDSTOCKENTITY:{
+      stock_entity_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false        
       },
-      IDWAREHOUSEADDRESS:{
+      warehouse_address_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDSTATUSITEMSTOCK:{
+      item_stock_status_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:Item_Status.NORMAL
       },
-      IDMEASUREMENTUNIT:{
+      measurement_unit_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDPACKAGING:{
+      packaging_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      UNITWEIGHT:{
+      unit_weight:{
         type: DataTypes.DECIMAL(32,10)
       },      
-      PACKAGEWEIGHT:{
+      package_weight:{
         type: DataTypes.DECIMAL(32,10)
       },      
-      UNITVOLUME:{
+      unit_volume:{
         type: DataTypes.DECIMAL(32,10)
       },      
-      PACKAGEVOLUME:{
+      package_volume:{
         type: DataTypes.DECIMAL(32,10)
       },      
-      AMOUNT:{
+      amount:{
         type: DataTypes.DECIMAL(32,10),
         allowNull:false,
         defaultValue:0
       },
-      ORDERNUM:{
+      numeric_order:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:0
       },
-      PRECEDENCE:{
+      precedence:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:0
@@ -84,13 +84,13 @@ class Item_Stocks extends BaseTableModel{
   };
   
   static uniqueFields = [
-    'IDITEMXLOTXCONTEINER',
-    'IDSTOCKRELATIONSHIPTYPE',
-    'IDSTOCKENTITY',
-    Sequelize.literal(`(COALESCE(IDWAREHOUSEADDRESS,0))`),
-    'IDSTATUSITEMSTOCK',
-    'IDMEASUREMENTUNIT',
-    'IDPACKAGING'
+    'item_lot_container_id',
+    'stock_relationship_type_id',
+    'stock_entity_id',
+    Sequelize.literal(`(COALESCE(warehouse_address_id,0))`),
+    'item_stock_status_id',
+    'measurement_unit_id',
+    'packaging_id'
   ];
 
   static constraints = [...(Item_Stocks.getBaseTableModelConstraints() || []),...[
@@ -103,16 +103,16 @@ class Item_Stocks extends BaseTableModel{
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDITEMXLOTXCONTEINER'],
+      fields: ['item_lot_container_id'],
       type: 'foreign key',
       references: { 
-          table: Items_X_Lots_X_Conteiners,
+          table: Items_X_Lots_X_Containers,
           field: 'id'
       },
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDSTOCKRELATIONSHIPTYPE'],
+      fields: ['stock_relationship_type_id'],
       type: 'foreign key',
       references: { 
           table: Stock_Entity_Relationship_Types,
@@ -121,7 +121,7 @@ class Item_Stocks extends BaseTableModel{
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDSTOCKENTITY'],
+      fields: ['stock_entity_id'],
       type: 'foreign key',
       references: { 
           table: Stock_Entities,
@@ -130,7 +130,7 @@ class Item_Stocks extends BaseTableModel{
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDWAREHOUSEADDRESS'],
+      fields: ['warehouse_address_id'],
       type: 'foreign key',
       references: { 
           table: Warehouse_Addresses,
@@ -139,7 +139,7 @@ class Item_Stocks extends BaseTableModel{
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDSTATUSITEMSTOCK'],
+      fields: ['item_stock_status_id'],
       type: 'foreign key',
       references: { 
           table: Item_Status,
@@ -148,7 +148,7 @@ class Item_Stocks extends BaseTableModel{
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDMEASUREMENTUNIT'],
+      fields: ['measurement_unit_id'],
       type: 'foreign key',
       references: { 
           table: Measurement_Units,
@@ -157,7 +157,7 @@ class Item_Stocks extends BaseTableModel{
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDPACKAGING'],
+      fields: ['packaging_id'],
       type: 'foreign key',
       references: { 
           table: Packagings,

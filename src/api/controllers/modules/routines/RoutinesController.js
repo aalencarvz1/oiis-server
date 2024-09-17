@@ -30,20 +30,20 @@ class RoutinesController extends RegistersController{
             let query = `
                  SELECT 
                     MODULES.id,
-                    MODULES.IDSUP,
+                    MODULES.parent_id,
                     MODULES.name,
                     MODULES.ICON,
-                    MODULES.PATH,
-                    MODULES.ORDERNUM,
+                    MODULES.path,
+                    MODULES.numeric_order,
                     MODULES.description,
                     ROUTINES.id AS ROUTINEID,
-                    ROUTINES.IDSUP AS ROUTINEIDSUP,
+                    ROUTINES.parent_id AS ROUTINEIDSUP,
                     ROUTINES.IDROUTINETYPE AS ROUTINEIDROUTINETYPE,
                     ROUTINES.IDMODULE AS ROUTINEIDMODULE,
                     ROUTINES.name AS ROUTINENAME,
                     ROUTINES.ICON AS ROUTINEICON,
                     ROUTINES.VIEWPATH AS ROUTINEVIEWPATH,
-                    ROUTINES.ORDERNUM AS ROUTINEORDERNUM,
+                    ROUTINES.numeric_order AS ROUTINEORDERNUM,
                     ROUTINES.SHOWINMENU AS ROUTINESHOWINMENU,
                     ROUTINES.description AS ROUTINEDESCRIPTION
                 FROM
@@ -102,8 +102,8 @@ class RoutinesController extends RegistersController{
                         OR PERMISSIONS.IDMODULE IS NOT NULL
                     )    
                 ORDER BY 
-                    COALESCE(MODULES.ORDERNUM, MODULES.id),
-                    COALESCE(ROUTINES.ORDERNUM, ROUTINES.id);    
+                    COALESCE(MODULES.numeric_order, MODULES.id),
+                    COALESCE(ROUTINES.numeric_order, ROUTINES.id);    
             `;
             res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
             res.data = res.data[0] || [];
@@ -114,13 +114,13 @@ class RoutinesController extends RegistersController{
                     nestedModules[res.data[i].id].ROUTINES = nestedModules[res.data[i].id].ROUTINES || {};
                     nestedModules[res.data[i].id].ROUTINES[res.data[i].ROUTINEID] = {
                         id: res.data[i].ROUTINEID,
-                        IDSUP: res.data[i].ROUTINEIDSUP,
+                        parent_id: res.data[i].ROUTINEIDSUP,
                         IDROUTINETYPE: res.data[i].ROUTINEIDROUTINETYPE,
                         IDMODULE: res.data[i].ROUTINEIDMODULE,
                         name: res.data[i].ROUTINENAME,
                         ICON: res.data[i].ROUTINEICON,
                         VIEWPATH: res.data[i].ROUTINEVIEWPATH,
-                        ORDERNUM: res.data[i].ROUTINEORDERNUM,
+                        numeric_order: res.data[i].ROUTINEORDERNUM,
                         SHOWINMENU: res.data[i].ROUTINESHOWINMENU,
                         description: res.data[i].ROUTINEDESCRIPTION
                     };
@@ -128,16 +128,16 @@ class RoutinesController extends RegistersController{
             }
 
             for(let key in nestedModules) {
-                if (Utils.hasValue(nestedModules[key].IDSUP)) {
-                    nestedModules[nestedModules[key].IDSUP].SUBS = nestedModules[nestedModules[key].IDSUP]?.SUBS || {};
-                    nestedModules[nestedModules[key].IDSUP].SUBS[key] = nestedModules[key];
+                if (Utils.hasValue(nestedModules[key].parent_id)) {
+                    nestedModules[nestedModules[key].parent_id].SUBS = nestedModules[nestedModules[key].parent_id]?.SUBS || {};
+                    nestedModules[nestedModules[key].parent_id].SUBS[key] = nestedModules[key];
                     nestedModules[key].moved = true;                        
                 }
                 if (Utils.hasValue(nestedModules[key].ROUTINES)) {
                     for(let kr in  nestedModules[key].ROUTINES ) {                
-                        if (Utils.hasValue(nestedModules[key].ROUTINES[kr].IDSUP)) {
-                            nestedModules[key].ROUTINES[nestedModules[key].ROUTINES[kr].IDSUP].SUBS = nestedModules[key].ROUTINES[nestedModules[key].ROUTINES[kr].IDSUP].SUBS || {};
-                            nestedModules[key].ROUTINES[nestedModules[key].ROUTINES[kr].IDSUP].SUBS[kr] = nestedModules[key].ROUTINES[kr];
+                        if (Utils.hasValue(nestedModules[key].ROUTINES[kr].parent_id)) {
+                            nestedModules[key].ROUTINES[nestedModules[key].ROUTINES[kr].parent_id].SUBS = nestedModules[key].ROUTINES[nestedModules[key].ROUTINES[kr].parent_id].SUBS || {};
+                            nestedModules[key].ROUTINES[nestedModules[key].ROUTINES[kr].parent_id].SUBS[kr] = nestedModules[key].ROUTINES[kr];
                             nestedModules[key].ROUTINES[kr].moved = true;
                         }
                     }

@@ -36,7 +36,16 @@ let oldTables = {
     }
   },
   connections:{
-    tableName:"DATACONNECTIONS"
+    tableName:"DATACONNECTIONS",
+    columns:{
+      ISDEFAULT:"is_default",
+    }
+  },
+  errors:{
+    columns:{
+      OBJECTTYPE:"object_type",
+      OBJECTNAME:"object_name"
+    }
   },
   schemas:{
     tableName:"DATASCHEMAS"
@@ -45,7 +54,18 @@ let oldTables = {
     tableName:"ENTITIESTYPES"
   },
   data_types:{
-    tableName:"DATATYPES"
+    tableName:"DATATYPES",
+    columns:{
+      ISBOOLEAN:"is_bool",
+      ISTEXT:"is_text",
+      ISNUMBER:"is_number",
+      ISARRAY:"is_array",
+      ISOBJECT:"is_object",
+      ISDECIMAL:"is_decimal",
+      ISDATE:"is_date",
+      ISTIME:"is_time",
+      ISOTHER:"is_other",
+    }
   },  
   action_status:{
     tableName:"ACTIONSSTATUS",
@@ -79,7 +99,10 @@ let oldTables = {
     }
   },
   identifier_types:{
-    tableName:"IDENTIFIERSTYPES"
+    tableName:"IDENTIFIERSTYPES",
+    columns:{
+      PROCESSTOVALIDATE:"process_to_validate"
+    }
   },  
   value_names:{
     tableName:"VALUESNAMES"
@@ -121,19 +144,41 @@ let oldTables = {
     tableName:"CONTRACTSTYPES"
   },    
   currencies:{
-    tableName:"CURRENCIESTYPES"
+    tableName:"CURRENCIESTYPES",
+    columns:{
+      ISPHYSICAL: "is_physical"
+    }
   },    
   form_types:{
     tableName:"FORMSTYPES"
   },    
   financial_value_forms:{
-    tableName:"FINANCIALVALUEFORMS"
+    tableName:"FINANCIALVALUEFORMS",
+    columns:{
+      IDSUP:"parent_id",
+      ISPHYSICAL:"is_physical",
+      ISCARD:"is_card",
+      ISELETRONIC:"is_eletronic",
+      ISCHECK:"is_check",
+      ISDEPOSIT:"is_deposit",
+      ISBOLET:"is_bolet"
+    }
   },    
   financial_value_localization_types:{
-    tableName:"FINANCIALVALUELOCALIZATIONSTYPES"
+    tableName:"FINANCIALVALUELOCALIZATIONSTYPES",
+    columns:{
+      IDSUP:"parent_id",
+      ISPHYSICAL:"is_physical",
+      ISELETRONIC:"is_eletronic"
+    }
   },     
   financial_value_mov_types:{
-    tableName:"FINANCIALVALUEMOVTYPES"
+    tableName:"FINANCIALVALUEMOVTYPES",
+    columns:{
+      IDSUP:"parent_id",
+      ISPHYSICAL:"is_physical",
+      ISELETRONIC:"is_eletronic"
+    }
   },    
   cities:{
     columns:{
@@ -177,6 +222,11 @@ let oldTables = {
   contact_types:{
     tableName:"CONTACTSTYPES"
   },
+  contacts:{
+    columns:{
+      IDCONTACTTYPE:"contact_type_id"
+    }
+  },
   addresses:{
     columns:{
       IDADDRESSTYPE:"address_type_id",
@@ -217,6 +267,12 @@ let oldTables = {
       IDCOMPANY:"company_id"
     }
   },
+  greatnesses:{
+    columns:{
+      ISSCALAR:"is_scalar",
+      ISVETORIAL:"is_vetorial"
+    }
+  },
   warehouses:{
     columns:{
       IDPEOPLE:"people_id",
@@ -249,13 +305,31 @@ let oldTables = {
     }
   },
   collaborator_functions:{
-    tableName:"COLLABORATORSFUNCTIONS"
+    tableName:"COLLABORATORSFUNCTIONS",
+    columns:{
+      ISTRUST:"is_trust",
+      ISTIMECONTROLLED:"is_time_controlled"
+    }
   },    
   collaborator_contracts:{
-    tableName:"COLLABORATORSCONTRACTS"
+    tableName:"COLLABORATORSCONTRACTS",
+    columns:{
+      IDCOLLABORATOR:"collaborator_id",
+      IDCONTRACTTYPE:"contract_type_id",
+      STARTDATE:"start_date",
+      ENDDATE:"end_date",
+      ISTIMECONTROLLED:"is_time_controlled"
+    }
   },      
   collaborators_x_functions:{
-    tableName:"COLLABORATORSXFUNCTIONS"
+    tableName:"COLLABORATORSXFUNCTIONS",
+    columns:{
+      IDCONTRACT:"contrract_id",
+      IDFUNCTION:"function_id",
+      STARTDATE:"start_date",
+      ENDDATE:"end_date",
+      ISTIMECONTROLLED:"is_time_controlled"
+    }
   },      
   clients:{
     columns:{
@@ -270,26 +344,83 @@ let oldTables = {
   power_types:{
     tableName:"POWERSTYPES"
   },        
+  condictions:{
+    columns:{
+      IDENTITYTYPE:"entity_type_id",
+      IDENTITY:"entity_id",
+      IDREGISTER:"record_id",
+      IDCOMPARATION:"comparation_id",
+      STARTDATE:"start_date",
+      ENDDATE:"end_date"
+    }
+  },
   condiction_items:{
-    tableName:"CONDICTIONSITEMS"
+    tableName:"CONDICTIONSITEMS",
+    columns:{
+      IDCONDICTION:"condiction_id"
+    }
   },      
-  conteiner_types:{
+  container_types:{
     tableName:"CONTEINERSTYPES"
   },      
-  conteiner_type_dimensions:{
-    tableName:"CONTEINERSTYPESDIMENSIONS"
+  container_type_dimensions:{
+    tableName:"CONTEINERSTYPESDIMENSIONS",
+    columns:{
+      IDCONTEINERTYPE:"container_type_id",
+      IDDIMENSIONTYPE:"dimension_type_id",
+      IDMEASUREMENTUNIT:"measurement_unit_id"
+    }
   },      
-  conteiner_type_capacities:{
-    tableName:"CONTEINERSTYPESCAPACITIES"
-  },          
+  container_type_capacities:{
+    tableName:"CONTEINERSTYPESCAPACITIES",
+    columns:{
+      IDCONTEINERTYPE:"container_type_id",
+      IDCAPACITYTYPE:"capacity_type_id",
+      IDMEASUREMENTUNIT:"measurement_unit_id"
+    }
+  },   
+  containers:{
+    tableName:"CONTEINERS",
+    columns:{
+      IDCONTENIERTYPE:"container_type_id",
+      IDIDENTIFIERTYPE:"identifier_type_id",
+      ALLOWMULTIPLESADDRESSES:"allow_multiple_addresses"
+    }
+  },      
+  continents:{
+    columns:{
+      IDSUP:"parent_id"
+    }
+  },
+  countries:{
+    columns:{
+      IDCONTINENT:"continent_id"
+    }
+  },
   gtin_types:{
     tableName:"GTINSTYPES"
   },      
   item_status:{
-    tableName:"ITEMSSTATUS"
+    tableName:"ITEMSSTATUS",
+    columns:{
+      ISDISPONIBLE:"is_disponible",
+      ISDAMAGED:"is_damaged",
+    }
   },
-  items_x_lots_x_conteiners:{
-    tableName:"ITEMSXLOTSXCONTEINERS"
+  items:{
+    columns:{
+      IDIDENTIFIERTYPE:"identifier_type_id",  
+      IDNCM:"ncm_id",
+      DEFAULTEXPIRATIONTIME:"default_expiration_time"
+    }
+  },
+  items_x_lots_x_containers:{
+    tableName:"ITEMSXLOTSXCONTEINERS",
+    columns:{
+      IDITEM:"item_id",
+      IDLOT:"lot_id",
+      IDCONTEINER:"container_id"
+    }
   },
   stock_entity_relationship_types:{
     tableName:"STOCKSENTITIESRELATIONSHIPSTYPES"
@@ -301,13 +432,53 @@ let oldTables = {
     }
   },
   item_stock_units:{
-    tableName:"ITEMSSTOCKSUNITS"
+    tableName:"ITEMSSTOCKSUNITS",
+    columns:{
+      IDITEMSTOCK:"stock_item_id",
+      IDIDENTIFIERTYPE:"identifier_type_id",
+      IDSTATUSITEMUNIT:"item_unit_status_id",
+      IDMEASUREMENTUNIT:"measurement_unit_id",
+      IDPACKAGING:"packaging_id",
+      UNITWEIGHT:"unit_weight",
+      PACKAGEWEIGHT:"package_weight",
+      UNITVOLUME:"unit_volume",
+      PACKAGEVOLUME:"package_volume",
+      IDVARIABLEMEAUN:"variable_unit_measure_id",
+      VARIABLEAMOUNT:"variable_amount"
+    }
   },  
   item_stocks:{
-    tableName:"ITEMSSTOCKS"
+    tableName:"ITEMSSTOCKS",
+    columns:{
+      IDITEMXLOTXCONTEINER:"item_lot_container_id",
+      IDSTOCKRELATIONSHIPTYPE:"stock_relationship_type_id",
+      IDSTOCKENTITY:"stock_entity_id",
+      IDWAREHOUSEADDRESS:"warehouse_address_id",
+      IDSTATUSITEMSTOCK:"item_stock_status_id",
+      IDMEASUREMENTUNIT:"measurement_unit_id",
+      IDPACKAGING:"packaging_id",
+      UNITWEIGHT:"unit_weight",
+      PACKAGEWEIGHT:"package_weight",
+      UNITVOLUME:"unit_volume",
+      PACKAGEVOLUME:"package_volume",
+      ORDERNUM:"numeric_order"
+    }
   },       
   item_x_meas_x_pack_x_identif:{
-    tableName:"ITEMSXMEAXPACKXIDENTIF"
+    tableName:"ITEMSXMEAXPACKXIDENTIF",
+    columns:{
+      IDITEM:"item_id",
+      IDPACKAGING:"packaging_id",
+      IDMEASUREMENTUNIT:"measurement_unit_id",
+      UNITWEIGHT:"unit_weight",
+      PACKAGEWEIGHT:"package_weight",
+      UNITVOLUME:"unit_volume",
+      PACKAGEVOLUME:"package_volume",
+      IDIDENTIFIERTYPE:"identifier_type_id",
+      IDITEMSTOCK:"stock_item_id",
+      IDSTOCKENTITY:"stock_entity_id",
+      ORDERNUM:"numeric_order"
+    }
   },    
   movement_types:{
     tableName:"MOVEMENTSTYPES"
@@ -346,25 +517,84 @@ let oldTables = {
     tableName:"MOVEMENTSXENTITIES"
   },  
   item_mov_amount_restrictions:{
-    tableName:"ITEMSMOVSAMOUNTSRESTRICTIONS"
+    tableName:"ITEMSMOVSAMOUNTSRESTRICTIONS",
+    columns:{
+      IDITEMMOVAMT: "item_mov_amt_id",
+      IDIDENTIFIERTYPE: "identifier_type_id",
+      IDVALUENAME: "value_name_id"
+    }
   },  
   item_mov_amounts:{
-    tableName:"ITEMSMOVSAMOUNTS"
+    tableName:"ITEMSMOVSAMOUNTS",
+    columns:{
+      IDMOVXITEMSTOCK: "mov_x_item_stock_id",
+      IDTYPEMOV: "type_mov_id",
+      IDMEASUREMENTUNIT:"measurement_unit_id",
+      IDPACKAGING: "packaging_id",
+      UNITWEIGHT: "unit_weight",
+      PACKAGEWEIGHT: "package_weight",
+      UNITVOLUME: "unit_volume",
+      PACKAGEVOLUME: "package_volume",
+      UNITVALUE: "unit_value",
+      IDSTATUSMOV: "status_mov_id",
+      MOVSTARTED_AT: "mov_started_at",
+      MOVENDED_AT: "mov_ended_at",
+      EXPECTEDAMT: "expected_amt",
+      MOVIMENTEDAMT: "moved_amt"
+    }
   },   
   item_mov_units:{
-    tableName:"ITEMSMOVSUNITS"
+    tableName:"ITEMSMOVSUNITS",
+    columns:{
+      IDITEMMOVAMT: "item_mov_amt_id",
+      IDIDENTIFIERTYPE: "identifier_type_id",
+      IDMEASUREMENTUNIT:"measurement_unit_id",
+      IDPACKAGING: "packaging_id",
+      UNITWEIGHT: "unit_weight",
+      PACKAGEWEIGHT: "package_weight",
+      UNITVOLUME: "unit_volume",
+      PACKAGEVOLUME: "package_volume",
+      IDSTATUSMOV: "status_mov_id",
+      MOVSTARTED_AT: "mov_started_at",
+      MOVENDED_AT: "mov_ended_at",
+      EXPECTEDAMT: "expected_amt",
+      MOVIMENTEDAMT: "moved_amt",
+      IDVARIABLEMEAUN:"variable_unit_measure_id",
+      VARIABLEEXPECTEDAMT:"variable_expected_amt",
+      VARIABLEMOVIMENTEDAMT:"variable_moved_amt",
+    }
   },     
   item_mov_xml_import_id_conversions:{
-    tableName:"ITEMSMOVSXMLIMPORTIDSCONVERSIONS"
+    tableName:"ITEMSMOVSXMLIMPORTIDSCONVERSIONS",
+    columns:{
+      IDOWNERCLIENT: "owner_client_id",
+      DOCEMITENT: "emitent_doc",
+      IDITEMORIGIN: "origin_item_id",
+      FIELDXMLAMOUNT:"xml_quantity_field_name",
+      IDITEM:"item_id",
+      IDPACKAGING: "packaging_id",
+      IDMEASUREMENTUNIT:"measurement_unit_id"
+    }
   },     
   commission_entitiy_codes:{
-    tableName:"COMMISSIONSENTITIESCODES"
+    tableName:"COMMISSIONSENTITIESCODES",
+    columns:{
+      IDTABLEENTITY: "table_entity_id",
+      IDREGISTERENTITY: "record_entity_id",
+      MINIMALVALUE: "minimal_value"
+    }
   },
   commission_items:{
-    tableName:"COMMISSIONSITEMS"
+    tableName:"COMMISSIONSITEMS",
+    columns:{
+      IDCOMMISSIONENTITYCODE: "commission_entity_code_id"
+    }
   },  
   commission_values:{
-    tableName:"COMMISSIONSVALUES"
+    tableName:"COMMISSIONSVALUES",
+    columns:{
+      IDCOMMISSIONITEM: "commission_item_id"
+    }
   },  
   sql_object_types:{
     tableName:"SQLOBJECTSTYPES"
@@ -385,31 +615,128 @@ let oldTables = {
     tableName:"REPORTSDATASFOUNTS"
   },
   logistic_mov_types:{
-    tableName:"LOGISTICMOVTYPES"
+    tableName:"LOGISTICMOVTYPES",
+    columns:{
+      ISINPUT:"is_input",
+      ISOUTPUT:"is_output",
+    }
   },
   logistic_status:{
-    tableName:"LOGISTICSTATUS"
+    tableName:"LOGISTICSTATUS",
+    column:{
+      ISTODELIVERY:"is_to_delivery",
+      ISDELIVERING:"is_delivering",
+      ISDELIVERED:"id_delivered",
+      ISPARTIALRETURNED:"is_partial_returned",
+      ISTOTALRETURNED:"is_total_returned"
+    }
   },  
   logistic_reasons:{
-    tableName:"LOGISTICREASONS"
+    tableName:"LOGISTICREASONS",
+    columns:{
+      SIGLAMOVTYPE:"mov_type_sigla"
+    }
   },    
   logistic_orders:{
-    tableName:"LOGISTICORDERS"
+    tableName:"LOGISTICORDERS",
+    columns:{
+      IDLOGISTICMOVTYPE:"logistic_mov_type_id",
+      IDIDENTIFIERTYPE:"identifier_type_id",
+      IDACTIONSTATUS:"action_status_id",
+      IDLOGISTICSTATUS:"logistic_status_id",
+      IDREASONNOTMOVIMENTEDAMT:"unmoved_reason_id",
+      IDREASONRETREATMOVIMENTEDAMT:"collected_reason_id",
+      OBSERVATIONSNOTMOVIMENTEDAMT:"unmoved_qty_notes",
+      OBSERVATIONSRETREATMOVIMENTEDAMT:"collected_qty_notes",
+      MOVSTARTED_AT:"mov_started_at",
+      MOVENDED_AT:"mov_ended_at"
+    }
   },   
   logistic_orders_x_movs:{
-    tableName:"LOGISTICORDERSXMOVS"
+    tableName:"LOGISTICORDERSXMOVS",
+    columns:{
+      IDLOGISTICORDER:"logistic_order_id",
+      IDMOV:"mov_id",
+      IDACTIONSTATUS:"action_status_id",
+      IDLOGISTICSTATUS:"logistic_status_id",
+      IDREASONNOTMOVIMENTEDAMT:"unmoved_reason_id",
+      IDREASONRETREATMOVIMENTEDAMT:"collected_reason_id",
+      OBSERVATIONSNOTMOVIMENTEDAMT:"unmoved_qty_notes",
+      OBSERVATIONSRETREATMOVIMENTEDAMT:"collected_qty_notes",
+      MOVSTARTED_AT:"mov_started_at",
+      MOVENDED_AT:"mov_ended_at",
+    }
   },    
   logistic_orders_x_movs_x_receipt_values:{
-    tableName:"LOGISTICORDERSXMOVSXRECEIPTVALUES"
+    tableName:"LOGISTICORDERSXMOVSXRECEIPTVALUES",
+    columns:{
+      IDLOGORDRECIPTREF:"logistic_order_movement_receipt_value_ref_id",
+      IDLOGISTICORDER:"logistic_order_id",
+      IDLOGISTICORDERXMOV:"mov_logistic_order_id",
+      IDFINANCIALVALUEFORM:"financial_value_form_id",
+      IDLOGMOVXITEMMOVAMT:"logistic_mov_item_mov_id",
+      IDCURRENCYTYPEEXPECTED:"expected_currency_id",
+      EXPIRATIONDATE:"expiration_date",
+      EXPECTEDVALUE:"expected_value",
+      OBSERVATIONSEXPECTED:"expected_value_notes",
+      IDCURRENCYTYPERECEIVED:"received_currency_id",
+      RECEIVEDVALUE:"received_value",
+      OBSERVATIONSRECEIVED:"received_notes",
+      ORDERNUM:"numeric_order"
+    }
   },    
   logistic_orders_x_items_mov_amt:{
-    tableName:"LOGISTICORDERSXITEMSMOVAMT"
+    tableName:"LOGISTICORDERSXITEMSMOVAMT",
+    columns:{
+      IDLOGISTICORDERXMOV:"mov_logistic_order_id",
+      IDITEMMOVAMT:"item_mov_amt_id",
+      IDLOGISTICMOVTYPE:"logistic_mov_type_id",
+      IDACTIONSTATUS:"action_status_id",
+      IDTYPEMOV:"type_mov_id",
+      IDLOGISTICSTATUS:"logistic_status_id",
+      IDMEASUREMENTUNIT:"measurement_unit_id",
+      IDPACKAGING:"packaging_id",
+      UNITWEIGHT:"unit_weight",
+      PACKAGEWEIGHT:"package_weight",
+      UNITVOLUME:"unit_volume",
+      PACKAGEVOLUME:"package_volume",
+      MOVSTARTED_AT:"mov_started_at",
+      MOVENDED_AT:"mov_ended_at",
+      EXPECTEDAMT:"expected_amt",
+      MOVIMENTEDAMT:"moved_amt",
+      NOTMOVIMENTEDAMT:"unmoved_qty",
+      RETREATMOVIMENTEDAMT:"collected_qty",
+      IDREASONNOTMOVIMENTEDAMT:"unmoved_reason_id",
+      IDREASONRETREATMOVIMENTEDAMT:"collected_reason_id",
+      OBSERVATIONSNOTMOVIMENTEDAMT:"unmoved_qty_notes",
+      OBSERVATIONSRETREATMOVIMENTEDAMT:"collected_qty_notes",
+      PHOTOSNOTMOVIMENTEDAMT:"unmoved_photos",
+      PHOTOSRETREATMOVIMENTEDAMT:"collected_photos",
+
+    }
   },    
   logistic_orders_x_dest_values:{
-    tableName:"LOGISTICORDERSXDESTVALUES"
+    tableName:"LOGISTICORDERSXDESTVALUES",
+    columns:{
+      IDLOGISTICORDER:"logistic_order_id",
+      IDLOGORDFINANCIALVALUEFORM:"logistic_order_financial_value_form_id",
+      IDCURRENCYTYPE:"currenty_type_id",
+      IDFINANCIALVALUEMOVTYPEDEST:"financial_value_mov_type_dest",
+      DESTINATEDVALUE:"destinated_value",
+      ORDERNUM:"numeric_order",
+    }
   }, 
   logistic_logs:{
-    tableName:"LOGISTICLOGS"
+    tableName:"LOGISTICLOGS",
+    columns:{
+      IDTABLEREF:"table_ref_id",
+      IDREGISTERREF:"record_ref_id",
+      JSONOBJECT:"json_object",
+      COLUMNNAME:"column_name",
+      OLDVALUE:"old_value",
+      NEWVALUE:"new_value",
+
+    }
   },    
   tasks_x_status_x_users:{
     tableName:"TASKSXSTATUSXUSERS"

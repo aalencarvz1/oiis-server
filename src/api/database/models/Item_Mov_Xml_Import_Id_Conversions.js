@@ -18,35 +18,35 @@ class Item_Mov_Xml_Import_Id_Conversions extends BaseTableModel {
   static model = null;
   static fields = {
     ...Item_Mov_Xml_Import_Id_Conversions.getBaseTableModelFields(),...{                 
-      IDOWNERCLIENT:{
+      owner_client_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      DOCEMITENT:{
+      emitent_doc:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      IDITEMORIGIN:{
-        type: DataTypes.STRING(256),
-        allowNull: false
-      },
-      FIELDXMLAMOUNT:{
+      origin_item_id:{
         type: DataTypes.STRING(256),
         allowNull: false
       },
-      IDITEM:{
+      xml_quantity_field_name:{
+        type: DataTypes.STRING(256),
+        allowNull: false
+      },
+      item_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDPACKAGING:{
+      packaging_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDMEASUREMENTUNIT:{
+      measurement_unit_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      MULTIPLIER:{
+      multiplier:{
         type: DataTypes.DECIMAL(32,10),
         allowNull:false,
         defaultValue: 1
@@ -55,17 +55,17 @@ class Item_Mov_Xml_Import_Id_Conversions extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDOWNERCLIENT',
-    'DOCEMITENT',
-    'IDITEMORIGIN',
-    'FIELDXMLAMOUNT'
+    'owner_client_id',
+    'emitent_doc',
+    'origin_item_id',
+    'xml_quantity_field_name'
   ];
 
   static constraints = [...(Item_Mov_Xml_Import_Id_Conversions.getBaseTableModelConstraints() || []),...[]];
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDOWNERCLIENT'],
+      fields: ['owner_client_id'],
       type: 'foreign key',
       references: { 
           table: Clients,
@@ -74,7 +74,7 @@ class Item_Mov_Xml_Import_Id_Conversions extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDITEM'],
+      fields: ['item_id'],
       type: 'foreign key',
       references: { 
           table: Items,
@@ -83,7 +83,7 @@ class Item_Mov_Xml_Import_Id_Conversions extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDPACKAGING'],
+      fields: ['packaging_id'],
       type: 'foreign key',
       references: { 
           table: Packagings,
@@ -92,7 +92,7 @@ class Item_Mov_Xml_Import_Id_Conversions extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDMEASUREMENTUNIT'],
+      fields: ['measurement_unit_id'],
       type: 'foreign key',
       references: { 
           table: Measurement_Units,

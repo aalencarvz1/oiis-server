@@ -14,29 +14,29 @@ class Logistic_Logs extends BaseTableModel {
   static model = null;
   static fields = {
     ...Logistic_Logs.getBaseTableModelFields(),...{    
-      IDTABLEREF:{
+      table_ref_id:{
           type: DataTypes.BIGINT.UNSIGNED,
           allowNull:false
       },       
-      IDREGISTERREF:{
+      record_ref_id:{
           type: DataTypes.BIGINT.UNSIGNED,
           allowNull:false
       },
-      OPERATION:{
+      operation:{
           type: DataTypes.STRING(10),
           allowNull:false,
           defaultValue: 'UPDATE'
       },      
-      JSONOBJECT:{
+      json_object:{
           type: DataTypes.TEXT
       },      
-      COLUMNNAME:{
+      column_name:{
           type: DataTypes.STRING(256),
       },
-      OLDVALUE: {
+      old_value: {
           type: DataTypes.TEXT,
       },
-      NEWVALUE: {
+      new_value: {
           type: DataTypes.TEXT,
       },
       latitude:{
@@ -57,7 +57,7 @@ class Logistic_Logs extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDTABLEREF'],
+      fields: ['table_ref_id'],
       type: 'foreign key',
       references: { 
           table: Tables,

@@ -24,7 +24,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'MONEY',
-      ISPHYSICAL: 1
+      is_physical: 1
     },{      
       id:Financial_Value_Forms.BOLET,
       status_reg_id: Record_Status.ACTIVE,
@@ -33,8 +33,8 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'BOLET',
-      ISELETRONIC: 1,
-      ISBOLET: 1
+      is_eletronic: 1,
+      is_bolet: 1
     },{      
       id:Financial_Value_Forms.CHECK,
       status_reg_id: Record_Status.ACTIVE,
@@ -43,7 +43,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'CHECK',
-      ISELETRONIC: 1
+      is_eletronic: 1
     },{      
       id:Financial_Value_Forms.PIX,
       status_reg_id: Record_Status.ACTIVE,
@@ -52,7 +52,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'PIX',
-      ISELETRONIC: 1
+      is_eletronic: 1
     },{      
       id:Financial_Value_Forms.CARD,
       status_reg_id: Record_Status.ACTIVE,
@@ -61,8 +61,8 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'CARD',
-      ISELETRONIC: 1,
-      ISCARD: 1
+      is_eletronic: 1,
+      is_card: 1
     },{      
       id:Financial_Value_Forms.DEPOSIT,
       status_reg_id: Record_Status.ACTIVE,
@@ -71,7 +71,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'DEPOSIT',
-      ISELETRONIC: 1
+      is_eletronic: 1
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

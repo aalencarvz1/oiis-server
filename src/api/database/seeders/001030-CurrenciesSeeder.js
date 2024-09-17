@@ -16,8 +16,8 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'DOLAR',
-      SYMBOL:'$',
-      ISPHYSICAL: 1
+      symbol:'$',
+      is_physical: 1
     },{      
       id:Currencies.BRL,
       status_reg_id: Record_Status.ACTIVE,
@@ -26,8 +26,8 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'BRAZILIAN REAL',
-      SYMBOL:'R$',
-      ISPHYSICAL: 1
+      symbol:'R$',
+      is_physical: 1
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

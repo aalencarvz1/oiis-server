@@ -5,12 +5,12 @@ const { Sequelize, DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
 const { Identifier_Types } = require("./Identifier_Types");
-const { Conteiner_Types } = require("./Conteiner_Types");
+const { Container_Types } = require("./Container_Types");
 
 /**
  * class model
  */
-class Conteiners extends BaseTableModel {
+class Containers extends BaseTableModel {
   static id = 8015;
   static tableName = this.name.toLowerCase();
   static model = null;
@@ -18,23 +18,23 @@ class Conteiners extends BaseTableModel {
   static WITHOUT_CONTEINER = 1;
 
   static fields = {
-    ...Conteiners.getBaseTableModelFields(),...{           
-      IDCONTENIERTYPE:{
+    ...Containers.getBaseTableModelFields(),...{           
+      container_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDIDENTIFIERTYPE:{
+      identifier_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDENTIFIER:{
+      identifier:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      TARA:{
+      tara:{
         type: DataTypes.DECIMAL(32,10)
       },
-      ALLOWMULTIPLESADDRESSES: {
+      allow_multiple_addresses: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
@@ -46,22 +46,22 @@ class Conteiners extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDCONTENIERTYPE',
-    'IDIDENTIFIERTYPE',
-    'IDENTIFIER'
+    'container_type_id',
+    'identifier_type_id',
+    'identifier'
   ];
 
-  static constraints = [...(Conteiners.getBaseTableModelConstraints() || []),...[
+  static constraints = [...(Containers.getBaseTableModelConstraints() || []),...[
     {
-      name: Conteiners.tableName + '_u1',
-      fields: [...Conteiners.getBaseTableModelUniqueFields(),...Conteiners.uniqueFields],
+      name: Containers.tableName + '_u1',
+      fields: [...Containers.getBaseTableModelUniqueFields(),...Containers.uniqueFields],
       type:"unique"
     },{
-      name: Conteiners.tableName + '_c_1',
-      fields:['ALLOWMULTIPLESADDRESSES'],
+      name: Containers.tableName + '_c_1',
+      fields:['allow_multiple_addresses'],
       type:"check",
       where:{
-        ALLOWMULTIPLESADDRESSES: {
+        allow_multiple_addresses: {
               [Sequelize.Op.in]: [0,1]
           }
       }
@@ -70,16 +70,16 @@ class Conteiners extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDCONTENIERTYPE'],
+      fields: ['container_type_id'],
       type: 'foreign key',
       references: { 
-          table: Conteiner_Types,
+          table: Container_Types,
           field: 'id'
       },
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDIDENTIFIERTYPE'],
+      fields: ['identifier_type_id'],
       type: 'foreign key',
       references: { 
           table: Identifier_Types,
@@ -92,4 +92,4 @@ class Conteiners extends BaseTableModel {
 };
 
 
-module.exports = {Conteiners}
+module.exports = {Containers}

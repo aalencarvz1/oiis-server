@@ -1,15 +1,15 @@
 'use strict';
 
 /*imports*/
-const { Conteiners } = require('../models/Conteiners');
+const { Container_Types } = require('../models/Container_Types');
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await Conteiners.runUpMigration(queryInterface);     
+    await Container_Types.runUpMigration(queryInterface);     
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(Conteiners.tableName);
+    await queryInterface.dropTable(Container_Types.tableName);
   }
 };

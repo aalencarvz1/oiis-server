@@ -22,18 +22,18 @@ class Lots extends BaseTableModel {
       IDSUPPLIER:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDIDENTIFIERTYPE:{
+      identifier_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDENTIFIER:{
+      identifier:{
         type: DataTypes.STRING(256),
         allowNull:false
       },      
       PRODUCTIONDATE:{
         type: DataTypes.DATE
       },      
-      EXPIRATIONDATE:{
+      expiration_date:{
         type: DataTypes.DATE
       }
     }
@@ -41,8 +41,8 @@ class Lots extends BaseTableModel {
   
   static uniqueFields = [
     'IDSUPPLIER',
-    'IDIDENTIFIERTYPE',
-    'IDENTIFIER'
+    'identifier_type_id',
+    'identifier'
   ];
 
   static constraints = [...(Lots.getBaseTableModelConstraints() || []),...[
@@ -64,7 +64,7 @@ class Lots extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDIDENTIFIERTYPE'],
+      fields: ['identifier_type_id'],
       type: 'foreign key',
       references: { 
           table: Identifier_Types,

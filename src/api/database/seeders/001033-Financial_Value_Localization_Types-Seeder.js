@@ -32,7 +32,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'POUCH',
-      ISPHYSICAL: 1
+      is_physical: 1
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

@@ -26,7 +26,7 @@ class Gtin_Types extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull: false
       },
-      CHARACTERS: {
+      characters: {
         type: DataTypes.BIGINT.UNSIGNED
       },
       description: {
@@ -37,7 +37,7 @@ class Gtin_Types extends BaseTableModel {
   
   static uniqueFields = [
     'name',
-    Sequelize.literal(`(COALESCE(CHARACTERS,0))`)
+    Sequelize.literal(`(COALESCE(characters,0))`)
   ];
 
   static constraints = [...(Gtin_Types.getBaseTableModelConstraints() || []),...[

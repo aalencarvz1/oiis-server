@@ -40,8 +40,8 @@ class ReportsController extends RegistersController{
         if (dates && dates.length) {
             dates[0] = new Date(dates[0]);
             dates[1] = new Date(dates[1] || dates[0]);
-            queryParams.where.STARTDATE = {[Sequelize.Op.lte]: dates[0]};
-            queryParams.where.ENDDATE = {[Sequelize.Op.gte]: dates[1]};
+            queryParams.where.start_date = {[Sequelize.Op.lte]: dates[0]};
+            queryParams.where.end_date = {[Sequelize.Op.gte]: dates[1]};
         }
         //Utils.log(queryParams);
         return await Report_Data_Founts.getModel().findOne(queryParams);
@@ -177,8 +177,8 @@ class ReportsController extends RegistersController{
                 SELECT
                     RF.id,
                     RV.id AS IDVISION,                    
-                    RF.STARTDATE,
-                    RF.ENDDATE,
+                    RF.start_date,
+                    RF.end_date,
                     RF.CONDICTIONS,
                     RF.GETEXPECTEDDATAFROMTYPE,
                     RF.GETEXPECTEDDATAFROMORIGIN,
@@ -186,7 +186,7 @@ class ReportsController extends RegistersController{
                     RF.GETVALUEFROMTYPE,
                     RF.GETVALUEFROMORIGIN,
                     RF.GETVALUEFROM,
-                    COALESCE(DR.ORDERNUM,DR.id) AS ORDERNUM,
+                    COALESCE(DR.numeric_order,DR.id) AS numeric_order,
                     CASE WHEN RV.id IN (${visionsIds.join(',')}) THEN 1 ELSE 0 END AS ISVISION,
                     CASE WHEN RV.id IN (${condictionsVisionsIds.length ? condictionsVisionsIds.join(',') : '-1'}) THEN 1 ELSE 0 END AS ISCONDICTIONVISION
                 FROM
@@ -203,8 +203,8 @@ class ReportsController extends RegistersController{
                     JOIN report_data_founts RF ON (
                         RF.id = DR.IDREG2
                         AND RF.status_reg_id = ${Record_Status.ACTIVE}
-                        AND COALESCE(RF.STARTDATE,STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
-                        AND COALESCE(RF.ENDDATE,STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
+                        AND COALESCE(RF.start_date,STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
+                        AND COALESCE(RF.end_date,STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
                     )
                 WHERE
                     (
@@ -214,7 +214,7 @@ class ReportsController extends RegistersController{
                     AND RV.status_reg_id = ${Record_Status.ACTIVE}
                 ORDER BY
                     RV.id,
-                    COALESCE(DR.ORDERNUM,DR.id)
+                    COALESCE(DR.numeric_order,DR.id)
             `;
 
             let reportsDatasFounts = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
@@ -306,8 +306,8 @@ class ReportsController extends RegistersController{
                     ep."commissions" c
                 where
                     nvl(c."active",1) = 1
-                    and trunc(nvl(c."startdate",sysdate)) <= trunc(sysdate)
-                    and trunc(nvl(c."enddate",sysdate)) >= trunc(sysdate)
+                    and trunc(nvl(c."start_date",sysdate)) <= trunc(sysdate)
+                    and trunc(nvl(c."end_date",sysdate)) >= trunc(sysdate)
             `;
             let commissionsData = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
             commissionsData = commissionsData[0] || [];

@@ -19,51 +19,51 @@ class Logistic_Orders extends BaseTableModel {
   static model = null;
   static fields = {
     ...Logistic_Orders.getBaseTableModelFields(),...{           
-      IDLOGISTICMOVTYPE:{
+      logistic_mov_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDIDENTIFIERTYPE:{
+      identifier_type_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDENTIFIER:{
+      identifier:{
         type: DataTypes.STRING(256)
       },
-      IDACTIONSTATUS:{
+      action_status_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:Movement_Status.NOT_STARTED
       },
-      IDLOGISTICSTATUS:{
+      logistic_status_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:Movement_Status.NOT_STARTED
       },
-      IDREASONNOTMOVIMENTEDAMT:{
+      unmoved_reason_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDREASONRETREATMOVIMENTEDAMT:{
+      collected_reason_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      OBSERVATIONSNOTMOVIMENTEDAMT:{
+      unmoved_qty_notes:{
         type: DataTypes.TEXT
       },
-      OBSERVATIONSRETREATMOVIMENTEDAMT:{
+      collected_qty_notes:{
         type: DataTypes.TEXT
       },
-      MOVSTARTED_AT:{
+      mov_started_at:{
         type: DataTypes.DATE
       },
-      MOVENDED_AT:{
+      mov_ended_at:{
         type: DataTypes.DATE
       },
     }
   };
   
   static uniqueFields = [
-    'IDLOGISTICMOVTYPE',
-    Sequelize.literal(`(COALESCE(IDIDENTIFIERTYPE,0))`),
-    Sequelize.literal(`(COALESCE(IDENTIFIER,'NULL'))`)
+    'logistic_mov_type_id',
+    Sequelize.literal(`(COALESCE(identifier_type_id,0))`),
+    Sequelize.literal(`(COALESCE(identifier,'NULL'))`)
   ];
 
   static constraints = [...(Logistic_Orders.getBaseTableModelConstraints() || []),...[
@@ -76,7 +76,7 @@ class Logistic_Orders extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDLOGISTICMOVTYPE'],
+      fields: ['logistic_mov_type_id'],
       type: 'foreign key',
       references: { 
           table: Logistic_Mov_Types,
@@ -85,7 +85,7 @@ class Logistic_Orders extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDIDENTIFIERTYPE'],
+      fields: ['identifier_type_id'],
       type: 'foreign key',
       references: { 
           table: Identifier_Types,
@@ -94,7 +94,7 @@ class Logistic_Orders extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDACTIONSTATUS'],
+      fields: ['action_status_id'],
       type: 'foreign key',
       references: { 
           table: Action_Status,
@@ -103,7 +103,7 @@ class Logistic_Orders extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDLOGISTICSTATUS'],
+      fields: ['logistic_status_id'],
       type: 'foreign key',
       references: { 
           table: Logistic_Status,
@@ -112,7 +112,7 @@ class Logistic_Orders extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDREASONNOTMOVIMENTEDAMT'],
+      fields: ['unmoved_reason_id'],
       type: 'foreign key',
       references: { 
           table: Logistic_Reasons,
@@ -121,7 +121,7 @@ class Logistic_Orders extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDREASONRETREATMOVIMENTEDAMT'],
+      fields: ['collected_reason_id'],
       type: 'foreign key',
       references: { 
           table: Logistic_Reasons,

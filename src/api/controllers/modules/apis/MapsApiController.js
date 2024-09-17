@@ -26,7 +26,7 @@ class MapsApiController extends BaseEndPointController {
                     raw:true,
                     where:{
                         ENTITY: bodyParams.ENTITY || 'PEOPLE',
-                        IDENTITY: bodyParams.IDENTITY,
+                        entity_id: bodyParams.entity_id,
                         LIBRARY: bodyParams.LIBRARY || 'geocoding',
                         PARAMETERS: apiParams,
                         [Sequelize.Op.and]:[{
@@ -67,7 +67,7 @@ class MapsApiController extends BaseEndPointController {
                         apiParams = JSON.stringify(apiParams);
                         await Maps_Api_Responses.getModel().create({
                             ENTITY:bodyParams.ENTITY || 'PEOPLE',
-                            IDENTITY:bodyParams.IDENTITY,
+                            entity_id:bodyParams.entity_id,
                             LIBRARY:bodyParams.LIBRARY || 'geocoding',
                             PARAMETERS: apiParams,
                             response_status_code:apiRes.status,

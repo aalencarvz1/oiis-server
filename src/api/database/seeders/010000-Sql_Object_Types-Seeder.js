@@ -23,7 +23,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDSUP : Sql_Object_Types.DATABASE,
+      parent_id : Sql_Object_Types.DATABASE,
       name : 'USER',
     },{      
       id:Sql_Object_Types.SCHEMA,
@@ -32,7 +32,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDSUP : Sql_Object_Types.DATABASE,
+      parent_id : Sql_Object_Types.DATABASE,
       name : 'SCHEMA',
     },{      
       id:Sql_Object_Types.TABLE,
@@ -41,7 +41,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDSUP : Sql_Object_Types.SCHEMA,
+      parent_id : Sql_Object_Types.SCHEMA,
       name : 'TABLE',
     },{      
       id:Sql_Object_Types.FIELD,
@@ -50,7 +50,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDSUP : Sql_Object_Types.TABLE,
+      parent_id : Sql_Object_Types.TABLE,
       name : 'FIELD',
     },{      
       id:Sql_Object_Types.SELECT,
@@ -67,7 +67,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDSUP : Sql_Object_Types.SELECT,
+      parent_id : Sql_Object_Types.SELECT,
       name : 'FROM',
     },{      
       id:Sql_Object_Types.JOIN,
@@ -76,7 +76,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDSUP : Sql_Object_Types.FROM,
+      parent_id : Sql_Object_Types.FROM,
       name : 'JOIN',
     },{      
       id:Sql_Object_Types.ON,
@@ -85,7 +85,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDSUP : Sql_Object_Types.JOIN,
+      parent_id : Sql_Object_Types.JOIN,
       name : 'ON',
     },{      
       id:Sql_Object_Types.WHERE,
@@ -94,7 +94,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDSUP : Sql_Object_Types.SELECT,      
+      parent_id : Sql_Object_Types.SELECT,      
       name : 'WHERE',
     },{      
       id:Sql_Object_Types.GROUP_BY,
@@ -103,7 +103,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDSUP : Sql_Object_Types.SELECT,      
+      parent_id : Sql_Object_Types.SELECT,      
       name : 'GROUP BY',
     },{      
       id:Sql_Object_Types.HAVING,
@@ -112,7 +112,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDSUP : Sql_Object_Types.SELECT,      
+      parent_id : Sql_Object_Types.SELECT,      
       name : 'HAVING',
     },{      
       id:Sql_Object_Types.ORDER_BY,
@@ -121,7 +121,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDSUP : Sql_Object_Types.SELECT,      
+      parent_id : Sql_Object_Types.SELECT,      
       name : 'ORDER BY',
     },{      
       id:Sql_Object_Types.PIVOT,
@@ -130,7 +130,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDSUP : Sql_Object_Types.SELECT,      
+      parent_id : Sql_Object_Types.SELECT,      
       name : 'PIVOT',
     },{      
       id:Sql_Object_Types.FOR,
@@ -139,7 +139,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDSUP : Sql_Object_Types.PIVOT,      
+      parent_id : Sql_Object_Types.PIVOT,      
       name : 'FOR',
     },{      
       id:Sql_Object_Types.IN,
@@ -148,7 +148,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDSUP : Sql_Object_Types.PIVOT,      
+      parent_id : Sql_Object_Types.PIVOT,      
       name : 'IN',
     },{      
       id:Sql_Object_Types.TEXT,

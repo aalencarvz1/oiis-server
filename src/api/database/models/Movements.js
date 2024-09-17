@@ -29,17 +29,17 @@ class Movements extends BaseTableModel {
   static model = null;
   static fields = {
     ...Movements.getBaseTableModelFields(),...{           
-      IDTYPEMOV:{
+      type_mov_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDIDENTIFIERTYPE:{
+      identifier_type_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDENTIFIER:{
+      identifier:{
         type: DataTypes.STRING(256)
       },
-      IDSTATUSMOV:{
+      status_mov_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:Action_Status.NOT_STARTED
@@ -65,22 +65,22 @@ class Movements extends BaseTableModel {
       IDSELLER:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDFINANCIALVALUEFORM:{
+      financial_value_form_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      MOVSTARTED_AT:{
+      mov_started_at:{
         type: DataTypes.DATE
       },
-      MOVENDED_AT:{
+      mov_ended_at:{
         type: DataTypes.DATE
       },
     }
   };
   
   static uniqueFields = [
-    'IDTYPEMOV',
-    Sequelize.literal(`(COALESCE(IDIDENTIFIERTYPE,0))`),  
-    Sequelize.literal(`(COALESCE(IDENTIFIER,'NULL'))`)
+    'type_mov_id',
+    Sequelize.literal(`(COALESCE(identifier_type_id,0))`),  
+    Sequelize.literal(`(COALESCE(identifier,'NULL'))`)
   ];
 
   static constraints = [...(Movements.getBaseTableModelConstraints() || []),...[
@@ -93,7 +93,7 @@ class Movements extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDTYPEMOV'],
+      fields: ['type_mov_id'],
       type: 'foreign key',
       references: { 
           table: Movement_Types,
@@ -102,7 +102,7 @@ class Movements extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDIDENTIFIERTYPE'],
+      fields: ['identifier_type_id'],
       type: 'foreign key',
       references: { 
           table: Identifier_Types,
@@ -111,7 +111,7 @@ class Movements extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDSTATUSMOV'],
+      fields: ['status_mov_id'],
       type: 'foreign key',
       references: { 
           table: Action_Status,
@@ -183,7 +183,7 @@ class Movements extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDFINANCIALVALUEFORM'],
+      fields: ['financial_value_form_id'],
       type: 'foreign key',
       references: { 
           table: Financial_Value_Forms,

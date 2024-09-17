@@ -159,24 +159,24 @@ class Logistic_Orders_Controller extends RegistersController {
                 query = `
                     select
                         l.id,
-                        l.IDENTIFIER,
-                        l.IDLOGISTICSTATUS,
+                        l.identifier,
+                        l.logistic_status_id,
                         ls.name as LOGISTICSTATUS
                     from
                         logistic_orders l
-                        left outer join logistic_status ls on ls.id = l.idlogisticstatus
+                        left outer join logistic_status ls on ls.id = l.logistic_status_id
                     where
-                        l.IDENTIFIER in (${numCars.join(',')})
+                        l.identifier in (${numCars.join(',')})
                 `;
                 let logData = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
                 logData = logData[0] || [];
                 if (logData) {
-                    logData = _.keyBy(logData,'IDENTIFIER');
+                    logData = _.keyBy(logData,'identifier');
                     Utils.log(logData);
                     for(let kj in res.data) {                                
                         if (logData[res.data[kj].NUMCAR.toString()]) {
-                            res.data[kj].IDLOGISTICORDER = logData[res.data[kj].NUMCAR.toString()].id;
-                            res.data[kj].IDLOGISTICSTATUS = logData[res.data[kj].NUMCAR.toString()].IDLOGISTICSTATUS;
+                            res.data[kj].logistic_order_id = logData[res.data[kj].NUMCAR.toString()].id;
+                            res.data[kj].logistic_status_id = logData[res.data[kj].NUMCAR.toString()].logistic_status_id;
                             res.data[kj].LOGISTICSTATUS = logData[res.data[kj].NUMCAR.toString()].LOGISTICSTATUS;
                         }
                     }

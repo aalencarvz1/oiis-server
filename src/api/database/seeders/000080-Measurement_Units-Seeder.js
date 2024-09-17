@@ -19,7 +19,7 @@ module.exports = {
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'UNIT',
       sigla: 'UN',
-      ISSCALAR: 1
+      is_scalar: 1
     },{
       id: Measurement_Units.KG,
       status_reg_id: Record_Status.ACTIVE,
@@ -30,7 +30,7 @@ module.exports = {
       IDGREATNESS: Greatnesses.MASS,
       name : 'KILOGRAM',
       sigla: 'KG',
-      ISSCALAR: 1
+      is_scalar: 1
     },{
       id: Measurement_Units.L,
       status_reg_id: Record_Status.ACTIVE,
@@ -41,7 +41,7 @@ module.exports = {
       IDGREATNESS: Greatnesses.VOLUM,
       name : 'LITER',
       sigla: 'L',
-      ISSCALAR: 1
+      is_scalar: 1
     },{
       id: Measurement_Units.PC,
       status_reg_id: Record_Status.ACTIVE,
@@ -52,7 +52,7 @@ module.exports = {
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'PIECE',
       sigla: 'PC',
-      ISSCALAR: 1
+      is_scalar: 1
     },{
       id: Measurement_Units.PKG,
       status_reg_id: Record_Status.ACTIVE,
@@ -63,7 +63,7 @@ module.exports = {
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'PACKAGE',
       sigla: 'PK',
-      ISSCALAR: 1
+      is_scalar: 1
     },{
       id: Measurement_Units.BOX,
       status_reg_id: Record_Status.ACTIVE,
@@ -74,7 +74,7 @@ module.exports = {
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'BOX',
       sigla: 'BX',
-      ISSCALAR: 1
+      is_scalar: 1
     },{
       id: Measurement_Units.BCK,
       status_reg_id: Record_Status.ACTIVE,
@@ -85,7 +85,7 @@ module.exports = {
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'BUCKET',
       sigla: 'BK',
-      ISSCALAR: 1
+      is_scalar: 1
     },{
       id: Measurement_Units.CAN,
       status_reg_id: Record_Status.ACTIVE,
@@ -96,7 +96,7 @@ module.exports = {
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'CAN',
       sigla: 'CN',
-      ISSCALAR: 1
+      is_scalar: 1
     },{
       id: Measurement_Units.BAG,
       status_reg_id: Record_Status.ACTIVE,
@@ -107,7 +107,7 @@ module.exports = {
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'BAG',
       sigla: 'BG',
-      ISSCALAR: 1
+      is_scalar: 1
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

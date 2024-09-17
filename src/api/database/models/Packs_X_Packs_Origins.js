@@ -27,7 +27,7 @@ class Packs_X_Packs_Origins extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      IDPACKAGING:{
+      packaging_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       }
@@ -66,7 +66,7 @@ class Packs_X_Packs_Origins extends BaseTableModel {
       },
       onUpdate: 'cascade'
     },{
-      fields: ['IDPACKAGING'],
+      fields: ['packaging_id'],
       type: 'foreign key',
       references: { 
           table: Packagings,

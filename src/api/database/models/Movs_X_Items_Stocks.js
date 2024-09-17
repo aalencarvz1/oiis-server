@@ -18,35 +18,35 @@ class Movs_X_Items_Stocks extends BaseTableModel {
   static model = null;
   static fields = {
     ...Movs_X_Items_Stocks.getBaseTableModelFields(),...{                 
-      IDMOV:{
+      mov_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDTYPEMOV:{
+      type_mov_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDITEMSTOCK:{
+      stock_item_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDSTATUSMOV:{
+      status_mov_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue: Movement_Status.NOT_STARTED
       },      
-      MOVSTARTED_AT:{
+      mov_started_at:{
         type: DataTypes.DATE
       },
-      MOVENDED_AT:{
+      mov_ended_at:{
         type: DataTypes.DATE
       },
-      ORDERNUM:{
+      numeric_order:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:0
       },
-      PRECEDENCE:{
+      precedence:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:0
@@ -58,9 +58,9 @@ class Movs_X_Items_Stocks extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDMOV',
-    'IDTYPEMOV',
-    'IDITEMSTOCK'
+    'mov_id',
+    'type_mov_id',
+    'stock_item_id'
   ];
 
   static constraints = [...(Movs_X_Items_Stocks.getBaseTableModelConstraints() || []),...[
@@ -73,7 +73,7 @@ class Movs_X_Items_Stocks extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDMOV'],
+      fields: ['mov_id'],
       type: 'foreign key',
       references: { 
           table: Movements,
@@ -83,7 +83,7 @@ class Movs_X_Items_Stocks extends BaseTableModel {
       onDelete: 'cascade'
     },
     {
-      fields: ['IDTYPEMOV'],
+      fields: ['type_mov_id'],
       type: 'foreign key',
       references: { 
           table: Movement_Types,
@@ -92,7 +92,7 @@ class Movs_X_Items_Stocks extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDITEMSTOCK'],
+      fields: ['stock_item_id'],
       type: 'foreign key',
       references: { 
           table: Item_Stocks,
@@ -101,7 +101,7 @@ class Movs_X_Items_Stocks extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDSTATUSMOV'],
+      fields: ['status_mov_id'],
       type: 'foreign key',
       references: { 
           table: Movement_Status,

@@ -15,7 +15,7 @@ class Countries extends BaseTableModel {
   static model = null;
   static fields = {
     ...Countries.getBaseTableModelFields(),...{           
-      IDCONTINENT:{
+      continent_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -30,7 +30,7 @@ class Countries extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDCONTINENT',
+    'continent_id',
     'name'
   ];
 
@@ -44,7 +44,7 @@ class Countries extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDCONTINENT'],
+      fields: ['continent_id'],
       type: 'foreign key',
       references: { 
           table: Continents,

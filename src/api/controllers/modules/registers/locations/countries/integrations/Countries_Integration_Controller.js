@@ -39,7 +39,7 @@ class Countries_Integration_Controller extends RegistersController {
                                        
             let queryParams = {
                 where: {
-                    IDCONTINENT: continent.id,
+                    continent_id: continent.id,
                     id: winthorCountryCode
                 }
             };
@@ -59,7 +59,7 @@ class Countries_Integration_Controller extends RegistersController {
                 country = await Countries.getModel().create({                    
                     id : winthorCountryCode,
                     data_origin_id: Data_Origins.WINTHOR,
-                    IDCONTINENT: continent.id,
+                    continent_id: continent.id,
                     name: pcpais.DESCRICAO,
                     sigla: pcpais.DESCRICAO.substring(0,2)
                 },options)

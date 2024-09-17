@@ -26,11 +26,11 @@ class Warehouse_Addresses extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDIDENTIFIERTYPE:{
+      identifier_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDENTIFIER:{
+      identifier:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -47,7 +47,7 @@ class Warehouse_Addresses extends BaseTableModel {
         allowNull: false,
         defaultValue:0
       },
-      ISDISPONIBLE: {
+      is_disponible: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:1
@@ -60,7 +60,7 @@ class Warehouse_Addresses extends BaseTableModel {
   
   static uniqueFields = [
     'IDWAREHOUSE',
-    'IDENTIFIER'
+    'identifier'
   ];
 
   static constraints = [...(Warehouse_Addresses.getBaseTableModelConstraints() || []),...[
@@ -88,10 +88,10 @@ class Warehouse_Addresses extends BaseTableModel {
       }
     },{
       name: Warehouse_Addresses.tableName + '_c_3',
-      fields:['ISDISPONIBLE'],
+      fields:['is_disponible'],
       type:"check",
       where:{
-        ISDISPONIBLE: {
+        is_disponible: {
               [Sequelize.Op.in]: [0,1]
           }
       }
@@ -118,7 +118,7 @@ class Warehouse_Addresses extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDIDENTIFIERTYPE'],
+      fields: ['identifier_type_id'],
       type: 'foreign key',
       references: { 
           table: Identifier_Types,

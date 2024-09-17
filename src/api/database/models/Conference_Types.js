@@ -25,17 +25,17 @@ class Conference_Types extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      CEGA: {
+      cega: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      SEMICEGA: {
+      semicega: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      NORMAL: {
+      normal: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
@@ -57,28 +57,28 @@ class Conference_Types extends BaseTableModel {
       type:"unique"
     },{
       name: Conference_Types.tableName + '_c_1',
-      fields:['CEGA'],
+      fields:['cega'],
       type:"check",
       where:{
-        CEGA: {
+        cega: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Conference_Types.tableName + '_c_2',
-      fields:['SEMICEGA'],
+      fields:['semicega'],
       type:"check",
       where:{
-        SEMICEGA: {
+        semicega: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Conference_Types.tableName + '_c_3',
-      fields:['NORMAL'],
+      fields:['normal'],
       type:"check",
       where:{
-        NORMAL: {
+        normal: {
               [Sequelize.Op.in]: [0,1]
           }
       }

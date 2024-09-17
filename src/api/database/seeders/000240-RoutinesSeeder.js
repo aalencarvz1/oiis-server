@@ -36,12 +36,12 @@ module.exports = {
                 data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
                 is_sys_rec : 1,
                 IDMODULE: idModuleSup,
-                IDSUP: idRoutineSup,
+                parent_id: idRoutineSup,
                 IDROUTINETYPE : (Utils.firstValid([routine.IDROUTINETYPE,1]))-0,
                 name:routine.name,
                 ICON:routine.ICON,
                 VIEWPATH:routine.VIEWPATH,
-                ORDERNUM: routine.ORDERNUM,
+                numeric_order: routine.numeric_order,
                 SHOWINMENU: Utils.firstValid([routine.SHOWINMENU,1]),
               });
               for(let i = 0; i < routine.SUBS.length; i++) {
@@ -56,9 +56,9 @@ module.exports = {
                 created_at: new Date(),
                 data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
                 is_sys_rec : 1,
-                IDSUP: idModuleSup,
+                parent_id: idModuleSup,
                 name:routine.name,
-                ORDERNUM: routine.ORDERNUM,
+                numeric_order: routine.numeric_order,
                 ICON:routine.ICON
               });
 
@@ -77,12 +77,12 @@ module.exports = {
               data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
               is_sys_rec : 1,
               IDMODULE: idModuleSup,
-              IDSUP: idRoutineSup,
+              parent_id: idRoutineSup,
               IDROUTINETYPE : routine.IDROUTINETYPE-0,
               name:routine.name,
               ICON:routine.ICON,
               VIEWPATH:routine.VIEWPATH,
-              ORDERNUM: routine.ORDERNUM,
+              numeric_order: routine.numeric_order,
               SHOWINMENU: Utils.firstValid([routine.SHOWINMENU,1]),
             });
           }
@@ -98,7 +98,7 @@ module.exports = {
 
     await queryInterface.bulkInsert(Modules.tableName,registersModules,{
       ignoreDuplicates:true,
-      updateOnDuplicate:['status_reg_id','IDSUP','name','ICON']
+      updateOnDuplicate:['status_reg_id','parent_id','name','ICON']
     });  
 
     await queryInterface.bulkInsert(Routines.tableName,registersRoutines,{

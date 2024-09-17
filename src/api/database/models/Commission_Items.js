@@ -16,7 +16,7 @@ class Commission_Items extends BaseTableModel {
 
   static fields = {
     ...Commission_Items.getBaseTableModelFields(),...{           
-      IDCOMMISSIONENTITYCODE:{
+      commission_entity_code_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -31,7 +31,7 @@ class Commission_Items extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDCOMMISSIONENTITYCODE',
+    'commission_entity_code_id',
     'name'
   ];
 
@@ -45,7 +45,7 @@ class Commission_Items extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDCOMMISSIONENTITYCODE'],
+      fields: ['commission_entity_code_id'],
       type: 'foreign key',
       references: { 
           table: Commission_Entitiy_Codes,

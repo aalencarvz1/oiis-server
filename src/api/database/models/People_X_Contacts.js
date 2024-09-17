@@ -21,14 +21,14 @@ class People_X_Contacts extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDCONTACTTYPE:{
+      contact_type_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
       IDCONTACT:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      ORDERNUM:{
+      numeric_order:{
         type: DataTypes.BIGINT
       },
       observations:{
@@ -39,7 +39,7 @@ class People_X_Contacts extends BaseTableModel {
   
   static uniqueFields = [
     'people_id',
-    Sequelize.literal(`(COALESCE(IDCONTACTTYPE,0))`),
+    Sequelize.literal(`(COALESCE(contact_type_id,0))`),
     'IDCONTACT'
   ];
 
@@ -63,7 +63,7 @@ class People_X_Contacts extends BaseTableModel {
       onDelete: 'cascade'
     },
     {
-      fields: ['IDCONTACTTYPE'],
+      fields: ['contact_type_id'],
       type: 'foreign key',
       references: { 
           table: Contact_Types,

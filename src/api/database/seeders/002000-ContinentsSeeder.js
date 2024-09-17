@@ -24,7 +24,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDSUP: Continents.AMERICA,
+      parent_id: Continents.AMERICA,
       name : 'SOUTH AMERICA',
       sigla:'AL'
     }],{

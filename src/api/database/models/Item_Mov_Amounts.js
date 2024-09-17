@@ -19,54 +19,54 @@ class Item_Mov_Amounts extends BaseTableModel {
   static model = null;
   static fields = {
     ...Item_Mov_Amounts.getBaseTableModelFields(),...{                 
-      IDMOVXITEMSTOCK:{
+      mov_x_item_stock_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDTYPEMOV:{
+      type_mov_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDMEASUREMENTUNIT:{
+      measurement_unit_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDPACKAGING:{
+      packaging_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      UNITWEIGHT:{
+      unit_weight:{
         type: DataTypes.DECIMAL(32,10)
       },      
-      PACKAGEWEIGHT:{
+      package_weight:{
         type: DataTypes.DECIMAL(32,10)
       },      
-      UNITVOLUME:{
+      unit_volume:{
         type: DataTypes.DECIMAL(32,10)
       },      
-      PACKAGEVOLUME:{
+      package_volume:{
         type: DataTypes.DECIMAL(32,10)
       },
-      UNITVALUE:{
+      unit_value:{
         type: DataTypes.DECIMAL(32,10)
       },  
-      IDSTATUSMOV:{
+      status_mov_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:Movement_Status.NOT_STARTED
       },      
-      MOVSTARTED_AT:{
+      mov_started_at:{
         type: DataTypes.DATE
       },
-      MOVENDED_AT:{
+      mov_ended_at:{
         type: DataTypes.DATE
       },
-      EXPECTEDAMT:{
+      expected_amt:{
         type: DataTypes.DECIMAL(32,10),
         allowNull:false,
         defaultValue:0
       },
-      MOVIMENTEDAMT:{
+      moved_amt:{
         type: DataTypes.DECIMAL(32,10),
         allowNull:false,
         defaultValue:0
@@ -78,10 +78,10 @@ class Item_Mov_Amounts extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDMOVXITEMSTOCK',
-    'IDTYPEMOV',
-    'IDMEASUREMENTUNIT',
-    'IDPACKAGING'
+    'mov_x_item_stock_id',
+    'type_mov_id',
+    'measurement_unit_id',
+    'packaging_id'
   ];
 
   static constraints = [...(Item_Mov_Amounts.getBaseTableModelConstraints() || []),...[
@@ -94,7 +94,7 @@ class Item_Mov_Amounts extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDMOVXITEMSTOCK'],
+      fields: ['mov_x_item_stock_id'],
       type: 'foreign key',
       references: { 
           table: Movs_X_Items_Stocks,
@@ -104,7 +104,7 @@ class Item_Mov_Amounts extends BaseTableModel {
       onDelete: 'cascade'
     },
     {
-      fields: ['IDTYPEMOV'],
+      fields: ['type_mov_id'],
       type: 'foreign key',
       references: { 
           table: Movement_Types,
@@ -113,7 +113,7 @@ class Item_Mov_Amounts extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDMEASUREMENTUNIT'],
+      fields: ['measurement_unit_id'],
       type: 'foreign key',
       references: { 
           table: Measurement_Units,
@@ -122,7 +122,7 @@ class Item_Mov_Amounts extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDPACKAGING'],
+      fields: ['packaging_id'],
       type: 'foreign key',
       references: { 
           table: Packagings,
@@ -131,7 +131,7 @@ class Item_Mov_Amounts extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDSTATUSMOV'],
+      fields: ['status_mov_id'],
       type: 'foreign key',
       references: { 
           table: Movement_Status,

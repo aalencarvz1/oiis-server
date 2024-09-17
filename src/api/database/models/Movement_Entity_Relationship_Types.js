@@ -34,12 +34,12 @@ class Movement_Entity_Relationship_Types extends BaseTableModel {
         allowNull: false,
         defaultValue:0
       },
-      ISINPUT: {
+      is_input: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISOUTPUT: {
+      is_output: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
@@ -79,19 +79,19 @@ class Movement_Entity_Relationship_Types extends BaseTableModel {
       }
     },{
       name: Movement_Entity_Relationship_Types.tableName + '_c_3',
-      fields:['ISINPUT'],
+      fields:['is_input'],
       type:"check",
       where:{
-        ISINPUT: {
+        is_input: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Movement_Entity_Relationship_Types.tableName + '_c_4',
-      fields:['ISOUTPUT'],
+      fields:['is_output'],
       type:"check",
       where:{
-        ISOUTPUT: {
+        is_output: {
               [Sequelize.Op.in]: [0,1]
           }
       }

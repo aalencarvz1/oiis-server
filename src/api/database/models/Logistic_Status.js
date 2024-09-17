@@ -25,27 +25,27 @@ class Logistic_Status extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      ISTODELIVERY: {
+      is_to_delivery: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISDELIVERING: {
+      is_delivering: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISDELIVERED: {
+      id_delivered: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISPARTIALRETURNED: {
+      is_partial_returned: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISTOTALRETURNED: {
+      is_total_returned: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
@@ -67,46 +67,46 @@ class Logistic_Status extends BaseTableModel {
       type:"unique"
     },{
       name: Logistic_Status.tableName + '_c_1',
-      fields:['ISTODELIVERY'],
+      fields:['is_to_delivery'],
       type:"check",
       where:{
-        ISTODELIVERY: {
+        is_to_delivery: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Logistic_Status.tableName + '_c_2',
-      fields:['ISDELIVERING'],
+      fields:['is_delivering'],
       type:"check",
       where:{
-        ISDELIVERING: {
+        is_delivering: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Logistic_Status.tableName + '_c_3',
-      fields:['ISDELIVERED'],
+      fields:['id_delivered'],
       type:"check",
       where:{
-        ISDELIVERED: {
+        id_delivered: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Logistic_Status.tableName + '_c_4',
-      fields:['ISPARTIALRETURNED'],
+      fields:['is_partial_returned'],
       type:"check",
       where:{
-        ISPARTIALRETURNED: {
+        is_partial_returned: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Logistic_Status.tableName + '_c_5',
-      fields:['ISTOTALRETURNED'],
+      fields:['is_total_returned'],
       type:"check",
       where:{
-        ISTOTALRETURNED: {
+        is_total_returned: {
               [Sequelize.Op.in]: [0,1]
           }
       }

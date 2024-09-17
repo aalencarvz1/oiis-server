@@ -16,8 +16,8 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDIDENTIFIERTYPE : Identifier_Types.IDENTIFIER,
-      IDENTIFIER: Lots.WITHOUT_LOT
+      identifier_type_id : Identifier_Types.IDENTIFIER,
+      identifier: Lots.WITHOUT_LOT
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

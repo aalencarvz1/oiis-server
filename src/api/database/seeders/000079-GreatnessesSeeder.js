@@ -18,7 +18,7 @@ module.exports = {
       is_sys_rec : 1,
       name : 'QUANTITY',
       sigla: 'QT',
-      ISSCALAR:1
+      is_scalar:1
     },{
       id: Greatnesses.MASS,
       status_reg_id: Record_Status.ACTIVE,
@@ -28,7 +28,7 @@ module.exports = {
       is_sys_rec : 1,
       name : 'MASS',
       sigla: 'M',
-      ISSCALAR:1
+      is_scalar:1
     },{
       id: Greatnesses.VOLUM,
       status_reg_id: Record_Status.ACTIVE,
@@ -38,7 +38,7 @@ module.exports = {
       is_sys_rec : 1,
       name : 'VOLUM',
       sigla: 'V',
-      ISSCALAR:1
+      is_scalar:1
     },{
       id: Greatnesses.LENGTH,
       status_reg_id: Record_Status.ACTIVE,
@@ -48,7 +48,7 @@ module.exports = {
       is_sys_rec : 1,
       name : 'LENGTH',
       sigla: 'L',
-      ISSCALAR:1
+      is_scalar:1
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

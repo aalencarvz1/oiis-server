@@ -49,12 +49,12 @@ class Measurement_Units extends BaseTableModel {
       description: {
         type: DataTypes.TEXT
       },
-      ISSCALAR: {
+      is_scalar: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue: 0
       },
-      ISVETORIAL: {
+      is_vetorial: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue: 0
@@ -74,19 +74,19 @@ class Measurement_Units extends BaseTableModel {
       type:"unique"
     },{
       name: Measurement_Units.tableName + '_c_1',
-      fields:['ISSCALAR'],
+      fields:['is_scalar'],
       type:"check",
       where:{
-        ISSCALAR: {
+        is_scalar: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Measurement_Units.tableName + '_c_2',
-      fields:['ISVETORIAL'],
+      fields:['is_vetorial'],
       type:"check",
       where:{
-        ISVETORIAL: {
+        is_vetorial: {
               [Sequelize.Op.in]: [0,1]
           }
       }

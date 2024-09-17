@@ -3,40 +3,40 @@
         "id" : 2,
         "name" :"REGISTERS",
         "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 512 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z\"/></svg>",
-        "ORDERNUM":2,
+        "numeric_order":2,
         "SUBS":[{      
             "id" :205,
             "IDROUTINETYPE" : 1,
             "name" :"PARAMETERS",
             "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 512 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z\"/></svg>",
             "VIEWPATH" :"/views/modules/registers/parameters",
-            "ORDERNUM":205
+            "numeric_order":205
         },{ 
             "id" :215,
             "name" :"LOCATIONS",
             "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" width=\"12\" viewBox=\"0 0 384 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d=\"M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z\"/></svg>",
-            "ORDERNUM":215,
+            "numeric_order":215,
             "SUBS":[{
                 "id" : 21502,
                 "IDROUTINETYPE" : 1,
                 "name" : "CONTINENTS",
                 "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" width=\"16\" viewBox=\"0 0 512 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M57.7 193l9.4 16.4c8.3 14.5 21.9 25.2 38 29.8L163 255.7c17.2 4.9 29 20.6 29 38.5v39.9c0 11 6.2 21 16 25.9s16 14.9 16 25.9v39c0 15.6 14.9 26.9 29.9 22.6c16.1-4.6 28.6-17.5 32.7-33.8l2.8-11.2c4.2-16.9 15.2-31.4 30.3-40l8.1-4.6c15-8.5 24.2-24.5 24.2-41.7v-8.3c0-12.7-5.1-24.9-14.1-33.9l-3.9-3.9c-9-9-21.2-14.1-33.9-14.1H257c-11.1 0-22.1-2.9-31.8-8.4l-34.5-19.7c-4.3-2.5-7.6-6.5-9.2-11.2c-3.2-9.6 1.1-20 10.2-24.5l5.9-3c6.6-3.3 14.3-3.9 21.3-1.5l23.2 7.7c8.2 2.7 17.2-.4 21.9-7.5c4.7-7 4.2-16.3-1.2-22.8l-13.6-16.3c-10-12-9.9-29.5 .3-41.3l15.7-18.3c8.8-10.3 10.2-25 3.5-36.7l-2.4-4.2c-3.5-.2-6.9-.3-10.4-.3C163.1 48 84.4 108.9 57.7 193zM464 256c0-36.8-9.6-71.4-26.4-101.5L412 164.8c-15.7 6.3-23.8 23.8-18.5 39.8l16.9 50.7c3.5 10.4 12 18.3 22.6 20.9l29.1 7.3c1.2-9 1.8-18.2 1.8-27.5zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z\"/></svg>",
                 "VIEWPATH" : "/views/modules/registers/locations/continents",
-                "ORDERNUM":21502
+                "numeric_order":21502
             },{
                 "id" : 21503,
                 "IDROUTINETYPE" : 1,
                 "name" : "COUNTRIES",
                 "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" width=\"14\" viewBox=\"0 0 448 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M48 24C48 10.7 37.3 0 24 0S0 10.7 0 24V64 350.5 400v88c0 13.3 10.7 24 24 24s24-10.7 24-24V388l80.3-20.1c41.1-10.3 84.6-5.5 122.5 13.4c44.2 22.1 95.5 24.8 141.7 7.4l34.7-13c12.5-4.7 20.8-16.6 20.8-30V66.1c0-23-24.2-38-44.8-27.7l-9.6 4.8c-46.3 23.2-100.8 23.2-147.1 0c-35.1-17.6-75.4-22-113.5-12.5L48 52V24zm0 77.5l96.6-24.2c27-6.7 55.5-3.6 80.4 8.8c54.9 27.4 118.7 29.7 175 6.8V334.7l-24.4 9.1c-33.7 12.6-71.2 10.7-103.4-5.4c-48.2-24.1-103.3-30.1-155.6-17.1L48 338.5v-237z\"/></svg>",
                 "VIEWPATH" : "/views/modules/registers/locations/countries",
-                "ORDERNUM":21503,
+                "numeric_order":21503,
                 "SUBS":[{
                     "id" : 2150300,
                     "IDROUTINETYPE" : 1,
                     "name" : "COUNTRIES INTEGRATIONS",
                     "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" width=\"14\" viewBox=\"0 0 448 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M48 24C48 10.7 37.3 0 24 0S0 10.7 0 24V64 350.5 400v88c0 13.3 10.7 24 24 24s24-10.7 24-24V388l80.3-20.1c41.1-10.3 84.6-5.5 122.5 13.4c44.2 22.1 95.5 24.8 141.7 7.4l34.7-13c12.5-4.7 20.8-16.6 20.8-30V66.1c0-23-24.2-38-44.8-27.7l-9.6 4.8c-46.3 23.2-100.8 23.2-147.1 0c-35.1-17.6-75.4-22-113.5-12.5L48 52V24zm0 77.5l96.6-24.2c27-6.7 55.5-3.6 80.4 8.8c54.9 27.4 118.7 29.7 175 6.8V334.7l-24.4 9.1c-33.7 12.6-71.2 10.7-103.4-5.4c-48.2-24.1-103.3-30.1-155.6-17.1L48 338.5v-237z\"/></svg>",
                     "VIEWPATH" : "/views/modules/registers/locations/countries/integrations",
-                    "ORDERNUM":2150300,
+                    "numeric_order":2150300,
                     "SHOWINMENU":0
                     
                 }]    
@@ -46,14 +46,14 @@
                 "name" : "STATES",
                 "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" width=\"16\" viewBox=\"0 0 512 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M272 0h80c8.8 0 16 7.2 16 16V80c0 8.8-7.2 16-16 16H272v32H464c17.7 0 32 14.3 32 32s-14.3 32-32 32H48c-17.7 0-32-14.3-32-32s14.3-32 32-32H240V16c0-8.8 7.2-16 16-16h16zM64 224h64V416h40V224h64V416h48V224h64V416h40V224h64V420.3c.6 .3 1.2 .7 1.8 1.1l48 32c11.7 7.8 17 22.4 12.9 35.9S494.1 512 480 512H32c-14.1 0-26.5-9.2-30.6-22.7s1.1-28.1 12.9-35.9l48-32c.6-.4 1.2-.7 1.8-1.1V224z\"/></svg>",
                 "VIEWPATH" : "/views/modules/registers/locations/states",
-                "ORDERNUM":21505,
+                "numeric_order":21505,
                 "SUBS":[{
                     "id" : 2150500,
                     "IDROUTINETYPE" : 1,
                     "name" : "STATES INTEGRATIONS",
                     "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" width=\"16\" viewBox=\"0 0 512 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M272 0h80c8.8 0 16 7.2 16 16V80c0 8.8-7.2 16-16 16H272v32H464c17.7 0 32 14.3 32 32s-14.3 32-32 32H48c-17.7 0-32-14.3-32-32s14.3-32 32-32H240V16c0-8.8 7.2-16 16-16h16zM64 224h64V416h40V224h64V416h48V224h64V416h40V224h64V420.3c.6 .3 1.2 .7 1.8 1.1l48 32c11.7 7.8 17 22.4 12.9 35.9S494.1 512 480 512H32c-14.1 0-26.5-9.2-30.6-22.7s1.1-28.1 12.9-35.9l48-32c.6-.4 1.2-.7 1.8-1.1V224z\"/></svg>",
                     "VIEWPATH" : "/views/modules/registers/locations/states/integrations",
-                    "ORDERNUM":2150500,
+                    "numeric_order":2150500,
                     "SHOWINMENU":0
                 }]
             },{
@@ -62,14 +62,14 @@
                 "name" : "CITIES",
                 "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" width=\"20\" viewBox=\"0 0 640 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M480 48c0-26.5-21.5-48-48-48H336c-26.5 0-48 21.5-48 48V96H224V24c0-13.3-10.7-24-24-24s-24 10.7-24 24V96H112V24c0-13.3-10.7-24-24-24S64 10.7 64 24V96H48C21.5 96 0 117.5 0 144v96V464c0 26.5 21.5 48 48 48H304h32 96H592c26.5 0 48-21.5 48-48V240c0-26.5-21.5-48-48-48H480V48zm96 320v32c0 8.8-7.2 16-16 16H528c-8.8 0-16-7.2-16-16V368c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16zM240 416H208c-8.8 0-16-7.2-16-16V368c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16zM128 400c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V368c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v32zM560 256c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H528c-8.8 0-16-7.2-16-16V272c0-8.8 7.2-16 16-16h32zM256 176v32c0 8.8-7.2 16-16 16H208c-8.8 0-16-7.2-16-16V176c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16zM112 160c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V176c0-8.8 7.2-16 16-16h32zM256 304c0 8.8-7.2 16-16 16H208c-8.8 0-16-7.2-16-16V272c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v32zM112 320H80c-8.8 0-16-7.2-16-16V272c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16zm304-48v32c0 8.8-7.2 16-16 16H368c-8.8 0-16-7.2-16-16V272c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16zM400 64c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H368c-8.8 0-16-7.2-16-16V80c0-8.8 7.2-16 16-16h32zm16 112v32c0 8.8-7.2 16-16 16H368c-8.8 0-16-7.2-16-16V176c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16z\"/></svg>",
                 "VIEWPATH" : "/views/modules/registers/locations/cities",
-                "ORDERNUM":21508,
+                "numeric_order":21508,
                 "SUBS":[{
                     "id" : 2150800,
                     "IDROUTINETYPE" : 1,
                     "name" : "CITIES INTEGRATIONS",
                     "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" width=\"20\" viewBox=\"0 0 640 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M480 48c0-26.5-21.5-48-48-48H336c-26.5 0-48 21.5-48 48V96H224V24c0-13.3-10.7-24-24-24s-24 10.7-24 24V96H112V24c0-13.3-10.7-24-24-24S64 10.7 64 24V96H48C21.5 96 0 117.5 0 144v96V464c0 26.5 21.5 48 48 48H304h32 96H592c26.5 0 48-21.5 48-48V240c0-26.5-21.5-48-48-48H480V48zm96 320v32c0 8.8-7.2 16-16 16H528c-8.8 0-16-7.2-16-16V368c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16zM240 416H208c-8.8 0-16-7.2-16-16V368c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16zM128 400c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V368c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v32zM560 256c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H528c-8.8 0-16-7.2-16-16V272c0-8.8 7.2-16 16-16h32zM256 176v32c0 8.8-7.2 16-16 16H208c-8.8 0-16-7.2-16-16V176c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16zM112 160c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V176c0-8.8 7.2-16 16-16h32zM256 304c0 8.8-7.2 16-16 16H208c-8.8 0-16-7.2-16-16V272c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v32zM112 320H80c-8.8 0-16-7.2-16-16V272c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16zm304-48v32c0 8.8-7.2 16-16 16H368c-8.8 0-16-7.2-16-16V272c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16zM400 64c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H368c-8.8 0-16-7.2-16-16V80c0-8.8 7.2-16 16-16h32zm16 112v32c0 8.8-7.2 16-16 16H368c-8.8 0-16-7.2-16-16V176c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16z\"/></svg>",
                     "VIEWPATH" : "/views/modules/registers/locations/cities/integrations",
-                    "ORDERNUM":2150800,
+                    "numeric_order":2150800,
                     "SHOWINMENU":0
                 }]
             }]
@@ -77,21 +77,21 @@
             "id" :220,
             "name" :"PEOPLE",
             "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 640 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M72 88a56 56 0 1 1 112 0A56 56 0 1 1 72 88zM64 245.7C54 256.9 48 271.8 48 288s6 31.1 16 42.3V245.7zm144.4-49.3C178.7 222.7 160 261.2 160 304c0 34.3 12 65.8 32 90.5V416c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V389.2C26.2 371.2 0 332.7 0 288c0-61.9 50.1-112 112-112h32c24 0 46.2 7.5 64.4 20.3zM448 416V394.5c20-24.7 32-56.2 32-90.5c0-42.8-18.7-81.3-48.4-107.7C449.8 183.5 472 176 496 176h32c61.9 0 112 50.1 112 112c0 44.7-26.2 83.2-64 101.2V416c0 17.7-14.3 32-32 32H480c-17.7 0-32-14.3-32-32zm8-328a56 56 0 1 1 112 0A56 56 0 1 1 456 88zM576 245.7v84.7c10-11.3 16-26.1 16-42.3s-6-31.1-16-42.3zM320 32a64 64 0 1 1 0 128 64 64 0 1 1 0-128zM240 304c0 16.2 6 31 16 42.3V261.7c-10 11.3-16 26.1-16 42.3zm144-42.3v84.7c10-11.3 16-26.1 16-42.3s-6-31.1-16-42.3zM448 304c0 44.7-26.2 83.2-64 101.2V448c0 17.7-14.3 32-32 32H288c-17.7 0-32-14.3-32-32V405.2c-37.8-18-64-56.5-64-101.2c0-61.9 50.1-112 112-112h32c61.9 0 112 50.1 112 112z\"/></svg>",
-            "ORDERNUM":220,
+            "numeric_order":220,
             "SUBS":[{
                 "id" : 22000,
                 "IDROUTINETYPE" : 1,
                 "name" : "PEOPLE",
                 "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 640 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M72 88a56 56 0 1 1 112 0A56 56 0 1 1 72 88zM64 245.7C54 256.9 48 271.8 48 288s6 31.1 16 42.3V245.7zm144.4-49.3C178.7 222.7 160 261.2 160 304c0 34.3 12 65.8 32 90.5V416c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V389.2C26.2 371.2 0 332.7 0 288c0-61.9 50.1-112 112-112h32c24 0 46.2 7.5 64.4 20.3zM448 416V394.5c20-24.7 32-56.2 32-90.5c0-42.8-18.7-81.3-48.4-107.7C449.8 183.5 472 176 496 176h32c61.9 0 112 50.1 112 112c0 44.7-26.2 83.2-64 101.2V416c0 17.7-14.3 32-32 32H480c-17.7 0-32-14.3-32-32zm8-328a56 56 0 1 1 112 0A56 56 0 1 1 456 88zM576 245.7v84.7c10-11.3 16-26.1 16-42.3s-6-31.1-16-42.3zM320 32a64 64 0 1 1 0 128 64 64 0 1 1 0-128zM240 304c0 16.2 6 31 16 42.3V261.7c-10 11.3-16 26.1-16 42.3zm144-42.3v84.7c10-11.3 16-26.1 16-42.3s-6-31.1-16-42.3zM448 304c0 44.7-26.2 83.2-64 101.2V448c0 17.7-14.3 32-32 32H288c-17.7 0-32-14.3-32-32V405.2c-37.8-18-64-56.5-64-101.2c0-61.9 50.1-112 112-112h32c61.9 0 112 50.1 112 112z\"/></svg>",
                 "VIEWPATH" : "/views/modules/registers/people/people",
-                "ORDERNUM":22000,
+                "numeric_order":22000,
                 "SUBS":[{
                     "id" : 2200000,
                     "IDROUTINETYPE" : 1,
                     "name" : "PEOPLE INTEGRATIONS",
                     "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 640 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M72 88a56 56 0 1 1 112 0A56 56 0 1 1 72 88zM64 245.7C54 256.9 48 271.8 48 288s6 31.1 16 42.3V245.7zm144.4-49.3C178.7 222.7 160 261.2 160 304c0 34.3 12 65.8 32 90.5V416c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V389.2C26.2 371.2 0 332.7 0 288c0-61.9 50.1-112 112-112h32c24 0 46.2 7.5 64.4 20.3zM448 416V394.5c20-24.7 32-56.2 32-90.5c0-42.8-18.7-81.3-48.4-107.7C449.8 183.5 472 176 496 176h32c61.9 0 112 50.1 112 112c0 44.7-26.2 83.2-64 101.2V416c0 17.7-14.3 32-32 32H480c-17.7 0-32-14.3-32-32zm8-328a56 56 0 1 1 112 0A56 56 0 1 1 456 88zM576 245.7v84.7c10-11.3 16-26.1 16-42.3s-6-31.1-16-42.3zM320 32a64 64 0 1 1 0 128 64 64 0 1 1 0-128zM240 304c0 16.2 6 31 16 42.3V261.7c-10 11.3-16 26.1-16 42.3zm144-42.3v84.7c10-11.3 16-26.1 16-42.3s-6-31.1-16-42.3zM448 304c0 44.7-26.2 83.2-64 101.2V448c0 17.7-14.3 32-32 32H288c-17.7 0-32-14.3-32-32V405.2c-37.8-18-64-56.5-64-101.2c0-61.9 50.1-112 112-112h32c61.9 0 112 50.1 112 112z\"/></svg>",
                     "VIEWPATH" : "/views/modules/registers/people/people/integrations",
-                    "ORDERNUM":2200000,
+                    "numeric_order":2200000,
                     "SHOWINMENU" : 0
                 }]
             },{
@@ -100,14 +100,14 @@
                 "name" : "COMPANIES",
                 "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 576 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M64 32C46.3 32 32 46.3 32 64V304v48 80c0 26.5 21.5 48 48 48H496c26.5 0 48-21.5 48-48V304 152.2c0-18.2-19.4-29.7-35.4-21.1L352 215.4V152.2c0-18.2-19.4-29.7-35.4-21.1L160 215.4V64c0-17.7-14.3-32-32-32H64z\"/></svg>",
                 "VIEWPATH" : "/views/modules/registers/people/companies",
-                "ORDERNUM":22001,
+                "numeric_order":22001,
                 "SUBS":[{
                     "id" : 2200100,
                     "IDROUTINETYPE" : 1,
                     "name" : "COMPANIES INTEGRATIONS",
                     "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 576 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M64 32C46.3 32 32 46.3 32 64V304v48 80c0 26.5 21.5 48 48 48H496c26.5 0 48-21.5 48-48V304 152.2c0-18.2-19.4-29.7-35.4-21.1L352 215.4V152.2c0-18.2-19.4-29.7-35.4-21.1L160 215.4V64c0-17.7-14.3-32-32-32H64z\"/></svg>",
                     "VIEWPATH" : "/views/modules/registers/people/companies/integrations",
-                    "ORDERNUM":2200100,
+                    "numeric_order":2200100,
                     "SHOWINMENU" : 0
                 }]
             },{
@@ -116,14 +116,14 @@
                 "name" : "WAREHOUSES",
                 "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 640 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M0 488V171.3c0-26.2 15.9-49.7 40.2-59.4L308.1 4.8c7.6-3.1 16.1-3.1 23.8 0L599.8 111.9c24.3 9.7 40.2 33.3 40.2 59.4V488c0 13.3-10.7 24-24 24H568c-13.3 0-24-10.7-24-24V224c0-17.7-14.3-32-32-32H128c-17.7 0-32 14.3-32 32V488c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24zm488 24l-336 0c-13.3 0-24-10.7-24-24V432H512l0 56c0 13.3-10.7 24-24 24zM128 400V336H512v64H128zm0-96V224H512l0 80H128z\"/></svg>",
                 "VIEWPATH" : "/views/modules/registers/people/warehouses",
-                "ORDERNUM":22002,
+                "numeric_order":22002,
                 "SUBS":[{
                     "id" : 2200200,
                     "IDROUTINETYPE" : 1,
                     "name" : "WAREHOUSES INTEGRATIONS",
                     "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 640 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M0 488V171.3c0-26.2 15.9-49.7 40.2-59.4L308.1 4.8c7.6-3.1 16.1-3.1 23.8 0L599.8 111.9c24.3 9.7 40.2 33.3 40.2 59.4V488c0 13.3-10.7 24-24 24H568c-13.3 0-24-10.7-24-24V224c0-17.7-14.3-32-32-32H128c-17.7 0-32 14.3-32 32V488c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24zm488 24l-336 0c-13.3 0-24-10.7-24-24V432H512l0 56c0 13.3-10.7 24-24 24zM128 400V336H512v64H128zm0-96V224H512l0 80H128z\"/></svg>",
                     "VIEWPATH" : "/views/modules/registers/people/warehouses/integrations",
-                    "ORDERNUM":2200200,
+                    "numeric_order":2200200,
                     "SHOWINMENU" : 0
                 }]
             },{
@@ -132,42 +132,42 @@
                 "name" : "BUSINESSES UNITS",
                 "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 640 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M36.8 192H603.2c20.3 0 36.8-16.5 36.8-36.8c0-7.3-2.2-14.4-6.2-20.4L558.2 21.4C549.3 8 534.4 0 518.3 0H121.7c-16 0-31 8-39.9 21.4L6.2 134.7c-4 6.1-6.2 13.2-6.2 20.4C0 175.5 16.5 192 36.8 192zM64 224V384v80c0 26.5 21.5 48 48 48H336c26.5 0 48-21.5 48-48V384 224H320V384H128V224H64zm448 0V480c0 17.7 14.3 32 32 32s32-14.3 32-32V224H512z\"/></svg>",
                 "VIEWPATH" : "/views/modules/registers/people/business_units",
-                "ORDERNUM":22003,
+                "numeric_order":22003,
                 "SUBS":[{
                     "id" : 2200300,
                     "IDROUTINETYPE" : 1,
                     "name" : "BUSINESSES UNITS INTEGRATIONS",
                     "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 640 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M36.8 192H603.2c20.3 0 36.8-16.5 36.8-36.8c0-7.3-2.2-14.4-6.2-20.4L558.2 21.4C549.3 8 534.4 0 518.3 0H121.7c-16 0-31 8-39.9 21.4L6.2 134.7c-4 6.1-6.2 13.2-6.2 20.4C0 175.5 16.5 192 36.8 192zM64 224V384v80c0 26.5 21.5 48 48 48H336c26.5 0 48-21.5 48-48V384 224H320V384H128V224H64zm448 0V480c0 17.7 14.3 32 32 32s32-14.3 32-32V224H512z\"/></svg>",
                     "VIEWPATH" : "/views/modules/registers/people/business_units/integrations",
-                    "ORDERNUM":2200300,
+                    "numeric_order":2200300,
                     "SHOWINMENU" : 0
                 }]
             },{
                 "id" : 22010,
                 "name" : "USERS",
                 "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 640 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M144 0a80 80 0 1 1 0 160A80 80 0 1 1 144 0zM512 0a80 80 0 1 1 0 160A80 80 0 1 1 512 0zM0 298.7C0 239.8 47.8 192 106.7 192h42.7c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96c-.2 0-.4 0-.7 0H21.3C9.6 320 0 310.4 0 298.7zM405.3 320c-.2 0-.4 0-.7 0c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7h42.7C592.2 192 640 239.8 640 298.7c0 11.8-9.6 21.3-21.3 21.3H405.3zM224 224a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zM128 485.3C128 411.7 187.7 352 261.3 352H378.7C452.3 352 512 411.7 512 485.3c0 14.7-11.9 26.7-26.7 26.7H154.7c-14.7 0-26.7-11.9-26.7-26.7z\"/></svg>",
-                "ORDERNUM":22010,
+                "numeric_order":22010,
                 "SUBS":[{
                     "id" : 2201000,
                     "IDROUTINETYPE" : 1,
                     "name" : "USERS",
                     "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 640 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M144 0a80 80 0 1 1 0 160A80 80 0 1 1 144 0zM512 0a80 80 0 1 1 0 160A80 80 0 1 1 512 0zM0 298.7C0 239.8 47.8 192 106.7 192h42.7c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96c-.2 0-.4 0-.7 0H21.3C9.6 320 0 310.4 0 298.7zM405.3 320c-.2 0-.4 0-.7 0c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7h42.7C592.2 192 640 239.8 640 298.7c0 11.8-9.6 21.3-21.3 21.3H405.3zM224 224a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zM128 485.3C128 411.7 187.7 352 261.3 352H378.7C452.3 352 512 411.7 512 485.3c0 14.7-11.9 26.7-26.7 26.7H154.7c-14.7 0-26.7-11.9-26.7-26.7z\"/></svg>",
                     "VIEWPATH" : "/views/modules/registers/people/users/users",
-                    "ORDERNUM":2201000
+                    "numeric_order":2201000
                 },{
                     "id" : 2201001,
                     "IDROUTINETYPE" : 1,
                     "name" : "ACCESSES PROFILES",
                     "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 640 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M144 160A80 80 0 1 0 144 0a80 80 0 1 0 0 160zm368 0A80 80 0 1 0 512 0a80 80 0 1 0 0 160zM0 298.7C0 310.4 9.6 320 21.3 320H234.7c.2 0 .4 0 .7 0c-26.6-23.5-43.3-57.8-43.3-96c0-7.6 .7-15 1.9-22.3c-13.6-6.3-28.7-9.7-44.6-9.7H106.7C47.8 192 0 239.8 0 298.7zM320 320c24 0 45.9-8.8 62.7-23.3c2.5-3.7 5.2-7.3 8-10.7c2.7-3.3 5.7-6.1 9-8.3C410 262.3 416 243.9 416 224c0-53-43-96-96-96s-96 43-96 96s43 96 96 96zm65.4 60.2c-10.3-5.9-18.1-16.2-20.8-28.2H261.3C187.7 352 128 411.7 128 485.3c0 14.7 11.9 26.7 26.7 26.7H455.2c-2.1-5.2-3.2-10.9-3.2-16.4v-3c-1.3-.7-2.7-1.5-4-2.3l-2.6 1.5c-16.8 9.7-40.5 8-54.7-9.7c-4.5-5.6-8.6-11.5-12.4-17.6l-.1-.2-.1-.2-2.4-4.1-.1-.2-.1-.2c-3.4-6.2-6.4-12.6-9-19.3c-8.2-21.2 2.2-42.6 19-52.3l2.7-1.5c0-.8 0-1.5 0-2.3s0-1.5 0-2.3l-2.7-1.5zM533.3 192H490.7c-15.9 0-31 3.5-44.6 9.7c1.3 7.2 1.9 14.7 1.9 22.3c0 17.4-3.5 33.9-9.7 49c2.5 .9 4.9 2 7.1 3.3l2.6 1.5c1.3-.8 2.6-1.6 4-2.3v-3c0-19.4 13.3-39.1 35.8-42.6c7.9-1.2 16-1.9 24.2-1.9s16.3 .6 24.2 1.9c22.5 3.5 35.8 23.2 35.8 42.6v3c1.3 .7 2.7 1.5 4 2.3l2.6-1.5c16.8-9.7 40.5-8 54.7 9.7c2.3 2.8 4.5 5.8 6.6 8.7c-2.1-57.1-49-102.7-106.6-102.7zm91.3 163.9c6.3-3.6 9.5-11.1 6.8-18c-2.1-5.5-4.6-10.8-7.4-15.9l-2.3-4c-3.1-5.1-6.5-9.9-10.2-14.5c-4.6-5.7-12.7-6.7-19-3l-2.9 1.7c-9.2 5.3-20.4 4-29.6-1.3s-16.1-14.5-16.1-25.1v-3.4c0-7.3-4.9-13.8-12.1-14.9c-6.5-1-13.1-1.5-19.9-1.5s-13.4 .5-19.9 1.5c-7.2 1.1-12.1 7.6-12.1 14.9v3.4c0 10.6-6.9 19.8-16.1 25.1s-20.4 6.6-29.6 1.3l-2.9-1.7c-6.3-3.6-14.4-2.6-19 3c-3.7 4.6-7.1 9.5-10.2 14.6l-2.3 3.9c-2.8 5.1-5.3 10.4-7.4 15.9c-2.6 6.8 .5 14.3 6.8 17.9l2.9 1.7c9.2 5.3 13.7 15.8 13.7 26.4s-4.5 21.1-13.7 26.4l-3 1.7c-6.3 3.6-9.5 11.1-6.8 17.9c2.1 5.5 4.6 10.7 7.4 15.8l2.4 4.1c3 5.1 6.4 9.9 10.1 14.5c4.6 5.7 12.7 6.7 19 3l2.9-1.7c9.2-5.3 20.4-4 29.6 1.3s16.1 14.5 16.1 25.1v3.4c0 7.3 4.9 13.8 12.1 14.9c6.5 1 13.1 1.5 19.9 1.5s13.4-.5 19.9-1.5c7.2-1.1 12.1-7.6 12.1-14.9v-3.4c0-10.6 6.9-19.8 16.1-25.1s20.4-6.6 29.6-1.3l2.9 1.7c6.3 3.6 14.4 2.6 19-3c3.7-4.6 7.1-9.4 10.1-14.5l2.4-4.2c2.8-5.1 5.3-10.3 7.4-15.8c2.6-6.8-.5-14.3-6.8-17.9l-3-1.7c-9.2-5.3-13.7-15.8-13.7-26.4s4.5-21.1 13.7-26.4l3-1.7zM472 384a40 40 0 1 1 80 0 40 40 0 1 1 -80 0z\"/></svg>",
                     "VIEWPATH" : "/views/modules/registers/people/users/access_profiles",
-                    "ORDERNUM":2201001
+                    "numeric_order":2201001
                 },{
                     "id" : 2201002,
                     "IDROUTINETYPE" : 1,
                     "name" : "PERMISSIONS",
                     "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 640 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c1.8 0 3.5-.2 5.3-.5c-76.3-55.1-99.8-141-103.1-200.2c-16.1-4.8-33.1-7.3-50.7-7.3H178.3zm308.8-78.3l-120 48C358 277.4 352 286.2 352 296c0 63.3 25.9 168.8 134.8 214.2c5.9 2.5 12.6 2.5 18.5 0C614.1 464.8 640 359.3 640 296c0-9.8-6-18.6-15.1-22.3l-120-48c-5.7-2.3-12.1-2.3-17.8 0zM591.4 312c-3.9 50.7-27.2 116.7-95.4 149.7V273.8L591.4 312z\"/></svg>",
                     "VIEWPATH" : "/views/modules/registers/people/users/permissions",
-                    "ORDERNUM":2201002
+                    "numeric_order":2201002
                 }]
             },{
                 "id" : 22013,
@@ -175,14 +175,14 @@
                 "name" : "CLIENTS",
                 "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 640 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M144 0a80 80 0 1 1 0 160A80 80 0 1 1 144 0zM512 0a80 80 0 1 1 0 160A80 80 0 1 1 512 0zM0 298.7C0 239.8 47.8 192 106.7 192h42.7c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96c-.2 0-.4 0-.7 0H21.3C9.6 320 0 310.4 0 298.7zM405.3 320c-.2 0-.4 0-.7 0c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7h42.7C592.2 192 640 239.8 640 298.7c0 11.8-9.6 21.3-21.3 21.3H405.3zM224 224a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zM128 485.3C128 411.7 187.7 352 261.3 352H378.7C452.3 352 512 411.7 512 485.3c0 14.7-11.9 26.7-26.7 26.7H154.7c-14.7 0-26.7-11.9-26.7-26.7z\"/></svg>",
                 "VIEWPATH" : "/views/modules/registers/people/clients",
-                "ORDERNUM":22013,
+                "numeric_order":22013,
                 "SUBS":[{
                     "id" : 2201300,
                     "IDROUTINETYPE" : 1,
                     "name" : "CLIENTS MAP",
                     "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 -960 960 960\" width=\"16\"><path d=\"M480-120q-151 0-255.5-46.5T120-280v-400q0-66 105.5-113T480-840q149 0 254.5 47T840-680v400q0 67-104.5 113.5T480-120Zm0-479q89 0 179-25.5T760-679q-11-29-100.5-55T480-760q-91 0-178.5 25.5T200-679q14 30 101.5 55T480-599Zm0 199q42 0 81-4t74.5-11.5q35.5-7.5 67-18.5t57.5-25v-120q-26 14-57.5 25t-67 18.5Q600-528 561-524t-81 4q-42 0-82-4t-75.5-11.5Q287-543 256-554t-56-25v120q25 14 56 25t66.5 18.5Q358-408 398-404t82 4Zm0 200q46 0 93.5-7t87.5-18.5q40-11.5 67-26t32-29.5v-98q-26 14-57.5 25t-67 18.5Q600-328 561-324t-81 4q-42 0-82-4t-75.5-11.5Q287-343 256-354t-56-25v99q5 15 31.5 29t66.5 25.5q40 11.5 88 18.5t94 7Z\"/></svg>",
                     "VIEWPATH" :"/views/modules/registers/people/clients/map",
-                    "ORDERNUM":2201300,
+                    "numeric_order":2201300,
                     "SHOWINMENU":0
                 }]                
             }]
@@ -192,46 +192,46 @@
             "name" : "OBJECTIVES",
             "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 512 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V400c0 44.2 35.8 80 80 80H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H80c-8.8 0-16-7.2-16-16V64zm406.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L320 210.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L240 221.3l57.4 57.4c12.5 12.5 32.8 12.5 45.3 0l128-128z\"/></svg>",
             "VIEWPATH" :"/views/modules/registers/objectives",
-            "ORDERNUM":250
+            "numeric_order":250
         },{
             "id" : 255,
             "name" : "REPORTS",
             "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 576 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M304 240V16.6c0-9 7-16.6 16-16.6C443.7 0 544 100.3 544 224c0 9-7.6 16-16.6 16H304zM32 272C32 150.7 122.1 50.3 239 34.3c9.2-1.3 17 6.1 17 15.4V288L412.5 444.5c6.7 6.7 6.2 17.7-1.5 23.1C371.8 495.6 323.8 512 272 512C139.5 512 32 404.6 32 272zm526.4 16c9.3 0 16.6 7.8 15.4 17c-7.7 55.9-34.6 105.6-73.9 142.3c-6 5.6-15.4 5.2-21.2-.7L320 288H558.4z\"/></svg>",
-            "ORDERNUM":255,
+            "numeric_order":255,
             "SUBS":[{
                 "id" : 25500,
                 "IDROUTINETYPE" : 1,
                 "name" : "REPORTS DATAS FOUNTS",
                 "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 -960 960 960\" width=\"16\"><path d=\"M480-120q-151 0-255.5-46.5T120-280v-400q0-66 105.5-113T480-840q149 0 254.5 47T840-680v400q0 67-104.5 113.5T480-120Zm0-479q89 0 179-25.5T760-679q-11-29-100.5-55T480-760q-91 0-178.5 25.5T200-679q14 30 101.5 55T480-599Zm0 199q42 0 81-4t74.5-11.5q35.5-7.5 67-18.5t57.5-25v-120q-26 14-57.5 25t-67 18.5Q600-528 561-524t-81 4q-42 0-82-4t-75.5-11.5Q287-543 256-554t-56-25v120q25 14 56 25t66.5 18.5Q358-408 398-404t82 4Zm0 200q46 0 93.5-7t87.5-18.5q40-11.5 67-26t32-29.5v-98q-26 14-57.5 25t-67 18.5Q600-328 561-324t-81 4q-42 0-82-4t-75.5-11.5Q287-343 256-354t-56-25v99q5 15 31.5 29t66.5 25.5q40 11.5 88 18.5t94 7Z\"/></svg>",
                 "VIEWPATH" :"/views/modules/registers/reports/datas",
-                "ORDERNUM":25500
+                "numeric_order":25500
             },{
                 "id" : 25501,
                 "IDROUTINETYPE" : 1,
                 "name" : "REPORTS VISIONS",
                 "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 -960 960 960\" width=\"16\"><path d=\"M480-120q-151 0-255.5-46.5T120-280v-400q0-66 105.5-113T480-840q149 0 254.5 47T840-680v400q0 67-104.5 113.5T480-120Zm0-479q89 0 179-25.5T760-679q-11-29-100.5-55T480-760q-91 0-178.5 25.5T200-679q14 30 101.5 55T480-599Zm0 199q42 0 81-4t74.5-11.5q35.5-7.5 67-18.5t57.5-25v-120q-26 14-57.5 25t-67 18.5Q600-528 561-524t-81 4q-42 0-82-4t-75.5-11.5Q287-543 256-554t-56-25v120q25 14 56 25t66.5 18.5Q358-408 398-404t82 4Zm0 200q46 0 93.5-7t87.5-18.5q40-11.5 67-26t32-29.5v-98q-26 14-57.5 25t-67 18.5Q600-328 561-324t-81 4q-42 0-82-4t-75.5-11.5Q287-343 256-354t-56-25v99q5 15 31.5 29t66.5 25.5q40 11.5 88 18.5t94 7Z\"/></svg>",
                 "VIEWPATH" :"/views/modules/registers/reports/visions",
-                "ORDERNUM":25599
+                "numeric_order":25599
             }]
         },{
             "id" : 258,
             "name" : "LOGISTIC",
             "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 512 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M403.8 34.4c12-5 25.7-2.2 34.9 6.9l64 64c6 6 9.4 14.1 9.4 22.6s-3.4 16.6-9.4 22.6l-64 64c-9.2 9.2-22.9 11.9-34.9 6.9s-19.8-16.6-19.8-29.6V160H352c-10.1 0-19.6 4.7-25.6 12.8L284 229.3 244 176l31.2-41.6C293.3 110.2 321.8 96 352 96h32V64c0-12.9 7.8-24.6 19.8-29.6zM164 282.7L204 336l-31.2 41.6C154.7 401.8 126.2 416 96 416H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H96c10.1 0 19.6-4.7 25.6-12.8L164 282.7zm274.6 188c-9.2 9.2-22.9 11.9-34.9 6.9s-19.8-16.6-19.8-29.6V416H352c-30.2 0-58.7-14.2-76.8-38.4L121.6 172.8c-6-8.1-15.5-12.8-25.6-12.8H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H96c30.2 0 58.7 14.2 76.8 38.4L326.4 339.2c6 8.1 15.5 12.8 25.6 12.8h32V320c0-12.9 7.8-24.6 19.8-29.6s25.7-2.2 34.9 6.9l64 64c6 6 9.4 14.1 9.4 22.6s-3.4 16.6-9.4 22.6l-64 64z\"/></svg>",
-            "ORDERNUM":258,
+            "numeric_order":258,
             "SUBS" : [{
                 "id" : 25800,
                 "IDROUTINETYPE" : 1,
                 "name" : "LOGISTIC REASONS",
                 "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 512 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M403.8 34.4c12-5 25.7-2.2 34.9 6.9l64 64c6 6 9.4 14.1 9.4 22.6s-3.4 16.6-9.4 22.6l-64 64c-9.2 9.2-22.9 11.9-34.9 6.9s-19.8-16.6-19.8-29.6V160H352c-10.1 0-19.6 4.7-25.6 12.8L284 229.3 244 176l31.2-41.6C293.3 110.2 321.8 96 352 96h32V64c0-12.9 7.8-24.6 19.8-29.6zM164 282.7L204 336l-31.2 41.6C154.7 401.8 126.2 416 96 416H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H96c10.1 0 19.6-4.7 25.6-12.8L164 282.7zm274.6 188c-9.2 9.2-22.9 11.9-34.9 6.9s-19.8-16.6-19.8-29.6V416H352c-30.2 0-58.7-14.2-76.8-38.4L121.6 172.8c-6-8.1-15.5-12.8-25.6-12.8H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H96c30.2 0 58.7 14.2 76.8 38.4L326.4 339.2c6 8.1 15.5 12.8 25.6 12.8h32V320c0-12.9 7.8-24.6 19.8-29.6s25.7-2.2 34.9 6.9l64 64c6 6 9.4 14.1 9.4 22.6s-3.4 16.6-9.4 22.6l-64 64z\"/></svg>",
                 "VIEWPATH" :"/views/modules/registers/logistic/reasons",
-                "ORDERNUM":25800,
+                "numeric_order":25800,
                 "SUBS":[{
                     "id" : 2580000,
                     "IDROUTINETYPE" : 1,
                     "name" : "LOGISTIC REASONS INTEGRATIONS",
                     "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 512 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M403.8 34.4c12-5 25.7-2.2 34.9 6.9l64 64c6 6 9.4 14.1 9.4 22.6s-3.4 16.6-9.4 22.6l-64 64c-9.2 9.2-22.9 11.9-34.9 6.9s-19.8-16.6-19.8-29.6V160H352c-10.1 0-19.6 4.7-25.6 12.8L284 229.3 244 176l31.2-41.6C293.3 110.2 321.8 96 352 96h32V64c0-12.9 7.8-24.6 19.8-29.6zM164 282.7L204 336l-31.2 41.6C154.7 401.8 126.2 416 96 416H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H96c10.1 0 19.6-4.7 25.6-12.8L164 282.7zm274.6 188c-9.2 9.2-22.9 11.9-34.9 6.9s-19.8-16.6-19.8-29.6V416H352c-30.2 0-58.7-14.2-76.8-38.4L121.6 172.8c-6-8.1-15.5-12.8-25.6-12.8H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H96c30.2 0 58.7 14.2 76.8 38.4L326.4 339.2c6 8.1 15.5 12.8 25.6 12.8h32V320c0-12.9 7.8-24.6 19.8-29.6s25.7-2.2 34.9 6.9l64 64c6 6 9.4 14.1 9.4 22.6s-3.4 16.6-9.4 22.6l-64 64z\"/></svg>",
                     "VIEWPATH" :"/views/modules/registers/logistic/reasons/integrations",
-                    "ORDERNUM":2580000,
+                    "numeric_order":2580000,
                     "SHOWINMENU":0
                 }]
             }]
@@ -241,19 +241,19 @@
             "name" : "APIS",
             "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"1em\" fill=\"currentColor\" class=\"bi bi-boxes\" viewBox=\"0 0 16 16\"><path d=\"M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z\"/></svg>",
             "VIEWPATH" :"/views/modules/registers/apis/apis",
-            "ORDERNUM":260
+            "numeric_order":260
         },{
             "id" : 280,
             "name" : "SQL",
             "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 -960 960 960\" width=\"16\"><path d=\"M480-120q-151 0-255.5-46.5T120-280v-400q0-66 105.5-113T480-840q149 0 254.5 47T840-680v400q0 67-104.5 113.5T480-120Zm0-479q89 0 179-25.5T760-679q-11-29-100.5-55T480-760q-91 0-178.5 25.5T200-679q14 30 101.5 55T480-599Zm0 199q42 0 81-4t74.5-11.5q35.5-7.5 67-18.5t57.5-25v-120q-26 14-57.5 25t-67 18.5Q600-528 561-524t-81 4q-42 0-82-4t-75.5-11.5Q287-543 256-554t-56-25v120q25 14 56 25t66.5 18.5Q358-408 398-404t82 4Zm0 200q46 0 93.5-7t87.5-18.5q40-11.5 67-26t32-29.5v-98q-26 14-57.5 25t-67 18.5Q600-328 561-324t-81 4q-42 0-82-4t-75.5-11.5Q287-343 256-354t-56-25v99q5 15 31.5 29t66.5 25.5q40 11.5 88 18.5t94 7Z\"/></svg>",
-            "ORDERNUM":280,
+            "numeric_order":280,
             "SUBS":[{
                 "id" : 28000,
                 "IDROUTINETYPE" : 1,
                 "name" : "SQL PROCESSES",
                 "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 -960 960 960\" width=\"16\"><path d=\"M480-120q-151 0-255.5-46.5T120-280v-400q0-66 105.5-113T480-840q149 0 254.5 47T840-680v400q0 67-104.5 113.5T480-120Zm0-479q89 0 179-25.5T760-679q-11-29-100.5-55T480-760q-91 0-178.5 25.5T200-679q14 30 101.5 55T480-599Zm0 199q42 0 81-4t74.5-11.5q35.5-7.5 67-18.5t57.5-25v-120q-26 14-57.5 25t-67 18.5Q600-528 561-524t-81 4q-42 0-82-4t-75.5-11.5Q287-543 256-554t-56-25v120q25 14 56 25t66.5 18.5Q358-408 398-404t82 4Zm0 200q46 0 93.5-7t87.5-18.5q40-11.5 67-26t32-29.5v-98q-26 14-57.5 25t-67 18.5Q600-328 561-324t-81 4q-42 0-82-4t-75.5-11.5Q287-343 256-354t-56-25v99q5 15 31.5 29t66.5 25.5q40 11.5 88 18.5t94 7Z\"/></svg>",
                 "VIEWPATH" :"/views/modules/registers/sql_processes",
-                "ORDERNUM":28000
+                "numeric_order":28000
             }]
         },{
             "id" : 299,
@@ -261,52 +261,52 @@
             "name" : "DATAS RELATIONSHIPS",
             "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 384 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M192 32c17.7 0 32 14.3 32 32V199.5l111.5-66.9c15.2-9.1 34.8-4.2 43.9 11s4.2 34.8-11 43.9L254.2 256l114.3 68.6c15.2 9.1 20.1 28.7 11 43.9s-28.7 20.1-43.9 11L224 312.5V448c0 17.7-14.3 32-32 32s-32-14.3-32-32V312.5L48.5 379.4c-15.2 9.1-34.8 4.2-43.9-11s-4.2-34.8 11-43.9L129.8 256 15.5 187.4c-15.2-9.1-20.1-28.7-11-43.9s28.7-20.1 43.9-11L160 199.5V64c0-17.7 14.3-32 32-32z\"/></svg>",
             "VIEWPATH" :"/views/modules/registers/relationships",
-            "ORDERNUM":299
+            "numeric_order":299
         }]
     },{      
         "id" : 4,
         "name" : "OUTPUTS",
         "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 640 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M320.7 352c8.1-89.7 83.5-160 175.3-160c8.9 0 17.6 .7 26.1 1.9L309.5 7c-6-5-14-7-21-7s-15 1-22 8L10 231.5c-7 7-10 15-10 24c0 18 14 32.1 32 32.1h32v69.7c-.1 .9-.1 1.8-.1 2.8V472c0 22.1 17.9 40 40 40h16c1.2 0 2.4-.1 3.6-.2c1.5 .1 3 .2 4.5 .2H160h24c22.1 0 40-17.9 40-40V448 384c0-17.7 14.3-32 32-32h64l.7 0zM640 368a144 144 0 1 0 -288 0 144 144 0 1 0 288 0zm-76.7-43.3c6.2 6.2 6.2 16.4 0 22.6l-72 72c-6.2 6.2-16.4 6.2-22.6 0l-40-40c-6.2-6.2-6.2-16.4 0-22.6s16.4-6.2 22.6 0L480 385.4l60.7-60.7c6.2-6.2 16.4-6.2 22.6 0z\"/></svg>",
-        "ORDERNUM":4,
+        "numeric_order":4,
         "SUBS":[{      
             "id" :400,
             "name" : "SALES",
             "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 512 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M470.7 9.4c3 3.1 5.3 6.6 6.9 10.3s2.4 7.8 2.4 12.2l0 .1v0 96c0 17.7-14.3 32-32 32s-32-14.3-32-32V109.3L310.6 214.6c-11.8 11.8-30.8 12.6-43.5 1.7L176 138.1 84.8 216.3c-13.4 11.5-33.6 9.9-45.1-3.5s-9.9-33.6 3.5-45.1l112-96c12-10.3 29.7-10.3 41.7 0l89.5 76.7L370.7 64H352c-17.7 0-32-14.3-32-32s14.3-32 32-32h96 0c8.8 0 16.8 3.6 22.6 9.3l.1 .1zM0 304c0-26.5 21.5-48 48-48H464c26.5 0 48 21.5 48 48V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V304zM48 416v48H96c0-26.5-21.5-48-48-48zM96 304H48v48c26.5 0 48-21.5 48-48zM464 416c-26.5 0-48 21.5-48 48h48V416zM416 304c0 26.5 21.5 48 48 48V304H416zm-96 80a64 64 0 1 0 -128 0 64 64 0 1 0 128 0z\"/></svg>",
-            "ORDERNUM":400,
+            "numeric_order":400,
             "SUBS" : [{      
                 "id" : 40001,
                 "name" : "FINANCIAL COLLECTION",
                 "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"1em\" fill=\"currentColor\" class=\"bi bi-currency-dollar\" viewBox=\"0 0 16 16\"><path d=\"M4 10.781c.148 1.667 1.513 2.85 3.591 3.003V15h1.043v-1.216c2.27-.179 3.678-1.438 3.678-3.3 0-1.59-.947-2.51-2.956-3.028l-.722-.187V3.467c1.122.11 1.879.714 2.07 1.616h1.47c-.166-1.6-1.54-2.748-3.54-2.875V1H7.591v1.233c-1.939.23-3.27 1.472-3.27 3.156 0 1.454.966 2.483 2.661 2.917l.61.162v4.031c-1.149-.17-1.94-.8-2.131-1.718H4zm3.391-3.836c-1.043-.263-1.6-.825-1.6-1.616 0-.944.704-1.641 1.8-1.828v3.495l-.2-.05zm1.591 1.872c1.287.323 1.852.859 1.852 1.769 0 1.097-.826 1.828-2.2 1.939V8.73l.348.086z\"/></svg>",
-                "ORDERNUM":40001,
+                "numeric_order":40001,
                 "SUBS":[{      
                     "id" :4000100,
                     "name" : "PIX",
                     "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"16px\" height=\"16px\" viewBox=\"0 0 16 16\" version=\"1.1\"><g id=\"surface1\"><path style=\" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;\" d=\"M 12.128906 11.90625 C 11.546875 11.90625 11.003906 11.683594 10.59375 11.273438 L 8.386719 9.0625 C 8.234375 8.914062 7.960938 8.914062 7.808594 9.0625 L 5.589844 11.28125 C 5.183594 11.691406 4.640625 11.914062 4.058594 11.914062 L 3.625 11.914062 L 6.429688 14.71875 C 7.300781 15.589844 8.726562 15.589844 9.597656 14.71875 L 12.410156 11.90625 Z M 12.128906 11.90625 \"/><path style=\" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;\" d=\"M 4.050781 4.085938 C 4.628906 4.085938 5.171875 4.308594 5.582031 4.71875 L 7.800781 6.9375 C 7.960938 7.097656 8.21875 7.097656 8.378906 6.9375 L 10.59375 4.726562 C 11.003906 4.316406 11.546875 4.09375 12.128906 4.09375 L 12.394531 4.09375 L 9.582031 1.28125 C 8.707031 0.410156 7.285156 0.410156 6.410156 1.28125 L 3.605469 4.085938 Z M 4.050781 4.085938 \"/><path style=\" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;\" d=\"M 14.71875 6.417969 L 13.015625 4.71875 C 12.980469 4.738281 12.9375 4.746094 12.890625 4.746094 L 12.117188 4.746094 C 11.71875 4.746094 11.324219 4.90625 11.050781 5.191406 L 8.839844 7.398438 C 8.636719 7.601562 8.359375 7.710938 8.09375 7.710938 C 7.816406 7.710938 7.550781 7.601562 7.34375 7.398438 L 5.128906 5.183594 C 4.84375 4.898438 4.453125 4.738281 4.058594 4.738281 L 3.109375 4.738281 C 3.0625 4.738281 3.027344 4.726562 2.992188 4.710938 L 1.28125 6.417969 C 0.410156 7.292969 0.410156 8.714844 1.28125 9.589844 L 2.984375 11.289062 C 3.019531 11.273438 3.054688 11.261719 3.097656 11.261719 L 4.050781 11.261719 C 4.453125 11.261719 4.84375 11.101562 5.121094 10.816406 L 7.335938 8.601562 C 7.738281 8.199219 8.441406 8.199219 8.839844 8.601562 L 11.046875 10.808594 C 11.332031 11.09375 11.722656 11.253906 12.117188 11.253906 L 12.890625 11.253906 C 12.933594 11.253906 12.972656 11.261719 13.015625 11.28125 L 14.714844 9.582031 C 15.589844 8.707031 15.589844 7.292969 14.71875 6.417969 \"/></g></svg>",
-                    "ORDERNUM":4000100,
+                    "numeric_order":4000100,
                     "SUBS" : [{
                         "id" : 400010000,
                         "name" :"INTEGRATIONS",
                         "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"1em\" fill=\"currentColor\" class=\"bi bi-arrow-down-up\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z\"/></svg>",
-                        "ORDERNUM":400010000,
+                        "numeric_order":400010000,
                         "SUBS" : [{
                             "id" : 40001000000,
                             "name" :"SICREDI",
                             "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"15px\" height=\"16px\" viewBox=\"0 0 15 15\" version=\"1.1\"><defs><filter id=\"alpha\" filterUnits=\"objectBoundingBox\" x=\"0%\" y=\"0%\" width=\"100%\" height=\"100%\"><feColorMatrix type=\"matrix\" in=\"SourceGraphic\" values=\"0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0\"/></filter><mask id=\"mask0\"><g filter=\"url(#alpha)\"><rect x=\"0\" y=\"0\" width=\"15\" height=\"15\" style=\"fill:currentColor;fill-opacity:0.996078;stroke:none;\"/></g></mask><clipPath id=\"clip1\"><rect x=\"0\" y=\"0\" width=\"15\" height=\"15\"/></clipPath><g id=\"surface5\" clip-path=\"url(#clip1)\"><path style=\" stroke:none;fill-rule:evenodd;fill:currentColor;fill-opacity:1;\" d=\"M 7.183594 0 C 7.257812 0 7.332031 0 7.402344 0 C 7.648438 0.00390625 7.890625 0.0195312 8.132812 0.046875 C 8.191406 0.0507812 8.253906 0.0625 8.3125 0.0703125 C 8.84375 1.089844 9.207031 2.15625 9.402344 3.28125 C 9.480469 3.730469 9.519531 4.183594 9.523438 4.636719 C 9.523438 4.828125 9.503906 5.011719 9.464844 5.199219 C 9.441406 5.316406 9.390625 5.425781 9.316406 5.527344 C 9.210938 5.640625 9.089844 5.65625 8.953125 5.578125 C 8.894531 5.539062 8.839844 5.488281 8.792969 5.433594 C 8.769531 5.402344 8.746094 5.371094 8.722656 5.339844 C 8.390625 4.824219 8.039062 4.316406 7.667969 3.828125 C 7.492188 3.601562 7.316406 3.375 7.140625 3.148438 C 6.929688 2.902344 6.714844 2.652344 6.503906 2.40625 C 6.105469 1.953125 5.6875 1.511719 5.257812 1.082031 C 5.058594 0.882812 4.855469 0.683594 4.65625 0.484375 C 5.355469 0.21875 6.082031 0.0585938 6.835938 0.0117188 C 6.953125 0.0078125 7.070312 0 7.183594 0 Z M 7.183594 0 \"/></g><mask id=\"mask1\"><g filter=\"url(#alpha)\"><rect x=\"0\" y=\"0\" width=\"15\" height=\"15\" style=\"fill:currentColor;fill-opacity:0.996078;stroke:none;\"/></g></mask><clipPath id=\"clip2\"><rect x=\"0\" y=\"0\" width=\"15\" height=\"15\"/></clipPath><g id=\"surface8\" clip-path=\"url(#clip2)\"><path style=\" stroke:none;fill-rule:evenodd;fill:currentColor;fill-opacity:1;\" d=\"M 11.085938 1.039062 C 11.867188 1.507812 12.542969 2.09375 13.109375 2.796875 C 13.242188 2.964844 13.367188 3.136719 13.484375 3.316406 C 13.144531 4.226562 12.667969 5.0625 12.050781 5.816406 C 11.761719 6.171875 11.433594 6.496094 11.074219 6.789062 C 10.960938 6.878906 10.839844 6.953125 10.707031 7.011719 C 10.632812 7.046875 10.554688 7.066406 10.472656 7.074219 C 10.292969 7.085938 10.191406 7.007812 10.15625 6.84375 C 10.140625 6.742188 10.148438 6.640625 10.171875 6.542969 C 10.421875 5.710938 10.625 4.867188 10.777344 4.011719 C 10.886719 3.316406 10.972656 2.621094 11.023438 1.921875 C 11.046875 1.625 11.066406 1.332031 11.085938 1.039062 Z M 11.085938 1.039062 \"/></g><mask id=\"mask2\"><g filter=\"url(#alpha)\"><rect x=\"0\" y=\"0\" width=\"15\" height=\"15\" style=\"fill:currentColor;fill-opacity:0.996078;stroke:none;\"/></g></mask><clipPath id=\"clip3\"><rect x=\"0\" y=\"0\" width=\"15\" height=\"15\"/></clipPath><g id=\"surface11\" clip-path=\"url(#clip3)\"><path style=\" stroke:none;fill-rule:evenodd;fill:currentColor;fill-opacity:1;\" d=\"M 0 5.910156 C 0 5.90625 0 5.902344 0 5.902344 C 0.285156 4.605469 0.875 3.457031 1.769531 2.453125 C 1.816406 2.40625 1.859375 2.359375 1.90625 2.316406 C 3.164062 2.601562 4.351562 3.0625 5.460938 3.691406 C 5.96875 3.984375 6.441406 4.316406 6.882812 4.695312 C 6.996094 4.800781 7.101562 4.910156 7.195312 5.027344 C 7.257812 5.105469 7.308594 5.191406 7.347656 5.28125 C 7.382812 5.359375 7.394531 5.445312 7.382812 5.53125 C 7.363281 5.609375 7.316406 5.667969 7.242188 5.710938 C 7.167969 5.746094 7.085938 5.769531 7 5.769531 C 6.949219 5.773438 6.898438 5.769531 6.851562 5.765625 C 5.535156 5.621094 4.214844 5.585938 2.894531 5.652344 C 2.304688 5.679688 1.71875 5.726562 1.132812 5.785156 C 0.753906 5.824219 0.375 5.867188 0 5.910156 Z M 0 5.910156 \"/></g><mask id=\"mask3\"><g filter=\"url(#alpha)\"><rect x=\"0\" y=\"0\" width=\"15\" height=\"15\" style=\"fill:currentColor;fill-opacity:0.996078;stroke:none;\"/></g></mask><clipPath id=\"clip4\"><rect x=\"0\" y=\"0\" width=\"15\" height=\"15\"/></clipPath><g id=\"surface14\" clip-path=\"url(#clip4)\"><path style=\" stroke:none;fill-rule:evenodd;fill:currentColor;fill-opacity:1;\" d=\"M 14.554688 5.800781 C 14.558594 5.800781 14.5625 5.804688 14.5625 5.808594 C 14.753906 6.859375 14.769531 7.910156 14.613281 8.964844 C 13.882812 9.230469 13.125 9.378906 12.347656 9.414062 C 11.863281 9.433594 11.386719 9.40625 10.910156 9.328125 C 10.726562 9.300781 10.550781 9.257812 10.378906 9.195312 C 10.269531 9.15625 10.171875 9.105469 10.082031 9.039062 C 10.015625 8.988281 9.964844 8.929688 9.929688 8.855469 C 9.886719 8.746094 9.902344 8.648438 9.976562 8.554688 C 10.054688 8.46875 10.152344 8.402344 10.261719 8.359375 C 10.828125 8.125 11.378906 7.863281 11.914062 7.574219 C 12.050781 7.496094 12.183594 7.421875 12.316406 7.339844 C 12.570312 7.1875 12.816406 7.03125 13.066406 6.875 C 13.582031 6.539062 14.078125 6.183594 14.554688 5.800781 Z M 14.554688 5.800781 \"/></g><mask id=\"mask4\"><g filter=\"url(#alpha)\"><rect x=\"0\" y=\"0\" width=\"15\" height=\"15\" style=\"fill:currentColor;fill-opacity:0.996078;stroke:none;\"/></g></mask><clipPath id=\"clip5\"><rect x=\"0\" y=\"0\" width=\"15\" height=\"15\"/></clipPath><g id=\"surface17\" clip-path=\"url(#clip5)\"><path style=\" stroke:none;fill-rule:evenodd;fill:currentColor;fill-opacity:1;\" d=\"M 5.527344 6.824219 C 5.644531 6.820312 5.761719 6.828125 5.875 6.851562 C 5.964844 6.867188 6.046875 6.902344 6.117188 6.953125 C 6.21875 7.039062 6.25 7.144531 6.21875 7.269531 C 6.191406 7.347656 6.15625 7.421875 6.105469 7.488281 C 6.085938 7.511719 6.066406 7.535156 6.050781 7.558594 C 5.355469 8.28125 4.710938 9.039062 4.113281 9.832031 C 3.78125 10.289062 3.457031 10.753906 3.148438 11.226562 C 2.792969 11.777344 2.449219 12.339844 2.125 12.910156 C 2.121094 12.914062 2.121094 12.914062 2.117188 12.910156 C 1.15625 11.96875 0.492188 10.859375 0.121094 9.585938 C 0.105469 9.527344 0.0898438 9.46875 0.078125 9.40625 C 1.019531 8.617188 2.070312 7.96875 3.222656 7.46875 C 3.800781 7.222656 4.398438 7.03125 5.015625 6.898438 C 5.1875 6.859375 5.355469 6.835938 5.527344 6.824219 Z M 5.527344 6.824219 \"/></g><mask id=\"mask5\"><g filter=\"url(#alpha)\"><rect x=\"0\" y=\"0\" width=\"15\" height=\"15\" style=\"fill:currentColor;fill-opacity:0.996078;stroke:none;\"/></g></mask><clipPath id=\"clip6\"><rect x=\"0\" y=\"0\" width=\"15\" height=\"15\"/></clipPath><g id=\"surface20\" clip-path=\"url(#clip6)\"><path style=\" stroke:none;fill-rule:evenodd;fill:currentColor;fill-opacity:1;\" d=\"M 7.566406 15 C 7.453125 15 7.34375 15 7.234375 15 C 6.660156 14.980469 6.09375 14.90625 5.535156 14.773438 C 5.339844 14.730469 5.140625 14.679688 4.945312 14.625 C 4.941406 14.625 4.933594 14.621094 4.929688 14.617188 C 4.851562 13.40625 4.980469 12.21875 5.316406 11.046875 C 5.445312 10.597656 5.609375 10.164062 5.808594 9.738281 C 5.898438 9.546875 6.007812 9.363281 6.132812 9.195312 C 6.207031 9.101562 6.292969 9.019531 6.394531 8.953125 C 6.625 8.824219 6.792969 8.875 6.902344 9.105469 C 6.9375 9.1875 6.960938 9.269531 6.972656 9.355469 C 7.105469 10.230469 7.289062 11.097656 7.519531 11.957031 C 7.722656 12.648438 7.957031 13.332031 8.226562 14.007812 C 8.34375 14.304688 8.464844 14.597656 8.585938 14.890625 C 8.34375 14.9375 8.101562 14.96875 7.855469 14.984375 C 7.757812 14.988281 7.660156 14.996094 7.566406 15 Z M 7.566406 15 \"/></g><mask id=\"mask6\"><g filter=\"url(#alpha)\"><rect x=\"0\" y=\"0\" width=\"15\" height=\"15\" style=\"fill:currentColor;fill-opacity:0.996078;stroke:none;\"/></g></mask><clipPath id=\"clip7\"><rect x=\"0\" y=\"0\" width=\"15\" height=\"15\"/></clipPath><g id=\"surface23\" clip-path=\"url(#clip7)\"><path style=\" stroke:none;fill-rule:evenodd;fill:currentColor;fill-opacity:1;\" d=\"M 8.53125 9.535156 C 8.617188 9.539062 8.703125 9.554688 8.78125 9.589844 C 8.8125 9.605469 8.839844 9.621094 8.871094 9.632812 C 9.460938 9.972656 10.070312 10.273438 10.699219 10.542969 C 10.808594 10.585938 10.917969 10.628906 11.023438 10.671875 C 11.261719 10.757812 11.5 10.847656 11.734375 10.933594 C 12.351562 11.148438 12.980469 11.328125 13.617188 11.476562 C 13.621094 11.476562 13.621094 11.480469 13.621094 11.480469 C 13.0625 12.382812 12.335938 13.136719 11.441406 13.742188 C 11.394531 13.773438 11.351562 13.800781 11.308594 13.828125 C 10.761719 13.480469 10.265625 13.074219 9.816406 12.609375 C 9.3125 12.085938 8.890625 11.507812 8.546875 10.878906 C 8.464844 10.726562 8.390625 10.574219 8.328125 10.414062 C 8.277344 10.28125 8.246094 10.144531 8.230469 10.003906 C 8.222656 9.902344 8.234375 9.804688 8.269531 9.707031 C 8.320312 9.601562 8.40625 9.542969 8.53125 9.535156 Z M 8.53125 9.535156 \"/></g></defs><g id=\"surface1\"><use xlink:href=\"#surface5\" mask=\"url(#mask0)\"/><use xlink:href=\"#surface8\" mask=\"url(#mask1)\"/><use xlink:href=\"#surface11\" mask=\"url(#mask2)\"/><use xlink:href=\"#surface14\" mask=\"url(#mask3)\"/><use xlink:href=\"#surface17\" mask=\"url(#mask4)\"/><use xlink:href=\"#surface20\" mask=\"url(#mask5)\"/><use xlink:href=\"#surface23\" mask=\"url(#mask6)\"/></g></svg>",
-                            "ORDERNUM":40001000000,
+                            "numeric_order":40001000000,
                             "SUBS" : [{
                                 "id" : 4000100000000,
                                 "IDROUTINETYPE" : 2,
                                 "name" :"API PIX SICREDI",
                                 "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"16px\" height=\"16px\" viewBox=\"0 0 16 16\" version=\"1.1\"><g id=\"surface1\"><path style=\" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;\" d=\"M 12.128906 11.90625 C 11.546875 11.90625 11.003906 11.683594 10.59375 11.273438 L 8.386719 9.0625 C 8.234375 8.914062 7.960938 8.914062 7.808594 9.0625 L 5.589844 11.28125 C 5.183594 11.691406 4.640625 11.914062 4.058594 11.914062 L 3.625 11.914062 L 6.429688 14.71875 C 7.300781 15.589844 8.726562 15.589844 9.597656 14.71875 L 12.410156 11.90625 Z M 12.128906 11.90625 \"/><path style=\" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;\" d=\"M 4.050781 4.085938 C 4.628906 4.085938 5.171875 4.308594 5.582031 4.71875 L 7.800781 6.9375 C 7.960938 7.097656 8.21875 7.097656 8.378906 6.9375 L 10.59375 4.726562 C 11.003906 4.316406 11.546875 4.09375 12.128906 4.09375 L 12.394531 4.09375 L 9.582031 1.28125 C 8.707031 0.410156 7.285156 0.410156 6.410156 1.28125 L 3.605469 4.085938 Z M 4.050781 4.085938 \"/><path style=\" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;\" d=\"M 14.71875 6.417969 L 13.015625 4.71875 C 12.980469 4.738281 12.9375 4.746094 12.890625 4.746094 L 12.117188 4.746094 C 11.71875 4.746094 11.324219 4.90625 11.050781 5.191406 L 8.839844 7.398438 C 8.636719 7.601562 8.359375 7.710938 8.09375 7.710938 C 7.816406 7.710938 7.550781 7.601562 7.34375 7.398438 L 5.128906 5.183594 C 4.84375 4.898438 4.453125 4.738281 4.058594 4.738281 L 3.109375 4.738281 C 3.0625 4.738281 3.027344 4.726562 2.992188 4.710938 L 1.28125 6.417969 C 0.410156 7.292969 0.410156 8.714844 1.28125 9.589844 L 2.984375 11.289062 C 3.019531 11.273438 3.054688 11.261719 3.097656 11.261719 L 4.050781 11.261719 C 4.453125 11.261719 4.84375 11.101562 5.121094 10.816406 L 7.335938 8.601562 C 7.738281 8.199219 8.441406 8.199219 8.839844 8.601562 L 11.046875 10.808594 C 11.332031 11.09375 11.722656 11.253906 12.117188 11.253906 L 12.890625 11.253906 C 12.933594 11.253906 12.972656 11.261719 13.015625 11.28125 L 14.714844 9.582031 C 15.589844 8.707031 15.589844 7.292969 14.71875 6.417969 \"/></g></svg>",
                                 "VIEWPATH" :"/views/modules/outputs/sales/financial_collection/pix/integrations/sicredi/api_pix_sicredi",
-                                "ORDERNUM":4000100000000,
+                                "numeric_order":4000100000000,
                                 "SUBS":[{
                                     "id" : 400010000000000,
                                     "IDROUTINETYPE" : 2,
                                     "name" :"CREATE API PIX SICREDI",
                                     "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"16px\" height=\"16px\" viewBox=\"0 0 16 16\" version=\"1.1\"><g id=\"surface1\"><path style=\" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;\" d=\"M 12.128906 11.90625 C 11.546875 11.90625 11.003906 11.683594 10.59375 11.273438 L 8.386719 9.0625 C 8.234375 8.914062 7.960938 8.914062 7.808594 9.0625 L 5.589844 11.28125 C 5.183594 11.691406 4.640625 11.914062 4.058594 11.914062 L 3.625 11.914062 L 6.429688 14.71875 C 7.300781 15.589844 8.726562 15.589844 9.597656 14.71875 L 12.410156 11.90625 Z M 12.128906 11.90625 \"/><path style=\" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;\" d=\"M 4.050781 4.085938 C 4.628906 4.085938 5.171875 4.308594 5.582031 4.71875 L 7.800781 6.9375 C 7.960938 7.097656 8.21875 7.097656 8.378906 6.9375 L 10.59375 4.726562 C 11.003906 4.316406 11.546875 4.09375 12.128906 4.09375 L 12.394531 4.09375 L 9.582031 1.28125 C 8.707031 0.410156 7.285156 0.410156 6.410156 1.28125 L 3.605469 4.085938 Z M 4.050781 4.085938 \"/><path style=\" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;\" d=\"M 14.71875 6.417969 L 13.015625 4.71875 C 12.980469 4.738281 12.9375 4.746094 12.890625 4.746094 L 12.117188 4.746094 C 11.71875 4.746094 11.324219 4.90625 11.050781 5.191406 L 8.839844 7.398438 C 8.636719 7.601562 8.359375 7.710938 8.09375 7.710938 C 7.816406 7.710938 7.550781 7.601562 7.34375 7.398438 L 5.128906 5.183594 C 4.84375 4.898438 4.453125 4.738281 4.058594 4.738281 L 3.109375 4.738281 C 3.0625 4.738281 3.027344 4.726562 2.992188 4.710938 L 1.28125 6.417969 C 0.410156 7.292969 0.410156 8.714844 1.28125 9.589844 L 2.984375 11.289062 C 3.019531 11.273438 3.054688 11.261719 3.097656 11.261719 L 4.050781 11.261719 C 4.453125 11.261719 4.84375 11.101562 5.121094 10.816406 L 7.335938 8.601562 C 7.738281 8.199219 8.441406 8.199219 8.839844 8.601562 L 11.046875 10.808594 C 11.332031 11.09375 11.722656 11.253906 12.117188 11.253906 L 12.890625 11.253906 C 12.933594 11.253906 12.972656 11.261719 13.015625 11.28125 L 14.714844 9.582031 C 15.589844 8.707031 15.589844 7.292969 14.71875 6.417969 \"/></g></svg>",
                                     "VIEWPATH" :"/views/modules/outputs/sales/financial_collection/pix/integrations/sicredi/api_pix_sicredi/create",
-                                    "ORDERNUM":400010000000000,
+                                    "numeric_order":400010000000000,
                                     "SHOWINMENU":0
                                 }]
                             },{
@@ -315,7 +315,7 @@
                                 "name" :"WEBHOOKS API PIX SICREDI",
                                 "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"16px\" height=\"16px\" viewBox=\"0 0 16 16\" version=\"1.1\"><g id=\"surface1\"><path style=\" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;\" d=\"M 12.128906 11.90625 C 11.546875 11.90625 11.003906 11.683594 10.59375 11.273438 L 8.386719 9.0625 C 8.234375 8.914062 7.960938 8.914062 7.808594 9.0625 L 5.589844 11.28125 C 5.183594 11.691406 4.640625 11.914062 4.058594 11.914062 L 3.625 11.914062 L 6.429688 14.71875 C 7.300781 15.589844 8.726562 15.589844 9.597656 14.71875 L 12.410156 11.90625 Z M 12.128906 11.90625 \"/><path style=\" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;\" d=\"M 4.050781 4.085938 C 4.628906 4.085938 5.171875 4.308594 5.582031 4.71875 L 7.800781 6.9375 C 7.960938 7.097656 8.21875 7.097656 8.378906 6.9375 L 10.59375 4.726562 C 11.003906 4.316406 11.546875 4.09375 12.128906 4.09375 L 12.394531 4.09375 L 9.582031 1.28125 C 8.707031 0.410156 7.285156 0.410156 6.410156 1.28125 L 3.605469 4.085938 Z M 4.050781 4.085938 \"/><path style=\" stroke:none;fill-rule:nonzero;fill:currentColor;fill-opacity:1;\" d=\"M 14.71875 6.417969 L 13.015625 4.71875 C 12.980469 4.738281 12.9375 4.746094 12.890625 4.746094 L 12.117188 4.746094 C 11.71875 4.746094 11.324219 4.90625 11.050781 5.191406 L 8.839844 7.398438 C 8.636719 7.601562 8.359375 7.710938 8.09375 7.710938 C 7.816406 7.710938 7.550781 7.601562 7.34375 7.398438 L 5.128906 5.183594 C 4.84375 4.898438 4.453125 4.738281 4.058594 4.738281 L 3.109375 4.738281 C 3.0625 4.738281 3.027344 4.726562 2.992188 4.710938 L 1.28125 6.417969 C 0.410156 7.292969 0.410156 8.714844 1.28125 9.589844 L 2.984375 11.289062 C 3.019531 11.273438 3.054688 11.261719 3.097656 11.261719 L 4.050781 11.261719 C 4.453125 11.261719 4.84375 11.101562 5.121094 10.816406 L 7.335938 8.601562 C 7.738281 8.199219 8.441406 8.199219 8.839844 8.601562 L 11.046875 10.808594 C 11.332031 11.09375 11.722656 11.253906 12.117188 11.253906 L 12.890625 11.253906 C 12.933594 11.253906 12.972656 11.261719 13.015625 11.28125 L 14.714844 9.582031 C 15.589844 8.707031 15.589844 7.292969 14.71875 6.417969 \"/></g></svg>",
                                 "VIEWPATH" :"/views/modules/outputs/sales/financial_collection/pix/integrations/sicredi/webhooks_api_pix_sicredi",
-                                "ORDERNUM":4000100000001
+                                "numeric_order":4000100000001
                             }]
                         }]
                     }]
@@ -326,40 +326,40 @@
         "id" : 10,
         "name" :"WMS",
         "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 640 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M0 488V171.3c0-26.2 15.9-49.7 40.2-59.4L308.1 4.8c7.6-3.1 16.1-3.1 23.8 0L599.8 111.9c24.3 9.7 40.2 33.3 40.2 59.4V488c0 13.3-10.7 24-24 24H568c-13.3 0-24-10.7-24-24V224c0-17.7-14.3-32-32-32H128c-17.7 0-32 14.3-32 32V488c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24zm488 24l-336 0c-13.3 0-24-10.7-24-24V432H512l0 56c0 13.3-10.7 24-24 24zM128 400V336H512v64H128zm0-96V224H512l0 80H128z\"/></svg>",
-        "ORDERNUM":10,
+        "numeric_order":10,
         "SUBS":[{      
             "id" :1001,
             "name" :"OUTPUTS",
             "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 640 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M320.7 352c8.1-89.7 83.5-160 175.3-160c8.9 0 17.6 .7 26.1 1.9L309.5 7c-6-5-14-7-21-7s-15 1-22 8L10 231.5c-7 7-10 15-10 24c0 18 14 32.1 32 32.1h32v69.7c-.1 .9-.1 1.8-.1 2.8V472c0 22.1 17.9 40 40 40h16c1.2 0 2.4-.1 3.6-.2c1.5 .1 3 .2 4.5 .2H160h24c22.1 0 40-17.9 40-40V448 384c0-17.7 14.3-32 32-32h64l.7 0zM640 368a144 144 0 1 0 -288 0 144 144 0 1 0 288 0zm-76.7-43.3c6.2 6.2 6.2 16.4 0 22.6l-72 72c-6.2 6.2-16.4 6.2-22.6 0l-40-40c-6.2-6.2-6.2-16.4 0-22.6s16.4-6.2 22.6 0L480 385.4l60.7-60.7c6.2-6.2 16.4-6.2 22.6 0z\"/></svg>",
-            "ORDERNUM":1001,
+            "numeric_order":1001,
             "SUBS" : [{
                 "id" : 100100,
                 "IDROUTINETYPE" : 1,
                 "name" :"SEPARATION MAP EMIT",
                 "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 384 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0H64zM256 0V128H384L256 0zM153 289l-31 31 31 31c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L71 337c-9.4-9.4-9.4-24.6 0-33.9l48-48c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9zM265 255l48 48c9.4 9.4 9.4 24.6 0 33.9l-48 48c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l31-31-31-31c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z\"/></svg>",
                 "VIEWPATH" :"/views/modules/wms/outputs/integrations/winthor/separation_map_emit",
-                "ORDERNUM":100100
+                "numeric_order":100100
             }]
         }]
     },{      
         "id" : 12,
         "name" : "LOGISTIC",
         "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 512 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M403.8 34.4c12-5 25.7-2.2 34.9 6.9l64 64c6 6 9.4 14.1 9.4 22.6s-3.4 16.6-9.4 22.6l-64 64c-9.2 9.2-22.9 11.9-34.9 6.9s-19.8-16.6-19.8-29.6V160H352c-10.1 0-19.6 4.7-25.6 12.8L284 229.3 244 176l31.2-41.6C293.3 110.2 321.8 96 352 96h32V64c0-12.9 7.8-24.6 19.8-29.6zM164 282.7L204 336l-31.2 41.6C154.7 401.8 126.2 416 96 416H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H96c10.1 0 19.6-4.7 25.6-12.8L164 282.7zm274.6 188c-9.2 9.2-22.9 11.9-34.9 6.9s-19.8-16.6-19.8-29.6V416H352c-30.2 0-58.7-14.2-76.8-38.4L121.6 172.8c-6-8.1-15.5-12.8-25.6-12.8H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H96c30.2 0 58.7 14.2 76.8 38.4L326.4 339.2c6 8.1 15.5 12.8 25.6 12.8h32V320c0-12.9 7.8-24.6 19.8-29.6s25.7-2.2 34.9 6.9l64 64c6 6 9.4 14.1 9.4 22.6s-3.4 16.6-9.4 22.6l-64 64z\"/></svg>",
-        "ORDERNUM":12,
+        "numeric_order":12,
         "SUBS":[{      
             "id" :1200,
             "IDROUTINETYPE" : 1,
             "name" : "DELIVERIES",
             "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 576 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M0 32C0 14.3 14.3 0 32 0h72.9c27.5 0 52 17.6 60.7 43.8L257.7 320c30.1 .5 56.8 14.9 74 37l202.1-67.4c16.8-5.6 34.9 3.5 40.5 20.2s-3.5 34.9-20.2 40.5L352 417.7c-.9 52.2-43.5 94.3-96 94.3c-53 0-96-43-96-96c0-30.8 14.5-58.2 37-75.8L104.9 64H32C14.3 64 0 49.7 0 32zM244.8 134.5c-5.5-16.8 3.7-34.9 20.5-40.3L311 79.4l19.8 60.9 60.9-19.8L371.8 59.6l45.7-14.8c16.8-5.5 34.9 3.7 40.3 20.5l49.4 152.2c5.5 16.8-3.7 34.9-20.5 40.3L334.5 307.2c-16.8 5.5-34.9-3.7-40.3-20.5L244.8 134.5z\"/></svg>",
             "VIEWPATH" :"/views/modules/lms/deliveries",
-            "ORDERNUM":1200,
+            "numeric_order":1200,
             "SUBS":[{      
                 "id" :120000,
                 "IDROUTINETYPE" : 1,
                 "name" : "DELIVERY",
                 "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 576 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M0 32C0 14.3 14.3 0 32 0h72.9c27.5 0 52 17.6 60.7 43.8L257.7 320c30.1 .5 56.8 14.9 74 37l202.1-67.4c16.8-5.6 34.9 3.5 40.5 20.2s-3.5 34.9-20.2 40.5L352 417.7c-.9 52.2-43.5 94.3-96 94.3c-53 0-96-43-96-96c0-30.8 14.5-58.2 37-75.8L104.9 64H32C14.3 64 0 49.7 0 32zM244.8 134.5c-5.5-16.8 3.7-34.9 20.5-40.3L311 79.4l19.8 60.9 60.9-19.8L371.8 59.6l45.7-14.8c16.8-5.5 34.9 3.7 40.3 20.5l49.4 152.2c5.5 16.8-3.7 34.9-20.5 40.3L334.5 307.2c-16.8 5.5-34.9-3.7-40.3-20.5L244.8 134.5z\"/></svg>",
                 "VIEWPATH" :"/views/modules/lms/deliveries/:delivery",
-                "ORDERNUM":120000,
+                "numeric_order":120000,
                 "SHOWINMENU":0,
                 "SUBS":[{      
                     "id" :12000000,
@@ -367,7 +367,7 @@
                     "name" : "INVOICES",
                     "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 576 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M0 32C0 14.3 14.3 0 32 0h72.9c27.5 0 52 17.6 60.7 43.8L257.7 320c30.1 .5 56.8 14.9 74 37l202.1-67.4c16.8-5.6 34.9 3.5 40.5 20.2s-3.5 34.9-20.2 40.5L352 417.7c-.9 52.2-43.5 94.3-96 94.3c-53 0-96-43-96-96c0-30.8 14.5-58.2 37-75.8L104.9 64H32C14.3 64 0 49.7 0 32zM244.8 134.5c-5.5-16.8 3.7-34.9 20.5-40.3L311 79.4l19.8 60.9 60.9-19.8L371.8 59.6l45.7-14.8c16.8-5.5 34.9 3.7 40.3 20.5l49.4 152.2c5.5 16.8-3.7 34.9-20.5 40.3L334.5 307.2c-16.8 5.5-34.9-3.7-40.3-20.5L244.8 134.5z\"/></svg>",
                     "VIEWPATH" :"/views/modules/lms/deliveries/:delivery/invoices",
-                    "ORDERNUM":12000000,
+                    "numeric_order":12000000,
                     "SHOWINMENU":0,
                     "SUBS":[{      
                         "id" :1200000000,
@@ -375,7 +375,7 @@
                         "name" : "INVOICE",
                         "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 576 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M0 32C0 14.3 14.3 0 32 0h72.9c27.5 0 52 17.6 60.7 43.8L257.7 320c30.1 .5 56.8 14.9 74 37l202.1-67.4c16.8-5.6 34.9 3.5 40.5 20.2s-3.5 34.9-20.2 40.5L352 417.7c-.9 52.2-43.5 94.3-96 94.3c-53 0-96-43-96-96c0-30.8 14.5-58.2 37-75.8L104.9 64H32C14.3 64 0 49.7 0 32zM244.8 134.5c-5.5-16.8 3.7-34.9 20.5-40.3L311 79.4l19.8 60.9 60.9-19.8L371.8 59.6l45.7-14.8c16.8-5.5 34.9 3.7 40.3 20.5l49.4 152.2c5.5 16.8-3.7 34.9-20.5 40.3L334.5 307.2c-16.8 5.5-34.9-3.7-40.3-20.5L244.8 134.5z\"/></svg>",
                         "VIEWPATH" :"/views/modules/lms/deliveries/:delivery/invoices/:data_origin_id/:invoice",
-                        "ORDERNUM":1200000000,
+                        "numeric_order":1200000000,
                         "SHOWINMENU":0,
                         "SUBS":[{      
                             "id" :120000000000,
@@ -383,7 +383,7 @@
                             "name" : "ITEMS",
                             "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 576 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M0 32C0 14.3 14.3 0 32 0h72.9c27.5 0 52 17.6 60.7 43.8L257.7 320c30.1 .5 56.8 14.9 74 37l202.1-67.4c16.8-5.6 34.9 3.5 40.5 20.2s-3.5 34.9-20.2 40.5L352 417.7c-.9 52.2-43.5 94.3-96 94.3c-53 0-96-43-96-96c0-30.8 14.5-58.2 37-75.8L104.9 64H32C14.3 64 0 49.7 0 32zM244.8 134.5c-5.5-16.8 3.7-34.9 20.5-40.3L311 79.4l19.8 60.9 60.9-19.8L371.8 59.6l45.7-14.8c16.8-5.5 34.9 3.7 40.3 20.5l49.4 152.2c5.5 16.8-3.7 34.9-20.5 40.3L334.5 307.2c-16.8 5.5-34.9-3.7-40.3-20.5L244.8 134.5z\"/></svg>",
                             "VIEWPATH" :"/views/modules/lms/deliveries/:delivery/invoices/:data_origin_id/:invoice/items",
-                            "ORDERNUM":120000000000,
+                            "numeric_order":120000000000,
                             "SHOWINMENU":0,
                             "SUBS":[{      
                                 "id" :12000000000000,
@@ -391,7 +391,7 @@
                                 "name" : "ITEM",
                                 "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 576 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M0 32C0 14.3 14.3 0 32 0h72.9c27.5 0 52 17.6 60.7 43.8L257.7 320c30.1 .5 56.8 14.9 74 37l202.1-67.4c16.8-5.6 34.9 3.5 40.5 20.2s-3.5 34.9-20.2 40.5L352 417.7c-.9 52.2-43.5 94.3-96 94.3c-53 0-96-43-96-96c0-30.8 14.5-58.2 37-75.8L104.9 64H32C14.3 64 0 49.7 0 32zM244.8 134.5c-5.5-16.8 3.7-34.9 20.5-40.3L311 79.4l19.8 60.9 60.9-19.8L371.8 59.6l45.7-14.8c16.8-5.5 34.9 3.7 40.3 20.5l49.4 152.2c5.5 16.8-3.7 34.9-20.5 40.3L334.5 307.2c-16.8 5.5-34.9-3.7-40.3-20.5L244.8 134.5z\"/></svg>",
                                 "VIEWPATH" :"/views/modules/lms/deliveries/:delivery/invoices/:data_origin_id/:invoice/items/:item",
-                                "ORDERNUM":12000000000000,
+                                "numeric_order":12000000000000,
                                 "SHOWINMENU":0
                             }]
                         }]
@@ -402,7 +402,7 @@
                     "name" : "ROUTE",
                     "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 576 512\"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d=\"M0 32C0 14.3 14.3 0 32 0h72.9c27.5 0 52 17.6 60.7 43.8L257.7 320c30.1 .5 56.8 14.9 74 37l202.1-67.4c16.8-5.6 34.9 3.5 40.5 20.2s-3.5 34.9-20.2 40.5L352 417.7c-.9 52.2-43.5 94.3-96 94.3c-53 0-96-43-96-96c0-30.8 14.5-58.2 37-75.8L104.9 64H32C14.3 64 0 49.7 0 32zM244.8 134.5c-5.5-16.8 3.7-34.9 20.5-40.3L311 79.4l19.8 60.9 60.9-19.8L371.8 59.6l45.7-14.8c16.8-5.5 34.9 3.7 40.3 20.5l49.4 152.2c5.5 16.8-3.7 34.9-20.5 40.3L334.5 307.2c-16.8 5.5-34.9-3.7-40.3-20.5L244.8 134.5z\"/></svg>",
                     "VIEWPATH" :"/views/modules/lms/deliveries/:delivery/route",
-                    "ORDERNUM":12000001,
+                    "numeric_order":12000001,
                     "SHOWINMENU":0
                 }]
             }]
@@ -411,76 +411,76 @@
         "id" : 80,
         "name" : "REPORTS",
         "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 576 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M304 240V16.6c0-9 7-16.6 16-16.6C443.7 0 544 100.3 544 224c0 9-7.6 16-16.6 16H304zM32 272C32 150.7 122.1 50.3 239 34.3c9.2-1.3 17 6.1 17 15.4V288L412.5 444.5c6.7 6.7 6.2 17.7-1.5 23.1C371.8 495.6 323.8 512 272 512C139.5 512 32 404.6 32 272zm526.4 16c9.3 0 16.6 7.8 15.4 17c-7.7 55.9-34.6 105.6-73.9 142.3c-6 5.6-15.4 5.2-21.2-.7L320 288H558.4z\"/></svg>",
-        "ORDERNUM":80,
+        "numeric_order":80,
         "SUBS":[{      
             "id" :8000,
             "IDROUTINETYPE" : 1,
             "name" : "CAMPANHA 2024",
             "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 512 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V400c0 44.2 35.8 80 80 80H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H80c-8.8 0-16-7.2-16-16V64zm406.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L320 210.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L240 221.3l57.4 57.4c12.5 12.5 32.8 12.5 45.3 0l128-128z\"/></svg>",
             "VIEWPATH" :"/views/modules/reports/campanha2024",
-            "ORDERNUM":8000
+            "numeric_order":8000
         },{      
             "id" :8001,
             "IDROUTINETYPE" : 1,
             "name" : "CUSTOMIZED REPORT",
             "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 512 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V400c0 44.2 35.8 80 80 80H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H80c-8.8 0-16-7.2-16-16V64zm406.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L320 210.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L240 221.3l57.4 57.4c12.5 12.5 32.8 12.5 45.3 0l128-128z\"/></svg>",
             "VIEWPATH" :"/views/modules/reports/customizedreport",
-            "ORDERNUM":8002
+            "numeric_order":8002
         },{      
             "id" :8002,
             "IDROUTINETYPE" : 1,
             "name" : "CAMPANHA 2024 PBI",
             "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 512 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V400c0 44.2 35.8 80 80 80H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H80c-8.8 0-16-7.2-16-16V64zm406.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L320 210.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L240 221.3l57.4 57.4c12.5 12.5 32.8 12.5 45.3 0l128-128z\"/></svg>",
             "VIEWPATH" :"/views/modules/reports/campanha2024pbi",
-            "ORDERNUM":8001
+            "numeric_order":8001
         },{      
             "id" :8005,
             "IDROUTINETYPE" : 1,
             "name" : "COMMISSIONS",
             "ICON" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 512 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V400c0 44.2 35.8 80 80 80H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H80c-8.8 0-16-7.2-16-16V64zm406.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L320 210.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L240 221.3l57.4 57.4c12.5 12.5 32.8 12.5 45.3 0l128-128z\"/></svg>",
             "VIEWPATH" :"/views/modules/reports/commissions",
-            "ORDERNUM":8005
+            "numeric_order":8005
         }]
     },{      
         "id" : 90,
         "name" :"TASKS",
         "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"1em\" fill=\"currentColor\" class=\"bi bi-list-task\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5H2zM3 3H2v1h1V3z\"/><path d=\"M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9z\"/><path fill-rule=\"evenodd\" d=\"M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5V7zM2 7h1v1H2V7zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5H2zm1 .5H2v1h1v-1z\"/></svg>",
-        "ORDERNUM":90,
+        "numeric_order":90,
         "SUBS":[{      
             "id" : 9000,
             "IDROUTINETYPE" : 1,
             "name" :"TASKS MANAGEMENT",
             "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"1em\" fill=\"currentColor\" class=\"bi bi-list-task\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5H2zM3 3H2v1h1V3z\"/><path d=\"M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9z\"/><path fill-rule=\"evenodd\" d=\"M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5V7zM2 7h1v1H2V7zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5H2zm1 .5H2v1h1v-1z\"/></svg>",
             "VIEWPATH" :"/views/modules/tasks/tasks_management",
-            "ORDERNUM":9000,
+            "numeric_order":9000,
             "SUBS":[{      
                 "id" : 900000,
                 "IDROUTINETYPE" : 1,
                 "name" :"MY TASKS",
                 "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"1em\" fill=\"currentColor\" class=\"bi bi-list-task\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5H2zM3 3H2v1h1V3z\"/><path d=\"M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9z\"/><path fill-rule=\"evenodd\" d=\"M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5V7zM2 7h1v1H2V7zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5H2zm1 .5H2v1h1v-1z\"/></svg>",
                 "VIEWPATH" :"/views/modules/tasks/tasks_management/user_tasks",
-                "ORDERNUM":900000
+                "numeric_order":900000
             }]
         }]
     },{      
         "id" : 95,
         "name" :"APIS",
         "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"1em\" fill=\"currentColor\" class=\"bi bi-list-task\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5H2zM3 3H2v1h1V3z\"/><path d=\"M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9z\"/><path fill-rule=\"evenodd\" d=\"M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5V7zM2 7h1v1H2V7zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5H2zm1 .5H2v1h1v-1z\"/></svg>",
-        "ORDERNUM":95,
+        "numeric_order":95,
         "SUBS":[{      
             "id" : 9500,
             "IDROUTINETYPE" : 1,
             "name" :"MAPS API",
             "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" width=\"12\" viewBox=\"0 0 384 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d=\"M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z\"/></svg>",
             "VIEWPATH" :"/views/modules/apis/maps",
-            "ORDERNUM":9500,
+            "numeric_order":9500,
             "SUBS":[{      
                 "id" : 950000,
                 "IDROUTINETYPE" : 1,
                 "name" :"MAPS API RESPONSES",
                 "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" width=\"12\" viewBox=\"0 0 384 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d=\"M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z\"/></svg>",
                 "VIEWPATH" :"/views/modules/apis/maps/responses/:id",
-                "ORDERNUM":950000,
+                "numeric_order":950000,
                 "SHOWINMENU":0
             }]
         }]
@@ -488,14 +488,14 @@
         "id" : 96,
         "name" :"PROCESSMENTS",
         "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 640 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M308.5 135.3c7.1-6.3 9.9-16.2 6.2-25c-2.3-5.3-4.8-10.5-7.6-15.5L304 89.4c-3-5-6.3-9.9-9.8-14.6c-5.7-7.6-15.7-10.1-24.7-7.1l-28.2 9.3c-10.7-8.8-23-16-36.2-20.9L199 27.1c-1.9-9.3-9.1-16.7-18.5-17.8C173.9 8.4 167.2 8 160.4 8h-.7c-6.8 0-13.5 .4-20.1 1.2c-9.4 1.1-16.6 8.6-18.5 17.8L115 56.1c-13.3 5-25.5 12.1-36.2 20.9L50.5 67.8c-9-3-19-.5-24.7 7.1c-3.5 4.7-6.8 9.6-9.9 14.6l-3 5.3c-2.8 5-5.3 10.2-7.6 15.6c-3.7 8.7-.9 18.6 6.2 25l22.2 19.8C32.6 161.9 32 168.9 32 176s.6 14.1 1.7 20.9L11.5 216.7c-7.1 6.3-9.9 16.2-6.2 25c2.3 5.3 4.8 10.5 7.6 15.6l3 5.2c3 5.1 6.3 9.9 9.9 14.6c5.7 7.6 15.7 10.1 24.7 7.1l28.2-9.3c10.7 8.8 23 16 36.2 20.9l6.1 29.1c1.9 9.3 9.1 16.7 18.5 17.8c6.7 .8 13.5 1.2 20.4 1.2s13.7-.4 20.4-1.2c9.4-1.1 16.6-8.6 18.5-17.8l6.1-29.1c13.3-5 25.5-12.1 36.2-20.9l28.2 9.3c9 3 19 .5 24.7-7.1c3.5-4.7 6.8-9.5 9.8-14.6l3.1-5.4c2.8-5 5.3-10.2 7.6-15.5c3.7-8.7 .9-18.6-6.2-25l-22.2-19.8c1.1-6.8 1.7-13.8 1.7-20.9s-.6-14.1-1.7-20.9l22.2-19.8zM112 176a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM504.7 500.5c6.3 7.1 16.2 9.9 25 6.2c5.3-2.3 10.5-4.8 15.5-7.6l5.4-3.1c5-3 9.9-6.3 14.6-9.8c7.6-5.7 10.1-15.7 7.1-24.7l-9.3-28.2c8.8-10.7 16-23 20.9-36.2l29.1-6.1c9.3-1.9 16.7-9.1 17.8-18.5c.8-6.7 1.2-13.5 1.2-20.4s-.4-13.7-1.2-20.4c-1.1-9.4-8.6-16.6-17.8-18.5L583.9 307c-5-13.3-12.1-25.5-20.9-36.2l9.3-28.2c3-9 .5-19-7.1-24.7c-4.7-3.5-9.6-6.8-14.6-9.9l-5.3-3c-5-2.8-10.2-5.3-15.6-7.6c-8.7-3.7-18.6-.9-25 6.2l-19.8 22.2c-6.8-1.1-13.8-1.7-20.9-1.7s-14.1 .6-20.9 1.7l-19.8-22.2c-6.3-7.1-16.2-9.9-25-6.2c-5.3 2.3-10.5 4.8-15.6 7.6l-5.2 3c-5.1 3-9.9 6.3-14.6 9.9c-7.6 5.7-10.1 15.7-7.1 24.7l9.3 28.2c-8.8 10.7-16 23-20.9 36.2L315.1 313c-9.3 1.9-16.7 9.1-17.8 18.5c-.8 6.7-1.2 13.5-1.2 20.4s.4 13.7 1.2 20.4c1.1 9.4 8.6 16.6 17.8 18.5l29.1 6.1c5 13.3 12.1 25.5 20.9 36.2l-9.3 28.2c-3 9-.5 19 7.1 24.7c4.7 3.5 9.5 6.8 14.6 9.8l5.4 3.1c5 2.8 10.2 5.3 15.5 7.6c8.7 3.7 18.6 .9 25-6.2l19.8-22.2c6.8 1.1 13.8 1.7 20.9 1.7s14.1-.6 20.9-1.7l19.8 22.2zM464 304a48 48 0 1 1 0 96 48 48 0 1 1 0-96z\"/></svg>",
-        "ORDERNUM":96,
+        "numeric_order":96,
         "SUBS":[{      
             "id" : 9600,
             "IDROUTINETYPE" : 1,
             "name" :"PROCESSMENTS",
             "ICON" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"1em\" viewBox=\"0 0 640 512\"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M308.5 135.3c7.1-6.3 9.9-16.2 6.2-25c-2.3-5.3-4.8-10.5-7.6-15.5L304 89.4c-3-5-6.3-9.9-9.8-14.6c-5.7-7.6-15.7-10.1-24.7-7.1l-28.2 9.3c-10.7-8.8-23-16-36.2-20.9L199 27.1c-1.9-9.3-9.1-16.7-18.5-17.8C173.9 8.4 167.2 8 160.4 8h-.7c-6.8 0-13.5 .4-20.1 1.2c-9.4 1.1-16.6 8.6-18.5 17.8L115 56.1c-13.3 5-25.5 12.1-36.2 20.9L50.5 67.8c-9-3-19-.5-24.7 7.1c-3.5 4.7-6.8 9.6-9.9 14.6l-3 5.3c-2.8 5-5.3 10.2-7.6 15.6c-3.7 8.7-.9 18.6 6.2 25l22.2 19.8C32.6 161.9 32 168.9 32 176s.6 14.1 1.7 20.9L11.5 216.7c-7.1 6.3-9.9 16.2-6.2 25c2.3 5.3 4.8 10.5 7.6 15.6l3 5.2c3 5.1 6.3 9.9 9.9 14.6c5.7 7.6 15.7 10.1 24.7 7.1l28.2-9.3c10.7 8.8 23 16 36.2 20.9l6.1 29.1c1.9 9.3 9.1 16.7 18.5 17.8c6.7 .8 13.5 1.2 20.4 1.2s13.7-.4 20.4-1.2c9.4-1.1 16.6-8.6 18.5-17.8l6.1-29.1c13.3-5 25.5-12.1 36.2-20.9l28.2 9.3c9 3 19 .5 24.7-7.1c3.5-4.7 6.8-9.5 9.8-14.6l3.1-5.4c2.8-5 5.3-10.2 7.6-15.5c3.7-8.7 .9-18.6-6.2-25l-22.2-19.8c1.1-6.8 1.7-13.8 1.7-20.9s-.6-14.1-1.7-20.9l22.2-19.8zM112 176a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM504.7 500.5c6.3 7.1 16.2 9.9 25 6.2c5.3-2.3 10.5-4.8 15.5-7.6l5.4-3.1c5-3 9.9-6.3 14.6-9.8c7.6-5.7 10.1-15.7 7.1-24.7l-9.3-28.2c8.8-10.7 16-23 20.9-36.2l29.1-6.1c9.3-1.9 16.7-9.1 17.8-18.5c.8-6.7 1.2-13.5 1.2-20.4s-.4-13.7-1.2-20.4c-1.1-9.4-8.6-16.6-17.8-18.5L583.9 307c-5-13.3-12.1-25.5-20.9-36.2l9.3-28.2c3-9 .5-19-7.1-24.7c-4.7-3.5-9.6-6.8-14.6-9.9l-5.3-3c-5-2.8-10.2-5.3-15.6-7.6c-8.7-3.7-18.6-.9-25 6.2l-19.8 22.2c-6.8-1.1-13.8-1.7-20.9-1.7s-14.1 .6-20.9 1.7l-19.8-22.2c-6.3-7.1-16.2-9.9-25-6.2c-5.3 2.3-10.5 4.8-15.6 7.6l-5.2 3c-5.1 3-9.9 6.3-14.6 9.9c-7.6 5.7-10.1 15.7-7.1 24.7l9.3 28.2c-8.8 10.7-16 23-20.9 36.2L315.1 313c-9.3 1.9-16.7 9.1-17.8 18.5c-.8 6.7-1.2 13.5-1.2 20.4s.4 13.7 1.2 20.4c1.1 9.4 8.6 16.6 17.8 18.5l29.1 6.1c5 13.3 12.1 25.5 20.9 36.2l-9.3 28.2c-3 9-.5 19 7.1 24.7c4.7 3.5 9.5 6.8 14.6 9.8l5.4 3.1c5 2.8 10.2 5.3 15.5 7.6c8.7 3.7 18.6 .9 25-6.2l19.8-22.2c6.8 1.1 13.8 1.7 20.9 1.7s14.1-.6 20.9-1.7l19.8 22.2zM464 304a48 48 0 1 1 0 96 48 48 0 1 1 0-96z\"/></svg>",
             "VIEWPATH" :"/views/modules/processments",
-            "ORDERNUM":9600        
+            "numeric_order":9600        
         }]     
     }
 ]

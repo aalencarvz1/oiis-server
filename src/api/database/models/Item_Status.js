@@ -25,12 +25,12 @@ class Item_Status extends BaseTableModel {
       sigla: {
         type: DataTypes.STRING(10)
       },
-      ISDISPONIBLE: {
+      is_disponible: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue: 1
       },
-      ISDAMAGED: {
+      is_damaged: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue: 0
@@ -53,19 +53,19 @@ class Item_Status extends BaseTableModel {
       type:"unique"
     },{
       name: Item_Status.tableName + '_c_1',
-      fields:['ISDISPONIBLE'],
+      fields:['is_disponible'],
       type:"check",
       where:{
-        ISDISPONIBLE: {
+        is_disponible: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Item_Status.tableName + '_c_2',
-      fields:['ISDAMAGED'],
+      fields:['is_damaged'],
       type:"check",
       where:{
-        ISDAMAGED: {
+        is_damaged: {
               [Sequelize.Op.in]: [0,1]
           }
       }

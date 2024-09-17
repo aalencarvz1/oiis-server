@@ -24,7 +24,7 @@ class Users extends BasePeopleModel {
       people_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },          
-      IDCOLLABORATOR: {
+      collaborator_id: {
         type: DataTypes.BIGINT.UNSIGNED
       },
       IDACCESSPROFILE: {
@@ -63,7 +63,7 @@ class Users extends BasePeopleModel {
 
   static foreignsKeys = [...(this.defaultPeopleForeignsKeys||[]),...[    
     {
-      fields: ['IDCOLLABORATOR'],
+      fields: ['collaborator_id'],
       type: 'foreign key',
       references: { 
           table: Collaborators,

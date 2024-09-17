@@ -28,7 +28,7 @@ class People_X_Addresses extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      ORDERNUM:{
+      numeric_order:{
         type: DataTypes.BIGINT
       },
       observations:{
