@@ -14,7 +14,7 @@ class Objectives extends BaseTableModel {
   static model = null;
   static fields = {
     ...Objectives.getBaseTableModelFields(),...{                 
-      IDSUP:{
+      parent_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
       name:{
@@ -24,11 +24,11 @@ class Objectives extends BaseTableModel {
       description:{
         type: DataTypes.TEXT
       },
-      STARTDATE:{
+      start_date:{
         type: DataTypes.DATE,
         allowNull:false,
       },
-      ENDDATE:{
+      end_date:{
         type: DataTypes.DATE,
         allowNull:false,
       },
@@ -61,7 +61,7 @@ class Objectives extends BaseTableModel {
   static constraints = [...(Objectives.getBaseTableModelConstraints() || []),...[]];
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['IDSUP'],
+    fields: ['parent_id'],
     type: 'foreign key',
     references: { 
         table: Objectives,

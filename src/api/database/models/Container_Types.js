@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
 /**
  * class model
  */
-class Conteiner_Types extends BaseTableModel {
+class Container_Types extends BaseTableModel {
   static id = 8002;
   static tableName = this.name.toLowerCase();
   static model = null;
@@ -18,15 +18,15 @@ class Conteiner_Types extends BaseTableModel {
   static PALLET = 2;
 
   static fields = {
-    ...Conteiner_Types.getBaseTableModelFields(),...{
+    ...Container_Types.getBaseTableModelFields(),...{
       name: {
         type: DataTypes.STRING(256),
         allowNull: false
       },
-      SIGLA: {
+      sigla: {
         type: DataTypes.STRING(10)
       },
-      TARA: {
+      tara: {
         type: DataTypes.DECIMAL(32,10)
       },
       description: {
@@ -37,13 +37,13 @@ class Conteiner_Types extends BaseTableModel {
   
   static uniqueFields = [
     'name',
-    Sequelize.literal(`(COALESCE(SIGLA,'NULL'))`)
+    Sequelize.literal(`(COALESCE(sigla,'NULL'))`)
   ];
 
-  static constraints = [...(Conteiner_Types.getBaseTableModelConstraints() || []),...[
+  static constraints = [...(Container_Types.getBaseTableModelConstraints() || []),...[
     {
-      name: Conteiner_Types.tableName + '_u1',
-      fields: [...Conteiner_Types.getBaseTableModelUniqueFields(),...Conteiner_Types.uniqueFields],
+      name: Container_Types.tableName + '_u1',
+      fields: [...Container_Types.getBaseTableModelUniqueFields(),...Container_Types.uniqueFields],
       type:"unique"
     }
 
@@ -55,4 +55,4 @@ class Conteiner_Types extends BaseTableModel {
 
 
 
-module.exports = {Conteiner_Types}
+module.exports = {Container_Types}

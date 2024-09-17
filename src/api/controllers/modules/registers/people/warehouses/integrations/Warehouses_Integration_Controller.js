@@ -62,15 +62,15 @@ class Warehouses_Integration_Controller extends RegistersController {
                     transaction: transaction
                 });
                 if (warehouse) {
-                    if (warehouse.IDPEOPLE != people.id) warehouse.IDPEOPLE = people.id;
-                    if (warehouse.IDCOMPANY != company.id) warehouse.IDCOMPANY = company.id;
+                    if (warehouse.people_id != people.id) warehouse.people_id = people.id;
+                    if (warehouse.company_id != company.id) warehouse.company_id = company.id;
                     await warehouse.save({transaction:transaction});
                 } else {
                     warehouse = await Warehouses.getModel().create({
                         id: pcfilial.CODIGO,
                         data_origin_id: Data_Origins.WINTHOR,
-                        IDPEOPLE : people.id,
-                        IDCOMPANY : company.id
+                        people_id : people.id,
+                        company_id : company.id
                     },{transaction:transaction});
                 }
 

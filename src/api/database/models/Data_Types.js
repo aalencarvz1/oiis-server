@@ -32,47 +32,47 @@ class Data_Types extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull: false
       },
-      ISBOOLEAN:{
+      is_bool:{
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISTEXT:{
+      is_text:{
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISNUMBER:{
+      is_number:{
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISARRAY:{
+      is_array:{
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISOBJECT:{
+      is_object:{
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISDECIMAL:{
+      is_decimal:{
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISDATE:{
+      is_date:{
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISTIME:{
+      is_time:{
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISOTHER:{
+      is_other:{
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
@@ -93,82 +93,82 @@ class Data_Types extends BaseTableModel {
     type:"unique"
   },{
     name: Data_Types.tableName + '_c_1',
-    fields:['ISBOOLEAN'],
+    fields:['is_bool'],
     type:"check",
     where:{
-      ISBOOLEAN: {
+      is_bool: {
             [Sequelize.Op.in]: [0,1]
       }
     }
   },{
     name: Data_Types.tableName + '_c_2',
-    fields:['ISTEXT'],
+    fields:['is_text'],
     type:"check",
     where:{
-      ISTEXT: {
+      is_text: {
             [Sequelize.Op.in]: [0,1]
       }
     }
   },{
     name: Data_Types.tableName + '_c_3',
-    fields:['ISNUMBER'],
+    fields:['is_number'],
     type:"check",
     where:{
-      ISNUMBER: {
+      is_number: {
             [Sequelize.Op.in]: [0,1]
       }
     }
   },{
     name: Data_Types.tableName + '_c_4',
-    fields:['ISARRAY'],
+    fields:['is_array'],
     type:"check",
     where:{
-      ISARRAY: {
+      is_array: {
             [Sequelize.Op.in]: [0,1]
       }
     }
   },{
     name: Data_Types.tableName + '_c_5',
-    fields:['ISOBJECT'],
+    fields:['is_object'],
     type:"check",
     where:{
-      ISOBJECT: {
+      is_object: {
             [Sequelize.Op.in]: [0,1]
       }
     }
   },{
     name: Data_Types.tableName + '_c_6',
-    fields:['ISDECIMAL'],
+    fields:['is_decimal'],
     type:"check",
     where:{
-      ISDECIMAL: {
+      is_decimal: {
             [Sequelize.Op.in]: [0,1]
       }
     }
   },{
     name: Data_Types.tableName + '_c_7',
-    fields:['ISDATE'],
+    fields:['is_date'],
     type:"check",
     where:{
-      ISDATE: {
+      is_date: {
             [Sequelize.Op.in]: [0,1]
       }
     }
   },{
     name: Data_Types.tableName + '_c_8',
-    fields:['ISTIME'],
+    fields:['is_time'],
     type:"check",
     where:{
-      ISTIME: {
+      is_time: {
             [Sequelize.Op.in]: [0,1]
       }
     }
   },{
     name: Data_Types.tableName + '_c_9',
-    fields:['ISOTHER'],
+    fields:['is_other'],
     type:"check",
     where:{
-      ISOTHER: {
+      is_other: {
             [Sequelize.Op.in]: [0,1]
       }
     }

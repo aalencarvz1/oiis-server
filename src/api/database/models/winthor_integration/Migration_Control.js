@@ -13,12 +13,12 @@ class Migration_Control extends BaseWinthorIntegrationTableModel {
   static model = null;
   static fields = {
     ...Migration_Control.getBaseTableModelFields(),...{                 
-      OBJECTTYPE:{
+      object_type:{
         type: DataTypes.STRING(100),
         allowNull:false,
         defualtValue:'TABLE'
       },
-      OBJECTNAME:{
+      object_name:{
         type: DataTypes.STRING(255),
         allowNull:false
       },

@@ -20,7 +20,7 @@ class Tasks_X_Status_X_Users_Logs extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
       },
-      OPERATION: {
+      operation: {
         type: DataTypes.STRING(50),
         allowNull: false,
       },

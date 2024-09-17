@@ -16,7 +16,7 @@ class Cities extends BaseTableModel {
   static model = null;
   static fields = {
     ...Cities.getBaseTableModelFields(),...{           
-      IDSTATE:{
+      state_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -24,23 +24,23 @@ class Cities extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      SIGLA:{
+      sigla:{
         type: DataTypes.STRING(10)
       },
-      POPULATION:{
+      population:{
         type: DataTypes.INTEGER
       },
-      LATITUDE:{
+      latitude:{
         type: DataTypes.DECIMAL(18,10)
       },
-      LONGITUDE:{
+      longitude:{
         type: DataTypes.DECIMAL(18,10)
       }
     }
   };
   
   static uniqueFields = [
-    'IDSTATE',
+    'state_id',
     'name'
   ];
 
@@ -54,7 +54,7 @@ class Cities extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDSTATE'],
+      fields: ['state_id'],
       type: 'foreign key',
       references: { 
           table: States,

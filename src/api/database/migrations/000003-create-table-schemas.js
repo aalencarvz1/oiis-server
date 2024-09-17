@@ -22,7 +22,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : configDB[`${process.env.NODE_ENV||'development'}`].dialectOptions?.schema || configDB[`${process.env.NODE_ENV||'development'}`].database,
-      ISDEFAULT : 1
+      is_default : 1
     },{      
       id:configDB[`${process.env.NODE_ENV||'development'}_winthor`].id,
       status_reg_id: Record_Status.ACTIVE,
@@ -31,7 +31,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : configDB[`${process.env.NODE_ENV||'development'}_winthor`].dialectOptions?.schema || configDB[`${process.env.NODE_ENV||'development'}_winthor`].database,
-      ISDEFAULT : 0
+      is_default : 0
     },{      
       id:configDB[`${process.env.NODE_ENV||'development'}_consult`].id,
       status_reg_id: Record_Status.ACTIVE,
@@ -40,7 +40,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : configDB[`${process.env.NODE_ENV||'development'}_consult`].dialectOptions?.schema || configDB[`${process.env.NODE_ENV||'development'}_consult`].database,
-      ISDEFAULT : 0
+      is_default : 0
     },{      
       id:configDB[`${process.env.NODE_ENV||'development'}_ep`].id,
       status_reg_id: Record_Status.ACTIVE,
@@ -49,7 +49,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : configDB[`${process.env.NODE_ENV||'development'}_ep`].dialectOptions?.schema || configDB[`${process.env.NODE_ENV||'development'}_ep`].database,
-      ISDEFAULT : 0
+      is_default : 0
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

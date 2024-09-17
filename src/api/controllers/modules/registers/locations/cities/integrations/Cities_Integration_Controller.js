@@ -26,7 +26,7 @@ class Cities_Integration_Controller extends RegistersController{
             let state = await States.getModel().findOne({
                 raw:true,
                 where:{
-                    SIGLA:pccidade.UF
+                    sigla:pccidade.UF
                 }
             });
 
@@ -39,7 +39,7 @@ class Cities_Integration_Controller extends RegistersController{
                                        
             let queryParams = {
                 where: {
-                    IDSTATE: state.id,
+                    state_id: state.id,
                     id: winthorCityCode
                 }
             };
@@ -60,11 +60,11 @@ class Cities_Integration_Controller extends RegistersController{
                     id:pccidade.CODCIDADE,                 
                     data_origin_id: Data_Origins.WINTHOR,
                     id_at_origin: pccidade.CODCIDADE,
-                    IDSTATE: state.id,
+                    state_id: state.id,
                     name: pccidade.NOMECIDADE,
-                    POPULATION: pccidade.POPULACAO,
-                    LATITUDE: pccidade.LATITUDE,
-                    LONGITUDE: pccidade.LONGITUDE
+                    population: pccidade.POPULACAO,
+                    latitude: pccidade.latitude,
+                    longitude: pccidade.longitude
                 },options)
             }
             return city;

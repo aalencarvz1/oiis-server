@@ -3,13 +3,13 @@
 const { Data_Origins } = require('../models/Data_Origins');
 const { Record_Status } = require('../models/Record_Status');
 const { Users } = require('../models/Users');
-const { Conteiner_Types } = require('../models/Conteiner_Types');
+const { Container_Types } = require('../models/Container_Types');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {    
-    await queryInterface.bulkInsert(Conteiner_Types.tableName,[{
-      id: Conteiner_Types.NO_CONTEINER,
+    await queryInterface.bulkInsert(Container_Types.tableName,[{
+      id: Container_Types.NO_CONTEINER,
       status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
@@ -23,6 +23,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-     await queryInterface.bulkDelete(Conteiner_Types.tableName, null, {});
+     await queryInterface.bulkDelete(Container_Types.tableName, null, {});
   }
 };

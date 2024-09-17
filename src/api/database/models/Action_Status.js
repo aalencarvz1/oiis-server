@@ -26,27 +26,27 @@ class Action_Status extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      ISSTARTED: {
+      is_started: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISRUNNING: {
+      is_running: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISSTOPED: {
+      is_stopped: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISCANCELED: {
+      is_canceled: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISCONCLUDED: {
+      is_concluded: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
@@ -68,46 +68,46 @@ class Action_Status extends BaseTableModel {
       type:"unique"
     },{
       name: Action_Status.tableName + '_c_1',
-      fields:['ISSTARTED'],
+      fields:['is_started'],
       type:"check",
       where:{
-        ISSTARTED: {
+        is_started: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Action_Status.tableName + '_c_2',
-      fields:['ISRUNNING'],
+      fields:['is_running'],
       type:"check",
       where:{
-        ISRUNNING: {
+        is_running: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Action_Status.tableName + '_c_3',
-      fields:['ISSTOPED'],
+      fields:['is_stopped'],
       type:"check",
       where:{
-        ISSTOPED: {
+        is_stopped: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Action_Status.tableName + '_c_4',
-      fields:['ISCANCELED'],
+      fields:['is_canceled'],
       type:"check",
       where:{
-        ISCANCELED: {
+        is_canceled: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Action_Status.tableName + '_c_5',
-      fields:['ISCONCLUDED'],
+      fields:['is_concluded'],
       type:"check",
       where:{
-        ISCONCLUDED: {
+        is_concluded: {
               [Sequelize.Op.in]: [0,1]
           }
       }

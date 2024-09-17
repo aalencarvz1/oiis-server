@@ -13,10 +13,10 @@ class Error_Logs extends BaseWinthorIntegrationTableModel {
   static model = null;
   static fields = {
     ...Error_Logs.getBaseTableModelFields(),...{                 
-      OBJECTTYPE:{
+      object_type:{
         type: DataTypes.STRING(100)
       },
-      OBJECTNAME:{
+      object_name:{
         type: DataTypes.STRING(255)
       },
       OBJECTLINE:{

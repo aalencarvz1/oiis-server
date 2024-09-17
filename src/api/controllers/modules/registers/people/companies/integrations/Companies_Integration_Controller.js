@@ -101,7 +101,7 @@ class Companies_Integration_Controller extends RegistersController{
 
             let queryParams = {
                 where: {
-                    IDPEOPLE: people.id
+                    people_id: people.id
                 }
             };
             if (transaction) queryParams.transaction = transaction;
@@ -121,13 +121,13 @@ class Companies_Integration_Controller extends RegistersController{
             //try preserve winthor code, if unique or primary key viloated, then raise exception here
             if (Utils.hasValue(company)) {
                 if (company.id != pcFilialCompany.CODIGO) company.id = pcFilialCompany.CODIGO; 
-                if (company.IDPEOPLE != people.id) company.IDPEOPLE = people.id;                    
+                if (company.people_id != people.id) company.people_id = people.id;                    
                 await company.save(options);                
             } else {
                 company = await Companies.getModel().create({                    
                     id : pcFilialCompany.CODIGO,
                     data_origin_id: Data_Origins.WINTHOR,
-                    IDPEOPLE: people.id
+                    people_id: people.id
                 },options)
             }
             return company;

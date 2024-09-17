@@ -16,14 +16,14 @@ class Condiction_Items extends BaseTableModel {
 
     static fields = {
     ...Condiction_Items.getBaseTableModelFields(),...{           
-      IDCONDICTION:{
+      condiction_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      VALUE:{
+      value:{
         type: DataTypes.TEXT
       },
-      EXPRESSION: {
+      expression: {
         type: DataTypes.TEXT
       }      
     }
@@ -33,7 +33,7 @@ class Condiction_Items extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDCONDICTION'],
+      fields: ['condiction_id'],
       type: 'foreign key',
       references: { 
           table: Condictions,

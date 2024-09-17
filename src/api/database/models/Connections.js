@@ -22,7 +22,7 @@ class Connections extends BaseTableModel {
       description: {
         type: DataTypes.TEXT
       },
-      ISDEFAULT: {
+      is_default: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
@@ -41,10 +41,10 @@ class Connections extends BaseTableModel {
       type:"unique"
     },{
       name: Connections.tableName + '_c_1',
-      fields:['ISDEFAULT'],
+      fields:['is_default'],
       type:"check",
       where:{
-        ISDEFAULT: {
+        is_default: {
               [Sequelize.Op.in]: [0,1]
           }
       }

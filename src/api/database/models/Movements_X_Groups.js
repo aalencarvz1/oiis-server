@@ -20,21 +20,21 @@ class Movements_X_Groups extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDMOV:{
+      mov_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      ORDERNUM:{
+      numeric_order:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:0
       },
-      PRECEDENCE:{
+      precedence:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:0
       },
-      OBSERVATIONS:{
+      observations:{
         type: DataTypes.TEXT
       }
     }
@@ -42,7 +42,7 @@ class Movements_X_Groups extends BaseTableModel {
   
   static uniqueFields = [
     'IDGROUPMOVEMENT',
-    'IDMOV'
+    'mov_id'
   ];
 
   static constraints = [...(Movements_X_Groups.getBaseTableModelConstraints() || []),...[
@@ -64,7 +64,7 @@ class Movements_X_Groups extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDMOV'],
+      fields: ['mov_id'],
       type: 'foreign key',
       references: { 
           table: Movements,

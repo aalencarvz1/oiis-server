@@ -17,35 +17,35 @@ class Collaborator_Contracts extends BaseTableModel {
   static model = null;
   static fields = {
     ...Collaborator_Contracts.getBaseTableModelFields(),...{           
-      IDCOLLABORATOR:{
+      collaborator_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDCONTRACTTYPE:{
+      contract_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      STARTDATE:{
+      start_date:{
         type: DataTypes.DATE,
       },
-      ENDDATE:{
+      end_date:{
         type: DataTypes.DATE,
       },     
-      ISTIMECONTROLLED: {
+      is_time_controlled: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:1
       },      
-      OBSERVATIONS:{
+      observations:{
         type: DataTypes.TEXT
       },
     }
   };
   
   static uniqueFields = [
-    'IDCOLLABORATOR',
-    'IDCONTRACTTYPE',
-    Sequelize.literal(`(COALESCE(STARTDATE,'1900-01-01'))`)
+    'collaborator_id',
+    'contract_type_id',
+    Sequelize.literal(`(COALESCE(start_date,'1900-01-01'))`)
   ];
 
   static constraints = [...(Collaborator_Contracts.getBaseTableModelConstraints() || []),...[
@@ -55,10 +55,10 @@ class Collaborator_Contracts extends BaseTableModel {
       type:"unique"
     },{
       name: Collaborator_Contracts.tableName + '_c_1',
-      fields:['ISTIMECONTROLLED'],
+      fields:['is_time_controlled'],
       type:"check",
       where:{
-        ISTIMECONTROLLED: {
+        is_time_controlled: {
               [Sequelize.Op.in]: [0,1]
           }
       }
@@ -67,7 +67,7 @@ class Collaborator_Contracts extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDCOLLABORATOR'],
+      fields: ['collaborator_id'],
       type: 'foreign key',
       references: { 
           table: Collaborators,
@@ -76,7 +76,7 @@ class Collaborator_Contracts extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDCONTRACTTYPE'],
+      fields: ['contract_type_id'],
       type: 'foreign key',
       references: { 
           table: Contract_Types,

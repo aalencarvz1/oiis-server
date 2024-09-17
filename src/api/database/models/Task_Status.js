@@ -25,25 +25,25 @@ class Task_Status extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull: false
       },
-      SIGLA: {
+      sigla: {
         type: DataTypes.STRING(10)
       },
-      ISRUNNING: {
+      is_running: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue: 0
       },
-      ISSTOPED: {
+      is_stopped: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue: 0
       },
-      ISCANCELED: {
+      is_canceled: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue: 0
       },
-      ISCONCLUDED: {
+      is_concluded: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue: 0
@@ -56,7 +56,7 @@ class Task_Status extends BaseTableModel {
   
   static uniqueFields = [     
     'name',
-    Sequelize.literal(`(COALESCE(SIGLA,'NULL'))`)
+    Sequelize.literal(`(COALESCE(sigla,'NULL'))`)
   ];
 
   static constraints = [...(Task_Status.getBaseTableModelConstraints() || []),...[

@@ -17,28 +17,28 @@ class Postal_Codes_X_Streets extends BaseTableModel {
   static model = null;
   static fields = {
     ...Postal_Codes_X_Streets.getBaseTableModelFields(),...{                 
-      IDPOSTALCODE:{
+      postal_code_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDNEIGHBORHOOD:{
+      neighborhood_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDSTREET:{
+      street_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      OBSERVATIONS:{
+      observations:{
         type: DataTypes.TEXT
       }
     }
   };
   
   static uniqueFields = [
-    'IDPOSTALCODE',
-    'IDNEIGHBORHOOD',
-    'IDSTREET'
+    'postal_code_id',
+    'neighborhood_id',
+    'street_id'
   ];
 
   static constraints = [...(Postal_Codes_X_Streets.getBaseTableModelConstraints() || []),...[
@@ -51,7 +51,7 @@ class Postal_Codes_X_Streets extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDPOSTALCODE'],
+      fields: ['postal_code_id'],
       type: 'foreign key',
       references: { 
           table: Postal_Codes,
@@ -60,7 +60,7 @@ class Postal_Codes_X_Streets extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDNEIGHBORHOOD'],
+      fields: ['neighborhood_id'],
       type: 'foreign key',
       references: { 
           table: NeighborHoods,
@@ -69,7 +69,7 @@ class Postal_Codes_X_Streets extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDSTREET'],
+      fields: ['street_id'],
       type: 'foreign key',
       references: { 
           table: Streets,

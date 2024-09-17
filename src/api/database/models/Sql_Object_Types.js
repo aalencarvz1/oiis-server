@@ -34,7 +34,7 @@ class Sql_Object_Types extends BaseTableModel {
 
   static fields = {
     ...Sql_Object_Types.getBaseTableModelFields(),...{            
-      IDSUP: {
+      parent_id: {
         type: DataTypes.BIGINT.UNSIGNED
       }, 
       name: {
@@ -48,7 +48,7 @@ class Sql_Object_Types extends BaseTableModel {
   };
   
   static uniqueFields = [ 
-    Sequelize.literal(`(COALESCE(IDSUP,0))`),
+    Sequelize.literal(`(COALESCE(parent_id,0))`),
     'name'
   ];
 
@@ -62,7 +62,7 @@ class Sql_Object_Types extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDSUP'],
+      fields: ['parent_id'],
       type: 'foreign key',
       references: { 
           table: Sql_Object_Types,

@@ -26,15 +26,15 @@ class Task_Controller extends RegistersController{
                     x.id
                 from
                     (select  id,
-                            IDSUP,
+                            parent_id,
                             STARTMOMENT
                     from    (select * from tasks
-                            order by IDSUP desc, id desc) products_sorted,
+                            order by parent_id desc, id desc) products_sorted,
                             (select @pv := '${pTaskId}') initialisation
                     where   find_in_set(id, @pv)
-                    and     length(@pv := concat(@pv, ',', coalesce(IDSUP,id)))
+                    and     length(@pv := concat(@pv, ',', coalesce(parent_id,id)))
                     order by
-                        IDSUP,ID
+                        parent_id,ID
                     ) t
                     join ${Tasks_X_Status_X_Users.tableName} x on (
                         x.IDTASK = t.id
@@ -61,16 +61,16 @@ class Task_Controller extends RegistersController{
                     x.id
                 from
                     (select  id,
-                            IDSUP,
+                            parent_id,
                             STARTMOMENT,
                             @pv
                     from    (select * from tasks
-                            order by IDSUP, id) products_sorted,
+                            order by parent_id, id) products_sorted,
                             (select @pv := '${pTaskId}') initialisation
-                    where   find_in_set(IDSUP, @pv)
+                    where   find_in_set(parent_id, @pv)
                     and     length(@pv := concat(@pv, ',', id))
                     order by
-                        IDSUP,ID
+                        parent_id,ID
                     ) t
                     join ${Tasks_X_Status_X_Users.tableName} x on (
                         x.IDTASK = t.id
@@ -124,20 +124,20 @@ class Task_Controller extends RegistersController{
                         join ${Task_Status.tableName} tsn on tsn.id = ${pIdNewStatus}
                     set
                         t1.IDSTATUS=${pIdNewStatus},
-                        t1.ENDMOMENT=CASE WHEN coalesce(tsn.ISCONCLUDED,0) = 1 then current_timestamp else t1.ENDMOMENT end
+                        t1.ENDMOMENT=CASE WHEN coalesce(tsn.is_concluded,0) = 1 then current_timestamp else t1.ENDMOMENT end
                     where
                         t1.id IN (${idsSubs.join(',')})
                         and t1.IDUSER = ${pUserId}
-                        and coalesce(tsn.ISRUNNING,0) = 0 
+                        and coalesce(tsn.is_running,0) = 0 
                         and (
-                            coalesce(ts.ISRUNNING,0) = 1
+                            coalesce(ts.is_running,0) = 1
                             or (
-                                1 in (coalesce(tsn.ISCONCLUDED,0),coalesce(tsn.ISCANCELED,0))
-                                and 1 not in (coalesce(ts.ISCONCLUDED,0),coalesce(ts.ISCANCELED,0))
+                                1 in (coalesce(tsn.is_concluded,0),coalesce(tsn.is_canceled,0))
+                                and 1 not in (coalesce(ts.is_concluded,0),coalesce(ts.is_canceled,0))
                             )
                             or (
-                                coalesce(tsn.ISSTOPED,0) = 1
-                                and coalesce(ts.ISRUNNING,0) = 1
+                                coalesce(tsn.is_stopped,0) = 1
+                                and coalesce(ts.is_running,0) = 1
                             )
                         )                                           
                 `;
@@ -340,15 +340,15 @@ class Task_Controller extends RegistersController{
                                 and tx.iduser = ${req.user.id}
                             )
                         ORDER BY 
-                            t.IDSUP DESC , 
+                            t.parent_id DESC , 
                             t.id DESC
                         ) t,
                         (SELECT @pv:=(
                             select 
                                 group_concat(replace(
                                     case 
-                                        when ti.idsup is null then ti.id
-                                        else concat(ti.idsup,',',ti.id)
+                                        when ti.parent_id is null then ti.id
+                                        else concat(ti.parent_id,',',ti.id)
                                     end
                                 ,'.',','),',') 
                             from 
@@ -363,9 +363,9 @@ class Task_Controller extends RegistersController{
                         )) initialisation
                     WHERE
                         FIND_IN_SET(id, @pv)
-                        AND LENGTH(@pv:=CONCAT(@pv, ',', COALESCE(IDSUP, id)))
-                        ${req.body.search.idsup ? `and FIND_IN_SET(${req.body.search.idsup}, @pv)` : ''}                        
-                    order by idsup,id                        
+                        AND LENGTH(@pv:=CONCAT(@pv, ',', COALESCE(parent_id, id)))
+                        ${req.body.search.parent_id ? `and FIND_IN_SET(${req.body.search.parent_id}, @pv)` : ''}                        
+                    order by parent_id,id                        
                 `;
                 
                 res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
@@ -457,7 +457,7 @@ class Task_Controller extends RegistersController{
     static async move(req,res,next) {
         try {
             await Tasks.getModel().update({
-                IDSUP:req.body?.idsup
+                parent_id:req.body?.parent_id
             },{
                 where:{
                     id: {
@@ -491,7 +491,7 @@ class Task_Controller extends RegistersController{
                 let taskLogX = {
                     IDTASK: task.id,
                     IDUSER: req.user.id,
-                    OPERATION: 'UPDATE'
+                    operation: 'UPDATE'
                 };
                 for(let key in req.body) {
                     if (['id','creator_user_id','created_at'].indexOf(key) == -1) {                        
@@ -559,12 +559,12 @@ class Task_Controller extends RegistersController{
                     await Task_Controller.playOthers(task.id,taskX.id, taskX.IDUSER, Task_Status.RUNNING);
                     //update sups with new status if math rules
                     if (taskLogX.IDNEWSTATUS == Task_Status.STOPED) {
-                        let idSup = task.IDSUP;
+                        let idSup = task.parent_id;
                         while(Utils.hasValue(idSup)) {
                             let query = `
                                 select
                                     t.id,
-                                    t.IDSUP,
+                                    t.parent_id,
                                     tu.id as TUID
                                 from
                                     ${Tasks.tableName} t
@@ -586,7 +586,7 @@ class Task_Controller extends RegistersController{
                                                 and tu2.IDSTATUS NOT IN (${taskLogX.IDNEWSTATUS}, ${Task_Status.CANCELED}, ${Task_Status.CONCLUDED})
                                             )
                                         where
-                                            t2.IDSUP = t.id
+                                            t2.parent_id = t.id
                                     )
                             `;
                             let sup = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
@@ -604,7 +604,7 @@ class Task_Controller extends RegistersController{
                                         id = ${sup.TUID}
                                 `;
                                 await DBConnectionManager.getDefaultDBConnection().query(query,{queryType:QueryTypes.UPDATE});
-                                idSup = sup.IDSUP;
+                                idSup = sup.parent_id;
                             } else {
                                 break;
                             }

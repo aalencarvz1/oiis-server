@@ -18,8 +18,8 @@ module.exports = {
       name : 'ORIGIN_INPUT',
       ISORIGIN : 1,
       ISTARGET : 0,
-      ISINPUT : 1,
-      ISOUTPUT : 0
+      is_input : 1,
+      is_output : 0
     },{
       id:Movement_Entity_Relationship_Types.TARGET_INPUT,
       status_reg_id: Record_Status.ACTIVE,
@@ -30,8 +30,8 @@ module.exports = {
       name : 'TARGET_INPUT',
       ISORIGIN : 0,
       ISTARGET : 1,
-      ISINPUT : 1,
-      ISOUTPUT : 0
+      is_input : 1,
+      is_output : 0
     },{
       id:Movement_Entity_Relationship_Types.ORIGIN_OUTPUT,
       status_reg_id: Record_Status.ACTIVE,
@@ -42,8 +42,8 @@ module.exports = {
       name : 'ORIGIN_OUTPUT',
       ISORIGIN : 1,
       ISTARGET : 0,
-      ISINPUT : 0,
-      ISOUTPUT : 1
+      is_input : 0,
+      is_output : 1
     },{
       id:Movement_Entity_Relationship_Types.TARGET_OUTPUT,
       status_reg_id: Record_Status.ACTIVE,
@@ -54,8 +54,8 @@ module.exports = {
       name : 'TARGET_OUTPUT',
       ISORIGIN : 0,
       ISTARGET : 1,
-      ISINPUT : 0,
-      ISOUTPUT : 1
+      is_input : 0,
+      is_output : 1
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

@@ -225,8 +225,8 @@ class BaseTableModel extends Model {
             id:this.id,
             created_at: new Date(),
             is_sys_rec : 1,
-            IDDATACONNECTION : configDB[process.env.NODE_ENV || 'development'].id,
-            IDSCHEMA : configDB[process.env.NODE_ENV || 'development'].id,
+            data_connection_id : configDB[process.env.NODE_ENV || 'development'].id,
+            schema_id : configDB[process.env.NODE_ENV || 'development'].id,
             name : this.tableName
         }],{
             ignoreDuplicates:true,

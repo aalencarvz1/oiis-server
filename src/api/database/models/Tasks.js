@@ -15,7 +15,7 @@ class Tasks extends BaseTableModel {
 
   static fields = {
     ...Tasks.getBaseTableModelFields(),...{            
-      IDSUP: {
+      parent_id: {
         type: DataTypes.BIGINT.UNSIGNED
       },       
       name: {
@@ -49,7 +49,7 @@ class Tasks extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDSUP'],
+      fields: ['parent_id'],
       type: 'foreign key',
       references: { 
           table: Tasks,

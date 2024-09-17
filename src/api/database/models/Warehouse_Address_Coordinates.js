@@ -16,7 +16,7 @@ class Warehouse_Address_Coordinates extends BaseTableModel {
   static model = null;
   static fields = {
     ...Warehouse_Address_Coordinates.getBaseTableModelFields(),...{           
-      IDWAREHOUSEADDRESS:{
+      warehouse_address_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -24,7 +24,7 @@ class Warehouse_Address_Coordinates extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },      
-      VALUE:{
+      value:{
         type: DataTypes.STRING(256),
         allowNull:false
       }
@@ -32,7 +32,7 @@ class Warehouse_Address_Coordinates extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDWAREHOUSEADDRESS',
+    'warehouse_address_id',
     'IDCOORDINATETYPE'
   ];
 
@@ -46,7 +46,7 @@ class Warehouse_Address_Coordinates extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDWAREHOUSEADDRESS'],
+      fields: ['warehouse_address_id'],
       type: 'foreign key',
       references: { 
           table: Warehouse_Addresses,

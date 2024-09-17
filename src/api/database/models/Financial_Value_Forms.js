@@ -24,39 +24,39 @@ class Financial_Value_Forms extends BaseTableModel {
 
   static fields = {
     ...Financial_Value_Forms.getBaseTableModelFields(),...{
-      IDSUP:{
+      parent_id:{
         type : DataTypes.BIGINT.UNSIGNED,                
       },
       name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      ISPHYSICAL: {
+      is_physical: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISCARD: {
+      is_card: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISELETRONIC: {
+      is_eletronic: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISCHECK: {
+      is_check: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISDEPOSIT: {
+      is_deposit: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISBOLET: {
+      is_bolet: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
@@ -68,7 +68,7 @@ class Financial_Value_Forms extends BaseTableModel {
   };
   
   static uniqueFields = [
-    Sequelize.literal(`(COALESCE(IDSUP,0))`),
+    Sequelize.literal(`(COALESCE(parent_id,0))`),
     'name'
   ];
 
@@ -79,55 +79,55 @@ class Financial_Value_Forms extends BaseTableModel {
       type:"unique"
     },{
       name: Financial_Value_Forms.tableName + '_c_1',
-      fields:['ISPHYSICAL'],
+      fields:['is_physical'],
       type:"check",
       where:{
-        ISPHYSICAL: {
+        is_physical: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Financial_Value_Forms.tableName + '_c_2',
-      fields:['ISCARD'],
+      fields:['is_card'],
       type:"check",
       where:{
-        ISCARD: {
+        is_card: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Financial_Value_Forms.tableName + '_c_3',
-      fields:['ISELETRONIC'],
+      fields:['is_eletronic'],
       type:"check",
       where:{
-        ISELETRONIC: {
+        is_eletronic: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Financial_Value_Forms.tableName + '_c_4',
-      fields:['ISCHECK'],
+      fields:['is_check'],
       type:"check",
       where:{
-        ISCHECK: {
+        is_check: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Financial_Value_Forms.tableName + '_c_5',
-      fields:['ISDEPOSIT'],
+      fields:['is_deposit'],
       type:"check",
       where:{
-        ISDEPOSIT: {
+        is_deposit: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Financial_Value_Forms.tableName + '_c_6',
-      fields:['ISBOLET'],
+      fields:['is_bolet'],
       type:"check",
       where:{
-        ISBOLET: {
+        is_bolet: {
               [Sequelize.Op.in]: [0,1]
           }
       }
@@ -135,7 +135,7 @@ class Financial_Value_Forms extends BaseTableModel {
   ]];
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['IDSUP'],
+    fields: ['parent_id'],
     type: 'foreign key',
     references: { 
         table: Financial_Value_Forms,

@@ -46,10 +46,10 @@ class Permissions extends BaseTableModel {
       IDROUTINE:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      STARTDATE:{
+      start_date:{
         type: DataTypes.DATE
       },
-      ENDDATE:{
+      end_date:{
         type: DataTypes.DATE
       },
       ALLOWEDACCESS: {
@@ -82,7 +82,7 @@ class Permissions extends BaseTableModel {
         allowNull: false,
         defaultValue:1
       },
-      OBSERVATIONS: {
+      observations: {
         type: DataTypes.TEXT
       }
     }
@@ -96,7 +96,7 @@ class Permissions extends BaseTableModel {
     Sequelize.literal(`(COALESCE(IDTABLE,0))`),
     Sequelize.literal(`(COALESCE(IDMODULE,0))`),
     Sequelize.literal(`(COALESCE(IDROUTINE,0))`),
-    Sequelize.literal(`(COALESCE(STARTDATE,'1900-01-01'))`)
+    Sequelize.literal(`(COALESCE(start_date,'1900-01-01'))`)
   ];
 
   static constraints = [...(Permissions.getBaseTableModelConstraints() || []),...[

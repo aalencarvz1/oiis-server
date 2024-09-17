@@ -21,47 +21,47 @@ class Item_X_Meas_X_Pack_X_Identif extends BaseTableModel {
   static model = null;
   static fields = {
     ...Item_X_Meas_X_Pack_X_Identif.getBaseTableModelFields(),...{           
-      IDITEM:{
+      item_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDPACKAGING:{
+      packaging_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDMEASUREMENTUNIT:{
+      measurement_unit_id:{
         type: DataTypes.BIGINT.UNSIGNED        
       }, 
-      UNITWEIGHT:{
+      unit_weight:{
         type: DataTypes.DECIMAL(32,10)
       },      
-      PACKAGEWEIGHT:{
+      package_weight:{
         type: DataTypes.DECIMAL(32,10)
       },
-      UNITVOLUME:{
+      unit_volume:{
         type: DataTypes.DECIMAL(32,10)
       },      
-      PACKAGEVOLUME:{
+      package_volume:{
         type: DataTypes.DECIMAL(32,10)
       },            
-      IDIDENTIFIERTYPE:{
+      identifier_type_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDENTIFIER:{
+      identifier:{
         type: DataTypes.STRING(256)
       },
-      MULTIPLIER:{
+      multiplier:{
         type: DataTypes.DECIMAL(32,10),
         allowNull:false,
         defaultValue:1
       },
-      IDITEMSTOCK:{
+      stock_item_id:{
         type: DataTypes.BIGINT.UNSIGNED        
       },      
-      IDSTOCKENTITY:{
+      stock_entity_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },      
-      ORDERNUM:{
+      numeric_order:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:0
@@ -70,14 +70,14 @@ class Item_X_Meas_X_Pack_X_Identif extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDITEM',
-    'IDPACKAGING',
-    Sequelize.literal(`(COALESCE(IDMEASUREMENTUNIT,0))`),
-    Sequelize.literal(`(COALESCE(IDIDENTIFIERTYPE,0))`),
-    Sequelize.literal(`(COALESCE(IDENTIFIER,'NULL'))`),
-    'MULTIPLIER',
-    Sequelize.literal(`(COALESCE(IDITEMSTOCK,0))`),
-    Sequelize.literal(`(COALESCE(IDSTOCKENTITY,0))`)
+    'item_id',
+    'packaging_id',
+    Sequelize.literal(`(COALESCE(measurement_unit_id,0))`),
+    Sequelize.literal(`(COALESCE(identifier_type_id,0))`),
+    Sequelize.literal(`(COALESCE(identifier,'NULL'))`),
+    'multiplier',
+    Sequelize.literal(`(COALESCE(stock_item_id,0))`),
+    Sequelize.literal(`(COALESCE(stock_entity_id,0))`)
   ];
 
   static constraints = [...(Item_X_Meas_X_Pack_X_Identif.getBaseTableModelConstraints() || []),...[
@@ -90,7 +90,7 @@ class Item_X_Meas_X_Pack_X_Identif extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDITEM'],
+      fields: ['item_id'],
       type: 'foreign key',
       references: { 
           table: Items,
@@ -99,7 +99,7 @@ class Item_X_Meas_X_Pack_X_Identif extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDPACKAGING'],
+      fields: ['packaging_id'],
       type: 'foreign key',
       references: { 
           table: Packagings,
@@ -108,7 +108,7 @@ class Item_X_Meas_X_Pack_X_Identif extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDMEASUREMENTUNIT'],
+      fields: ['measurement_unit_id'],
       type: 'foreign key',
       references: { 
           table: Measurement_Units,
@@ -117,7 +117,7 @@ class Item_X_Meas_X_Pack_X_Identif extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDIDENTIFIERTYPE'],
+      fields: ['identifier_type_id'],
       type: 'foreign key',
       references: { 
           table: Identifier_Types,
@@ -126,7 +126,7 @@ class Item_X_Meas_X_Pack_X_Identif extends BaseTableModel {
       onUpdate: 'cascade'
     },    
     {
-      fields: ['IDITEMSTOCK'],
+      fields: ['stock_item_id'],
       type: 'foreign key',
       references: { 
           table: Item_Stocks,
@@ -135,7 +135,7 @@ class Item_X_Meas_X_Pack_X_Identif extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDSTOCKENTITY'],
+      fields: ['stock_entity_id'],
       type: 'foreign key',
       references: { 
           table: Stock_Entities,

@@ -17,29 +17,29 @@ class Api_Requests extends BaseTableModel {
 
   static fields = {
     ...Api_Requests.getBaseTableModelFields(),...{            
-      IDAPI: {
+      api_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
       name: {
         type: DataTypes.STRING(256)
       },
-      METHOD: {
+      method: {
         type: DataTypes.STRING(10),
       },
-      ENDPOINT: {
+      end_point: {
         type: DataTypes.STRING(2000)
       },            
-      AUTHORIZATION:{
+      authorization:{
         type: DataTypes.TEXT
       }, 
-      REQUESTPARAMS:{
+      request_params:{
         type: DataTypes.TEXT
       }, 
-      BODYPARAMS:{
+      body_params:{
         type: DataTypes.TEXT
       }, 
-      WEBHOOK:{
+      webhook:{
         type: DataTypes.STRING(2000)
       }, 
       description: {
@@ -53,7 +53,7 @@ class Api_Requests extends BaseTableModel {
   static constraints = [...(Api_Requests.getBaseTableModelConstraints() || []),...[]];
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['IDAPI'],
+    fields: ['api_id'],
     type: 'foreign key',
     references: { 
         table: Apis,
@@ -66,24 +66,24 @@ class Api_Requests extends BaseTableModel {
   static async createData(params) {
     params = params || {};  
     params.queryParams = params.queryParams || params || {};
-    params.queryParams.REQUESTPARAMS = params.queryParams.REQUESTPARAMS || {};
-    if (typeof params.queryParams.REQUESTPARAMS != 'object') params.queryParams.REQUESTPARAMS = JSON.parse(params.queryParams.REQUESTPARAMS);
-    params.queryParams.REQUESTPARAMS.headers = params.queryParams.REQUESTPARAMS.headers || {};
-    params.queryParams.REQUESTPARAMS.headers['Content-Type'] = params.queryParams.REQUESTPARAMS.headers['Content-Type'] || 'application/json';
-    params.queryParams.REQUESTPARAMS.headers['Accept'] = params.queryParams.REQUESTPARAMS.headers['Accept'] || 'application/json';
-    //params.queryParams.REQUESTPARAMS.headers['access-control-allow-origin'] = params.queryParams.REQUESTPARAMS.headers['access-control-allow-origin'] || '*';
-    //params.queryParams.REQUESTPARAMS.headers['access-control-allow-headers'] = params.queryParams.REQUESTPARAMS.headers['access-control-allow-headers'] || 'Origin, X-Requested-With, Content-Type, Accept';
-    params.queryParams.REQUESTPARAMS = JSON.stringify(params.queryParams.REQUESTPARAMS);
+    params.queryParams.request_params = params.queryParams.request_params || {};
+    if (typeof params.queryParams.request_params != 'object') params.queryParams.request_params = JSON.parse(params.queryParams.request_params);
+    params.queryParams.request_params.headers = params.queryParams.request_params.headers || {};
+    params.queryParams.request_params.headers['Content-Type'] = params.queryParams.request_params.headers['Content-Type'] || 'application/json';
+    params.queryParams.request_params.headers['Accept'] = params.queryParams.request_params.headers['Accept'] || 'application/json';
+    //params.queryParams.request_params.headers['access-control-allow-origin'] = params.queryParams.request_params.headers['access-control-allow-origin'] || '*';
+    //params.queryParams.request_params.headers['access-control-allow-headers'] = params.queryParams.request_params.headers['access-control-allow-headers'] || 'Origin, X-Requested-With, Content-Type, Accept';
+    params.queryParams.request_params = JSON.stringify(params.queryParams.request_params);
     let result = await BaseTableModel.createData.bind(Api_Requests)(params,false);
-    if (!Utils.hasValue(result.WEBHOOK)) {      
-      let apiBodyParams = result.BODYPARAMS || '{}';
+    if (!Utils.hasValue(result.webhook)) {      
+      let apiBodyParams = result.body_params || '{}';
       apiBodyParams = JSON.parse(apiBodyParams);
       if (Utils.hasValue(apiBodyParams.webhook)) {
-        result.WEBHOOK = apiBodyParams.webhook;  
+        result.webhook = apiBodyParams.webhook;  
       } else {
-        result.WEBHOOK = `http://${process.env.API_EXTERNAL_IP}:${process.env.API_PORT}/api/modules/webhooks/api_requests/${result.id}/responses`;
-        apiBodyParams.webhook = result.WEBHOOK;
-        result.BODYPARAMS = JSON.stringify(apiBodyParams);
+        result.webhook = `http://${process.env.API_EXTERNAL_IP}:${process.env.API_PORT}/api/modules/webhooks/api_requests/${result.id}/responses`;
+        apiBodyParams.webhook = result.webhook;
+        result.body_params = JSON.stringify(apiBodyParams);
       }      
       await result.save();
       result = result.dataValues;

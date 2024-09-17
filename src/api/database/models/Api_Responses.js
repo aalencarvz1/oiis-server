@@ -16,14 +16,14 @@ class Api_Responses extends BaseTableModel {
 
   static fields = {
     ...Api_Responses.getBaseTableModelFields(),...{            
-      IDAPIREQUESTCALL: {
+      api_request_call_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      RESPONSESTATUSCODE: {
+      response_status_code: {
         type: DataTypes.INTEGER.UNSIGNED
       }, 
-      RESPONSE: {
+      response: {
         type: DataTypes.TEXT
       },
     }
@@ -34,7 +34,7 @@ class Api_Responses extends BaseTableModel {
   static constraints = [...(Api_Responses.getBaseTableModelConstraints() || []),...[]];
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['IDAPIREQUESTCALL'],
+    fields: ['api_request_call_id'],
     type: 'foreign key',
     references: { 
         table: Api_Request_Calls,

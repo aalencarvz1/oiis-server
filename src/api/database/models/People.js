@@ -18,11 +18,11 @@ class People extends BaseTableModel {
   
   static fields = {
     ...People.getBaseTableModelFields(),...{
-      IDIDENTIFIERDOCTYPE: {
+      identifier_doc_type_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
       },
-      IDENTIFIERDOC: {
+      identifier_doc: {
         type: DataTypes.STRING(256),
         allowNull: false
       },
@@ -30,24 +30,24 @@ class People extends BaseTableModel {
         type: DataTypes.STRING(2000),
         allowNull: false
       },
-      BIRTHDATE: {
+      birth_date: {
         type: DataTypes.DATE
       },
-      FANTASY: {
+      fantasy: {
         type: DataTypes.STRING(2000)
       },
-      ALIAS: {
+      alias: {
         type: DataTypes.STRING(2000)
       },
-      OBSERVATIONS: {
+      observations: {
         type: DataTypes.TEXT
       }
     }
   };
   
   static uniqueFields = [
-    'IDIDENTIFIERDOCTYPE',
-    'IDENTIFIERDOC'
+    'identifier_doc_type_id',
+    'identifier_doc'
   ];
 
   static constraints = [...(People.getBaseTableModelConstraints() || []),...[
@@ -60,7 +60,7 @@ class People extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDIDENTIFIERDOCTYPE'],
+      fields: ['identifier_doc_type_id'],
       type: 'foreign key',
       references: { 
           table: Identifier_Types,
@@ -73,10 +73,10 @@ class People extends BaseTableModel {
   static include(queryParams,pClassModelParent) {
     queryParams = queryParams || {};
     queryParams.attributes = queryParams.attributes || [`${pClassModelParent.tableName}.*`],
-    queryParams.attributes.push([Sequelize.col(`${People.tableName}.IDIDENTIFIERDOCTYPE`),'IDIDENTIFIERDOCTYPE']);
-    queryParams.attributes.push([Sequelize.col(`${People.tableName}.IDENTIFIERDOC`),'IDENTIFIERDOC']);
+    queryParams.attributes.push([Sequelize.col(`${People.tableName}.identifier_doc_type_id`),'identifier_doc_type_id']);
+    queryParams.attributes.push([Sequelize.col(`${People.tableName}.identifier_doc`),'identifier_doc']);
     queryParams.attributes.push([Sequelize.col(`${People.tableName}.name`),'name']);
-    queryParams.attributes.push([Sequelize.col(`${People.tableName}.FANTASY`),'FANTASY']);
+    queryParams.attributes.push([Sequelize.col(`${People.tableName}.fantasy`),'fantasy']);
     queryParams.include = queryParams.include || [];
     queryParams.include.push({
         raw:true,
@@ -85,18 +85,18 @@ class People extends BaseTableModel {
         on:Sequelize.where(
             Sequelize.col(`${People.tableName}.id`),
             '=',
-            Sequelize.col(`${pClassModelParent.tableName}.IDPEOPLE`)
+            Sequelize.col(`${pClassModelParent.tableName}.people_id`)
         )
     });
     return queryParams;
   }
 
   static async updateOrCreatePeopleByIdentifierDocAndGet(queryParams) {
-    if (queryParams.IDIDENTIFIERDOCTYPE && queryParams.IDENTIFIERDOC) {
+    if (queryParams.identifier_doc_type_id && queryParams.identifier_doc) {
       let people = await People.getModel().findOne({
         where:[
-          {IDIDENTIFIERDOCTYPE: queryParams.IDIDENTIFIERDOCTYPE},
-          Sequelize.where(Sequelize.fn('lower',Sequelize.fn('regexp_replace',Sequelize.col('IDENTIFIERDOC'),'[^a-z|A-Z|0-9]','')),'=',Sequelize.fn('lower',Sequelize.fn('regexp_replace',queryParams.IDENTIFIERDOC,'[^a-z|A-Z|0-9]','')))
+          {identifier_doc_type_id: queryParams.identifier_doc_type_id},
+          Sequelize.where(Sequelize.fn('lower',Sequelize.fn('regexp_replace',Sequelize.col('identifier_doc'),'[^a-z|A-Z|0-9]','')),'=',Sequelize.fn('lower',Sequelize.fn('regexp_replace',queryParams.identifier_doc,'[^a-z|A-Z|0-9]','')))
         ] 
       });
 
@@ -136,21 +136,21 @@ class People extends BaseTableModel {
         let r = {};
         let and = [];
         if (typeof el == 'object') {
-          if (el.IDIDENTIFIERDOCTYPE) {
+          if (el.identifier_doc_type_id) {
             and.push({
-              IDIDENTIFIERDOCTYPE: el.IDIDENTIFIERDOCTYPE
+              identifier_doc_type_id: el.identifier_doc_type_id
             });
           }
-          if (el.IDENTIFIERDOC) {
+          if (el.identifier_doc) {
             and.push(Sequelize.where(
-              Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`IDENTIFIERDOC`),'[^0-9]',''),'DECIMAL(32)'),
+              Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`identifier_doc`),'[^0-9]',''),'DECIMAL(32)'),
               '=',
-              Sequelize.cast(Sequelize.fn('regexp_replace',el.IDENTIFIERDOC,'[^0-9]',''),'DECIMAL(32)'),
+              Sequelize.cast(Sequelize.fn('regexp_replace',el.identifier_doc,'[^0-9]',''),'DECIMAL(32)'),
             ));
           }
         } else {
           and.push(Sequelize.where(
-            Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`IDENTIFIERDOC`),'[^0-9]',''),'DECIMAL(32)'),
+            Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col(`identifier_doc`),'[^0-9]',''),'DECIMAL(32)'),
             '=',
             Sequelize.cast(Sequelize.fn('regexp_replace',el,'[^0-9]',''),'DECIMAL(32)'),
           ));

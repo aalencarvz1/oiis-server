@@ -23,95 +23,95 @@ class Logistic_Orders_X_Items_Mov_Amt extends BaseTableModel {
   static model = null;
   static fields = {
     ...Logistic_Orders_X_Items_Mov_Amt.getBaseTableModelFields(),...{           
-      IDLOGISTICORDERXMOV:{
+      mov_logistic_order_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDITEMMOVAMT:{
+      item_mov_amt_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDLOGISTICMOVTYPE:{
+      logistic_mov_type_id:{
         type: DataTypes.BIGINT.UNSIGNED
       }, 
-      IDACTIONSTATUS:{
+      action_status_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:Movement_Status.NOT_STARTED
       },
-      IDTYPEMOV:{
+      type_mov_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDLOGISTICSTATUS:{
+      logistic_status_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:Movement_Status.NOT_STARTED
       },
-      IDMEASUREMENTUNIT:{
+      measurement_unit_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDPACKAGING:{
+      packaging_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },  
-      UNITWEIGHT:{
+      unit_weight:{
         type: DataTypes.DECIMAL(32,10)
       },      
-      PACKAGEWEIGHT:{
+      package_weight:{
         type: DataTypes.DECIMAL(32,10)
       },   
-      UNITVOLUME:{
+      unit_volume:{
         type: DataTypes.DECIMAL(32,10)
       },      
-      PACKAGEVOLUME:{
+      package_volume:{
         type: DataTypes.DECIMAL(32,10)
       },        
-      MOVSTARTED_AT:{
+      mov_started_at:{
         type: DataTypes.DATE
       },
-      MOVENDED_AT:{
+      mov_ended_at:{
         type: DataTypes.DATE
       },
-      EXPECTEDAMT:{
+      expected_amt:{
         type: DataTypes.DECIMAL(32,10)
       },
-      MOVIMENTEDAMT:{
+      moved_amt:{
         type: DataTypes.DECIMAL(32,10)
       },
-      NOTMOVIMENTEDAMT:{
+      unmoved_qty:{
         type: DataTypes.DECIMAL(32,10)
       },
-      RETREATMOVIMENTEDAMT:{
+      collected_qty:{
         type: DataTypes.DECIMAL(32,10)
       },
-      IDREASONNOTMOVIMENTEDAMT:{
+      unmoved_reason_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDREASONRETREATMOVIMENTEDAMT:{
+      collected_reason_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      OBSERVATIONSNOTMOVIMENTEDAMT:{
+      unmoved_qty_notes:{
         type: DataTypes.TEXT
       },
-      OBSERVATIONSRETREATMOVIMENTEDAMT:{
+      collected_qty_notes:{
         type: DataTypes.TEXT
       },
-      PHOTOSNOTMOVIMENTEDAMT:{
+      unmoved_photos:{
         type: DataTypes.TEXT
       },
-      PHOTOSRETREATMOVIMENTEDAMT:{
+      collected_photos:{
         type: DataTypes.TEXT
       }
     }
   };
   
   static uniqueFields = [
-    'IDLOGISTICORDERXMOV',
-    'IDITEMMOVAMT',
-    Sequelize.literal(`(COALESCE(IDLOGISTICMOVTYPE,0))`),
-    'IDACTIONSTATUS',
-    Sequelize.literal(`(COALESCE(IDTYPEMOV,0))`),
-    Sequelize.literal(`(COALESCE(IDMEASUREMENTUNIT,0))`),
-    Sequelize.literal(`(COALESCE(IDPACKAGING,0))`)
+    'mov_logistic_order_id',
+    'item_mov_amt_id',
+    Sequelize.literal(`(COALESCE(logistic_mov_type_id,0))`),
+    'action_status_id',
+    Sequelize.literal(`(COALESCE(type_mov_id,0))`),
+    Sequelize.literal(`(COALESCE(measurement_unit_id,0))`),
+    Sequelize.literal(`(COALESCE(packaging_id,0))`)
   ];
 
   static constraints = [...(Logistic_Orders_X_Items_Mov_Amt.getBaseTableModelConstraints() || []),...[
@@ -124,7 +124,7 @@ class Logistic_Orders_X_Items_Mov_Amt extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDLOGISTICORDERXMOV'],
+      fields: ['mov_logistic_order_id'],
       type: 'foreign key',
       references: { 
           table: Logistic_Orders_X_Movs,
@@ -133,7 +133,7 @@ class Logistic_Orders_X_Items_Mov_Amt extends BaseTableModel {
       onUpdate: 'cascade',
       onDelete: 'cascade'
     },{
-      fields: ['IDITEMMOVAMT'],
+      fields: ['item_mov_amt_id'],
       type: 'foreign key',
       references: { 
           table: Item_Mov_Amounts,
@@ -142,7 +142,7 @@ class Logistic_Orders_X_Items_Mov_Amt extends BaseTableModel {
       onUpdate: 'cascade',
       onDelete: 'cascade'
     },{
-      fields: ['IDLOGISTICMOVTYPE'],
+      fields: ['logistic_mov_type_id'],
       type: 'foreign key',
       references: { 
           table: Logistic_Mov_Types,
@@ -151,7 +151,7 @@ class Logistic_Orders_X_Items_Mov_Amt extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDACTIONSTATUS'],
+      fields: ['action_status_id'],
       type: 'foreign key',
       references: { 
           table: Action_Status,
@@ -160,7 +160,7 @@ class Logistic_Orders_X_Items_Mov_Amt extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDTYPEMOV'],
+      fields: ['type_mov_id'],
       type: 'foreign key',
       references: { 
           table: Movement_Types,
@@ -169,7 +169,7 @@ class Logistic_Orders_X_Items_Mov_Amt extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDMEASUREMENTUNIT'],
+      fields: ['measurement_unit_id'],
       type: 'foreign key',
       references: { 
           table: Measurement_Units,
@@ -178,7 +178,7 @@ class Logistic_Orders_X_Items_Mov_Amt extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDLOGISTICSTATUS'],
+      fields: ['logistic_status_id'],
       type: 'foreign key',
       references: { 
           table: Logistic_Status,
@@ -187,7 +187,7 @@ class Logistic_Orders_X_Items_Mov_Amt extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDPACKAGING'],
+      fields: ['packaging_id'],
       type: 'foreign key',
       references: { 
           table: Packagings,
@@ -196,7 +196,7 @@ class Logistic_Orders_X_Items_Mov_Amt extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDREASONNOTMOVIMENTEDAMT'],
+      fields: ['unmoved_reason_id'],
       type: 'foreign key',
       references: { 
           table: Logistic_Reasons,
@@ -205,7 +205,7 @@ class Logistic_Orders_X_Items_Mov_Amt extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDREASONRETREATMOVIMENTEDAMT'],
+      fields: ['collected_reason_id'],
       type: 'foreign key',
       references: { 
           table: Logistic_Reasons,

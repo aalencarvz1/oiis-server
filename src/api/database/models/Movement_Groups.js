@@ -15,18 +15,18 @@ class Movement_Groups extends BaseTableModel {
   static model = null;
   static fields = {
     ...Movement_Groups.getBaseTableModelFields(),...{           
-      IDIDENTIFIERTYPE:{
+      identifier_type_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDENTIFIER:{
+      identifier:{
         type: DataTypes.STRING(256)
       }
     }
   };
   
   static uniqueFields = [
-    Sequelize.literal(`(COALESCE(IDIDENTIFIERTYPE,0))`),
-    Sequelize.literal(`(COALESCE(IDENTIFIER,'NULL'))`)
+    Sequelize.literal(`(COALESCE(identifier_type_id,0))`),
+    Sequelize.literal(`(COALESCE(identifier,'NULL'))`)
   ];
 
   static constraints = [...(Movement_Groups.getBaseTableModelConstraints() || []),...[
@@ -39,7 +39,7 @@ class Movement_Groups extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDIDENTIFIERTYPE'],
+      fields: ['identifier_type_id'],
       type: 'foreign key',
       references: { 
           table: Identifier_Types,

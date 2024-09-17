@@ -80,7 +80,7 @@ class Clients_Integration_Controller extends RegistersController{
                 let queryParams = {};
                 if (transaction) queryParams.transaction = transaction;
                 queryParams.where = {
-                    IDPEOPLE: people.id
+                    people_id: people.id
                 }
 
                 let client = await Clients.getModel().findOne(queryParams);
@@ -99,14 +99,14 @@ class Clients_Integration_Controller extends RegistersController{
                 //preserve winthor code, if violate primary key or unique, raise here
                 if (client) {
                     if (client.id != pcClient.CODCLI) client.id = pcClient.CODCLI;
-                    if (client.IDPEOPLE != people.id) client.IDPEOPLE = people.id;
+                    if (client.people_id != people.id) client.people_id = people.id;
                     await client.save(options);
                 } else {
                     client = await Clients.getModel().create({
                         id: pcClient.CODCLI,
                         data_origin_id: Data_Origins.WINTHOR,
                         id_at_origin: pcClient.CODCLI,
-                        IDPEOPLE: people.id
+                        people_id: people.id
                     },options)
                 }
                 result.data = client;
@@ -283,11 +283,11 @@ class Clients_Integration_Controller extends RegistersController{
                                 let r = {};
                                 if (typeof el == 'object') {
                                     r = {
-                                        IDIDENTIFIERDOCTYPE: el?.CODTIPODOCIDENTIFICADOR == 1 && (el.CODDOCIDENTIFICADOR || '').length() <= 11 ? Identifier_Types.CPF : Identifier_Types.CNPJ,
-                                        IDENTIFIERDOC: el.CODDOCIDENTIFICADOR 
+                                        identifier_doc_type_id: el?.CODTIPODOCIDENTIFICADOR == 1 && (el.CODDOCIDENTIFICADOR || '').length() <= 11 ? Identifier_Types.CPF : Identifier_Types.CNPJ,
+                                        identifier_doc: el.CODDOCIDENTIFICADOR 
                                     };
                                 } else {
-                                    r.IDENTIFIERDOC = el;
+                                    r.identifier_doc = el;
                                 }
                                 return r;
                             });
@@ -297,8 +297,8 @@ class Clients_Integration_Controller extends RegistersController{
                         getBulkDataToCreate: EpIntegrationsRegistersController.getClientsByIdentifierDocToIntegrate,
                         getDataToUpdate: async (row) => {
                             return await EpIntegrationsRegistersController.getClientsByIdentifierDocToIntegrate([{
-                                CODTIPODOCIDENTIFICADOR: row.PEOPLE.IDIDENTIFIERDOCTYPE == Identifier_Types.CPF ? 1 : 2,
-                                CODDOCIDENTIFICADOR: row.PEOPLE.IDENTIFIERDOC
+                                CODTIPODOCIDENTIFICADOR: row.PEOPLE.identifier_doc_type_id == Identifier_Types.CPF ? 1 : 2,
+                                CODDOCIDENTIFICADOR: row.PEOPLE.identifier_doc
                             }]);
                         }
                     }
@@ -366,10 +366,10 @@ class Clients_Integration_Controller extends RegistersController{
                         DatabaseUtils.mountCondiction(queryParams.where,Sequelize.fn('upper',Sequelize.col('FANTASIA')),req.body.fantasia || req.body.fantasias || req.body.fantasy || req.body.fantasies || [], 'like', 'upper');
 
                         if (req.body.onlyWithCoordinates) {
-                            queryParams.where.LATITUDE = {
+                            queryParams.where.latitude = {
                                 [Sequelize.Op.not] : null
                             }
-                            queryParams.where.LONGITUDE = {
+                            queryParams.where.longitude = {
                                 [Sequelize.Op.not] : null
                             }
                         }
@@ -378,7 +378,7 @@ class Clients_Integration_Controller extends RegistersController{
                         /*bodyParams.supervisor = searchSupervisors;
                         bodyParams.identifier = searchIdentifier;
                         bodyParams.name = searchName;
-                        bodyParams.fantasy = searchFantasy;*/
+                        bodyParams.fantasy = searchfantasy;*/
 
                         res.data = await PcClient.getModel().findAll(queryParams);
                         res.sendResponse(200,true);
@@ -421,7 +421,7 @@ class Clients_Integration_Controller extends RegistersController{
                     JUMBO.PCLOGCADASTRO lc1
                 WHERE
                         lc1.nomeobjeto = 'PCCLIENT'
-                    AND lc1.valornew LIKE '%LATITUDE%'
+                    AND lc1.valornew LIKE '%latitude%'
                     AND lc1.nomeaplicacao LIKE '%Ion%'
                     AND lc1.datalog = (
                         SELECT
@@ -431,7 +431,7 @@ class Clients_Integration_Controller extends RegistersController{
                         WHERE
                                 lc2.nomeobjeto = lc1.nomeobjeto
                             AND lc2.rowidcampo = lc1.rowidcampo
-                            AND lc2.valornew LIKE '%LATITUDE%'
+                            AND lc2.valornew LIKE '%latitude%'
                             AND lc2.nomeaplicacao LIKE '%Ion%'
                     )
                     and ${whereRowids}

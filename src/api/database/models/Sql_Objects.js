@@ -20,7 +20,7 @@ class Sql_Objects extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull : false
       }, 
-      IDSUP: {
+      parent_id: {
         type: DataTypes.BIGINT.UNSIGNED
       }, 
       name: {
@@ -35,7 +35,7 @@ class Sql_Objects extends BaseTableModel {
   
   static uniqueFields = [ 
     'IDSQLOBJECTTYPE',
-    Sequelize.literal(`(COALESCE(IDSUP,0))`),
+    Sequelize.literal(`(COALESCE(parent_id,0))`),
     'name'
   ];
 
@@ -58,7 +58,7 @@ class Sql_Objects extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDSUP'],
+      fields: ['parent_id'],
       type: 'foreign key',
       references: { 
           table: Sql_Objects,

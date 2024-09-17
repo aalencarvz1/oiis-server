@@ -16,7 +16,7 @@ class Routines extends BaseTableModel {
   static model = null;
   static fields = {
     ...Routines.getBaseTableModelFields(),...{     
-      IDSUP: {
+      parent_id: {
         type: DataTypes.BIGINT.UNSIGNED
       }, 
       IDROUTINETYPE: {
@@ -37,7 +37,7 @@ class Routines extends BaseTableModel {
       VIEWPATH: {
         type: DataTypes.TEXT
       }, 
-      ORDERNUM: {
+      numeric_order: {
         type: DataTypes.BIGINT.UNSIGNED
       },
       SHOWINMENU: {
@@ -52,7 +52,7 @@ class Routines extends BaseTableModel {
   };
   
   static uniqueFields = [ 
-    Sequelize.literal(`(COALESCE(IDSUP,0))`),
+    Sequelize.literal(`(COALESCE(parent_id,0))`),
     'name'
   ];
 
@@ -75,7 +75,7 @@ class Routines extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDSUP'],
+      fields: ['parent_id'],
       type: 'foreign key',
       references: { 
           table: Routines,

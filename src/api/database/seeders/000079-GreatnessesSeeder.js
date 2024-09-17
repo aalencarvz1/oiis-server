@@ -17,8 +17,8 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'QUANTITY',
-      SIGLA: 'QT',
-      ISSCALAR:1
+      sigla: 'QT',
+      is_scalar:1
     },{
       id: Greatnesses.MASS,
       status_reg_id: Record_Status.ACTIVE,
@@ -27,8 +27,8 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'MASS',
-      SIGLA: 'M',
-      ISSCALAR:1
+      sigla: 'M',
+      is_scalar:1
     },{
       id: Greatnesses.VOLUM,
       status_reg_id: Record_Status.ACTIVE,
@@ -37,8 +37,8 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'VOLUM',
-      SIGLA: 'V',
-      ISSCALAR:1
+      sigla: 'V',
+      is_scalar:1
     },{
       id: Greatnesses.LENGTH,
       status_reg_id: Record_Status.ACTIVE,
@@ -47,8 +47,8 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'LENGTH',
-      SIGLA: 'L',
-      ISSCALAR:1
+      sigla: 'L',
+      is_scalar:1
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

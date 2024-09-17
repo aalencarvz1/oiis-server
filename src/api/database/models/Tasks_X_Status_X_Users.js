@@ -52,7 +52,7 @@ class Tasks_X_Status_X_Users extends BaseTableModel {
       ACCUMTIME : {
         type: DataTypes.BIGINT
       },
-      OBSERVATIONS: {
+      observations: {
         type: DataTypes.TEXT
       }
     }

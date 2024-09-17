@@ -23,7 +23,7 @@ class States extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      SIGLA:{
+      sigla:{
         type: DataTypes.STRING(10)
       }
     }

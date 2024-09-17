@@ -17,7 +17,7 @@ class Report_Data_Fount_Items extends BaseTableModel {
   static model = null;
   static fields = {
     ...Report_Data_Fount_Items.getBaseTableModelFields(),...{                 
-      IDSUP: {
+      parent_id: {
         type: DataTypes.BIGINT.UNSIGNED,
       },
       IDREPORTDATAFOUNT: {
@@ -41,7 +41,7 @@ class Report_Data_Fount_Items extends BaseTableModel {
       SQLTEXTAFTERCHILDREN:{
         type: DataTypes.TEXT
       },
-      ORDERNUM: {
+      numeric_order: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false,
         defaultValue: 1
@@ -73,7 +73,7 @@ class Report_Data_Fount_Items extends BaseTableModel {
         allowNull: false,
         defaultValue:0
       },
-      OBSERVATIONS:{
+      observations:{
         type: DataTypes.TEXT
       }
     }
@@ -111,7 +111,7 @@ class Report_Data_Fount_Items extends BaseTableModel {
   }]];
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['IDSUP'],
+    fields: ['parent_id'],
     type: 'foreign key',
     references: { 
         table: Report_Data_Fount_Items,

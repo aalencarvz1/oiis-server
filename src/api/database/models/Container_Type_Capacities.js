@@ -6,65 +6,65 @@ const { BaseTableModel } = require('./BaseTableModel');
 
 const { Measurement_Units } = require("./Measurement_Units");
 const { Identifier_Types } = require("./Identifier_Types");
-const { Conteiner_Types } = require("./Conteiner_Types");
+const { Container_Types } = require("./Container_Types");
 
 /**
  * class model
  */
-class Conteiner_Type_Dimensions extends BaseTableModel {
-  static id = 8003;
+class Container_Type_Capacities extends BaseTableModel {
+  static id = 8004;
   static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
-    ...Conteiner_Type_Dimensions.getBaseTableModelFields(),...{           
-      IDCONTEINERTYPE:{
+    ...Container_Type_Capacities.getBaseTableModelFields(),...{           
+      container_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDDIMENSIONTYPE:{
+      capacity_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },      
-      IDMEASUREMENTUNIT:{
+      measurement_unit_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },      
-      VALUE:{
+      capacity:{
         type: DataTypes.DECIMAL(32,10),
         allowNull:false,
         defaultValue:0
       },
-      OBSERVATIONS:{
+      observations:{
         type:DataTypes.TEXT
       }
     }
   };
   
   static uniqueFields = [
-    'IDCONTEINERTYPE',
-    'IDDIMENSIONTYPE'
+    'container_type_id',
+    'capacity_type_id'
   ];
 
-  static constraints = [...(Conteiner_Type_Dimensions.getBaseTableModelConstraints() || []),...[
+  static constraints = [...(Container_Type_Capacities.getBaseTableModelConstraints() || []),...[
     {
-      name: Conteiner_Type_Dimensions.tableName + '_u1',
-      fields: [...Conteiner_Type_Dimensions.getBaseTableModelUniqueFields(),...Conteiner_Type_Dimensions.uniqueFields],
+      name: Container_Type_Capacities.tableName + '_u1',
+      fields: [...Container_Type_Capacities.getBaseTableModelUniqueFields(),...Container_Type_Capacities.uniqueFields],
       type:"unique"
     }
   ]];
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDCONTEINERTYPE'],
+      fields: ['container_type_id'],
       type: 'foreign key',
       references: { 
-          table: Conteiner_Types,
+          table: Container_Types,
           field: 'id'
       },
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDDIMENSIONTYPE'],
+      fields: ['capacity_type_id'],
       type: 'foreign key',
       references: { 
           table: Identifier_Types,
@@ -73,7 +73,7 @@ class Conteiner_Type_Dimensions extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDMEASUREMENTUNIT'],
+      fields: ['measurement_unit_id'],
       type: 'foreign key',
       references: { 
           table: Measurement_Units,
@@ -86,4 +86,4 @@ class Conteiner_Type_Dimensions extends BaseTableModel {
 };
 
 
-module.exports = {Conteiner_Type_Dimensions}
+module.exports = {Container_Type_Capacities}

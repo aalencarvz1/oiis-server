@@ -20,48 +20,48 @@ class Logistic_Orders_X_Movs extends BaseTableModel {
   static model = null;
   static fields = {
     ...Logistic_Orders_X_Movs.getBaseTableModelFields(),...{           
-      IDLOGISTICORDER:{
+      logistic_order_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDMOV:{
+      mov_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDACTIONSTATUS:{
+      action_status_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:Movement_Status.NOT_STARTED
       },
-      IDLOGISTICSTATUS:{
+      logistic_status_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:Movement_Status.NOT_STARTED
       },
-      IDREASONNOTMOVIMENTEDAMT:{
+      unmoved_reason_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDREASONRETREATMOVIMENTEDAMT:{
+      collected_reason_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      OBSERVATIONSNOTMOVIMENTEDAMT:{
+      unmoved_qty_notes:{
         type: DataTypes.TEXT
       },
-      OBSERVATIONSRETREATMOVIMENTEDAMT:{
+      collected_qty_notes:{
         type: DataTypes.TEXT
       },
-      MOVSTARTED_AT:{
+      mov_started_at:{
         type: DataTypes.DATE
       },
-      MOVENDED_AT:{
+      mov_ended_at:{
         type: DataTypes.DATE
       },
     }
   };
   
   static uniqueFields = [
-    'IDLOGISTICORDER',
-    'IDMOV'
+    'logistic_order_id',
+    'mov_id'
   ];
 
   static constraints = [...(Logistic_Orders_X_Movs.getBaseTableModelConstraints() || []),...[
@@ -74,7 +74,7 @@ class Logistic_Orders_X_Movs extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDLOGISTICORDER'],
+      fields: ['logistic_order_id'],
       type: 'foreign key',
       references: { 
           table: Logistic_Orders,
@@ -84,7 +84,7 @@ class Logistic_Orders_X_Movs extends BaseTableModel {
       onDelete: 'cascade'
     },
     {
-      fields: ['IDMOV'],
+      fields: ['mov_id'],
       type: 'foreign key',
       references: { 
           table: Movements,
@@ -94,7 +94,7 @@ class Logistic_Orders_X_Movs extends BaseTableModel {
       onDelete: 'cascade'
     },
     {
-      fields: ['IDACTIONSTATUS'],
+      fields: ['action_status_id'],
       type: 'foreign key',
       references: { 
           table: Action_Status,
@@ -103,7 +103,7 @@ class Logistic_Orders_X_Movs extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDLOGISTICSTATUS'],
+      fields: ['logistic_status_id'],
       type: 'foreign key',
       references: { 
           table: Logistic_Status,
@@ -112,7 +112,7 @@ class Logistic_Orders_X_Movs extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDREASONNOTMOVIMENTEDAMT'],
+      fields: ['unmoved_reason_id'],
       type: 'foreign key',
       references: { 
           table: Logistic_Reasons,
@@ -121,7 +121,7 @@ class Logistic_Orders_X_Movs extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDREASONRETREATMOVIMENTEDAMT'],
+      fields: ['collected_reason_id'],
       type: 'foreign key',
       references: { 
           table: Logistic_Reasons,

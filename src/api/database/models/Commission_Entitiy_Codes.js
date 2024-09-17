@@ -15,11 +15,11 @@ class Commission_Entitiy_Codes extends BaseTableModel {
   static model = null;
   static fields = {
     ...Commission_Entitiy_Codes.getBaseTableModelFields(),...{                 
-      IDTABLEENTITY:{
+      table_entity_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
       },
-      IDREGISTERENTITY:{
+      record_entity_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
       },
@@ -30,22 +30,22 @@ class Commission_Entitiy_Codes extends BaseTableModel {
       description:{
         type: DataTypes.TEXT
       },
-      MINIMALVALUE:{
+      minimal_value:{
         type: DataTypes.DECIMAL(32,10)
       }
     }
   };
   
   static uniqueFields = [
-    'IDTABLEENTITY',
-    'IDREGISTERENTITY',
+    'table_entity_id',
+    'record_entity_id',
     'name'
   ];
 
   static constraints = [...(Commission_Entitiy_Codes.getBaseTableModelConstraints() || []),...[]];
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['IDTABLEENTITY'],
+    fields: ['table_entity_id'],
     type: 'foreign key',
     references: { 
         table: Tables,

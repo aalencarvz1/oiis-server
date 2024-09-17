@@ -17,20 +17,20 @@ class Item_Mov_Amount_Restrictions extends BaseTableModel {
   static model = null;
   static fields = {
     ...Item_Mov_Amount_Restrictions.getBaseTableModelFields(),...{                 
-      IDITEMMOVAMT:{
+      item_mov_amt_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDIDENTIFIERTYPE:{
+      identifier_type_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDVALUENAME:{
+      value_name_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      OPERATION:{
+      operation:{
         type: DataTypes.STRING(256)
       },
-      VALUE:{
+      value:{
         type: DataTypes.STRING(256)
       }
     }
@@ -42,7 +42,7 @@ class Item_Mov_Amount_Restrictions extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDITEMMOVAMT'],
+      fields: ['item_mov_amt_id'],
       type: 'foreign key',
       references: { 
           table: Item_Mov_Amounts,
@@ -52,7 +52,7 @@ class Item_Mov_Amount_Restrictions extends BaseTableModel {
       onDelete: 'cascade'
     },
     {
-      fields: ['IDIDENTIFIERTYPE'],
+      fields: ['identifier_type_id'],
       type: 'foreign key',
       references: { 
           table: Identifier_Types,
@@ -61,7 +61,7 @@ class Item_Mov_Amount_Restrictions extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDVALUENAME'],
+      fields: ['value_name_id'],
       type: 'foreign key',
       references: { 
           table: Value_Names,

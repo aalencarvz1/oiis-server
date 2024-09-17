@@ -19,7 +19,7 @@ class Form_Types extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      PATH:{
+      path:{
         type: DataTypes.STRING(2000)
       }
     }

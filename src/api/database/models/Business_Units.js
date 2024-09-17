@@ -16,7 +16,7 @@ class Business_Units extends BasePeopleModel {
   static fields = {
     ...(Business_Units.getBaseTableModelFields() || {}),
     ...{           
-      IDCOMPANY:{
+      company_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       }
@@ -35,7 +35,7 @@ class Business_Units extends BasePeopleModel {
 
   static foreignsKeys = [...(this.defaultPeopleForeignsKeys || []),...[
     {
-      fields: ['IDCOMPANY'],
+      fields: ['company_id'],
       type: 'foreign key',
       references: { 
           table: Companies,

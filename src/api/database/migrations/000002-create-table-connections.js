@@ -25,7 +25,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : process.env.NODE_ENV,
-      ISDEFAULT : 1
+      is_default : 1
     },{      
       id:configDB[`${process.env.NODE_ENV||'development'}_winthor`].id,
       status_reg_id: Record_Status.ACTIVE,
@@ -34,7 +34,7 @@ module.exports = {
       data_origin_id : Data_Origins.WINTHOR,
       is_sys_rec : 1,
       name : `WINTHOR`,
-      ISDEFAULT : 0
+      is_default : 0
     },{      
       id:configDB[`${process.env.NODE_ENV||'development'}_consult`].id,
       status_reg_id: Record_Status.ACTIVE,
@@ -43,7 +43,7 @@ module.exports = {
       data_origin_id : Data_Origins.CONSULTA,
       is_sys_rec : 1,
       name : `CONSULTA`,
-      ISDEFAULT : 0
+      is_default : 0
     },{      
       id:configDB[`${process.env.NODE_ENV||'development'}_ep`].id,
       status_reg_id: Record_Status.ACTIVE,
@@ -52,7 +52,7 @@ module.exports = {
       data_origin_id : Data_Origins.EP,
       is_sys_rec : 1,
       name : `EP`,
-      ISDEFAULT : 0
+      is_default : 0
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null
