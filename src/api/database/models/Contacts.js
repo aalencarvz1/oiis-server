@@ -15,7 +15,7 @@ class Contacts extends BaseTableModel {
   static model = null;
   static fields = {
     ...Contacts.getBaseTableModelFields(),...{           
-      IDCONTACTTYPE:{
+      contact_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -27,7 +27,7 @@ class Contacts extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDCONTACTTYPE',
+    'contact_type_id',
     'name'
   ];
 
@@ -41,7 +41,7 @@ class Contacts extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDCONTACTTYPE'],
+      fields: ['contact_type_id'],
       type: 'foreign key',
       references: { 
           table: Contact_Types,

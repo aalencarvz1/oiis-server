@@ -18,7 +18,7 @@ class Migration_Columns extends BaseWinthorIntegrationTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      COLUMNNAME:{
+      column_name:{
         type: DataTypes.STRING(255),
         allowNull:false
       },      
@@ -42,7 +42,7 @@ class Migration_Columns extends BaseWinthorIntegrationTableModel {
   
   static uniqueFields = [
     'IDMIGRATIONTABLE',
-    'COLUMNNAME'
+    'column_name'
   ];
 
   static constraints = [...(Migration_Columns.getBaseTableModelConstraints() || []),...[{

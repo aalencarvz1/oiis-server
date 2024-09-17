@@ -16,13 +16,13 @@ class Midias extends BaseTableModel {
 
   static fields = {
     ...Midias.getBaseTableModelFields(),...{      
-      IDTABLEREF: {
+      table_ref_id: {
         type: DataTypes.BIGINT.UNSIGNED
       },    
-      IDREGISTERREF: {
+      record_ref_id: {
         type: DataTypes.BIGINT.UNSIGNED
       },
-      ORDERNUM: {
+      numeric_order: {
         type: DataTypes.INTEGER
       },
       name:{
@@ -48,7 +48,7 @@ class Midias extends BaseTableModel {
   static constraints = [...(Midias.getBaseTableModelConstraints() || []),...[]];
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['IDTABLEREF'],
+    fields: ['table_ref_id'],
     type: 'foreign key',
     references: { 
         table: Tables,

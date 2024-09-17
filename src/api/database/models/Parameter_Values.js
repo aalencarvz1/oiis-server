@@ -20,7 +20,7 @@ class Parameter_Values extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull : false,
       },
-      VALUE: {
+      value: {
         type: DataTypes.STRING(256)
       },
       description: {
@@ -31,7 +31,7 @@ class Parameter_Values extends BaseTableModel {
   
   static uniqueFields = [
     'IDPARAMETER',
-    Sequelize.literal(`(COALESCE(VALUE,'NULL'))`)
+    Sequelize.literal(`(COALESCE(value,'NULL'))`)
   ];
 
   static constraints = [...(Parameter_Values.getBaseTableModelConstraints() || []),...[
@@ -64,7 +64,7 @@ class Parameter_Values extends BaseTableModel {
       where:{IDPARAMETER:pIdParameter}
     });
     if (result) {
-      result = result.VALUE;
+      result = result.value;
     }
     return result;
   }

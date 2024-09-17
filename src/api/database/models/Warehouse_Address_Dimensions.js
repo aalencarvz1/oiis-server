@@ -17,32 +17,32 @@ class Warehouse_Address_Dimensions extends BaseTableModel {
   static model = null;
   static fields = {
     ...Warehouse_Address_Dimensions.getBaseTableModelFields(),...{           
-      IDWAREHOUSEADDRESS:{
+      warehouse_address_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDDIMENSIONTYPE:{
+      dimension_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },      
-      IDMEASUREMENTUNIT:{
+      measurement_unit_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },      
-      VALUE:{
+      value:{
         type: DataTypes.DECIMAL(32,10),
         allowNull:false,
         defaultValue:0
       },
-      OBSERVATIONS:{
+      observations:{
         type:DataTypes.TEXT
       }
     }
   };
   
   static uniqueFields = [
-    'IDWAREHOUSEADDRESS',
-    'IDDIMENSIONTYPE'
+    'warehouse_address_id',
+    'dimension_type_id'
   ];
 
   static constraints = [...(Warehouse_Address_Dimensions.getBaseTableModelConstraints() || []),...[
@@ -55,7 +55,7 @@ class Warehouse_Address_Dimensions extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDWAREHOUSEADDRESS'],
+      fields: ['warehouse_address_id'],
       type: 'foreign key',
       references: { 
           table: Warehouse_Addresses,
@@ -64,7 +64,7 @@ class Warehouse_Address_Dimensions extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDDIMENSIONTYPE'],
+      fields: ['dimension_type_id'],
       type: 'foreign key',
       references: { 
           table: Identifier_Types,
@@ -73,7 +73,7 @@ class Warehouse_Address_Dimensions extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDMEASUREMENTUNIT'],
+      fields: ['measurement_unit_id'],
       type: 'foreign key',
       references: { 
           table: Measurement_Units,

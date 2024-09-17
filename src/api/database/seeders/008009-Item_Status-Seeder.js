@@ -16,8 +16,8 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'NORMAL',
-      ISDISPONIBLE: 1,
-      ISDAMAGED: 0
+      is_disponible: 1,
+      is_damaged: 0
     },{
       id: Item_Status.DAMAGED,
       status_reg_id: Record_Status.ACTIVE,
@@ -26,8 +26,8 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'DAMAGED',
-      ISDISPONIBLE: 0,
-      ISDAMAGED: 1
+      is_disponible: 0,
+      is_damaged: 1
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

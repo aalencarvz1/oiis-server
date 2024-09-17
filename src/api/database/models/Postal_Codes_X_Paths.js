@@ -16,35 +16,35 @@ class Postal_Codes_X_Paths extends BaseTableModel {
   static model = null;
   static fields = {
     ...Postal_Codes_X_Paths.getBaseTableModelFields(),...{                 
-      IDPOSTALCODE:{
+      postal_code_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDPOSTALCODEXSTREET:{
+      postal_code_x_street_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      LATITUDE:{
+      latitude:{
         type: DataTypes.DECIMAL(18,10)
       },
-      LONGITUDE:{
+      longitude:{
         type: DataTypes.DECIMAL(18,10)
       },
-      STARTNUMBER:{
+      start_number:{
         type: DataTypes.STRING(256)
       },
-      ENDNUMBER:{
+      end_number:{
         type: DataTypes.STRING(256)
       }
     }
   };
   
   static uniqueFields = [
-    'IDPOSTALCODE',
-    Sequelize.literal(`(COALESCE(IDPOSTALCODEXSTREET,0))`),
-    Sequelize.literal(`(COALESCE(LATITUDE,0))`),
-    Sequelize.literal(`(COALESCE(LONGITUDE,0))`),
-    Sequelize.literal(`(COALESCE(STARTNUMBER,'NULL'))`),
-    Sequelize.literal(`(COALESCE(ENDNUMBER,'NULL'))`),
+    'postal_code_id',
+    Sequelize.literal(`(COALESCE(postal_code_x_street_id,0))`),
+    Sequelize.literal(`(COALESCE(latitude,0))`),
+    Sequelize.literal(`(COALESCE(longitude,0))`),
+    Sequelize.literal(`(COALESCE(start_number,'NULL'))`),
+    Sequelize.literal(`(COALESCE(end_number,'NULL'))`),
   ];
 
   static constraints = [...(Postal_Codes_X_Paths.getBaseTableModelConstraints() || []),...[
@@ -57,7 +57,7 @@ class Postal_Codes_X_Paths extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDPOSTALCODE'],
+      fields: ['postal_code_id'],
       type: 'foreign key',
       references: { 
           table: Postal_Codes,
@@ -66,7 +66,7 @@ class Postal_Codes_X_Paths extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDPOSTALCODEXSTREET'],
+      fields: ['postal_code_x_street_id'],
       type: 'foreign key',
       references: { 
           table: Postal_Codes_X_Streets,

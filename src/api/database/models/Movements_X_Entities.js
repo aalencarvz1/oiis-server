@@ -17,7 +17,7 @@ class Movements_X_Entities extends BaseTableModel {
   static model = null;
   static fields = {
     ...Movements_X_Entities.getBaseTableModelFields(),...{                 
-      IDMOV:{
+      mov_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -25,30 +25,30 @@ class Movements_X_Entities extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDSTOCKENTITY:{
+      stock_entity_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      ORDERNUM:{
+      numeric_order:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:0
       },
-      PRECEDENCE:{
+      precedence:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:0
       },
-      OBSERVATIONS:{
+      observations:{
         type:DataTypes.TEXT
       }
     }
   };
   
   static uniqueFields = [
-    'IDMOV',
+    'mov_id',
     'IDMOVENTITYRELATIONSHIPTYPE',
-    'IDSTOCKENTITY'
+    'stock_entity_id'
   ];
 
   static constraints = [...(Movements_X_Entities.getBaseTableModelConstraints() || []),...[
@@ -61,7 +61,7 @@ class Movements_X_Entities extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDMOV'],
+      fields: ['mov_id'],
       type: 'foreign key',
       references: { 
           table: Movements,
@@ -80,7 +80,7 @@ class Movements_X_Entities extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDSTOCKENTITY'],
+      fields: ['stock_entity_id'],
       type: 'foreign key',
       references: { 
           table: Stock_Entities,

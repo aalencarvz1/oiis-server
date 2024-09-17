@@ -15,7 +15,7 @@ class Commission_Values extends BaseTableModel {
   static model = null;
   static fields = {
     ...Commission_Values.getBaseTableModelFields(),...{                 
-      IDCOMMISSIONITEM:{
+      commission_item_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
       },
@@ -26,7 +26,7 @@ class Commission_Values extends BaseTableModel {
       description:{
         type: DataTypes.TEXT
       },
-      PERCENT:{
+      percent:{
         type: DataTypes.DECIMAL(32,10),
         allowNull:false,
         defaultValue:0
@@ -35,14 +35,14 @@ class Commission_Values extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDCOMMISSIONITEM',
+    'commission_item_id',
     'name'
   ];
 
   static constraints = [...(Commission_Values.getBaseTableModelConstraints() || []),...[]];
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['IDCOMMISSIONITEM'],
+    fields: ['commission_item_id'],
     type: 'foreign key',
     references: { 
         table: Commission_Items,

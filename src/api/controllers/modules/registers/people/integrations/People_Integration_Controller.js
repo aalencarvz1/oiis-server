@@ -49,11 +49,11 @@ class People_Integration_Controller extends RegistersController{
                 let whereDocs = [];
                 for(let k in params.identifiers) {
                     if (Utils.typeOf(params.identifiers[k]) == 'object') {
-                        let doc = params.identifiers[k].IDENTIFIERDOC || params.identifiers[k].CNPJ || params.identifiers[k].CGC || params.identifiers[k].CGCENT || params.identifiers[k].CPF;
-                        let idTpDoc = params.identifiers[k].IDIDENTIFIERDOCTYPE || (params.identifiers[k].TIPOFJ == 'F' ? Identifier_Types.CPF : Identifier_Types.CNPJ);
+                        let doc = params.identifiers[k].identifier_doc || params.identifiers[k].CNPJ || params.identifiers[k].CGC || params.identifiers[k].CGCENT || params.identifiers[k].CPF;
+                        let idTpDoc = params.identifiers[k].identifier_doc_type_id || (params.identifiers[k].TIPOFJ == 'F' ? Identifier_Types.CPF : Identifier_Types.CNPJ);
                         whereDocs.push({
-                            IDENTIFIERDOC: doc.toString().replace(/[^\d]/,'')-0,
-                            IDIDENTIFIERDOCTYPE: idTpDoc
+                            identifier_doc: doc.toString().replace(/[^\d]/,'')-0,
+                            identifier_doc_type_id: idTpDoc
                         });
                     } else {
                         whereIds.push(params.identifiers[k]);
@@ -93,14 +93,14 @@ class People_Integration_Controller extends RegistersController{
                                 C.NUMEROENT,
                                 C.CEPENT,
                                 C.COMPLEMENTOENT,
-                                C.LATITUDE,
-                                C.LONGITUDE,
+                                C.latitude,
+                                C.longitude,
                                 C.TIPOFJ,                            
                                 CI.NOMECIDADE,
                                 CI.UF AS CIDADE_UF,
                                 CI.CODIBGE AS CIDADE_CODIBGE,
-                                CI.LATITUDE AS CIDADE_LATITUDE,
-                                CI.LONGITUDE AS CIDADE_LONGITUDE,
+                                CI.latitude AS CIDADE_latitude,
+                                CI.longitude AS CIDADE_longitude,
                                 CI.POPULACAO AS CIDADE_POPULACAO,
                                 E.ESTADO,
                                 E.CODIBGE AS ESTADO_CODIBGE,
@@ -187,7 +187,7 @@ class People_Integration_Controller extends RegistersController{
                                                 POSTALCODE: winthorRegs[people[k].id_at_origin].CEPENT
                                             },
                                             values:{
-                                                IDADDRESSTYPE: people[k].IDIDENTIFIERDOCTYPE == Identifier_Types.CPF ? Address_Types.RESIDENTIAL : Address_Types.BUSINESS
+                                                address_type_id: people[k].identifier_doc_type_id == Identifier_Types.CPF ? Address_Types.RESIDENTIAL : Address_Types.BUSINESS
                                             }
                                         });
                                         if (postalCode && postalCode.success) {
@@ -198,16 +198,16 @@ class People_Integration_Controller extends RegistersController{
                                     address = await Addresses.getModel().getOrCreate({
                                         raw:true,
                                         where:{
-                                            IDNEIGHBORHOOD: neighborhood?.id,
-                                            IDSTREET: street?.id,
-                                            IDPOSTALCODE: postalCode?.id,
-                                            LATITUDE: (winthorRegs[people[k].id_at_origin].LATITUDE || 0) == 0 ? null : Utils.toNumber(winthorRegs[people[k].id_at_origin].LATITUDE),
-                                            LONGITUDE: (winthorRegs[people[k].id_at_origin].LONGITUDE || 0) == 0 ? null : Utils.toNumber(winthorRegs[people[k].id_at_origin].LONGITUDE),
-                                            NUMBER: winthorRegs[people[k].id_at_origin].NUMEROENT,
-                                            COMPLEMENT: winthorRegs[people[k].id_at_origin].COMPLEMENTOENT,
+                                            neighborhood_id: neighborhood?.id,
+                                            street_id: street?.id,
+                                            postal_code_id: postalCode?.id,
+                                            latitude: (winthorRegs[people[k].id_at_origin].latitude || 0) == 0 ? null : Utils.toNumber(winthorRegs[people[k].id_at_origin].latitude),
+                                            longitude: (winthorRegs[people[k].id_at_origin].longitude || 0) == 0 ? null : Utils.toNumber(winthorRegs[people[k].id_at_origin].longitude),
+                                            number: winthorRegs[people[k].id_at_origin].NUMEROENT,
+                                            complement: winthorRegs[people[k].id_at_origin].COMPLEMENTOENT,
                                         },
                                         values:{
-                                            IDADDRESSTYPE: people[k].IDIDENTIFIERDOCTYPE == Identifier_Types.CPF ? Address_Types.RESIDENTIAL : Address_Types.BUSINESS
+                                            address_type_id: people[k].identifier_doc_type_id == Identifier_Types.CPF ? Address_Types.RESIDENTIAL : Address_Types.BUSINESS
                                         }
                                     });
                                     if (address && address.success) {
@@ -215,9 +215,9 @@ class People_Integration_Controller extends RegistersController{
                                         await People_X_Addresses.getModel().getOrCreate({
                                             raw:true,
                                             where:{
-                                                IDPEOPLE : people[k].id,
+                                                people_id : people[k].id,
                                                 IDADDRESS: address.id,
-                                                IDADDRESSTYPE: address.IDADDRESSTYPE
+                                                address_type_id: address.address_type_id
                                             }
                                         });
                                     }                                    
@@ -261,8 +261,8 @@ class People_Integration_Controller extends RegistersController{
                     getIntegratedsByOriginIds: async (registersIdentifiersDocs,options) => {
                         let peopleRegsIdentifiers = registersIdentifiersDocs.map(el=>{
                             return {
-                                IDIDENTIFIERDOCTYPE: el?.TIPOFJ == 'F' ? Identifier_Types.CPF : Identifier_Types.CNPJ,
-                                IDENTIFIERDOC: el?.CGCENT || el
+                                identifier_doc_type_id: el?.TIPOFJ == 'F' ? Identifier_Types.CPF : Identifier_Types.CNPJ,
+                                identifier_doc: el?.CGCENT || el
                             }
                         });
                         return await People.getPeopleByIdentifiersDocs(peopleRegsIdentifiers,options);
@@ -270,8 +270,8 @@ class People_Integration_Controller extends RegistersController{
                     getBulkDataToCreate: WinthorIntegrationsRegistersController.getPeopleByIdentifierDocToIntegrate.bind(WinthorIntegrationsRegistersController),
                     getDataToUpdate: async (row) => {
                         return await WinthorIntegrationsRegistersController.getPeopleByIdentifierDocToIntegrate.bind(WinthorIntegrationsRegistersController)([{
-                            TIPOFJ: row.IDIDENTIFIERDOCTYPE == Identifier_Types.CPF ? 'F' : 'J',
-                            CGCENT: row.IDENTIFIERDOC
+                            TIPOFJ: row.identifier_doc_type_id == Identifier_Types.CPF ? 'F' : 'J',
+                            CGCENT: row.identifier_doc
                         }]);
                     }
                 }
@@ -282,7 +282,7 @@ class People_Integration_Controller extends RegistersController{
                 if (result.success) {
                     let originalPeople = await WinthorIntegrationsRegistersController.getPeopleByIdentifierDocToIntegrate.bind(WinthorIntegrationsRegistersController)(params.registersIdentifiersDocs);
 
-                    let peopleDocs = originalPeople.map(el=>{return {IDENTIFIERDOC: el.id, IDIDENTIFIERDOCTYPE: el.IDIDENTIFIERDOCTYPE}});
+                    let peopleDocs = originalPeople.map(el=>{return {identifier_doc: el.id, identifier_doc_type_id: el.identifier_doc_type_id}});
 
                     let resultIntegrateAddresses = await People_Integration_Controller.integrateWinthorAddressesPeople(peopleDocs);
 
@@ -402,8 +402,8 @@ class People_Integration_Controller extends RegistersController{
                     getIntegratedsByOriginIds: async (registersIdentifiersDocs,options) => {
                         let peopleRegsIdentifiers = registersIdentifiersDocs.map(el=>{
                             return {
-                                IDIDENTIFIERDOCTYPE: el?.CODTIPODOCIDENTIFICADOR == 1 && (el.CODDOCIDENTIFICADOR || '').length() <= 11 ? Identifier_Types.CPF : Identifier_Types.CNPJ,
-                                IDENTIFIERDOC: el?.CODDOCIDENTIFICADOR || el
+                                identifier_doc_type_id: el?.CODTIPODOCIDENTIFICADOR == 1 && (el.CODDOCIDENTIFICADOR || '').length() <= 11 ? Identifier_Types.CPF : Identifier_Types.CNPJ,
+                                identifier_doc: el?.CODDOCIDENTIFICADOR || el
                             }
                         });
                         return await People.getPeopleByIdentifiersDocs(peopleRegsIdentifiers,options);
@@ -411,8 +411,8 @@ class People_Integration_Controller extends RegistersController{
                     getBulkDataToCreate: EpIntegrationsRegistersController.getPeopleByIdentifierDocToIntegrate,
                     getDataToUpdate: async (row) => {
                         return await EpIntegrationsRegistersController.getPeopleByIdentifierDocToIntegrate([{
-                            CODTIPODOCIDENTIFICADOR: row.IDIDENTIFIERDOCTYPE == Identifier_Types.CPF ? 1 : 2,
-                            CODDOCIDENTIFICADOR: row.IDENTIFIERDOC
+                            CODTIPODOCIDENTIFICADOR: row.identifier_doc_type_id == Identifier_Types.CPF ? 1 : 2,
+                            CODDOCIDENTIFICADOR: row.identifier_doc
                         }]);
                     }
                 }

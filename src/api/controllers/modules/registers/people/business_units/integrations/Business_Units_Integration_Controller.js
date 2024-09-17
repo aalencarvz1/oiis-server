@@ -75,15 +75,15 @@ class Business_Units_Integration_Controller extends RegistersController {
                             transaction: transaction
                         });
                         if (businessUnit) {
-                            if (businessUnit.IDPEOPLE != people.id) businessUnit.IDPEOPLE = people.id;
-                            if (businessUnit.IDCOMPANY != company.id) businessUnit.IDCOMPANY = company.id;
+                            if (businessUnit.people_id != people.id) businessUnit.people_id = people.id;
+                            if (businessUnit.company_id != company.id) businessUnit.company_id = company.id;
                             await businessUnit.save({transaction:transaction});
                         } else {
                             businessUnit = await Business_Units.getModel().create({
                                 id: integrations[key].CODIGO,
                                 data_origin_id: Data_Origins.WINTHOR,
-                                IDPEOPLE : people.id,
-                                IDCOMPANY : company.id
+                                people_id : people.id,
+                                company_id : company.id
                             },{transaction:transaction});
                         }
 

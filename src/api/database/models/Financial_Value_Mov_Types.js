@@ -20,19 +20,19 @@ class Financial_Value_Mov_Types extends BaseTableModel {
 
   static fields = {
     ...Financial_Value_Mov_Types.getBaseTableModelFields(),...{
-      IDSUP:{
+      parent_id:{
         type : DataTypes.BIGINT.UNSIGNED,                
       },
       name:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      ISPHYSICAL: {
+      is_physical: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISELETRONIC: {
+      is_eletronic: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
@@ -44,7 +44,7 @@ class Financial_Value_Mov_Types extends BaseTableModel {
   };
   
   static uniqueFields = [
-    Sequelize.literal(`(COALESCE(IDSUP,0))`),
+    Sequelize.literal(`(COALESCE(parent_id,0))`),
     'name'
   ];
 
@@ -55,19 +55,19 @@ class Financial_Value_Mov_Types extends BaseTableModel {
       type:"unique"
     },{
       name: Financial_Value_Mov_Types.tableName + '_c_1',
-      fields:['ISPHYSICAL'],
+      fields:['is_physical'],
       type:"check",
       where:{
-        ISPHYSICAL: {
+        is_physical: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Financial_Value_Mov_Types.tableName + '_c_3',
-      fields:['ISELETRONIC'],
+      fields:['is_eletronic'],
       type:"check",
       where:{
-        ISELETRONIC: {
+        is_eletronic: {
               [Sequelize.Op.in]: [0,1]
           }
       }
@@ -75,7 +75,7 @@ class Financial_Value_Mov_Types extends BaseTableModel {
   ]];
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['IDSUP'],
+    fields: ['parent_id'],
     type: 'foreign key',
     references: { 
         table: Financial_Value_Mov_Types,

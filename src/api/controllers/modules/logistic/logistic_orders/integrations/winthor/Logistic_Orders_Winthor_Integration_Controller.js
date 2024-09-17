@@ -84,11 +84,11 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                                 raw:true,
                                 attributes:[
                                     Sequelize.col(`${Logistic_Orders.tableName}.id_at_origin`),
-                                    [Sequelize.col('logistic_orders_x_movs.IDLOGISTICSTATUS'), 'IDLOGISTICSTATUS'],
+                                    [Sequelize.col('logistic_orders_x_movs.logistic_status_id'), 'logistic_status_id'],
                                     [Sequelize.col('logistic_orders_x_movs->MOVEMENTS.data_origin_id'), 'data_origin_idNF'],
                                     [Sequelize.col('logistic_orders_x_movs->MOVEMENTS.id_at_origin'), 'NUMTRANSVENDA'],
                                     [Sequelize.fn('COUNT',Sequelize.col('logistic_orders_x_movs->logistic_orders_x_items_mov_amt.id')),'QTITEMS'],
-                                    [Sequelize.fn('COUNT',Sequelize.literal(`CASE WHEN \`logistic_orders_x_movs->logistic_orders_x_items_mov_amt\`.IDLOGISTICSTATUS = ${Logistic_Status.DELIVERED} THEN 1 ELSE NULL END`)),'QTITEMSFINALIZEDS']
+                                    [Sequelize.fn('COUNT',Sequelize.literal(`CASE WHEN \`logistic_orders_x_movs->logistic_orders_x_items_mov_amt\`.logistic_status_id = ${Logistic_Status.DELIVERED} THEN 1 ELSE NULL END`)),'QTITEMSFINALIZEDS']
                                 ],
                                 where:{
                                     [Op.and]:[{
@@ -102,17 +102,17 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                                     include: [{
                                         model: Movements.getModel(),
                                         attributes:[],
-                                        on:Sequelize.where(Sequelize.col(`logistic_orders_x_movs->MOVEMENTS.id`),Sequelize.col(`${Logistic_Orders_X_Movs.tableName}.IDMOV`))
+                                        on:Sequelize.where(Sequelize.col(`logistic_orders_x_movs->MOVEMENTS.id`),Sequelize.col(`${Logistic_Orders_X_Movs.tableName}.mov_id`))
                                     },{
                                         model: Logistic_Orders_X_Items_Mov_Amt.getModel(),
                                         attributes:[],
-                                        on:Sequelize.where(Sequelize.col(`logistic_orders_x_movs->logistic_orders_x_items_mov_amt.IDLOGISTICORDERXMOV`),Sequelize.col(`${Logistic_Orders_X_Movs.tableName}.id`))
+                                        on:Sequelize.where(Sequelize.col(`logistic_orders_x_movs->logistic_orders_x_items_mov_amt.mov_logistic_order_id`),Sequelize.col(`${Logistic_Orders_X_Movs.tableName}.id`))
                                         
                                     }]
                                 }],
                                 group:[
                                     Sequelize.col(`${Logistic_Orders.tableName}.id_at_origin`),
-                                    Sequelize.col('logistic_orders_x_movs.IDLOGISTICSTATUS'),
+                                    Sequelize.col('logistic_orders_x_movs.logistic_status_id'),
                                     Sequelize.col('logistic_orders_x_movs->MOVEMENTS.data_origin_id'),
                                     Sequelize.col('logistic_orders_x_movs->MOVEMENTS.id_at_origin')
                                 ]
@@ -131,7 +131,7 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                                                 }*/
                                             }
                                         });
-                                        if (logOrder[kl].IDLOGISTICSTATUS == Logistic_Status.DELIVERED && logOrder[kl].QTITEMS == logOrder[kl].QTITEMSFINALIZEDS) {
+                                        if (logOrder[kl].logistic_status_id == Logistic_Status.DELIVERED && logOrder[kl].QTITEMS == logOrder[kl].QTITEMSFINALIZEDS) {
 
                                             if (nfWint && ['748','BNF','BNFT','DEP'].indexOf(nfWint.CODCOB) > -1) {
 
@@ -314,11 +314,11 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                                                 resultData.COBRANCAS_NAO_INTEGRAR.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.VLTOTAL});    
                                             }
                                         } else {
-                                            if (logOrder[kl].IDLOGISTICSTATUS == Logistic_Status.PARTIAL_RETURNED) 
+                                            if (logOrder[kl].logistic_status_id == Logistic_Status.PARTIAL_RETURNED) 
                                                 resultData.NOTAS_DEVOLVIDAS_PARCIALMENTE.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.VLTOTAL})
-                                            else if (logOrder[kl].IDLOGISTICSTATUS == Logistic_Status.TOTAL_RETURNED) 
+                                            else if (logOrder[kl].logistic_status_id == Logistic_Status.TOTAL_RETURNED) 
                                                 resultData.NOTAS_DEVOLVIDAS_TOTALMENTE.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.VLTOTAL})    
-                                            else if (logOrder[kl].IDLOGISTICSTATUS == Logistic_Status.RUNNING) 
+                                            else if (logOrder[kl].logistic_status_id == Logistic_Status.RUNNING) 
                                                 resultData.NOTAS_EM_ENTREGA.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.VLTOTAL})
                                             else
                                                 resultData.NOTAS_A_ENTREGAR.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.VLTOTAL});    
@@ -381,10 +381,10 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                             creator_user_id: Users.SYSTEM,
                             data_origin_id: Data_Origins.WINTHOR,
                             id_at_origin:el,
-                            IDLOGISTICMOVTYPE: Logistic_Mov_Types.DELIVERY,
-                            IDIDENTIFIERTYPE: Identifier_Types.CODE,
-                            IDENTIFIER: el,
-                            IDLOGISTICSTATUS: Logistic_Status.TO_DELIVERY
+                            logistic_mov_type_id: Logistic_Mov_Types.DELIVERY,
+                            identifier_type_id: Identifier_Types.CODE,
+                            identifier: el,
+                            logistic_status_id: Logistic_Status.TO_DELIVERY
                         }
                     });
                 } 

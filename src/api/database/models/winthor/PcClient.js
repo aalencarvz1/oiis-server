@@ -59,10 +59,10 @@ class PcClient extends BaseWinthorTableModel {
       NUMEROENT: {
         type: DataTypes.STRING(2000)
       },
-      LATITUDE:{
+      latitude:{
         type: DataTypes.DECIMAL(18,10)
       },
-      LONGITUDE:{
+      longitude:{
         type: DataTypes.DECIMAL(18,10)
       },
       DTEXCLUSAO: {

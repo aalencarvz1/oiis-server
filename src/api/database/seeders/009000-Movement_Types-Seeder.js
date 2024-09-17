@@ -16,7 +16,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'INPUT',
-      ISINPUT : 1
+      is_input : 1
     },{      
       id:Movement_Types.OUTPUT,
       status_reg_id: Record_Status.ACTIVE,
@@ -25,7 +25,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'OUTPUT',
-      ISOUTPUT : 1
+      is_output : 1
     },{      
       id:Movement_Types.CONFERENCE,
       status_reg_id: Record_Status.ACTIVE,

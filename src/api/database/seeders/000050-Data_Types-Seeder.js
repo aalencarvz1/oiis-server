@@ -16,7 +16,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'ANY',
-      ISOTHER: 1
+      is_other: 1
     },{
       id: Data_Types.STRING,
       status_reg_id: Record_Status.ACTIVE,
@@ -25,7 +25,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'STRING',
-      ISTEXT:1
+      is_text:1
     },{
       id: Data_Types.INTEGER,
       status_reg_id: Record_Status.ACTIVE,
@@ -34,7 +34,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'INTEGER',
-      ISNUMBER:1
+      is_number:1
     },{
       id: Data_Types.BOOLEAN,
       status_reg_id: Record_Status.ACTIVE,
@@ -43,7 +43,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'BOOLEAN',
-      ISBOOLEAN: 1
+      is_bool: 1
     },{
       id: Data_Types.ARRAY,
       status_reg_id: Record_Status.ACTIVE,
@@ -52,7 +52,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'ARRAY',
-      ISARRAY: 1
+      is_array: 1
     },{
       id: Data_Types.OBJECT,
       status_reg_id: Record_Status.ACTIVE,
@@ -61,7 +61,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'OBJECT',
-      ISOBJECT: 1
+      is_object: 1
     },{
       id: Data_Types.NUMBER,
       status_reg_id: Record_Status.ACTIVE,
@@ -70,8 +70,8 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'NUMBER',
-      ISNUMBER:1,
-      ISDECIMAL:1
+      is_number:1,
+      is_decimal:1
     },{
       id: Data_Types.DATE,
       status_reg_id: Record_Status.ACTIVE,
@@ -80,7 +80,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'DATE',
-      ISDATE:1
+      is_date:1
     },{
       id: Data_Types.TIME,
       status_reg_id: Record_Status.ACTIVE,
@@ -89,7 +89,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'TIME',
-      ISTIME:1
+      is_time:1
     },{
       id: Data_Types.DATETIME,
       status_reg_id: Record_Status.ACTIVE,
@@ -98,8 +98,8 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'DATETIME',
-      ISDATE:1,
-      ISTIME:1
+      is_date:1,
+      is_time:1
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

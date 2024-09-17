@@ -17,16 +17,16 @@ class Api_Request_Calls extends BaseTableModel {
 
   static fields = {
     ...Api_Request_Calls.getBaseTableModelFields(),...{            
-      IDAPIREQUEST: {
+      api_request_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDSTATUSRUN: {
+      run_status_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue: Run_Status.NOT_STARTED
       },
-      ONRECEIVEWEBHOOKRESPONSE:{
+      on_receive_response:{
         type: DataTypes.TEXT
       }
     }
@@ -37,7 +37,7 @@ class Api_Request_Calls extends BaseTableModel {
   static constraints = [...(Api_Request_Calls.getBaseTableModelConstraints() || []),...[]];
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['IDAPIREQUEST'],
+    fields: ['api_request_id'],
     type: 'foreign key',
     references: { 
         table: Api_Requests,
@@ -46,7 +46,7 @@ class Api_Request_Calls extends BaseTableModel {
     onUpdate: 'cascade',
     onDelete: 'cascade'
   },{
-    fields: ['IDSTATUSRUN'],
+    fields: ['run_status_id'],
     type: 'foreign key',
     references: { 
         table: Run_Status,

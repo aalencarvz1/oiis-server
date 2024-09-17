@@ -30,8 +30,8 @@ class BaseSjdTableModel extends BaseTableModel {
             id:this.id,
             created_at: new Date(),
             is_sys_rec : 1,
-            IDDATACONNECTION : configDB[`${process.env.NODE_ENV||'development'}_consult`].id,
-            IDSCHEMA : configDB[`${process.env.NODE_ENV||'development'}_consult`].id,
+            data_connection_id : configDB[`${process.env.NODE_ENV||'development'}_consult`].id,
+            schema_id : configDB[`${process.env.NODE_ENV||'development'}_consult`].id,
             name : this.tableName
         }],{
             ignoreDuplicates:true,

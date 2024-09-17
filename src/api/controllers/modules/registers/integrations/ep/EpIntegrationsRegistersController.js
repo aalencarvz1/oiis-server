@@ -83,10 +83,10 @@ class EpIntegrationsRegistersController extends RegistersController{
                         ['COD','id'],
                         [Sequelize.literal(`${Data_Origins.EP}`),'data_origin_id'],
                         ['COD','id_at_origin'],
-                        [Sequelize.literal(`case when EPPESSOAS.CODTIPODOCIDENTIFICADOR = 1 AND LENGTH(EPPESSOAS.CODDOCIDENTIFICADOR) <= 11 then ${Identifier_Types.CPF} else ${Identifier_Types.CNPJ} end`),'IDIDENTIFIERDOCTYPE'],
-                        [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CODDOCIDENTIFICADOR'),'[^0-9]',''),'DECIMAL(32)'),'IDENTIFIERDOC'],
+                        [Sequelize.literal(`case when EPPESSOAS.CODTIPODOCIDENTIFICADOR = 1 AND LENGTH(EPPESSOAS.CODDOCIDENTIFICADOR) <= 11 then ${Identifier_Types.CPF} else ${Identifier_Types.CNPJ} end`),'identifier_doc_type_id'],
+                        [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CODDOCIDENTIFICADOR'),'[^0-9]',''),'DECIMAL(32)'),'identifier_doc'],
                         ['NOMERAZAO','name'],
-                        ['FANTASIA','FANTASY']
+                        ['FANTASIA','fantasy']
                     ]
                 }
             )
@@ -176,7 +176,7 @@ class EpIntegrationsRegistersController extends RegistersController{
                         ['COD','id'],
                         [Sequelize.literal(`${Data_Origins.EP}`),'data_origin_id'],
                         ['CODPESSOA','id_at_origin'],
-                        ['CODPESSOA','IDPEOPLE']
+                        ['CODPESSOA','people_id']
                     ]
                 }
             )

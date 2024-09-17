@@ -39,7 +39,7 @@ class Logistic_Reasons_Integration_Controller extends RegistersController {
             //preserve winthor code, if violate primary key or unique, raise here
             if (logisticReason) {
                 if (logisticReason.name != pcTabDev.MOTIVO) logisticReason.name = pcTabDev.MOTIVO;
-                if (logisticReason.SIGLAMOVTYPE != pcTabDev.TIPO) logisticReason.SIGLAMOVTYPE = pcTabDev.TIPO;            
+                if (logisticReason.mov_type_sigla != pcTabDev.TIPO) logisticReason.mov_type_sigla = pcTabDev.TIPO;            
                 await logisticReason.save(options);
             } else {
                 logisticReason = await Logistic_Reasons.getModel().create({
@@ -47,7 +47,7 @@ class Logistic_Reasons_Integration_Controller extends RegistersController {
                     data_origin_id: Data_Origins.WINTHOR,
                     id_at_origin: pcTabDev.CODDEVOL,                    
                     name: pcTabDev.MOTIVO,
-                    SIGLAMOVTYPE: pcTabDev.TIPO
+                    mov_type_sigla: pcTabDev.TIPO
                 },options);
             }
             return logisticReason;

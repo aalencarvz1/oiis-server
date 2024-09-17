@@ -20,7 +20,7 @@ class Postal_Codes extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      IDADDRESSTYPE:{
+      address_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -28,7 +28,7 @@ class Postal_Codes extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      COMPLEMENT:{
+      complement:{
         type: DataTypes.STRING(2000)
       }
     }
@@ -36,7 +36,7 @@ class Postal_Codes extends BaseTableModel {
   
   static uniqueFields = [
     'POSTALCODE',
-    'IDADDRESSTYPE',
+    'address_type_id',
     'IDCITY'
   ];
 
@@ -50,7 +50,7 @@ class Postal_Codes extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDADDRESSTYPE'],
+      fields: ['address_type_id'],
       type: 'foreign key',
       references: { 
           table: Address_Types,

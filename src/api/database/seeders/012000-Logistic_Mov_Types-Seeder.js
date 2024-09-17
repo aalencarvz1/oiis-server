@@ -17,7 +17,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'DELIVERY',
-      ISOUTPUT:1
+      is_output:1
     },{
       id: Logistic_Mov_Types.COLLECT,
       status_reg_id: Record_Status.ACTIVE,
@@ -26,7 +26,7 @@ module.exports = {
       data_origin_id : Logistic_Mov_Types.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'COLLECT',
-      ISINPUT: 1
+      is_input: 1
     },{
       id: Logistic_Mov_Types.RETREAT,
       status_reg_id: Record_Status.ACTIVE,
@@ -35,7 +35,7 @@ module.exports = {
       data_origin_id : Logistic_Mov_Types.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'RETREAT',
-      ISINPUT: 1
+      is_input: 1
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

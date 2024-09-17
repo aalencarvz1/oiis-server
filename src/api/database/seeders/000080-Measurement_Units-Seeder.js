@@ -18,8 +18,8 @@ module.exports = {
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'UNIT',
-      SIGLA: 'UN',
-      ISSCALAR: 1
+      sigla: 'UN',
+      is_scalar: 1
     },{
       id: Measurement_Units.KG,
       status_reg_id: Record_Status.ACTIVE,
@@ -29,8 +29,8 @@ module.exports = {
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.MASS,
       name : 'KILOGRAM',
-      SIGLA: 'KG',
-      ISSCALAR: 1
+      sigla: 'KG',
+      is_scalar: 1
     },{
       id: Measurement_Units.L,
       status_reg_id: Record_Status.ACTIVE,
@@ -40,8 +40,8 @@ module.exports = {
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.VOLUM,
       name : 'LITER',
-      SIGLA: 'L',
-      ISSCALAR: 1
+      sigla: 'L',
+      is_scalar: 1
     },{
       id: Measurement_Units.PC,
       status_reg_id: Record_Status.ACTIVE,
@@ -51,8 +51,8 @@ module.exports = {
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'PIECE',
-      SIGLA: 'PC',
-      ISSCALAR: 1
+      sigla: 'PC',
+      is_scalar: 1
     },{
       id: Measurement_Units.PKG,
       status_reg_id: Record_Status.ACTIVE,
@@ -62,8 +62,8 @@ module.exports = {
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'PACKAGE',
-      SIGLA: 'PK',
-      ISSCALAR: 1
+      sigla: 'PK',
+      is_scalar: 1
     },{
       id: Measurement_Units.BOX,
       status_reg_id: Record_Status.ACTIVE,
@@ -73,8 +73,8 @@ module.exports = {
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'BOX',
-      SIGLA: 'BX',
-      ISSCALAR: 1
+      sigla: 'BX',
+      is_scalar: 1
     },{
       id: Measurement_Units.BCK,
       status_reg_id: Record_Status.ACTIVE,
@@ -84,8 +84,8 @@ module.exports = {
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'BUCKET',
-      SIGLA: 'BK',
-      ISSCALAR: 1
+      sigla: 'BK',
+      is_scalar: 1
     },{
       id: Measurement_Units.CAN,
       status_reg_id: Record_Status.ACTIVE,
@@ -95,8 +95,8 @@ module.exports = {
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'CAN',
-      SIGLA: 'CN',
-      ISSCALAR: 1
+      sigla: 'CN',
+      is_scalar: 1
     },{
       id: Measurement_Units.BAG,
       status_reg_id: Record_Status.ACTIVE,
@@ -106,8 +106,8 @@ module.exports = {
       is_sys_rec : 1,
       IDGREATNESS: Greatnesses.QUANTITY,
       name : 'BAG',
-      SIGLA: 'BG',
-      ISSCALAR: 1
+      sigla: 'BG',
+      is_scalar: 1
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

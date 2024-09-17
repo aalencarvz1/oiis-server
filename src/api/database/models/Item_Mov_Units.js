@@ -19,73 +19,73 @@ class Item_Mov_Units extends BaseTableModel {
   static model = null;
   static fields = {
     ...Item_Mov_Units.getBaseTableModelFields(),...{                 
-      IDITEMMOVAMT:{
+      item_mov_amt_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDIDENTIFIERTYPE:{
+      identifier_type_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDENTIFIER:{
+      identifier:{
         type: DataTypes.STRING(256)
       },
-      IDMEASUREMENTUNIT:{
+      measurement_unit_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },      
-      IDPACKAGING:{
+      packaging_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },  
-      UNITWEIGHT:{
+      unit_weight:{
         type: DataTypes.DECIMAL(32,10)
       },      
-      PACKAGEWEIGHT:{
+      package_weight:{
         type: DataTypes.DECIMAL(32,10)
       },  
-      UNITVOLUME:{
+      unit_volume:{
         type: DataTypes.DECIMAL(32,10)
       },      
-      PACKAGEVOLUME:{
+      package_volume:{
         type: DataTypes.DECIMAL(32,10)
       },              
-      IDSTATUSMOV:{
+      status_mov_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:Movement_Status.NOT_STARTED
       },      
-      MOVSTARTED_AT:{
+      mov_started_at:{
         type: DataTypes.DATE
       },
-      MOVENDED_AT:{
+      mov_ended_at:{
         type: DataTypes.DATE
       },
-      EXPECTEDAMT:{
+      expected_amt:{
         type: DataTypes.DECIMAL(32,10),
         allowNull:false,
         defaultValue:0
       },
-      MOVIMENTEDAMT:{
+      moved_amt:{
         type: DataTypes.DECIMAL(32,10),
         allowNull:false,
         defaultValue:0
       },
-      IDVARIABLEMEAUN:{
+      variable_unit_measure_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      VARIABLEEXPECTEDAMT:{
+      variable_expected_amt:{
         type: DataTypes.DECIMAL(32,10)
       },
-      VARIABLEMOVIMENTEDAMT:{
+      variable_moved_amt:{
         type: DataTypes.DECIMAL(32,10)
       },
-      OBSERVATIONS:{
+      observations:{
         type:DataTypes.TEXT
       }      
     }
   };
   
   static uniqueFields = [
-    'IDITEMMOVAMT',
-    Sequelize.literal(`(COALESCE(IDENTIFIER,'NULL'))`)
+    'item_mov_amt_id',
+    Sequelize.literal(`(COALESCE(identifier,'NULL'))`)
   ];
 
   static constraints = [...(Item_Mov_Units.getBaseTableModelConstraints() || []),...[
@@ -98,7 +98,7 @@ class Item_Mov_Units extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDITEMMOVAMT'],
+      fields: ['item_mov_amt_id'],
       type: 'foreign key',
       references: { 
           table: Item_Mov_Amounts,
@@ -108,7 +108,7 @@ class Item_Mov_Units extends BaseTableModel {
       onDelete: 'cascade'
     },
     {
-      fields: ['IDIDENTIFIERTYPE'],
+      fields: ['identifier_type_id'],
       type: 'foreign key',
       references: { 
           table: Identifier_Types,
@@ -117,7 +117,7 @@ class Item_Mov_Units extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDMEASUREMENTUNIT'],
+      fields: ['measurement_unit_id'],
       type: 'foreign key',
       references: { 
           table: Measurement_Units,
@@ -126,7 +126,7 @@ class Item_Mov_Units extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDPACKAGING'],
+      fields: ['packaging_id'],
       type: 'foreign key',
       references: { 
           table: Packagings,
@@ -135,7 +135,7 @@ class Item_Mov_Units extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDSTATUSMOV'],
+      fields: ['status_mov_id'],
       type: 'foreign key',
       references: { 
           table: Movement_Status,
@@ -144,7 +144,7 @@ class Item_Mov_Units extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDVARIABLEMEAUN'],
+      fields: ['variable_unit_measure_id'],
       type: 'foreign key',
       references: { 
           table: Measurement_Units,

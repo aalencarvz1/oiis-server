@@ -32,7 +32,7 @@ class User_Timeworks extends BaseTableModel {
         type: DataTypes.STRING(8),
         allowNull: false
       },
-      OBSERVATIONS:{
+      observations:{
         type:DataTypes.TEXT
       }
     }

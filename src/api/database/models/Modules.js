@@ -19,7 +19,7 @@ class Modules extends BaseTableModel {
 
   static fields = {
     ...Modules.getBaseTableModelFields(),...{     
-      IDSUP: {
+      parent_id: {
         type: DataTypes.BIGINT.UNSIGNED
       }, 
       name: {
@@ -29,10 +29,10 @@ class Modules extends BaseTableModel {
       ICON: {
         type: DataTypes.TEXT
       }, 
-      PATH: {
+      path: {
         type: DataTypes.STRING(2000)
       },  
-      ORDERNUM: {
+      numeric_order: {
         type: DataTypes.BIGINT.UNSIGNED
       },   
       description: {
@@ -42,7 +42,7 @@ class Modules extends BaseTableModel {
   };
   
   static uniqueFields = [ 
-    Sequelize.literal(`(COALESCE(IDSUP,0))`),  
+    Sequelize.literal(`(COALESCE(parent_id,0))`),  
     'name'
   ];
 
@@ -56,7 +56,7 @@ class Modules extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDSUP'],
+      fields: ['parent_id'],
       type: 'foreign key',
       references: { 
           table: Modules,

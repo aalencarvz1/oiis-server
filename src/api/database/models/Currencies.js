@@ -24,10 +24,10 @@ class Currencies extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      SYMBOL:{
+      symbol:{
         type: DataTypes.STRING(10)
       },
-      ISPHYSICAL: {
+      is_physical: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:1
@@ -49,10 +49,10 @@ class Currencies extends BaseTableModel {
       type:"unique"
     },{
       name: Currencies.tableName + '_c_1',
-      fields:['ISPHYSICAL'],
+      fields:['is_physical'],
       type:"check",
       where:{
-        ISPHYSICAL: {
+        is_physical: {
               [Sequelize.Op.in]: [0,1]
           }
       }

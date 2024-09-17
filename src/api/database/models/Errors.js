@@ -17,11 +17,11 @@ class Errors extends BaseTableModel {
       primaryKey: true,               
       allowNull: false 
     },
-    OBJECTTYPE: {
+    object_type: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    OBJECTNAME: {
+    object_name: {
       type: DataTypes.STRING(255),
       allowNull: true
     },

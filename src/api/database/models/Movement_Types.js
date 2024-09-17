@@ -24,12 +24,12 @@ class Movement_Types extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      ISINPUT: {
+      is_input: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISOUTPUT: {
+      is_output: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
@@ -61,19 +61,19 @@ class Movement_Types extends BaseTableModel {
       type:"unique"
     },{
       name: Movement_Types.tableName + '_c_1',
-      fields:['ISINPUT'],
+      fields:['is_input'],
       type:"check",
       where:{
-        ISINPUT: {
+        is_input: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Movement_Types.tableName + '_c_2',
-      fields:['ISOUTPUT'],
+      fields:['is_output'],
       type:"check",
       where:{
-        ISOUTPUT: {
+        is_output: {
               [Sequelize.Op.in]: [0,1]
           }
       }

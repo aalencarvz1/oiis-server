@@ -21,10 +21,10 @@ class Report_Data_Founts extends BaseTableModel {
       description:{
         type: DataTypes.TEXT
       },
-      STARTDATE:{
+      start_date:{
         type: DataTypes.DATE
       },
-      ENDDATE:{
+      end_date:{
         type: DataTypes.DATE
       },
       CONDICTIONS:{

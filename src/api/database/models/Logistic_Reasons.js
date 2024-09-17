@@ -18,7 +18,7 @@ class Logistic_Reasons extends BaseTableModel {
         type: DataTypes.STRING(2000),
         allowNull: false
       },
-      SIGLAMOVTYPE:{
+      mov_type_sigla:{
         type: DataTypes.STRING(2)
       }
     }

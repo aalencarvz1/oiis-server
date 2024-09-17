@@ -16,7 +16,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'NORMAL',
-      NORMAL: 1
+      normal: 1
     },{      
       id:Conference_Types.CEGA,
       status_reg_id: Record_Status.ACTIVE,
@@ -25,7 +25,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'CEGA',
-      CEGA: 1
+      cega: 1
     },{      
       id:Conference_Types.SEMICEGA,
       status_reg_id: Record_Status.ACTIVE,
@@ -34,7 +34,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'SEMICEGA',
-      SEMICEGA: 1
+      semicega: 1
     },{      
       id:Conference_Types.XML_WITH_LOT,
       status_reg_id: Record_Status.ACTIVE,
@@ -43,7 +43,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'XML_WITH_LOT',
-      NORMAL: 1
+      normal: 1
     },{      
       id:Conference_Types.XML_WITHOUT_LOT,
       status_reg_id: Record_Status.ACTIVE,
@@ -52,7 +52,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'XML_WITHOUT_LOT',
-      SEMICEGA: 1
+      semicega: 1
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

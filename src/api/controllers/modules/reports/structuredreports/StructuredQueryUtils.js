@@ -15,7 +15,7 @@ class StructuredQueryUtils {
     static sortNestedReportDataFoutItems(currentItems) {        
         if (currentItems) {
             if (Utils.typeOf(currentItems) == 'array') {
-                currentItems = currentItems.sort(function(a,b){return ((a.ORDERNUM||a.id)-0) - ((b.ORDERNUM||b.id)-0)});
+                currentItems = currentItems.sort(function(a,b){return ((a.numeric_order||a.id)-0) - ((b.numeric_order||b.id)-0)});
                 for(let k in currentItems) {
                     if (currentItems[k].SUBS && currentItems[k].SUBS.length) {
                         currentItems[k].SUBS = StructuredQueryUtils.sortNestedReportDataFoutItems(currentItems[k].SUBS);
@@ -48,7 +48,7 @@ class StructuredQueryUtils {
                 ${reportDataFount.ISVISION||0} as ISVISION,
                 ${reportDataFount.ISCONDICTIONVISION||0} as ISCONDICTIONVISION,
                 P.id AS IDPERMISSION,
-                C.EXPRESSION
+                C.expression
             FROM
                 report_data_fount_items RFI 
                 LEFT OUTER JOIN tables T ON (   
@@ -70,9 +70,9 @@ class StructuredQueryUtils {
                     )
                 )
                 LEFT OUTER JOIN CONDICTIONS C ON (
-                    C.IDENTITYTYPE = ${Entities_Types.DATABASE_TABLE}
-                    AND C.IDENTITY = ${Permissions.id}
-                    AND C.IDREGISTER = P.id
+                    C.entity_type_id = ${Entities_Types.DATABASE_TABLE}
+                    AND C.entity_id = ${Permissions.id}
+                    AND C.record_id = P.id
                 )
             WHERE
                 RFI.IDREPORTDATAFOUNT = ${reportDataFount.id}
@@ -86,14 +86,14 @@ class StructuredQueryUtils {
                             RFI.IDSQLOBJECTTYPE <> ${Sql_Object_Types.FIELD}
                             OR (
                                 RFI.IDSQLOBJECTTYPE = ${Sql_Object_Types.FIELD}
-                                AND NOT EXISTS (SELECT 1 FROM report_data_fount_items RFI2 WHERE RFI2.id = RFI.IDSUP AND RFI2.IDSQLOBJECTTYPE = ${Sql_Object_Types.SELECT})
+                                AND NOT EXISTS (SELECT 1 FROM report_data_fount_items RFI2 WHERE RFI2.id = RFI.parent_id AND RFI2.IDSQLOBJECTTYPE = ${Sql_Object_Types.SELECT})
                             )
 
                         )
                     )
                 )
             ORDER BY
-                COALESCE(RFI.IDSUP,RFI.id)
+                COALESCE(RFI.parent_id,RFI.id)
         `;
 
         let reportsDataItems = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
@@ -111,9 +111,9 @@ class StructuredQueryUtils {
                         continue;    
                     };
                 }
-                if (structuredReportsDataItems[k].IDSUP) {
-                    structuredReportsDataItems[structuredReportsDataItems[k].IDSUP].SUBS = structuredReportsDataItems[structuredReportsDataItems[k].IDSUP].SUBS || [];
-                    structuredReportsDataItems[structuredReportsDataItems[k].IDSUP].SUBS.push(structuredReportsDataItems[k]);
+                if (structuredReportsDataItems[k].parent_id) {
+                    structuredReportsDataItems[structuredReportsDataItems[k].parent_id].SUBS = structuredReportsDataItems[structuredReportsDataItems[k].parent_id].SUBS || [];
+                    structuredReportsDataItems[structuredReportsDataItems[k].parent_id].SUBS.push(structuredReportsDataItems[k]);
                     structuredReportsDataItems[k].MOVED = true;
                 }
             }
@@ -593,7 +593,7 @@ class StructuredQueryUtils {
                     if (b.IDSQLOBJECTTYPE == Sql_Object_Types.FIELD) {
                         if (Utils.toBool(a.VALUEGROUPMENT||false)) {
                             if (Utils.toBool(b.VALUEGROUPMENT||false)) {
-                                result = visionsSort[a.IDVISION] == visionsSort[b.IDVISION] ? a.ORDERNUM - b.ORDERNUM : visionsSort[a.IDVISION] - visionsSort[b.IDVISION];
+                                result = visionsSort[a.IDVISION] == visionsSort[b.IDVISION] ? a.numeric_order - b.numeric_order : visionsSort[a.IDVISION] - visionsSort[b.IDVISION];
                             } else {
                                 result = 1;
                             }   
@@ -601,7 +601,7 @@ class StructuredQueryUtils {
                             if (Utils.toBool(b.VALUEGROUPMENT||false)) {
                                 result = -1;
                             } else {
-                                result = visionsSort[a.IDVISION] == visionsSort[b.IDVISION] ? a.ORDERNUM - b.ORDERNUM : visionsSort[a.IDVISION] - visionsSort[b.IDVISION];
+                                result = visionsSort[a.IDVISION] == visionsSort[b.IDVISION] ? a.numeric_order - b.numeric_order : visionsSort[a.IDVISION] - visionsSort[b.IDVISION];
                             }   
                         }
                     } else {
@@ -610,14 +610,14 @@ class StructuredQueryUtils {
                 } else if (b.IDSQLOBJECTTYPE == Sql_Object_Types.FIELD) {
                     result = 1;
                 } else {
-                    result = visionsSort[a.IDVISION] == visionsSort[b.IDVISION] ? a.ORDERNUM - b.ORDERNUM : visionsSort[a.IDVISION] - visionsSort[b.IDVISION];
+                    result = visionsSort[a.IDVISION] == visionsSort[b.IDVISION] ? a.numeric_order - b.numeric_order : visionsSort[a.IDVISION] - visionsSort[b.IDVISION];
                 }
             } else if (sup?.IDSQLOBJECTTYPE == Sql_Object_Types.FROM) {
-                result = a.ORDERNUM - b.ORDERNUM;
+                result = a.numeric_order - b.numeric_order;
             } else {
-                result = visionsSort[a.IDVISION] == visionsSort[b.IDVISION] ? a.ORDERNUM - b.ORDERNUM : visionsSort[a.IDVISION] - visionsSort[b.IDVISION];
+                result = visionsSort[a.IDVISION] == visionsSort[b.IDVISION] ? a.numeric_order - b.numeric_order : visionsSort[a.IDVISION] - visionsSort[b.IDVISION];
             }
-            //Utils.log(visionsSort[a.IDVISION],visionsSort[b.IDVISION],a.ORDERNUM,b.ORDERNUM,visionsSort[a.IDVISION] == visionsSort[b.IDVISION],a.ORDERNUM - b.ORDERNUM,visionsSort[a.IDVISION] - visionsSort[b.IDVISION],visionsSort[a.IDVISION] == visionsSort[b.IDVISION] ? a.ORDERNUM - b.ORDERNUM : visionsSort[a.IDVISION] - visionsSort[b.IDVISION],result);
+            //Utils.log(visionsSort[a.IDVISION],visionsSort[b.IDVISION],a.numeric_order,b.numeric_order,visionsSort[a.IDVISION] == visionsSort[b.IDVISION],a.numeric_order - b.numeric_order,visionsSort[a.IDVISION] - visionsSort[b.IDVISION],visionsSort[a.IDVISION] == visionsSort[b.IDVISION] ? a.numeric_order - b.numeric_order : visionsSort[a.IDVISION] - visionsSort[b.IDVISION],result);
             return result;
         });
         for(let i = 0; i < structuredQuery.length; i++) {
@@ -636,15 +636,15 @@ class StructuredQueryUtils {
                 currentSelect = structuredQuery[k];
             }
             if (structuredQuery[k].IDSQLOBJECTTYPE == Sql_Object_Types.TABLE) {
-                if (Utils.hasValue(structuredQuery[k].EXPRESSION)) {
-                    structuredQuery[k].EXPRESSION = await StructuredQueryUtils.evalSqlText(structuredQuery[k].EXPRESSION, params);
-                    structuredQuery[k].EXPRESSION = structuredQuery[k].EXPRESSION.replaceAll('__TABLE_ALIAS__',structuredQuery[k].SQLALIAS);
-                    Utils.log('xxxxxxx', structuredQuery[k].EXPRESSION);
+                if (Utils.hasValue(structuredQuery[k].expression)) {
+                    structuredQuery[k].expression = await StructuredQueryUtils.evalSqlText(structuredQuery[k].expression, params);
+                    structuredQuery[k].expression = structuredQuery[k].expression.replaceAll('__TABLE_ALIAS__',structuredQuery[k].SQLALIAS);
+                    Utils.log('xxxxxxx', structuredQuery[k].expression);
                     let injected = false;
                     for(let j in pCurrentSelect?.SUBS || []) {
                         if (pCurrentSelect.SUBS[j].IDSQLOBJECTTYPE == Sql_Object_Types.WHERE) {
                             pCurrentSelect.SUBS[j].SUBS = pCurrentSelect.SUBS[j].SUBS || [];
-                            pCurrentSelect.SUBS[j].SUBS.push(structuredQuery[k].EXPRESSION);
+                            pCurrentSelect.SUBS[j].SUBS.push(structuredQuery[k].expression);
                             injected = true;
                             break;
                         }
@@ -653,7 +653,7 @@ class StructuredQueryUtils {
                         pCurrentSelect.SUBS = pCurrentSelect.SUBS || [];
                         pCurrentSelect.SUBS.push({
                             IDSQLOBJECTTYPE: Sql_Object_Types.WHERE,
-                            SUBS:[structuredQuery[k].EXPRESSION]
+                            SUBS:[structuredQuery[k].expression]
                         })
                     }
                 }

@@ -40,7 +40,7 @@ class States_Integration_Controller extends RegistersController {
             let queryParams = {
                 where: {
                     IDCOUNTRY: country.id,
-                    SIGLA: pcestado.UF
+                    sigla: pcestado.UF
                 }
             };
             if (transaction) queryParams.transaction = transaction;
@@ -60,7 +60,7 @@ class States_Integration_Controller extends RegistersController {
                     data_origin_id: Data_Origins.WINTHOR,
                     IDCOUNTRY: country.id,
                     name: pcestado.ESTADO,
-                    SIGLA: pcestado.UF
+                    sigla: pcestado.UF
                 },options)
             }
             return state;

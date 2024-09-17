@@ -26,7 +26,7 @@ class Meas_X_Meas_Origins extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      IDMEASUREMENTUNIT:{
+      measurement_unit_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       }
@@ -65,7 +65,7 @@ class Meas_X_Meas_Origins extends BaseTableModel {
       },
       onUpdate: 'cascade'
     },{
-      fields: ['IDMEASUREMENTUNIT'],
+      fields: ['measurement_unit_id'],
       type: 'foreign key',
       references: { 
           table: Measurement_Units,

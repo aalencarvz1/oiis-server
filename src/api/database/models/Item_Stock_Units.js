@@ -20,56 +20,56 @@ class Item_Stock_Units extends BaseTableModel {
   static model = null;
   static fields = {
     ...Item_Stock_Units.getBaseTableModelFields(),...{           
-      IDITEMSTOCK:{
+      stock_item_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDIDENTIFIERTYPE:{
+      identifier_type_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDENTIFIER:{
+      identifier:{
         type: DataTypes.STRING(256)
       },
-      IDSTATUSITEMUNIT:{
+      item_unit_status_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue:Item_Status.NORMAL
       },
-      IDMEASUREMENTUNIT:{
+      measurement_unit_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDPACKAGING:{
+      packaging_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      UNITWEIGHT:{
+      unit_weight:{
         type: DataTypes.DECIMAL(32,10)
       },      
-      PACKAGEWEIGHT:{
+      package_weight:{
         type: DataTypes.DECIMAL(32,10)
       }, 
-      UNITVOLUME:{
+      unit_volume:{
         type: DataTypes.DECIMAL(32,10)
       },      
-      PACKAGEVOLUME:{
+      package_volume:{
         type: DataTypes.DECIMAL(32,10)
       },      
-      AMOUNT:{
+      amount:{
         type: DataTypes.DECIMAL(32,10),
         allowNull:false,
         defaultValue:0
       },
-      IDVARIABLEMEAUN:{
+      variable_unit_measure_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      VARIABLEAMOUNT:{
+      variable_amount:{
         type: DataTypes.DECIMAL(32,10)
       }
     }
   };
   
   static uniqueFields = [
-    'IDITEMSTOCK',
-    Sequelize.literal(`(COALESCE(IDENTIFIER,'NULL'))`)
+    'stock_item_id',
+    Sequelize.literal(`(COALESCE(identifier,'NULL'))`)
   ];
 
   static constraints = [...(Item_Stock_Units.getBaseTableModelConstraints() || []),...[
@@ -82,7 +82,7 @@ class Item_Stock_Units extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDITEMSTOCK'],
+      fields: ['stock_item_id'],
       type: 'foreign key',
       references: { 
           table: Item_Stocks,
@@ -91,7 +91,7 @@ class Item_Stock_Units extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDIDENTIFIERTYPE'],
+      fields: ['identifier_type_id'],
       type: 'foreign key',
       references: { 
           table: Identifier_Types,
@@ -100,7 +100,7 @@ class Item_Stock_Units extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDSTATUSITEMUNIT'],
+      fields: ['item_unit_status_id'],
       type: 'foreign key',
       references: { 
           table: Item_Status,
@@ -109,7 +109,7 @@ class Item_Stock_Units extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDMEASUREMENTUNIT'],
+      fields: ['measurement_unit_id'],
       type: 'foreign key',
       references: { 
           table: Measurement_Units,
@@ -118,7 +118,7 @@ class Item_Stock_Units extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDPACKAGING'],
+      fields: ['packaging_id'],
       type: 'foreign key',
       references: { 
           table: Packagings,
@@ -127,7 +127,7 @@ class Item_Stock_Units extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDVARIABLEMEAUN'],
+      fields: ['variable_unit_measure_id'],
       type: 'foreign key',
       references: { 
           table: Measurement_Units,

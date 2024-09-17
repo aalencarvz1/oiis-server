@@ -35,7 +35,7 @@ class Identifier_Types extends BaseTableModel {
       description: {
         type: DataTypes.TEXT
       },
-      PROCESSTOVALIDATE: {
+      process_to_validate: {
         type: DataTypes.TEXT
       }
     }

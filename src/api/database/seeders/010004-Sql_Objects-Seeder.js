@@ -32,7 +32,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSQLOBJECTTYPE : Sql_Object_Types.USER,
-      IDSUP : configDB[`${process.env.NODE_ENV||'development'}`].id,
+      parent_id : configDB[`${process.env.NODE_ENV||'development'}`].id,
       name : configDB[`${process.env.NODE_ENV||'development'}`].user || configDB[`${process.env.NODE_ENV||'development'}`].database,
     },{      
       id: configDB[`${process.env.NODE_ENV||'development'}`].id + 2,
@@ -42,7 +42,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       IDSQLOBJECTTYPE : Sql_Object_Types.SCHEMA,
-      IDSUP : configDB[`${process.env.NODE_ENV||'development'}`].id + 1,
+      parent_id : configDB[`${process.env.NODE_ENV||'development'}`].id + 1,
       name : configDB[`${process.env.NODE_ENV||'development'}`].schema || configDB[`${process.env.NODE_ENV||'development'}`]?.dialectOptions?.schema || configDB[`${process.env.NODE_ENV||'development'}`].database
     },{
       id: configDB["development_winthor"]?.id,      
@@ -92,7 +92,7 @@ module.exports = {
     
     let wintUserObject = await Sql_Objects.getModel().findOne({raw:true,where: {
       IDSQLOBJECTTYPE : Sql_Object_Types.USER, 
-      IDSUP:wintObject.id, 
+      parent_id:wintObject.id, 
       name: 'JUMBO'
     }});
 
@@ -104,7 +104,7 @@ module.exports = {
         data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
         is_sys_rec : 1,
         IDSQLOBJECTTYPE : Sql_Object_Types.USER,
-        IDSUP : wintObject.id,
+        parent_id : wintObject.id,
         name : 'JUMBO',
       }],{
         ignoreDuplicates:true,
@@ -113,14 +113,14 @@ module.exports = {
 
       wintUserObject = await Sql_Objects.getModel().findOne({raw:true,where: {
         IDSQLOBJECTTYPE : Sql_Object_Types.USER, 
-        IDSUP:wintObject.id, 
+        parent_id:wintObject.id, 
         name: 'JUMBO'
       }});
     }
 
     let wintSchemaObject = await Sql_Objects.getModel().findOne({raw:true,where: {
       IDSQLOBJECTTYPE : Sql_Object_Types.SCHEMA, 
-      IDSUP:wintUserObject.id, 
+      parent_id:wintUserObject.id, 
       name: 'JUMBO'
     }});
     if (Object.keys(wintSchemaObject||{}).length == 0) {
@@ -131,7 +131,7 @@ module.exports = {
         data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
         is_sys_rec : 1,
         IDSQLOBJECTTYPE : Sql_Object_Types.SCHEMA,
-        IDSUP : wintUserObject.id,
+        parent_id : wintUserObject.id,
         name : 'JUMBO',
       }],{
         ignoreDuplicates:true,
@@ -140,7 +140,7 @@ module.exports = {
 
       wintSchemaObject = await Sql_Objects.getModel().findOne({raw:true,where: {
         IDSQLOBJECTTYPE : Sql_Object_Types.SCHEMA, 
-        IDSUP:wintUserObject.id, 
+        parent_id:wintUserObject.id, 
         name: 'JUMBO'
       }});
     }
@@ -155,7 +155,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,      
       IDSQLOBJECTTYPE : Sql_Object_Types.TABLE,
-      IDSUP: wintSchemaObject.id,
+      parent_id: wintSchemaObject.id,
       name : PcFilial.tableName,
     }],{
       ignoreDuplicates:true,

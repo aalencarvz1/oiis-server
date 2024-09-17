@@ -25,7 +25,7 @@ class Relationship_Values extends BaseTableModel {
       IDCONTEXT:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDIDENTIFIERTYPE:{
+      identifier_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -33,10 +33,10 @@ class Relationship_Values extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      VALUE:{
+      value:{
         type: DataTypes.STRING(256)
       },
-      ORDERNUM:{
+      numeric_order:{
         type: DataTypes.BIGINT
       },
       STARTMOMENT:{
@@ -51,10 +51,10 @@ class Relationship_Values extends BaseTableModel {
   static uniqueFields = [
     'IDDATARELATIONSHIP',
     Sequelize.literal(`(COALESCE(IDCONTEXT,0))`),
-    'IDIDENTIFIERTYPE',
+    'identifier_type_id',
     'IDDATATYPE',
-    Sequelize.literal(`(COALESCE(VALUE,'NULL'))`),
-    Sequelize.literal(`(COALESCE(ORDERNUM,0))`),
+    Sequelize.literal(`(COALESCE(value,'NULL'))`),
+    Sequelize.literal(`(COALESCE(numeric_order,0))`),
     Sequelize.literal(`(COALESCE(STARTMOMENT,'1900-01-01'))`)
   ];
 
@@ -84,7 +84,7 @@ class Relationship_Values extends BaseTableModel {
       },
       onUpdate: 'cascade'
     },{
-      fields: ['IDIDENTIFIERTYPE'],
+      fields: ['identifier_type_id'],
       type: 'foreign key',
       references: { 
           table: Identifier_Types,

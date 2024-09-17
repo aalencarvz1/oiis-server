@@ -18,12 +18,12 @@ class Collaborator_Functions extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      ISTRUST: {
+      is_trust: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISTIMECONTROLLED: {
+      is_time_controlled: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
@@ -42,19 +42,19 @@ class Collaborator_Functions extends BaseTableModel {
       type:"unique"
     },{
       name: Collaborator_Functions.tableName + '_c_1',
-      fields:['ISTRUST'],
+      fields:['is_trust'],
       type:"check",
       where:{
-        ISTRUST: {
+        is_trust: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Collaborator_Functions.tableName + '_c_2',
-      fields:['ISTIMECONTROLLED'],
+      fields:['is_time_controlled'],
       type:"check",
       where:{
-        ISTIMECONTROLLED: {
+        is_time_controlled: {
               [Sequelize.Op.in]: [0,1]
           }
       }

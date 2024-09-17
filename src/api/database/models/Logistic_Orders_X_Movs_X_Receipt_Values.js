@@ -18,49 +18,49 @@ class Logistic_Orders_X_Movs_X_Receipt_Values extends BaseTableModel {
   static model = null;
   static fields = {
     ...Logistic_Orders_X_Movs_X_Receipt_Values.getBaseTableModelFields(),...{    
-      IDLOGORDRECIPTREF:{
+      logistic_order_movement_receipt_value_ref_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },       
-      IDLOGISTICORDER:{
+      logistic_order_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },       
-      IDLOGISTICORDERXMOV:{
+      mov_logistic_order_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDFINANCIALVALUEFORM:{
+      financial_value_form_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDLOGMOVXITEMMOVAMT:{
+      logistic_mov_item_mov_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },            
-      IDCURRENCYTYPEEXPECTED:{
+      expected_currency_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      EXPIRATIONDATE:{
+      expiration_date:{
         type: DataTypes.DATE
       },      
-      EXPECTEDVALUE:{
+      expected_value:{
         type: DataTypes.DECIMAL(32,10)
       },     
-      OBSERVATIONSEXPECTED:{
+      expected_value_notes:{
         type: DataTypes.TEXT
       }, 
-      IDCURRENCYTYPERECEIVED:{
+      received_currency_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      RECEIVEDVALUE:{
+      received_value:{
         type: DataTypes.DECIMAL(32,10)
       },      
-      RECEIVED_AT:{
+      received_at:{
         type: DataTypes.DATE
       },            
-      OBSERVATIONSRECEIVED:{
+      received_notes:{
         type: DataTypes.TEXT
       },
-      ORDERNUM:{
+      numeric_order:{
         type:DataTypes.INTEGER.UNSIGNED,
         allowNull:false,
         defaultValue:1
@@ -75,13 +75,13 @@ class Logistic_Orders_X_Movs_X_Receipt_Values extends BaseTableModel {
   };
   
   static uniqueFields = [
-    Sequelize.literal(`(COALESCE(IDLOGORDRECIPTREF,0))`),
-    'IDLOGISTICORDER',
-    Sequelize.literal(`(COALESCE(IDLOGISTICORDERXMOV,0))`),
-    'IDFINANCIALVALUEFORM',
-    Sequelize.literal(`(COALESCE(IDLOGMOVXITEMMOVAMT,0))`),
-    'IDCURRENCYTYPEEXPECTED',
-    'ORDERNUM'
+    Sequelize.literal(`(COALESCE(logistic_order_movement_receipt_value_ref_id,0))`),
+    'logistic_order_id',
+    Sequelize.literal(`(COALESCE(mov_logistic_order_id,0))`),
+    'financial_value_form_id',
+    Sequelize.literal(`(COALESCE(logistic_mov_item_mov_id,0))`),
+    'expected_currency_id',
+    'numeric_order'
   ];
 
   static constraints = [...(Logistic_Orders_X_Movs_X_Receipt_Values.getBaseTableModelConstraints() || []),...[
@@ -94,7 +94,7 @@ class Logistic_Orders_X_Movs_X_Receipt_Values extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDLOGORDRECIPTREF'],
+      fields: ['logistic_order_movement_receipt_value_ref_id'],
       type: 'foreign key',
       references: { 
           table: Logistic_Orders_X_Movs_X_Receipt_Values,
@@ -103,7 +103,7 @@ class Logistic_Orders_X_Movs_X_Receipt_Values extends BaseTableModel {
       onUpdate: 'cascade',
       onDelete: 'cascade'
     },{
-      fields: ['IDLOGISTICORDER'],
+      fields: ['logistic_order_id'],
       type: 'foreign key',
       references: { 
           table: Logistic_Orders,
@@ -112,7 +112,7 @@ class Logistic_Orders_X_Movs_X_Receipt_Values extends BaseTableModel {
       onUpdate: 'cascade',
       onDelete: 'cascade'
     },{
-      fields: ['IDLOGISTICORDERXMOV'],
+      fields: ['mov_logistic_order_id'],
       type: 'foreign key',
       references: { 
           table: Logistic_Orders_X_Movs,
@@ -122,7 +122,7 @@ class Logistic_Orders_X_Movs_X_Receipt_Values extends BaseTableModel {
       onDelete: 'cascade'
     },
     {
-      fields: ['IDFINANCIALVALUEFORM'],
+      fields: ['financial_value_form_id'],
       type: 'foreign key',
       references: { 
           table: Financial_Value_Forms,
@@ -131,7 +131,7 @@ class Logistic_Orders_X_Movs_X_Receipt_Values extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDLOGMOVXITEMMOVAMT'],
+      fields: ['logistic_mov_item_mov_id'],
       type: 'foreign key',
       references: { 
           table: Logistic_Orders_X_Items_Mov_Amt,
@@ -141,7 +141,7 @@ class Logistic_Orders_X_Movs_X_Receipt_Values extends BaseTableModel {
       onDelete: 'cascade'
     },
     {
-      fields: ['IDCURRENCYTYPEEXPECTED'],
+      fields: ['expected_currency_id'],
       type: 'foreign key',
       references: { 
           table: Currencies,
@@ -150,7 +150,7 @@ class Logistic_Orders_X_Movs_X_Receipt_Values extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDCURRENCYTYPERECEIVED'],
+      fields: ['received_currency_id'],
       type: 'foreign key',
       references: { 
           table: Currencies,
