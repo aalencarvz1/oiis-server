@@ -19,11 +19,11 @@ class Routines extends BaseTableModel {
       parent_id: {
         type: DataTypes.BIGINT.UNSIGNED
       }, 
-      IDROUTINETYPE: {
+      routine_type_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDMODULE: {
+      module_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       }, 
@@ -31,16 +31,16 @@ class Routines extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       }, 
-      ICON: {
+      icon: {
         type: DataTypes.TEXT
       }, 
-      VIEWPATH: {
+      view_path: {
         type: DataTypes.TEXT
       }, 
       numeric_order: {
         type: DataTypes.BIGINT.UNSIGNED
       },
-      SHOWINMENU: {
+      show_in_menu: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:1
@@ -63,10 +63,10 @@ class Routines extends BaseTableModel {
       type:"unique"
     },{
       name: Routines.tableName + '_c_1',
-      fields:['SHOWINMENU'],
+      fields:['show_in_menu'],
       type:"check",
       where:{
-        SHOWINMENU: {
+        show_in_menu: {
               [Sequelize.Op.in]: [0,1]
           }
       }
@@ -83,7 +83,7 @@ class Routines extends BaseTableModel {
       },
       onUpdate: 'cascade'
     },{
-      fields: ['IDROUTINETYPE'],
+      fields: ['routine_type_id'],
       type: 'foreign key',
       references: { 
           table: Routine_Types,
@@ -91,7 +91,7 @@ class Routines extends BaseTableModel {
       },
       onUpdate: 'cascade'
     },{
-      fields: ['IDMODULE'],
+      fields: ['module_id'],
       type: 'foreign key',
       references: { 
           table: Modules,

@@ -47,7 +47,7 @@ class Report_Visions extends BaseTableModel {
       description:{
         type: DataTypes.TEXT
       },
-      VISIBLE: {
+      is_visible: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:1
@@ -65,10 +65,10 @@ class Report_Visions extends BaseTableModel {
     type:"unique"
   },{
     name: Report_Visions.tableName + '_c_1',
-    fields:['VISIBLE'],
+    fields:['is_visible'],
     type:"check",
     where:{
-      VISIBLE: {
+      is_visible: {
             [Sequelize.Op.in]: [0,1]
         }
     }

@@ -20,25 +20,25 @@ class Report_Data_Fount_Items extends BaseTableModel {
       parent_id: {
         type: DataTypes.BIGINT.UNSIGNED,
       },
-      IDREPORTDATAFOUNT: {
+      report_data_source_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
       },
-      IDSQLOBJECTTYPE: {
+      sql_object_type_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
       },
-      IDSQLOBJECT: {
+      sql_object_id: {
         type: DataTypes.BIGINT.UNSIGNED
       },
-      BEFORESQLTEXT:{
+      before_sql_text:{
         type: DataTypes.TEXT,
       },
       SQLTEXT:{
         type: DataTypes.TEXT,
         allowNull:false,
       },
-      SQLTEXTAFTERCHILDREN:{
+      sql_text_after_children:{
         type: DataTypes.TEXT
       },
       numeric_order: {
@@ -46,29 +46,29 @@ class Report_Data_Fount_Items extends BaseTableModel {
         allowNull: false,
         defaultValue: 1
       },
-      SQLALIAS:{
+      sql_alias:{
         type: DataTypes.STRING(2000)
       },
-      IDDATATYPE:{
+      data_type_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      EXISTENCECRITERY:{
+      existence_critery:{
         type: DataTypes.TEXT
       },
-      ACCESSCRITERY:{
+      access_critery:{
         type: DataTypes.TEXT
       },
-      UNIQUEINGROUPMENT:{
+      is_unique_in_groupment:{
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      DATAGROUPMENT:{
+      data_groupment:{
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      VALUEGROUPMENT:{
+      value_groupment:{
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
@@ -83,28 +83,28 @@ class Report_Data_Fount_Items extends BaseTableModel {
 
   static constraints = [...(Report_Data_Fount_Items.getBaseTableModelConstraints() || []),...[{
     name: Report_Data_Fount_Items.tableName + '_c_1',
-    fields:['UNIQUEINGROUPMENT'],
+    fields:['is_unique_in_groupment'],
     type:"check",
     where:{
-      UNIQUEINGROUPMENT: {
+      is_unique_in_groupment: {
             [Sequelize.Op.in]: [0,1]
         }
     }
   },{
     name: Report_Data_Fount_Items.tableName + '_c_2',
-    fields:['DATAGROUPMENT'],
+    fields:['data_groupment'],
     type:"check",
     where:{
-      DATAGROUPMENT: {
+      data_groupment: {
             [Sequelize.Op.in]: [0,1]
         }
     }
   },{
     name: Report_Data_Fount_Items.tableName + '_c_3',
-    fields:['VALUEGROUPMENT'],
+    fields:['value_groupment'],
     type:"check",
     where:{
-      VALUEGROUPMENT: {
+      value_groupment: {
             [Sequelize.Op.in]: [0,1]
         }
     }
@@ -120,7 +120,7 @@ class Report_Data_Fount_Items extends BaseTableModel {
     onUpdate: 'cascade',
     onDelete: 'cascade'
   },{
-    fields: ['IDREPORTDATAFOUNT'],
+    fields: ['report_data_source_id'],
     type: 'foreign key',
     references: { 
         table: Report_Data_Founts,
@@ -129,7 +129,7 @@ class Report_Data_Fount_Items extends BaseTableModel {
     onUpdate: 'cascade',
     onDelete: 'cascade'
   },{
-    fields: ['IDSQLOBJECTTYPE'],
+    fields: ['sql_object_type_id'],
     type: 'foreign key',
     references: { 
         table: Sql_Object_Types,
@@ -137,7 +137,7 @@ class Report_Data_Fount_Items extends BaseTableModel {
     },    
     onUpdate: 'cascade'
   },{
-    fields: ['IDDATATYPE'],
+    fields: ['data_type_id'],
     type: 'foreign key',
     references: { 
         table: Data_Types,

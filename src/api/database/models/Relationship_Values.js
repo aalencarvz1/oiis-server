@@ -18,18 +18,18 @@ class Relationship_Values extends BaseTableModel {
   static model = null;
   static fields = {
     ...Relationship_Values.getBaseTableModelFields(),...{           
-      IDDATARELATIONSHIP:{
+      data_relationship_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDCONTEXT:{
+      context_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
       identifier_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDDATATYPE:{
+      data_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -39,23 +39,23 @@ class Relationship_Values extends BaseTableModel {
       numeric_order:{
         type: DataTypes.BIGINT
       },
-      STARTMOMENT:{
+      start_at:{
         type: DataTypes.DATE
       },
-      ENDMOMENT:{
+      end_at:{
         type: DataTypes.DATE
       }
     }
   };
   
   static uniqueFields = [
-    'IDDATARELATIONSHIP',
-    Sequelize.literal(`(COALESCE(IDCONTEXT,0))`),
+    'data_relationship_id',
+    Sequelize.literal(`(COALESCE(context_id,0))`),
     'identifier_type_id',
-    'IDDATATYPE',
+    'data_type_id',
     Sequelize.literal(`(COALESCE(value,'NULL'))`),
     Sequelize.literal(`(COALESCE(numeric_order,0))`),
-    Sequelize.literal(`(COALESCE(STARTMOMENT,'1900-01-01'))`)
+    Sequelize.literal(`(COALESCE(start_at,'1900-01-01'))`)
   ];
 
   static constraints = [...(Relationship_Values.getBaseTableModelConstraints() || []),...[
@@ -68,7 +68,7 @@ class Relationship_Values extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys() || []),...[
     {
-      fields: ['IDDATARELATIONSHIP'],
+      fields: ['data_relationship_id'],
       type: 'foreign key',
       references: { 
           table: Relationships,
@@ -76,7 +76,7 @@ class Relationship_Values extends BaseTableModel {
       },
       onUpdate: 'cascade'
     },{
-      fields: ['IDCONTEXT'],
+      fields: ['context_id'],
       type: 'foreign key',
       references: { 
           table: Contexts,
@@ -92,7 +92,7 @@ class Relationship_Values extends BaseTableModel {
       },
       onUpdate: 'cascade'
     },{
-      fields: ['IDDATATYPE'],
+      fields: ['data_type_id'],
       type: 'foreign key',
       references: { 
           table: Data_Types,

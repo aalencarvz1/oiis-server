@@ -19,7 +19,7 @@ class Sync_Status extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull: false
       },
-      SYNCRONIZED: {
+      synchronized: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:1
@@ -38,10 +38,10 @@ class Sync_Status extends BaseTableModel {
       type:"unique"
     },{
       name: Sync_Status.tableName + '_c_1',
-      fields:['SYNCRONIZED'],
+      fields:['synchronized'],
       type:"check",
       where:{
-        SYNCRONIZED: {
+        synchronized: {
               [Sequelize.Op.in]: [0,1]
           }
       }

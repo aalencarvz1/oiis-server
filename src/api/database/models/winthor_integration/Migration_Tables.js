@@ -13,36 +13,36 @@ class Migration_Tables extends BaseWinthorIntegrationTableModel {
   static model = null;
   static fields = {
     ...Migration_Tables.getBaseTableModelFields(),...{                 
-      TABLENAME:{
+      table_name:{
         type: DataTypes.STRING(255),
         allowNull:false
       },
-      MIGRATEINTEGRATION:{
+      migrate_integration:{
         type: DataTypes.INTEGER(1),
         allowNull:false,
         defaultValue:1
       },
-      MIGRATEINSERT:{
+      migrate_insert:{
         type: DataTypes.INTEGER(1),
         allowNull:false,
         defaultValue:1
       },
-      MIGRATEUPDATE:{
+      migrate_update:{
         type: DataTypes.INTEGER(1),
         allowNull:false,
         defaultValue:1
       },
-      MIGRATEDELETE:{
+      migrate_delete:{
         type: DataTypes.INTEGER(1),
         allowNull:false,
         defaultValue:1
       },
-      MIGRATEONDEMAND:{
+      migrate_on_demand:{
         type: DataTypes.INTEGER(1),
         allowNull:false,
         defaultValue:1
       },
-      MIGRATEBYTIME:{
+      migrate_by_time:{
         type: DataTypes.STRING(2000),
         allowNull:true,
         defaultValue:"{minute:5}"
@@ -51,7 +51,7 @@ class Migration_Tables extends BaseWinthorIntegrationTableModel {
   };
   
   static uniqueFields = [
-    'TABLENAME'
+    'table_name'
   ];
 
   static constraints = [...(Migration_Tables.getBaseTableModelConstraints() || []),...[{
@@ -60,37 +60,37 @@ class Migration_Tables extends BaseWinthorIntegrationTableModel {
     type:"unique"
   },{
     name: Migration_Tables.tableName + '_c_1',
-    fields:['MIGRATEINTEGRATION'],
+    fields:['migrate_integration'],
     type:"check",
     where:{
-      MIGRATEINTEGRATION: {
+      migrate_integration: {
             [Sequelize.Op.in]: [0,1]
         }
     }
   },{
     name: Migration_Tables.tableName + '_c_2',
-    fields:['MIGRATEINSERT'],
+    fields:['migrate_insert'],
     type:"check",
     where:{
-      MIGRATEINSERT: {
+      migrate_insert: {
             [Sequelize.Op.in]: [0,1]
         }
     }
   },{
     name: Migration_Tables.tableName + '_c_3',
-    fields:['MIGRATEUPDATE'],
+    fields:['migrate_update'],
     type:"check",
     where:{
-      MIGRATEUPDATE: {
+      migrate_update: {
             [Sequelize.Op.in]: [0,1]
         }
     }
   },{
     name: Migration_Tables.tableName + '_c_4',
-    fields:['MIGRATEDELETE'],
+    fields:['migrate_delete'],
     type:"check",
     where:{
-      MIGRATEDELETE: {
+      migrate_delete: {
             [Sequelize.Op.in]: [0,1]
         }
     }

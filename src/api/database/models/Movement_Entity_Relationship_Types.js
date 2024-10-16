@@ -24,12 +24,12 @@ class Movement_Entity_Relationship_Types extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      ISORIGIN: {
+      is_origin: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISTARGET: {
+      is_target: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
@@ -61,19 +61,19 @@ class Movement_Entity_Relationship_Types extends BaseTableModel {
       type:"unique"
     },{
       name: Movement_Entity_Relationship_Types.tableName + '_c_1',
-      fields:['ISORIGIN'],
+      fields:['is_origin'],
       type:"check",
       where:{
-        ISORIGIN: {
+        is_origin: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Movement_Entity_Relationship_Types.tableName + '_c_2',
-      fields:['ISTARGET'],
+      fields:['is_target'],
       type:"check",
       where:{
-        ISTARGET: {
+        is_target: {
               [Sequelize.Op.in]: [0,1]
           }
       }

@@ -22,7 +22,7 @@ const { Streets } = require("../../../../../database/models/Streets");
 const { Postal_Codes } = require("../../../../../database/models/Postal_Codes");
 const { Addresses } = require("../../../../../database/models/Addresses");
 const { Address_Types } = require("../../../../../database/models/Address_Types");
-const { People_X_Addresses } = require("../../../../../database/models/People_X_Addresses");
+const { People_Addresses } = require("../../../../../database/models/People_Addresses");
 const { RegistersController } = require("../../RegistersController");
 const { Cities_Integration_Controller } = require("../../locations/cities/integrations/Cities_Integration_Controller");
 const { QueryBuilder } = require("../../../../database/QueryBuilder");
@@ -153,7 +153,7 @@ class People_Integration_Controller extends RegistersController{
                                         neighborhoodParams = {
                                             raw:true,
                                             where:{
-                                                IDCITY: city.id,
+                                                city_id: city.id,
                                                 name: winthorRegs[people[k].id_at_origin].BAIRROENT
                                             }
                                         }
@@ -172,7 +172,7 @@ class People_Integration_Controller extends RegistersController{
                                         street = await Streets.getModel().getOrCreate({
                                             raw:true,
                                             where:{
-                                                IDCITY: city.id,
+                                                city_id: city.id,
                                                 name: winthorRegs[people[k].id_at_origin].ENDERENT
                                             }
                                         });
@@ -183,8 +183,8 @@ class People_Integration_Controller extends RegistersController{
                                         postalCode = await Postal_Codes.getModel().getOrCreate({
                                             raw:true,
                                             where:{
-                                                IDCITY: city.id,
-                                                POSTALCODE: winthorRegs[people[k].id_at_origin].CEPENT
+                                                city_id: city.id,
+                                                postal_code: winthorRegs[people[k].id_at_origin].CEPENT
                                             },
                                             values:{
                                                 address_type_id: people[k].identifier_doc_type_id == Identifier_Types.CPF ? Address_Types.RESIDENTIAL : Address_Types.BUSINESS
@@ -212,11 +212,11 @@ class People_Integration_Controller extends RegistersController{
                                     });
                                     if (address && address.success) {
                                         address = address.data;
-                                        await People_X_Addresses.getModel().getOrCreate({
+                                        await People_Addresses.getModel().getOrCreate({
                                             raw:true,
                                             where:{
                                                 people_id : people[k].id,
-                                                IDADDRESS: address.id,
+                                                address_id: address.id,
                                                 address_type_id: address.address_type_id
                                             }
                                         });
@@ -250,6 +250,7 @@ class People_Integration_Controller extends RegistersController{
      * @created 2023-09-08
      */
     static async integrateWinthorPeople(params) {
+        Utils.logi(`${this.name}`,`integrateWinthorPeople`);
         let result = new DataSwap();
         try {
             params = params || {};
@@ -316,11 +317,11 @@ class People_Integration_Controller extends RegistersController{
                             await Relationships.createIfNotExists({
                                 where: {
                                     status_reg_id: Record_Status.ACTIVE,
-                                    IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-                                    IDTABLE1 : Companies.id,
-                                    IDREG1: company.id,
-                                    IDTABLE2 : People.id,
-                                    IDREG2: originalPeople[k].id                            
+                                    relationship_type_id: Relationship_Types.RELATIONSHIP,
+                                    table_1_id : Companies.id,
+                                    record_1_id: company.id,
+                                    table_2_id : People.id,
+                                    record_2_id: originalPeople[k].id                            
                                 }
                             });
                         }
@@ -328,11 +329,11 @@ class People_Integration_Controller extends RegistersController{
                             await Relationships.createIfNotExists({
                                 where: {
                                     status_reg_id: Record_Status.ACTIVE,
-                                    IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-                                    IDTABLE1 : Business_Units.id,
-                                    IDREG1: businessUnit.id,
-                                    IDTABLE2 : People.id,
-                                    IDREG2: originalPeople[k].id                            
+                                    relationship_type_id: Relationship_Types.RELATIONSHIP,
+                                    table_1_id : Business_Units.id,
+                                    record_1_id: businessUnit.id,
+                                    table_2_id : People.id,
+                                    record_2_id: originalPeople[k].id                            
                                 }
                             });
                         };
@@ -340,11 +341,11 @@ class People_Integration_Controller extends RegistersController{
                             await Relationships.createIfNotExists({
                                 where: {
                                     status_reg_id: Record_Status.ACTIVE,
-                                    IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-                                    IDTABLE1 : Warehouses.id,
-                                    IDREG1: warehouse.id,
-                                    IDTABLE2 : People.id,
-                                    IDREG2: originalPeople[k].id                            
+                                    relationship_type_id: Relationship_Types.RELATIONSHIP,
+                                    table_1_id : Warehouses.id,
+                                    record_1_id: warehouse.id,
+                                    table_2_id : People.id,
+                                    record_2_id: originalPeople[k].id                            
                                 }
                             });
                         }
@@ -352,22 +353,22 @@ class People_Integration_Controller extends RegistersController{
                         await Relationships.createIfNotExists({
                             where: {
                                 status_reg_id: Record_Status.ACTIVE,
-                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-                                IDTABLE1 : People.id,
-                                IDREG1: originalPeople[k].id,
-                                IDTABLE2 : Modules.id,
-                                IDREG2: Modules.WMS
+                                relationship_type_id: Relationship_Types.RELATIONSHIP,
+                                table_1_id : People.id,
+                                record_1_id: originalPeople[k].id,
+                                table_2_id : Modules.id,
+                                record_2_id: Modules.WMS
                             }
                         });
 
                         await Relationships.createIfNotExists({
                             where: {
                                 status_reg_id: Record_Status.ACTIVE,
-                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-                                IDTABLE1 : People.id,
-                                IDREG1: originalPeople[k].id,
-                                IDTABLE2 : Modules.id,
-                                IDREG2: Modules.LOGISTIC
+                                relationship_type_id: Relationship_Types.RELATIONSHIP,
+                                table_1_id : People.id,
+                                record_1_id: originalPeople[k].id,
+                                table_2_id : Modules.id,
+                                record_2_id: Modules.LOGISTIC
                             }
                         });
                     }
@@ -379,6 +380,7 @@ class People_Integration_Controller extends RegistersController{
             Utils.log(e);
             result.setException(e);
         }
+        Utils.logf(`${this.name}`,`integrateWinthorPeople`);
         return result;
     }
 
@@ -425,22 +427,22 @@ class People_Integration_Controller extends RegistersController{
                         await Relationships.createIfNotExists({
                             where: {
                                 status_reg_id: Record_Status.ACTIVE,
-                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-                                IDTABLE1 : People.id,
-                                IDREG1: originalPeople[k].id,
-                                IDTABLE2 : Modules.id,
-                                IDREG2: Modules.WMS
+                                relationship_type_id: Relationship_Types.RELATIONSHIP,
+                                table_1_id : People.id,
+                                record_1_id: originalPeople[k].id,
+                                table_2_id : Modules.id,
+                                record_2_id: Modules.WMS
                             }
                         });
 
                         await Relationships.createIfNotExists({
                             where: {
                                 status_reg_id: Record_Status.ACTIVE,
-                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-                                IDTABLE1 : People.id,
-                                IDREG1: originalPeople[k].id,
-                                IDTABLE2 : Modules.id,
-                                IDREG2: Modules.LOGISTIC
+                                relationship_type_id: Relationship_Types.RELATIONSHIP,
+                                table_1_id : People.id,
+                                record_1_id: originalPeople[k].id,
+                                table_2_id : Modules.id,
+                                record_2_id: Modules.LOGISTIC
                             }
                         });
                     }

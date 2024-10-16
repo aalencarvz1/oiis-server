@@ -18,37 +18,37 @@ class Relationships extends BaseTableModel {
   static model = null;
   static fields = {
     ...Relationships.getBaseTableModelFields(),...{     
-      IDRELATIONSHIPTYPE:{
+      relationship_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
       },
-      IDTABLE1:{
+      table_1_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
       },
-      COLUMNREG1:{
+      record_1_column:{
         type: DataTypes.STRING(255)
       },      
-      IDREG1:{
+      record_1_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      CONDICTIONSREG1:{
+      record_1_conditions:{
         type: DataTypes.TEXT
       },
-      IDTABLE2:{
+      table_2_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
       },      
-      COLUMNREG2:{
+      record_2_column:{
         type: DataTypes.STRING(255)
       },            
-      IDREG2:{
+      record_2_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      CONDICTIONSREG2:{
+      record_2_conditions:{
         type: DataTypes.TEXT
       },
-      IDCONTEXT:{
+      context_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
       value:{
@@ -57,27 +57,27 @@ class Relationships extends BaseTableModel {
       numeric_order:{
         type: DataTypes.BIGINT
       },
-      STARTMOMENT:{
+      start_at:{
         type: DataTypes.DATE
       },
-      ENDMOMENT:{
+      end_at:{
         type: DataTypes.DATE
       }
     }
   };
   
   static uniqueFields = [
-    'IDRELATIONSHIPTYPE',
-    'IDTABLE1',
-    'IDTABLE2',
-    Sequelize.literal(`(COALESCE(COLUMNREG1,'id'))`),
-    Sequelize.literal(`(COALESCE(COLUMNREG2,'id'))`),
-    Sequelize.literal(`(COALESCE(IDREG1,0))`),
-    Sequelize.literal(`(COALESCE(IDREG2,0))`),
-    Sequelize.literal(`(COALESCE(IDCONTEXT,0))`),
+    'relationship_type_id',
+    'table_1_id',
+    'table_2_id',
+    Sequelize.literal(`(COALESCE(record_1_column,'id'))`),
+    Sequelize.literal(`(COALESCE(record_2_column,'id'))`),
+    Sequelize.literal(`(COALESCE(record_1_id,0))`),
+    Sequelize.literal(`(COALESCE(record_2_id,0))`),
+    Sequelize.literal(`(COALESCE(context_id,0))`),
     //Sequelize.literal(`(COALESCE(value,'NULL'))`),
     Sequelize.literal(`(COALESCE(numeric_order,0))`),
-    Sequelize.literal(`(COALESCE(STARTMOMENT,'1900-01-01'))`)
+    Sequelize.literal(`(COALESCE(start_at,'1900-01-01'))`)
   ];
 
   static constraints = [...(Relationships.getBaseTableModelConstraints() || []),...[
@@ -90,7 +90,7 @@ class Relationships extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys() || []),...[
     {
-      fields: ['IDRELATIONSHIPTYPE'],
+      fields: ['relationship_type_id'],
       type: 'foreign key',
       references: { 
           table: Relationship_Types,
@@ -98,7 +98,7 @@ class Relationships extends BaseTableModel {
       },
       onUpdate: 'cascade'
     },{
-      fields: ['IDTABLE1'],
+      fields: ['table_1_id'],
       type: 'foreign key',
       references: { 
           table: Tables,
@@ -106,7 +106,7 @@ class Relationships extends BaseTableModel {
       },
       onUpdate: 'cascade'
     },{
-      fields: ['IDTABLE2'],
+      fields: ['table_2_id'],
       type: 'foreign key',
       references: { 
           table: Tables,
@@ -114,7 +114,7 @@ class Relationships extends BaseTableModel {
       },
       onUpdate: 'cascade'
     },{
-      fields: ['IDCONTEXT'],
+      fields: ['context_id'],
       type: 'foreign key',
       references: { 
           table: Contexts,

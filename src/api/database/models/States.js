@@ -15,7 +15,7 @@ class States extends BaseTableModel {
   static model = null;
   static fields = {
     ...States.getBaseTableModelFields(),...{           
-      IDCOUNTRY:{
+      country_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -30,7 +30,7 @@ class States extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDCOUNTRY',
+    'country_id',
     'name'
   ];
 
@@ -44,7 +44,7 @@ class States extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDCOUNTRY'],
+      fields: ['country_id'],
       type: 'foreign key',
       references: { 
           table: Countries,

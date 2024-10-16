@@ -25,19 +25,19 @@ class Errors extends BaseTableModel {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    LINE: {
+    line: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    CODE: {
+    code: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    MESSAGE: {
+    message: {
       type: DataTypes.STRING(2000),
       allowNull: true
     },
-    DATA: {
+    data: {
       type: DataTypes.STRING(2000),
       allowNull: true
     }

@@ -40,6 +40,7 @@ module.exports = {
     "port": process.env.DB_DEV_PORT || "3306",
     "dialect": process.env.DB_DEV_DIALECT ||"mysql",
     "logQueryParameters":true,
+    logging: console.log, // Enable logging of SQL queries
     "define":{
       "freezeTableName": true
     },
@@ -153,6 +154,34 @@ module.exports = {
     "dialectOptions":{      
       "schema": "EP"
     }
+  },
+  "production_external_data": {
+    "id":100,
+    "database": process.env.DB_EXTERNAL_DATA_PROD_NAME || "SERVER_API_DB_EXTERNAL_DATA", 
+    "username": process.env.DB_EXTERNAL_DATA_PROD_USERNAME || "root",
+    "password": process.env.DB_EXTERNAL_DATA_PROD_PASSWORD || "masterkey",
+    "host": process.env.DB_EXTERNAL_DATA_PROD_HOST || "localhost",
+    "port": process.env.DB_EXTERNAL_DATA_PROD_PORT || "3306",
+    "dialect": process.env.DB_EXTERNAL_DATA_PROD_DIALECT ||"mysql",
+    "logQueryParameters":true,
+    //"logging":true,
+    "define":{
+      "freezeTableName": true
+    }
+  },
+  "development_external_data": {
+    "id":1000,
+    "database": process.env.DB_EXTERNAL_DATA_DEV_NAME || "SERVER_API_DB_EXTERNAL_DATA", 
+    "username": process.env.DB_EXTERNAL_DATA_DEV_USERNAME || "root",
+    "password": process.env.DB_EXTERNAL_DATA_DEV_PASSWORD || "masterkey",
+    "host": process.env.DB_EXTERNAL_DATA_DEV_HOST || "localhost",
+    "port": process.env.DB_EXTERNAL_DATA_DEV_PORT || "3306",
+    "dialect": process.env.DB_EXTERNAL_DATA_DEV_DIALECT ||"mysql",
+    "logQueryParameters":true,
+    "define":{
+      "freezeTableName": true
+    },
+    //"logging":true
   },
 }
   

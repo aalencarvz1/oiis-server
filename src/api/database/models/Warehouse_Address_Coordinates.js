@@ -20,7 +20,7 @@ class Warehouse_Address_Coordinates extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDCOORDINATETYPE:{
+      coordinate_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },      
@@ -33,7 +33,7 @@ class Warehouse_Address_Coordinates extends BaseTableModel {
   
   static uniqueFields = [
     'warehouse_address_id',
-    'IDCOORDINATETYPE'
+    'coordinate_type_id'
   ];
 
   static constraints = [...(Warehouse_Address_Coordinates.getBaseTableModelConstraints() || []),...[
@@ -55,7 +55,7 @@ class Warehouse_Address_Coordinates extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDCOORDINATETYPE'],
+      fields: ['coordinate_type_id'],
       type: 'foreign key',
       references: { 
           table: Warehouse_Address_Types,

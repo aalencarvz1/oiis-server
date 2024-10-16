@@ -17,18 +17,18 @@ class MapsApiController extends BaseEndPointController {
         try {            
             let bodyParams = req.body || req.query ;
             Utils.log(bodyParams);
-            if (bodyParams.LIBRARY == 'geocoding') {
-                let apiParams = bodyParams.PARAMETERS;
+            if (bodyParams.library == 'geocoding') {
+                let apiParams = bodyParams.entity;
                 if (typeof apiParams != 'string') {
                     apiParams = JSON.stringify(apiParams);
                 }
                 let apiRes = await Maps_Api_Responses.getModel().findOne({
                     raw:true,
                     where:{
-                        ENTITY: bodyParams.ENTITY || 'PEOPLE',
+                        entity: bodyParams.entity || 'PEOPLE',
                         entity_id: bodyParams.entity_id,
-                        LIBRARY: bodyParams.LIBRARY || 'geocoding',
-                        PARAMETERS: apiParams,
+                        library: bodyParams.library || 'geocoding',
+                        entity: apiParams,
                         [Sequelize.Op.and]:[{
                             [Sequelize.Op.or]:[{
                                 response_status_code:200
@@ -66,10 +66,10 @@ class MapsApiController extends BaseEndPointController {
                         delete apiParams.key;
                         apiParams = JSON.stringify(apiParams);
                         await Maps_Api_Responses.getModel().create({
-                            ENTITY:bodyParams.ENTITY || 'PEOPLE',
+                            entity:bodyParams.entity || 'PEOPLE',
                             entity_id:bodyParams.entity_id,
-                            LIBRARY:bodyParams.LIBRARY || 'geocoding',
-                            PARAMETERS: apiParams,
+                            library:bodyParams.library || 'geocoding',
+                            entity: apiParams,
                             response_status_code:apiRes.status,
                             response_status:apiRes.statusText,
                             response:res.data
@@ -84,7 +84,7 @@ class MapsApiController extends BaseEndPointController {
                     res.success = true;
                 }
             } else {
-                throw new Error(`not expected library: ${bodyParams.LIBRARY}`);
+                throw new Error(`not expected library: ${bodyParams.library}`);
             }
             res.sendResponse(res.success ? 200 : 517,res.success);
         } catch (e) {

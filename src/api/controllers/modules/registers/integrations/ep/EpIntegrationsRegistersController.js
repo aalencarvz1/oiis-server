@@ -192,18 +192,18 @@ class EpIntegrationsRegistersController extends RegistersController{
 
     static async getRcasCodes(req) {
         let rcas = null;
-        if (req?.user.IDACCESSPROFILE == Access_Profiles.SUPERVISOR) {
+        if (req?.user.access_profile_id == Access_Profiles.SUPERVISOR) {
             let dataRel = await Relationships.getModel().findAll({
                 raw:true,
                 where:{
-                    IDRELATIONSHIPTYPE: [Relationship_Types.EP_ID],
-                    IDTABLE1: Users.id,
-                    IDREG1: req.user.id,
-                    IDTABLE2: EpTrabalhadores.id
+                    relationship_type_id: [Relationship_Types.EP_ID],
+                    table_1_id: Users.id,
+                    record_1_id: req.user.id,
+                    table_2_id: EpTrabalhadores.id
                 }
             });
             if (dataRel && dataRel.length) {
-                dataRel = dataRel.map(el=>el.IDREG2);
+                dataRel = dataRel.map(el=>el.record_2_id);
                 //EpVendedores.initAssociations();
                 let sellers = await EpVendedores.getModel().findAll({
                     raw:true,
@@ -231,14 +231,14 @@ class EpIntegrationsRegistersController extends RegistersController{
             let dataRel = await Relationships.getModel().findAll({
                 raw:true,
                 where:{
-                    IDRELATIONSHIPTYPE: [Relationship_Types.EP_ID],
-                    IDTABLE1: Users.id,
-                    IDREG1: req?.user.id ,
-                    IDTABLE2: EpVendedores.id
+                    relationship_type_id: [Relationship_Types.EP_ID],
+                    table_1_id: Users.id,
+                    record_1_id: req?.user.id ,
+                    table_2_id: EpVendedores.id
                 }
             });
             if (dataRel && dataRel.length) {
-                rcas = dataRel.map(el=>el.IDREG2).join(',');
+                rcas = dataRel.map(el=>el.record_2_id).join(',');
             }
         }
         if (!rcas) rcas = `select ev.cod from EP.EPVENDEDORES ev`;

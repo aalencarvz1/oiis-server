@@ -15,16 +15,16 @@ class Maps_Api_Responses extends BaseTableModel {
 
   static fields = {
     ...Maps_Api_Responses.getBaseTableModelFields(),...{            
-      ENTITY: {
+      entity: {
         type: DataTypes.STRING(255)
       },
       entity_id: {
         type: DataTypes.STRING(255)
       },
-      LIBRARY: {
+      library: {
         type: DataTypes.STRING(255)
       },
-      PARAMETERS: {
+      entity: {
         type: DataTypes.TEXT
       },
       response_status_code: {

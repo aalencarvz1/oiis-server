@@ -12,6 +12,9 @@ class BaseEpTableModel extends BaseTableModel {
     static schema = configDB[`${process.env.NODE_ENV||'development'}_ep`].dialectOptions.schema;  
     static getConnection = DBConnectionManager.getEpDBConnection;
 
+    //not has base foreign keys
+    static getBaseTableModelForeignsKeys = () => [];
+    
     /**
      * run migrations of inherited model
      * @static (pay attention to bindings)

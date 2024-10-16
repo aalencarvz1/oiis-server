@@ -23,6 +23,8 @@ module.exports = class DBConnectionManager {
 
     static #winthorIntegrationConnection = null;
 
+    static #externalDataConnection = null;
+
     
 
     /**
@@ -206,6 +208,39 @@ module.exports = class DBConnectionManager {
         return DBConnectionManager.#winthorIntegrationConnection;
     }
 
+    
+
+    static getExternalDataDBConnection(){
+        try {
+            if (DBConnectionManager.#externalDataConnection == null) {
+                let connectionConfig = configDB[`${process.env.NODE_ENV||'development'}_external_data`];
+
+                if (connectionConfig) {
+
+                    if ((connectionConfig?.dialect || '').toLowerCase().trim() == 'oracle' ) {
+                        
+                        //https://github.com/oracle/node-oracledb/blob/b2b784218a53e0adfb8b3b8eeb91532abed946f5/doc/src/user_guide/appendix_a.rst#id87                
+                        //Utils.log('initializing oracle client');
+                        OracleDB.initOracleClient();
+                    }
+
+                    Utils.log('starting sequelize ', connectionConfig);
+                    if (process.env.NODE_ENV == 'production') {
+                        /*if (connectionConfig?.logging !== false) {
+                            connectionConfig.logging = (...msg)=>Utils.log(msg);
+                        }*/
+                    }
+                    DBConnectionManager.#externalDataConnection = new Sequelize(connectionConfig);                
+                }
+            }
+            return DBConnectionManager.#externalDataConnection;
+        } catch (e) {
+            Utils.log('error on start connection',e);
+        }
+        return DBConnectionManager.#externalDataConnection;
+    }
+
+
 
     static getConnectionBySchemaName(schemaName) {
         let result = null;
@@ -218,6 +253,9 @@ module.exports = class DBConnectionManager {
                 break;
             case 'winthor':
                 result = DBConnectionManager.getWinthorDBConnection();
+                break;
+            case 'external_data':
+                result = DBConnectionManager.getExternalDataDBConnection();
                 break;
             case 'default':
                 result = DBConnectionManager.getDefaultDBConnection();

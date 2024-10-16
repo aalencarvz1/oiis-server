@@ -32,20 +32,20 @@ class RoutinesController extends RegistersController{
                     MODULES.id,
                     MODULES.parent_id,
                     MODULES.name,
-                    MODULES.ICON,
+                    MODULES.icon,
                     MODULES.path,
                     MODULES.numeric_order,
                     MODULES.description,
-                    ROUTINES.id AS ROUTINEID,
-                    ROUTINES.parent_id AS ROUTINEIDSUP,
-                    ROUTINES.IDROUTINETYPE AS ROUTINEIDROUTINETYPE,
-                    ROUTINES.IDMODULE AS ROUTINEIDMODULE,
-                    ROUTINES.name AS ROUTINENAME,
-                    ROUTINES.ICON AS ROUTINEICON,
-                    ROUTINES.VIEWPATH AS ROUTINEVIEWPATH,
-                    ROUTINES.numeric_order AS ROUTINEORDERNUM,
-                    ROUTINES.SHOWINMENU AS ROUTINESHOWINMENU,
-                    ROUTINES.description AS ROUTINEDESCRIPTION
+                    routines.id AS routine_id,
+                    routines.parent_id AS routine_sup_id,
+                    routines.routine_type_id AS routine_routine_type_id,
+                    routines.module_id AS routine_module_id,
+                    routines.name AS routine_name,
+                    routines.icon AS routine_icon,
+                    routines.view_path AS routine_view_path,
+                    routines.numeric_order AS routine_order_num,
+                    routines.show_in_menu AS routine_show_in_menu,
+                    routines.description AS routine_description
                 FROM
                     MODULES	                    
                     INNER JOIN USERS ON (
@@ -54,101 +54,101 @@ class RoutinesController extends RegistersController{
                         AND USERS.deleted_at IS NULL
                     )
                     INNER JOIN access_profiles ON (
-                        access_profiles.id = USERS.IDACCESSPROFILE
+                        access_profiles.id = USERS.access_profile_id
                         AND access_profiles.status_reg_id = ${Record_Status.ACTIVE}
                         AND access_profiles.deleted_at IS NULL
                     )
                     INNER JOIN PERMISSIONS ON (
                         PERMISSIONS.status_reg_id = ${Record_Status.ACTIVE}
                         AND PERMISSIONS.deleted_at IS NULL
-                        AND COALESCE(PERMISSIONS.IDACCESSPROFILE,
-                            USERS.IDACCESSPROFILE) = USERS.IDACCESSPROFILE
-                        AND COALESCE(PERMISSIONS.IDUSER, USERS.id) = USERS.id
-                        AND COALESCE(PERMISSIONS.IDMODULE, MODULES.id) = MODULES.id
-                        AND PERMISSIONS.ALLOWEDACCESS = 1
+                        AND COALESCE(PERMISSIONS.access_profile_id,
+                            USERS.access_profile_id) = USERS.access_profile_id
+                        AND COALESCE(PERMISSIONS.user_id, USERS.id) = USERS.id
+                        AND COALESCE(PERMISSIONS.module_id, MODULES.id) = MODULES.id
+                        AND PERMISSIONS.allowed_access = 1
                     )
                     LEFT OUTER JOIN (
-                        ROUTINES
+                        routines
                         INNER JOIN USERS UR ON (
                             UR.id = ${req.user.id}
                             AND UR.status_reg_id = ${Record_Status.ACTIVE}
                             AND UR.deleted_at IS NULL
                         )
                         INNER JOIN access_profiles AR ON (
-                            AR.id = UR.IDACCESSPROFILE
+                            AR.id = UR.access_profile_id
                             AND AR.status_reg_id = ${Record_Status.ACTIVE}
                             AND AR.deleted_at IS NULL
                         )
                         INNER JOIN PERMISSIONS P2 ON (
                             P2.status_reg_id = ${Record_Status.ACTIVE}
                             AND P2.deleted_at IS NULL
-                            AND COALESCE(P2.IDACCESSPROFILE,
-                                UR.IDACCESSPROFILE) = UR.IDACCESSPROFILE
-                            AND COALESCE(P2.IDUSER, UR.id) = UR.id
-                            AND COALESCE(P2.IDMODULE, ROUTINES.IDMODULE) = ROUTINES.IDMODULE
-                            AND COALESCE(P2.IDROUTINE,
+                            AND COALESCE(P2.access_profile_id,
+                                UR.access_profile_id) = UR.access_profile_id
+                            AND COALESCE(P2.user_id, UR.id) = UR.id
+                            AND COALESCE(P2.module_id, routines.module_id) = routines.module_id
+                            AND COALESCE(P2.routine_id,
                                 CASE
                                     WHEN AR.allow_access_to_all_module_routines = 0 THEN - 1
-                                    ELSE ROUTINES.id
-                                END) = ROUTINES.id
-                            AND P2.ALLOWEDACCESS = 1
+                                    ELSE routines.id
+                                END) = routines.id
+                            AND P2.allowed_access = 1
                         )
                     ) ON (
-                        ROUTINES.IDMODULE = MODULES.id
+                        routines.module_id = MODULES.id
                     )                    
                 WHERE
                     (
-                        PERMISSIONS.IDTABLE IS NULL
-                        OR PERMISSIONS.IDMODULE IS NOT NULL
+                        PERMISSIONS.table_id IS NULL
+                        OR PERMISSIONS.module_id IS NOT NULL
                     )    
                 ORDER BY 
                     COALESCE(MODULES.numeric_order, MODULES.id),
-                    COALESCE(ROUTINES.numeric_order, ROUTINES.id);    
+                    COALESCE(routines.numeric_order, routines.id);    
             `;
             res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
             res.data = res.data[0] || [];
             let nestedModules = {};
             for(let i = 0; i < res.data.length; i++) {                
                 nestedModules[res.data[i].id] = nestedModules[res.data[i].id] || res.data[i];
-                if (Utils.hasValue(res.data[i].ROUTINEID)) {
-                    nestedModules[res.data[i].id].ROUTINES = nestedModules[res.data[i].id].ROUTINES || {};
-                    nestedModules[res.data[i].id].ROUTINES[res.data[i].ROUTINEID] = {
-                        id: res.data[i].ROUTINEID,
-                        parent_id: res.data[i].ROUTINEIDSUP,
-                        IDROUTINETYPE: res.data[i].ROUTINEIDROUTINETYPE,
-                        IDMODULE: res.data[i].ROUTINEIDMODULE,
-                        name: res.data[i].ROUTINENAME,
-                        ICON: res.data[i].ROUTINEICON,
-                        VIEWPATH: res.data[i].ROUTINEVIEWPATH,
-                        numeric_order: res.data[i].ROUTINEORDERNUM,
-                        SHOWINMENU: res.data[i].ROUTINESHOWINMENU,
-                        description: res.data[i].ROUTINEDESCRIPTION
+                if (Utils.hasValue(res.data[i].routine_id)) {
+                    nestedModules[res.data[i].id].routines = nestedModules[res.data[i].id].routines || {};
+                    nestedModules[res.data[i].id].routines[res.data[i].routine_id] = {
+                        id: res.data[i].routine_id,
+                        parent_id: res.data[i].routine_sup_id,
+                        routine_type_id: res.data[i].routine_routine_type_id,
+                        module_id: res.data[i].routine_module_id,
+                        name: res.data[i].routine_name,
+                        icon: res.data[i].routine_icon,
+                        view_path: res.data[i].routine_view_path,
+                        numeric_order: res.data[i].routine_order_num,
+                        show_in_menu: res.data[i].routine_show_in_menu,
+                        description: res.data[i].routine_description
                     };
                 }
             }
 
             for(let key in nestedModules) {
                 if (Utils.hasValue(nestedModules[key].parent_id)) {
-                    nestedModules[nestedModules[key].parent_id].SUBS = nestedModules[nestedModules[key].parent_id]?.SUBS || {};
-                    nestedModules[nestedModules[key].parent_id].SUBS[key] = nestedModules[key];
+                    nestedModules[nestedModules[key].parent_id].subs = nestedModules[nestedModules[key].parent_id]?.subs || {};
+                    nestedModules[nestedModules[key].parent_id].subs[key] = nestedModules[key];
                     nestedModules[key].moved = true;                        
                 }
-                if (Utils.hasValue(nestedModules[key].ROUTINES)) {
-                    for(let kr in  nestedModules[key].ROUTINES ) {                
-                        if (Utils.hasValue(nestedModules[key].ROUTINES[kr].parent_id)) {
-                            nestedModules[key].ROUTINES[nestedModules[key].ROUTINES[kr].parent_id].SUBS = nestedModules[key].ROUTINES[nestedModules[key].ROUTINES[kr].parent_id].SUBS || {};
-                            nestedModules[key].ROUTINES[nestedModules[key].ROUTINES[kr].parent_id].SUBS[kr] = nestedModules[key].ROUTINES[kr];
-                            nestedModules[key].ROUTINES[kr].moved = true;
+                if (Utils.hasValue(nestedModules[key].routines)) {
+                    for(let kr in  nestedModules[key].routines ) {                
+                        if (Utils.hasValue(nestedModules[key].routines[kr].parent_id)) {
+                            nestedModules[key].routines[nestedModules[key].routines[kr].parent_id].subs = nestedModules[key].routines[nestedModules[key].routines[kr].parent_id].subs || {};
+                            nestedModules[key].routines[nestedModules[key].routines[kr].parent_id].subs[kr] = nestedModules[key].routines[kr];
+                            nestedModules[key].routines[kr].moved = true;
                         }
                     }
                 }
             }
 
             for(let key in nestedModules) {
-                for(let kr in nestedModules[key].ROUTINES || []) {
-                    if ((nestedModules[key].ROUTINES[kr].moved || false) == true) {
-                        nestedModules[key].ROUTINES[kr] = null;
-                        delete nestedModules[key].ROUTINES[kr];
+                for(let kr in nestedModules[key].routines || []) {
+                    if ((nestedModules[key].routines[kr].moved || false) == true) {
+                        nestedModules[key].routines[kr] = null;
+                        delete nestedModules[key].routines[kr];
                     }
                 }
                 if ((nestedModules[key].moved || false) == true) {

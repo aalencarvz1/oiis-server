@@ -24,7 +24,7 @@ class Record_Status extends BaseTableModel {
       description: {
         type: DataTypes.TEXT
       },
-      ISACTIVE: {
+      is_active: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
@@ -43,10 +43,10 @@ class Record_Status extends BaseTableModel {
       type:"unique"
     },{
       name: Record_Status.tableName + '_c_1',
-      fields:['ISACTIVE'],
+      fields:['is_active'],
       type:"check",
       where:{
-        ISACTIVE: {
+        is_active: {
               [Sequelize.Op.in]: [0,1]
           }
       }

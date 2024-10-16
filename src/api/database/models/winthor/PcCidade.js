@@ -30,10 +30,10 @@ class PcCidade extends BaseWinthorTableModel {
       POPULACAO:{
         type: DataTypes.INTEGER,
       },
-      latitude:{
+      LATITUDE:{
         type: DataTypes.DECIMAL(18,10)
       },
-      longitude:{
+      LONGITUDE:{
         type: DataTypes.DECIMAL(18,10)
       }
   };

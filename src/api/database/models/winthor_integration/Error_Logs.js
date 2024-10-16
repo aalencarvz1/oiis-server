@@ -19,16 +19,16 @@ class Error_Logs extends BaseWinthorIntegrationTableModel {
       object_name:{
         type: DataTypes.STRING(255)
       },
-      OBJECTLINE:{
+      object_line:{
         type: DataTypes.BIGINT.UNSIGNED,
       },
-      ERRORCODE:{
+      error_code:{
         type: DataTypes.STRING(255)
       },
-      MESSAGE:{
+      message:{
         type: DataTypes.TEXT
       },
-      LOGVALUES:{
+      log_values:{
         type: DataTypes.TEXT
       }
     }

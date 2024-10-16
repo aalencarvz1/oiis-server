@@ -25,19 +25,19 @@ class Tasks extends BaseTableModel {
       description: {
         type: DataTypes.TEXT
       },
-      ANOTATIONS: {
+      anotations: {
         type: DataTypes.TEXT
       },
-      FORECASTSTARTMOMENT: {
+      forecast_start_moment: {
         type: DataTypes.DATE
       },
-      FORECASTENDMOMENT: {
+      forecast_end_moment: {
         type: DataTypes.DATE
       },
-      STARTMOMENT: {
+      start_at: {
         type: DataTypes.DATE
       },
-      ENDMOMENT: {
+      end_at: {
         type: DataTypes.DATE
       }
     }

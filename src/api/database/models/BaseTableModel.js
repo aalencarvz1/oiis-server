@@ -414,6 +414,7 @@ class BaseTableModel extends Model {
      */
     static async createData(params,returnRaw) {
         let queryParams = params.queryParams?.values || params.queryParams || params || {};
+        Utils.log('FL','CREATING WITH PARAMETERS',queryParams);
         let result = await this.getModel().create(queryParams);
         if (typeof this.getData === 'function' && returnRaw !== false && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(result.id) || result
         else return result;
@@ -446,14 +447,15 @@ class BaseTableModel extends Model {
      * @async (pay attention to await)
      * @created 2023-11-10
      */
-    static async updateData(params,whereClause) {
-        let queryParams = params.queryParams || params || {};
+    static async updateData(params) {
+        //let queryParams = params.queryParams || params || {};
         let reg = null;
-        whereClause = whereClause || queryParams.where;
-        if (whereClause) {
-            reg = await this.getModel().findOne({where:whereClause});
-        } else if (queryParams.id) { 
-            reg = await this.getModel().findOne({where:{id:queryParams.id}});
+        params.values = params.values || params.queryParams?.values || params.queryParams || params ;
+        params.where = params.where || params.queryParams?.where || null;
+        if (Utils.hasValue(params.where)) {
+            reg = await this.getModel().findOne(params);
+        } else if (params.values.id) { 
+            reg = await this.getModel().findOne({where:{id:params.values.id},transaction:params.transaction});
         } else {
             let primaryKeys = [];
             for(let k in this.fields) {
@@ -463,18 +465,18 @@ class BaseTableModel extends Model {
             } 
             if (primaryKeys.length > 0) {
                 let where = {};
-                let keys = Object.keys(queryParams).join(',').trim().toLowerCase().split(',');
+                let keys = Object.keys(params.values).join(',').trim().toLowerCase().split(',');
                 let ind = -1;
                 //Utils.log(primaryKeys,keys);
                 for(let k in primaryKeys) {
                     ind =keys.indexOf(k.trim().toLowerCase());
                     if (ind > -1) {
-                        where[Object.keys(queryParams)[ind]] = queryParams[Object.keys(queryParams)[ind]];
+                        where[Object.keys(params.values)[ind]] = params.values[Object.keys(params.values)[ind]];
                     }
                 }
                 //Utils.log(where);
                 if (Object.keys(where).length > 0) {
-                    reg = await this.getModel().findOne({where:where});
+                    reg = await this.getModel().findOne({where:where,transaction:params.transaction});
                 } else {
                     throw new Error('missing data (primary key)');    
                 }
@@ -483,14 +485,13 @@ class BaseTableModel extends Model {
             }
         }
         if (reg) {
-            let values = queryParams.values || queryParams;
-            for(let key in values) {
+            for(let key in params.values) {
                 if (key != 'id') {
-                    reg[key] = values[key];
+                    reg[key] = params.values[key];
                 }
             }
             //Utils.log(reg);
-            await reg.save();
+            await reg.save(params.transaction ? {transaction:params.transaction} : {});
             if (typeof this.getData === 'function' && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(reg.id) || reg.dataValues
             else return reg.dataValues;
         } else {
@@ -548,12 +549,33 @@ class BaseTableModel extends Model {
             let queryParams = params.queryParams || params || {};
             queryParams.raw = queryParams.raw !== false ? true : queryParams.raw;
             queryParams.limit = queryParams.limit || 1;
+            queryParams.transaction = queryParams.transaction || params.transaction;
+            //console.log(queryParams);
             result.data = await this.getModel().findOne(queryParams);
+            /*console.log(result.data);            
+            if (Utils.hasValue(queryParams.transaction)) {
+                delete queryParams.transaction;
+            }
+            console.log(queryParams);
+            let test = await this.getModel().findOne(queryParams);            
+            console.log(test);*/
             if (!result.data) {
-                if (params.createMethod) 
-                    result = await params.createMethod.bind(this)({...queryParams.where,...(queryParams.values||{})});
-                else {
-                    result.data = await this.getModel().create({...queryParams.where,...(queryParams.values||{})});
+                if (params.createMethod)  {
+                    let paramsToCreateMethod = {...queryParams.where,...(queryParams.values||{})};
+                    if (params.transaction) {
+                        Utils.log('FL','creating with transaction')
+                        paramsToCreateMethod.transaction = params.transaction;
+                    } else {
+                        Utils.log('FL','creating without transaction');
+                    }
+                    result = await params.createMethod.bind(this)(paramsToCreateMethod);
+                } else {
+                    if (params.transaction) {
+                        Utils.log('FL','creating with transaction')
+                    } else {
+                        Utils.log('FL','creating without transaction');
+                    }
+                    result.data = await this.getModel().create({...queryParams.where,...(queryParams.values||{})},{transaction:params.transaction});
                     if (result.data) {
                         if (queryParams.raw)
                             result.data = result.data.dataValues;
@@ -577,15 +599,19 @@ class BaseTableModel extends Model {
             result.data = await this.getModel().findOne(queryParams);
             if (!result.data) {
                 if (params.createMethod) 
-                    result = await params.createMethod.bind(this)({...queryParams.where,...(queryParams.values||{})});
+                    result = await params.createMethod.bind(this)({...queryParams.where,...(queryParams.values||{})},params);
                 else {
-                    result.data = await this.getModel().create({...queryParams.where,...(queryParams.values||{})});
+                    result.data = await this.getModel().create({...queryParams.where,...(queryParams.values||{})},params.transaction ? {transaction: params.transaction} : {});
                     if (result.data) {
                         result.success = true;
                     } else throw new Error(`error on create register with ${JSON.parse({...queryParams.where,...(queryParams.values||{})})}`);
                 }
             } else {
-                await this.updateData({...result.data.dataValues,...(queryParams.values||{})},queryParams.where)
+                await this.updateData({
+                    values:{...result.data.dataValues,...(queryParams.values||{})},
+                    where:queryParams.where,
+                    transaction: params.transaction
+                });
                 result.success = true;
             }
         } catch (e) {

@@ -24,9 +24,9 @@ module.exports = {
           }
         } else {
           Utils.log('FL','passing routine ',routine.name);
-          if (Utils.hasValue(routine?.SUBS)) {
+          if (Utils.hasValue(routine?.subs)) {
             Utils.log('FL',routine.name,' has subs');
-            if (routine.IDROUTINETYPE || routine.VIEWPATH) {
+            if (routine.routine_type_id || routine.view_path) {
               Utils.log('FL',routine.name,' is routine');
               registersRoutines.push({
                 id:routine.id-0,
@@ -35,17 +35,17 @@ module.exports = {
                 created_at: new Date(),
                 data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
                 is_sys_rec : 1,
-                IDMODULE: idModuleSup,
+                module_id: idModuleSup,
                 parent_id: idRoutineSup,
-                IDROUTINETYPE : (Utils.firstValid([routine.IDROUTINETYPE,1]))-0,
+                routine_type_id : (Utils.firstValid([routine.routine_type_id,1]))-0,
                 name:routine.name,
-                ICON:routine.ICON,
-                VIEWPATH:routine.VIEWPATH,
+                icon:routine.icon,
+                view_path:routine.view_path,
                 numeric_order: routine.numeric_order,
-                SHOWINMENU: Utils.firstValid([routine.SHOWINMENU,1]),
+                show_in_menu: Utils.firstValid([routine.show_in_menu,1]),
               });
-              for(let i = 0; i < routine.SUBS.length; i++) {
-                seedRoutine(routine.SUBS[i],idModuleSup,routine.id);
+              for(let i = 0; i < routine.subs.length; i++) {
+                seedRoutine(routine.subs[i],idModuleSup,routine.id);
               } 
             } else {
               Utils.log('FL',routine.name,' is module');
@@ -59,11 +59,11 @@ module.exports = {
                 parent_id: idModuleSup,
                 name:routine.name,
                 numeric_order: routine.numeric_order,
-                ICON:routine.ICON
+                icon:routine.icon
               });
 
-              for(let i = 0; i < routine.SUBS.length; i++) {
-                seedRoutine(routine.SUBS[i],routine.id);
+              for(let i = 0; i < routine.subs.length; i++) {
+                seedRoutine(routine.subs[i],routine.id);
               } 
             }
 
@@ -76,14 +76,14 @@ module.exports = {
               created_at: new Date(),
               data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
               is_sys_rec : 1,
-              IDMODULE: idModuleSup,
+              module_id: idModuleSup,
               parent_id: idRoutineSup,
-              IDROUTINETYPE : routine.IDROUTINETYPE-0,
+              routine_type_id : routine.routine_type_id-0,
               name:routine.name,
-              ICON:routine.ICON,
-              VIEWPATH:routine.VIEWPATH,
+              icon:routine.icon,
+              view_path:routine.view_path,
               numeric_order: routine.numeric_order,
-              SHOWINMENU: Utils.firstValid([routine.SHOWINMENU,1]),
+              show_in_menu: Utils.firstValid([routine.show_in_menu,1]),
             });
           }
         }
@@ -98,12 +98,12 @@ module.exports = {
 
     await queryInterface.bulkInsert(Modules.tableName,registersModules,{
       ignoreDuplicates:true,
-      updateOnDuplicate:['status_reg_id','parent_id','name','ICON']
+      updateOnDuplicate:['status_reg_id','parent_id','name','icon']
     });  
 
     await queryInterface.bulkInsert(Routines.tableName,registersRoutines,{
       ignoreDuplicates:true,
-      updateOnDuplicate:['status_reg_id','IDMODULE','name','ICON','VIEWPATH']
+      updateOnDuplicate:['status_reg_id','module_id','name','icon','view_path']
     });  
   },
 

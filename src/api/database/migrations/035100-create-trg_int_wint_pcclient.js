@@ -61,7 +61,7 @@ module.exports = {
         select count(1) into v_exists from migration_tables where lower(trim(tablename)) = v_table_name;
         IF v_exists > 0 THEN
             select * into v_migrationtable_row from migration_tables where lower(trim(tablename)) = v_table_name;     
-            IF v_migrationtable_row.MIGRATEINTEGRATION = 1 THEN
+            IF v_migrationtable_row.migrate_integration = 1 THEN
                 v_json_values := new json_object_t();            
                 v_operation := 'MIGRATION';
                 IF DELETING THEN
@@ -109,17 +109,17 @@ module.exports = {
                 END IF;
                 hasValues := 1;
                 v_blob_values := v_json_values.to_blob();                
-            ELSIF INSERTING AND v_migrationtable_row.MIGRATEINTEGRATION = 0 AND v_migrationtable_row.MIGRATEINSERT = 1 THEN 
+            ELSIF INSERTING AND v_migrationtable_row.migrate_integration = 0 AND v_migrationtable_row.migrate_insert = 1 THEN 
                 v_operation := 'INSERT';            
                 v_codcli := :NEW.CODCLI;
-            ELSIF UPDATING AND v_migrationtable_row.MIGRATEINTEGRATION = 0 AND v_migrationtable_row.MIGRATEUPDATE = 1 THEN
+            ELSIF UPDATING AND v_migrationtable_row.migrate_integration = 0 AND v_migrationtable_row.migrate_update = 1 THEN
                 v_operation := 'UPDATE';
                 v_codcli := :NEW.CODCLI;
-            ELSIF DELETING AND v_migrationtable_row.MIGRATEINTEGRATION = 0 AND v_migrationtable_row.MIGRATEDELETE = 1 THEN
+            ELSIF DELETING AND v_migrationtable_row.migrate_integration = 0 AND v_migrationtable_row.migrate_delete = 1 THEN
                 v_operation := 'DELETE';
                 v_codcli := :OLD.CODCLI;
             END IF;
-            IF v_migrationtable_row.MIGRATEINTEGRATION = 0 AND (INSERTING OR UPDATING) AND (v_migrationtable_row.MIGRATEINSERT = 1 OR v_migrationtable_row.MIGRATEUPDATE = 1) THEN
+            IF v_migrationtable_row.migrate_integration = 0 AND (INSERTING OR UPDATING) AND (v_migrationtable_row.migrate_insert = 1 OR v_migrationtable_row.migrate_update = 1) THEN
                 v_json_values := new json_object_t();
                 v_json_values.put('CODCLI',v_codcli);
                 IF INSERTING THEN
@@ -212,9 +212,9 @@ module.exports = {
                     status_reg_id,
                     object_type,
                     OBJECT_NAME,
-                    OBJECTREGISTERID,
-                    OBJECTOPERATION,
-                    VALUESTOMIGRATE
+                    object_register_id,
+                    object_operation,
+                    values_to_migrate
                 ) VALUES (
                     CURRENT_TIMESTAMP,
                     1,
@@ -236,12 +236,12 @@ module.exports = {
             v_error_log.is_sys_rec := 0;
             v_error_log.object_type := 'trigger';
             v_error_log.object_name := $$plsql_unit;
-            v_error_log.objectline := $$plsql_line;
-            v_error_log.errorcode := sqlcode;
+            v_error_log.object_line := $$plsql_line;
+            v_error_log.error_code := sqlcode;
             v_error_log.message := substr(sqlerrm
                                         || ' '
                                         || dbms_utility.format_error_backtrace, 1, 4000);
-            v_error_log.logvalues := 'codcli: ' || :new.codcli;
+            v_error_log.log_values := 'codcli: ' || :new.codcli;
             INSERT INTO error_logs VALUES v_error_log;
             COMMIT;
             NULL;

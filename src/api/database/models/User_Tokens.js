@@ -16,35 +16,35 @@ class User_Tokens extends BaseTableModel {
   
   static fields = {
     ...User_Tokens.getBaseTableModelFields(),...{
-      IDUSER: {
+      user_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      TOKEN: {
+      token: {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      EXPIREAT: {
+      expired_at: {
         type: DataTypes.DATE
       },
-      EXPIRED: {
+      expired: {
         type: DataTypes.INTEGER(1),
         allowNull:false,
         defaultValue:0
       },
-      DEVICEINFORMATION: {
+      device_information: {
         type: DataTypes.STRING(2000)
       },
-      TIMEZONEOFFSET: {
+      timezone_offset: {
         type: DataTypes.INTEGER
       }
     }
   };
   
   static uniqueFields = [    
-    'IDUSER',
-    'TOKEN',
-    'EXPIRED'
+    'user_id',
+    'token',
+    'expired'
   ];
 
   static constraints = [...(User_Tokens.getBaseTableModelConstraints() || []),...[
@@ -54,10 +54,10 @@ class User_Tokens extends BaseTableModel {
       type:"unique"
     },{
       name: User_Tokens.tableName + '_c_1',
-      fields:['EXPIRED'],
+      fields:['expired'],
       type:"check",
       where:{
-        EXPIRED: {
+        expired: {
               [Sequelize.Op.in]: [0,1]
           }
       }
@@ -66,7 +66,7 @@ class User_Tokens extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDUSER'],
+      fields: ['user_id'],
       type: 'foreign key',
       references: { 
           table: Users,

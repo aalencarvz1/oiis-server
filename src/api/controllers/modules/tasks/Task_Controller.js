@@ -2,10 +2,10 @@
 const { Sequelize, QueryTypes } = require("sequelize");
 const { Tasks } = require("../../../database/models/Tasks");
 const { Task_Status } = require("../../../database/models/Task_Status");
-const { Tasks_X_Status_X_Users_Logs } = require("../../../database/models/Tasks_X_Status_X_Users_Logs");
+const { Tasks_Status_Users_Logs } = require("../../../database/models/Tasks_Status_Users_Logs");
 const { Utils } = require("../../utils/Utils");
 const DBConnectionManager = require("../../../database/DBConnectionManager");
-const { Tasks_X_Status_X_Users } = require("../../../database/models/Tasks_X_Status_X_Users");
+const { Tasks_Status_Users } = require("../../../database/models/Tasks_Status_Users");
 const { DatabaseUtils } = require("../../database/DatabaseUtils");
 const { RegistersController } = require("../registers/RegistersController");
 
@@ -27,7 +27,7 @@ class Task_Controller extends RegistersController{
                 from
                     (select  id,
                             parent_id,
-                            STARTMOMENT
+                            start_at
                     from    (select * from tasks
                             order by parent_id desc, id desc) products_sorted,
                             (select @pv := '${pTaskId}') initialisation
@@ -36,9 +36,9 @@ class Task_Controller extends RegistersController{
                     order by
                         parent_id,ID
                     ) t
-                    join ${Tasks_X_Status_X_Users.tableName} x on (
-                        x.IDTASK = t.id
-                        and x.IDUSER = ${pUserId}
+                    join ${Tasks_Status_Users.tableName} x on (
+                        x.task_id = t.id
+                        and x.user_id = ${pUserId}
                     )
             `;
             let sups = await DBConnectionManager.getDefaultDBConnection().query(query);
@@ -62,7 +62,7 @@ class Task_Controller extends RegistersController{
                 from
                     (select  id,
                             parent_id,
-                            STARTMOMENT,
+                            start_at,
                             @pv
                     from    (select * from tasks
                             order by parent_id, id) products_sorted,
@@ -72,9 +72,9 @@ class Task_Controller extends RegistersController{
                     order by
                         parent_id,ID
                     ) t
-                    join ${Tasks_X_Status_X_Users.tableName} x on (
-                        x.IDTASK = t.id
-                        and x.IDUSER = ${pUserId}
+                    join ${Tasks_Status_Users.tableName} x on (
+                        x.task_id = t.id
+                        and x.user_id = ${pUserId}
                     )
             `;
             let subs = await DBConnectionManager.getDefaultDBConnection().query(query);
@@ -89,22 +89,22 @@ class Task_Controller extends RegistersController{
         return result;
     }
 
-    static async updateSupStatusToRunning(pIdTask,pIdUser,pIdNewStatus) {
+    static async updateSupStatusToRunning(pIdTask,puser_id,pIdNewStatus) {
         try {
             let idsSups = await Task_Controller.getIdsSupsX(pIdTask,pIdUser);            
             if (idsSups && idsSups.length > 0) {
 
                 let query = `
                     update
-                        ${Tasks_X_Status_X_Users.tableName}
+                        ${Tasks_Status_Users.tableName}
                     set
-                        IDSTATUS=${pIdNewStatus},
-                        STARTMOMENT=coalesce(STARTMOMENT,current_timestamp),
-                        LASTRUN=CASE WHEN ${pIdNewStatus} = 2 THEN current_timestamp else LASTRUN END
+                        status_id=${pIdNewStatus},
+                        start_at=coalesce(start_at,current_timestamp),
+                        last_run=CASE WHEN ${pIdNewStatus} = 2 THEN current_timestamp else last_run END
                     where
                         id IN (${idsSups.join(',')})
-                        AND IDUSER = ${pIdUser}
-                        AND IDSTATUS != ${pIdNewStatus}
+                        AND user_id = ${pIdUser}
+                        AND status_id != ${pIdNewStatus}
                 `;
                 await DBConnectionManager.getDefaultDBConnection().query(query);
             }
@@ -119,15 +119,15 @@ class Task_Controller extends RegistersController{
             if (idsSubs && idsSubs.length > 0) {                
                 let query = `
                     update
-                        ${Tasks_X_Status_X_Users.tableName} t1
-                        join ${Task_Status.tableName} ts on ts.id = t1.IDSTATUS
+                        ${Tasks_Status_Users.tableName} t1
+                        join ${Task_Status.tableName} ts on ts.id = t1.status_id
                         join ${Task_Status.tableName} tsn on tsn.id = ${pIdNewStatus}
                     set
-                        t1.IDSTATUS=${pIdNewStatus},
-                        t1.ENDMOMENT=CASE WHEN coalesce(tsn.is_concluded,0) = 1 then current_timestamp else t1.ENDMOMENT end
+                        t1.status_id=${pIdNewStatus},
+                        t1.end_at=CASE WHEN coalesce(tsn.is_concluded,0) = 1 then current_timestamp else t1.end_at end
                     where
                         t1.id IN (${idsSubs.join(',')})
-                        and t1.IDUSER = ${pUserId}
+                        and t1.user_id = ${pUserId}
                         and coalesce(tsn.is_running,0) = 0 
                         and (
                             coalesce(ts.is_running,0) = 1
@@ -146,13 +146,13 @@ class Task_Controller extends RegistersController{
                 if (pIdNewStatus != Task_Status.RUNNING) {
                     let query = `
                         update
-                            ${Tasks_X_Status_X_Users.tableName}
+                            ${Tasks_Status_Users.tableName}
                         set
-                            IDSTATUS=${Task_Status.RUNNING} 
+                            status_id=${Task_Status.RUNNING} 
                         where
-                            IDUSER = ${pUserId}
-                            AND IDSTATUS = ${Task_Status.STOPED}
-                            AND IDTASKCAUSESTATUS in (${idsSubs.join(',')})
+                            user_id = ${pUserId}
+                            AND status_id = ${Task_Status.STOPED}
+                            AND triggering_task_id in (${idsSubs.join(',')})
                     `;
                     await DBConnectionManager.getDefaultDBConnection().query(query);                    
                 }
@@ -174,14 +174,14 @@ class Task_Controller extends RegistersController{
             if (idsPreserve && idsPreserve.length > 0) {
                 let query = `
                     update
-                        ${Tasks_X_Status_X_Users.tableName}
+                        ${Tasks_Status_Users.tableName}
                     set
-                        IDSTATUS=${pIdNewStatus},
-                        IDTASKCAUSESTATUS=${pIdTask}
+                        status_id=${pIdNewStatus},
+                        triggering_task_id=${pIdTask}
                     where
                         id NOT IN (${idsPreserve.join(',')})
-                        AND IDUSER = ${pIdUser}
-                        AND IDSTATUS = ${Task_Status.RUNNING}
+                        AND user_id = ${pIdUser}
+                        AND status_id = ${Task_Status.RUNNING}
                 `;
                 await DBConnectionManager.getDefaultDBConnection().query(query);
             }
@@ -203,27 +203,27 @@ class Task_Controller extends RegistersController{
             if (idsPreserve && idsPreserve.length > 0) {
                 let query = `
                     update
-                        ${Tasks_X_Status_X_Users.tableName} t
+                        ${Tasks_Status_Users.tableName} t
                     set
-                        t.IDSTATUS=${pIdNewStatus}                        
+                        t.status_id=${pIdNewStatus}                        
                     where
                         t.id NOT IN (${idsPreserve.join(',')})
-                        AND t.IDUSER = ${pIdUser}
-                        AND t.IDSTATUS = ${Task_Status.STOPED}
-                        AND t.IDTASKCAUSESTATUS = ${pIdTask}
+                        AND t.user_id = ${pIdUser}
+                        AND t.status_id = ${Task_Status.STOPED}
+                        AND t.triggering_task_id = ${pIdTask}
                 `;
                 let [result,metadata] = await DBConnectionManager.getDefaultDBConnection().query(query,{queryType:QueryTypes.UPDATE});
                 if (metadata.affectedRows > 0 && pIdNewStatus == Task_Status.RUNNING && idsSups.length > 0) {
                     query = `
                         update
-                            ${Tasks_X_Status_X_Users.tableName}
+                            ${Tasks_Status_Users.tableName}
                         set
-                            IDSTATUS=${Task_Status.STOPED}                        
+                            status_id=${Task_Status.STOPED}                        
                         where
                             id NOT IN (${idsPreserve.join(',')})
                             AND id IN (${idsSups.join(',')})
-                            AND IDUSER = ${pIdUser}
-                            AND IDSTATUS = ${Task_Status.RUNNING}
+                            AND user_id = ${pIdUser}
+                            AND status_id = ${Task_Status.RUNNING}
                     `;
                     await DBConnectionManager.getDefaultDBConnection().query(query,{queryType:QueryTypes.UPDATE});
                 }
@@ -243,27 +243,27 @@ class Task_Controller extends RegistersController{
 
         queryParams.attributes = [
             `${Tasks.tableName}.*`,
-            Sequelize.literal(`${Tasks_X_Status_X_Users.tableName}.IDSTATUS`),
-            Sequelize.literal(`coalesce(${Tasks_X_Status_X_Users.tableName}.ACCUMTIME,0) + CASE WHEN ${Tasks_X_Status_X_Users.tableName}.IDSTATUS = 2 THEN TIMESTAMPDIFF(SECOND,coalesce(${Tasks_X_Status_X_Users.tableName}.LASTRUN,CURRENT_TIMESTAMP),CURRENT_TIMESTAMP) ELSE 0 END AS ACCUMTIME`),
+            Sequelize.literal(`${Tasks_Status_Users.tableName}.status_id`),
+            Sequelize.literal(`coalesce(${Tasks_Status_Users.tableName}.accumulated_time,0) + CASE WHEN ${Tasks_Status_Users.tableName}.status_id = 2 THEN TIMESTAMPDIFF(SECOND,coalesce(${Tasks_Status_Users.tableName}.last_run,CURRENT_TIMESTAMP),CURRENT_TIMESTAMP) ELSE 0 END AS accumulated_time`),
             Sequelize.literal(`
                 case 
-                    when coalesce(${Tasks_X_Status_X_Users.tableName}.FORECASTSTARTMOMENT,${Tasks.tableName}.FORECASTSTARTMOMENT) < current_timestamp and ${Tasks_X_Status_X_Users.tableName}.IDSTATUS IN (1) THEN 
+                    when coalesce(${Tasks_Status_Users.tableName}.forecast_start_moment,${Tasks.tableName}.forecast_start_moment) < current_timestamp and ${Tasks_Status_Users.tableName}.status_id IN (1) THEN 
                         1 
-                    when coalesce(${Tasks_X_Status_X_Users.tableName}.FORECASTENDMOMENT,${Tasks.tableName}.FORECASTENDMOMENT) < current_timestamp and ${Tasks_X_Status_X_Users.tableName}.IDSTATUS NOT IN (4,5) then 
+                    when coalesce(${Tasks_Status_Users.tableName}.forecast_end_moment,${Tasks.tableName}.forecast_end_moment) < current_timestamp and ${Tasks_Status_Users.tableName}.status_id NOT IN (4,5) then 
                         1 
                     ELSE 0 
-                END AS EXPIRED`
+                END AS expired`
             )
         ];
         queryParams.include = [{
             raw:true,
-            model:Tasks_X_Status_X_Users.getModel(),
+            model:Tasks_Status_Users.getModel(),
             attributes:[],
             required:true,
             on:{
                 [Sequelize.Op.and]:[
-                    Sequelize.where(Sequelize.col(`${Tasks_X_Status_X_Users.tableName}.IDTASK`),'=',Sequelize.col(`${Tasks.tableName}.id`)),
-                    {IDUSER: req.user.id}
+                    Sequelize.where(Sequelize.col(`${Tasks_Status_Users.tableName}.task_id`),'=',Sequelize.col(`${Tasks.tableName}.id`)),
+                    {user_id: req.user.id}
                 ]
             }
         }];
@@ -274,25 +274,25 @@ class Task_Controller extends RegistersController{
         let query = `
             select 
                 ${Tasks.tableName}.*,
-                ${Tasks_X_Status_X_Users.tableName}.IDSTATUS,
-                coalesce(${Tasks_X_Status_X_Users.tableName}.ACCUMTIME,0) + CASE 
-                    WHEN ${Tasks_X_Status_X_Users.tableName}.IDSTATUS = 2 THEN 
-                        TIMESTAMPDIFF(SECOND,coalesce(${Tasks_X_Status_X_Users.tableName}.LASTRUN,CURRENT_TIMESTAMP),CURRENT_TIMESTAMP) 
+                ${Tasks_Status_Users.tableName}.status_id,
+                coalesce(${Tasks_Status_Users.tableName}.accumulated_time,0) + CASE 
+                    WHEN ${Tasks_Status_Users.tableName}.status_id = 2 THEN 
+                        TIMESTAMPDIFF(SECOND,coalesce(${Tasks_Status_Users.tableName}.last_run,CURRENT_TIMESTAMP),CURRENT_TIMESTAMP) 
                     ELSE 
                         0 
-                END AS ACCUMTIME,                
+                END AS accumulated_time,                
                 case 
-                    when coalesce(${Tasks_X_Status_X_Users.tableName}.FORECASTSTARTMOMENT,${Tasks.tableName}.FORECASTSTARTMOMENT) < current_timestamp and ${Tasks_X_Status_X_Users.tableName}.IDSTATUS IN (1) THEN 
+                    when coalesce(${Tasks_Status_Users.tableName}.forecast_start_moment,${Tasks.tableName}.forecast_start_moment) < current_timestamp and ${Tasks_Status_Users.tableName}.status_id IN (1) THEN 
                         1 
-                    when coalesce(${Tasks_X_Status_X_Users.tableName}.FORECASTENDMOMENT,${Tasks.tableName}.FORECASTENDMOMENT) < current_timestamp and ${Tasks_X_Status_X_Users.tableName}.IDSTATUS NOT IN (4,5) then 
+                    when coalesce(${Tasks_Status_Users.tableName}.forecast_end_moment,${Tasks.tableName}.forecast_end_moment) < current_timestamp and ${Tasks_Status_Users.tableName}.status_id NOT IN (4,5) then 
                         1 
                     ELSE 0 
-                END AS EXPIRED                
+                END AS expired                
             from 
                 ${Tasks.tableName}
-                join ${Tasks_X_Status_X_Users.tableName} on (
-                    ${Tasks_X_Status_X_Users.tableName}.IDTASK = ${Tasks.tableName}.id
-                    and ${Tasks_X_Status_X_Users.tableName}.IDUSER = ${req.user.id}
+                join ${Tasks_Status_Users.tableName} on (
+                    ${Tasks_Status_Users.tableName}.task_id = ${Tasks.tableName}.id
+                    and ${Tasks_Status_Users.tableName}.user_id = ${req.user.id}
                 )
         `;
         if (Utils.hasValue(queryParams)) {
@@ -324,20 +324,20 @@ class Task_Controller extends RegistersController{
                     FROM
                         (SELECT 
                             t.*,
-                            tx.IDSTATUS,
-                            coalesce(tx.ACCUMTIME,0) + CASE WHEN tx.IDSTATUS = 2 THEN TIMESTAMPDIFF(SECOND,coalesce(tx.LASTRUN,CURRENT_TIMESTAMP),CURRENT_TIMESTAMP) ELSE 0 END AS ACCUMTIME,
+                            tx.status_id,
+                            coalesce(tx.accumulated_time,0) + CASE WHEN tx.status_id = 2 THEN TIMESTAMPDIFF(SECOND,coalesce(tx.last_run,CURRENT_TIMESTAMP),CURRENT_TIMESTAMP) ELSE 0 END AS accumulated_time,
                             case 
-                                when coalesce(tx.FORECASTSTARTMOMENT,t.FORECASTSTARTMOMENT) < current_timestamp and tx.IDSTATUS IN (1) THEN 
+                                when coalesce(tx.forecast_start_moment,t.forecast_start_moment) < current_timestamp and tx.status_id IN (1) THEN 
                                     1 
-                                when coalesce(tx.FORECASTENDMOMENT,t.FORECASTENDMOMENT) < current_timestamp and tx.IDSTATUS NOT IN (4,5) then 
+                                when coalesce(tx.forecast_end_moment,t.forecast_end_moment) < current_timestamp and tx.status_id NOT IN (4,5) then 
                                     1 
                                 ELSE 0 
-                            END AS EXPIRED
+                            END AS expired
                         FROM
                             tasks t
-                            join Tasks_X_Status_X_Users tx on (
-                                tx.idtask = t.id
-                                and tx.iduser = ${req.user.id}
+                            join Tasks_Status_Users tx on (
+                                tx.task_id = t.id
+                                and tx.user_id = ${req.user.id}
                             )
                         ORDER BY 
                             t.parent_id DESC , 
@@ -353,9 +353,9 @@ class Task_Controller extends RegistersController{
                                 ,'.',','),',') 
                             from 
                                 tasks ti 
-                                join tasks_x_status_x_users tx on (
-                                    tx.idtask = ti.id
-                                    and tx.iduser = ${req.user.id}                                    
+                                join tasks_status_users tx on (
+                                    tx.task_id = ti.id
+                                    and tx.user_id = ${req.user.id}                                    
                                 )            
                             where 			
                                 ti.name like '%${req.body.search.value}%'
@@ -390,21 +390,21 @@ class Task_Controller extends RegistersController{
             let taskParams = {};
             let taskXParams = {};
             for(let key in bodyParams) {                
-                if (key != 'IDSTATUS') taskParams[key] = bodyParams[key]
+                if (key != 'status_id') taskParams[key] = bodyParams[key]
                 else taskXParams[key] = bodyParams[key] || Task_Status.NOT_STARTED;
             }
             taskParams.creator_user_id = req.user.id;
             taskXParams.creator_user_id = req.user.id;
-            taskXParams.IDSTATUS = taskXParams.IDSTATUS || Task_Status.NOT_STARTED;
-            if (taskXParams.IDSTATUS == Task_Status.RUNNING) {
+            taskXParams.status_id = taskXParams.status_id || Task_Status.NOT_STARTED;
+            if (taskXParams.status_id == Task_Status.RUNNING) {
 
-                if (!Utils.hasValue(taskParams?.STARTMOMENT)) {
-                    taskParams.STARTMOMENT = Sequelize.literal('current_timestamp');
+                if (!Utils.hasValue(taskParams?.start_at)) {
+                    taskParams.start_at = Sequelize.literal('current_timestamp');
                 }                
-                taskXParams.LASTRUN = taskParams.STARTMOMENT || Sequelize.literal('current_timestamp');
+                taskXParams.last_run = taskParams.start_at || Sequelize.literal('current_timestamp');
             }
-            if (taskXParams.IDSTATUS == Task_Status.CONCLUDED && !Utils.hasValue(taskParams?.ENDMOMENT)) {
-                taskParams.ENDMOMENT = Sequelize.literal('current_timestamp');
+            if (taskXParams.status_id == Task_Status.CONCLUDED && !Utils.hasValue(taskParams?.end_at)) {
+                taskParams.end_at = Sequelize.literal('current_timestamp');
             }
 
             for(let key in taskParams) {                
@@ -417,13 +417,13 @@ class Task_Controller extends RegistersController{
             }
 
             let task = await Tasks.getModel().create(taskParams);
-            taskXParams.IDTASK = task.id;
-            taskXParams.IDUSER = req.user.id;
+            taskXParams.task_id = task.id;
+            taskXParams.user_id = req.user.id;
 
-            let taskX = await Tasks_X_Status_X_Users.getModel().create(taskXParams);
-            if (taskX.IDSTATUS == Task_Status.RUNNING) {                
-                await Task_Controller.stopOthers(task.id, taskX.id, taskX.IDUSER, Task_Status.STOPED);
-                await Task_Controller.updateSupStatusToRunning(task.id, taskX.IDUSER, taskX.IDSTATUS);                
+            let taskX = await Tasks_Status_Users.getModel().create(taskXParams);
+            if (taskX.status_id == Task_Status.RUNNING) {                
+                await Task_Controller.stopOthers(task.id, taskX.id, taskX.user_id, Task_Status.STOPED);
+                await Task_Controller.updateSupStatusToRunning(task.id, taskX.user_id, taskX.status_id);                
             }     
             //let queryParams = Task_Controller.mountQueryParamsToGet(req,{where:{id:task.id}});      
             //res.data = await Tasks.getModel().findOne(queryParams);
@@ -481,16 +481,16 @@ class Task_Controller extends RegistersController{
                     id: req.body?.id
                 }
             });
-            let taskX = await Tasks_X_Status_X_Users.getModel().findOne({
+            let taskX = await Tasks_Status_Users.getModel().findOne({
                 where:{
-                    IDTASK: req.body?.id,
-                    IDUSER: req.user.id
+                    task_id: req.body?.id,
+                    user_id: req.user.id
                 }
             });            
             if (task) {
                 let taskLogX = {
-                    IDTASK: task.id,
-                    IDUSER: req.user.id,
+                    task_id: task.id,
+                    user_id: req.user.id,
                     operation: 'UPDATE'
                 };
                 for(let key in req.body) {
@@ -510,9 +510,9 @@ class Task_Controller extends RegistersController{
                             if (taskX[key] != req.body[key]
                                 && (taskX[key] != null || (taskX[key] == null && Utils.hasValue(req.body[key])))
                             ) {         
-                                if (key == 'IDSTATUS') {
-                                    taskLogX.IDOLDSTATUS = taskX[key];
-                                    taskLogX.IDNEWSTATUS = req.body[key];
+                                if (key == 'status_id') {
+                                    taskLogX.old_status_id = taskX[key];
+                                    taskLogX.new_status_id = req.body[key];
                                 }                                                                              
                                 taskX[key] = req.body[key]; 
                                 if (key.indexOf("DATE") > -1 && Utils.hasValue(taskX[key]) && typeof taskX[key] == 'string') {
@@ -525,40 +525,40 @@ class Task_Controller extends RegistersController{
                 task.updater_user_id = req.user.id;
                 taskX.updater_user_id = req.user.id;
 
-                if (taskLogX.IDNEWSTATUS == Task_Status.CONCLUDED) {
-                    if (!Utils.hasValue(req.body?.ENDMOMENT)) {
-                        task.ENDMOMENT = Sequelize.literal('current_timestamp');
-                        taskX.ENDMOMENT = Sequelize.literal('current_timestamp');
+                if (taskLogX.new_status_id == Task_Status.CONCLUDED) {
+                    if (!Utils.hasValue(req.body?.end_at)) {
+                        task.end_at = Sequelize.literal('current_timestamp');
+                        taskX.end_at = Sequelize.literal('current_timestamp');
                     }
                 }
 
-                if (taskLogX.IDNEWSTATUS == Task_Status.RUNNING) {
-                    taskX.LASTRUN = req.body?.STARTMOMENT ? Sequelize.fn('str_to_date',req.body?.STARTMOMENT,'%Y-%m-%d %H:%i:%s') : Sequelize.literal('current_timestamp');
-                    if (!Utils.hasValue(req.body?.STARTMOMENT)) {
-                        if (!Utils.hasValue(task.STARTMOMENT)) {
-                            task.STARTMOMENT = Sequelize.literal('current_timestamp');
+                if (taskLogX.new_status_id == Task_Status.RUNNING) {
+                    taskX.last_run = req.body?.start_at ? Sequelize.fn('str_to_date',req.body?.start_at,'%Y-%m-%d %H:%i:%s') : Sequelize.literal('current_timestamp');
+                    if (!Utils.hasValue(req.body?.start_at)) {
+                        if (!Utils.hasValue(task.start_at)) {
+                            task.start_at = Sequelize.literal('current_timestamp');
                         }
-                        if (!Utils.hasValue(taskX.STARTMOMENT)) {
-                            taskX.STARTMOMENT = Sequelize.literal('current_timestamp');
+                        if (!Utils.hasValue(taskX.start_at)) {
+                            taskX.start_at = Sequelize.literal('current_timestamp');
                         }
                     }
                 } else {
-                    taskX.IDTASKCAUSESTATUS = null;
+                    taskX.triggering_task_id = null;
                 }
 
                 await task.save();
                 await taskX.save();
-                taskLogX.IDTASKXSTATUSXUSER = taskX.id;
-                taskLogX = await Tasks_X_Status_X_Users_Logs.getModel().create(taskLogX);
+                taskLogX.task_status_user_id = taskX.id;
+                taskLogX = await Tasks_Status_Users_Logs.getModel().create(taskLogX);
 
-                if (taskLogX.IDNEWSTATUS == Task_Status.RUNNING) {
-                    await Task_Controller.stopOthers(task.id,taskX.id, taskX.IDUSER, Task_Status.STOPED);
-                    await Task_Controller.updateSupStatusToRunning(task.id,taskX.IDUSER, taskLogX.IDNEWSTATUS);
-                } else if (Utils.hasValue(taskLogX.IDNEWSTATUS)) {
-                    await Task_Controller.updateSubStatus(task.id,taskX.IDUSER, taskLogX.IDNEWSTATUS);                          
-                    await Task_Controller.playOthers(task.id,taskX.id, taskX.IDUSER, Task_Status.RUNNING);
+                if (taskLogX.new_status_id == Task_Status.RUNNING) {
+                    await Task_Controller.stopOthers(task.id,taskX.id, taskX.user_id, Task_Status.STOPED);
+                    await Task_Controller.updateSupStatusToRunning(task.id,taskX.user_id, taskLogX.new_status_id);
+                } else if (Utils.hasValue(taskLogX.new_status_id)) {
+                    await Task_Controller.updateSubStatus(task.id,taskX.user_id, taskLogX.new_status_id);                          
+                    await Task_Controller.playOthers(task.id,taskX.id, taskX.user_id, Task_Status.RUNNING);
                     //update sups with new status if math rules
-                    if (taskLogX.IDNEWSTATUS == Task_Status.STOPED) {
+                    if (taskLogX.new_status_id == Task_Status.STOPED) {
                         let idSup = task.parent_id;
                         while(Utils.hasValue(idSup)) {
                             let query = `
@@ -568,10 +568,10 @@ class Task_Controller extends RegistersController{
                                     tu.id as TUID
                                 from
                                     ${Tasks.tableName} t
-                                    join ${Tasks_X_Status_X_Users.tableName} tu on (
-                                        tu.IDTASK = t.id
-                                        and tu.IDUSER = ${req.user.id}
-                                        and tu.IDSTATUS = ${taskLogX.IDOLDSTATUS}
+                                    join ${Tasks_Status_Users.tableName} tu on (
+                                        tu.task_id = t.id
+                                        and tu.user_id = ${req.user.id}
+                                        and tu.status_id = ${taskLogX.old_status_id}
                                     )
                                 where
                                     t.id = ${idSup}
@@ -580,10 +580,10 @@ class Task_Controller extends RegistersController{
                                             1
                                         from
                                             ${Tasks.tableName} t2
-                                            join ${Tasks_X_Status_X_Users.tableName} tu2 on (
-                                                tu2.IDTASK = t2.id
-                                                and tu2.IDUSER = ${req.user.id}
-                                                and tu2.IDSTATUS NOT IN (${taskLogX.IDNEWSTATUS}, ${Task_Status.CANCELED}, ${Task_Status.CONCLUDED})
+                                            join ${Tasks_Status_Users.tableName} tu2 on (
+                                                tu2.task_id = t2.id
+                                                and tu2.user_id = ${req.user.id}
+                                                and tu2.status_id NOT IN (${taskLogX.new_status_id}, ${Task_Status.CANCELED}, ${Task_Status.CONCLUDED})
                                             )
                                         where
                                             t2.parent_id = t.id
@@ -596,10 +596,10 @@ class Task_Controller extends RegistersController{
                                 Utils.log('sup',sup);
                                 query = `
                                     UPDATE
-                                        ${Tasks_X_Status_X_Users.name}
+                                        ${Tasks_Status_Users.name}
                                     set
-                                        IDSTATUS = ${taskLogX.IDNEWSTATUS},
-                                        IDTASKCAUSESTATUS = ${task.id}
+                                        status_id = ${taskLogX.new_status_id},
+                                        triggering_task_id = ${task.id}
                                     where
                                         id = ${sup.TUID}
                                 `;
