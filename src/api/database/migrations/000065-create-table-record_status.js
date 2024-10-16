@@ -27,7 +27,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'ACTIVE',
-      ISACTIVE:1      
+      is_active:1      
     },{
       id: Record_Status.INACTIVE,
       status_reg_id: Record_Status.ACTIVE,
@@ -36,7 +36,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'INACTIVE',
-      ISACTIVE:1     
+      is_active:1     
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

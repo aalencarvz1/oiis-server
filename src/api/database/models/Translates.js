@@ -16,15 +16,15 @@ class Translates extends BaseTableModel {
   static model = null;
   static fields = {
     ...Translates.getBaseTableModelFields(),...{     
-      IDLANGUAGE:{
+      language_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
       },
-      IDTEXT:{
+      text_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
       },
-      TRANSLATED: {
+      translated: {
         type: DataTypes.STRING(2000),
         allowNull:false
       }
@@ -32,8 +32,8 @@ class Translates extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDLANGUAGE',
-    'IDTEXT'
+    'language_id',
+    'text_id'
   ];
 
   static constraints = [...(Translates.getBaseTableModelConstraints() || []),...[
@@ -46,7 +46,7 @@ class Translates extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys() || []),...[
     {
-      fields: ['IDLANGUAGE'],
+      fields: ['language_id'],
       type: 'foreign key',
       references: { 
           table: Languages,
@@ -55,7 +55,7 @@ class Translates extends BaseTableModel {
       onUpdate: 'cascade',
       onDelete: 'cascade'
     },{
-      fields: ['IDTEXT'],
+      fields: ['text_id'],
       type: 'foreign key',
       references: { 
           table: Texts,

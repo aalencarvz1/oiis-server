@@ -15,7 +15,7 @@ class Routine_Contents extends BaseTableModel {
   static model = null;
   static fields = {
     ...Routine_Contents.getBaseTableModelFields(),...{     
-      IDROUTINE: {
+      routine_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -23,23 +23,20 @@ class Routine_Contents extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       }, 
-      CONTENT: {
+      content: {
         type: DataTypes.TEXT
       },
-      SERVERVIEWPATH: {
+      view_server_path: {
         type: DataTypes.TEXT
       },
-      CLIENTVIEWPATH: {
+      view_client_path: {
         type: DataTypes.TEXT
-      },
-      CLIENTDOWNLOADEDAT: {
-        type: DataTypes.DATE
       }
     }
   };
   
   static uniqueFields = [ 
-    'IDROUTINE',
+    'routine_id',
     'name'
   ];
 
@@ -53,7 +50,7 @@ class Routine_Contents extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDROUTINE'],
+      fields: ['routine_id'],
       type: 'foreign key',
       references: { 
           table: Routines,

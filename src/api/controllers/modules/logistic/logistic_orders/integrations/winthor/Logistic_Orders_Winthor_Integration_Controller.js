@@ -6,9 +6,9 @@ const { PcCarreg } = require("../../../../../../database/models/winthor/PcCarreg
 const { PcNfsaid } = require("../../../../../../database/models/winthor/PcNfsaid");
 const { PcDocEletronico } = require("../../../../../../database/models/winthor/PcDocEletronico");
 const { Utils } = require("../../../../../utils/Utils");
-const { Logistic_Orders_X_Items_Mov_Amt } = require("../../../../../../database/models/Logistic_Orders_X_Items_Mov_Amt");
+const { Logistic_Orders_Items_Mov_Amt } = require("../../../../../../database/models/Logistic_Orders_Items_Mov_Amt");
 const { Movements } = require("../../../../../../database/models/Movements");
-const { Logistic_Orders_X_Movs } = require("../../../../../../database/models/Logistic_Orders_X_Movs");
+const { Logistic_Orders_Movs } = require("../../../../../../database/models/Logistic_Orders_Movs");
 const { Logistic_Orders } = require("../../../../../../database/models/Logistic_Orders");
 const { Logistic_Status } = require("../../../../../../database/models/Logistic_Status");
 const { Parameter_Values } = require("../../../../../../database/models/Parameter_Values");
@@ -21,7 +21,6 @@ const { Users } = require("../../../../../../database/models/Users");
 const { WinthorIntegrationsRegistersController } = require("../../../../registers/integrations/winthor/WinthorIntegrationsRegistersController");
 const { Relationships } = require("../../../../../../database/models/Relationships");
 const { Record_Status } = require("../../../../../../database/models/Record_Status");
-const { BaseEndPointController } = require("../../../../../endpoints/BaseEndPointController");
 
 
 /**
@@ -29,11 +28,11 @@ const { BaseEndPointController } = require("../../../../../endpoints/BaseEndPoin
  * @author Alencar
  * @created 2023-29-08
  */
-class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointController{
+class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrationsRegistersController{
 
-    static getDataOriginId(data_origin_id) {
+    static getDataOriginId(data_origin_id_at_origin) {
         let result = Data_Origins.DEFAULT_ORIGINDATA;
-        switch(data_origin_id) {
+        switch(data_origin_id_at_origin) {
             case 0:
                 result = Data_Origins.WINTHOR;
                 break;
@@ -78,43 +77,43 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                     Utils.log('FL',ids);
                     if (ids.length) {   
                         for(let key in ids) {
-                            //Logistic_Orders_X_Movs.initAssociations();
-                            //Logistic_Orders_X_Items_Mov_Amt.initAssociations();
+                            //Logistic_Orders_Movs.initAssociations();
+                            //Logistic_Orders_Items_Mov_Amt.initAssociations();
                             let logOrder = await Logistic_Orders.getModel().findAll({
                                 raw:true,
                                 attributes:[
                                     Sequelize.col(`${Logistic_Orders.tableName}.id_at_origin`),
-                                    [Sequelize.col('logistic_orders_x_movs.logistic_status_id'), 'logistic_status_id'],
-                                    [Sequelize.col('logistic_orders_x_movs->MOVEMENTS.data_origin_id'), 'data_origin_idNF'],
-                                    [Sequelize.col('logistic_orders_x_movs->MOVEMENTS.id_at_origin'), 'NUMTRANSVENDA'],
-                                    [Sequelize.fn('COUNT',Sequelize.col('logistic_orders_x_movs->logistic_orders_x_items_mov_amt.id')),'QTITEMS'],
-                                    [Sequelize.fn('COUNT',Sequelize.literal(`CASE WHEN \`logistic_orders_x_movs->logistic_orders_x_items_mov_amt\`.logistic_status_id = ${Logistic_Status.DELIVERED} THEN 1 ELSE NULL END`)),'QTITEMSFINALIZEDS']
+                                    [Sequelize.col('logistic_orders_movs.logistic_status_id'), 'logistic_status_id'],
+                                    [Sequelize.col('logistic_orders_movs->movements.data_origin_id'), 'data_origin_idNF'],
+                                    [Sequelize.col('logistic_orders_movs->movements.id_at_origin'), 'NUMTRANSVENDA'],
+                                    [Sequelize.fn('COUNT',Sequelize.col('logistic_orders_movs->logistic_orders_items_mov_amt.id')),'QTITEMS'],
+                                    [Sequelize.fn('COUNT',Sequelize.literal(`CASE WHEN \`logistic_orders_movs->logistic_orders_items_mov_amt\`.logistic_status_id = ${Logistic_Status.DELIVERED} THEN 1 ELSE NULL END`)),'QTITEMSFINALIZEDS']
                                 ],
                                 where:{
                                     [Op.and]:[{
                                         id:ids[key]
-                                    },Sequelize.where(Sequelize.literal('`logistic_orders_x_movs->MOVEMENTS`.data_origin_id'),Sequelize.literal(Data_Origins.WINTHOR))
+                                    },Sequelize.where(Sequelize.literal('`logistic_orders_movs->movements`.data_origin_id'),Sequelize.literal(Data_Origins.WINTHOR))
                                     ]
                                 },
                                 include:[{                                
-                                    model: Logistic_Orders_X_Movs.getModel(),
+                                    model: Logistic_Orders_Movs.getModel(),
                                     attributes: [],
                                     include: [{
                                         model: Movements.getModel(),
                                         attributes:[],
-                                        on:Sequelize.where(Sequelize.col(`logistic_orders_x_movs->MOVEMENTS.id`),Sequelize.col(`${Logistic_Orders_X_Movs.tableName}.mov_id`))
+                                        on:Sequelize.where(Sequelize.col(`logistic_orders_movs->movements.id`),Sequelize.col(`${Logistic_Orders_Movs.tableName}.mov_id`))
                                     },{
-                                        model: Logistic_Orders_X_Items_Mov_Amt.getModel(),
+                                        model: Logistic_Orders_Items_Mov_Amt.getModel(),
                                         attributes:[],
-                                        on:Sequelize.where(Sequelize.col(`logistic_orders_x_movs->logistic_orders_x_items_mov_amt.mov_logistic_order_id`),Sequelize.col(`${Logistic_Orders_X_Movs.tableName}.id`))
+                                        on:Sequelize.where(Sequelize.col(`logistic_orders_movs->logistic_orders_items_mov_amt.mov_logistic_order_id`),Sequelize.col(`${Logistic_Orders_Movs.tableName}.id`))
                                         
                                     }]
                                 }],
                                 group:[
                                     Sequelize.col(`${Logistic_Orders.tableName}.id_at_origin`),
-                                    Sequelize.col('logistic_orders_x_movs.logistic_status_id'),
-                                    Sequelize.col('logistic_orders_x_movs->MOVEMENTS.data_origin_id'),
-                                    Sequelize.col('logistic_orders_x_movs->MOVEMENTS.id_at_origin')
+                                    Sequelize.col('logistic_orders_movs.logistic_status_id'),
+                                    Sequelize.col('logistic_orders_movs->movements.data_origin_id'),
+                                    Sequelize.col('logistic_orders_movs->movements.id_at_origin')
                                 ]
                             });
                             if (logOrder && logOrder.length) {
@@ -304,24 +303,24 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                                                             queryType: QueryTypes.UPDATE,
                                                             transaction: transaction
                                                         });
-                                                        resultData.COBRANCAS_INTEGRADAS.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.VLTOTAL});    
+                                                        resultData.COBRANCAS_INTEGRADAS.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.total_value});    
                                                         return true;
                                                     });
                                                 } else {
-                                                    resultData.COBRANCAS_INTEGRADAS_ANTERIORMENTE.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.VLTOTAL});    
+                                                    resultData.COBRANCAS_INTEGRADAS_ANTERIORMENTE.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.total_value});    
                                                 }
                                             } else {
-                                                resultData.COBRANCAS_NAO_INTEGRAR.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.VLTOTAL});    
+                                                resultData.COBRANCAS_NAO_INTEGRAR.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.total_value});    
                                             }
                                         } else {
                                             if (logOrder[kl].logistic_status_id == Logistic_Status.PARTIAL_RETURNED) 
-                                                resultData.NOTAS_DEVOLVIDAS_PARCIALMENTE.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.VLTOTAL})
+                                                resultData.NOTAS_DEVOLVIDAS_PARCIALMENTE.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.total_value})
                                             else if (logOrder[kl].logistic_status_id == Logistic_Status.TOTAL_RETURNED) 
-                                                resultData.NOTAS_DEVOLVIDAS_TOTALMENTE.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.VLTOTAL})    
+                                                resultData.NOTAS_DEVOLVIDAS_TOTALMENTE.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.total_value})    
                                             else if (logOrder[kl].logistic_status_id == Logistic_Status.RUNNING) 
-                                                resultData.NOTAS_EM_ENTREGA.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.VLTOTAL})
+                                                resultData.NOTAS_EM_ENTREGA.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.total_value})
                                             else
-                                                resultData.NOTAS_A_ENTREGAR.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.VLTOTAL});    
+                                                resultData.NOTAS_A_ENTREGAR.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.total_value});    
                                         }
                                     }
                                 }                            
@@ -368,7 +367,7 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
     }
 
     static async getOrCreateIntegrateds(numcarsWint) {
-        let result = await WinthorIntegrationsRegistersController.integrateRegisters({
+        let result = await Logistic_Orders_Winthor_Integration_Controller.integrateRegisters({
             registersIds: numcarsWint,
             tableClassModel: Logistic_Orders, 
             getIntegratedsByOriginIds: Logistic_Orders_Winthor_Integration_Controller.getLogisticsOrdersByNumcars,
@@ -401,7 +400,7 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
      * @param {*} next 
      * @created 2023-01-12
      */
-    static async getLoadingsDataForDelivery(req,res,next) {
+    static async getCargosDataForDelivery(req,res,next) {
         try {
             let identifiers = req.body.identifiers || [];
             if (typeof identifiers === 'string') identifiers = identifiers.split(',');
@@ -426,9 +425,9 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                 let dataRels = await Relationships.getModel().findAll({
                     raw:true,
                     where:{
-                        IDTABLE1: Users.id,
-                        IDREG1: req.user.id,
-                        IDTABLE2: PcCarreg.id,
+                        table_1_id: Users.id,
+                        record_1_id: req.user.id,
+                        table_2_id: PcCarreg.id,
                         status_reg_id: Record_Status.ACTIVE
                     }
                 });
@@ -436,14 +435,14 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                     let orDataRels = [];
                     for(let kd in dataRels) {
                         let and = [];
-                        if (dataRels[kd].IDREG2) {
+                        if (dataRels[kd].record_2_id) {
 
                             and.push({
-                                [dataRels[kd].COLUMNREG2||'NUMCAR']:dataRels[kd].IDREG2
+                                [dataRels[kd].record_2_column||'NUMCAR']:dataRels[kd].record_2_id
                             });
                         }
-                        if (dataRels[kd].CONDICTIONSREG2) {
-                            and.push(Sequelize.literal(dataRels[kd].CONDICTIONSREG2));
+                        if (dataRels[kd].record_2_conditions) {
+                            and.push(Sequelize.literal(dataRels[kd].record_2_conditions));
                         }
                         Utils.log('and',and);
                         orDataRels.push({[Sequelize.Op.and]:and});
@@ -460,19 +459,19 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                 res.data = await PcCarreg.getModel().findAll({
                     raw:true,
                     attributes: [
-                        Sequelize.literal('0 AS data_origin_id'),
-                        ['NUMCAR','IDLOADORIGIN'],
-                        'DTSAIDA',
-                        ['CODMOTORISTA','IDMOTORISTAORIGEM'],
-                        ['CODVEICULO','IDVEICULOORIGEM'],
-                        ['TOTPESO','PESOTOTAL'],
-                        'VLTOTAL',
-                        ['NUMNOTAS','QTNOTAS'],
-                        ['NUMENT','QTENTREGAS'],
-                        'DESTINO',
-                        ['DT_CANCEL','DTCANCEL'],
-                        [Sequelize.col(`${PcEmpr.tableName}.NOME`),'NOMEMOTORISTA'],
-                        [Sequelize.col(`${PcVeicul.tableName}.PLACA`),'PLACA']                        
+                        Sequelize.literal('0 AS "data_origin_id"'),
+                        ['NUMCAR','id_at_origin'],
+                        ['DTSAIDA','out_date'],
+                        ['CODMOTORISTA','driver_id'],
+                        ['CODVEICULO','vehiclee_id'],
+                        ['TOTPESO','total_weight'],
+                        ['VLTOTAL','total_value'],
+                        ['NUMNOTAS','invoice_qty'],
+                        ['NUMENT','delivery_qty'],
+                        ['DESTINO','destiny'],
+                        ['DT_CANCEL','cancel_date'],
+                        [Sequelize.col(`${PcEmpr.tableName}.NOME`),'driver_name'],
+                        [Sequelize.col(`${PcVeicul.tableName}.PLACA`),'plate']                        
                     ],
                     include:[{
                         raw:true,
@@ -499,26 +498,26 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
 
                     for(let key in res.data) {
 
-                        //find invoice data of this delivery
+                        //find invoice client data of this delivery
                         let query = `
                             select 
                                 *
                             from
                                 (
                                     select
-                                        0 as data_origin_id,
-                                        c.CODCLI AS IDCLIENTORIGIN,
-                                        to_number(regexp_replace(c.CGCENT,'[^0-9]','')) as CGC,
-                                        c.CLIENTE AS NOME,
-                                        c.FANTASIA,
-                                        c.ESTENT AS ESTADO,
-                                        c.MUNICENT AS CIDADE,
-                                        c.BAIRROENT AS BAIRRO,
-                                        c.ENDERENT AS ENDERECO,                                        
-                                        c.NUMEROENT AS NUMERO,                                        
-                                        c.TELENT AS TELEFONE,
-                                        c.CODUSUR1 as IDVENDEDOR1ORIGEM,
-                                        c.CODUSUR2 as IDVENDEDOR2ORIGEM
+                                        0 as "data_origin_id",
+                                        c.CODCLI AS "id_at_origin",
+                                        to_number(regexp_replace(c.CGCENT,'[^0-9]','')) as "document",
+                                        c.CLIENTE AS "name",
+                                        c.FANTASIA as "fantasy",
+                                        c.ESTENT AS "state",
+                                        c.MUNICENT AS "city",
+                                        c.BAIRROENT AS "neighborhood",
+                                        c.ENDERENT AS "address",                                        
+                                        c.NUMEROENT AS "address_number",                                        
+                                        c.TELENT AS "telephone",
+                                        c.CODUSUR1 as "seller_1_id",
+                                        c.CODUSUR2 as "seller_2_id"
                                     from
                                         JUMBO.PCCARREG cr 
                                         join JUMBO.PCNFSAID s on (
@@ -531,22 +530,22 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                                         )
                                         join JUMBO.PCCLIENT c on c.codcli = s.codcli
                                     where
-                                        cr.numcar = ${res.data[key].IDLOADORIGIN}
+                                        cr.numcar = ${res.data[key].id_at_origin}
                                     union 
                                     select
-                                        decode(cj.codcli,null,1,0) as data_origin_id,
-                                        nvl(cj.codcli,p.COD) AS IDCLIENTORIGIN,
-                                        to_number(regexp_replace(nvl(cj.cgcent,p.coddocidentificador),'[^0-9]','')) as CGC,
-                                        nvl(cj.cliente,p.NOMERAZAO) AS NOME,
-                                        nvl(cj.fantasia,p.FANTASIA) AS FANTASIA,
-                                        nvl(cj.estent,ci.uf) as ESTADO,
-                                        nvl(cj.municent,ci.nome) AS CIDADE,
-                                        nvl(cj.bairroent,p.BAIRRO) AS BAIRRO,
-                                        nvl(cj.enderent,p.ENDERECO) AS ENDERECO, 
-                                        nvl(cj.numeroent,P.NUMERO) AS NUMERO,
-                                        nvl(cj.telent,null) AS TELEFONE,
-                                        nvl(cj.codusur1,c.codvendedor1) AS IDVENDEDOR1ORIGEM,
-                                        nvl(cj.codusur2,c.codvendedor2) AS IDVENDEDOR2ORIGEM
+                                        decode(cj.codcli,null,1,0) as "data_origin_id",
+                                        nvl(cj.codcli,p.COD) AS "id_at_origin",
+                                        to_number(regexp_replace(nvl(cj.cgcent,p.coddocidentificador),'[^0-9]','')) as "document",
+                                        nvl(cj.cliente,p.NOMERAZAO) AS "name",
+                                        nvl(cj.fantasia,p.FANTASIA) as "fantasy",
+                                        nvl(cj.estent,ci.uf) AS "state",
+                                        nvl(cj.municent,ci.nome) AS "city",
+                                        nvl(cj.bairroent,p.BAIRRO) AS "neighborhood",
+                                        nvl(cj.enderent,p.ENDERECO) AS "address", 
+                                        nvl(cj.numeroent,P.NUMERO) AS "address_number",
+                                        nvl(cj.telent,null) AS "telephone",
+                                        nvl(cj.codusur1,c.codvendedor1) as "seller_1_id",
+                                        nvl(cj.codusur2,c.codvendedor2) as "seller_2_id"
                                     from
                                         EP.EPUNIFCARGAS u 
                                         join EP.EPNFSSAIDA s on (
@@ -562,16 +561,16 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                                         left outer join EP.EPCIDADES ci on ci.cod = p.codcidade
                                         left outer join JUMBO.PCCLIENT cj on cj.codcli = p.cod
                                     where
-                                        u.id = (select u2.id from EP.EPUNIFCARGAS u2 where u2.NRCARGA = ${res.data[key].IDLOADORIGIN})
+                                        u.id = (select u2.id from EP.EPUNIFCARGAS u2 where u2.NRCARGA = ${res.data[key].id_at_origin})
                                         and u.IDORIGEMINFO = 1
                                 )
                             order by
                                 1
                         `;
-                        res.data[key].CLIENTS = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
-                        res.data[key].CLIENTS = res.data[key].CLIENTS[0] || [];
+                        res.data[key].clients = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
+                        res.data[key].clients = res.data[key].clients[0] || [];
 
-                        if (res.data[key].CLIENTS && res.data[key].CLIENTS.length) {  
+                        if (res.data[key].clients && res.data[key].clients.length) {  
                             
                             //find invoice data on winthor
                             //PcDocEletronico.initAssociations();
@@ -579,22 +578,21 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                             let nfsWinthor = await PcNfsaid.getModel().findAll({
                                 raw:true,
                                 attributes:[
-                                    Sequelize.literal('0 as data_origin_id'),
+                                    Sequelize.literal('0 as "data_origin_id"'),
                                     ['NUMTRANSVENDA','id_at_origin'],
-                                    ['NUMNOTA','IDINVOICEORIGIN'],
-                                    ['DTSAIDA','DTEMISSAO'],
-                                    ['CODCOB','IDFINANCIALCOLLECTIONORIGIN'],
-                                    ['CODPLPAG','IDPRAZOPAGAMENTOORIGEM'],
-                                    ['TOTPESO','PESOTOTAL'],
-                                    'VLTOTAL',
-                                    'DTCANCEL',
-                                    'NUMTRANSVENDA',
-                                    ['CODCLI','IDCLIENTORIGIN'],
-                                    'CHAVENFE',
-                                    [Sequelize.col(`${PcDocEletronico.tableName}.XMLNFE`),'XML']
+                                    ['NUMNOTA','invoice_number'],
+                                    ['DTSAIDA','issue_date'],
+                                    ['CODCOB','financial_value_form_id'],
+                                    ['CODPLPAG','payment_plan_id'],
+                                    ['TOTPESO','total_weight'],
+                                    ['VLTOTAL','total_value'],
+                                    ['DTCANCEL','cancel_date'],
+                                    ['CODCLI','client_id'],
+                                    ['CHAVENFE','invoice_key'],
+                                    [Sequelize.col(`${PcDocEletronico.tableName}.XMLNFE`),'xml']
                                 ],
                                 where:{
-                                    NUMCAR: res.data[key].IDLOADORIGIN,
+                                    NUMCAR: res.data[key].id_at_origin,
                                     DTCANCEL: {
                                         [Sequelize.Op.is] : null
                                     }
@@ -614,20 +612,23 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
 
                                 //find item invoice data on winthor
                                 query = `
-                                    select                                        
-                                        m.CODPROD AS IDITEMORIGEM,
-                                        coalesce(m.descricao,p.descricao,'') as DESCRICAO,
-                                        p.CODAUXILIARTRIB AS GTINUNTRIB,
-                                        p.CODAUXILIAR AS GTINUNVENDA,
-                                        p.CODAUXILIAR2 AS GTINUNMASTER,
-                                        coalesce(m.unidade,p.unidade,'UN') as UNIDADE,
-                                        coalesce(p.UNIDADEMASTER,m.embalagem,'CX') as EMBALAGEM,
-                                        coalesce(m.qtunitcx,p.qtunitcx,1) as QTUNITEMBALAGEM,
-                                        coalesce(m.pesoliq,p.pesoliq,1) as PESOLIQUN,
-                                        sum(coalesce(m.qt,m.qtcont,0)) as QT,
-                                        max(coalesce(m.punit,m.punitcont,0)) as VLUN,
+                                    select
+                                        0 AS "data_origin_id",
+                                        /*m.NUMTRANSITEM AS "id", numtransitem duplicate item if has 2 or more equals items at same invoice*/
+                                        m.NUMTRANSVENDA as "invoice_id",
+                                        m.CODPROD AS "item_id",
+                                        coalesce(m.descricao,p.descricao,'') as "description",
+                                        p.CODAUXILIARTRIB AS "gtin_trib_un",
+                                        p.CODAUXILIAR AS "gtin_sell_un",
+                                        p.CODAUXILIAR2 AS "gtin_master_un",
+                                        coalesce(m.unidade,p.unidade,'UN') as "un",
+                                        coalesce(p.UNIDADEMASTER,m.embalagem,'CX') as "package",
+                                        coalesce(m.qtunitcx,p.qtunitcx,1) as "package_un_qty",
+                                        coalesce(m.pesoliq,p.pesoliq,1) as "liq_weight",
+                                        sum(coalesce(m.qt,m.qtcont,0)) as "qty",
+                                        max(coalesce(m.punit,m.punitcont,0)) as "un_value",
                                         '[' || (SELECT
-                                            listagg('{"IDLOTEORIGEM":"'||l.numlote||'","DTVALIDADE":"'||l.dtvalidade||'","QT":'||replace(to_char(coalesce(m2.qt,m2.qtcont,0),'999999999990.9999990'),',','.')||'}',',') within group (order by m.numtransvenda,m.codprod)
+                                            listagg('{"identifier":"'||l.numlote||'","expirartion_date":"'||l.dtvalidade||'","qty":'||replace(to_char(coalesce(m2.qt,m2.qtcont,0),'999999999990.9999990'),',','.')||'}',',') within group (order by m.numtransvenda,m.codprod)
                                         FROM
                                             JUMBO.PCLOTE l 
                                             join JUMBO.PCMOV m2 on (
@@ -639,8 +640,7 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                                         where 
                                             l.codfilial = coalesce(m.codfilialretira,m.codfilial) 
                                             and l.codprod = m.codprod 
-                                        ) || ']' AS LOTS,
-                                        m.NUMTRANSVENDA
+                                        ) || ']' AS "lots"
                                     from
                                         JUMBO.PCNFSAID s
                                         join JUMBO.PCMOV m on (
@@ -655,9 +655,10 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                                             and l.numlote = m.numlote
                                         )
                                     where
-                                        s.numcar = ${res.data[key].IDLOADORIGIN}
+                                        s.numcar = ${res.data[key].id_at_origin}
                                         and s.dtcancel is null     
                                     group by
+                                        0,
                                         m.CODPROD,
                                         coalesce(m.descricao,p.descricao,''),
                                         p.CODAUXILIARTRIB,
@@ -679,24 +680,24 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                                 let itemsWinthor = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
                                 itemsWinthor = itemsWinthor[0] || [];
                                 for(let kn in nfsWinthor) {
-                                    nfsWinthor[kn].ITEMS = nfsWinthor[kn].ITEMS || [];
+                                    nfsWinthor[kn].items = nfsWinthor[kn].items || [];
                                     for(let ki in itemsWinthor) {                                        
-                                        if (typeof itemsWinthor[ki].LOTS === 'string') {
-                                            if (itemsWinthor[ki].LOTS.trim() == '[]') itemsWinthor[ki].LOTS = []
-                                            else itemsWinthor[ki].LOTS = JSON.parse(itemsWinthor[ki].LOTS);
+                                        if (typeof itemsWinthor[ki].logs === 'string') {
+                                            if (itemsWinthor[ki].logs.trim() == '[]') itemsWinthor[ki].logs = []
+                                            else itemsWinthor[ki].logs = JSON.parse(itemsWinthor[ki].logs);
                                         }
-                                        if (itemsWinthor[ki].NUMTRANSVENDA == nfsWinthor[kn].NUMTRANSVENDA) {
-                                            nfsWinthor[kn].ITEMS.push(itemsWinthor[ki]);
+                                        if (itemsWinthor[ki].invoice_id == nfsWinthor[kn].id_at_origin) {
+                                            nfsWinthor[kn].items.push(itemsWinthor[ki]);
                                         }
                                     }
                                 }
                                 
                                 //attach nfs winthor to cients
-                                for(let kc in res.data[key].CLIENTS) {
-                                    res.data[key].CLIENTS[kc].NFS = res.data[key].CLIENTS[kc].NFS || [];
+                                for(let kc in res.data[key].clients) {
+                                    res.data[key].clients[kc].invoices = res.data[key].clients[kc].invoices || [];
                                     for(let kn in nfsWinthor) {
-                                        if (nfsWinthor[kn].IDCLIENTORIGIN == res.data[key].CLIENTS[kc].IDCLIENTORIGIN) {
-                                            res.data[key].CLIENTS[kc].NFS.push(nfsWinthor[kn]);
+                                        if (nfsWinthor[kn].client_id == res.data[key].clients[kc].id_at_origin) {
+                                            res.data[key].clients[kc].invoices.push(nfsWinthor[kn]);
                                         }
                                     }
                                 }
@@ -705,23 +706,22 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                             //find invoice data on broker (aurora)
                             query = `
                                 select
-                                    1 AS data_origin_id,
-                                    s.cod as id_at_origin,
-                                    s.NUMNOTAORIGEM AS IDINVOICEORIGIN,
-                                    s.DTEMISSAO,
-                                    null as IDFINANCIALCOLLECTIONORIGIN,
-                                    null as IDPRAZOPAGAMENTOORIGEM,
-                                    sum(nvl(ms.qtsaida,0) - nvl(ms.qtdevolvida,0)) as PESOTOTAL,
-                                    sum((nvl(ms.qtsaida,0) - nvl(ms.qtdevolvida,0)) * nvl(ms.vlun,0)) as VLTOTAL,
-                                    s.DTCANCEL,
-                                    S.COD,
-                                    S.CODCLIENTE,
-                                    s.CHAVENFE
+                                    1 AS "data_origin_id",
+                                    s.cod as "id_at_origin",
+                                    s.NUMNOTAORIGEM AS "invoice_number",
+                                    s.DTEMISSAO as "issue_date",
+                                    null as "financial_value_form_id",
+                                    null as "payment_plan_id",
+                                    sum(nvl(ms.qtsaida,0) - nvl(ms.qtdevolvida,0)) as "total_weight",
+                                    sum((nvl(ms.qtsaida,0) - nvl(ms.qtdevolvida,0)) * nvl(ms.vlun,0)) as "total_value",
+                                    s.DTCANCEL as "cancel_date",
+                                    S.CODCLIENTE as "client_id",
+                                    s.CHAVENFE as "invoice_key"
                                 from
                                     EP.EPNFSSAIDA s
                                     JOIN EP.EPMOVIMENTACOESSAIDA ms on ms.codnfsaida = s.cod
                                 where
-                                    s.nrcarga = (select u2.nrcarga from EP.EPUNIFCARGAS u2 where u2.idorigeminfo = 1 and u2.id = (select u.id from EP.EPUNIFCARGAS u where u.idorigeminfo = 0 and u.nrcarga = ${res.data[key].IDLOADORIGIN}) and u2.idorigeminfo = 1)
+                                    s.nrcarga = (select u2.nrcarga from EP.EPUNIFCARGAS u2 where u2.idorigeminfo = 1 and u2.id = (select u.id from EP.EPUNIFCARGAS u where u.idorigeminfo = 0 and u.nrcarga = ${res.data[key].id_at_origin}) and u2.idorigeminfo = 1)
                                 GROUP BY
                                     1,
                                     s.NUMNOTAORIGEM,
@@ -741,19 +741,21 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                                 //find item invoice data on broker (aurora)
                                 query = `
                                     select
-                                        m.CODPROD AS IDITEMORIGEM,
-                                        coalesce(p.descricao,'') as DESCRICAO,
-                                        p.CODAUXILIARTRIB AS GTINUNTRIB,
-                                        p.CODAUXILIAR AS GTINUNVENDA,
-                                        p.CODAUXILIAR2 AS GTINUNMASTER,
-                                        coalesce(p.unidade,'UN') as UNIDADE,
-                                        coalesce(p.UNIDADEMASTER,'CX') as EMBALAGEM,
-                                        coalesce(p.qtunitcx,1) as QTUNITEMBALAGEM,
-                                        coalesce(p.pesoliq,1) as PESOLIQ,
-                                        sum(coalesce(m.qtsaida,0)) as QT, 
-                                        max(coalesce(m.vlun,0)) as VLUN,  
-                                        '[]' AS LOTS,
-                                        m.CODNFSAIDA
+                                        1 AS "data_origin_id",
+                                        m.cod AS "id_at_origin",
+                                        m.CODNFSAIDA as "invoice_id"
+                                        m.CODPROD AS "item_id",
+                                        coalesce(p.descricao,'') as "description",
+                                        p.CODAUXILIARTRIB AS "gtin_trib_un",
+                                        p.CODAUXILIAR AS "gtin_sell_un",
+                                        p.CODAUXILIAR2 AS "gtin_master_un",
+                                        coalesce(p.unidade,'UN') as "un",
+                                        coalesce(p.UNIDADEMASTER,'CX') as "package",
+                                        coalesce(p.qtunitcx,1) as "package_un_qty",
+                                        coalesce(p.pesoliq,1) as "liq_weight",
+                                        sum(coalesce(m.qtsaida,0)) as "qty", 
+                                        max(coalesce(m.vlun,0)) as "un_value",  
+                                        '[]' AS "lots"
                                     from
                                         EP.EPNFSSAIDA s
                                         join EP.EPMOVIMENTACOESSAIDA m on (
@@ -763,9 +765,11 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                                         )
                                         left outer join JUMBO.PCPRODUT p on p.codprod = m.codprod
                                     where
-                                        s.nrcarga = (select u2.nrcarga from EP.EPUNIFCARGAS u2 where u2.idorigeminfo = 1 and u2.id = (select u.id from EP.EPUNIFCARGAS u where u.idorigeminfo = 0 and u.nrcarga = ${res.data[key].IDLOADORIGIN}))
+                                        s.nrcarga = (select u2.nrcarga from EP.EPUNIFCARGAS u2 where u2.idorigeminfo = 1 and u2.id = (select u.id from EP.EPUNIFCARGAS u where u.idorigeminfo = 0 and u.nrcarga = ${res.data[key].id_at_origin}))
                                         and s.dtcancel is null     
                                     group by
+                                        1,
+                                        m.cod,
                                         m.CODPROD,
                                         coalesce(p.descricao,''),
                                         p.CODAUXILIARTRIB,
@@ -786,24 +790,24 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
                                 let itemsBroker = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
                                 itemsBroker = itemsBroker[0] || [];                                
                                 for(let kn in nfsBroker) {
-                                    nfsBroker[kn].ITEMS = nfsBroker[kn].ITEMS || [];
+                                    nfsBroker[kn].items = nfsBroker[kn].items || [];
                                     for(let ki in itemsBroker) {
-                                        if (typeof itemsBroker[ki].LOTS === 'string') {
-                                            if (itemsBroker[ki].LOTS.trim() == '[]') itemsBroker[ki].LOTS = []
-                                            else itemsBroker[ki].LOTS = JSON.parse(itemsBroker[ki].LOTS);
+                                        if (typeof itemsBroker[ki].lots === 'string') {
+                                            if (itemsBroker[ki].lots.trim() == '[]') itemsBroker[ki].lots = []
+                                            else itemsBroker[ki].lots = JSON.parse(itemsBroker[ki].lots);
                                         }
-                                        if (itemsBroker[ki].CODNFSAIDA == nfsBroker[kn].COD) {
-                                            nfsBroker[kn].ITEMS.push(itemsBroker[ki]);
+                                        if (itemsBroker[ki].invoice_id == nfsBroker[kn].id_at_origin) {
+                                            nfsBroker[kn].items.push(itemsBroker[ki]);
                                         }
                                     }
                                 }
                                 
                                 //attach nfs broker to cients                                                               
-                                for(let kc in res.data[key].CLIENTS) {
-                                    res.data[key].CLIENTS[kc].NFS = res.data[key].CLIENTS[kc].NFS || [];
+                                for(let kc in res.data[key].clients) {
+                                    res.data[key].clients[kc].invoices = res.data[key].clients[kc].invoices || [];
                                     for(let kn in nfsBroker) {
-                                        if (nfsBroker[kn].CODCLIENTE == res.data[key].CLIENTS[kc].IDCLIENTORIGIN) {
-                                            res.data[key].CLIENTS[kc].NFS.push(nfsBroker[kn]);
+                                        if (nfsBroker[kn].client_id == res.data[key].clients[kc].id_at_origin) {
+                                            res.data[key].clients[kc].invoices.push(nfsBroker[kn]);
                                         }
                                     }
                                 }
@@ -838,8 +842,8 @@ class Logistic_Orders_Winthor_Integration_Controller extends BaseEndPointControl
         try {            
             level++;
             switch(arrRoute[level].trim().toLowerCase()) {
-                case 'getloadingsdatafordelivery':
-                    await Logistic_Orders_Winthor_Integration_Controller.getLoadingsDataForDelivery(req,res,next);
+                case 'getcargosdatafordelivery':
+                    await Logistic_Orders_Winthor_Integration_Controller.getCargosDataForDelivery(req,res,next);
                     break;
                 case 'integrateboxclosing':
                     res.data = await Logistic_Orders_Winthor_Integration_Controller.integrateBoxClosing(req.body.identifiers);

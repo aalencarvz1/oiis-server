@@ -54,27 +54,27 @@ class Logistic_Orders_Controller extends RegistersController {
             else where = ' where 1=2 ';//prevent massive database get
             let query = `
                 select
-                    DTSAIDA,
-                    NUMCAR,
-                    DESTINO,
-                    CODMOTORISTA,
-                    MOTORISTA,
-                    CODVEICULO,                            
-                    PLACA,                            
-                    COUNT(DISTINCT CGC) AS NUMENT,
-                    COUNT(DISTINCT NUMTRANSVENDA) AS NUMNOTAS,
-                    sum(nvl(TOTPESO,0)) AS TOTPESO,
-                    sum(nvl(TOTPESO,0)) - sum(nvl(TOTPESODEV,0)) AS TOTPESOLIQ,
-                    sum(nvl(VLTOTAL,0)) AS VLTOTAL,
-                    sum(nvl(VLTOTAL,0)) - sum(nvl(VLTOTALDEV,0)) AS VLTOTALLIQ,
-                    COUNT(DISTINCT DNFSARECEBER) AS DNFSARECEBER,
-                    sum(nvl(DARECEBER,0)) AS DARECEBER,
-                    COUNT(DISTINCT CARTAONFSARECEBER) AS CARTAONFSARECEBER,
-                    sum(nvl(CARTAOARECEBER,0)) AS CARTAOARECEBER,
-                    COUNT(DISTINCT CHEQUENFSARECEBER) AS CHEQUENFSARECEBER,
-                    sum(nvl(CHEQUEARECEBER,0)) AS CHEQUEARECEBER,
-                    0 AS PIXNFSARECEBER,
-                    0 AS PIXARECEBER
+                    DTSAIDA as "out_date",
+                    NUMCAR as "id",
+                    DESTINO as "destiny",
+                    CODMOTORISTA as "driver_id",
+                    MOTORISTA as "driver_name",
+                    CODVEICULO as "vehicle_id",
+                    PLACA as "plate",
+                    COUNT(DISTINCT CGC) AS "deliveries_qty",
+                    COUNT(DISTINCT NUMTRANSVENDA) AS "invoices_qty",
+                    sum(nvl("total_weight",0)) AS "total_weight",
+                    sum(nvl("total_weight",0)) - sum(nvl("total_return_weight",0)) AS "total_liq_weight",
+                    sum(nvl("total_value",0)) AS "total_value",
+                    sum(nvl("total_value",0)) - sum(nvl(VLTOTALDEV,0)) AS "total_liq_value",
+                    COUNT(DISTINCT DNFSARECEBER) AS "invoices_to_delivery_money_qty",
+                    sum(nvl(DARECEBER,0)) AS "invoices_to_delivery_money_value",
+                    COUNT(DISTINCT CARTAONFSARECEBER) AS "invoices_to_delivery_card_qty",
+                    sum(nvl(CARTAOARECEBER,0)) AS "invoices_to_delivery_card_value",
+                    COUNT(DISTINCT CHEQUENFSARECEBER) AS "invoices_to_delivery_check_qty",
+                    sum(nvl(CHEQUEARECEBER,0)) AS "invoices_to_delivery_check_value",
+                    0 AS "invoices_to_delivery_pix_qty",
+                    0 AS "invoices_to_delivery_pix_value"
                 FROM (
                     select       
                         c.DTSAIDA,                 
@@ -86,9 +86,9 @@ class Logistic_Orders_Controller extends RegistersController {
                         v.PLACA,
                         to_number(regexp_replace(s.cgc,'[^0-9]','')) as cgc,
                         '0'||s.numtransvenda AS NUMTRANSVENDA,
-                        nvl(m.qt,m.qtcont) * coalesce(m.pesoliq,p.pesoliq,1) as TOTPESO,
-                        nvl(m.qtdevol,0) * coalesce(m.pesoliq,p.pesoliq,1) as TOTPESODEV,
-                        nvl(m.qt,m.qtcont) * nvl(m.punit,m.punitcont) as VLTOTAL,
+                        nvl(m.qt,m.qtcont) * coalesce(m.pesoliq,p.pesoliq,1) as "total_weight",
+                        nvl(m.qtdevol,0) * coalesce(m.pesoliq,p.pesoliq,1) as "total_return_weight",
+                        nvl(m.qt,m.qtcont) * nvl(m.punit,m.punitcont) as "total_value",
                         nvl(m.qtdevol,0) * nvl(m.punit,m.punitcont) as VLTOTALDEV,
                         case when s.codcob in ('D','DH') then '0'||s.numtransvenda ELSE NULL end as DNFSARECEBER,
                         case when s.codcob in ('D','DH') then nvl(m.qt,m.qtcont) * nvl(m.punit,m.punitcont) ELSE NULL end as DARECEBER,
@@ -115,9 +115,9 @@ class Logistic_Orders_Controller extends RegistersController {
                         v.PLACA,
                         to_number(regexp_replace(ps.coddocidentificador,'[^0-9]','')) as cgc,
                         '1'||s.cod as numtransvenda,                                
-                        nvl(m.qtsaida,0) * coalesce(m.pesoliqun,1) as TOTPESO,
-                        nvl(m.qtdevolvida,0) * coalesce(m.pesoliqun,1) as TOTPESODEV,
-                        nvl(m.qtsaida,0) * nvl(m.vlun,0) as VLTOTAL,
+                        nvl(m.qtsaida,0) * coalesce(m.pesoliqun,1) as total_weight,
+                        nvl(m.qtdevolvida,0) * coalesce(m.pesoliqun,1) as total_return_weight,
+                        nvl(m.qtsaida,0) * nvl(m.vlun,0) as total_value,
                         nvl(m.qtdevolvida,0) * nvl(m.vlun,0) as VLTOTALDEV,
                         NULL as DNFSARECEBER,
                         NULL as DARECEBER,
@@ -155,13 +155,13 @@ class Logistic_Orders_Controller extends RegistersController {
             res.data = res.data[0] || [];
 
             if (res.data.length) {
-                let numCars = res.data.map(el=>el.NUMCAR);
+                let numCars = res.data.map(el=>el.id);
                 query = `
                     select
                         l.id,
                         l.identifier,
                         l.logistic_status_id,
-                        ls.name as LOGISTICSTATUS
+                        ls.name as "logistic_status_name"
                     from
                         logistic_orders l
                         left outer join logistic_status ls on ls.id = l.logistic_status_id
@@ -174,10 +174,10 @@ class Logistic_Orders_Controller extends RegistersController {
                     logData = _.keyBy(logData,'identifier');
                     Utils.log(logData);
                     for(let kj in res.data) {                                
-                        if (logData[res.data[kj].NUMCAR.toString()]) {
-                            res.data[kj].logistic_order_id = logData[res.data[kj].NUMCAR.toString()].id;
-                            res.data[kj].logistic_status_id = logData[res.data[kj].NUMCAR.toString()].logistic_status_id;
-                            res.data[kj].LOGISTICSTATUS = logData[res.data[kj].NUMCAR.toString()].LOGISTICSTATUS;
+                        if (logData[res.data[kj].id.toString()]) {
+                            res.data[kj].logistic_order_id = logData[res.data[kj].id.toString()].id;
+                            res.data[kj].logistic_status_id = logData[res.data[kj].id.toString()].logistic_status_id;
+                            res.data[kj].logistic_status_name = logData[res.data[kj].id.toString()].logistic_status_name;
                         }
                     }
                 }

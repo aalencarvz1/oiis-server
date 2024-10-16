@@ -16,7 +16,7 @@ const { Utils } = require("../../../controllers/utils/Utils");
 class BaseWinthorIntegrationTableModel extends BaseTableModel {    
     static schema = configDB[`${process.env.NODE_ENV||'development'}_winthor_integration`].dialectOptions.schema;  
     static getConnection = DBConnectionManager.getWinthorIntegrationDBConnection;
-    //not has foreign keys
+    //not has base foreign keys
     static getBaseTableModelForeignsKeys = () => [];
 
     /**

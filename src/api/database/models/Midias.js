@@ -28,13 +28,13 @@ class Midias extends BaseTableModel {
       name:{
         type: DataTypes.STRING(256)
       },
-      TYPE:{
+      type:{
         type: DataTypes.STRING(256)
       },
-      LOCALPATH:{
+      local_path:{
         type: DataTypes.TEXT
       },
-      BASE64CONTENT:{
+      content_base64:{
         type: DataTypes.TEXT
       },
       description: {

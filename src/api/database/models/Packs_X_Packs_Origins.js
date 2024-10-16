@@ -20,10 +20,10 @@ class Packs_X_Packs_Origins extends BaseTableModel {
       /*data_origin_id:{
         type: DataTypes.BIGINT.UNSIGNED
       }, already exists*/
-      IDSUPPLIER:{
+      supplier_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      PACKAGINGORIGIN:{
+      origin_packaging:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -35,8 +35,8 @@ class Packs_X_Packs_Origins extends BaseTableModel {
   };
   
   static uniqueFields = [
-    Sequelize.literal(`(COALESCE(IDSUPPLIER,0))`),  
-    'PACKAGINGORIGIN'
+    Sequelize.literal(`(COALESCE(supplier_id,0))`),  
+    'origin_packaging'
   ];
 
   static constraints = [...(Packs_X_Packs_Origins.getBaseTableModelConstraints() || []),...[
@@ -58,7 +58,7 @@ class Packs_X_Packs_Origins extends BaseTableModel {
       onUpdate: 'cascade'
     },*/
     {
-      fields: ['IDSUPPLIER'],
+      fields: ['supplier_id'],
       type: 'foreign key',
       references: { 
           table: Suppliers,

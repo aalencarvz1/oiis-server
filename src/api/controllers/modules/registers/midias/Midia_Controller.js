@@ -24,42 +24,42 @@ class Midia_Controller extends RegistersController{
                 let midia = null;
 
                 for(let key in registers) {
-                    let file = req.files.filter(el=>el.originalname.trim().name.toLowerCase() == registers[key].name.trim().name.toLowerCase())[0];
+                    let file = req.files.filter(el=>el.originalname.trim().toLowerCase() == registers[key].name.trim().toLowerCase())[0];
                     if (Utils.hasValue(file)) {
                         console.log('FL','file',file);
-                        tablesRefs[registers[key].TABLENAME] = tablesRefs[registers[key].TABLENAME] || await Tables.getModel().findOne({
+                        tablesRefs[registers[key].table_name] = tablesRefs[registers[key].table_name] || await Tables.getModel().findOne({
                             raw:true,
                             where:{
-                                name: registers[key].TABLENAME.trim().name.toLowerCase()
+                                name: registers[key].table_name.trim().toLowerCase()
                             }
                         });
 
-                        if (registers[key].IDONSERVER) {
+                        if (registers[key].server_id) {
                             midia = await Midias.getModel().findOne({
                                 where:{
-                                    id:registers[key].IDONSERVER
+                                    id:registers[key].server_id
                                 }
                             });
-                            midia.table_ref_id = tablesRefs[registers[key].TABLENAME].id;
+                            midia.table_ref_id = tablesRefs[registers[key].table_name].id;
                             midia.record_ref_id= registers[key].record_ref_id;
                             midia.name= file.filename;
-                            midia.TYPE= registers[key].TYPE || file.mimetype;
+                            midia.type= registers[key].type || file.mimetype;
                             midia.numeric_order= registers[key].numeric_order || 0;
-                            midia.LOCALPATH=file.path;
+                            midia.local_path=file.path;
                             await midia.save();
                         } else {
                             midia = await Midias.getModel().create({
-                                table_ref_id : tablesRefs[registers[key].TABLENAME].id,
+                                table_ref_id : tablesRefs[registers[key].table_name].id,
                                 record_ref_id: registers[key].record_ref_id,
                                 name: file.filename,
-                                TYPE: registers[key].TYPE || file.mimetype,
+                                type: registers[key].type || file.mimetype,
                                 numeric_order: registers[key].numeric_order || 0,
-                                LOCALPATH:file.path
+                                local_path:file.path
                             });                    
                         }
                         rMidias.push({
                             id:registers[key].id,
-                            IDONSERVER: midia.id
+                            server_id: midia.id
                         });
                     }
                 }            

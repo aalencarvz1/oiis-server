@@ -22,19 +22,19 @@ class Migration_Control extends BaseWinthorIntegrationTableModel {
         type: DataTypes.STRING(255),
         allowNull:false
       },
-      OBJECTREGISTERID:{
+      object_register_id:{
         type: DataTypes.STRING(2000),
         allowNull:false
       },      
-      OBJECTOPERATION:{
+      object_operation:{
         type: DataTypes.STRING(100),
         allowNull:false,
         defaultValue:'UPDATE'
       },      
-      VALUESTOMIGRATE:{
+      values_to_migrate:{
         type: DataTypes.JSON
       },
-      MIGRATEDAT:{
+      migrated_at:{
         type: DataTypes.DATE
       }
     }

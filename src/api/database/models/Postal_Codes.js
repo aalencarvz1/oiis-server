@@ -16,7 +16,7 @@ class Postal_Codes extends BaseTableModel {
   static model = null;
   static fields = {
     ...Postal_Codes.getBaseTableModelFields(),...{           
-      POSTALCODE:{
+      postal_code:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -24,7 +24,7 @@ class Postal_Codes extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDCITY:{
+      city_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -35,9 +35,9 @@ class Postal_Codes extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'POSTALCODE',
+    'postal_code',
     'address_type_id',
-    'IDCITY'
+    'city_id'
   ];
 
   static constraints = [...(Postal_Codes.getBaseTableModelConstraints() || []),...[
@@ -59,7 +59,7 @@ class Postal_Codes extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDCITY'],
+      fields: ['city_id'],
       type: 'foreign key',
       references: { 
           table: Cities,

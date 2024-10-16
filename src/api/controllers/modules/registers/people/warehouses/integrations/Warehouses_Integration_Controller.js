@@ -74,7 +74,10 @@ class Warehouses_Integration_Controller extends RegistersController {
                     },{transaction:transaction});
                 }
 
-                let client = await Clients_Integration_Controller.integrateWinthorPcClientToClient(pcfilial.CGCENT,transaction);
+                let client = await Clients_Integration_Controller.integrateWinthorPcClientToClient({
+                    winthorClientCNPJ:pcfilial.CGCENT,
+                    transaction
+                });
                 if (!client) {
                     throw new Error("client is null as return of integration client");
                 } else if (!client.success) {
@@ -88,11 +91,11 @@ class Warehouses_Integration_Controller extends RegistersController {
                 let rel = await Relationships.createIfNotExists({
                     where: {
                         status_reg_id: Record_Status.ACTIVE,
-                        IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-                        IDTABLE1 : Companies.id,
-                        IDREG1: company.id,
-                        IDTABLE2 : Warehouses.id,
-                        IDREG2: warehouse.id                            
+                        relationship_type_id: Relationship_Types.RELATIONSHIP,
+                        table_1_id : Companies.id,
+                        record_1_id: company.id,
+                        table_2_id : Warehouses.id,
+                        record_2_id: warehouse.id                            
                     },
                     transaction:transaction
                 });
@@ -100,11 +103,11 @@ class Warehouses_Integration_Controller extends RegistersController {
                 rel = await Relationships.createIfNotExists({
                     where: {
                         status_reg_id: Record_Status.ACTIVE,
-                        IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-                        IDTABLE1 : Companies.id,
-                        IDREG1: company.id,
-                        IDTABLE2 : Clients.id,
-                        IDREG2: client.id                            
+                        relationship_type_id: Relationship_Types.RELATIONSHIP,
+                        table_1_id : Companies.id,
+                        record_1_id: company.id,
+                        table_2_id : Clients.id,
+                        record_2_id: client.id                            
                     },
                     transaction:transaction
                 });
@@ -112,11 +115,11 @@ class Warehouses_Integration_Controller extends RegistersController {
                 rel = await Relationships.createIfNotExists({
                     where:{
                         status_reg_id: Record_Status.ACTIVE,
-                        IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-                        IDTABLE1 : Warehouses.id,
-                        IDREG1: warehouse.id,
-                        IDTABLE2 : Clients.id,
-                        IDREG2: client.id                            
+                        relationship_type_id: Relationship_Types.RELATIONSHIP,
+                        table_1_id : Warehouses.id,
+                        record_1_id: warehouse.id,
+                        table_2_id : Clients.id,
+                        record_2_id: client.id                            
                     },
                     transaction: transaction
                 });
@@ -124,11 +127,11 @@ class Warehouses_Integration_Controller extends RegistersController {
                 rel = await Relationships.createIfNotExists({
                     where:{
                         status_reg_id: Record_Status.ACTIVE,
-                        IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-                        IDTABLE1 : Companies.id,
-                        IDREG1: company.id,
-                        IDTABLE2 : Modules.id,
-                        IDREG2: Modules.WMS
+                        relationship_type_id: Relationship_Types.RELATIONSHIP,
+                        table_1_id : Companies.id,
+                        record_1_id: company.id,
+                        table_2_id : Modules.id,
+                        record_2_id: Modules.WMS
                     },
                     transaction: transaction
                 });
@@ -136,11 +139,11 @@ class Warehouses_Integration_Controller extends RegistersController {
                 rel = await Relationships.createIfNotExists({
                     where:{
                         status_reg_id: Record_Status.ACTIVE,
-                        IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-                        IDTABLE1 : Warehouses.id,
-                        IDREG1: warehouse.id,
-                        IDTABLE2 : Modules.id,
-                        IDREG2: Modules.WMS
+                        relationship_type_id: Relationship_Types.RELATIONSHIP,
+                        table_1_id : Warehouses.id,
+                        record_1_id: warehouse.id,
+                        table_2_id : Modules.id,
+                        record_2_id: Modules.WMS
                     },
                     transaction: transaction
                 });
@@ -148,11 +151,11 @@ class Warehouses_Integration_Controller extends RegistersController {
                 rel = await Relationships.createIfNotExists({
                     where:{
                         status_reg_id: Record_Status.ACTIVE,
-                        IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-                        IDTABLE1 : Clients.id,
-                        IDREG1: client.id,
-                        IDTABLE2 : Modules.id,
-                        IDREG2: Modules.WMS
+                        relationship_type_id: Relationship_Types.RELATIONSHIP,
+                        table_1_id : Clients.id,
+                        record_1_id: client.id,
+                        table_2_id : Modules.id,
+                        record_2_id: Modules.WMS
                     },
                     transaction: transaction
                 });                

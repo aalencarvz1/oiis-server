@@ -27,30 +27,30 @@ class Users extends BasePeopleModel {
       collaborator_id: {
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDACCESSPROFILE: {
+      access_profile_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull : false,
         defaultValue : Access_Profiles.DEFAULT
       },
-      EMAIL: {
+      email: {
         type: DataTypes.STRING(512),
         allowNull:false
       },
-      PASSWORD: {
+      password: {
         type: DataTypes.STRING(1000),
         allowNull:false
       },
-      LASTTOKEN:{
+      last_token:{
         type: DataTypes.STRING(1000)
       },
-      LASTTIMEZONEOFFSET: {
+      last_timezone_offset: {
         type: DataTypes.INTEGER
       }
     }
   };
   
   static uniqueFields = [    
-    'EMAIL'
+    'email'
   ];
 
   static constraints = [...(Users.getBaseTableModelConstraints() || []),...[
@@ -72,7 +72,7 @@ class Users extends BasePeopleModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDACCESSPROFILE'],
+      fields: ['access_profile_id'],
       type: 'foreign key',
       references: { 
           table: Access_Profiles,
@@ -85,8 +85,8 @@ class Users extends BasePeopleModel {
 
   static async createData(params) {
     params = params || {};  
-    if (params.PASSWORD) {
-      params.PASSWORD = bcrypt.hashSync(params.PASSWORD,(process.env.API_USER_PASSWORD_CRIPTSALT||10)-0)
+    if (params.password) {
+      params.password = bcrypt.hashSync(params.password,(process.env.API_USER_PASSWORD_CRIPTSALT||10)-0)
     }                  
     return await BasePeopleModel.createData.bind(Users)(params);
   }  

@@ -26,7 +26,7 @@ class Modules extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       }, 
-      ICON: {
+      icon: {
         type: DataTypes.TEXT
       }, 
       path: {

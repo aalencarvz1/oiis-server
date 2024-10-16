@@ -16,7 +16,10 @@ class DataSwap {
     setException(ex,notConsole) {
         if (!notConsole) Utils.log(ex);
         this.success = false;
-        this.message = ex.message || ex;
+        this.message = ex.sqlMessage || ex.message || ex;
+        if (ex.errors?.length) {
+            this.message = ex.errors[0].sqlMessage || ex.errors[0].message || this.message;
+        }
         this.exception = ex;        
     }
 }

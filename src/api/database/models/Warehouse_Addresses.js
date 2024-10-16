@@ -18,11 +18,11 @@ class Warehouse_Addresses extends BaseTableModel {
   static model = null;
   static fields = {
     ...Warehouse_Addresses.getBaseTableModelFields(),...{           
-      IDWAREHOUSE:{
+      warehouse_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDWAREHOUSEADDRESSTYPE:{
+      warehouse_address_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -34,15 +34,15 @@ class Warehouse_Addresses extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      IDFORMTYPE:{
+      form_type_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      ISSTORABLE: {
+      is_storable: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:1
       },
-      ISPASSABLE: {
+      is_passable: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
@@ -59,7 +59,7 @@ class Warehouse_Addresses extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDWAREHOUSE',
+    'warehouse_id',
     'identifier'
   ];
 
@@ -70,19 +70,19 @@ class Warehouse_Addresses extends BaseTableModel {
       type:"unique"
     },{
       name: Warehouse_Addresses.tableName + '_c_1',
-      fields:['ISSTORABLE'],
+      fields:['is_storable'],
       type:"check",
       where:{
-        ISSTORABLE: {
+        is_storable: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Warehouse_Addresses.tableName + '_c_2',
-      fields:['ISPASSABLE'],
+      fields:['is_passable'],
       type:"check",
       where:{
-        ISPASSABLE: {
+        is_passable: {
               [Sequelize.Op.in]: [0,1]
           }
       }
@@ -100,7 +100,7 @@ class Warehouse_Addresses extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDWAREHOUSE'],
+      fields: ['warehouse_id'],
       type: 'foreign key',
       references: { 
           table: Warehouses,
@@ -109,7 +109,7 @@ class Warehouse_Addresses extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDWAREHOUSEADDRESSTYPE'],
+      fields: ['warehouse_address_type_id'],
       type: 'foreign key',
       references: { 
           table: Warehouse_Address_Types,
@@ -127,7 +127,7 @@ class Warehouse_Addresses extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDFORMTYPE'],
+      fields: ['form_type_id'],
       type: 'foreign key',
       references: { 
           table: Form_Types,

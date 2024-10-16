@@ -245,6 +245,23 @@ class Utils {
         }        
     }
 
+    static loge(...values){
+        if ((process.env.NODE_ENV || 'development') == 'production' && (process.env.LOG_LEVEL || 'debug') == 'production') {
+            if (values[0]) {
+                let tp = typeof values[0];
+                if ((values instanceof Error                     
+                    || (tp == 'object' && values[0].message)
+                    || (tp == 'string' && (
+                        values[0] == 'FL' //FORCE LOG                        
+                    ))) && !(tp == 'object' && values[0].success)) {
+                    console.error(Utils.getMomento(),values);   
+                }
+            }
+        } else {
+            console.error(Utils.getMomento(),values);
+        }        
+    }
+
     static logToFile(...values){
         let log = [Utils.getMomento()];
         for(let key in values) {
@@ -438,6 +455,38 @@ class Utils {
             //console.log('not encountred method ',methodName,'in',obj.name || obj.constructor?.name, Object.keys(obj[ownPropName]));
         }
         return null;
+    }
+
+    static toDate(pValue, pFormat) {
+        let result = null;
+        if (pValue && pValue != null) {
+            if (typeof pValue == 'object') {
+                result = pValue;
+            } else {
+                if (pValue.indexOf("-") > -1) {
+                    result = new Date(pValue.substring(0,10).split("-").map(Number));
+                } else if (pValue.indexOf("/") > -1) {
+                    result = new Date(pValue.substring(0,10).split("/").reverse().map(Number));
+                } else {
+                    if (Utils.hasValue(pFormat)) {
+                        switch(pFormat.trim().toLowerCase()) {
+                            case "yyyymmdd":
+                                if(!/^(\d){8}$/.test(pValue)) throw new Error(`invalid date: ${pValue}`);
+                                let y = pValue.substr(0,4),
+                                    m = pValue.substr(4,2),
+                                    d = pValue.substr(6,2);
+                                result = new Date(y,m,d);
+                                break;
+                            default:
+                                throw new Error(`not expected date format: ${pFormat}`);
+                        }
+                    } else {
+                        result = new Date(pValue);
+                    }
+                }
+            }
+        }
+        return result;
     }
     
 }

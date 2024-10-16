@@ -34,7 +34,7 @@ class Measurement_Units extends BaseTableModel {
   
   static fields = {
     ...Measurement_Units.getBaseTableModelFields(),...{
-      IDGREATNESS: {
+      greatness_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
       },
@@ -96,7 +96,7 @@ class Measurement_Units extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDGREATNESS'],
+      fields: ['greatness_id'],
       type: 'foreign key',
       references: { 
           table: Greatnesses,

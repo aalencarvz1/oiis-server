@@ -16,7 +16,7 @@ class User_Profile_Timeworks extends BaseTableModel {
   
   static fields = {
     ...User_Profile_Timeworks.getBaseTableModelFields(),...{
-      IDUSER: {
+      user_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -28,7 +28,7 @@ class User_Profile_Timeworks extends BaseTableModel {
   };
   
   static uniqueFields = [    
-    'IDUSER',
+    'user_id',
     'name'
   ];
 
@@ -42,7 +42,7 @@ class User_Profile_Timeworks extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDUSER'],
+      fields: ['user_id'],
       type: 'foreign key',
       references: { 
           table: Users,

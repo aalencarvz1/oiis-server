@@ -19,58 +19,58 @@ class EpMovimentacoesSaida extends BaseEpTableModel {
 
 
   static fields = {      
-		COD:{
-			type: DataTypes.INTEGER,
-      primaryKey:true
-		},
-		CODORIGEMINFO:{
-			type: DataTypes.INTEGER
-		},
-		NUMTRANSITEMORIGEM:{
-			type: DataTypes.INTEGER
-		},
-		CODNFSAIDA:{
-			type: DataTypes.INTEGER
-		},
-		CODPROD:{
-			type: DataTypes.INTEGER
-		},
-		CODFORNEC:{
-			type: DataTypes.INTEGER
-		},
-		CODOPER:{
-			type: DataTypes.INTEGER
-		},
-		CODEPTO:{
-			type: DataTypes.INTEGER
-		},
-		CODUNIDADE:{
-			type: DataTypes.INTEGER
-		},
-		QTSAIDA:{
-			type: DataTypes.DECIMAL(38,10)
-		},
-		QTDEVOLVIDA:{
-			type: DataTypes.DECIMAL(38,10)
-		},
-		VLUN:{
-			type: DataTypes.DECIMAL(38,10)
-		},
-		PESOLIQUN:{
-			type: DataTypes.DECIMAL(38,10)
-		},
-		PESOBRUTOUN:{
-			type: DataTypes.DECIMAL(38,10)
-		},
-		DTMOVIMENTACAO:{
-			type: DataTypes.DATE
-		},
-		DTCANCEL:{
-			type: DataTypes.DATE
-		},
-		CODSTATUSREG:{
-			type: DataTypes.INTEGER
-		},
+	COD:{
+		type: DataTypes.INTEGER,
+		primaryKey:true
+	},
+	CODORIGEMINFO:{
+		type: DataTypes.INTEGER
+	},
+	NUMTRANSITEMORIGEM:{
+		type: DataTypes.INTEGER
+	},
+	CODNFSAIDA:{
+		type: DataTypes.INTEGER
+	},
+	CODPROD:{
+		type: DataTypes.INTEGER
+	},
+	CODFORNEC:{
+		type: DataTypes.INTEGER
+	},
+	CODOPER:{
+		type: DataTypes.INTEGER
+	},
+	CODEPTO:{
+		type: DataTypes.INTEGER
+	},
+	CODUNIDADE:{
+		type: DataTypes.INTEGER
+	},
+	QTSAIDA:{
+		type: DataTypes.DECIMAL(38,10)
+	},
+	QTDEVOLVIDA:{
+		type: DataTypes.DECIMAL(38,10)
+	},
+	VLUN:{
+		type: DataTypes.DECIMAL(38,10)
+	},
+	PESOLIQUN:{
+		type: DataTypes.DECIMAL(38,10)
+	},
+	PESOBRUTOUN:{
+		type: DataTypes.DECIMAL(38,10)
+	},
+	DTMOVIMENTACAO:{
+		type: DataTypes.DATE
+	},
+	DTCANCEL:{
+		type: DataTypes.DATE
+	},
+	CODSTATUSREG:{
+		type: DataTypes.INTEGER
+	},
   };
 
   static foreignsKeys = [{

@@ -19,15 +19,15 @@ class Ncms extends BaseTableModel {
   static model = null;
   static fields = {
     ...Ncms.getBaseTableModelFields(),...{           
-      CHAPTER:{
+      chapter:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      NCM:{
+      ncm:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },      
-      EXCEPTION:{
+      exception:{
         type: DataTypes.BIGINT.UNSIGNED
       },      
       description:{
@@ -37,7 +37,7 @@ class Ncms extends BaseTableModel {
     }
   };
   
-  static uniqueFields = `create unique index ${Ncms.tableName}_u1 on ${Ncms.tableName} (${Ncms.getBaseTableModelUniqueFields().join(',')},NCM,(coalesce(EXCEPTION,-1))) `;
+  static uniqueFields = `create unique index ${Ncms.tableName}_u1 on ${Ncms.tableName} (${Ncms.getBaseTableModelUniqueFields().join(',')},ncm,(coalesce(exception,-1))) `;
 
   static constraints = [...(Ncms.getBaseTableModelConstraints() || []),...[
     Ncms.uniqueFields
@@ -52,31 +52,32 @@ class Ncms extends BaseTableModel {
       let queryParams = params.queryParams || params || {};
       let winthorData = await PcNcm.getModel().findOne({
         where:{
-          CODNCM: queryParams.NCM,
-          CODEX: queryParams.EXCEPTION
+          CODNCM: queryParams.ncm,
+          CODEX: queryParams.exception
         }
       });
       if (!winthorData && (
-        Utils.hasValue(queryParams.EXCEPTION) && Utils.toBool(await Parameter_Values.get(Parameters.WINTHOR_INTEGRATION_NCM_CONSIDER_EXCEPTION_NULL_IF_NOT_EXISTS)) == true
+        Utils.hasValue(queryParams.exception) && Utils.toBool(await Parameter_Values.get(Parameters.WINTHOR_INTEGRATION_NCM_CONSIDER_EXCEPTION_NULL_IF_NOT_EXISTS)) == true
       )) { 
         winthorData = await PcNcm.getModel().findOne({
           where:{
-            CODNCM: queryParams.NCM,
+            CODNCM: queryParams.ncm,
             CODEX: null
-          }
+          },
+          transaction:params.transaction
         });
       }
       if (winthorData) {
         queryParams.data_origin_id = Data_Origins.WINTHOR;
-        queryParams.CHAPTER = queryParams.CHAPTER || winthorData.CAPITULO;
+        queryParams.chapter = queryParams.chapter || winthorData.CAPITULO;
         queryParams.description = queryParams.description || winthorData.DESCRICAO;
-        result.data = await Ncms.getModel().create(queryParams);
+        result.data = await Ncms.getModel().create(queryParams,{transaction:params.transaction});
         if (result.data) {
           result.data = result.data.dataValues;
           result.success = true;
         }
       } else {
-        throw new Error(`winthor ncm ${queryParams.NCM}(ex:${queryParams.EXCEPTION || 'null'}) not found`);
+        throw new Error(`winthor ncm ${queryParams.ncm}(ex:${queryParams.exception || 'null'}) not found`);
       }
     } catch (e) {
       result.setException(e);

@@ -91,7 +91,7 @@ class DatabaseUtils {
     }
 
 
-    static mountCondiction(whereClause,field,values,compare,valuesFunc) {
+    static mountCondition(whereClause,field,values,compare,valuesFunc) {
         if (values && values != null) {
             if (Utils.typeOf(values) == 'array') {
                 if (values.length > 0) {

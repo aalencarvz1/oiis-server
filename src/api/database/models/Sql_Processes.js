@@ -18,7 +18,7 @@ class Sql_Processes extends BaseTableModel {
 
   static fields = {
     ...Sql_Processes.getBaseTableModelFields(),...{            
-      IDSQLOBJECTTYPE: {
+      sql_object_type_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull : false
       },       
@@ -33,7 +33,7 @@ class Sql_Processes extends BaseTableModel {
   };
   
   static uniqueFields = [ 
-    'IDSQLOBJECTTYPE',
+    'sql_object_type_id',
     'name'
   ];
 
@@ -47,7 +47,7 @@ class Sql_Processes extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDSQLOBJECTTYPE'],
+      fields: ['sql_object_type_id'],
       type: 'foreign key',
       references: { 
           table: Sql_Object_Types,

@@ -117,7 +117,7 @@ class BasePeopleModel extends BaseTableModel {
    *   * @created 2023-11-10
    */
   static async updateData(params) {
-    let queryParams = params.queryParams || params || {};
+    let queryParams = params.queryParams || params.values || params.where ||  params || {};
     if (Object.keys(queryParams).indexOf('people_id') > -1 && !Utils.hasValue(queryParams.people_id)) {
       await this.addIdPeopleToReqQueryParams(params);
     }

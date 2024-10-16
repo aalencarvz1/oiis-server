@@ -24,26 +24,26 @@ class Permissions extends BaseTableModel {
 
   static fields = {
     ...Permissions.getBaseTableModelFields(),...{           
-      IDPOWERTYPE:{
+      power_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDACCESSPROFILE:{
+      access_profile_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDUSER:{
+      user_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDCONTEXT:{
+      context_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDTABLE:{
+      table_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDMODULE:{
+      module_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDROUTINE:{
+      routine_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
       start_date:{
@@ -52,32 +52,32 @@ class Permissions extends BaseTableModel {
       end_date:{
         type: DataTypes.DATE
       },
-      ALLOWEDACCESS: {
+      allowed_access: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:1
       },
-      ALLOWEDSEARCH: {
+      allowed_search: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:1
       },
-      ALLOWEDREAD: {
+      allowed_read: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:1
       },
-      ALLOWEDUPDATE: {
+      allowed_update: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:1
       },
-      ALLOWEDCREATE: {
+      allowed_create: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:1
       },
-      ALLOWEDDELETE: {
+      allowed_delete: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:1
@@ -89,13 +89,13 @@ class Permissions extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDPOWERTYPE',
-    Sequelize.literal(`(COALESCE(IDACCESSPROFILE,0))`),
-    Sequelize.literal(`(COALESCE(IDUSER,0))`),
-    Sequelize.literal(`(COALESCE(IDCONTEXT,0))`),
-    Sequelize.literal(`(COALESCE(IDTABLE,0))`),
-    Sequelize.literal(`(COALESCE(IDMODULE,0))`),
-    Sequelize.literal(`(COALESCE(IDROUTINE,0))`),
+    'power_type_id',
+    Sequelize.literal(`(COALESCE(access_profile_id,0))`),
+    Sequelize.literal(`(COALESCE(user_id,0))`),
+    Sequelize.literal(`(COALESCE(context_id,0))`),
+    Sequelize.literal(`(COALESCE(table_id,0))`),
+    Sequelize.literal(`(COALESCE(module_id,0))`),
+    Sequelize.literal(`(COALESCE(routine_id,0))`),
     Sequelize.literal(`(COALESCE(start_date,'1900-01-01'))`)
   ];
 
@@ -106,55 +106,55 @@ class Permissions extends BaseTableModel {
       type:"unique"
     },{
       name: Permissions.tableName + '_c_1',
-      fields:['ALLOWEDACCESS'],
+      fields:['allowed_access'],
       type:"check",
       where:{
-        ALLOWEDACCESS: {
+        allowed_access: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Permissions.tableName + '_c_2',
-      fields:['ALLOWEDSEARCH'],
+      fields:['allowed_search'],
       type:"check",
       where:{
-        ALLOWEDSEARCH: {
+        allowed_search: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Permissions.tableName + '_c_3',
-      fields:['ALLOWEDREAD'],
+      fields:['allowed_read'],
       type:"check",
       where:{
-        ALLOWEDREAD: {
+        allowed_read: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Permissions.tableName + '_c_4',
-      fields:['ALLOWEDUPDATE'],
+      fields:['allowed_update'],
       type:"check",
       where:{
-        ALLOWEDUPDATE: {
+        allowed_update: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Permissions.tableName + '_c_5',
-      fields:['ALLOWEDCREATE'],
+      fields:['allowed_create'],
       type:"check",
       where:{
-        ALLOWEDCREATE: {
+        allowed_create: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Permissions.tableName + '_c_6',
-      fields:['ALLOWEDDELETE'],
+      fields:['allowed_delete'],
       type:"check",
       where:{
-        ALLOWEDDELETE: {
+        allowed_delete: {
               [Sequelize.Op.in]: [0,1]
           }
       }
@@ -163,7 +163,7 @@ class Permissions extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDPOWERTYPE'],
+      fields: ['power_type_id'],
       type: 'foreign key',
       references: { 
           table: Power_Types,
@@ -172,7 +172,7 @@ class Permissions extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDACCESSPROFILE'],
+      fields: ['access_profile_id'],
       type: 'foreign key',
       references: { 
           table: Access_Profiles,
@@ -181,7 +181,7 @@ class Permissions extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDUSER'],
+      fields: ['user_id'],
       type: 'foreign key',
       references: { 
           table: Users,
@@ -190,7 +190,7 @@ class Permissions extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDCONTEXT'],
+      fields: ['context_id'],
       type: 'foreign key',
       references: { 
           table: Contexts,
@@ -199,7 +199,7 @@ class Permissions extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDTABLE'],
+      fields: ['table_id'],
       type: 'foreign key',
       references: { 
           table: Tables,
@@ -208,7 +208,7 @@ class Permissions extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDMODULE'],
+      fields: ['module_id'],
       type: 'foreign key',
       references: { 
           table: Modules,
@@ -217,7 +217,7 @@ class Permissions extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDROUTINE'],
+      fields: ['routine_id'],
       type: 'foreign key',
       references: { 
           table: Routines,

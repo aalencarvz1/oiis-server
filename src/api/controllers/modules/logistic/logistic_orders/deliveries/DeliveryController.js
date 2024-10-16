@@ -4,7 +4,7 @@ const { Logistic_Orders } = require('../../../../../database/models/Logistic_Ord
 const { Sequelize, QueryTypes } = require('sequelize');
 const { Data_Origins } = require('../../../../../database/models/Data_Origins');
 const DBConnectionManager = require('../../../../../database/DBConnectionManager');
-const { Logistic_Orders_X_Movs } = require('../../../../../database/models/Logistic_Orders_X_Movs');
+const { Logistic_Orders_Movs } = require('../../../../../database/models/Logistic_Orders_Movs');
 const { Utils } = require('../../../../utils/Utils');
 const { Movements } = require('../../../../../database/models/Movements');
 const { Financial_Value_Forms } = require('../../../../../database/models/Financial_Value_Forms');
@@ -26,25 +26,26 @@ class DeliveryController extends RegistersController{
      * @created 2024-05-01
      * @version 1.0.0
      */
-    static async getSummaryDetails(pId) {
+    static async getSummaryDetails(req,res) {
         let result = null;
         try {
             let where = [];
-            if (pId) {
-                let identifier = Utils.typeOf(pId) == 'array' ? pId : pId.toString().split(',');
+            if (req.body.id) {
+                let identifier = Utils.typeOf(req.body.id) == 'array' ? req.body.id : req.body.id.toString().split(',');
                 identifier = identifier.map(el=>Utils.hasValue(el)?el:'null');
                 where.push(`l.id in (${identifier.join(',')})`);
             }
-            if (where.length) where = ` where ${where.join(' and ')} `
+            if (where.length) where = ` where ${where.join(' and ')} `            
             else where = ' where 1=2 ';//prevent massive database get
+            console.log('where',req.body.id,where);
             let query = `
                 select
                     l.*,
                     lsl.name AS LOGISTICSTATUS,
-                    COUNT(DISTINCT CASE WHEN ls.is_to_delivery = 1 THEN m.IDCLIENT ELSE NULL END) AS QTENTREGASAENTREGAR,
-                    COUNT(DISTINCT CASE WHEN ls.is_delivering = 1 THEN m.IDCLIENT ELSE NULL END) AS QTENTREGASENTREGANDO,
-                    COUNT(DISTINCT CASE WHEN ls.id_delivered = 1 THEN m.IDCLIENT ELSE NULL END) AS QTENTREGASENTREGUES,
-                    COUNT(DISTINCT CASE WHEN ls.is_partial_returned = 1 OR ls.is_total_returned = 1 THEN m.IDCLIENT ELSE NULL END) AS QTENTREGASDEVOLVIDAS,
+                    COUNT(DISTINCT CASE WHEN ls.is_to_delivery = 1 THEN m.client_id ELSE NULL END) AS QTENTREGASAENTREGAR,
+                    COUNT(DISTINCT CASE WHEN ls.is_delivering = 1 THEN m.client_id ELSE NULL END) AS QTENTREGASENTREGANDO,
+                    COUNT(DISTINCT CASE WHEN ls.id_delivered = 1 THEN m.client_id ELSE NULL END) AS QTENTREGASENTREGUES,
+                    COUNT(DISTINCT CASE WHEN ls.is_partial_returned = 1 OR ls.is_total_returned = 1 THEN m.client_id ELSE NULL END) AS QTENTREGASDEVOLVIDAS,
                     COUNT(DISTINCT CASE WHEN ls.is_to_delivery = 1 THEN m.id ELSE NULL END) AS QTNOTASFISCAISAENTREGAR,
                     COUNT(DISTINCT CASE WHEN ls.is_delivering = 1 THEN m.id ELSE NULL END) AS QTNOTASFISCAISENTREGANDO,
                     COUNT(DISTINCT CASE WHEN ls.id_delivered = 1 THEN m.id ELSE NULL END) AS QTNOTASFISCAISENTREGUES,
@@ -103,8 +104,8 @@ class DeliveryController extends RegistersController{
                     (SELECT
                         COUNT(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.MONEY} then lxm.mov_id else null end)
                     FROM
-                        Logistic_Orders_X_Movs_X_Receipt_Values lxmr
-                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
+                        Logistic_Orders_Movs_Received_Values lxmr
+                        join Logistic_Orders_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
                     WHERE
                         lxm.logistic_order_id = l.id
                         and coalesce(lxmr.received_value,0) > 0
@@ -112,8 +113,8 @@ class DeliveryController extends RegistersController{
                     (SELECT
                         sum(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.MONEY} then coalesce(lxmr.received_value,0) else 0 end)
                     FROM
-                        Logistic_Orders_X_Movs_X_Receipt_Values lxmr
-                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
+                        Logistic_Orders_Movs_Received_Values lxmr
+                        join Logistic_Orders_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
                     WHERE
                         lxm.logistic_order_id = l.id
                         and coalesce(lxmr.received_value,0) > 0
@@ -130,8 +131,8 @@ class DeliveryController extends RegistersController{
                     (SELECT
                         COUNT(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.CARD} then lxm.mov_id else null end)
                     FROM
-                        Logistic_Orders_X_Movs_X_Receipt_Values lxmr
-                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
+                        Logistic_Orders_Movs_Received_Values lxmr
+                        join Logistic_Orders_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
                     WHERE
                         lxm.logistic_order_id = l.id
                         and coalesce(lxmr.received_value,0) > 0
@@ -139,8 +140,8 @@ class DeliveryController extends RegistersController{
                     (SELECT
                         sum(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.CARD} then coalesce(lxmr.received_value,0) else 0 end)
                     FROM
-                        Logistic_Orders_X_Movs_X_Receipt_Values lxmr
-                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
+                        Logistic_Orders_Movs_Received_Values lxmr
+                        join Logistic_Orders_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
                     WHERE
                         lxm.logistic_order_id = l.id
                         and coalesce(lxmr.received_value,0) > 0
@@ -157,8 +158,8 @@ class DeliveryController extends RegistersController{
                     (SELECT
                         COUNT(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.CHECK} then lxm.mov_id else null end)
                     FROM
-                        Logistic_Orders_X_Movs_X_Receipt_Values lxmr
-                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
+                        Logistic_Orders_Movs_Received_Values lxmr
+                        join Logistic_Orders_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
                     WHERE
                         lxm.logistic_order_id = l.id
                         and coalesce(lxmr.received_value,0) > 0
@@ -166,8 +167,8 @@ class DeliveryController extends RegistersController{
                     (SELECT
                         sum(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.CHECK} then coalesce(lxmr.received_value,0) else 0 end)
                     FROM
-                        Logistic_Orders_X_Movs_X_Receipt_Values lxmr
-                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
+                        Logistic_Orders_Movs_Received_Values lxmr
+                        join Logistic_Orders_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
                     WHERE
                         lxm.logistic_order_id = l.id
                         and coalesce(lxmr.received_value,0) > 0
@@ -184,8 +185,8 @@ class DeliveryController extends RegistersController{
                     (SELECT
                         COUNT(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.PIX} then lxm.mov_id else null end)
                     FROM
-                        Logistic_Orders_X_Movs_X_Receipt_Values lxmr
-                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
+                        Logistic_Orders_Movs_Received_Values lxmr
+                        join Logistic_Orders_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
                     WHERE
                         lxm.logistic_order_id = l.id
                         and coalesce(lxmr.received_value,0) > 0
@@ -193,8 +194,8 @@ class DeliveryController extends RegistersController{
                     (SELECT
                         sum(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.PIX} then coalesce(lxmr.received_value,0) else 0 end)
                     FROM
-                        Logistic_Orders_X_Movs_X_Receipt_Values lxmr
-                        join Logistic_Orders_X_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
+                        Logistic_Orders_Movs_Received_Values lxmr
+                        join Logistic_Orders_Movs lxm on lxm.id = lxmr.mov_logistic_order_id
                     WHERE
                         lxm.logistic_order_id = l.id
                         and coalesce(lxmr.received_value,0) > 0
@@ -202,10 +203,10 @@ class DeliveryController extends RegistersController{
                 from
                     Logistic_Orders l
                     LEFT OUTER JOIN logistic_status lsl on lsl.id = l.logistic_status_id
-                    LEFT OUTER JOIN logistic_orders_x_movs lm on lm.logistic_order_id = l.id
+                    LEFT OUTER JOIN logistic_orders_movs lm on lm.logistic_order_id = l.id
                     LEFT OUTER JOIN logistic_status ls on ls.id = lm.logistic_status_id
                     LEFT OUTER JOIN Movements m on m.id = lm.mov_id
-                    LEFT OUTER JOIN logistic_orders_x_items_mov_amt lim on lim.mov_logistic_order_id = lm.id
+                    LEFT OUTER JOIN logistic_orders_items_mov_amt lim on lim.mov_logistic_order_id = lm.id
                     LEFT OUTER JOIN item_mov_amounts ima on ima.id = lim.item_mov_amt_id                            
                 ${where || ''}
                 group by
@@ -213,12 +214,13 @@ class DeliveryController extends RegistersController{
                     lsl.name
             `;
 
-            result = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
-            result = result[0] || [];
+            res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
+            res.data = res.data[0] || [];
+            res.success = true;
         } catch (e) {
-            Utils.log(e);
+            res.setException(e);
         }
-        return result;
+        res.sendResponse();
     }
 
     /**
@@ -241,18 +243,18 @@ class DeliveryController extends RegistersController{
                 query = `
                     select                                        
                         m.CODPROD,
-                        coalesce(m.descricao,p.descricao,'') as DESCRICAO,
-                        p.CODAUXILIARTRIB AS GTINUNTRIB,
-                        p.CODAUXILIAR AS GTINUNVENDA,
-                        p.CODAUXILIAR2 AS GTINUNMASTER,
-                        coalesce(m.unidade,p.unidade,'UN') as UNIDADE,
-                        coalesce(p.UNIDADEMASTER,m.embalagem,'CX') as EMBALAGEM,
-                        coalesce(m.qtunitcx,p.qtunitcx,1) as QTUNITEMBALAGEM,
-                        coalesce(m.pesoliq,p.pesoliq,1) as PESOLIQUN,
+                        coalesce(m.descricao,p.descricao,'') as description,
+                        p.CODAUXILIARTRIB AS gtin_trib_un,
+                        p.CODAUXILIAR AS gtin_sell_un,
+                        p.CODAUXILIAR2 AS gtin_master_un,
+                        coalesce(m.unidade,p.unidade,'UN') as un,
+                        coalesce(p.UNIDADEMASTER,m.embalagem,'CX') as package,
+                        coalesce(m.qtunitcx,p.qtunitcx,1) as package_un_qty,
+                        coalesce(m.pesoliq,p.pesoliq,1) as liq_weight,
                         sum(coalesce(m.qt,m.qtcont,0)) as QT,
                         max(coalesce(m.punit,m.punitcont,0)) as VLUN,
                         '[' || (SELECT
-                            listagg('{"IDLOTEORIGEM":"'||l.numlote||'","DTVALIDADE":"'||l.dtvalidade||'","QT":'||replace(to_char(coalesce(m2.qt,m2.qtcont,0)),',','.')||'}',',') within group (order by m.numtransvenda,m.codprod)
+                            listagg('{"identifier":"'||l.numlote||'","expirartion_date":"'||l.dtvalidade||'","qty":'||replace(to_char(coalesce(m2.qt,m2.qtcont,0)),',','.')||'}',',') within group (order by m.numtransvenda,m.codprod)
                         FROM
                             JUMBO.PCLOTE l 
                             join JUMBO.PCMOV m2 on (
@@ -304,14 +306,14 @@ class DeliveryController extends RegistersController{
                 query = `
                     select                                        
                         m.CODPROD,
-                        coalesce(ep.descricao,p.descricao,'') as DESCRICAO,
-                        p.CODAUXILIARTRIB AS GTINUNTRIB,
-                        p.CODAUXILIAR AS GTINUNVENDA,
-                        p.CODAUXILIAR2 AS GTINUNMASTER,
-                        coalesce(u.sigla,p.unidade,'UN') as UNIDADE,
-                        coalesce(p.UNIDADEMASTER,'CX') as EMBALAGEM,
-                        coalesce(p.qtunitcx,1) as QTUNITEMBALAGEM,
-                        coalesce(m.pesoliqun,p.pesoliq,1) as PESOLIQUN,
+                        coalesce(ep.descricao,p.descricao,'') as description,
+                        p.CODAUXILIARTRIB AS gtin_trib_un,
+                        p.CODAUXILIAR AS gtin_sell_un,
+                        p.CODAUXILIAR2 AS gtin_master_un,
+                        coalesce(u.sigla,p.unidade,'UN') as un,
+                        coalesce(p.UNIDADEMASTER,'CX') as package,
+                        coalesce(p.qtunitcx,1) as package_un_qty,
+                        coalesce(m.pesoliqun,p.pesoliq,1) as liq_weight,
                         sum(coalesce(m.qtsaida,0)) as QT,
                         max(coalesce(m.vlun,0)) as VLUN,
                         '[]' AS LOTS,
@@ -413,13 +415,13 @@ class DeliveryController extends RegistersController{
                     ) AS VALUERETURNED
                 from
                     movements m
-                    join logistic_orders_x_movs lxm on lxm.mov_id = m.id
-                    join movs_x_items_stocks mxis on mxis.mov_id = m.id
+                    join logistic_orders_movs lxm on lxm.mov_id = m.id
+                    join movs_items_stocks mxis on mxis.mov_id = m.id
                     join item_stocks ist on ist.id = mxis.stock_item_id
-                    join Items_X_Lots_X_Containers ix on ix.id = ist.iditemxlotxcontainer
+                    join Items_Lots_Containers ix on ix.id = ist.item_lot_container_id
                     join items i on i.id = ix.item_id
-                    join item_mov_amounts im on im.mov_x_item_stock_id = mxis.id
-                    join logistic_orders_x_items_mov_amt lxim on lxim.mov_logistic_order_id = lxm.id and lxim.item_mov_amt_id = im.id                        
+                    join item_mov_amounts im on im.mov_item_stock_id = mxis.id
+                    join logistic_orders_items_mov_amt lxim on lxim.mov_logistic_order_id = lxm.id and lxim.item_mov_amt_id = im.id                        
                     left outer join logistic_status ls on ls.id = lxim.logistic_status_id
                     left outer join logistic_reasons lr on lr.id = lxim.unmoved_reason_id
                 where
@@ -529,11 +531,11 @@ class DeliveryController extends RegistersController{
                     o.name as ORIGINDATA,
                     m.id_at_origin AS id_at_originMOV,
                     m.identifier,
-                    m.IDCLIENT,
+                    m.client_id,
                     p.name AS CLIENTNAME,
                     m.financial_value_form_id,
                     rt.name AS FINANCIALVALUEFORM,
-                    m.IDSELLER,
+                    m.seller_id,
                     ps.name AS SELLERNAME,
                     CASE WHEN max(coalesce(lxim.unmoved_reason_id,-1)) > -1 then max(coalesce(lxim.unmoved_reason_id,-1)) else null end as unmoved_reason_idITEMS,
                     CASE WHEN max(coalesce(lxim.unmoved_reason_id,-1)) > -1 then (SELECT lt.name from Logistic_Reasons lt where lt.id = max(coalesce(lxim.unmoved_reason_id,-1))) else null end as REASONNOTMOVIMENTEDAMTITEMS,
@@ -555,7 +557,7 @@ class DeliveryController extends RegistersController{
                                 COALESCE(lxim.moved_amt,0) 
                                 + COALESCE(lxim.unmoved_qty,0)
                             )
-                        ) * CASE WHEN coalesce(lxim.measurement_unit_id,im.measurement_unit_id,ist.measurement_unit_id,2) = 2 then 1 else COALESCE(lxim.unit_weight,im.unit_weightt,ist.unit_weight,1) end
+                        ) * CASE WHEN coalesce(lxim.measurement_unit_id,im.measurement_unit_id,ist.measurement_unit_id,2) = 2 then 1 else COALESCE(lxim.unit_weight,im.unit_weight,ist.unit_weight,1) end
                     ) AS WEIGHTTODELIVERY,
                     SUM(
                         COALESCE(lxim.moved_amt,0) 
@@ -598,7 +600,7 @@ class DeliveryController extends RegistersController{
                     (SELECT
                         sum(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.MONEY} then coalesce(lxmr.received_value,0) else 0 end)
                     FROM
-                        Logistic_Orders_X_Movs_X_Receipt_Values lxmr
+                        Logistic_Orders_Movs_Received_Values lxmr
                     WHERE
                         lxmr.mov_logistic_order_id = lxm.id
                         and coalesce(lxmr.received_value,0) > 0
@@ -614,7 +616,7 @@ class DeliveryController extends RegistersController{
                     (SELECT
                         sum(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.CARD} then coalesce(lxmr.received_value,0) else 0 end)
                     FROM
-                        Logistic_Orders_X_Movs_X_Receipt_Values lxmr
+                        Logistic_Orders_Movs_Received_Values lxmr
                     WHERE
                         lxmr.mov_logistic_order_id = lxm.id
                         and coalesce(lxmr.received_value,0) > 0
@@ -630,7 +632,7 @@ class DeliveryController extends RegistersController{
                     (SELECT
                         sum(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.CHECK} then coalesce(lxmr.received_value,0) else 0 end)
                     FROM
-                        Logistic_Orders_X_Movs_X_Receipt_Values lxmr
+                        Logistic_Orders_Movs_Received_Values lxmr
                     WHERE
                         lxmr.mov_logistic_order_id = lxm.id
                         and coalesce(lxmr.received_value,0) > 0
@@ -646,43 +648,43 @@ class DeliveryController extends RegistersController{
                     (SELECT
                         sum(CASE WHEN lxmr.financial_value_form_id = ${Financial_Value_Forms.PIX} then coalesce(lxmr.received_value,0) else 0 end)
                     FROM
-                        Logistic_Orders_X_Movs_X_Receipt_Values lxmr
+                        Logistic_Orders_Movs_Received_Values lxmr
                     WHERE
                         lxmr.mov_logistic_order_id = lxm.id
                         and coalesce(lxmr.received_value,0) > 0
                     ) AS PIXRECEIVED
                 from
-                    Logistic_Orders_X_Movs lxm 
+                    Logistic_Orders_Movs lxm 
                     left outer join Logistic_Status ls on ls.id = lxm.logistic_status_id
                     left outer join Movements m on m.id = lxm.mov_id                            
                     left outer join Data_Origins o on o.id = m.data_origin_id
-                    left outer join Clients c on c.id = m.idclient
+                    left outer join Clients c on c.id = m.client_id
                     left outer join People p on p.id = c.people_id
                     left outer join Financial_Value_Forms rt on rt.id = m.financial_value_form_id
-                    left outer join Collaborators cl on cl.id = m.idseller
+                    left outer join Collaborators cl on cl.id = m.seller_id
                     left outer join People ps on ps.id = cl.people_id
-                    left outer join movs_x_items_stocks mxis on mxis.mov_id = m.id
-                    left outer join item_mov_amounts im on im.mov_x_item_stock_id = mxis.id
+                    left outer join movs_items_stocks mxis on mxis.mov_id = m.id
+                    left outer join item_mov_amounts im on im.mov_item_stock_id = mxis.id
                     left outer join item_stocks ist on ist.id = mxis.stock_item_id
-                    left outer join Items_X_Lots_X_Containers ix on ix.id = ist.item_lot_container_id
+                    left outer join Items_Lots_Containers ix on ix.id = ist.item_lot_container_id
                     left outer join items i on i.id = iX.item_id
-                    left outer join logistic_orders_x_items_mov_amt lxim on (
+                    left outer join logistic_orders_items_mov_amt lxim on (
                         lxim.mov_logistic_order_id = lxm.id
                         AND lxim.item_mov_amt_id = im.id
                     )
                     left outer join Logistic_Status lsxi on lsxi.id = lxim.logistic_status_id
                 ${where||''}
                 GROUP BY
-                    ${Object.keys(Logistic_Orders_X_Movs.fields).map(el=>`lxm.${el}`).join(',')},
+                    ${Object.keys(Logistic_Orders_Movs.fields).map(el=>`lxm.${el}`).join(',')},
                     ls.name,
                     o.name,
                     m.id_at_origin,
                     m.identifier,
-                    m.IDCLIENT,
+                    m.client_id,
                     p.name,
                     m.financial_value_form_id,
                     rt.name,
-                    m.IDSELLER,
+                    m.seller_id,
                     ps.name
             `;
             res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
@@ -737,20 +739,20 @@ class DeliveryController extends RegistersController{
             if (req.body.id_at_origin) {
                 let query = `
                     select
-                        ${Data_Origins.WINTHOR} as data_origin_id,
-                        'WINTHOR' AS ORIGINDATA,
-                        s.numtransvenda as id_at_origin,
-                        s.NUMTRANSVENDA,
+                        ${Data_Origins.WINTHOR} as "data_origin_id",
+                        'WINTHOR' AS "data_origin_name",
+                        s.numtransvenda as "id_at_origin",
+                        s.NUMTRANSVENDA ,
                         s.CODCLI as IDCLIENTORIGIN,
                         s.CODCLI,
                         s.NUMNOTA AS identifier,
                         s.NUMNOTA,
                         s.DTSAIDA AS DTEMISSAO,
-                        s.CODCOB AS IDFINANCIALCOLLECTIONORIGIN,
-                        s.CODPLPAG AS IDPRAZOPAGAMENTOORIGEM,
-                        s.TOTPESO as PESOTOTAL,
-                        s.VLTOTAL,
-                        s.CHAVENFE
+                        s.CODCOB AS "origin_financial_value_form_id",
+                        s.CODPLPAG AS "payment_plan_id",
+                        s.TOTPESO as "total_weight",
+                        s.VLTOTAL as "total_value",
+                        s.CHAVENFE as "invoice_key"
                     from
                         JUMBO.PCNFSAID s 
                     where
@@ -760,18 +762,18 @@ class DeliveryController extends RegistersController{
                     select
                         ${Data_Origins.AURORA} as data_origin_id,
                         'AURORA' AS ORIGINDATA,
-                        s.COD as id_at_origin,
+                        s.COD as "id_at_origin",
                         s.COD AS NUMTRANSVENDA,
                         s.CODCLIENTE as IDCLIENTORIGIN,
                         s.CODCLIENTE AS CODCLI,
                         s.NUMNOTAORIGEM AS identifier,
                         s.NUMNOTAORIGEM AS NUMNOTA,
                         s.DTEMISSAO AS DTEMISSAO,
-                        null AS IDFINANCIALCOLLECTIONORIGIN,
-                        null AS IDPRAZOPAGAMENTOORIGEM,
-                        (select sum(coalesce(ms.qtsaida,0) * coalesce(ms.pesoliqun,1)) from EP.EPMOVIMENTACOESSAIDA ms where ms.CODNFSAIDA = s.COD) as PESOTOTAL,
-                        (select sum(coalesce(ms.qtsaida,0) * coalesce(ms.vlun,0)) from EP.EPMOVIMENTACOESSAIDA ms where ms.CODNFSAIDA = s.COD) as VLTOTAL,
-                        s.CHAVENFE
+                        null AS origin_financial_value_form_id,
+                        null AS payment_plan_id,
+                        (select sum(coalesce(ms.qtsaida,0) * coalesce(ms.pesoliqun,1)) from EP.EPMOVIMENTACOESSAIDA ms where ms.CODNFSAIDA = s.COD) as total_weight,
+                        (select sum(coalesce(ms.qtsaida,0) * coalesce(ms.vlun,0)) from EP.EPMOVIMENTACOESSAIDA ms where ms.CODNFSAIDA = s.COD) as total_value,
+                        s.CHAVENFE as invoice_key
                     from
                         EP.EPNFSSAIDA s
                     where
@@ -811,7 +813,7 @@ class DeliveryController extends RegistersController{
                             ls.name AS LOGISTICSTATUS
                         from
                             Logistic_Orders l
-                            join Logistic_Orders_X_Movs lxm on lxm.logistic_order_id = l.id
+                            join Logistic_Orders_Movs lxm on lxm.logistic_order_id = l.id
                             left outer join Movements m on m.id = lxm.mov_id
                             left outer join Logistic_Status ls on ls.id = lxm.logistic_status_id
                         where
@@ -888,28 +890,28 @@ class DeliveryController extends RegistersController{
                         a.number,
                         a.latitude as CLIENT_latitude,
                         a.longitude AS CLIENT_longitude,
-                        pc.POSTALCODE,
+                        pc.postal_code,
                         concat(st.name,',',a.number,',',ct.name,' - ',stt.sigla,',',ctr.name) as GOOGLEADDRESS
                     from
                         logistic_logs lg 
-                        join tables t on LOWER(t.name) = LOWER('logistic_orders_x_items_mov_amt') and lg.table_ref_id = t.id
-                        join logistic_orders_x_items_mov_amt lxim on lxim.id = lg.record_ref_id
-                        join logistic_orders_x_movs lxm on lxm.id = lxim.mov_logistic_order_id
+                        join tables t on LOWER(t.name) = LOWER('logistic_orders_items_mov_amt') and lg.table_ref_id = t.id
+                        join logistic_orders_items_mov_amt lxim on lxim.id = lg.record_ref_id
+                        join logistic_orders_movs lxm on lxm.id = lxim.mov_logistic_order_id
                         join logistic_orders l on l.id = lxm.idlogisticorder
                         join movements m on m.id = lxm.mov_id
-                        join clients c on c.id = m.idclient
+                        join clients c on c.id = m.client_id
                         join people p on p.id = c.people_id
-                        left outer join people_x_addresses x on x.people_id = p.id
-                        left outer join addresses a on a.id = x.idaddress
+                        left outer join people_addresses x on x.people_id = p.id
+                        left outer join addresses a on a.id = x.address_id
                         left outer join postal_codes pc on pc.id = a.postal_code_id
                         left outer join neighborhoods nb on nb.id = a.neighborhood_id
                         left outer join streets st on st.id = a.street_id    
-                        left outer join cities ct on ct.id = coalesce(st.IDCITY,nb.idcity,pc.idcity)
+                        left outer join cities ct on ct.id = coalesce(st.city_id,nb.city_id,pc.city_id)
                         left outer join states stt on stt.id = ct.state_id
-                        left outer join countries ctr on ctr.id = stt.idcountry
+                        left outer join countries ctr on ctr.id = stt.country_id
                     where
                         l.id_at_origin = ${req.body.id_at_origin}
-                        AND lg.column_name = 'IDSTATUSENTREGA'
+                        AND lg.column_name = 'delivery_status_id'
                         and lg.operation in ('UPDATE','INSERT')
                         and lg.new_value IN (3,4,5)
                     group by
@@ -925,7 +927,7 @@ class DeliveryController extends RegistersController{
                         a.number,
                         a.latitude,
                         a.longitude,
-                        pc.postalcode,
+                        pc.postal_code,
                         concat(st.name,',',a.number,',',ct.name,' - ',stt.sigla,',',ctr.name)
                     order by
                         date_format(lg.created_at,'%Y-%m-%d %H:%i'),
@@ -994,8 +996,7 @@ class DeliveryController extends RegistersController{
             level++;
             switch(arrRoute[level].trim().toLowerCase()) {
                 case 'getsummarydetails':
-                    res.data = await DeliveryController.getSummaryDetails(req.body.id);
-                    res.sendResponse(200,true);
+                    return DeliveryController.getSummaryDetails(req,res);
                     break;
                 case 'invoices':                    
                     await DeliveryController.processPostInvoicesAsRoute(req,res,next,route,arrRoute,level);
@@ -1013,40 +1014,7 @@ class DeliveryController extends RegistersController{
         }
     }
 
-    /**
-     * 
-     * @param {*} req 
-     * @param {*} res 
-     * @param {*} next 
-     * @created 2024-07-13
-     * @override
-     */
-    static async processRequest(req,res,next) {
-        Utils.logi(`${this.name}`,`processRequest(${req.url})`);
-        try {
-            let origin = req.body.origin || "";
-            let urlPath = req.url;
-            urlPath = Utils.getSingleUrlPath(urlPath);
-            let arrUrlPath = urlPath.split("/");
-            if (!Utils.hasValue(arrUrlPath[0])) {
-                arrUrlPath.shift();
-            }
-            let currentPathIndex = arrUrlPath.indexOf(this.name.trim().toLowerCase());
-            let methodName = arrUrlPath[currentPathIndex+1] || req.method; 
-            switch(methodName.trim().toLowerCase()) {
-                case 'getsummarydetails':
-                    res.data = await DeliveryController.getSummaryDetails(req.body.id);
-                    return res.sendResponse(200,true);
-                    break;               
-                default:
-                    return super.processRequest(req,res,next);
-            }            
-        } catch (e) {
-            res.setException(e);
-            res.sendResponse(517,false);
-        }
-        Utils.logf(`${this.name}`,`processRequest(${req.url})`);
-    }
+
 }
 
 module.exports = {DeliveryController}

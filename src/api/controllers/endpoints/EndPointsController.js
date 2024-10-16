@@ -162,6 +162,9 @@ class EndPointsController extends BaseEndPointController{
             if (!notShowConsole) Utils.log(ex);
             this.success = false;
             this.message = ex.message || ex;
+            if (ex.errors?.length) {
+                this.message = ex.errors[0].sqlMessage || ex.errors[0].message || this.message;
+            }
             this.exception = ex;        
         }.bind(res);
     

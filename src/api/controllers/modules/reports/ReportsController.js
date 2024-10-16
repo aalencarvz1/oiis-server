@@ -59,9 +59,9 @@ class ReportsController extends RegistersController{
                         req.query.dates = req.query.dates.split(',');
                     }
                 }
-                if ((report.GETVALUEFROMTYPE||'').trim().toLowerCase() == 'query') {
-                    if ((report.GETVALUEFROMORIGIN||'').trim().toLowerCase() == 'ep') {
-                        let query = report.GETVALUEFROM;
+                if ((report.type_get_value_from||'').trim().toLowerCase() == 'query') {
+                    if ((report.origin_get_value_from||'').trim().toLowerCase() == 'ep') {
+                        let query = report.get_value_from;
                         let loopLimit = 1000;
                         let p1 = query.indexOf("${");
                         let p2 = query.indexOf("}$");
@@ -89,10 +89,10 @@ class ReportsController extends RegistersController{
                         result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
                         result = result[0] || [];
                     } else {
-                        throw new Error(`not expected GETVALUEFROMTYPE: ${report.GETVALUEFROMORIGIN}`)    
+                        throw new Error(`not expected type_get_value_from: ${report.origin_get_value_from}`)    
                     }
                 } else {
-                    throw new Error(`not expected GETVALUEFROMTYPE: ${report.GETVALUEFROMTYPE}`)
+                    throw new Error(`not expected type_get_value_from: ${report.type_get_value_from}`)
                 }
             } else {
                 throw new Error("report data fount not found or not valid at informed dates");
@@ -133,7 +133,7 @@ class ReportsController extends RegistersController{
         console.log('params',params.visions);
         let visionsIds = params.visions || [];
         let periods = params.periods || [];
-        let condictions = params.condictions || [];
+        let conditions = params.conditions || [];
         if (visionsIds.length && periods.length) {            
             if (Utils.typeOf(visionsIds) != "array") {
                 visionsIds = Utils.toArray(visionsIds,",");
@@ -147,8 +147,8 @@ class ReportsController extends RegistersController{
             //wraper perios in array o 2 elements [[init,end],..]
             periods = Utils.singleArrayTo2LevelArray(periods);
             visionsIds = [...new Set(visionsIds)]; //unique
-            if (Utils.hasValue(condictions) && typeof condictions == 'string') {
-                condictions = JSON.parse(condictions);
+            if (Utils.hasValue(conditions) && typeof conditions == 'string') {
+                conditions = JSON.parse(conditions);
             }
             Utils.log('visionsIds',visionsIds,'periods',periods);
             let minPeriod = null;
@@ -167,10 +167,10 @@ class ReportsController extends RegistersController{
                 }
             }
             
-            let condictionsVisionsIds = params.condictionsVisionsIds || (condictions||[]).map(el=>(el.reportVision || el.vision || {}).id || el.reportVision || el.vision);  
-            condictionsVisionsIds = condictionsVisionsIds.map(el=>Utils.hasValue(el)?el:'null');          
-            condictionsVisionsIds = [...new Set(condictionsVisionsIds)]; //unique
-            Utils.log('visionsIds',visionsIds,'periods',periods,'min max period',minPeriod,maxPeriod, 'condictionsVisionsIds',condictionsVisionsIds);
+            let conditionsVisionsIds = params.conditionsVisionsIds || (conditions||[]).map(el=>(el.reportVision || el.vision || {}).id || el.reportVision || el.vision);  
+            conditionsVisionsIds = conditionsVisionsIds.map(el=>Utils.hasValue(el)?el:'null');          
+            conditionsVisionsIds = [...new Set(conditionsVisionsIds)]; //unique
+            Utils.log('visionsIds',visionsIds,'periods',periods,'min max period',minPeriod,maxPeriod, 'conditionsVisionsIds',conditionsVisionsIds);
 
             //get report data fount
             let query = `
@@ -179,29 +179,29 @@ class ReportsController extends RegistersController{
                     RV.id AS IDVISION,                    
                     RF.start_date,
                     RF.end_date,
-                    RF.CONDICTIONS,
-                    RF.GETEXPECTEDDATAFROMTYPE,
-                    RF.GETEXPECTEDDATAFROMORIGIN,
-                    RF.GETEXPECTEDDATAFROM,
-                    RF.GETVALUEFROMTYPE,
-                    RF.GETVALUEFROMORIGIN,
-                    RF.GETVALUEFROM,
+                    RF.conditions,
+                    RF.type_get_expected_data_from,
+                    RF.origin_get_expected_data_from,
+                    RF.get_expected_data_from,
+                    RF.type_get_value_from,
+                    RF.origin_get_value_from,
+                    RF.get_value_from,
                     COALESCE(DR.numeric_order,DR.id) AS numeric_order,
                     CASE WHEN RV.id IN (${visionsIds.join(',')}) THEN 1 ELSE 0 END AS ISVISION,
-                    CASE WHEN RV.id IN (${condictionsVisionsIds.length ? condictionsVisionsIds.join(',') : '-1'}) THEN 1 ELSE 0 END AS ISCONDICTIONVISION
+                    CASE WHEN RV.id IN (${conditionsVisionsIds.length ? conditionsVisionsIds.join(',') : '-1'}) THEN 1 ELSE 0 END AS ISCONDITIONVISION
                 FROM
                     report_visions RV
                     JOIN relationships DR ON (
-                        DR.IDRELATIONSHIPTYPE = ${Relationship_Types.RELATIONSHIP}
-                        AND DR.IDTABLE1 = ${Report_Visions.id}
-                        AND DR.IDREG1 = RV.id
-                        AND DR.IDTABLE2 = ${Report_Data_Founts.id}
+                        DR.relationship_type_id = ${Relationship_Types.RELATIONSHIP}
+                        AND DR.table_1_id = ${Report_Visions.id}
+                        AND DR.record_1_id = RV.id
+                        AND DR.table_2_id = ${Report_Data_Founts.id}
                         AND DR.status_reg_id = ${Record_Status.ACTIVE}
-                        AND COALESCE(DR.STARTMOMENT,STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
-                        AND COALESCE(DR.ENDMOMENT,STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
+                        AND COALESCE(DR.start_at,STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
+                        AND COALESCE(DR.end_at,STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
                     )
                     JOIN report_data_founts RF ON (
-                        RF.id = DR.IDREG2
+                        RF.id = DR.record_2_id
                         AND RF.status_reg_id = ${Record_Status.ACTIVE}
                         AND COALESCE(RF.start_date,STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
                         AND COALESCE(RF.end_date,STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
@@ -209,7 +209,7 @@ class ReportsController extends RegistersController{
                 WHERE
                     (
                         RV.id IN (${visionsIds.join(',')})
-                        ${condictionsVisionsIds.length ? `OR RV.id IN (${condictionsVisionsIds.join(',')}) ` : ''}
+                        ${conditionsVisionsIds.length ? `OR RV.id IN (${conditionsVisionsIds.join(',')}) ` : ''}
                     )
                     AND RV.status_reg_id = ${Record_Status.ACTIVE}
                 ORDER BY
@@ -221,17 +221,17 @@ class ReportsController extends RegistersController{
             reportsDatasFounts = reportsDatasFounts[0] || [];
             if (reportsDatasFounts && reportsDatasFounts.length) {                
                 for(let k in reportsDatasFounts) {
-                    if (reportsDatasFounts[k].GETVALUEFROMTYPE.trim().toUpperCase() == 'STRUCTURED QUERY') {
+                    if (reportsDatasFounts[k].type_get_value_from.trim().toUpperCase() == 'STRUCTURED QUERY') {
 
                         //unify all structured report data fount in one
-                        structuredQueryOrigin = structuredQueryOrigin || reportsDatasFounts[k].GETVALUEFROMORIGIN;
-                        if (structuredQueryOrigin != reportsDatasFounts[k].GETVALUEFROMORIGIN) {
-                            throw new Error(`unsuported different origins in same structured report: ${structuredQueryOrigin},${reportsDatasFounts[k].GETVALUEFROMORIGIN}`);
+                        structuredQueryOrigin = structuredQueryOrigin || reportsDatasFounts[k].origin_get_value_from;
+                        if (structuredQueryOrigin != reportsDatasFounts[k].origin_get_value_from) {
+                            throw new Error(`unsuported different origins in same structured report: ${structuredQueryOrigin},${reportsDatasFounts[k].origin_get_value_from}`);
                         }
                         result = result || [];
                         result = await StructuredQueryUtils.unifyStructuredQuery(result,reportsDatasFounts[k],params);                       
                     } else {
-                        throw new Error(`GETVALUEFROMTYPE of report data found id ${reportsDatasFounts[k].id} not expected: ${reportsDatasFounts[k].GETVALUEFROMTYPE}`)
+                        throw new Error(`type_get_value_from of report data found id ${reportsDatasFounts[k].id} not expected: ${reportsDatasFounts[k].type_get_value_from}`)
                     }
                 }                     
             } else {
@@ -312,28 +312,28 @@ class ReportsController extends RegistersController{
             let commissionsData = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
             commissionsData = commissionsData[0] || [];
             if (commissionsData && commissionsData.length > 0) {                                    
-                let allCondictions = [];
-                let allCondictionsVisions = [];
+                let allConditions = [];
+                let allConditionsVisions = [];
                 for(let i = 0; i < commissionsData.length; i++) {
                     console.log(commissionsData[i]);
-                    let condiction = [];
-                    condiction.push(`cm."id" = ${commissionsData[i].id}`)
+                    let condition = [];
+                    condition.push(`cm."id" = ${commissionsData[i].id}`)
                     switch((commissionsData[i].entityname || 'rca').trim().toLowerCase()) {
                         case 'rca':
-                            condiction.push(`v.cod = ${commissionsData[i].entityid}`);
+                            condition.push(`v.cod = ${commissionsData[i].entityid}`);
                             break;
                         default:
                             throw new Error(`not expected entity name: ${commissionsData[i].entityname}`)
                     }
-                    condiction.push(`(${commissionsData[i].condictionjoin})`);                    
-                    allCondictions.push(condiction.join(' and '));
-                    if (Utils.hasValue(commissionsData[i].condictionreportsvisionsids)) {
-                        commissionsData[i].condictionreportsvisionsids = Utils.toArray(commissionsData[i].condictionreportsvisionsids);
-                        allCondictionsVisions = allCondictionsVisions.concat(commissionsData[i].condictionreportsvisionsids);
+                    condition.push(`(${commissionsData[i].conditionjoin})`);                    
+                    allConditions.push(condition.join(' and '));
+                    if (Utils.hasValue(commissionsData[i].conditionreportsvisionsids)) {
+                        commissionsData[i].conditionreportsvisionsids = Utils.toArray(commissionsData[i].conditionreportsvisionsids);
+                        allConditionsVisions = allConditionsVisions.concat(commissionsData[i].conditionreportsvisionsids);
                     }
                 }
-                allCondictions = [...new Set(allCondictions)];
-                allCondictionsVisions = [...new Set(allCondictionsVisions)];
+                allConditions = [...new Set(allConditions)];
+                allConditionsVisions = [...new Set(allConditionsVisions)];
 
                 let structuredQueryParams = {};
                 structuredQueryParams.visions = [8,10]; //rca,depto
@@ -352,7 +352,7 @@ class ReportsController extends RegistersController{
                 
                 //wraper perios in array o 2 elements [[init,end],..]
                 structuredQueryParams.periods = Utils.singleArrayTo2LevelArray(structuredQueryParams.periods);
-                structuredQueryParams.condictionsVisionsIds = Utils.hasValue(allCondictionsVisions) ? allCondictionsVisions : undefined;
+                structuredQueryParams.conditionsVisionsIds = Utils.hasValue(allConditionsVisions) ? allConditionsVisions : undefined;
                 let structuredQueryData = await this.getStructuredQueryData(structuredQueryParams);  
                 let reportQuery = await StructuredQueryUtils.mountQuery(structuredQueryData.structuredQuery,structuredQueryParams);
                 reportQuery = reportQuery.replace(/\s{2,}/g,' ').trim();                
@@ -360,12 +360,12 @@ class ReportsController extends RegistersController{
                 reportQuery[0] += ` join ep."commissions" cm on (
                     lower(nvl(cm."entityname",'rca')) = 'rca'
                     and cm."entityid" = s.codvendedor
-                    and (${allCondictions.join(') or (')})
+                    and (${allConditions.join(') or (')})
                 ) `;
                 reportQuery[1] += ` join ep."commissions" cm on (
                     lower(nvl(cm."entityname",'rca')) = 'rca'
                     and cm."entityid" = e.codvendedor
-                    and (${allCondictions.join(') or (')})
+                    and (${allConditions.join(') or (')})
                 ) `;
                 reportQuery = reportQuery.join(' where ');
 

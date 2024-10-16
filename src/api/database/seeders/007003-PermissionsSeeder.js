@@ -18,14 +18,14 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDPOWERTYPE: Power_Types.SYSTEM,
-      IDACCESSPROFILE: Access_Profiles.SYSTEM,
-      ALLOWEDACCESS: 1,
-      ALLOWEDSEARCH: 1,
-      ALLOWEDREAD: 1,
-      ALLOWEDUPDATE: 1,
-      ALLOWEDCREATE: 1,
-      ALLOWEDDELETE: 1
+      power_type_id: Power_Types.SYSTEM,
+      access_profile_id: Access_Profiles.SYSTEM,
+      allowed_access: 1,
+      allowed_search: 1,
+      allowed_read: 1,
+      allowed_update: 1,
+      allowed_create: 1,
+      allowed_delete: 1
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

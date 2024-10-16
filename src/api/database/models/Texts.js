@@ -15,11 +15,11 @@ class Texts extends BaseTableModel {
   static model = null;
   static fields = {
     ...Texts.getBaseTableModelFields(),...{     
-      IDLANGUAGE:{
+      language_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
       },
-      TEXT: {
+      text: {
         type: DataTypes.STRING(2000),
         allowNull:false
       }
@@ -32,7 +32,7 @@ class Texts extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys() || []),...[
     {
-      fields: ['IDLANGUAGE'],
+      fields: ['language_id'],
       type: 'foreign key',
       references: { 
           table: Languages,

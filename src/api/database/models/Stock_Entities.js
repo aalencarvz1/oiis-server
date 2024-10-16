@@ -29,19 +29,19 @@ class Stock_Entities extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      IDBUSINESSUNIT:{
+      business_unit_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDWAREHOUSE:{
+      warehouse_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDSUPPLIER:{
+      supplier_id:{
         type: DataTypes.BIGINT.UNSIGNED        
       },
-      IDCLIENT:{
+      client_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDUSER:{
+      user_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
       collaborator_id:{
@@ -65,11 +65,11 @@ class Stock_Entities extends BaseTableModel {
   
   static uniqueFields = [
     'company_id',
-    Sequelize.literal(`(COALESCE(IDBUSINESSUNIT,0))`),
-    Sequelize.literal(`(COALESCE(IDWAREHOUSE,0))`),
-    Sequelize.literal(`(COALESCE(IDSUPPLIER,0))`),
-    Sequelize.literal(`(COALESCE(IDCLIENT,0))`),
-    Sequelize.literal(`(COALESCE(IDUSER,0))`),
+    Sequelize.literal(`(COALESCE(business_unit_id,0))`),
+    Sequelize.literal(`(COALESCE(warehouse_id,0))`),
+    Sequelize.literal(`(COALESCE(supplier_id,0))`),
+    Sequelize.literal(`(COALESCE(client_id,0))`),
+    Sequelize.literal(`(COALESCE(user_id,0))`),
     Sequelize.literal(`(COALESCE(collaborator_id,0))`)
   ];
 
@@ -92,7 +92,7 @@ class Stock_Entities extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDBUSINESSUNIT'],
+      fields: ['business_unit_id'],
       type: 'foreign key',
       references: { 
           table: Business_Units,
@@ -101,7 +101,7 @@ class Stock_Entities extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDWAREHOUSE'],
+      fields: ['warehouse_id'],
       type: 'foreign key',
       references: { 
           table: Warehouses,
@@ -110,7 +110,7 @@ class Stock_Entities extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDSUPPLIER'],
+      fields: ['supplier_id'],
       type: 'foreign key',
       references: { 
           table: Suppliers,
@@ -119,7 +119,7 @@ class Stock_Entities extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDCLIENT'],
+      fields: ['client_id'],
       type: 'foreign key',
       references: { 
           table: Clients,
@@ -128,7 +128,7 @@ class Stock_Entities extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDUSER'],
+      fields: ['user_id'],
       type: 'foreign key',
       references: { 
           table: Users,

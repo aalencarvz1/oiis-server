@@ -17,11 +17,11 @@ class Logs extends BaseTableModel {
       primaryKey: true,               
       allowNull: false 
     },
-    PROCESSNAME: {
+    process_name: {
       type: DataTypes.STRING(256),
       allowNull: true
     },    
-    PROCESSVALUES: {
+    values_names: {
       type: DataTypes.STRING(2000),
       allowNull: true
     }

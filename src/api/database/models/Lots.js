@@ -19,7 +19,7 @@ class Lots extends BaseTableModel {
 
   static fields = {
     ...Lots.getBaseTableModelFields(),...{           
-      IDSUPPLIER:{
+      supplier_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
       identifier_type_id:{
@@ -30,7 +30,7 @@ class Lots extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },      
-      PRODUCTIONDATE:{
+      production_date:{
         type: DataTypes.DATE
       },      
       expiration_date:{
@@ -40,7 +40,7 @@ class Lots extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDSUPPLIER',
+    'supplier_id',
     'identifier_type_id',
     'identifier'
   ];
@@ -55,7 +55,7 @@ class Lots extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDSUPPLIER'],
+      fields: ['supplier_id'],
       type: 'foreign key',
       references: { 
           table: Suppliers,

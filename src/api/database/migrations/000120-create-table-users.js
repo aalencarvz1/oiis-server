@@ -38,9 +38,9 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,      
       people_id : People.SYSTEM,
-      IDACCESSPROFILE : Access_Profiles.SYSTEM,
-      EMAIL:process.env.SYSTEM_EMAIL || 'system@system',
-      PASSWORD: bcrypt.hashSync(process.env.SYSTEM_EMAIL_PASSWORD ||'system',(process.env.API_USER_PASSWORD_CRIPTSALT||10)-0)
+      access_profile_id : Access_Profiles.SYSTEM,
+      email:process.env.SYSTEM_EMAIL || 'system@system',
+      password: bcrypt.hashSync(process.env.SYSTEM_EMAIL_PASSWORD ||'system',(process.env.API_USER_PASSWORD_CRIPTSALT||10)-0)
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

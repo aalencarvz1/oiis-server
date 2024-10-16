@@ -18,7 +18,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDPARAMETER: Parameters.HAS_WINTHOR_INTEGRATION,
+      parameter_id: Parameters.HAS_WINTHOR_INTEGRATION,
       value : Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) ? 1 : 0
     },{
       id: Parameters.LOGISTIC_INTEGRATE_AUTOMATIC_CLOSE_BOX_DRIVER,
@@ -27,7 +27,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDPARAMETER: Parameters.LOGISTIC_INTEGRATE_AUTOMATIC_CLOSE_BOX_DRIVER,
+      parameter_id: Parameters.LOGISTIC_INTEGRATE_AUTOMATIC_CLOSE_BOX_DRIVER,
       value : 1
     },{
       id: Parameters.WMS_OUTPUT_INTEGRATION_CHECK_RCA,
@@ -36,7 +36,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDPARAMETER: Parameters.WMS_OUTPUT_INTEGRATION_CHECK_RCA,
+      parameter_id: Parameters.WMS_OUTPUT_INTEGRATION_CHECK_RCA,
       value : 1
     },{
       id: Parameters.APPS_DELIVERY_MUST_CAPTURE_SIGNATURE,
@@ -45,7 +45,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDPARAMETER: Parameters.APPS_DELIVERY_MUST_CAPTURE_SIGNATURE,
+      parameter_id: Parameters.APPS_DELIVERY_MUST_CAPTURE_SIGNATURE,
       value : 1
     },{
       id: Parameters.APPS_DELIVERY_MUST_CAPTURE_SIGNATURE_BY_INVOICE,
@@ -54,7 +54,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDPARAMETER: Parameters.APPS_DELIVERY_MUST_CAPTURE_SIGNATURE_BY_INVOICE,
+      parameter_id: Parameters.APPS_DELIVERY_MUST_CAPTURE_SIGNATURE_BY_INVOICE,
       value : 0
     },{
       id: Parameters.APPS_DELIVERY_ONLY_ONE_DELIVERY_RUNNING,
@@ -63,7 +63,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDPARAMETER: Parameters.APPS_DELIVERY_ONLY_ONE_DELIVERY_RUNNING,
+      parameter_id: Parameters.APPS_DELIVERY_ONLY_ONE_DELIVERY_RUNNING,
       value : 1
     },{
       id: Parameters.WINTHOR_INTEGRATION_NCM_CONSIDER_EXCEPTION_NULL_IF_NOT_EXISTS,
@@ -72,7 +72,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDPARAMETER: Parameters.WINTHOR_INTEGRATION_NCM_CONSIDER_EXCEPTION_NULL_IF_NOT_EXISTS,
+      parameter_id: Parameters.WINTHOR_INTEGRATION_NCM_CONSIDER_EXCEPTION_NULL_IF_NOT_EXISTS,
       value : 1
     }],{
       ignoreDuplicates:true,
