@@ -8,7 +8,7 @@ const { Item_Status } = require("./Item_Status");
 const { Warehouse_Addresses } = require("./Warehouse_Addresses");
 const { Stock_Entity_Relationship_Types } = require("./Stock_Entity_Relationship_Types");
 const { Stock_Entities } = require("./Stock_Entities");
-const { Items_X_Lots_X_Containers } = require("./Items_X_Lots_X_Containers");
+const { Items_Lots_Containers } = require("./Items_Lots_Containers");
 
 
 
@@ -106,7 +106,7 @@ class Item_Stocks extends BaseTableModel{
       fields: ['item_lot_container_id'],
       type: 'foreign key',
       references: { 
-          table: Items_X_Lots_X_Containers,
+          table: Items_Lots_Containers,
           field: 'id'
       },
       onUpdate: 'cascade'

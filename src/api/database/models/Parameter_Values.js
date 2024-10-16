@@ -16,7 +16,7 @@ class Parameter_Values extends BaseTableModel {
 
   static fields = {
     ...Parameter_Values.getBaseTableModelFields(),...{
-      IDPARAMETER: {
+      parameter_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull : false,
       },
@@ -30,7 +30,7 @@ class Parameter_Values extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDPARAMETER',
+    'parameter_id',
     Sequelize.literal(`(COALESCE(value,'NULL'))`)
   ];
 
@@ -45,7 +45,7 @@ class Parameter_Values extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDPARAMETER'],
+      fields: ['parameter_id'],
       type: 'foreign key',
       references: { 
           table: Parameters,
@@ -61,7 +61,7 @@ class Parameter_Values extends BaseTableModel {
     result = await Parameter_Values.getModel().findOne({
       raw:true,
       attributes:[Sequelize.literal(`${Parameter_Values.tableName}.*`)],
-      where:{IDPARAMETER:pIdParameter}
+      where:{parameter_id:pIdParameter}
     });
     if (result) {
       result = result.value;

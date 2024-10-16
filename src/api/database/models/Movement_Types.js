@@ -34,12 +34,12 @@ class Movement_Types extends BaseTableModel {
         allowNull: false,
         defaultValue:0
       },
-      ISCONFERENCE: {
+      is_conference: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISINTERNAL: {
+      is_internal: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
@@ -79,19 +79,19 @@ class Movement_Types extends BaseTableModel {
       }
     },{
       name: Movement_Types.tableName + '_c_3',
-      fields:['ISCONFERENCE'],
+      fields:['is_conference'],
       type:"check",
       where:{
-        ISCONFERENCE: {
+        is_conference: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Movement_Types.tableName + '_c_4',
-      fields:['ISINTERNAL'],
+      fields:['is_internal'],
       type:"check",
       where:{
-        ISINTERNAL: {
+        is_internal: {
               [Sequelize.Op.in]: [0,1]
           }
       }

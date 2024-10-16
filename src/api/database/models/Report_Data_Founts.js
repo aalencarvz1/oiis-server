@@ -27,25 +27,25 @@ class Report_Data_Founts extends BaseTableModel {
       end_date:{
         type: DataTypes.DATE
       },
-      CONDICTIONS:{
+      conditions:{
         type: DataTypes.JSON
       },
-      GETEXPECTEDDATAFROMTYPE:{
+      type_get_expected_data_from:{
         type: DataTypes.STRING
       },
-      GETEXPECTEDDATAFROMORIGIN:{
+      origin_get_expected_data_from:{
         type: DataTypes.STRING
       },
-      GETEXPECTEDDATAFROM:{
+      get_expected_data_from:{
         type: DataTypes.TEXT
       },
-      GETVALUEFROMTYPE:{
+      type_get_value_from:{
         type: DataTypes.STRING
       },
-      GETVALUEFROMORIGIN:{
+      origin_get_value_from:{
         type: DataTypes.STRING
       },
-      GETVALUEFROM:{
+      get_value_from:{
         type: DataTypes.TEXT
       }
     }

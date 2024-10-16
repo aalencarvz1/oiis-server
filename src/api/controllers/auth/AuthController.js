@@ -56,32 +56,32 @@ class AuthController extends RegistersController{
             where:{email:(body.email||'').trim().toLowerCase()}
         });        
         if (!user) return res.sendResponse(401,false,'user not found'); 
-        if (!bcrypt.compareSync(body.password, user.PASSWORD)) return res.sendResponse(401,false,'password not match'); 
-        let token = jwt.sign({id: user.id,IDACCESSPROFILE:user.IDACCESSPROFILE},process.env.API_SECRET, {expiresIn:/*process.env.API_TOKEN_EXPIRATION*/10});
-        let refreshToken = jwt.sign({id: user.id,IDACCESSPROFILE:user.IDACCESSPROFILE}, process.env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
+        if (!bcrypt.compareSync(body.password, user.password)) return res.sendResponse(401,false,'password not match'); 
+        let token = jwt.sign({id: user.id,access_profile_id:user.access_profile_id},process.env.API_SECRET, {expiresIn:/*process.env.API_TOKEN_EXPIRATION*/10});
+        let refreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, process.env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
         
-        user.LASTTOKEN = token;
-        user.LASTTIMEZONEOFFSET = body?.currentTimeZoneOffset || 0;
+        user.last_token = token;
+        user.last_timezone_offset = body?.currentTimeZoneOffset || 0;
         await user.save();
 
         let userToken = await User_Tokens.getModel().findOne({
             where:{
-                IDUSER: user.id,
-                TOKEN: token            
+                user_id: user.id,
+                token: token            
             }
         })
         if (!Utils.hasValue(userToken)) {
             try {
                 await User_Tokens.getModel().create({
-                    IDUSER: user.id,
-                    TOKEN: token,
-                    TIMEZONEOFFSET: user.LASTTIMEZONEOFFSET
+                    user_id: user.id,
+                    token: token,
+                    timezone_offset: user.last_timezone_offset
                 });
             } catch (e) {
                 Utils.log(e);
             }
         } else {
-            userToken.TIMEZONEOFFSET = user.LASTTIMEZONEOFFSET;
+            userToken.timezone_offset = user.last_timezone_offset;
             await userToken.save();
         }
 
@@ -108,7 +108,8 @@ class AuthController extends RegistersController{
             Utils.log('user',user);
             if (!user) return res.sendResponse(401,false,'user not found'); 
             Utils.log('ok0');
-            if (!bcrypt.compareSync(password, user.PASSWORD)) return res.sendResponse(401,false,'password not match'); 
+            if (!bcrypt.compareSync(password, user.password)) return res.sendResponse(401,false,'password not match'); 
+            
 
             // attach user to request object
             req.user = user
@@ -137,25 +138,25 @@ class AuthController extends RegistersController{
             if (!user) return res.sendResponse(401,false,'user not found'); 
 
             let token = jwt.sign({id: decoded.id},process.env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});            
-            let newRefreshToken = jwt.sign({id: user.id,IDACCESSPROFILE:user.IDACCESSPROFILE}, process.env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
+            let newRefreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, process.env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
 
-            user.LASTTOKEN = token;
-            user.LASTTIMEZONEOFFSET = req.body?.currentTimeZoneOffset || 0;
+            user.last_token = token;
+            user.last_timezone_offset = req.body?.currentTimeZoneOffset || 0;
             await user.save();
 
             let userToken = await User_Tokens.getModel().findOne({
                 where:{
-                    IDUSER: user.id,
-                    TOKEN: token            
+                    user_id: user.id,
+                    token: token            
                 }
             });
             Utils.log('usertoekn',userToken);
             if (!userToken) {
                 try {
                     await User_Tokens.getModel().create({
-                        IDUSER: user.id,
-                        TOKEN: token,
-                        TIMEZONEOFFSET: user.LASTTIMEZONEOFFSET
+                        user_id: user.id,
+                        token: token,
+                        TIMEZONEOFFSET: user.last_timezone_offset
                     });
                 } catch (ex) {
                     if (ex.name.trim().toLowerCase().indexOf('unique') == -1) {
@@ -163,7 +164,7 @@ class AuthController extends RegistersController{
                     } //else async other request already inserted new user token at same time
                 }
             } else {
-                userToken.TIMEZONEOFFSET = user.LASTTIMEZONEOFFSET;
+                userToken.TIMEZONEOFFSET = user.last_timezone_offset;
                 await userToken.save();
             }
             //jwt.destroy(refreshToken);
@@ -189,21 +190,21 @@ class AuthController extends RegistersController{
         if (user) return res.sendResponse(401,false,'user already register'); 
         user = await Users.getModel().create({
             creator_user_id : Users.SYSTEM,
-            IDACCESSPROFILE : Access_Profiles.DEFAULT,
-            EMAIL:(req.body.email||'').trim().toLowerCase(),
-            PASSWORD: bcrypt.hashSync(req.body.password,(process.env.API_USER_PASSWORD_CRIPTSALT||10)-0)
+            access_profile_id : Access_Profiles.DEFAULT,
+            email:(req.body.email||'').trim().toLowerCase(),
+            password: bcrypt.hashSync(req.body.password,(process.env.API_USER_PASSWORD_CRIPTSALT||10)-0)
         });
-        let token = jwt.sign({id: user.id,IDACCESSPROFILE:user.IDACCESSPROFILE},process.env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});
-        let refreshToken = jwt.sign({id: user.id,IDACCESSPROFILE:user.IDACCESSPROFILE}, process.env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
+        let token = jwt.sign({id: user.id,access_profile_id:user.access_profile_id},process.env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});
+        let refreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, process.env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
 
-        user.LASTTOKEN = token;
-        user.LASTTIMEZONEOFFSET = req.body?.currentTimeZoneOffset || 0;
+        user.last_token = token;
+        user.last_timezone_offset = req.body?.currentTimeZoneOffset || 0;
         await user.save();
 
         await User_Tokens.getModel().create({
-            IDUSER: user.id,
-            TOKEN: token,
-            TIMEZONEOFFSET: user.LASTTIMEZONEOFFSET
+            user_id: user.id,
+            token: token,
+            TIMEZONEOFFSET: user.last_timezone_offset
         });
 
         res.cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict', maxAge: 24 * 60 * 60 * 1000 })
@@ -215,7 +216,7 @@ class AuthController extends RegistersController{
      * middleware check autorization, called by all routes (app.use)
      */
     static checkToken(req,res,next) {      
-        //console.log('xxxxxxxxxxx',req.headers['x-access-token'],typeof req.headers['x-access-token'], !Utils.hasValue(req.headers['x-access-token']));  
+        console.log('xxxxxxxxxxx',req.url,req.headers['x-access-token'],typeof req.headers['x-access-token'], !Utils.hasValue(req.headers['x-access-token']));  
         if (AuthController.#unsecureRoutes.find(el=>req.url.trim().toLowerCase().indexOf(el.trim().toLowerCase()) === 0)
             && (
             !Utils.hasValue(req.headers['x-access-token'])
@@ -258,7 +259,7 @@ class AuthController extends RegistersController{
                     let user = await Users.getModel().findOne({
                         raw:true,
                         where:{
-                            EMAIL:email
+                            email:email
                         }
                     });
 

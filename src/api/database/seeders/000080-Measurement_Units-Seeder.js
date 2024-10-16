@@ -16,7 +16,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDGREATNESS: Greatnesses.QUANTITY,
+      greatness_id: Greatnesses.QUANTITY,
       name : 'UNIT',
       sigla: 'UN',
       is_scalar: 1
@@ -27,7 +27,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDGREATNESS: Greatnesses.MASS,
+      greatness_id: Greatnesses.MASS,
       name : 'KILOGRAM',
       sigla: 'KG',
       is_scalar: 1
@@ -38,7 +38,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDGREATNESS: Greatnesses.VOLUM,
+      greatness_id: Greatnesses.VOLUM,
       name : 'LITER',
       sigla: 'L',
       is_scalar: 1
@@ -49,7 +49,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDGREATNESS: Greatnesses.QUANTITY,
+      greatness_id: Greatnesses.QUANTITY,
       name : 'PIECE',
       sigla: 'PC',
       is_scalar: 1
@@ -60,7 +60,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDGREATNESS: Greatnesses.QUANTITY,
+      greatness_id: Greatnesses.QUANTITY,
       name : 'PACKAGE',
       sigla: 'PK',
       is_scalar: 1
@@ -71,7 +71,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDGREATNESS: Greatnesses.QUANTITY,
+      greatness_id: Greatnesses.QUANTITY,
       name : 'BOX',
       sigla: 'BX',
       is_scalar: 1
@@ -82,7 +82,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDGREATNESS: Greatnesses.QUANTITY,
+      greatness_id: Greatnesses.QUANTITY,
       name : 'BUCKET',
       sigla: 'BK',
       is_scalar: 1
@@ -93,7 +93,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDGREATNESS: Greatnesses.QUANTITY,
+      greatness_id: Greatnesses.QUANTITY,
       name : 'CAN',
       sigla: 'CN',
       is_scalar: 1
@@ -104,7 +104,7 @@ module.exports = {
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      IDGREATNESS: Greatnesses.QUANTITY,
+      greatness_id: Greatnesses.QUANTITY,
       name : 'BAG',
       sigla: 'BG',
       is_scalar: 1

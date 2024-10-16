@@ -44,25 +44,25 @@ class Movements extends BaseTableModel {
         allowNull:false,
         defaultValue:Action_Status.NOT_STARTED
       },
-      IDCONFERENCETYPE:{
+      conference_type_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
       company_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDWAREHOUSE:{
+      warehouse_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDBUSINESSUNIT:{
+      business_unit_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDSUPPLIER:{
+      supplier_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDCLIENT:{
+      client_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      IDSELLER:{
+      seller_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
       financial_value_form_id:{
@@ -120,7 +120,7 @@ class Movements extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDCONFERENCETYPE'],
+      fields: ['conference_type_id'],
       type: 'foreign key',
       references: { 
           table: Conference_Types,
@@ -138,7 +138,7 @@ class Movements extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDWAREHOUSE'],
+      fields: ['warehouse_id'],
       type: 'foreign key',
       references: { 
           table: Warehouses,
@@ -147,7 +147,7 @@ class Movements extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDBUSINESSUNIT'],
+      fields: ['business_unit_id'],
       type: 'foreign key',
       references: { 
           table: Business_Units,
@@ -156,7 +156,7 @@ class Movements extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDSUPPLIER'],
+      fields: ['supplier_id'],
       type: 'foreign key',
       references: { 
           table: Suppliers,
@@ -165,7 +165,7 @@ class Movements extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDCLIENT'],
+      fields: ['client_id'],
       type: 'foreign key',
       references: { 
           table: Clients,
@@ -174,7 +174,7 @@ class Movements extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDSELLER'],
+      fields: ['seller_id'],
       type: 'foreign key',
       references: { 
           table: Collaborators,
@@ -200,21 +200,21 @@ class Movements extends BaseTableModel {
         let relationshipQueryParams  = {
           where:{
             status_reg_id: Record_Status.ACTIVE,
-            IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-            IDTABLE1: Movements.id,
-            IDREG1: reg.id,
-            IDTABLE2: Business_Units.id,
-            IDREG2: businessUnit.id
+            relationship_type_id: Relationship_Types.RELATIONSHIP,
+            table_1_id: Movements.id,
+            record_1_id: reg.id,
+            table_2_id: Business_Units.id,
+            record_2_id: businessUnit.id
           }
         };
         let relationshipQueryCheckParams  = {
           where:{
             status_reg_id: Record_Status.ACTIVE,
-            IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-            IDTABLE1: Business_Units.id,
-            IDREG1: businessUnit.id,
-            IDTABLE2: Modules.id,
-            IDREG2: Modules.WMS
+            relationship_type_id: Relationship_Types.RELATIONSHIP,
+            table_1_id: Business_Units.id,
+            record_1_id: businessUnit.id,
+            table_2_id: Modules.id,
+            record_2_id: Modules.WMS
           }
         };
         if (queryParams.transaction) {
@@ -229,21 +229,21 @@ class Movements extends BaseTableModel {
         let relationshipQueryParams  = {
           where:{
             status_reg_id: Record_Status.ACTIVE,
-            IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-            IDTABLE1: Movements.id,
-            IDREG1: reg.id,
-            IDTABLE2: Warehouses.id,
-            IDREG2: warehouse.id
+            relationship_type_id: Relationship_Types.RELATIONSHIP,
+            table_1_id: Movements.id,
+            record_1_id: reg.id,
+            table_2_id: Warehouses.id,
+            record_2_id: warehouse.id
           }
         };
         let relationshipQueryCheckParams = [{
           where:{
             status_reg_id: Record_Status.ACTIVE,
-            IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-            IDTABLE1: Warehouses.id,
-            IDREG1: warehouse.id,
-            IDTABLE2: Modules.id,
-            IDREG2: Modules.WMS
+            relationship_type_id: Relationship_Types.RELATIONSHIP,
+            table_1_id: Warehouses.id,
+            record_1_id: warehouse.id,
+            table_2_id: Modules.id,
+            record_2_id: Modules.WMS
           }
         }];
 
@@ -251,11 +251,11 @@ class Movements extends BaseTableModel {
           relationshipQueryCheckParams.push({
             where:{
               status_reg_id: Record_Status.ACTIVE,
-              IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-              IDTABLE1: Business_Units.id,
-              IDREG1: businessUnit.id,
-              IDTABLE2: Warehouses.id,
-              IDREG2: warehouse.id
+              relationship_type_id: Relationship_Types.RELATIONSHIP,
+              table_1_id: Business_Units.id,
+              record_1_id: businessUnit.id,
+              table_2_id: Warehouses.id,
+              record_2_id: warehouse.id
             }
           })
         }
@@ -273,21 +273,21 @@ class Movements extends BaseTableModel {
         let relationshipQueryParams  = {
           where:{
             status_reg_id: Record_Status.ACTIVE,
-            IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-            IDTABLE1: Movements.id,
-            IDREG1: reg.id,
-            IDTABLE2: Clients.id,
-            IDREG2: client.id
+            relationship_type_id: Relationship_Types.RELATIONSHIP,
+            table_1_id: Movements.id,
+            record_1_id: reg.id,
+            table_2_id: Clients.id,
+            record_2_id: client.id
           }
         };
         let relationshipQueryCheckParams = [{
           where:{
             status_reg_id: Record_Status.ACTIVE,
-            IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-            IDTABLE1: Clients.id,
-            IDREG1: client.id,
-            IDTABLE2: Modules.id,
-            IDREG2: Modules.WMS
+            relationship_type_id: Relationship_Types.RELATIONSHIP,
+            table_1_id: Clients.id,
+            record_1_id: client.id,
+            table_2_id: Modules.id,
+            record_2_id: Modules.WMS
           }
         }];
 
@@ -295,11 +295,11 @@ class Movements extends BaseTableModel {
           relationshipQueryCheckParams.push({
             where:{
               status_reg_id: Record_Status.ACTIVE,
-              IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-              IDTABLE1: Business_Units.id,
-              IDREG1: businessUnit.id,
-              IDTABLE2: Clients.id,
-              IDREG2: client.id
+              relationship_type_id: Relationship_Types.RELATIONSHIP,
+              table_1_id: Business_Units.id,
+              record_1_id: businessUnit.id,
+              table_2_id: Clients.id,
+              record_2_id: client.id
             }
           })
         }
@@ -308,11 +308,11 @@ class Movements extends BaseTableModel {
           relationshipQueryCheckParams.push({
             where:{
               status_reg_id: Record_Status.ACTIVE,
-              IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-              IDTABLE1: Warehouses.id,
-              IDREG1: warehouse.id,
-              IDTABLE2: Clients.id,
-              IDREG2: client.id
+              relationship_type_id: Relationship_Types.RELATIONSHIP,
+              table_1_id: Warehouses.id,
+              record_1_id: warehouse.id,
+              table_2_id: Clients.id,
+              record_2_id: client.id
             }
           })
         }

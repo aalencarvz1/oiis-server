@@ -374,9 +374,9 @@ class BaseEndPointController {
             if (resultLoadControllerClass?.success && resultLoadControllerClass?.data) {                             
                 //check if method referenced in route or restfull verb exists in localized controller
                 let method = Utils.getMethodName(resultLoadControllerClass.data,methodName || req.method);
-                Utils.log(`${this.name}(${BaseEndPointController.name})`,methodName,req.method,typeof method)
+                Utils.log(`${resultLoadControllerClass.data.name}(${BaseEndPointController.name})`,methodName,req.method,typeof method)
                 if (method) {
-                    Utils.log(`${this.name}(${BaseEndPointController.name})`,'OK1');
+                    Utils.log(`calling ${resultLoadControllerClass.data.name}(${BaseEndPointController.name}).${method}`,'OK1');
                     return resultLoadControllerClass.data[method].bind(resultLoadControllerClass.data)(req,res,next);
                 } else {
                     //if method not localizad, check if controller has generic method called processrequest, then call it

@@ -14,7 +14,7 @@ class Migration_Columns extends BaseWinthorIntegrationTableModel {
   static model = null;
   static fields = {
     ...Migration_Columns.getBaseTableModelFields(),...{                 
-      IDMIGRATIONTABLE:{
+      migration_table_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -22,17 +22,17 @@ class Migration_Columns extends BaseWinthorIntegrationTableModel {
         type: DataTypes.STRING(255),
         allowNull:false
       },      
-      MIGRATEINTEGRATION:{
+      migrate_integration:{
         type: DataTypes.INTEGER(1),
         allowNull:false,
         defaultValue:1
       },
-      MIGRATEINSERT:{
+      migrate_insert:{
         type: DataTypes.INTEGER(1),
         allowNull:false,
         defaultValue:1
       },
-      MIGRATEUPDATE:{
+      migrate_update:{
         type: DataTypes.INTEGER(1),
         allowNull:false,
         defaultValue:1
@@ -41,7 +41,7 @@ class Migration_Columns extends BaseWinthorIntegrationTableModel {
   };
   
   static uniqueFields = [
-    'IDMIGRATIONTABLE',
+    'migration_table_id',
     'column_name'
   ];
 
@@ -51,35 +51,35 @@ class Migration_Columns extends BaseWinthorIntegrationTableModel {
     type:"unique"
   },{
     name: Migration_Columns.tableName + '_c_1',
-    fields:['MIGRATEINTEGRATION'],
+    fields:['migrate_integration'],
     type:"check",
     where:{
-      MIGRATEINTEGRATION: {
+      migrate_integration: {
             [Sequelize.Op.in]: [0,1]
         }
     }
   },{
     name: Migration_Columns.tableName + '_c_2',
-    fields:['MIGRATEINSERT'],
+    fields:['migrate_insert'],
     type:"check",
     where:{
-      MIGRATEINSERT: {
+      migrate_insert: {
             [Sequelize.Op.in]: [0,1]
         }
     }
   },{
     name: Migration_Columns.tableName + '_c_3',
-    fields:['MIGRATEUPDATE'],
+    fields:['migrate_update'],
     type:"check",
     where:{
-      MIGRATEUPDATE: {
+      migrate_update: {
             [Sequelize.Op.in]: [0,1]
         }
     }
   }]];
 
   static foreignsKeys = [...(Migration_Columns.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['IDMIGRATIONTABLE'],
+    fields: ['migration_table_id'],
     type: 'foreign key',
     references: { 
         table: Migration_Tables,

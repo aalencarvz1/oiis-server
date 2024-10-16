@@ -17,49 +17,49 @@ class EpProdutos extends BaseEpTableModel {
 
 
   static fields = {      
-		COD:{
-			type: DataTypes.INTEGER,
-			primaryKey:true
-		},
-		CODORIGEMINFO:{
-			type: DataTypes.INTEGER
-		},
-		CODFORNEC:{
-			type: DataTypes.INTEGER
-		},
-		CODEPTO:{
-			type: DataTypes.INTEGER
-		},
-		CODUNIDADE:{
-			type: DataTypes.INTEGER
-		},
-		DESCRICAO:{
-			type: DataTypes.TEXT
-		},
-		PESOLIQUN:{
-			type: DataTypes.DECIMAL(38,10)
-		},
-		PESOBRUTOUN:{
-			type: DataTypes.DECIMAL(38,10)
-		},
-		CODSTATUSREG:{
-			type: DataTypes.INTEGER
-		},
-		CODNEGOCIOORIGEM:{
-			type: DataTypes.INTEGER
-		},
-		CODCATEGORIAORIGEM:{
-			type: DataTypes.INTEGER
-		},
-		DTEXCLUSAO:{
-			type: DataTypes.DATE
-		},
-		ATIVO:{
-			type: DataTypes.INTEGER
-		},
-		TEMPERARMAZPADRAO:{
-			type: DataTypes.INTEGER
-		},
+	COD:{
+		type: DataTypes.INTEGER,
+		primaryKey:true
+	},
+	CODORIGEMINFO:{
+		type: DataTypes.INTEGER
+	},
+	CODFORNEC:{
+		type: DataTypes.INTEGER
+	},
+	CODEPTO:{
+		type: DataTypes.INTEGER
+	},
+	CODUNIDADE:{
+		type: DataTypes.INTEGER
+	},
+	DESCRICAO:{
+		type: DataTypes.TEXT
+	},
+	PESOLIQUN:{
+		type: DataTypes.DECIMAL(38,10)
+	},
+	PESOBRUTOUN:{
+		type: DataTypes.DECIMAL(38,10)
+	},
+	CODSTATUSREG:{
+		type: DataTypes.INTEGER
+	},
+	CODNEGOCIOORIGEM:{
+		type: DataTypes.INTEGER
+	},
+	CODCATEGORIAORIGEM:{
+		type: DataTypes.INTEGER
+	},
+	DTEXCLUSAO:{
+		type: DataTypes.DATE
+	},
+	ATIVO:{
+		type: DataTypes.INTEGER
+	},
+	TEMPERARMAZPADRAO:{
+		type: DataTypes.INTEGER
+	},
   };
 
   static foreignsKeys = [{

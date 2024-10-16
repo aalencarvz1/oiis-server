@@ -19,10 +19,10 @@ class Meas_X_Meas_Origins extends BaseTableModel {
       /*data_origin_id:{
         type: DataTypes.BIGINT.UNSIGNED
       }, already exists*/
-      IDSUPPLIER:{
+      supplier_id:{
         type: DataTypes.BIGINT.UNSIGNED
       },
-      MEASUREMENTUNITORIGIN:{
+      origin_measurement_unit:{
         type: DataTypes.STRING(256),
         allowNull:false
       },
@@ -34,8 +34,8 @@ class Meas_X_Meas_Origins extends BaseTableModel {
   };
   
   static uniqueFields = [
-    Sequelize.literal(`(COALESCE(IDSUPPLIER,0))`),
-    'MEASUREMENTUNITORIGIN'
+    Sequelize.literal(`(COALESCE(supplier_id,0))`),
+    'origin_measurement_unit'
   ];
 
   static constraints = [...(Meas_X_Meas_Origins.getBaseTableModelConstraints() || []),...[
@@ -57,7 +57,7 @@ class Meas_X_Meas_Origins extends BaseTableModel {
       onUpdate: 'cascade'
     },*/
     {
-      fields: ['IDSUPPLIER'],
+      fields: ['supplier_id'],
       type: 'foreign key',
       references: { 
           table: Suppliers,

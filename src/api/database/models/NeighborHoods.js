@@ -15,7 +15,7 @@ class NeighborHoods extends BaseTableModel {
   static model = null;
   static fields = {
     ...NeighborHoods.getBaseTableModelFields(),...{           
-      IDCITY:{
+      city_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -27,7 +27,7 @@ class NeighborHoods extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'IDCITY',
+    'city_id',
     'name'
   ];
 
@@ -41,7 +41,7 @@ class NeighborHoods extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDCITY'],
+      fields: ['city_id'],
       type: 'foreign key',
       references: { 
           table: Cities,

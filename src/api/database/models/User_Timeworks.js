@@ -16,19 +16,19 @@ class User_Timeworks extends BaseTableModel {
   
   static fields = {
     ...User_Timeworks.getBaseTableModelFields(),...{
-      IDUSERPROFILETIMEWORK: {
+      user_profile_time_work_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
-      WEEKDAY:{
+      week_day:{
         type: DataTypes.TINYINT,
         allowNull: false
       },
-      STARTAT:{
+      start_at:{
         type: DataTypes.STRING(8),
         allowNull: false
       },
-      ENDAT:{
+      end_at:{
         type: DataTypes.STRING(8),
         allowNull: false
       },
@@ -39,15 +39,15 @@ class User_Timeworks extends BaseTableModel {
   };
   
   static uniqueFields = [    
-    'IDUSERPROFILETIMEWORK',
-    'WEEKDAY',
-    'STARTAT'
+    'user_profile_time_work_id',
+    'week_day',
+    'start_at'
   ];
 
   static uniqueFields2 = [    
-    'IDUSERPROFILETIMEWORK',
-    'WEEKDAY',
-    'ENDAT'
+    'user_profile_time_work_id',
+    'week_day',
+    'end_at'
   ];
 
   static constraints = [...(User_Timeworks.getBaseTableModelConstraints() || []),...[
@@ -62,10 +62,10 @@ class User_Timeworks extends BaseTableModel {
       type:"unique"
     },{
       name: User_Timeworks.tableName + '_c_1',
-      fields:['WEEKDAY'],
+      fields:['week_day'],
       type:"check",
       where:{
-        WEEKDAY: {
+        week_day: {
               [Sequelize.Op.in]: [0,1,2,3,4,5,6]
           }
       }
@@ -74,7 +74,7 @@ class User_Timeworks extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDUSERPROFILETIMEWORK'],
+      fields: ['user_profile_time_work_id'],
       type: 'foreign key',
       references: { 
           table: User_Profile_Timeworks,

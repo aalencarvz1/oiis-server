@@ -16,8 +16,8 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'ORIGIN_INPUT',
-      ISORIGIN : 1,
-      ISTARGET : 0,
+      is_origin : 1,
+      is_target : 0,
       is_input : 1,
       is_output : 0
     },{
@@ -28,8 +28,8 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'TARGET_INPUT',
-      ISORIGIN : 0,
-      ISTARGET : 1,
+      is_origin : 0,
+      is_target : 1,
       is_input : 1,
       is_output : 0
     },{
@@ -40,8 +40,8 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'ORIGIN_OUTPUT',
-      ISORIGIN : 1,
-      ISTARGET : 0,
+      is_origin : 1,
+      is_target : 0,
       is_input : 0,
       is_output : 1
     },{
@@ -52,8 +52,8 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'TARGET_OUTPUT',
-      ISORIGIN : 0,
-      ISTARGET : 1,
+      is_origin : 0,
+      is_target : 1,
       is_input : 0,
       is_output : 1
     }],{

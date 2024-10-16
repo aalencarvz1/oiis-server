@@ -16,7 +16,7 @@ module.exports = {
       CREATE TRIGGER ${Movements.schema}.${Movements.tableName}_deleted AFTER DELETE on ${Movements.schema}.${Movements.tableName}
       FOR EACH ROW 
       BEGIN
-        DELETE FROM ${Movements.schema}.${Relationships.tableName} WHERE (${Relationships.tableName}.IDTABLE1 = ${Movements.id} AND ${Relationships.tableName}.IDREG1 = OLD.id) OR (${Relationships.tableName}.IDTABLE2 = ${Movements.id} AND ${Relationships.tableName}.IDREG2 = OLD.id);      
+        DELETE FROM ${Movements.schema}.${Relationships.tableName} WHERE (${Relationships.tableName}.table_1_id = ${Movements.id} AND ${Relationships.tableName}.record_1_id = OLD.id) OR (${Relationships.tableName}.table_2_id = ${Movements.id} AND ${Relationships.tableName}.record_2_id = OLD.id);      
       END
     `;
     if ((connectionConfig?.dialect || '').toLowerCase().trim() == 'mysql' ) {

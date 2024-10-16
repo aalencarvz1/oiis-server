@@ -19,22 +19,22 @@ class Stock_Entity_Relationship_Types extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      ISORIGIN: {
+      is_origin: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISOWNER: {
+      is_owner: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:1
       },
-      ISRESERVED: {
+      is_reserved: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
       },
-      ISTARGET: {
+      is_target: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
@@ -56,37 +56,37 @@ class Stock_Entity_Relationship_Types extends BaseTableModel {
       type:"unique"
     },{
       name: Stock_Entity_Relationship_Types.tableName + '_c_1',
-      fields:['ISORIGIN'],
+      fields:['is_origin'],
       type:"check",
       where:{
-        ISORIGIN: {
+        is_origin: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Stock_Entity_Relationship_Types.tableName + '_c_2',
-      fields:['ISOWNER'],
+      fields:['is_owner'],
       type:"check",
       where:{
-        ISOWNER: {
+        is_owner: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Stock_Entity_Relationship_Types.tableName + '_c_3',
-      fields:['ISRESERVED'],
+      fields:['is_reserved'],
       type:"check",
       where:{
-        ISRESERVED: {
+        is_reserved: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Stock_Entity_Relationship_Types.tableName + '_c_4',
-      fields:['ISTARGET'],
+      fields:['is_target'],
       type:"check",
       where:{
-        ISTARGET: {
+        is_target: {
               [Sequelize.Op.in]: [0,1]
           }
       }

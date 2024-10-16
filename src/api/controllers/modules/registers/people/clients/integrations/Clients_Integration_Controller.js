@@ -26,20 +26,26 @@ const { RegistersController } = require("../../../RegistersController");
  */
 class Clients_Integration_Controller extends RegistersController{
 
-    static async integrateWinthorPcClientToClient(winthorCgc,transaction) {    
+    static async integrateWinthorPcClientToClient(params) {    
+        Utils.logi(`${this.name}`,`integrateWinthorPcClientToClient`);
         let result = new DataSwap();
         try {    
-            if (Utils.hasValue(winthorCgc)) {
-                
-                let pcClient = await PcClient.getModel().findOne({
+            let pcClient = null;
+            if (Utils.hasValue(params.winthorClientCNPJ) || Utils.hasValue(params.winthorClientId)) {
+                Utils.log("ok0");
+                pcClient = await PcClient.getModel().findOne({
                     raw:true,
                     attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.tableName}.${el}`)),
                     where:{
                         [Sequelize.Op.and]:[
                             Sequelize.where(
-                                Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CGCENT'),'[^0-9]',''),'DECIMAL(32)'),
+                                Utils.hasValue(params.winthorClientId) 
+                                    ? Sequelize.col('CODCLI')
+                                    : Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CGCENT'),'[^0-9]',''),'DECIMAL(32)'),
                                 '=',
-                                Sequelize.cast(Sequelize.fn('regexp_replace',winthorCgc,'[^0-9]',''),'DECIMAL(32)')
+                                Utils.hasValue(params.winthorClientId) 
+                                    ? Sequelize.literal(params.winthorClientId)
+                                    : Sequelize.cast(Sequelize.fn('regexp_replace',params.winthorClientCNPJ,'[^0-9]',''),'DECIMAL(32)')
                             )
                         ],
                         DTEXCLUSAO:{
@@ -47,6 +53,7 @@ class Clients_Integration_Controller extends RegistersController{
                         }
                     }
                 });
+                Utils.log("ok1");
 
                 if (!pcClient) {
                     pcClient = await PcClient.getModel().findOne({
@@ -55,20 +62,24 @@ class Clients_Integration_Controller extends RegistersController{
                         where:{
                             [Sequelize.Op.and]:[
                                 Sequelize.where(
-                                    Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CGCENT'),'[^0-9]',''),'DECIMAL(32)'),
+                                    Utils.hasValue(params.winthorClientId) 
+                                        ? Sequelize.col('CODCLI')
+                                        : Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CGCENT'),'[^0-9]',''),'DECIMAL(32)'),
                                     '=',
-                                    Sequelize.cast(Sequelize.fn('regexp_replace',winthorCgc,'[^0-9]',''),'DECIMAL(32)')
+                                    Utils.hasValue(params.winthorClientId) 
+                                        ? Sequelize.literal(params.winthorClientId)
+                                        : Sequelize.cast(Sequelize.fn('regexp_replace',params.winthorClientCNPJ,'[^0-9]',''),'DECIMAL(32)')
                                 )
                             ]
                         }
                     });
                 }
 
-                if (!pcClient) throw new Error(`cgcent not found in PCCLIENT: ${winthorCgc}`);           
+                if (!pcClient) throw new Error(`cgcent not found in PCCLIENT: ${params.winthorClientCNPJ} ${params.winthorClientId}`);           
 
                 let people = await People_Integration_Controller.integrateWinthorPeople([{
                     TIPOFJ: pcClient.TIPOFJ,
-                    CGCENT: winthorCgc
+                    CGCENT: params.winthorClientCNPJ || pcClient.CGCENT
                 }]);
                 if (!people) throw new Error("people is null as return of people integration");
                 if (!people.success) {
@@ -78,7 +89,7 @@ class Clients_Integration_Controller extends RegistersController{
                 people = people?.data[0];
 
                 let queryParams = {};
-                if (transaction) queryParams.transaction = transaction;
+                if (params.transaction) queryParams.transaction = params.transaction;
                 queryParams.where = {
                     people_id: people.id
                 }
@@ -94,7 +105,7 @@ class Clients_Integration_Controller extends RegistersController{
 
 
                 let options = {};
-                if (transaction) options.transaction = transaction;
+                if (params.transaction) options.transaction = params.transaction;
 
                 //preserve winthor code, if violate primary key or unique, raise here
                 if (client) {
@@ -112,11 +123,12 @@ class Clients_Integration_Controller extends RegistersController{
                 result.data = client;
                 result.success = true;
             } else {
-                throw new Error("winthorCgc is empty");
+                throw new Error("params.winthorClientCNPJ is empty");
             }
         } catch (e) {
             result.setException(e);
         }
+        Utils.logf(`${this.name}`,`integrateWinthorPcClientToClient`);
         return result;
     }
 
@@ -179,7 +191,10 @@ class Clients_Integration_Controller extends RegistersController{
                         });
                         if (!warehouse) throw new Error(`warehouse ${integrations[key]?.CODFILIALNF || 1} not found`);
 
-                        let client = await Clients_Integration_Controller.integrateWinthorPcClientToClient(integrations[key].CGCENT,transaction);
+                        let client = await Clients_Integration_Controller.integrateWinthorPcClientToClient({
+                            winthorClientCNPJ: integrations[key].CGCENT,
+                            transaction
+                        });
                         if (!client) {
                             throw new Error("client is null as return of integration client");
                         } else if (!client.success) {
@@ -193,11 +208,11 @@ class Clients_Integration_Controller extends RegistersController{
                         let rel = await Relationships.createIfNotExists({
                             where: {
                                 status_reg_id: Record_Status.ACTIVE,                                    
-                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-                                IDTABLE1 : Companies.id,
-                                IDREG1: company.id,
-                                IDTABLE2 : Clients.id,
-                                IDREG2: client.id                            
+                                relationship_type_id: Relationship_Types.RELATIONSHIP,
+                                table_1_id : Companies.id,
+                                record_1_id: company.id,
+                                table_2_id : Clients.id,
+                                record_2_id: client.id                            
                             },
                             transaction:transaction
                         });
@@ -205,11 +220,11 @@ class Clients_Integration_Controller extends RegistersController{
                         rel = await Relationships.createIfNotExists({
                             where: {
                                 status_reg_id: Record_Status.ACTIVE,
-                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-                                IDTABLE1 : Business_Units.id,
-                                IDREG1: businessUnit.id,
-                                IDTABLE2 : Clients.id,
-                                IDREG2: client.id                            
+                                relationship_type_id: Relationship_Types.RELATIONSHIP,
+                                table_1_id : Business_Units.id,
+                                record_1_id: businessUnit.id,
+                                table_2_id : Clients.id,
+                                record_2_id: client.id                            
                             },
                             transaction:transaction
                         });
@@ -217,11 +232,11 @@ class Clients_Integration_Controller extends RegistersController{
                         rel = await Relationships.createIfNotExists({
                             where: {
                                 status_reg_id: Record_Status.ACTIVE,
-                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-                                IDTABLE1 : Warehouses.id,
-                                IDREG1: warehouse.id,
-                                IDTABLE2 : Clients.id,
-                                IDREG2: client.id                            
+                                relationship_type_id: Relationship_Types.RELATIONSHIP,
+                                table_1_id : Warehouses.id,
+                                record_1_id: warehouse.id,
+                                table_2_id : Clients.id,
+                                record_2_id: client.id                            
                             },
                             transaction: transaction
                         });
@@ -229,11 +244,11 @@ class Clients_Integration_Controller extends RegistersController{
                         rel = await Relationships.createIfNotExists({
                             where: {
                                 status_reg_id: Record_Status.ACTIVE,
-                                IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-                                IDTABLE1 : Clients.id,
-                                IDREG1: client.id,
-                                IDTABLE2 : Modules.id,
-                                IDREG2: Modules.WMS
+                                relationship_type_id: Relationship_Types.RELATIONSHIP,
+                                table_1_id : Clients.id,
+                                record_1_id: client.id,
+                                table_2_id : Modules.id,
+                                record_2_id: Modules.WMS
                             },
                             transaction: transaction
                         });
@@ -311,22 +326,22 @@ class Clients_Integration_Controller extends RegistersController{
                             await Relationships.createIfNotExists({
                                 where: {
                                     status_reg_id: Record_Status.ACTIVE,
-                                    IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-                                    IDTABLE1 : People.id,
-                                    IDREG1: originalPeople[k].id,
-                                    IDTABLE2 : Modules.id,
-                                    IDREG2: Modules.WMS
+                                    relationship_type_id: Relationship_Types.RELATIONSHIP,
+                                    table_1_id : People.id,
+                                    record_1_id: originalPeople[k].id,
+                                    table_2_id : Modules.id,
+                                    record_2_id: Modules.WMS
                                 }
                             });
 
                             await Relationships.createIfNotExists({
                                 where: {
                                     status_reg_id: Record_Status.ACTIVE,
-                                    IDRELATIONSHIPTYPE: Relationship_Types.RELATIONSHIP,
-                                    IDTABLE1 : People.id,
-                                    IDREG1: originalPeople[k].id,
-                                    IDTABLE2 : Modules.id,
-                                    IDREG2: Modules.LOGISTIC
+                                    relationship_type_id: Relationship_Types.RELATIONSHIP,
+                                    table_1_id : People.id,
+                                    record_1_id: originalPeople[k].id,
+                                    table_2_id : Modules.id,
+                                    record_2_id: Modules.LOGISTIC
                                 }
                             });
                         }
@@ -357,13 +372,13 @@ class Clients_Integration_Controller extends RegistersController{
                     case "winthor":                            
                         queryParams.where = queryParams.where || {};
 
-                        DatabaseUtils.mountCondiction(queryParams.where,'CODFILIALNF',req.body.filial || req.body.filiais || req.body.bussinessUnit || req.body.bussinessesUnits || []);
-                        DatabaseUtils.mountCondiction(queryParams.where,'CODUSUR1',req.body.rca || req.body.rcas || req.body.seller || req.body.sellers || []);
-                        DatabaseUtils.mountCondiction(queryParams.where,'ESTENT',req.body.uf || req.body.ufs || req.body.state || req.body.states || []);
-                        DatabaseUtils.mountCondiction(queryParams.where,'CODCIDADE',req.body.cidade || req.body.cidades || req.body.city || req.body.cityes || []);
-                        DatabaseUtils.mountCondiction(queryParams.where,'CODCLI',req.body.codcli || req.body.codclis || req.body.id || req.body.ids || []);
-                        DatabaseUtils.mountCondiction(queryParams.where,Sequelize.fn('upper',Sequelize.col('CLIENTE')),req.body.cliente || req.body.clientes || req.body.name || req.body.names || [], 'like', 'upper');
-                        DatabaseUtils.mountCondiction(queryParams.where,Sequelize.fn('upper',Sequelize.col('FANTASIA')),req.body.fantasia || req.body.fantasias || req.body.fantasy || req.body.fantasies || [], 'like', 'upper');
+                        DatabaseUtils.mountCondition(queryParams.where,'CODFILIALNF',req.body.filial || req.body.filiais || req.body.bussinessUnit || req.body.bussinessesUnits || []);
+                        DatabaseUtils.mountCondition(queryParams.where,'CODUSUR1',req.body.rca || req.body.rcas || req.body.seller || req.body.sellers || []);
+                        DatabaseUtils.mountCondition(queryParams.where,'ESTENT',req.body.uf || req.body.ufs || req.body.state || req.body.states || []);
+                        DatabaseUtils.mountCondition(queryParams.where,'CODCIDADE',req.body.cidade || req.body.cidades || req.body.city || req.body.cityes || []);
+                        DatabaseUtils.mountCondition(queryParams.where,'CODCLI',req.body.codcli || req.body.codclis || req.body.id || req.body.ids || []);
+                        DatabaseUtils.mountCondition(queryParams.where,Sequelize.fn('upper',Sequelize.col('CLIENTE')),req.body.cliente || req.body.clientes || req.body.name || req.body.names || [], 'like', 'upper');
+                        DatabaseUtils.mountCondition(queryParams.where,Sequelize.fn('upper',Sequelize.col('FANTASIA')),req.body.fantasia || req.body.fantasias || req.body.fantasy || req.body.fantasies || [], 'like', 'upper');
 
                         if (req.body.onlyWithCoordinates) {
                             queryParams.where.latitude = {

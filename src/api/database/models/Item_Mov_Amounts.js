@@ -7,7 +7,7 @@ const { Measurement_Units } = require("./Measurement_Units");
 const { Packagings } = require("./Packagings");
 const { Movement_Status } = require("./Movement_Status");
 const { Movement_Types } = require("./Movement_Types");
-const { Movs_X_Items_Stocks } = require("./Movs_X_Items_Stocks");
+const { Movs_Items_Stocks } = require("./Movs_Items_Stocks");
 
 
 /**
@@ -19,7 +19,7 @@ class Item_Mov_Amounts extends BaseTableModel {
   static model = null;
   static fields = {
     ...Item_Mov_Amounts.getBaseTableModelFields(),...{                 
-      mov_x_item_stock_id:{
+      mov_item_stock_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -78,7 +78,7 @@ class Item_Mov_Amounts extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'mov_x_item_stock_id',
+    'mov_item_stock_id',
     'type_mov_id',
     'measurement_unit_id',
     'packaging_id'
@@ -94,10 +94,10 @@ class Item_Mov_Amounts extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['mov_x_item_stock_id'],
+      fields: ['mov_item_stock_id'],
       type: 'foreign key',
       references: { 
-          table: Movs_X_Items_Stocks,
+          table: Movs_Items_Stocks,
           field: 'id'
       },
       onUpdate: 'cascade',

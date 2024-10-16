@@ -34,7 +34,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'CONFERENCE',
-      ISCONFERENCE : 1
+      is_conference : 1
     },{      
       id:Movement_Types.INTERNAL,
       status_reg_id: Record_Status.ACTIVE,
@@ -43,7 +43,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'INTERNAL',
-      ISINTERNAL : 1
+      is_internal : 1
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

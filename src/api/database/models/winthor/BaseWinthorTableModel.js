@@ -17,6 +17,9 @@ class BaseWinthorTableModel extends BaseTableModel {
     static schema = configDB[`${process.env.NODE_ENV||'development'}_winthor`].dialectOptions.schema;  
     static getConnection = DBConnectionManager.getWinthorDBConnection;
 
+    //not has base foreign keys
+    static getBaseTableModelForeignsKeys = () => [];
+    
     /**
      * run migrations of inherited model
      * @static (pay attention to bindings)

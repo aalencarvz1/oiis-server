@@ -26,7 +26,7 @@ class Parameters extends BaseTableModel {
   static model = null;
   static fields = {
     ...Parameters.getBaseTableModelFields(),...{
-      IDDATATYPE: {
+      data_type_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull : false,
       },
@@ -34,7 +34,7 @@ class Parameters extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull: false
       },
-      DEFAULTVALUE: {
+      default_value: {
         type: DataTypes.STRING(256)
       },
       description: {
@@ -58,7 +58,7 @@ class Parameters extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['IDDATATYPE'],
+      fields: ['data_type_id'],
       type: 'foreign key',
       references: { 
           table: Data_Types,

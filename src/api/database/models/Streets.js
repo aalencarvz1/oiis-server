@@ -21,7 +21,7 @@ class Streets extends BaseTableModel {
         allowNull:false,
         defaultValue: Street_Types.STREET
       },
-      IDCITY:{
+      city_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -34,7 +34,7 @@ class Streets extends BaseTableModel {
   
   static uniqueFields = [
     'street_type_id',
-    'IDCITY',
+    'city_id',
     'name'
   ];
 
@@ -57,7 +57,7 @@ class Streets extends BaseTableModel {
       onUpdate: 'cascade'
     },
     {
-      fields: ['IDCITY'],
+      fields: ['city_id'],
       type: 'foreign key',
       references: { 
           table: Cities,

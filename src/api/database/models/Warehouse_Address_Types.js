@@ -18,12 +18,12 @@ class Warehouse_Address_Types extends BaseTableModel {
         type: DataTypes.STRING(256),
         allowNull:false
       },
-      ISSTORABLE: {
+      is_storable: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:1
       },
-      ISPASSABLE: {
+      is_passable: {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue:0
@@ -42,19 +42,19 @@ class Warehouse_Address_Types extends BaseTableModel {
       type:"unique"
     },{
       name: Warehouse_Address_Types.tableName + '_c_1',
-      fields:['ISSTORABLE'],
+      fields:['is_storable'],
       type:"check",
       where:{
-        ISSTORABLE: {
+        is_storable: {
               [Sequelize.Op.in]: [0,1]
           }
       }
     },{
       name: Warehouse_Address_Types.tableName + '_c_2',
-      fields:['ISPASSABLE'],
+      fields:['is_passable'],
       type:"check",
       where:{
-        ISPASSABLE: {
+        is_passable: {
               [Sequelize.Op.in]: [0,1]
           }
       }

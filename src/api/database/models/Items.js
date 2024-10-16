@@ -116,14 +116,20 @@ class Items extends BaseTableModel {
         queryParams.id_at_origin = queryParams.id_at_origin || winthorData.CODPROD;
         queryParams.identifier_type_id = queryParams.identifier_type_id || Identifier_Types.CODE;
         queryParams.identifier = queryParams.identifier || winthorData.CODPROD;
+        if (params.transaction) {
+          Utils.log('FL','creating ncm with transaction');
+        } else {
+          Utils.log('FL','creating ncm without transaction');
+        }
         if (!Utils.hasValue(queryParams.ncm_id)) {
           let ncm = await Ncms.getOrCreate({
             raw:true,
             where:{
               data_origin_id: Data_Origins.WINTHOR,
-              NCM: winthorData.NBM,
-              EXCEPTION: Utils.hasValue(winthorData.CODNCMEX.split('.')[1]) ? winthorData.CODNCMEX.split('.')[1] : null
+              ncm: winthorData.NBM,
+              exception: Utils.hasValue(winthorData.CODNCMEX.split('.')[1]) ? winthorData.CODNCMEX.split('.')[1] : null
             },
+            transaction:params.transaction,
             createMethod: Ncms.integrateByWinthor
           });
           if (ncm.success) {
@@ -135,7 +141,7 @@ class Items extends BaseTableModel {
         queryParams.name = queryParams.name || winthorData.DESCRICAO;
         queryParams.description = queryParams.description;
         queryParams.default_expiration_time = queryParams.default_expiration_time || winthorData.PRAZOVAL;
-        result.data = await Items.getModel().create(queryParams);
+        result.data = await Items.getModel().create(queryParams,{transaction:params.transaction});
         if (result.data) {
           result.data = result.data.dataValues;
           result.success = true;
@@ -193,8 +199,9 @@ class Items extends BaseTableModel {
             raw:true,
             where:{
               data_origin_id: Data_Origins.WINTHOR,
-              NCM: 1
+              ncm: 1
             },
+            transaction:params.transaction,
             createMethod: Ncms.integrateByWinthor
           });
           if (ncm.success) {

@@ -19,70 +19,70 @@ class EpNfsEnt extends BaseEpTableModel {
 
 
   static fields = {      
-    COD:{
-			type: DataTypes.INTEGER,
-      primaryKey:true
-		},
-		CODORIGEMINFO:{
-			type: DataTypes.INTEGER
-		},
-		CODSUP:{
-			type: DataTypes.INTEGER
-		},
-		CODNFSAIDAREF:{
-			type: DataTypes.INTEGER
-		},
-		NUMTRANSENTORIGEM:{
-			type: DataTypes.INTEGER
-		},
-		NUMNOTAORIGEM:{
-			type: DataTypes.INTEGER
-		},
-		CODESPECIENF:{
-			type: DataTypes.INTEGER
-		},
-		CODFILIAL:{
-			type: DataTypes.INTEGER
-		},
-		CODCOMPRADOR:{
-			type: DataTypes.INTEGER
-		},
-		CODFORNECEDOR:{
-			type: DataTypes.INTEGER
-		},
-		CODADMINISTRADOR:{
-			type: DataTypes.INTEGER
-		},
-		CODVENDEDOR:{
-			type: DataTypes.INTEGER
-		},
-		CODCLIENTE:{
-			type: DataTypes.INTEGER
-		},
-		DTEMISSAO:{
-			type: DataTypes.DATE
-		},
-		DTMOVIMENTACAO:{
-			type: DataTypes.DATE
-		},
-		DTCANCEL:{
-			type: DataTypes.DATE
-		},
-		CODSTATUSREG:{
-			type: DataTypes.INTEGER
-		},
-		CHAVENFE:{
-			type: DataTypes.STRING(100)
-		},
-		NRCTE:{
-			type: DataTypes.INTEGER
-		},
-		NRCARGA:{
-			type: DataTypes.INTEGER
-		},
-		PLACA:{
-			type: DataTypes.STRING(12)
-		},
+	COD:{
+		type: DataTypes.INTEGER,
+		primaryKey:true
+	},
+	CODORIGEMINFO:{
+		type: DataTypes.INTEGER
+	},
+	CODSUP:{
+		type: DataTypes.INTEGER
+	},
+	CODNFSAIDAREF:{
+		type: DataTypes.INTEGER
+	},
+	NUMTRANSENTORIGEM:{
+		type: DataTypes.INTEGER
+	},
+	NUMNOTAORIGEM:{
+		type: DataTypes.INTEGER
+	},
+	CODESPECIENF:{
+		type: DataTypes.INTEGER
+	},
+	CODFILIAL:{
+		type: DataTypes.INTEGER
+	},
+	CODCOMPRADOR:{
+		type: DataTypes.INTEGER
+	},
+	CODFORNECEDOR:{
+		type: DataTypes.INTEGER
+	},
+	CODADMINISTRADOR:{
+		type: DataTypes.INTEGER
+	},
+	CODVENDEDOR:{
+		type: DataTypes.INTEGER
+	},
+	CODCLIENTE:{
+		type: DataTypes.INTEGER
+	},
+	DTEMISSAO:{
+		type: DataTypes.DATE
+	},
+	DTMOVIMENTACAO:{
+		type: DataTypes.DATE
+	},
+	DTCANCEL:{
+		type: DataTypes.DATE
+	},
+	CODSTATUSREG:{
+		type: DataTypes.INTEGER
+	},
+	CHAVENFE:{
+		type: DataTypes.STRING(100)
+	},
+	NRCTE:{
+		type: DataTypes.INTEGER
+	},
+	NRCARGA:{
+		type: DataTypes.INTEGER
+	},
+	PLACA:{
+		type: DataTypes.STRING(12)
+	},
   };
 
   static foreignsKeys = [{

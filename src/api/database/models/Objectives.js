@@ -32,25 +32,25 @@ class Objectives extends BaseTableModel {
         type: DataTypes.DATE,
         allowNull:false,
       },
-      CONDICTIONS:{
+      conditions:{
         type: DataTypes.JSON
       },
-      GETOBJECTIVEFROMTYPE:{
+      type_get_objective_from:{
         type: DataTypes.STRING
       },
-      GETOBJECTIVEFROMORIGIN:{
+      origin_get_objective_from:{
         type: DataTypes.STRING
       },
-      GETOBJECTIVEFROM:{
+      get_objective_from:{
         type: DataTypes.TEXT
       },
-      GETVALUEFROMTYPE:{
+      type_get_value_from:{
         type: DataTypes.STRING
       },
-      GETVALUEFROMORIGIN:{
+      origin_get_value_from:{
         type: DataTypes.STRING
       },
-      GETVALUEFROM:{
+      get_value_from:{
         type: DataTypes.TEXT
       }
     }

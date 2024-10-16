@@ -17,6 +17,9 @@ class BaseSjdTableModel extends BaseTableModel {
     static schema = configDB[`${process.env.NODE_ENV||'development'}_consult`].dialectOptions.schema;  
     static getConnection = DBConnectionManager.getConsultDBConnection;
 
+    //not has base foreign keys
+    static getBaseTableModelForeignsKeys = () => [];
+    
     /**
      * run migrations of inherited model
      * @static (pay attention to bindings)

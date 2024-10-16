@@ -16,7 +16,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'VALUES',
-      VISIBLE : 0,
+      is_visible : 0,
     },{      
       id:Report_Visions.ORIGIN_DATA,
       status_reg_id: Record_Status.ACTIVE,
@@ -25,7 +25,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'ORIGIN DATA',
-      VISIBLE : 1,
+      is_visible : 1,
     },{      
       id:Report_Visions.COMPANY,
       status_reg_id: Record_Status.ACTIVE,
@@ -34,7 +34,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'COMPANY',
-      VISIBLE : 1,
+      is_visible : 1,
     },{      
       id:Report_Visions.BUSINESS_UNIT,
       status_reg_id: Record_Status.ACTIVE,
@@ -43,7 +43,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'BUSINESS UNIT',
-      VISIBLE : 1,
+      is_visible : 1,
     },{      
       id:Report_Visions.SUPPLIER,
       status_reg_id: Record_Status.ACTIVE,
@@ -52,7 +52,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'SUPPLIER',
-      VISIBLE : 1,
+      is_visible : 1,
     },{      
       id:Report_Visions.CITY,
       status_reg_id: Record_Status.ACTIVE,
@@ -61,7 +61,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'CITY',
-      VISIBLE : 1,
+      is_visible : 1,
     },{      
       id:Report_Visions.SUPERVISOR,
       status_reg_id: Record_Status.ACTIVE,
@@ -70,7 +70,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'SUPERVISOR',
-      VISIBLE : 1,
+      is_visible : 1,
     },{      
       id:Report_Visions.SELLER,
       status_reg_id: Record_Status.ACTIVE,
@@ -79,7 +79,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'SELLER',
-      VISIBLE : 1,
+      is_visible : 1,
     },{      
       id:Report_Visions.BUSINESS_AREA,
       status_reg_id: Record_Status.ACTIVE,
@@ -88,7 +88,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'BUSINESS AREA',
-      VISIBLE : 1,
+      is_visible : 1,
     },{      
       id:Report_Visions.DEPARTMENT,
       status_reg_id: Record_Status.ACTIVE,
@@ -97,7 +97,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'DEPARTMENT',
-      VISIBLE : 1,
+      is_visible : 1,
     },{      
       id:Report_Visions.PRODUCT,
       status_reg_id: Record_Status.ACTIVE,
@@ -106,7 +106,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'PRODUCT',
-      VISIBLE : 1,
+      is_visible : 1,
     },{      
       id:Report_Visions.EVOLUTION,
       status_reg_id: Record_Status.ACTIVE,
@@ -115,7 +115,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'EVOLUTION',
-      VISIBLE : 1,
+      is_visible : 1,
     },{      
       id:Report_Visions.CLIENT,
       status_reg_id: Record_Status.ACTIVE,
@@ -124,7 +124,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'CLIENT',
-      VISIBLE : 1,
+      is_visible : 1,
     },{      
       id:Report_Visions.NETWORK_CLIENT,
       status_reg_id: Record_Status.ACTIVE,
@@ -133,7 +133,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'NETWORK CLIENT',
-      VISIBLE : 1,
+      is_visible : 1,
     },{      
       id:Report_Visions.ROUTE,
       status_reg_id: Record_Status.ACTIVE,
@@ -142,7 +142,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'ROUTE',
-      VISIBLE : 1,
+      is_visible : 1,
     },{      
       id:Report_Visions.SQUARE,
       status_reg_id: Record_Status.ACTIVE,
@@ -151,7 +151,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'SQUARE',
-      VISIBLE : 1,
+      is_visible : 1,
     },{      
       id:Report_Visions.INVOICE,
       status_reg_id: Record_Status.ACTIVE,
@@ -160,7 +160,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'INVOICE',
-      VISIBLE : 1,
+      is_visible : 1,
     },{      
       id:Report_Visions.ITEM_INVOICE,
       status_reg_id: Record_Status.ACTIVE,
@@ -169,7 +169,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'ITEM INVOICE',
-      VISIBLE : 1,
+      is_visible : 1,
     },{      
       id:Report_Visions.ORIGIN_BUSINESS,
       status_reg_id: Record_Status.ACTIVE,
@@ -178,7 +178,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'ORIGIN BUSINESS',
-      VISIBLE : 1,
+      is_visible : 1,
     },{      
       id:Report_Visions.ORIGIN_CATEGORY,
       status_reg_id: Record_Status.ACTIVE,
@@ -187,7 +187,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'ORIGIN CATEGORY',
-      VISIBLE : 1,
+      is_visible : 1,
     },{      
       id:Report_Visions.PLATE,
       status_reg_id: Record_Status.ACTIVE,
@@ -196,7 +196,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'PLATE',
-      VISIBLE : 1,
+      is_visible : 1,
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null
