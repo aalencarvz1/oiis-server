@@ -3,6 +3,7 @@
 /*imports*/
 const { DataTypes } = require("sequelize");
 const { BaseWinthorTableModel } = require('./BaseWinthorTableModel');
+const { PcNfsaid } = require("./PcNfsaid");
 
 /**
  * class model
@@ -14,49 +15,57 @@ class PcPixCobrancaDados extends BaseWinthorTableModel {
 
 
   static fields = {            
-      NUMTRANSPAGDIGITAL:{
-        type: DataTypes.STRING(100),
-        primaryKey:true,
-        allowNull:false,        
-      },
-      FILIAL: {
-        type: DataTypes.STRING(2)
-      },
-      LINK: {
-        type: DataTypes.STRING(250)
-      },
-      QRCODE: {
-        type: DataTypes.STRING(4000)
-      },      
-      VENCIMENTO:{
-        type: DataTypes.DATE,
-      },
-      DESCRICAO: {
-        type: DataTypes.STRING(4000)
-      },
-      NUMTRANSVENDA: {
-        type: DataTypes.STRING(30)
-      },
-      PREST: {
-        type: DataTypes.STRING(2)
-      },
-      JUROS: {
-        type: DataTypes.DECIMAL(10,2)
-      },
-      EMAIL_ENVIADO: {
-        type: DataTypes.STRING(1),
-        defaultValue: 'N'
-      },
-      STATUS: {
-        type: DataTypes.STRING(1000)
-      },
-      BAIXADOPCPRESTVIAAPI: {
-        type: DataTypes.INTEGER(1),
-        allowNull: false,
-        defaultValue:0
-      }
+    NUMTRANSPAGDIGITAL:{
+      type: DataTypes.STRING(100),
+      primaryKey:true,
+      allowNull:false,        
+    },
+    FILIAL: {
+      type: DataTypes.STRING(2)
+    },
+    LINK: {
+      type: DataTypes.STRING(250)
+    },
+    QRCODE: {
+      type: DataTypes.STRING(4000)
+    },      
+    VENCIMENTO:{
+      type: DataTypes.DATE,
+    },
+    DESCRICAO: {
+      type: DataTypes.STRING(4000)
+    },
+    NUMTRANSVENDA: {
+      type: DataTypes.STRING(30)
+    },
+    PREST: {
+      type: DataTypes.STRING(2)
+    },
+    JUROS: {
+      type: DataTypes.DECIMAL(10,2)
+    },
+    EMAIL_ENVIADO: {
+      type: DataTypes.STRING(1),
+      defaultValue: 'N'
+    },
+    STATUS: {
+      type: DataTypes.STRING(1000)
+    },
+    BAIXADOPCPRESTVIAAPI: {
+      type: DataTypes.INTEGER(1),
+      allowNull: false,
+      defaultValue:0
+    }
   };
  
+  static foreignsKeys = [{
+    fields: ['NUMTRANSVENDA'],
+    type: 'foreign key',
+    references: { 
+        table: PcNfsaid,
+        field: 'NUMTRANSVENDA'
+    }
+  }];
 };
 
 

@@ -53,7 +53,7 @@ class Ncms extends BaseTableModel {
       let winthorData = await PcNcm.getModel().findOne({
         where:{
           CODNCM: queryParams.ncm,
-          CODEX: queryParams.exception
+          CODEX: queryParams.exception||null
         }
       });
       if (!winthorData && (

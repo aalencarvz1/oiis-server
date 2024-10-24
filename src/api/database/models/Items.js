@@ -213,7 +213,7 @@ class Items extends BaseTableModel {
         queryParams.name = queryParams.name || auroraData.DESCRICAO;
         queryParams.description = queryParams.description;
         queryParams.default_expiration_time = queryParams.default_expiration_time || 1;
-        result.data = await Items.getModel().create(queryParams);
+        result.data = await Items.getModel().create(queryParams,{transaction:params.transaction});
         if (result.data) {
           result.data = result.data.dataValues;
           result.success = true;

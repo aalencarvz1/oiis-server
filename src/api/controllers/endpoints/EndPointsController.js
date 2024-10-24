@@ -94,6 +94,13 @@ class EndPointsController extends BaseEndPointController{
                 get:['GET']
             }
         },
+        winthor_integrations_registers_controller:{
+            logged:true,
+            path:'/api/controllers/modules/registers/integrations/winthor/WinthorIntegrationsRegistersController',
+            methods:{
+                get:['POST']
+            }
+        },
         logistic:{
             logged:true,
             path:'/api/controllers/modules/logistic',
