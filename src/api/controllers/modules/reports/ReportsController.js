@@ -60,37 +60,42 @@ class ReportsController extends RegistersController{
                     }
                 }
                 if ((report.type_get_value_from||'').trim().toLowerCase() == 'query') {
+                    let connectiton = DBConnectionManager.getDefaultDBConnection();
                     if ((report.origin_get_value_from||'').trim().toLowerCase() == 'ep') {
-                        let query = report.get_value_from;
-                        let loopLimit = 1000;
-                        let p1 = query.indexOf("${");
-                        let p2 = query.indexOf("}$");
-                        let replaceText = null;
-                        let evalText = null;
-                        let evaluetedValue = null;
-
-
-                        //to use in eval code
-                        let params = req.body || req.query || {};
-                        params.user = req.user;
-
-
-                        while(p1 > -1 && p2 > -1 && p2 > p1 && loopLimit > 0) {
-                            replaceText = query.substr(p1,(p2-p1)+2);
-                            evalText = replaceText.substring(2,replaceText.length-2);
-                            //Utils.log('*************************************',p1,p2,`|${replaceText}|`,`|${evalText}|`);
-                            evaluetedValue = await eval(evalText);
-                            //Utils.log('evaluetedValue', evalText, evaluetedValue);
-                            query = query.replaceAll(replaceText,evaluetedValue);
-                            p1 = query.indexOf("${");
-                            p2 = query.indexOf("}$");
-                            loopLimit --;
-                        }                    
-                        result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
-                        result = result[0] || [];
+                        connectiton = DBConnectionManager.getEpDBConnection();
+                    } else if ((report.origin_get_value_from||'').trim().toLowerCase() == 'winthor') {
+                        connectiton = DBConnectionManager.getWinthorDBConnection();
                     } else {
                         throw new Error(`not expected type_get_value_from: ${report.origin_get_value_from}`)    
                     }
+
+                    let query = report.get_value_from;
+                    let loopLimit = 1000;
+                    let p1 = query.indexOf("${");
+                    let p2 = query.indexOf("}$");
+                    let replaceText = null;
+                    let evalText = null;
+                    let evaluetedValue = null;
+
+
+                    //to use in eval code
+                    let params = req.body || req.query || {};
+                    params.user = req.user;
+
+
+                    while(p1 > -1 && p2 > -1 && p2 > p1 && loopLimit > 0) {
+                        replaceText = query.substr(p1,(p2-p1)+2);
+                        evalText = replaceText.substring(2,replaceText.length-2);
+                        //Utils.log('*************************************',p1,p2,`|${replaceText}|`,`|${evalText}|`);
+                        evaluetedValue = await eval(evalText);
+                        //Utils.log('evaluetedValue', evalText, evaluetedValue);
+                        query = query.replaceAll(replaceText,evaluetedValue);
+                        p1 = query.indexOf("${");
+                        p2 = query.indexOf("}$");
+                        loopLimit --;
+                    }                    
+                    result = connectiton.query(query,{raw:true,queryType:QueryTypes.SELECT});
+                    result = result[0] || [];
                 } else {
                     throw new Error(`not expected type_get_value_from: ${report.type_get_value_from}`)
                 }
@@ -271,8 +276,14 @@ class ReportsController extends RegistersController{
                 }
 
                 //get unified query data
-                let data = await connection.query(query);
-                data = data[0] || [];
+                
+                let data = await connection.query(query,{
+                    raw:true,
+                    queryType:QueryTypes.SELECT,
+                    mapToModel: false,
+                    nest:true
+                });
+                data = data || [];
                 Utils.log(data);
                 res.data = res.data || [];
                 res.data.push({

@@ -463,11 +463,11 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                         ['NUMCAR','id_at_origin'],
                         ['DTSAIDA','out_date'],
                         ['CODMOTORISTA','driver_id'],
-                        ['CODVEICULO','vehiclee_id'],
+                        ['CODVEICULO','vehicle_id'],
                         ['TOTPESO','total_weight'],
                         ['VLTOTAL','total_value'],
-                        ['NUMNOTAS','invoice_qty'],
-                        ['NUMENT','delivery_qty'],
+                        ['NUMNOTAS','invoices_qty'],
+                        ['NUMENT','deliveries_qty'],
                         ['DESTINO','destiny'],
                         ['DT_CANCEL','cancel_date'],
                         [Sequelize.col(`${PcEmpr.tableName}.NOME`),'driver_name'],
@@ -609,12 +609,39 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                                 ]
                             });                            
                             if (nfsWinthor && nfsWinthor.length > 0) {
+                                
+                                //find winthor payments
+                                query = `
+                                    select
+                                        s.numtransvenda as "invoice_id",
+                                        p.codcob as "financial_value_form_id",
+                                        p.prest as "numeric_order",
+                                        p.valor as "value",
+                                        x.qrcode as "qrcode"
+                                    from
+                                        pcnfsaid s 
+                                        join jumbo.pcprest p on p.numtransvenda = s.numtransvenda
+                                        left outer join jumbo.pcpixcobrancadados x on x.numtransvenda = s.numtransvenda and coalesce(x.prest,'1') = p.prest and x.status = 'ATIVA'
+                                    where
+                                        s.numcar = ${res.data[key].id_at_origin}
+                                        and p.dtpag is null
+                                        and p.dtdesd is null
+                                        and p.dtbaixa is null
+                                        and p.codbaixa is null
+                                        and coalesce(p.valor,0) > 0
+                                    order by
+                                        s.numcar,
+                                        s.numtransvenda,
+                                        p.prest
+                                `;
+                                let winthorPayments = await DBConnectionManager.getWinthorDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
+                                winthorPayments = winthorPayments[0] || [];
+                                console.log('zzzzzzzzzzzzzz',winthorPayments);
 
                                 //find item invoice data on winthor
                                 query = `
                                     select
                                         0 AS "data_origin_id",
-                                        /*m.NUMTRANSITEM AS "id", numtransitem duplicate item if has 2 or more equals items at same invoice*/
                                         m.NUMTRANSVENDA as "invoice_id",
                                         m.CODPROD AS "item_id",
                                         coalesce(m.descricao,p.descricao,'') as "description",
@@ -677,11 +704,22 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                                 `;
 
                                 //attach items winthor to nfs winthor
-                                let itemsWinthor = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
+                                let itemsWinthor = await DBConnectionManager.getWinthorDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
                                 itemsWinthor = itemsWinthor[0] || [];
+
                                 for(let kn in nfsWinthor) {
+                                    nfsWinthor[kn].payments = nfsWinthor[kn].payments || [];
                                     nfsWinthor[kn].items = nfsWinthor[kn].items || [];
-                                    for(let ki in itemsWinthor) {                                        
+
+                                    for(let kp in winthorPayments) {
+                                        console.log(kp,winthorPayments[kp].invoice_id,nfsWinthor[kn].id_at_origin);
+                                        if (winthorPayments[kp].invoice_id == nfsWinthor[kn].id_at_origin) {
+                                            nfsWinthor[kn].payments.push(winthorPayments[kp]);
+                                            console.log('xxxxxxx',nfsWinthor[kn]);
+                                        }
+                                    }
+
+                                    for(let ki in itemsWinthor) {
                                         if (typeof itemsWinthor[ki].logs === 'string') {
                                             if (itemsWinthor[ki].logs.trim() == '[]') itemsWinthor[ki].logs = []
                                             else itemsWinthor[ki].logs = JSON.parse(itemsWinthor[ki].logs);
@@ -691,6 +729,8 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                                         }
                                     }
                                 }
+
+                               
                                 
                                 //attach nfs winthor to cients
                                 for(let kc in res.data[key].clients) {
@@ -743,7 +783,7 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                                     select
                                         1 AS "data_origin_id",
                                         m.cod AS "id_at_origin",
-                                        m.CODNFSAIDA as "invoice_id"
+                                        m.CODNFSAIDA as "invoice_id",
                                         m.CODPROD AS "item_id",
                                         coalesce(p.descricao,'') as "description",
                                         p.CODAUXILIARTRIB AS "gtin_trib_un",
