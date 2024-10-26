@@ -1164,8 +1164,8 @@ module.exports = {
   async up (queryInterface, Sequelize) {        
 
     async function migrateDataOldTable(pOldConnection,pOlddSchemaName,pNewTableName) {
+      let oldTableName = pNewTableName;
       try {
-        let oldTableName = pNewTableName;
         let keyOldTable = Utils.getKey(oldTables,oldTableName);
         let oldTable = null;
         if (Utils.hasValue(keyOldTable)) {
