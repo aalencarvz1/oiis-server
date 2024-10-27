@@ -486,12 +486,16 @@ class BaseTableModel extends Model {
         }
         if (reg) {
             for(let key in params.values) {
-                if (key != 'id') {
+                if (key != 'id' && key != 'where') {
                     reg[key] = params.values[key];
                 }
             }
-            //Utils.log(reg);
-            await reg.save(params.transaction ? {transaction:params.transaction} : {});
+            Utils.log(reg);
+            if (params.transaction) { 
+                await reg.save({transaction:params.transaction});
+            } else {
+                await reg.save();
+            }
             if (typeof this.getData === 'function' && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(reg.id) || reg.dataValues
             else return reg.dataValues;
         } else {

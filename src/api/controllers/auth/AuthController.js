@@ -134,44 +134,47 @@ class AuthController extends RegistersController{
             if (error) return res.status(401).json({success:false,message:error.message || error});
             req.user = {id:decoded.id};  
             Utils.log("in refresh token",req.user,decoded);
-            let user = await Users.getModel().findOne({where:{id:req.user.id}});
-            if (!user) return res.sendResponse(401,false,'user not found'); 
+            if (Utils.hasValue(req.user.id)) {
+                let user = await Users.getModel().findOne({where:{id:req.user.id}});
+                if (!user) return res.sendResponse(401,false,'user not found'); 
 
-            let token = jwt.sign({id: decoded.id},process.env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});            
-            let newRefreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, process.env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
+                let token = jwt.sign({id: decoded.id},process.env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});            
+                let newRefreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, process.env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
 
-            user.last_token = token;
-            user.last_timezone_offset = req.body?.currentTimeZoneOffset || 0;
-            await user.save();
+                user.last_token = token;
+                user.last_timezone_offset = req.body?.currentTimeZoneOffset || 0;
+                await user.save();
 
-            let userToken = await User_Tokens.getModel().findOne({
-                where:{
-                    user_id: user.id,
-                    token: token            
-                }
-            });
-            Utils.log('usertoekn',userToken);
-            if (!userToken) {
-                try {
-                    await User_Tokens.getModel().create({
+                let userToken = await User_Tokens.getModel().findOne({
+                    where:{
                         user_id: user.id,
-                        token: token,
-                        TIMEZONEOFFSET: user.last_timezone_offset
-                    });
-                } catch (ex) {
-                    if (ex.name.trim().toLowerCase().indexOf('unique') == -1) {
-                        throw ex;
-                    } //else async other request already inserted new user token at same time
+                        token: token            
+                    }
+                });
+                Utils.log('usertoekn',userToken);
+                if (!userToken) {
+                    try {
+                        await User_Tokens.getModel().create({
+                            user_id: user.id,
+                            token: token,
+                            TIMEZONEOFFSET: user.last_timezone_offset
+                        });
+                    } catch (ex) {
+                        if (ex.name.trim().toLowerCase().indexOf('unique') == -1) {
+                            throw ex;
+                        } //else async other request already inserted new user token at same time
+                    }
+                } else {
+                    userToken.TIMEZONEOFFSET = user.last_timezone_offset;
+                    await userToken.save();
                 }
+                //jwt.destroy(refreshToken);
+                res.cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict', maxAge: 24 * 60 * 60 * 1000 })
+                    .header('Authorization', token) //web applications use header, but others applications like mobile or direct request from database triggers, use only body
+                    .sendResponse(200,true,'logged',{token:token,refreshToken:newRefreshToken,user:user});
             } else {
-                userToken.TIMEZONEOFFSET = user.last_timezone_offset;
-                await userToken.save();
+                res.sendResponse(401,false,'user not found');
             }
-            //jwt.destroy(refreshToken);
-            res.cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict', maxAge: 24 * 60 * 60 * 1000 })
-                .header('Authorization', token) //web applications use header, but others applications like mobile or direct request from database triggers, use only body
-                .sendResponse(200,true,'logged',{token:token,refreshToken:newRefreshToken,user:user});
-            
             //next();
         });
         
@@ -308,8 +311,9 @@ class AuthController extends RegistersController{
         AuthController.sendEmailRecoverPassword(req,res,next);
     }
 
-    static async passwordChange(req,res,next) {
-        try {
+    static async passwordChange(req,res,next) {        
+        Utils.logi(`${this.name}`,`passwordChange`);
+        try {            
             let token = req.body.token || '';
             let password = req.body.password || '';
             if (!Utils.hasValue(token) || !Utils.hasValue(password)) {
@@ -324,7 +328,8 @@ class AuthController extends RegistersController{
                         }
                     });
                     if (user) {
-                        user.PASSWORD = bcrypt.hashSync(password,(process.env.API_USER_PASSWORD_CRIPTSALT||10)-0);
+                        user.password = bcrypt.hashSync(password,(process.env.API_USER_PASSWORD_CRIPTSALT||10)-0);
+
                         await user.save();
                         return res.sendResponse(200,true);
                     } else {
@@ -336,6 +341,7 @@ class AuthController extends RegistersController{
             Utils.log(e);
             res.sendResponse(517,false,e.message || e);
         }
+        Utils.logf(`${this.name}`,`passwordChange`);
     }
 }
 

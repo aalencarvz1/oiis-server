@@ -169,6 +169,7 @@ let oldTables = {
     tableName:"USERSTIMESWORK",
     columns:{
       IDUSERPROFILETIMEWORK:'user_profile_time_work_id',
+      WEEKDAY:'week_day',
       STARTAT:'start_at',
       ENDAT:'end_at',
     }
@@ -584,7 +585,7 @@ let oldTables = {
     }
   },
   items_lots_containers:{
-    tableName:"ITEMSXLOTSXCONTEINERS",
+    tableName:"ITEMSXLOTSCONTEINERS",
     columns:{
       IDITEM:"item_id",
       IDLOT:"lot_id",
@@ -645,8 +646,8 @@ let oldTables = {
       PACKAGEVOLUME:"package_volume",
       ORDERNUM:"numeric_order"
     }
-  },       
-  item_x_meas_pack_identif:{
+  },         
+  item_meas_pack_identif:{
     tableName:"ITEMSXMEAXPACKXIDENTIF",
     columns:{
       IDITEM:"item_id",
@@ -885,7 +886,15 @@ let oldTables = {
     }
   },
   conditions:{
-    tableName: "CONDICTIONS"
+    tableName: "CONDICTIONS",
+    columns:{
+      IDENTITYTYPE:'entity_type_id',
+      IDENTITY:'entity_id',
+      IDREGISTER:'record_id',
+      IDCOMPARATION:'comparation_id',
+      STARTDATE:'start_date',
+      ENDDATE:'end_date'
+    }
   },
   report_data_founts:{
     tableName:"REPORTSDATASFOUNTS",
@@ -1087,7 +1096,7 @@ let oldTables = {
   api_request_calls:{
     tableName:"APISREQUESTSCALLS",
     columns:{
-      IDAPIREQUESTCALL:"api_request_id",
+      IDAPIREQUEST:"api_request_id",
       IDSTATUSRUN:"run_status_id",
       ONRECEIVEWEBHOOKRESPONSE:"on_receive_response"
     }
@@ -1217,8 +1226,7 @@ module.exports = {
                 }
               }
             }
-            Utils.log('FL','KEYS OLD',oldTableName,allOldColumns);
-            if (pNewTableName === 'users') Utils.log('newregs users inserting',newRegs);
+            Utils.log('FL','KEYS OLD',oldTableName,allOldColumns);            
             for(let index in newRegs) {
 
               if (Utils.hasValue(oldTables.allTables.allColumns)) {
@@ -1248,8 +1256,7 @@ module.exports = {
               if (pNewTableName === 'users') Utils.log('newregs users inserting',newRegs[index]);
               Utils.deleteNotExistsProperty(newRegs[index],fields);
               if (pNewTableName === 'users') Utils.log('newregs users inserting',newRegs[index]);
-            }         
-            if (pNewTableName === 'users') Utils.log('newregs users inserting',newRegs);
+            }                     
             await queryInterface.bulkInsert(pNewTableName,newRegs,{
               ignoreDuplicates:true,
               updateOnDuplicate:null
@@ -1265,6 +1272,7 @@ module.exports = {
             );
             qty = qty[0] || [];
             if ((qty[0]?.qty ||0) < newRegs.length) {
+              Utils.log(`newregs ${pNewTableName} inserting`,newRegs);
               throw new Error(`${(qty[0]?.qty ||0)} register(s) migrated from old table ${oldTableName} to ${pNewTableName} of ${newRegs.length}`);
             } else {
               Utils.log(`${(qty[0]?.qty ||0)} register(s) migrated from old table ${oldTableName} to ${pNewTableName} of ${newRegs.length}`);
