@@ -642,7 +642,10 @@ class StructuredQueryUtils {
             }
             if (structuredQuery[k].sql_object_type_id == Sql_Object_Types.TABLE) {
                 if (Utils.hasValue(structuredQuery[k].expression)) {
+                    console.log('oooooooooooooooooooooo',structuredQuery[k].expression);
+
                     structuredQuery[k].expression = await StructuredQueryUtils.evalSqlText(structuredQuery[k].expression, params);
+                    console.log('oooooooooooooooooooooo',structuredQuery[k].expression);
                     structuredQuery[k].expression = structuredQuery[k].expression.replaceAll('__TABLE_ALIAS__',structuredQuery[k].sql_alias);
                     Utils.log('xxxxxxx', structuredQuery[k].expression);
                     let injected = false;
