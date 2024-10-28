@@ -91,6 +91,15 @@ class Users extends BasePeopleModel {
     return await BasePeopleModel.createData.bind(Users)(params);
   }  
   static putData = this.createData;
+
+  static async updateData(params) {
+    params = params || {};  
+    if (params.password) {
+      params.password = bcrypt.hashSync(params.password,(process.env.API_USER_PASSWORD_CRIPTSALT||10)-0)
+    }                  
+    return await BasePeopleModel.updateData.bind(Users)(params);
+  }  
+  static patchData = this.updateData;
 }
 
 
