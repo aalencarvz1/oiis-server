@@ -305,11 +305,13 @@ class StructuredQueryUtils {
     static checkExistsConditionsByReportVision(params,idVision) {
         let result = false;
         try {
-            let conditions = params.conditions || [];
+            let conditions = params.conditions || params.condictions || [];
+            console.log('conditions',conditions);
             if (Utils.hasValue(conditions)) {
                 if (typeof conditions == 'string') {
                     conditions = JSON.parse(conditions);
                 }
+                console.log('conditions',conditions);
                 result = conditions.filter(el=>((el.reportVision || el.vision || {}).id || el.reportVision || el.vision) == idVision).length > 0;
             }
         } catch (e) {
@@ -318,11 +320,12 @@ class StructuredQueryUtils {
         Utils.log('result of checkExistsConditionsByReportVision', result);
         return result;
     }
+    static checkExistsCondictionsByReportVision = StructuredQueryUtils.checkExistsConditionsByReportVision;
 
     static mountConditionsByReportVision(params,idVision,field) {
         let result = null;
         try {
-            let conditions = params.conditions || [];
+            let conditions = params.conditions || params.condictions|| [];
             if (Utils.hasValue(conditions)) {
                 Utils.log('has conditions',conditions);
                 if (typeof conditions == 'string') {
@@ -353,6 +356,8 @@ class StructuredQueryUtils {
         }
         return result;
     }
+    static mountCondictionsByReportVision = StructuredQueryUtils.mountConditionsByReportVision;
+
 
     static async evalSqlText(sqlText,params) {
         let result = sqlText;
