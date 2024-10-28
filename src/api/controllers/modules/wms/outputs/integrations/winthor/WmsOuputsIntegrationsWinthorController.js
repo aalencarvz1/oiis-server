@@ -39,18 +39,18 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
             
             let query = `
                 select 
-                    u.id as id,
-                    o.cod as IDORIGIN,
-                    o.nome as ORIGIN,
-                    c.codfilial as CODFILIAL,
-                    cj.numcar AS cargo_number,
-                    v.placa AS PLATE,
-                    cj.totpeso AS TOTALWEIGHT,
-                    cj.dtsaida AS OUTPUTDATE,
-                    cj.destino AS DESTINY,
-                    cj.numnotas AS INVOICESAMT,
-                    cj.nument  AS DELIVERIESAMT,
-                    cj.qtitens AS ITEMSAMT
+                    u.id as "id",
+                    o.cod as "idorigin",
+                    o.nome as "origin",
+                    c.codfilial as "codfilial",
+                    cj.numcar AS "cargo_number",
+                    v.placa AS "plate",
+                    cj.totpeso AS "totalweight",
+                    cj.dtsaida AS "outputdate",
+                    cj.destino AS "destiny",
+                    cj.numnotas AS "invoicesamt",
+                    cj.nument  AS "deliveriesamt",
+                    cj.qtitens AS "itemsamt"
                 from 
                     JUMBO.PCCARREG cj 
                     join JUMBO.PCPEDC c on c.numcar = cj.numcar 
@@ -133,7 +133,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                     from
                         EP.EPUNIFCARGAS u
                     where                        
-                        ${identifiers.map(el=>`(u.IDORIGEMINFO = ${el.IDORIGIN} AND u.NRCARGA = ${el.cargo_number})`).join(' or ')}
+                        ${identifiers.map(el=>`(u.IDORIGEMINFO = ${el.idorigin} AND u.NRCARGA = ${el.cargo_number})`).join(' or ')}
                 `
                 let data = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
                 data = data[0] || [];
@@ -147,7 +147,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                     let loadingsWinthor = [];
                     let loadingsBroker = [];
                     for(let key in identifiers) {
-                        if (identifiers[key].IDORIGIN == 0) loadingsWinthor.push(identifiers[key].cargo_number)
+                        if (identifiers[key].idorigin == 0) loadingsWinthor.push(identifiers[key].cargo_number)
                         else loadingsBroker.push(identifiers[key].cargo_number);
                     }
                     //Utils.log('loadingsWinthor',loadingsWinthor);
@@ -212,7 +212,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                 data = data[0] || [];
                 let proxId = data[0].PROXID || 1;
                 res.data = proxId;
-                let queries = identifiers.map(el=>`insert into EP.EPUNIFCARGAS values (${proxId},${el.IDORIGIN},${el.cargo_number},sysdate,${req.user.id})`);
+                let queries = identifiers.map(el=>`insert into EP.EPUNIFCARGAS values (${proxId},${el.idorigin},${el.cargo_number},sysdate,${req.user.id})`);
                 for (let key in queries) {
                     await DBConnectionManager.getConsultDBConnection().query(queries[key],{queryType:Sequelize.QueryTypes.INSERT});
                 }
@@ -252,7 +252,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                     from
                         EP.EPUNIFCARGAS
                     where
-                        ${identifiers.map(el=>` (IDORIGEMINFO=${el.IDORIGIN} AND NRCARGA=${el.cargo_number}) `).join(' OR ')}
+                        ${identifiers.map(el=>` (IDORIGEMINFO=${el.idorigin} AND NRCARGA=${el.cargo_number}) `).join(' OR ')}
                 `
                 data = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
 
@@ -272,7 +272,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                 let winthorLoads = [];
                 let brokerLoads = [];
                 for(let key in identifiers) {
-                    if (identifiers[key].IDORIGIN == 0) {
+                    if (identifiers[key].idorigin == 0) {
                         winthorLoads.push(identifiers[key].cargo_number)
                     } else {
                         brokerLoads.push(identifiers[key].cargo_number);
