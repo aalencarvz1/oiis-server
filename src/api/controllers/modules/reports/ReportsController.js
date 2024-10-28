@@ -8,6 +8,9 @@ const { Record_Status } = require("../../../database/models/Record_Status");
 const _ = require('lodash');
 const { StructuredQueryUtils } = require("./structuredreports/StructuredQueryUtils");
 const { RegistersController } = require("../registers/RegistersController");
+const { EpIntegrationsRegistersController } = require("../registers/integrations/ep/EpIntegrationsRegistersController");
+
+
 
 
 /**
@@ -17,7 +20,7 @@ const { RegistersController } = require("../registers/RegistersController");
  */
 class ReportsController extends RegistersController{
 
-    static async getReportDataFount(req) {        
+    static async getReportDataFount(req) {                
         let queryParams = {
             raw:true,
             where:{}
@@ -94,8 +97,10 @@ class ReportsController extends RegistersController{
                         p2 = query.indexOf("}$");
                         loopLimit --;
                     }                    
-                    result = connectiton.query(query,{raw:true,queryType:QueryTypes.SELECT});
-                    result = result[0] || [];
+                    result = await connectiton.query(query,{raw:true,queryType:QueryTypes.SELECT});
+
+                    result = result[0] || [];                    
+
                 } else {
                     throw new Error(`not expected type_get_value_from: ${report.type_get_value_from}`)
                 }
@@ -106,21 +111,19 @@ class ReportsController extends RegistersController{
             console.log('cath block',e);
             if (res) {
                 res.setException(e);
-                res.sendResopnse(517,false);
+                return res.sendResopnse(517,false);
             } else {
                 throw e;
             }
         } finally {
             if (res && !res.exception) {
-                console.log('finally block x1');
                 res.data = result;
                 res.success = true;
-                res.sendResponse(200,true);
+                return res.sendResponse(200,true);
+            } else {
+                return result;
             }
-            console.log('finally block x2');
-            return result;
-        }
-        
+        }        
     }
 
 
