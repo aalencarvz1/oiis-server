@@ -129,9 +129,11 @@ class RoutinesController extends RegistersController{
 
             for(let key in nestedModules) {
                 if (Utils.hasValue(nestedModules[key].parent_id)) {
-                    nestedModules[nestedModules[key].parent_id].subs = nestedModules[nestedModules[key].parent_id]?.subs || {};
-                    nestedModules[nestedModules[key].parent_id].subs[key] = nestedModules[key];
-                    nestedModules[key].moved = true;                        
+                    if (Utils.hasValue(nestedModules[nestedModules[key].parent_id])) {
+                        nestedModules[nestedModules[key].parent_id].subs = nestedModules[nestedModules[key].parent_id]?.subs || {};
+                        nestedModules[nestedModules[key].parent_id].subs[key] = nestedModules[key];
+                        nestedModules[key].moved = true;                        
+                    }
                 }
                 if (Utils.hasValue(nestedModules[key].routines)) {
                     for(let kr in  nestedModules[key].routines ) {                
