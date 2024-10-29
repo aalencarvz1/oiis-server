@@ -7,7 +7,7 @@ Utils.log('NODE_ENV =',process.env.NODE_ENV);
 const { ModelsController } = require('./controllers/database/ModelsController');
 const { ToadScheduler, SimpleIntervalJob, AsyncTask } = require('toad-scheduler');
 const { SicrediIntegrationsPixController } = require('./controllers/modules/outputs/sales/financial_collection/pix/integrations/sicredi/SicrediIntegrationsPixController');
-//const { AuroraIntegrationsRegistersController } = require('./controllers/modules/registers/integrations/aurora/AuroraIntegrationsRegistersController');
+const { AuroraIntegrationsRegistersController } = require('./controllers/modules/registers/integrations/aurora/AuroraIntegrationsRegistersController');
 const cors = require('cors');
 //const { MtrixIntegrationsController } = require('./controllers/modules/registers/integrations/mtrix/MtrixIntegrationsController');
 
@@ -24,7 +24,7 @@ api.use(cors());
 ModelsController.initModels();
 
 //job to query complete pixs
-//if (process.env.NODE_ENV == 'production') {
+if (process.env.NODE_ENV == 'production') {
     const scheduler = new ToadScheduler();
 
     //API PIX SICREDI INTEGRATION CHECKER
@@ -58,7 +58,7 @@ ModelsController.initModels();
 
 
     //AURORA STOCK INTEGRATION
-    /*const taskAuroraStockIntegration = new AsyncTask(
+    const taskAuroraStockIntegration = new AsyncTask(
         'simple task', 
         async () => { 
             try {
@@ -73,7 +73,6 @@ ModelsController.initModels();
             Utils.log(err) 
         }
     );
-
     const jobAuroraStockIntegration = new SimpleIntervalJob(
         { 
             minutes: 60,            
@@ -85,12 +84,11 @@ ModelsController.initModels();
             preventOverrun: true,
         }
     );
-
     scheduler.addSimpleIntervalJob(jobAuroraStockIntegration);
 
 
     //MTRIX INTEGRATION FILES GENERATE 
-    const taskMtrixIntegration = new AsyncTask(
+    /*const taskMtrixIntegration = new AsyncTask(
         'simple task', 
         async () => { 
             try {
@@ -123,7 +121,7 @@ ModelsController.initModels();
         Utils.closeLogFile();
         scheduler.stop();
     });
-//}
+}
 
 Utils.log('FL','schedulers running');
 
