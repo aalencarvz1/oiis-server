@@ -7,9 +7,9 @@ Utils.log('NODE_ENV =',process.env.NODE_ENV);
 const { ModelsController } = require('./controllers/database/ModelsController');
 const { ToadScheduler, SimpleIntervalJob, AsyncTask } = require('toad-scheduler');
 const { SicrediIntegrationsPixController } = require('./controllers/modules/outputs/sales/financial_collection/pix/integrations/sicredi/SicrediIntegrationsPixController');
-const { AuroraIntegrationsRegistersController } = require('./controllers/modules/registers/integrations/aurora/AuroraIntegrationsRegistersController');
+//const { AuroraIntegrationsRegistersController } = require('./controllers/modules/registers/integrations/aurora/AuroraIntegrationsRegistersController');
 const cors = require('cors');
-const { MtrixIntegrationsController } = require('./controllers/modules/registers/integrations/mtrix/MtrixIntegrationsController');
+//const { MtrixIntegrationsController } = require('./controllers/modules/registers/integrations/mtrix/MtrixIntegrationsController');
 
 //api create
 const api = express();
@@ -24,7 +24,7 @@ api.use(cors());
 ModelsController.initModels();
 
 //job to query complete pixs
-if (process.env.NODE_ENV == 'production') {
+//if (process.env.NODE_ENV == 'production') {
     const scheduler = new ToadScheduler();
 
     //API PIX SICREDI INTEGRATION CHECKER
@@ -58,7 +58,7 @@ if (process.env.NODE_ENV == 'production') {
 
 
     //AURORA STOCK INTEGRATION
-    const taskAuroraStockIntegration = new AsyncTask(
+    /*const taskAuroraStockIntegration = new AsyncTask(
         'simple task', 
         async () => { 
             try {
@@ -116,14 +116,14 @@ if (process.env.NODE_ENV == 'production') {
             preventOverrun: true,
         }
     );
-    scheduler.addSimpleIntervalJob(jobMtrixIntegration);
+    scheduler.addSimpleIntervalJob(jobMtrixIntegration);*/
 
     process.on('SIGINT', function() {
         Utils.log('FL','stoped application, stoping schedulers');
         Utils.closeLogFile();
         scheduler.stop();
     });
-}
+//}
 
 Utils.log('FL','schedulers running');
 
