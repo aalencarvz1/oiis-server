@@ -281,7 +281,7 @@ class AuthController extends RegistersController{
                                 to: email,
                                 subject: config[`app_${process.env.NODE_ENV||'development'}`] || process.env.API_NAME || 'Api' + '-Recuperacao de senha',
                                 text: `Acesse este link para criar uma nova senha: ${path}/${token}`,
-                                html: `Acesse este link para criar uma nova senha: ${path}/${token}`,
+                                html: `Acesse este link para criar uma nova senha: <br /><a href="${path}/${token}">Alterar senha</a>`,
                             });
                             Utils.log(response);
                             if (response && (response.response||'').indexOf('Ok') > -1) {
