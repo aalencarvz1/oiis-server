@@ -425,7 +425,7 @@ class BaseTableModel extends Model {
      * @created 2023-11-10
      */
     static async createData(params,returnRaw) {
-        let queryParams = params.queryParams?.values || params.queryParams || params || {};
+        let queryParams = params.queryParams?.values || params.values || params.queryParams || params || {};
         Utils.log('FL','CREATING WITH PARAMETERS',queryParams);
         let result = await this.getModel().create(queryParams);
         if (typeof this.getData === 'function' && returnRaw !== false && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(result.id) || result
