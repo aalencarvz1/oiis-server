@@ -480,7 +480,7 @@ class PcPrest extends BaseWinthorTableModel {
     try {
       console.log(queryParams);
       queryParams = queryParams.queryParams || queryParams;
-      queryParams = DatabaseUtils.prepareQueryParams(queryParams || {});      
+      queryParams = await DatabaseUtils.prepareQueryParams(queryParams || {});      
       queryParams.include = queryParams.include || [];
       queryParams.include.push({
         model: PcCob.getModel(),

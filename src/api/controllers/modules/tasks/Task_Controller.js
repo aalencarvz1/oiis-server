@@ -234,9 +234,9 @@ class Task_Controller extends RegistersController{
         Utils.log(`END ${Task_Controller.name}.playOthers`);
     }
 
-    static mountQueryParamsToGet(req,queryParams) {
+    static async mountQueryParamsToGet(req,queryParams) {
         queryParams = queryParams || {};
-        queryParams = DatabaseUtils.prepareQueryParams(queryParams);
+        queryParams = await DatabaseUtils.prepareQueryParams(queryParams);
         queryParams.raw = true;
         queryParams.where = queryParams.where || {};
         queryParams.where.creator_user_id = req.user.id;
@@ -371,8 +371,6 @@ class Task_Controller extends RegistersController{
                 res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
                 res.data = res.data[0] || [];
             } else {
-                //let queryParams = Task_Controller.mountQueryParamsToGet(req,req.body.queryParams);            
-                //res.data = await Tasks.getModel().findAll(queryParams);  
                 console.log(req.body.queryParams);
                 let query = this.mountQueryToGet(req,req.body.queryParams);
                 res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{queryType:QueryTypes.SELECT,raw:true});
@@ -425,8 +423,6 @@ class Task_Controller extends RegistersController{
                 await Task_Controller.stopOthers(task.id, taskX.id, taskX.user_id, Task_Status.STOPED);
                 await Task_Controller.updateSupStatusToRunning(task.id, taskX.user_id, taskX.status_id);                
             }     
-            //let queryParams = Task_Controller.mountQueryParamsToGet(req,{where:{id:task.id}});      
-            //res.data = await Tasks.getModel().findOne(queryParams);
             let query = this.mountQueryToGet(req,{where:{id:task.id}});
             res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{queryType:QueryTypes.SELECT,raw:true});
             res.data = (res.data[0] || [])[0];
@@ -614,8 +610,6 @@ class Task_Controller extends RegistersController{
                     
                 }   
 
-                //let queryParams = Task_Controller.mountQueryParamsToGet(req,{where:{id:task.id}});      
-                //res.data = await Tasks.getModel().findOne(queryParams);
                 let query = this.mountQueryToGet(req,{where:{id:task.id}});
                 res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{queryType:QueryTypes.SELECT,raw:true});
                 res.data = (res.data[0] || [])[0];

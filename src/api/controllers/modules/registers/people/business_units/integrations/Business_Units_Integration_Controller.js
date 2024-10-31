@@ -242,13 +242,15 @@ class Business_Units_Integration_Controller extends RegistersController {
     static async get(req,res,next) {
         try {
             let origin = req.body.origin || "";
-            let queryParams = DatabaseUtils.prepareQueryParams(req.body.queryParams || {});
+            let queryParams = await DatabaseUtils.prepareQueryParams(req.body.queryParams || {});
             queryParams.raw = true;
             switch((origin.name || origin).trim().toLowerCase()) {
                 case "winthor":                            
                     queryParams.where = queryParams.where || {};
-                    queryParams.where.CODIGO = {
-                        [Sequelize.Op.notIn] : [99]
+                    if (!Utils.hasValue(queryParams.where.CODIGO)) {
+                        queryParams.where.CODIGO = {
+                            [Sequelize.Op.notIn] : [99]
+                        }
                     }
                     res.data = await PcFilial.getModel().findAll(queryParams);
                     res.sendResponse(200,true);

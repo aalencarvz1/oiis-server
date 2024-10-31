@@ -141,6 +141,18 @@ class BaseTableModel extends Model {
         };
     }
 
+    static getPrimaryKeysFieldsNames() {
+        if (!Utils.hasValue(this.primaryKeysFieldsNames)) {
+            this.primaryKeysFieldsNames = this.primaryKeysFieldsNames || [];
+            for(let k in this.fields) {
+                if (this.fields[k].primaryKey) {
+                this.primaryKeysFieldsNames.push(k);
+                }
+            } 
+        }
+        return this.primaryKeysFieldsNames;
+    }
+
     /**
      * run migrations constraints of inherited model
      * @static (pay attention to bindings)
@@ -429,7 +441,7 @@ class BaseTableModel extends Model {
      * @created 2023-11-10
      */
     static async getData(params) {
-        let queryParams = DatabaseUtils.prepareQueryParams(params.queryParams || params || {});
+        let queryParams = await DatabaseUtils.prepareQueryParams(params.queryParams || params || {});
         if (queryParams.raw !== false) queryParams.raw = true; 
         if (queryParams.query) {
             let result = await this.getConnection().query(queryParams.query,{raw:queryParams.raw,queryType:QueryTypes.SELECT});
@@ -450,33 +462,33 @@ class BaseTableModel extends Model {
     static async updateData(params) {
         //let queryParams = params.queryParams || params || {};
         let reg = null;
-        params.values = params.values || params.queryParams?.values || params.queryParams || params ;
+        Utils.log('PARAMMMMMSSSSSSSSS',params);
+        let values = params.values || params.queryParams?.values || params.queryParams || params ;                
+        Utils.log(params);
         params.where = params.where || params.queryParams?.where || null;
+        let primaryKeysFieldsNames = this.getPrimaryKeysFieldsNames();
+        console.log('primaryKeysFieldsNames',primaryKeysFieldsNames);
         if (Utils.hasValue(params.where)) {
             reg = await this.getModel().findOne(params);
-        } else if (params.values.id) { 
-            reg = await this.getModel().findOne({where:{id:params.values.id},transaction:params.transaction});
-        } else {
-            let primaryKeys = [];
-            for(let k in this.fields) {
-                if (this.fields[k].primaryKey) {
-                    primaryKeys.push(k);
-                }
-            } 
-            if (primaryKeys.length > 0) {
-                let where = {};
-                let keys = Object.keys(params.values).join(',').trim().toLowerCase().split(',');
+        } else if (values.id) { 
+            params.where = {id:values.id}
+            reg = await this.getModel().findOne({where:params.where,transaction:params.transaction});
+        } else {            
+            
+            if (primaryKeysFieldsNames.length > 0) {
+                params.where = {};
+                let keys = Object.keys(values).join(',').trim().toLowerCase().split(',');
                 let ind = -1;
-                //Utils.log(primaryKeys,keys);
-                for(let k in primaryKeys) {
-                    ind =keys.indexOf(k.trim().toLowerCase());
+                Utils.log('KEYSSSSSSSSSSSS',primaryKeysFieldsNames,keys, values);
+                for(let k in primaryKeysFieldsNames) {
+                    ind = keys.indexOf(primaryKeysFieldsNames[k].trim().toLowerCase());
                     if (ind > -1) {
-                        where[Object.keys(params.values)[ind]] = params.values[Object.keys(params.values)[ind]];
+                        params.where[Object.keys(values)[ind]] = values[Object.keys(values)[ind]];
                     }
                 }
-                //Utils.log(where);
-                if (Object.keys(where).length > 0) {
-                    reg = await this.getModel().findOne({where:where,transaction:params.transaction});
+                Utils.log(params.where);
+                if (Object.keys(params.where).length > 0) {
+                    reg = await this.getModel().findOne({where:params.where,transaction:params.transaction});
                 } else {
                     throw new Error('missing data (primary key)');    
                 }
@@ -484,17 +496,64 @@ class BaseTableModel extends Model {
                 throw new Error('missing data (primary key)');
             }
         }
+        let hasPrimaryKeyOnUpdate = false;
+        let valuesToUpdate = {};
         if (reg) {
-            for(let key in params.values) {
+            for(let key in values) {
+                console.log('key',key);
                 if (key != 'id' && key != 'where') {
-                    reg[key] = params.values[key];
+                    console.log('antes',reg[key],values[key])
+                    if (reg[key] != values[key]) {
+                        reg[key] = values[key];
+                        valuesToUpdate[key] = values[key];
+                        console.log('apos',reg[key],values[key],Utils.hasValue(primaryKeysFieldsNames),!hasPrimaryKeyOnUpdate)
+                        
+                        /*sequelize nao atualiza estes campos se forem chaves primarias, 
+                        verificar apos o save se houve alteracao de campos chaves primarias e fazer update via query e nao via 
+                        save nestes casos
+
+                        testar dica do chatgpt sequelize.queryGenerator.updateQuery, que gera a query sem executala*/
+
+                        if (Utils.hasValue(primaryKeysFieldsNames) && !hasPrimaryKeyOnUpdate) {
+                            console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
+                            for(let ks in primaryKeysFieldsNames) {
+                                console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh 1');
+                                if (primaryKeysFieldsNames[ks].trim().toLowerCase() == key.trim().toLowerCase()) {
+                                    console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh 2');
+                                    if (reg[key] != values[key]) {
+                                        console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh 3');
+                                        hasPrimaryKeyOnUpdate = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
-            Utils.log(reg);
-            if (params.transaction) { 
-                await reg.save({transaction:params.transaction});
+            Utils.log('VALUES TO UPDATE: ',reg);
+            if (hasPrimaryKeyOnUpdate) {
+                const updateSQL = this.getModel().queryGenerator.updateQuery(
+                    this.getTableName(),
+                    valuesToUpdate,
+                    params.where,
+                    this.getModel()
+                );
+                console.log(updateSQL);
+                let resultUpdate = await this.getConnection().query(updateSQL,{queryType:QueryTypes.UPDATE,transaction:params.transaction});                
+                console.log('resultUpdate',resultUpdate);
+                if (Utils.hasValue(resultUpdate) && resultUpdate[0]?.rowsAffected >= 1) {
+                    if (typeof this.getData === 'function' && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(reg.id) || reg.dataValues
+                    else return values;
+                } else {
+                    throw new Error(`error on update data with query: ${updateSQL}`);
+                }
             } else {
-                await reg.save();
+                if (params.transaction) { 
+                    await reg.save({transaction:params.transaction});
+                } else {
+                    await reg.save();
+                }
             }
             if (typeof this.getData === 'function' && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(reg.id) || reg.dataValues
             else return reg.dataValues;
@@ -513,7 +572,8 @@ class BaseTableModel extends Model {
      * @version 1.1.0
      */
     static async deleteData(params){
-        let queryParams = DatabaseUtils.prepareQueryParams(params.queryParams || params || {});
+        let queryParams = await DatabaseUtils.prepareQueryParams(params.queryParams || params || {});
+        console.log(queryParams);
         if (Utils.hasValue(queryParams.where) || Utils.hasValue(queryParams.id) || Utils.hasValue(queryParams.identifiers)) {
             let where = {};
             if (Utils.hasValue(queryParams.where)) {
