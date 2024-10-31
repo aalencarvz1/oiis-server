@@ -361,7 +361,7 @@ class Clients_Integration_Controller extends RegistersController{
     static async get(req,res,next) {
         try {
             let origin = req.body.origin || ["WINTHOR"];
-            let queryParams = DatabaseUtils.prepareQueryParams(req.body.queryParams || {});
+            let queryParams = await DatabaseUtils.prepareQueryParams(req.body.queryParams || {});
             queryParams.raw = true;
             if (Utils.typeOf(origin) != 'array') {
                 origin = [origin];

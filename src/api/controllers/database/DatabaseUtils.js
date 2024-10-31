@@ -1,5 +1,7 @@
 const { Sequelize } = require("sequelize");
+const path = require("path");
 const { Utils } = require("../utils/Utils");
+const { BaseEndPointController } = require("../endpoints/BaseEndPointController");
 
 class DatabaseUtils {
     static customOrder(column, values, direction) {
@@ -49,7 +51,7 @@ class DatabaseUtils {
         return result;
     }
 
-    static prepareQueryParams(queryParams) {
+    static async prepareQueryParams(queryParams) {
         queryParams = queryParams || {};      
         if (queryParams.where) {
             queryParams.where = DatabaseUtils.prepareLogicalQueryParams(queryParams.where || {});
@@ -69,6 +71,35 @@ class DatabaseUtils {
                 || (!isNaN(queryParams.order[key][0]) && Number.isInteger(queryParams.order[key][0]-0))
             ) {
                 queryParams.order[key][0] = Sequelize.literal(queryParams.order[key][0]);
+            }
+        }
+        if (Utils.hasValue(queryParams.include)) {
+            for(let key in queryParams.include) {
+                //load dinamic table clas model, require controller path wich control model path
+                if (Utils.hasValue(queryParams.include[key].model) && typeof queryParams.include[key].model == 'string') {
+                    if (Utils.hasValue(queryParams.include[key].modelController)) {
+                        let baseDir = path.dirname(require.main.filename);
+                        baseDir = path.dirname(baseDir);
+                        let modelControllerPath = (baseDir + queryParams.include[key].modelController).split("/");
+                        let modelControllerPath1 = modelControllerPath[0];
+                        modelControllerPath.shift();
+                        if (!Utils.hasValue(modelControllerPath1)) {
+                            modelControllerPath1 = `/${modelControllerPath[0]}/`;
+                            modelControllerPath.shift();
+                        } else {
+                            modelControllerPath1 += "/";
+                        }
+                        modelControllerPath = modelControllerPath.join("/");
+                        let controllerClass = BaseEndPointController.loadControllerClass(modelControllerPath,modelControllerPath1);
+                        let resultTableClassModel = await controllerClass.data.loadTableClassModel(queryParams.include[key].model,controllerClass.data.getDatabaseModelsPath());
+                        queryParams.include[key].model = resultTableClassModel.data.getModel();
+                        if (Utils.hasValue(queryParams.include[key].on)) {
+                            queryParams.include[key].on = DatabaseUtils.prepareLogicalQueryParams(queryParams.include[key].on);
+                        }
+                    } else {
+                        throw new Error("missing modelController path property in included object model");
+                    }
+                }
             }
         }
         return queryParams;

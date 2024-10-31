@@ -360,7 +360,7 @@ class WinthorIntegrationsRegistersController extends RegistersController {
                 }
             }
             Utils.log('queryParams',queryParams);        
-            queryParams = DatabaseUtils.prepareQueryParams(queryParams);
+            queryParams = await DatabaseUtils.prepareQueryParams(queryParams);
             switch(tableClassModel.name.trim().toLowerCase()) {
                 case PcFilial.name.trim().toLocaleLowerCase():
                     //Utils.log(route,level+1,arrRoute[level+1]);

@@ -210,7 +210,7 @@ class Warehouses_Integration_Controller extends RegistersController {
             let origin = req.body.origin || "";
             switch(arrRoute[level].trim().toLowerCase()) {
                 case 'get':                    
-                    let queryParams = DatabaseUtils.prepareQueryParams(req.body.queryParams || {});
+                    let queryParams = await DatabaseUtils.prepareQueryParams(req.body.queryParams || {});
                     queryParams.raw = true;
                     switch((origin.name || origin).trim().toLowerCase()) {
                         case "winthor":                            
