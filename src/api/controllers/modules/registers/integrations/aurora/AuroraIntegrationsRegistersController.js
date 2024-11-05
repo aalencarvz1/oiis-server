@@ -18,7 +18,29 @@ const { IntegrationsRegistersController } = require("../IntegrationsRegistersCon
  */
 class AuroraIntegrationsRegistersController extends IntegrationsRegistersController {
 
+    /**
+     * @override
+     * @returns 
+     * @created 2024-07-17
+     * @version 1.0.0
+     * @todo override this in inherited registers controllers if directory returned is another
+     */
+    static getDatabaseModelsPath(){        
+        return `${super.getDatabaseModelsPath()}${path.sep}winthor`;
+    }
 
+    /**
+     * @override
+     * @returns 
+     * @created 2024-07-17
+     * @version 1.0.0
+     * @todo override this in inherited registers controllers if directory returned is another
+     */
+    static getDirName(){
+        return __dirname;
+    }
+
+    
     static async integratePrices(req,res,next,route,arrRoute,level) {
         try {
             let data = req.body.data || null;
