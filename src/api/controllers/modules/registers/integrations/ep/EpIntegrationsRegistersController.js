@@ -241,6 +241,16 @@ class EpIntegrationsRegistersController extends RegistersController{
                 rcas = dataRel.map(el=>el.record_2_id).join(',');
             }
         }
+        if (Utils.hasValue(req.body.seller_ids)) {
+            if (Utils.hasValue(rcas)) {                
+                let seller_ids = Utils.toArray(req.body.seller_ids);
+                let rcasTemp = Utils.toArray(rcas);
+                seller_ids = seller_ids.filter(el=>rcasTemp.indexOf(el) > -1);
+                rcas = seller_ids.join(',');                
+            } else {
+                rcas = Utils.toArray(req.body.seller_ids).join(',');
+            }
+        }
         if (!rcas) rcas = `select ev.cod from EP.EPVENDEDORES ev`;
         return rcas;
     }
