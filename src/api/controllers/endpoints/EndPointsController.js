@@ -2,6 +2,10 @@ const path = require("path");
 const { Utils } = require("../utils/Utils");
 const fs = require("fs");
 const { BaseEndPointController } = require("./BaseEndPointController");
+const { JsonStreamStringify } = require('json-stream-stringify');
+
+
+
 
 /**
  * @created 2023-08-25
@@ -193,8 +197,17 @@ class EndPointsController extends BaseEndPointController{
                     }
                 }
             }
-            if (status) this.status(status).json(this.getJson())
-            else this.json(this.getJson());
+            if (status) this.status(status);
+
+            console.log("antes");
+            this.setHeader('Content-Type', 'application/json');
+
+            // Cria um stream de resposta JSON            
+            this.type('json'); // Required for proper handling by test frameworks and some clients
+            new JsonStreamStringify(this.getJson()).pipe(this);
+
+            console.log("depois");
+            //this.send(this.getJson());
         }.bind(res);
 
         req.getClientIp = function() {
