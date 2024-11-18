@@ -34,7 +34,7 @@ class Report_Data_Fount_Items extends BaseTableModel {
       before_sql_text:{
         type: DataTypes.TEXT,
       },
-      SQLTEXT:{
+      sql_text:{
         type: DataTypes.TEXT,
         allowNull:false,
       },

@@ -24,6 +24,10 @@ npx sequelize-cli db:seed:all
 run cmd in root project folder
 npm start
 
+TO UPDATE PACKAGES:
+npm outdated --force 
+npm update --force
+
 **** ADJUSTS ****
 node_modules\sequelize\lib\dialects\abstract\query-generator.js
 UPDATE IF TO ACCEPT LITERALS OF OTHERS INSTANCES OF SEQUELIZE:

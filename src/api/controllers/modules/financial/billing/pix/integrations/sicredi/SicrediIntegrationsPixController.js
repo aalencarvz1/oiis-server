@@ -1,17 +1,17 @@
-const { PcClient } = require("../../../../../../../../database/models/winthor/PcClient");
-const { Utils } = require('../../../../../../../utils/Utils');
+const { PcClient } = require("../../../../../../../database/models/winthor/PcClient");
+const { Utils } = require('../../../../../../utils/Utils');
 const { Sequelize, QueryTypes } = require('sequelize');
-const { PcPixCobrancaDados } = require('../../../../../../../../database/models/winthor/PcPixCobrancaDados');
+const { PcPixCobrancaDados } = require('../../../../../../../database/models/winthor/PcPixCobrancaDados');
 const { SicrediApiPixController } = require('./SicrediApiPixController');
-const { PcPrest } = require('../../../../../../../../database/models/winthor/PcPrest');
-const DBConnectionManager = require('../../../../../../../../database/DBConnectionManager');
-const { PcEstcr } = require('../../../../../../../../database/models/winthor/PcEstcr');
-const { PcConsum } = require('../../../../../../../../database/models/winthor/PcConsum');
-const { PcCob } = require('../../../../../../../../database/models/winthor/PcCob');
-const { PcNfsaid } = require("../../../../../../../../database/models/winthor/PcNfsaid");
-const { Parameter_Values } = require("../../../../../../../../database/models/Parameter_Values");
-const { Parameters } = require("../../../../../../../../database/models/Parameters");
-const { RegistersController } = require("../../../../../../registers/RegistersController");
+const { PcPrest } = require('../../../../../../../database/models/winthor/PcPrest');
+const DBConnectionManager = require('../../../../../../../database/DBConnectionManager');
+const { PcEstcr } = require('../../../../../../../database/models/winthor/PcEstcr');
+const { PcConsum } = require('../../../../../../../database/models/winthor/PcConsum');
+const { PcCob } = require('../../../../../../../database/models/winthor/PcCob');
+const { PcNfsaid } = require("../../../../../../../database/models/winthor/PcNfsaid");
+const { Parameter_Values } = require("../../../../../../../database/models/Parameter_Values");
+const { Parameters } = require("../../../../../../../database/models/Parameters");
+const { RegistersController } = require("../../../../../registers/RegistersController");
 
 
 /**
