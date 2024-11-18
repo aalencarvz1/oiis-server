@@ -5,7 +5,7 @@ const fetchNode = (...args) => import('node-fetch').then(({default: fetch}) => f
 //const fetchNode = require('node:fetch');
 const https = require('node:https');
 const path = require('node:path');
-const { Utils } = require('../../../../../../../utils/Utils');
+const { Utils } = require('../../../../../../utils/Utils');
 
 
 class SicrediApiPixController {
@@ -18,15 +18,15 @@ class SicrediApiPixController {
     static #apiPixSicrediLoginAutorization = "Basic T0RVMU1qSXdORE13TURBeE9UQTZNREF3TVRwSlpEazpTamRDV1c5RVh5dDFRR2d6VlVNNQ=="; //Basic Base64(client_id:client_secret) production
 
     
-    static #apiPixSicrediCertificate = fs.existsSync(path.resolve(__dirname,'../../../../../../../../assets/certificates/sicredi/api_pix/sicredi_certs/85522043000190.pem'))
+    static #apiPixSicrediCertificate = fs.existsSync(path.resolve(__dirname,'../../../../../../../assets/certificates/sicredi/api_pix/sicredi_certs/85522043000190.pem'))
         ? fs.readFileSync(
-            path.resolve(__dirname,'../../../../../../../../assets/certificates/sicredi/api_pix/sicredi_certs/85522043000190.pem'),
+            path.resolve(__dirname,'../../../../../../../assets/certificates/sicredi/api_pix/sicredi_certs/85522043000190.pem'),
             'utf-8'
         )
         : null;
-    static #apiPixSicredikey = fs.existsSync(path.resolve(__dirname,'../../../../../../../../assets/certificates/sicredi/api_pix/APLICACAO.key'))
+    static #apiPixSicredikey = fs.existsSync(path.resolve(__dirname,'../../../../../../../assets/certificates/sicredi/api_pix/APLICACAO.key'))
         ? fs.readFileSync(
-            path.resolve(__dirname,'../../../../../../../../assets/certificates/sicredi/api_pix/APLICACAO.key'),
+            path.resolve(__dirname,'../../../../../../../assets/certificates/sicredi/api_pix/APLICACAO.key'),
             'utf-8'                            
         )
         : null;

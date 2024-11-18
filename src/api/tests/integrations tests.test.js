@@ -683,7 +683,7 @@ describe('Running api call tests',()=>{
                         let parentTableName2 = 'sql_object_types';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);        
                         return {
-                            SQLTEXT:testString,                            
+                            sql_text:testString,                            
                             report_data_source_id:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
                             sql_object_type_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }

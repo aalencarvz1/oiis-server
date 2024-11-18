@@ -393,13 +393,13 @@ class StructuredQueryUtils {
         try {
             if (item) {
                 if (typeof item == 'object') {
-                    if (item.MOUNTEDSQLTEXT) {
-                        result = item.MOUNTEDSQLTEXT;
+                    if (item.assembled_sql_text) {
+                        result = item.assembled_sql_text;
                     } else {
                         item.before_sql_text = await StructuredQueryUtils.evalSqlText(item.before_sql_text,params);
-                        item.SQLTEXT = await StructuredQueryUtils.evalSqlText(item.SQLTEXT,params);
-                        result = `${item.before_sql_text||''} ${item.SQLTEXT}`;
-                        item.MOUNTEDSQLTEXT = result;
+                        item.sql_text = await StructuredQueryUtils.evalSqlText(item.sql_text,params);
+                        result = `${item.before_sql_text||''} ${item.sql_text}`;
+                        item.assembled_sql_text = result;
                     }
                 } else {
                     result = await StructuredQueryUtils.evalSqlText(item,params);
@@ -433,9 +433,9 @@ class StructuredQueryUtils {
                             if (currentItems[k].sql_object_type_id == Sql_Object_Types.JOIN && currentStructure[j].sql_object_type_id == Sql_Object_Types.JOIN) {
                                 if (Utils.hasValue(currentItems[k].subs) && Utils.hasValue(currentStructure[j].subs)) {
 
-                                    //Utils.log('y2k',currentItems[k].subs[0].SQLTEXT,currentStructure[j].subs[0].SQLTEXT,currentItems[k].subs[0].sql_alias,currentStructure[j].subs[0].sql_alias);
+                                    //Utils.log('y2k',currentItems[k].subs[0].sql_text,currentStructure[j].subs[0].sql_text,currentItems[k].subs[0].sql_alias,currentStructure[j].subs[0].sql_alias);
 
-                                    if ((currentItems[k].subs[0].SQLTEXT||'').trim().replace(/\s/g,'').toLowerCase() == (currentStructure[j].subs[0].SQLTEXT||'').trim().replace(/\s/g,'').toLowerCase()
+                                    if ((currentItems[k].subs[0].sql_text||'').trim().replace(/\s/g,'').toLowerCase() == (currentStructure[j].subs[0].sql_text||'').trim().replace(/\s/g,'').toLowerCase()
                                         && (currentItems[k].subs[0].sql_alias||'').trim().replace(/\s/g,'').toLowerCase() == (currentStructure[j].subs[0].sql_alias||'').trim().replace(/\s/g,'').toLowerCase()
 
                                         //mostrar isso e ver porque o alias não está sendo computado (diferente no registro e está passando por aqui como igual visao filia + empresa)
@@ -516,8 +516,8 @@ class StructuredQueryUtils {
                             }           
                             if (queryItems.sql_object_type_id == Sql_Object_Types.SELECT) {
                                 for (let i = 0; i < queryItems.subs.length; i++) {                                
-                                    if (Utils.hasValue(queryItems.subs[i].MOUNTEDSQLTEXT)) {
-                                        result += ` ${queryItems.subs[i].MOUNTEDSQLTEXT}`;
+                                    if (Utils.hasValue(queryItems.subs[i].assembled_sql_text)) {
+                                        result += ` ${queryItems.subs[i].assembled_sql_text}`;
                                         if (i < queryItems.subs.length-1) {
                                             if (queryItems.subs[i+1].sql_object_type_id == Sql_Object_Types.FIELD) {
                                                 result += ` ${delimiter}`;
@@ -528,13 +528,13 @@ class StructuredQueryUtils {
                             } else if (queryItems.sql_object_type_id == Sql_Object_Types.FROM) {
                                 let openedParents = false;
                                 for (let i = 0; i < queryItems.subs.length; i++) {
-                                    if (Utils.hasValue(queryItems.subs[i].MOUNTEDSQLTEXT)) {
+                                    if (Utils.hasValue(queryItems.subs[i].assembled_sql_text)) {
                                         //open subquery parentesis
                                         if (queryItems.subs[i].sql_object_type_id == Sql_Object_Types.SELECT && !openedParents) {
                                             result += ` ( `;
                                             openedParents = true;
                                         }
-                                        result += ` ${queryItems.subs[i].MOUNTEDSQLTEXT}`;
+                                        result += ` ${queryItems.subs[i].assembled_sql_text}`;
                                         if (i < queryItems.subs.length-1) {
                                             if (queryItems.subs[i+1].sql_object_type_id == Sql_Object_Types.FIELD) {
                                                 result += ` ${delimiter}`;
@@ -546,8 +546,8 @@ class StructuredQueryUtils {
                                             if (i < queryItems.subs.length-1) {
                                                 if (queryItems.subs[i+1].sql_object_type_id == Sql_Object_Types.SELECT) {
                                                     if (!(
-                                                        (queryItems.subs[i].sql_text_after_children||'').toLowerCase().indexOf('union') > -1 || (queryItems.subs[i].SQLTEXT||'').toLowerCase().indexOf('union') > -1
-                                                        || (queryItems.subs[i+1].before_sql_text||'').toLowerCase().indexOf('union') > -1 || (queryItems.subs[i+1].SQLTEXT||'').toLowerCase().indexOf('union') > -1
+                                                        (queryItems.subs[i].sql_text_after_children||'').toLowerCase().indexOf('union') > -1 || (queryItems.subs[i].sql_text||'').toLowerCase().indexOf('union') > -1
+                                                        || (queryItems.subs[i+1].before_sql_text||'').toLowerCase().indexOf('union') > -1 || (queryItems.subs[i+1].sql_text||'').toLowerCase().indexOf('union') > -1
                                                     )) {
                                                         result += ` ) `;
                                                         openedParents = false;
@@ -583,7 +583,7 @@ class StructuredQueryUtils {
                     if (Utils.hasValue(queryItems.sql_alias)) {
                         result += ` ${queryItems.sql_alias}`;
                     }
-                    queryItems.MOUNTEDSQLTEXT = result;
+                    queryItems.assembled_sql_text = result;
                 } 
             }
         }
