@@ -16,6 +16,7 @@ check/change your database configuration
 *RUN MIGRATIONS:
 run cmds (in src/server/database folder):
 cd src/api/database
+npx sequelize-cli db:dr
 npx sequelize-cli db:create (if your database not exists)(oracle dont support it, create manually)
 npx sequelize-cli db:migrate
 npx sequelize-cli db:seed:all
