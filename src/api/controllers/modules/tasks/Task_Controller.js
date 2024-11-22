@@ -48,7 +48,7 @@ class Task_Controller extends RegistersController{
                 result.pop(); //remove self, return only sups
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return result;
     }
@@ -84,7 +84,7 @@ class Task_Controller extends RegistersController{
                 //result.shift(); //remove self, return only sups //returning without self, not necessary shift
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return result;
     }
@@ -109,7 +109,7 @@ class Task_Controller extends RegistersController{
                 await DBConnectionManager.getDefaultDBConnection().query(query);
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
     }    
 
@@ -158,12 +158,11 @@ class Task_Controller extends RegistersController{
                 }
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
     }
 
     static async stopOthers(pIdTask,pIdX,pIdUser,pIdNewStatus) {
-        Utils.log(`INIT ${Task_Controller.name}.stopOthers`);
         try {            
             let idsSups = await Task_Controller.getIdsSupsX(pIdTask,pIdUser);            
             let idsSubs = await Task_Controller.getIdsSubsX(pIdTask,pIdUser);            
@@ -186,13 +185,11 @@ class Task_Controller extends RegistersController{
                 await DBConnectionManager.getDefaultDBConnection().query(query);
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
-        Utils.log(`END ${Task_Controller.name}.stopOthers`);
     }
 
     static async playOthers(pIdTask,pIdX,pIdUser,pIdNewStatus) {
-        Utils.log(`INIT ${Task_Controller.name}.playOthers`);
         try {
             let idsSups = await Task_Controller.getIdsSupsX(pIdTask,pIdUser);            
             let idsSubs = await Task_Controller.getIdsSubsX(pIdTask,pIdUser);            
@@ -229,9 +226,8 @@ class Task_Controller extends RegistersController{
                 }
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
-        Utils.log(`END ${Task_Controller.name}.playOthers`);
     }
 
     static async mountQueryParamsToGet(req,queryParams) {
@@ -297,9 +293,7 @@ class Task_Controller extends RegistersController{
         `;
         if (Utils.hasValue(queryParams)) {
             if (Utils.hasValue(queryParams.where)) {                
-                console.log('where to string antes ',queryParams.where);
                 queryParams.where = DatabaseUtils.whereToString(queryParams.where,Tasks);
-                console.log('where to string apos ',queryParams.where);
                 if (Utils.hasValue(queryParams.where)) {
                     query += ` where ${queryParams.where}`
                 }                
@@ -371,7 +365,6 @@ class Task_Controller extends RegistersController{
                 res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
                 res.data = res.data[0] || [];
             } else {
-                console.log(req.body.queryParams);
                 let query = this.mountQueryToGet(req,req.body.queryParams);
                 res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{queryType:QueryTypes.SELECT,raw:true});
                 res.data = res.data[0] || [];
@@ -428,7 +421,7 @@ class Task_Controller extends RegistersController{
             res.data = (res.data[0] || [])[0];
             res.sendResponse(200,true);
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(417,false,e.message || e,null,e);
         }
     }
@@ -463,7 +456,7 @@ class Task_Controller extends RegistersController{
             }); 
             res.sendResponse(200,true);
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(517,false,e.message || e,null,e);
         }
     }
@@ -471,7 +464,6 @@ class Task_Controller extends RegistersController{
         
     static async update(req,res,next) {
         try {
-            Utils.log('saving with parameters ',req.body);
             let task = await Tasks.getModel().findOne({
                 where:{
                     id: req.body?.id
@@ -589,7 +581,6 @@ class Task_Controller extends RegistersController{
                             sup = sup[0] || sup;
                             if (sup && sup.length > 0) {
                                 sup = sup[0];
-                                Utils.log('sup',sup);
                                 query = `
                                     UPDATE
                                         ${Tasks_Status_Users.name}
@@ -618,7 +609,7 @@ class Task_Controller extends RegistersController{
                 throw new Error(`task ${req.body?.id} not found`);
             }            
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(417,false,e.message || e,null,e);
         }
     }

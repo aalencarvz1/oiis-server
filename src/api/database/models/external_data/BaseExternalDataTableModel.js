@@ -23,9 +23,6 @@ class BaseExternalDataTableModel extends BaseTableModel {
      */
     static async runUpMigration(queryInterface, options) {
         options = options || {};
-        Utils.log('creating table',`${this.schema}.${this.tableName}`, Object.keys(this.fields));
-        //await queryInterface.createTable({scheme: this.schema, tableName: this.tableName}, this.fields);
-        //await this.migrateConstraints(queryInterface);    
         await queryInterface.bulkInsert('tables',[{      
             id:this.id,
             created_at: new Date(),
@@ -47,7 +44,6 @@ class BaseExternalDataTableModel extends BaseTableModel {
     static initModel(pSequelize) {
         let model = null;
         try {
-            //Utils.log('Initializing model ',pClassModel.name);
             pSequelize = pSequelize || this.getConnection();  
             if (pSequelize) {
                 model = this.init(this.fields,{
@@ -65,12 +61,11 @@ class BaseExternalDataTableModel extends BaseTableModel {
                     removeAttr: Utils.firstValid([this.removeAttr ,'']),
                 });
             }
-            //Utils.log(' successfull initied model ',pClassModel.name);
             if (Utils.hasValue(this.removeAttr)) {
                 model.removeAttribute(this.removeAttr);
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return model;
     }      

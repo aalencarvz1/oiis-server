@@ -115,12 +115,7 @@ class Items extends BaseTableModel {
         queryParams.data_origin_id = Data_Origins.WINTHOR;
         queryParams.id_at_origin = queryParams.id_at_origin || winthorData.CODPROD;
         queryParams.identifier_type_id = queryParams.identifier_type_id || Identifier_Types.CODE;
-        queryParams.identifier = queryParams.identifier || winthorData.CODPROD;
-        if (params.transaction) {
-          Utils.log('FL','creating ncm with transaction');
-        } else {
-          Utils.log('FL','creating ncm without transaction');
-        }
+        queryParams.identifier = queryParams.identifier || winthorData.CODPROD;        
         if (!Utils.hasValue(queryParams.ncm_id)) {
           let ncm = await Ncms.getOrCreate({
             raw:true,

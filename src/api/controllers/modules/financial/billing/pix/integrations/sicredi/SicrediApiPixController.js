@@ -92,7 +92,7 @@ class SicrediApiPixController {
                 try {
                     responseJson = JSON.parse(responseText);                        
                 } catch (errorJson) {
-                    Utils.log(errorJson);
+                    Utils.logError(errorJson);
                     resultObject.data = responseText;
                     resultObject.exception = errorJson;
                     resultObject.message = errorJson.message || errorJson;
@@ -102,7 +102,6 @@ class SicrediApiPixController {
                         callerParams[1] = callerParams[1] || true; //new token
                         callerParams[2] = callerParams[2] || 0; //recursive count
                         if (callerParams[2] > SicrediApiPixController.#RECUSIVE_LIMIT) throw new Error("recursive limit extrapoled");
-                        Utils.log(`recursing, login expired ${caller.name}`);
                         return await caller(...callerParams);
                     } else {
                         resultObject.data = responseJson;
@@ -120,7 +119,7 @@ class SicrediApiPixController {
             resultObject.exception = e;
             resultObject.message = e.message || e;
             resultObject.success = false;
-            Utils.log(e);
+            Utils.logError(e);
         } 
         return resultObject;
     }
@@ -144,9 +143,7 @@ class SicrediApiPixController {
                     },
                     agent: SicrediApiPixController.#httpsAgent
                 }
-                Utils.log('logging on api pix wieth params',options);
                 let apiPixRequestResponse = await fetchNode(SicrediApiPixController.#apiPixSicrediBasePath + "/oauth/token",options);
-                Utils.log('response api pix login',apiPixRequestResponse);
                 await SicrediApiPixController.#handleApiRequestResult(apiPixRequestResponse,result,null,true);
                 if (!result?.data?.access_token) throw new Error("api response not contain access_token");
                 SicrediApiPixController.#apiPixSicrediToken = result?.data?.access_token;
@@ -155,7 +152,7 @@ class SicrediApiPixController {
                 result.success = true;
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             result.exception = e;
             result.message = e.message || e;
             result.success = false;
@@ -216,7 +213,6 @@ class SicrediApiPixController {
         let result = {...SicrediApiPixController.#DefaultResponse};
         try {
             let logged = await SicrediApiPixController.#login(getNewApiPixToken || false);
-            Utils.log('response of logged api pix',logged);
             if (logged) {
                 p_PixReqParams = p_PixReqParams || {};
                 let status = p_PixReqParams?.status;
@@ -248,7 +244,7 @@ class SicrediApiPixController {
                 throw new Error("not logged on api pix sicredi");
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             result.exception = e;
             result.message = e.message || e;
             result.success = false;
@@ -277,7 +273,7 @@ class SicrediApiPixController {
                 throw new Error("not logged on api pix sicredi");
             } 
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             result.exception = e;
             result.message = e.message || e;
             result.success = false;
@@ -305,7 +301,7 @@ class SicrediApiPixController {
                 throw new Error("not logged on api pix sicredi");
             }        
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             result.exception = e;
             result.message = e.message || e;
             result.success = false;
@@ -345,7 +341,7 @@ class SicrediApiPixController {
                 throw new Error("not logged on api pix sicredi");
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             result.exception = e;
             result.message = e.message || e;
             result.success = false;
@@ -376,7 +372,7 @@ class SicrediApiPixController {
                 throw new Error("not logged on api pix sicredi");
             } 
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             result.exception = e;
             result.message = e.message || e;
             result.success = false;
@@ -400,7 +396,7 @@ class SicrediApiPixController {
                 throw new Error("not logged on api pix sicredi");
             } 
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             result.exception = e;
             result.message = e.message || e;
             result.success = false;

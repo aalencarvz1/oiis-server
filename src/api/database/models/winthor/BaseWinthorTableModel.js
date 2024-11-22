@@ -28,7 +28,6 @@ class BaseWinthorTableModel extends BaseTableModel {
      */
     static async runUpMigration(queryInterface, options) {
         options = options || {};
-        Utils.log('migrating table',this.tableName, Object.keys(this.fields));
         await queryInterface.bulkInsert('tables',[{      
             id:this.id,
             created_at: new Date(),
@@ -51,7 +50,6 @@ class BaseWinthorTableModel extends BaseTableModel {
     static initModel(pSequelize) {
         let model = null;
         try {
-            //Utils.log('Initializing model ',pClassModel.name);
             pSequelize = pSequelize || this.getConnection();  
             if (pSequelize) {
                 model = this.init(this.fields,{
@@ -69,12 +67,11 @@ class BaseWinthorTableModel extends BaseTableModel {
                     removeAttr: Utils.firstValid([this.removeAttr ,'']),
                 });
             }
-            //Utils.log(' successfull initied model ',pClassModel.name);
             if (Utils.hasValue(this.removeAttr)) {
                 model.removeAttribute(this.removeAttr);
             }
         } catch(e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return model;
     }

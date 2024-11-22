@@ -123,7 +123,6 @@ class People_Integration_Controller extends RegistersController{
                         winthorRegs = winthorRegs[0] || [];
                         if (winthorRegs && winthorRegs.length) {
                             winthorRegs = _.keyBy(winthorRegs,'CODCLI');
-                            Utils.log(people,winthorRegs);
                             let city = null;
                             let neighborhoodParams = null;
                             let neighborhood = null;
@@ -158,13 +157,11 @@ class People_Integration_Controller extends RegistersController{
                                             }
                                         }
                                     }
-                                    Utils.log('neighborhoodParams',neighborhoodParams);
                                     if (neighborhoodParams) {
                                         neighborhood = await NeighborHoods.getModel().getOrCreate(neighborhoodParams);
                                         if (neighborhood && neighborhood.success) {
                                             neighborhood = neighborhood.data;
                                         }
-                                        Utils.log('neighborhood',neighborhood);
                                     }
 
                                     if (city) {
@@ -237,7 +234,7 @@ class People_Integration_Controller extends RegistersController{
                 throw new Error('missing parameter property (params.identifiers)');
             }            
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             result.setException(e);
         }
         return result;
@@ -287,9 +284,6 @@ class People_Integration_Controller extends RegistersController{
 
                     let resultIntegrateAddresses = await People_Integration_Controller.integrateWinthorAddressesPeople(peopleDocs);
 
-                    if (!resultIntegrateAddresses.success) {
-                        Utils.log(resultIntegrateAddresses.exception || resultIntegrateAddresses.message);
-                    } 
                     let companies = {};
                     let businessesUnits = {};
                     let warehouses = {};
@@ -377,7 +371,7 @@ class People_Integration_Controller extends RegistersController{
                 throw new Error('missing parameter property (params.registersIdentifiersDocs)');
             }            
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             result.setException(e);
         }
         Utils.logf(`${this.name}`,`integrateWinthorPeople`);
@@ -451,7 +445,7 @@ class People_Integration_Controller extends RegistersController{
                 throw new Error('missing parameter property (params.registersIdentifiersDocs)');
             }            
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             result.setException(e);
         }
         return result;
@@ -470,7 +464,6 @@ class People_Integration_Controller extends RegistersController{
     static processPostAsRoute = async(req,res,next,route,arrRoute,level) => {
         try {            
             level++;
-            //Utils.log(route,level,arrRoute[level]);
             let origin = req.body.origin || "";
             switch(arrRoute[level].trim().toLowerCase()) {
                 case 'get':                    
@@ -536,7 +529,6 @@ class People_Integration_Controller extends RegistersController{
                 arrUrlPath.shift();
             }
             let currentPathIndex = arrUrlPath.indexOf(this.name.trim().toLowerCase());
-            console.log('xxxxx',currentPathIndex,arrUrlPath);
             let methodName = arrUrlPath[currentPathIndex+1] || req.method; 
             switch(methodName.trim().toLowerCase()) {
                 case 'create':

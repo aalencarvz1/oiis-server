@@ -145,8 +145,6 @@ module.exports = {
       }});
     }
 
-    //CONTINUAR AQUI, INCLUIR OS OPJETOS NECESSARIOS PARA FAZER OS COMANDOS SQL DIRETO DO WINTHOR (PCFILIAL, PCPRODUT,PCNFSAID,PCMOV,PCNFENT,PCEST,ETC. POR HORA FAZER SO DA JUMBO, MONTAR COMO MONTADO NO EP (INCLUIR PROCESSOS DE CUSTO/LUCRO E OBJETOS DESTES PROCESSOS (UTILIZANDO O SCHEMA JUMBO)))
-    Utils.log('FL',wintSchemaObject);
     await queryInterface.bulkInsert(Sql_Objects.tableName,[{      
       id: PcFilial.id,
       status_reg_id: Record_Status.ACTIVE,

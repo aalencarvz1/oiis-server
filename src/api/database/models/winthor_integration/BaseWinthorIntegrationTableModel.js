@@ -27,10 +27,7 @@ class BaseWinthorIntegrationTableModel extends BaseTableModel {
      */
     static async runUpMigration(queryInterface, options) {
         options = options || {};
-        Utils.log('migrating table',this.tableName, Object.keys(this.fields));
-        //await queryInterface.createTable(this.tableName, this.fields);
         let originQueryInterface = await this.getConnection().getQueryInterface();
-        //let tableExists = await originQueryInterface.tableExists(this.tableName);
         let tableExists = await originQueryInterface.sequelize.query(`
             select 
                 count(1) as "exists"
@@ -67,17 +64,12 @@ class BaseWinthorIntegrationTableModel extends BaseTableModel {
             if (options.migrateForeignKeyContraint == true) {
                 await this.migrateForeignKeyContraint(originQueryInterface);              
             }
-        } else {
-            Utils.log('  not migrated, pre-exists');
-        }
+        } 
     }
 
     static async runDownMigration(queryInterface, options) {
         options = options || {};
-        Utils.log('migrating down table',this.tableName, Object.keys(this.fields));
-        //await queryInterface.createTable(this.tableName, this.fields);
         let originQueryInterface = this.getConnection().getQueryInterface();
-        //await originQueryInterface.dropTable(Error_Logs.tableName);
     }
 
     
@@ -113,7 +105,7 @@ class BaseWinthorIntegrationTableModel extends BaseTableModel {
                 model.removeAttribute(this.removeAttr);
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return model;
     }

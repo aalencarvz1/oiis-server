@@ -121,7 +121,7 @@ class IntegrationsRegistersController extends BaseEndPointController{
                 throw new Error('missing parameter property (params.registersIds)');
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             result.setException(e);
         }
         return result;

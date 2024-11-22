@@ -170,7 +170,7 @@ class EndPointsController extends BaseEndPointController{
         }.bind(res);
 
         res.setException = function(ex,notShowConsole) {
-            if (!notShowConsole) Utils.log(ex);
+            if (!notShowConsole) Utils.logError(ex);
             this.success = false;
             this.message = ex.message || ex;
             if (ex.errors?.length) {
@@ -199,15 +199,12 @@ class EndPointsController extends BaseEndPointController{
             }
             if (status) this.status(status);
 
-            console.log("antes");
             this.setHeader('Content-Type', 'application/json');
 
             // Cria um stream de resposta JSON            
             this.type('json'); // Required for proper handling by test frameworks and some clients
             new JsonStreamStringify(this.getJson()).pipe(this);
 
-            console.log("depois");
-            //this.send(this.getJson());
         }.bind(res);
 
         req.getClientIp = function() {
@@ -246,7 +243,6 @@ class EndPointsController extends BaseEndPointController{
         Utils.logi(`${this.name}`,`processRequest(${req.url})`);
         try {
             global.loadedFiles = global.loadedFiles || {};
-            //Utils.log('FL',this.name,'processing', req.url/*,Object.keys(global.loadedFiles),Object.keys(global.loadedFiles).map(el=>global.loadedFiles[el].name)*/);
             let urlPath = req.url;
             urlPath = Utils.getSingleUrlPath(urlPath);
             switch(urlPath) {

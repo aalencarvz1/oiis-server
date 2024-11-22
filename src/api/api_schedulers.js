@@ -16,10 +16,6 @@ const api = express();
 
 api.use(cors());
 
-/*api.listen(process.env.API_SCHEDULERS_PORT||3000,function(){
-    Utils.log('FL',`server api running on port ${process.env.API_SCHEDULERS_PORT||3000} at ${new Date()}`)
-});*/
-
 //init database models
 ModelsController.initModels();
 

@@ -50,7 +50,6 @@ class AuthController extends RegistersController{
      */
     static async login(req,res,next) {
         let body = req.body || {};
-        Utils.log(req.method,body);
         if (!body.email || !body.password) return res.sendResponse(401,false,'missing data');
         let user = await Users.getModel().findOne({
             where:{email:(body.email||'').trim().toLowerCase()}
@@ -78,7 +77,7 @@ class AuthController extends RegistersController{
                     timezone_offset: user.last_timezone_offset
                 });
             } catch (e) {
-                Utils.log(e);
+                Utils.logError(e);
             }
         } else {
             userToken.timezone_offset = user.last_timezone_offset;
@@ -99,24 +98,18 @@ class AuthController extends RegistersController{
         
             // verify auth credentials
             const base64Credentials =  req.headers.authorization.split(' ')[1];
-            Utils.log(base64Credentials);
             const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
-            Utils.log(credentials);
             const [username, password] = credentials.split(':');
-            Utils.log(username,password);
             let user = await Users.getModel().findOne({where:{email:(username||'').trim().toLowerCase()}});
-            Utils.log('user',user);
             if (!user) return res.sendResponse(401,false,'user not found'); 
-            Utils.log('ok0');
             if (!bcrypt.compareSync(password, user.password)) return res.sendResponse(401,false,'password not match'); 
             
 
             // attach user to request object
             req.user = user
-            Utils.log('ok2');
             next();
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(517,false,e.message || e);
         }
     }
@@ -127,13 +120,11 @@ class AuthController extends RegistersController{
      * @returns object with token
      */
     static async refreshToken(req,res,next) {
-        Utils.log('cokies',req.cookies);
         let refreshToken = req.cookies.refreshToken || req.body.refreshToken;
         if (!refreshToken) return res.status(401).json({success:false,message:'no refresh token'});
         jwt.verify(refreshToken,process.env.API_REFRESH_SECRET,async function(error,decoded) {
             if (error) return res.status(401).json({success:false,message:error.message || error});
             req.user = {id:decoded.id};  
-            Utils.log("in refresh token",req.user,decoded);
             if (Utils.hasValue(req.user.id)) {
                 let user = await Users.getModel().findOne({where:{id:req.user.id}});
                 if (!user) return res.sendResponse(401,false,'user not found'); 
@@ -151,7 +142,6 @@ class AuthController extends RegistersController{
                         token: token            
                     }
                 });
-                Utils.log('usertoekn',userToken);
                 if (!userToken) {
                     try {
                         await User_Tokens.getModel().create({
@@ -186,7 +176,6 @@ class AuthController extends RegistersController{
      */
     static async register(req,res,next) {
         let body = req.body || {};
-        Utils.log(req.method,body);
         if (!body.email || !body.password) return res.sendResponse(401,false,'missing data');
         if (body.password.trim().length < 8) return res.sendResponse(401,false,'password < 8');
         let user = await Users.getModel().findOne({where:{email:(body.email||'').trim().toLowerCase()}},{raw:true});
@@ -219,7 +208,6 @@ class AuthController extends RegistersController{
      * middleware check autorization, called by all routes (app.use)
      */
     static checkToken(req,res,next) {      
-        console.log('xxxxxxxxxxx',req.url,req.headers['x-access-token'],typeof req.headers['x-access-token'], !Utils.hasValue(req.headers['x-access-token']));  
         if (AuthController.#unsecureRoutes.find(el=>req.url.trim().toLowerCase().indexOf(el.trim().toLowerCase()) === 0)
             && (
             !Utils.hasValue(req.headers['x-access-token'])
@@ -237,7 +225,6 @@ class AuthController extends RegistersController{
             if (!token) {
                 let authorization = req.headers['authorization'];
                 if (Utils.hasValue(authorization)) {
-                    Utils.log('checking basic for incomming connection ...', authorization);
                     return AuthController.basicAuth(req,res,next);
                 } else {                
                     return res.status(401).json({success:false,message:'no token'});
@@ -255,7 +242,6 @@ class AuthController extends RegistersController{
         try {
             let email = req.body.email;
             let path = req.body.path;
-            Utils.log('req.body',req.body);
             if (Utils.hasValue(email)) {
                 if (validator.validate(email)) {
 
@@ -271,7 +257,6 @@ class AuthController extends RegistersController{
 
                         AuthController.#mailTransport = AuthController.#mailTransport || createTransport(config[`smtp_${process.env.NODE_ENV||'development'}`]);
                         let verify = await AuthController.#mailTransport.verify();
-                        Utils.log('verify',verify);
                         if (verify === true) {
 
                             let token = jwt.sign({id: user.id},process.env.API_RECOVER_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});
@@ -283,7 +268,6 @@ class AuthController extends RegistersController{
                                 text: `Acesse este link para criar uma nova senha: ${path}/${token}`,
                                 html: `Acesse este link para criar uma nova senha: <br /><a href="${path}/${token}">Alterar senha</a>`,
                             });
-                            Utils.log(response);
                             if (response && (response.response||'').indexOf('Ok') > -1) {
                                 res.sendResponse(200,true);
                             } else {
@@ -302,7 +286,7 @@ class AuthController extends RegistersController{
                 res.sendResponse(517,false,"empty email");
             }
         } catch(e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(517,false,e.message || e);
         }
     }
@@ -338,7 +322,7 @@ class AuthController extends RegistersController{
                 });
             }
         } catch(e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(517,false,e.message || e);
         }
         Utils.logf(`${this.name}`,`passwordChange`);

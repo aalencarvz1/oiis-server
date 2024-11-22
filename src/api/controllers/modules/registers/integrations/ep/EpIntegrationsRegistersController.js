@@ -69,7 +69,7 @@ class EpIntegrationsRegistersController extends RegistersController{
                 result = await EpPessoas.getModel().findAll(findParams);
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return result;
     }
@@ -91,7 +91,7 @@ class EpIntegrationsRegistersController extends RegistersController{
                 }
             )
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return result;
     }     
@@ -161,7 +161,7 @@ class EpIntegrationsRegistersController extends RegistersController{
                 result = await EpClientes.getModel().findAll(findParams);
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return result;
     }
@@ -181,7 +181,7 @@ class EpIntegrationsRegistersController extends RegistersController{
                 }
             )
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return result;
     } 
@@ -192,7 +192,6 @@ class EpIntegrationsRegistersController extends RegistersController{
 
     static async getRcasCodes(params) {
         let rcas = null;
-        console.log('xxxxnnnn',params);
         if (params?.user.access_profile_id == Access_Profiles.SUPERVISOR) {
             let dataRel = await Relationships.getModel().findAll({
                 raw:true,
@@ -205,7 +204,6 @@ class EpIntegrationsRegistersController extends RegistersController{
             });
             if (dataRel && dataRel.length) {
                 dataRel = dataRel.map(el=>el.record_2_id);
-                //EpVendedores.initAssociations();
                 let sellers = await EpVendedores.getModel().findAll({
                     raw:true,
                     attributes:[

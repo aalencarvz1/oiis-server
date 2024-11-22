@@ -25,9 +25,7 @@ module.exports = {
     } else if ((connectionConfig?.dialect || '').toLowerCase().trim() == 'oracle' ) {
       queryTrigger = queryTrigger.replace("CREATE TRIGGER","CREATE OR REPLACE TRIGGER");
       await queryInterface.sequelize.query(queryTrigger);
-    } else {
-      Utils.log('not created triggers because dialect is not suported ',connectionConfig?.dialect);
-    }
+    } 
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable(Movements.tableName);

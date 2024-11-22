@@ -104,7 +104,6 @@ async function refreshToken() {
         })
     };    
     let jsonData = await callApi(endPoint,options);
-    //console.log('response of refreshtoken',jsonData);
     expect(hasValue(jsonData?.data?.token)).toBeTruthy();
     expect(hasValue(jsonData?.data?.refreshToken)).toBeTruthy();
     expect(hasValue(jsonData?.data?.user)).toBeTruthy();
@@ -116,7 +115,6 @@ async function refreshToken() {
         method:'GET',
         headers: {...loggedApiHeaders}
     }
-    console.log('refreshing token success');
     return jsonData;
 }
 

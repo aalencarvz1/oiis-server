@@ -85,7 +85,7 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                 result = Financial_Value_Forms.BOLET;
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return result;
     }
@@ -739,14 +739,14 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                             await Logistic_Orders_Winthor_Integration_Controller.integrateBoxClosing(idsLogOrders);
                         }   
                     } catch (ex) {
-                        Utils.log(ex); //not re-send data to user, separated 'thred'
+                        Utils.logError(ex); //not re-send data to user, separated 'thred'
                     }
                 }
             } else {
                 throw new Error('missing data');
             }            
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(501,false,e.message || e,null,e);
         } 
         Utils.logf(`${Logistic_Orders_Integration_Controller.name}`,`sendlogisticorderdata`);
