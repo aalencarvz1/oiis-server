@@ -478,7 +478,6 @@ class PcPrest extends BaseWinthorTableModel {
   static async getAllWarePixCobs(queryParams) {
     let result = null;
     try {
-      console.log(queryParams);
       queryParams = queryParams.queryParams || queryParams;
       queryParams = await DatabaseUtils.prepareQueryParams(queryParams || {});      
       queryParams.include = queryParams.include || [];
@@ -509,11 +508,10 @@ class PcPrest extends BaseWinthorTableModel {
           ]
         }
       });
-      console.log(queryParams);
       queryParams.where.VALOR = {[Sequelize.Op.gt] : 0};
       result = await PcPrest.getModel().findAll(queryParams);
     } catch (e) {
-      Utils.log(e);
+      Utils.logError(e);
     }    
     return result;
   }

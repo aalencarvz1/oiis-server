@@ -16,7 +16,6 @@ class MapsApiController extends BaseEndPointController {
     static async get(req,res,next) {
         try {            
             let bodyParams = req.body || req.query ;
-            Utils.log(bodyParams);
             if (bodyParams.library == 'geocoding') {
                 let apiParams = bodyParams.entity;
                 if (typeof apiParams != 'string') {

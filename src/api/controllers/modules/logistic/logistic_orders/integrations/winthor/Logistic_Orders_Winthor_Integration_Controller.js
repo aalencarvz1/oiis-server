@@ -74,7 +74,6 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                     if (Utils.typeOf(ids) !== 'array') {
                         ids = ids.toString().split(',');
                     }
-                    Utils.log('FL',ids);
                     if (ids.length) {   
                         for(let key in ids) {
                             //Logistic_Orders_Movs.initAssociations();
@@ -336,7 +335,7 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                 }
             }
         } catch(e) {
-            Utils.log(e);
+            Utils.logError(e);
             resultData.ERRORS.push(e.message || e);
         }
         return resultData;
@@ -360,7 +359,7 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                 });
             }
         } catch(e) {
-            Utils.log(e);
+            Utils.logError(e);
             resultData.ERRORS.push(e.message || e);
         }
         return result;
@@ -444,7 +443,7 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                         if (dataRels[kd].record_2_conditions) {
                             and.push(Sequelize.literal(dataRels[kd].record_2_conditions));
                         }
-                        Utils.log('and',and);
+                        Utils.logError('and',and);
                         orDataRels.push({[Sequelize.Op.and]:and});
                     }
                     if (orDataRels.length) {
@@ -453,9 +452,6 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                 }
 
                 //find delivery                
-                //console.log('yyyyyyyyyy antes',PcCarreg.getModel().associations);
-                //PcCarreg.initAssociations();
-                //console.log('yyyyyyyyyy depois',PcCarreg.getModel().associations);
                 res.data = await PcCarreg.getModel().findAll({
                     raw:true,
                     attributes: [
@@ -573,8 +569,6 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                         if (res.data[key].clients && res.data[key].clients.length) {  
                             
                             //find invoice data on winthor
-                            //PcDocEletronico.initAssociations();
-                            console.log('yyyyyyy',PcDocEletronico.getModel().associations);
                             let nfsWinthor = await PcNfsaid.getModel().findAll({
                                 raw:true,
                                 attributes:[
@@ -636,7 +630,6 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                                 `;
                                 let winthorPayments = await DBConnectionManager.getWinthorDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
                                 winthorPayments = winthorPayments[0] || [];
-                                console.log('zzzzzzzzzzzzzz',winthorPayments);
 
                                 //find item invoice data on winthor
                                 query = `
@@ -712,10 +705,8 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                                     nfsWinthor[kn].items = nfsWinthor[kn].items || [];
 
                                     for(let kp in winthorPayments) {
-                                        console.log(kp,winthorPayments[kp].invoice_id,nfsWinthor[kn].id_at_origin);
                                         if (winthorPayments[kp].invoice_id == nfsWinthor[kn].id_at_origin) {
                                             nfsWinthor[kn].payments.push(winthorPayments[kp]);
-                                            console.log('xxxxxxx',nfsWinthor[kn]);
                                         }
                                     }
 
@@ -863,7 +854,7 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
             }
             
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(501,false,e.message || e,null,e);
         }
     }

@@ -105,7 +105,6 @@ class StructuredQueryUtils {
             let structuredReportsDataItems = _.keyBy(reportsDataItems,'id');
             for(let k in structuredReportsDataItems) {
                 if (Utils.hasValue(structuredReportsDataItems[k].existence_critery)) {
-                    Utils.log('executing eval',structuredReportsDataItems[k].existence_critery);
                     if (!Utils.toBool(eval(structuredReportsDataItems[k].existence_critery))) {
                         structuredReportsDataItems[k].MOVED = true;
                         continue;    
@@ -132,8 +131,6 @@ class StructuredQueryUtils {
             }
             arrStructuredReportsDataItems = StructuredQueryUtils.sortNestedReportDataFoutItems(arrStructuredReportsDataItems);            
             result = arrStructuredReportsDataItems;
-        } else {
-            Utils.log(`reports data fount items not found for report data fount id ${reportDataFount.id}`);
         }
         return result;
     }
@@ -251,13 +248,11 @@ class StructuredQueryUtils {
     }
     
     static mountPivotFields(params) {
-        //Utils.log('view weigth find...');
         let result = [];
         if (Utils.toBool(params.viewAmount || false)) {
             result.push('SUM(NVL(QT,0)) AS QT');
         }
         if (Utils.toBool(params.viewWeight || false)) {
-            //Utils.log('view weigth true');
             result.push('SUM(NVL(PESO,0)) AS PESO');
         }
         if (Utils.toBool(params.viewValue || false)) {
@@ -278,9 +273,7 @@ class StructuredQueryUtils {
         if (Utils.typeOf(periods) != "array") {
             periods = Utils.toArray(periods,",");
         }
-        //console.log('antes',periods);
         periods = Utils.singleArrayTo2LevelArray(periods);
-        //console.log('depois',periods);
 
         for (let p in periods) {
             newPeriods[p] = [];
@@ -306,18 +299,15 @@ class StructuredQueryUtils {
         let result = false;
         try {
             let conditions = params.conditions || params.condictions || [];
-            console.log('conditions',conditions);
             if (Utils.hasValue(conditions)) {
                 if (typeof conditions == 'string') {
                     conditions = JSON.parse(conditions);
                 }
-                console.log('conditions',conditions);
                 result = conditions.filter(el=>((el.reportVision || el.vision || {}).id || el.reportVision || el.vision) == idVision).length > 0;
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
-        Utils.log('result of checkExistsConditionsByReportVision', result);
         return result;
     }
     static checkExistsCondictionsByReportVision = StructuredQueryUtils.checkExistsConditionsByReportVision;
@@ -327,19 +317,14 @@ class StructuredQueryUtils {
         try {
             let conditions = params.conditions || params.condictions|| [];
             if (Utils.hasValue(conditions)) {
-                Utils.log('has conditions',conditions);
                 if (typeof conditions == 'string') {
                     conditions = JSON.parse(conditions);
                 }
-                Utils.log('has conditions 2',conditions, idVision);
                 conditions = conditions.filter(el=>(el.reportVision || el.vision || {}).id || el.reportVision || el.vision == idVision);
-                Utils.log('has conditions 3',conditions, Utils.hasValue(conditions));
                 if (Utils.hasValue(conditions)) {
                     let or = [];
-                    Utils.log('okx1');
                     for(let k in conditions) {
                         if ((conditions[k].selecteds || conditions[k].values) && (conditions[k].selecteds || conditions[k].values).length) {
-                            Utils.log('okx2');
                             or.push(`${field} ${conditions[k].operation.id || conditions[k].operation} (${(conditions[k].selecteds || conditions[k].values).map(el=>el.id || el ||'null').join(',')})`);
                         }
                     }
@@ -349,10 +334,9 @@ class StructuredQueryUtils {
                         result = or.join(' or ');
                     }
                 }
-                Utils.log('conditions result',result);
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return result;
     }
@@ -361,7 +345,6 @@ class StructuredQueryUtils {
 
     static async evalSqlText(sqlText,params) {
         let result = sqlText;
-        //console.log('antes evel',sqlText,params);
         try {
             if (Utils.hasValue(result)) {
                 let loopLimit = 1000;
@@ -373,9 +356,7 @@ class StructuredQueryUtils {
                 while(p1 > -1 && p2 > -1 && p2 > p1 && loopLimit > 0) {
                     replaceText = result.substr(p1,(p2-p1)+2);
                     evalText = replaceText.substring(2,replaceText.length-2);
-                    Utils.log('executing eval',evalText);
                     evaluetedValue = await eval(evalText);
-                    Utils.log('result of evel',evaluetedValue);
                     result = result.replaceAll(replaceText,evaluetedValue);
                     p1 = result.indexOf("${");
                     p2 = result.indexOf("}$");
@@ -383,7 +364,7 @@ class StructuredQueryUtils {
                 }     
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return result;
     }
@@ -406,7 +387,7 @@ class StructuredQueryUtils {
                 }
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return result;
     }
@@ -432,8 +413,6 @@ class StructuredQueryUtils {
 
                             if (currentItems[k].sql_object_type_id == Sql_Object_Types.JOIN && currentStructure[j].sql_object_type_id == Sql_Object_Types.JOIN) {
                                 if (Utils.hasValue(currentItems[k].subs) && Utils.hasValue(currentStructure[j].subs)) {
-
-                                    //Utils.log('y2k',currentItems[k].subs[0].sql_text,currentStructure[j].subs[0].sql_text,currentItems[k].subs[0].sql_alias,currentStructure[j].subs[0].sql_alias);
 
                                     if ((currentItems[k].subs[0].sql_text||'').trim().replace(/\s/g,'').toLowerCase() == (currentStructure[j].subs[0].sql_text||'').trim().replace(/\s/g,'').toLowerCase()
                                         && (currentItems[k].subs[0].sql_alias||'').trim().replace(/\s/g,'').toLowerCase() == (currentStructure[j].subs[0].sql_alias||'').trim().replace(/\s/g,'').toLowerCase()
@@ -487,10 +466,7 @@ class StructuredQueryUtils {
             } else {
                 await StructuredQueryUtils.unifyStructuredQueryItems(structuredQuery,arrStructuredReportsDataItems,params);
             }
-        } else {
-            Utils.log(`reports data fount items not found for report data fount id ${reportDataFount.id}`);
-        }
-        //Utils.log('unified structured query',JSON.stringify(structuredQuery));
+        } 
         return structuredQuery;
     };
 
@@ -622,7 +598,6 @@ class StructuredQueryUtils {
             } else {
                 result = visionsSort[a.IDVISION] == visionsSort[b.IDVISION] ? a.numeric_order - b.numeric_order : visionsSort[a.IDVISION] - visionsSort[b.IDVISION];
             }
-            //Utils.log(visionsSort[a.IDVISION],visionsSort[b.IDVISION],a.numeric_order,b.numeric_order,visionsSort[a.IDVISION] == visionsSort[b.IDVISION],a.numeric_order - b.numeric_order,visionsSort[a.IDVISION] - visionsSort[b.IDVISION],visionsSort[a.IDVISION] == visionsSort[b.IDVISION] ? a.numeric_order - b.numeric_order : visionsSort[a.IDVISION] - visionsSort[b.IDVISION],result);
             return result;
         });
         for(let i = 0; i < structuredQuery.length; i++) {
@@ -636,18 +611,14 @@ class StructuredQueryUtils {
     static async processAccessCriteriesStructuredQueryItems(params,structuredQuery,pCurrentSelect) {
         let currentSelect = pCurrentSelect;
         for(let k in structuredQuery) {
-            //Utils.log('xxx',structuredQuery[k]);
             if (structuredQuery[k].sql_object_type_id == Sql_Object_Types.SELECT) {
                 currentSelect = structuredQuery[k];
             }
             if (structuredQuery[k].sql_object_type_id == Sql_Object_Types.TABLE) {
                 if (Utils.hasValue(structuredQuery[k].expression)) {
-                    console.log('oooooooooooooooooooooo',structuredQuery[k].expression);
 
                     structuredQuery[k].expression = await StructuredQueryUtils.evalSqlText(structuredQuery[k].expression, params);
-                    console.log('oooooooooooooooooooooo',structuredQuery[k].expression);
                     structuredQuery[k].expression = structuredQuery[k].expression.replaceAll('__TABLE_ALIAS__',structuredQuery[k].sql_alias);
-                    Utils.log('xxxxxxx', structuredQuery[k].expression);
                     let injected = false;
                     for(let j in pCurrentSelect?.subs || []) {
                         if (pCurrentSelect.subs[j].sql_object_type_id == Sql_Object_Types.WHERE) {
@@ -673,16 +644,13 @@ class StructuredQueryUtils {
     }
 
     static async mountQuery(structuredQuery,params) {
-        //Utils.log('mounting'); 
         let visionsIds = params.visions || [];
         let visionsSort = {};
         for(let i = 0; i < visionsIds.length; i++) {
             visionsSort[visionsIds[i]] = i;
         }
-        //Utils.log('sorted visions',visionsSort);
         let orderedStructuredQuery = StructuredQueryUtils.orderStructuredQueryItems(structuredQuery,visionsSort);
         await StructuredQueryUtils.processAccessCriteriesStructuredQueryItems(params,orderedStructuredQuery);
-        //Utils.log('unified structured query ordereds',JSON.stringify(orderedStructuredQuery));
         let result = await StructuredQueryUtils.mountQueryItems(orderedStructuredQuery,params);
         if (Utils.typeOf(result) == 'array') {
             result = result.join(' ');

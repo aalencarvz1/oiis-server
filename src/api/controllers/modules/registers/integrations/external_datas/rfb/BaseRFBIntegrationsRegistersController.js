@@ -78,7 +78,6 @@ class BaseRFBIntegrationsRegistersController extends RegistersController {
                                 } else {
                                     lines[k][numberCols[j]] = Utils.toNumber(lines[k][numberCols[j]]);    
                                     if (isNaN(lines[k][numberCols[j]]) || lines[k][numberCols[j]] == 'NaN') {
-                                        Utils.log(lines[k]);
                                         throw new Error(`invalid number ${previousStr}`);
                                     }
                                 }
@@ -90,7 +89,6 @@ class BaseRFBIntegrationsRegistersController extends RegistersController {
                         //number columns to number
                         for(let j in dateCols) {
                             if (Utils.hasValue(lines[k][dateCols[j]]) && lines[k][dateCols[j]] != '0') {
-                                //console.log(lines[k],dateCols[j],lines[k][dateCols[j]]);
                                 lines[k][dateCols[j]] = Utils.toDate(lines[k][dateCols[j]],dateFormat);    
                             } else {
                                 lines[k][dateCols[j]] = null;

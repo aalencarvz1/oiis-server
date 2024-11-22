@@ -194,7 +194,6 @@ class DatabaseUtils {
 
     static whereToString(where,tableClassModel,delimiter) {
         let result = null;
-        //console.log('whereToString where',where);
         if (Utils.hasValue(where)) {
             if (Utils.typeOf(where) == 'array') {
                 let wheres = [];
@@ -214,7 +213,6 @@ class DatabaseUtils {
                         }
                         if (Utils.typeOf(where[key]) == 'object') {
                             let keys = Object.keys(where[key]);
-                            //console.log('keys where ',key,keys);
                             if (keys.length > 1) throw new Error(`where clause field ${key} has more than 1 object key`);
                             let fieldKey = keys[0].trim().toLowerCase();
                             if (fieldKey == 'in' || fieldKey == 'not in') {
@@ -239,7 +237,6 @@ class DatabaseUtils {
                 result = where;
             }
         }
-        //console.log('whereToString result',result);
         return result;
     }
 

@@ -14,7 +14,7 @@ class DataSwap {
     }
     
     setException(ex,notConsole) {
-        if (!notConsole) Utils.log(ex);
+        if (!notConsole) Utils.logError(ex);
         this.success = false;
         this.message = ex.sqlMessage || ex.message || ex;
         if (ex.errors?.length) {

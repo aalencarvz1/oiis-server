@@ -78,7 +78,6 @@ class Report_Visions extends BaseTableModel {
 
   static async getReportVisionData(body) {
     let result = null;
-    Utils.log('body:',body);
     let idReportVision = body?.idReportVision;
     if (idReportVision) {
       let query = null;

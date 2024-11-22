@@ -173,7 +173,6 @@ class Warehouses_Integration_Controller extends RegistersController {
     static async integrateWinthorWarehouses(req,res,next) {
         try {
             let identifiers = req.body.identifiers || []; 
-            Utils.log(identifiers,Utils.typeOf(identifiers));
             if (Utils.typeOf(identifiers) != 'array') identifiers = identifiers.split(',');                    
             if (identifiers.length > 0) {
                 res.data = [];
@@ -186,7 +185,7 @@ class Warehouses_Integration_Controller extends RegistersController {
             }
 
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(501,false,e.message || e,null,e);
         }
 
@@ -206,7 +205,6 @@ class Warehouses_Integration_Controller extends RegistersController {
     static processPostAsRoute = async(req,res,next,route,arrRoute,level) => {
         try {            
             level++;
-            //Utils.log(route,level,arrRoute[level]);
             let origin = req.body.origin || "";
             switch(arrRoute[level].trim().toLowerCase()) {
                 case 'get':                    

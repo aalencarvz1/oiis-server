@@ -37,16 +37,11 @@ module.exports = class DBConnectionManager {
             if (DBConnectionManager.#defaultDBConnection == null) {
                 let connectionConfig = configDB[`${process.env.NODE_ENV||'development'}`];
                 Utils.log('starting sequelize ', connectionConfig);
-                if (process.env.NODE_ENV == 'production') {
-                    /*if (connectionConfig?.logging !== false) {
-                        connectionConfig.logging = (...msg)=>Utils.log(msg);
-                    }*/
-                }
                 DBConnectionManager.#defaultDBConnection = new Sequelize(connectionConfig);                
             }
             return DBConnectionManager.#defaultDBConnection;
         } catch (e) {
-            Utils.log('error on start connection',e);
+            Utils.logError(e);
         }
         return DBConnectionManager.#defaultDBConnection;
     }
@@ -63,22 +58,16 @@ module.exports = class DBConnectionManager {
                     if ((connectionConfig?.dialect || '').toLowerCase().trim() == 'oracle' ) {
                         
                         //https://github.com/oracle/node-oracledb/blob/b2b784218a53e0adfb8b3b8eeb91532abed946f5/doc/src/user_guide/appendix_a.rst#id87                
-                        //Utils.log('initializing oracle client');
                         OracleDB.initOracleClient();
                     }
 
                     Utils.log('starting sequelize ', connectionConfig);
-                    if (process.env.NODE_ENV == 'production') {
-                        /*if (connectionConfig?.logging !== false) {
-                            connectionConfig.logging = (...msg)=>Utils.log(msg);
-                        }*/
-                    }
                     DBConnectionManager.#winthorDBConnection = new Sequelize(connectionConfig);                
                 }
             }
             return DBConnectionManager.#winthorDBConnection;
         } catch (e) {
-            Utils.log('error on start connection',e);
+            Utils.logError(e);
         }
         return DBConnectionManager.#winthorDBConnection;
     }
@@ -95,22 +84,16 @@ module.exports = class DBConnectionManager {
                     if ((connectionConfig?.dialect || '').toLowerCase().trim() == 'oracle' ) {
                         
                         //https://github.com/oracle/node-oracledb/blob/b2b784218a53e0adfb8b3b8eeb91532abed946f5/doc/src/user_guide/appendix_a.rst#id87                
-                        //Utils.log('initializing oracle client');
                         OracleDB.initOracleClient();
                     }
 
                     Utils.log('starting sequelize ', connectionConfig);
-                    if (process.env.NODE_ENV == 'production') {
-                        /*if (connectionConfig?.logging !== false) {
-                            connectionConfig.logging = (...msg)=>Utils.log(msg);
-                        }*/
-                    }
                     DBConnectionManager.#consultDBConnection = new Sequelize(connectionConfig);                
                 }
             }
             return DBConnectionManager.#consultDBConnection;
         } catch (e) {
-            Utils.log('error on start connection',e);
+            Utils.logError(e);
         }
         return DBConnectionManager.#consultDBConnection;
     }
@@ -126,22 +109,16 @@ module.exports = class DBConnectionManager {
                     if ((connectionConfig?.dialect || '').toLowerCase().trim() == 'oracle' ) {
                         
                         //https://github.com/oracle/node-oracledb/blob/b2b784218a53e0adfb8b3b8eeb91532abed946f5/doc/src/user_guide/appendix_a.rst#id87                
-                        //Utils.log('initializing oracle client');
                         OracleDB.initOracleClient();
                     }
 
                     Utils.log('starting sequelize ', connectionConfig);
-                    if (process.env.NODE_ENV == 'production') {
-                        /*if (connectionConfig?.logging !== false) {
-                            connectionConfig.logging = (...msg)=>Utils.log(msg);
-                        }*/
-                    }
                     DBConnectionManager.#epDBConnection = new Sequelize(connectionConfig);                
                 }
             }
             return DBConnectionManager.#epDBConnection;
         } catch (e) {
-            Utils.log('error on start connection',e);
+            Utils.logError(e);
         }
         return DBConnectionManager.#epDBConnection;
     }
@@ -157,22 +134,16 @@ module.exports = class DBConnectionManager {
                     if ((connectionConfig?.dialect || '').toLowerCase().trim() == 'oracle' ) {
                         
                         //https://github.com/oracle/node-oracledb/blob/b2b784218a53e0adfb8b3b8eeb91532abed946f5/doc/src/user_guide/appendix_a.rst#id87                
-                        //Utils.log('initializing oracle client');
                         OracleDB.initOracleClient();
                     }
 
-                    Utils.log('starting sequelize ', connectionConfig);
-                    if (process.env.NODE_ENV == 'production') {
-                        /*if (connectionConfig?.logging !== false) {
-                            connectionConfig.logging = (...msg)=>Utils.log(msg);
-                        }*/
-                    }
+                    Utils.log('starting sequelize ', connectionConfig);                    
                     DBConnectionManager.#oldDBConnection = new Sequelize(connectionConfig);                
                 }
             }
             return DBConnectionManager.#oldDBConnection;
         } catch (e) {
-            Utils.log('error on start connection',e);
+            Utils.logError(e);
         }
         return DBConnectionManager.#oldDBConnection;
     }
@@ -188,22 +159,16 @@ module.exports = class DBConnectionManager {
                     if ((connectionConfig?.dialect || '').toLowerCase().trim() == 'oracle' ) {
                         
                         //https://github.com/oracle/node-oracledb/blob/b2b784218a53e0adfb8b3b8eeb91532abed946f5/doc/src/user_guide/appendix_a.rst#id87                
-                        //Utils.log('initializing oracle client');
                         OracleDB.initOracleClient();
                     }
 
                     Utils.log('starting sequelize ', connectionConfig);
-                    if (process.env.NODE_ENV == 'production') {
-                        /*if (connectionConfig?.logging !== false) {
-                            connectionConfig.logging = (...msg)=>Utils.log(msg);
-                        }*/
-                    }
                     DBConnectionManager.#winthorIntegrationConnection = new Sequelize(connectionConfig);                
                 }
             }
             return DBConnectionManager.#winthorIntegrationConnection;
         } catch (e) {
-            Utils.log('error on start connection',e);
+            Utils.logError(e);
         }
         return DBConnectionManager.#winthorIntegrationConnection;
     }
@@ -220,22 +185,16 @@ module.exports = class DBConnectionManager {
                     if ((connectionConfig?.dialect || '').toLowerCase().trim() == 'oracle' ) {
                         
                         //https://github.com/oracle/node-oracledb/blob/b2b784218a53e0adfb8b3b8eeb91532abed946f5/doc/src/user_guide/appendix_a.rst#id87                
-                        //Utils.log('initializing oracle client');
                         OracleDB.initOracleClient();
                     }
 
-                    Utils.log('starting sequelize ', connectionConfig);
-                    if (process.env.NODE_ENV == 'production') {
-                        /*if (connectionConfig?.logging !== false) {
-                            connectionConfig.logging = (...msg)=>Utils.log(msg);
-                        }*/
-                    }
+                    Utils.log('starting sequelize ', connectionConfig);                    
                     DBConnectionManager.#externalDataConnection = new Sequelize(connectionConfig);                
                 }
             }
             return DBConnectionManager.#externalDataConnection;
         } catch (e) {
-            Utils.log('error on start connection',e);
+            Utils.logError(e);
         }
         return DBConnectionManager.#externalDataConnection;
     }

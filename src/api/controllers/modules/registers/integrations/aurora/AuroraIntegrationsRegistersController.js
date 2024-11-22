@@ -52,7 +52,6 @@ class AuroraIntegrationsRegistersController extends IntegrationsRegistersControl
                         data[k] = data[k].split(';');
                     }
                     let columns = data[0];
-                    Utils.log(columns);
 
                     /*[
                         'CODFILIAL',     'CODPROD',
@@ -94,7 +93,6 @@ class AuroraIntegrationsRegistersController extends IntegrationsRegistersControl
                     };
                     data.shift(); //delete columns row;
                     columns = columns.join(';').toUpperCase().trim().split(';');
-                    Utils.log(columns);
                     let qt_tot_titles = columns.length;
                     let ind = null;
                     for( let k in expected_titles) {
@@ -105,7 +103,6 @@ class AuroraIntegrationsRegistersController extends IntegrationsRegistersControl
                             throw new Error(`missing column: ${k}`);
                         }
                     }
-                    Utils.log(expected_titles);
 
                     let inserts = [];
                     //print_r(data);exit();
@@ -174,13 +171,10 @@ class AuroraIntegrationsRegistersController extends IntegrationsRegistersControl
                             } else {
 
                                 let nextId = await DBConnectionManager.getConsultDBConnection().query(`select nvl(max(nvl(T2.CODITEMTABPR,0)),0) as NEXTID from CONSULTA.SJDTABPR_ORIGEM T2`,{raw:true,queryType:QueryTypes.SELECT});
-                                Utils.log(nextId);
                                 nextId = nextId[0] || null;
                                 if (nextId) nextId = nextId[0] || null;
-                                Utils.log(nextId);
                                 if (nextId) nextId = Utils.toNumber(nextId.NEXTID) + 1
                                 else nextId = 1;
-                                Utils.log(nextId);
 
                                 tabPrOrigem = await SjdTabpr_Origem.getModel().create({
                                     CODITEMTABPR: nextId,
@@ -197,7 +191,6 @@ class AuroraIntegrationsRegistersController extends IntegrationsRegistersControl
                                     PERCDESCPCOMPRA2: inserts[k].PERCDESCPCOMPRA2
                                 });
                             }                            
-                            Utils.log(inserts);
                             if (!tabPrOrigem) throw new Error(`error on upsert ${Object.values(inserts[k])}` );
                             tabPrOrigem.DTIMPORTACAO = Sequelize.literal('sysdate');
                             await SjdTabpr_Origem_Log.getModel().create(tabPrOrigem.dataValues || tabPrOrigem);
@@ -215,7 +208,7 @@ class AuroraIntegrationsRegistersController extends IntegrationsRegistersControl
                 throw new Error("missing data");
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(517,false,e.message || e,null,e);
         }
     }
@@ -239,7 +232,7 @@ class AuroraIntegrationsRegistersController extends IntegrationsRegistersControl
                 let currentTime = new Date();
                 fileContent = fileContent.split(/\r?\n/);
                 fileContent = fileContent.map(el=>el.split('#'));                
-                //Utils.log("fileContent",typeof fileContent, fileContent);
+
                 await DBConnectionManager.getConsultDBConnection().query('delete from consulta.arestaurimportacao',{queryType:QueryTypes.DELETE});
                 for(let k in fileContent) {                
                     if (Utils.hasValue(fileContent[k][0]) && Utils.hasValue(fileContent[k][1]) && Utils.hasValue(fileContent[k][2])) {
@@ -261,10 +254,8 @@ class AuroraIntegrationsRegistersController extends IntegrationsRegistersControl
                 //await DBConnectionManager.getConsultDBConnection().query('commit',{queryType:'COMMIT'});
                 
                 let newFileName = `${path}/processados/${fileName.substring(0,fileName.indexOf('.'))}${currentTime.toISOString().replace(/[\.\-\:]/g,'')}.TXT`;
-                //Utils.log('renaming',`${path}/${fileName}`,newFileName);
                 await client.rename(`${path}/${fileName}`,newFileName);
                 let responseProcess = await DBConnectionManager.getConsultDBConnection().query('call consulta.sjdpkg_funcs_sisjd.atualizar_estoque_aurora();');
-                //Utils.log(responseProcess);            
                 await DBConnectionManager.getConsultDBConnection().query('delete from consulta.arestaurimportacao',{queryType:QueryTypes.DELETE});
                 result.success = true;
             } else {
@@ -295,7 +286,6 @@ class AuroraIntegrationsRegistersController extends IntegrationsRegistersControl
      */
     static processPostAsRoute = async(req,res,next,route,arrRoute,level) => {
         level++;
-        //Utils.log(route,level,arrRoute[level]);
         switch(arrRoute[level].trim().toLowerCase()) {
             case 'prices':
                 await AuroraIntegrationsRegistersController.integratePrices(req,res,next,route,arrRoute,level);

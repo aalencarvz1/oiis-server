@@ -16,7 +16,6 @@ class Companies_Integration_Controller extends RegistersController{
     
 
     static async integrateWinthorPcFilialToCompany(winthorFilialCode,transaction) {           
-        Utils.log('yyyy');
         if (Utils.hasValue(winthorFilialCode)) {
             let pcfilial = await PcFilial.getModel().findOne({
                 raw : true,
@@ -142,7 +141,6 @@ class Companies_Integration_Controller extends RegistersController{
     static async integrateWinthorCompanies(req,res,next) {
         try {
             let identifiers = req.body.identifiers || []; 
-            Utils.log(identifiers,Utils.typeOf(identifiers));
             if (Utils.typeOf(identifiers) != 'array') identifiers = identifiers.split(',');                    
             if (identifiers.length > 0) {
                 res.data = [];
@@ -154,7 +152,7 @@ class Companies_Integration_Controller extends RegistersController{
                 throw new Error("not identifiers for integration");
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(501,false,e.message || e,null,e);
         }
 

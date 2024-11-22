@@ -61,8 +61,6 @@ class SicrediIntegrationsPixController extends RegistersController{
 
             //ESTA RETORNANDO false, VER PORQUE
 
-            Utils.log('integrateWinthor',integrateWinthor);
-
             if (bodyParams?.codcli) {
                 if (integrateWinthor) {
                     pcClient = await PcClient.getModel().findOne({
@@ -205,7 +203,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                 res.sendResponse(200,false,)
             }                           
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(501,false,e.message || e, null, e);
         }
     }
@@ -248,7 +246,7 @@ class SicrediIntegrationsPixController extends RegistersController{
             }
             res.sendResponse(200,true);                                
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(501,false,e.message || e, null, e);
         }
     }
@@ -265,7 +263,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                 result?.exception
             );                     
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(501,false,e.message || e, null, e);
         }
     }
@@ -281,7 +279,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                 result?.exception
             ); 
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(501,false,e.message || e, null, e);
         }
     }
@@ -307,17 +305,15 @@ class SicrediIntegrationsPixController extends RegistersController{
                 res.sendResponse(200,true);                                
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(501,false,e.message || e, null, e);
         }
     }
 
     static async downWinthorTitle(params) {
-        Utils.log("downWinthorTitle","INIT");
         let result = false;
         try {
             if (params.numtrans) {
-                Utils.log("downWinthorTitle",params);
                 let pcPrest = await PcPrest.getModel().findOne({
                     where:{
                         [Sequelize.Op.and]:[{
@@ -346,7 +342,6 @@ class SicrediIntegrationsPixController extends RegistersController{
                     let dowed = false;
                     let wintConnection = DBConnectionManager.getWinthorDBConnection();
                     await wintConnection.transaction(async transaction=>{
-                        Utils.log("downWinthorTitle","ok1");
                         pcPrest = await wintConnection.query(`
                             select
                                 *
@@ -366,11 +361,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                         if (pcPrest) {
                             pcPrest = pcPrest[0];
                         }
-                        Utils.log("downWinthorTitle","ok2");
-                        Utils.log("pcPrest",pcPrest);
-                        Utils.log("downWinthorTitle","ok2.1");
                         if (pcPrest) {
-                            Utils.log("downWinthorTitle","ok3");
                             let pcCob = await PcCob.getModel(wintConnection).findOne({
                                 raw: true,
                                 attributes:[
@@ -398,7 +389,6 @@ class SicrediIntegrationsPixController extends RegistersController{
                                 if (pcEstcr) {
                                     pcEstcr = pcEstcr[0];
                                 }
-                                Utils.log("downWinthorTitle","ok3.1");                                
 
                                 if (pcEstcr) {
 
@@ -706,7 +696,6 @@ class SicrediIntegrationsPixController extends RegistersController{
                                             transaction:transaction
                                         });
 
-                                        Utils.log("downWinthorTitle","ok3.1");
 
                                         let newPcPrest = await PcPrest.getModel(wintConnection).findOne({
                                             where:{
@@ -719,10 +708,8 @@ class SicrediIntegrationsPixController extends RegistersController{
                                             },
                                             transaction:transaction
                                         });
-                                        Utils.log("downWinthorTitle","ok3.2");
 
                                         if (newPcPrest) {
-                                            Utils.log("downWinthorTitle","ok3.2.1");
                                             let oldPcPrest = pcPrest;
                                             pcPrest = newPcPrest;
                                             oldPcPrest.CODCOB = "DESD";
@@ -746,9 +733,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                                             oldPcPrest.PRESTTEF = oldPcPrest.PREST;
                                             oldPcPrest.CODBAIXA = 93; //CODFUNC OU TIPO DE BAIXA???
                                             oldPcPrest.OBS2 = 'Desdobrado via api pix';
-                                            Utils.log("downWinthorTitle","ok3.2.2");
                                             await oldPcPrest.save({transaction:transaction});
-                                            Utils.log("downWinthorTitle","ok3.2.3");
 
                                             await wintConnection.query(`
                                                 INSERT INTO PCDESD (
@@ -776,7 +761,6 @@ class SicrediIntegrationsPixController extends RegistersController{
                                                 type:Sequelize.QueryTypes.INSERT,
                                                 transaction:transaction
                                             });
-                                            Utils.log("downWinthorTitle","ok3.2.4");
                                         }
                                     }
                                 } else {
@@ -784,7 +768,6 @@ class SicrediIntegrationsPixController extends RegistersController{
                                 }
 
 
-                                Utils.log("downWinthorTitle","ok4");
                                 let pcConsum = await wintConnection.query(`
                                     select 
                                         nvl(PROXNUMTRANS,0) PROXNUMTRANS,
@@ -801,7 +784,6 @@ class SicrediIntegrationsPixController extends RegistersController{
                                 if (pcConsum) {
                                     pcConsum = pcConsum[0];
                                 }
-                                Utils.log("downWinthorTitle","ok5");
                                 let numtrans = (pcConsum?.PROXNUMTRANS||0)-0;
                                 //pcConsum.PROXNUMTRANS = numtrans+2;//winthor faz duas vezes lock e duas vezes update + 1 sequencialmente //Sequelize.literal('nvl(PROXNUMTRANS,0) + 1'); NAO FUNCIONA ASSIM
                                 let numlanc = (pcConsum?.PROXNUMLANC||0)-0;
@@ -819,8 +801,6 @@ class SicrediIntegrationsPixController extends RegistersController{
                                     transaction:transaction
                                 });
 
-                                //await pcConsum.save({transaction:transaction});
-                                //Utils.log("downWinthorTitle","ok6",numtrans,numlanc);
                                 pcPrest.CODCOB = 'D';
                                 pcPrest.VPAGO = Utils.toNumber(params.pix.valor.original);
                                 pcPrest.TXPERM = Sequelize.fn('decode',Sequelize.col('TXPERM'),Sequelize.literal('0'),Sequelize.literal('null'),Sequelize.col('TXPERM'));
@@ -859,9 +839,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                                 pcPrest.ROTINAPAG = '[PCSIS1207 - 33.00.04.06]';
                                 pcPrest.ROTINAFECHA = '[PCSIS1207 - 33.00.04.06]';
 
-                                Utils.log("downWinthorTitle","ok7");
                                 await pcPrest.save({transaction:transaction});
-                                Utils.log("downWinthorTitle","ok8");
 
                                 await wintConnection.query(`
                                     INSERT INTO pclogcr (
@@ -887,18 +865,12 @@ class SicrediIntegrationsPixController extends RegistersController{
                                 });
 
 
-                                Utils.log("downWinthorTitle","ok9");
-
-                            
-                                Utils.log("downWinthorTitle","ok10.1",pcEstcr.VALOR,Utils.toNumber(pcEstcr.VALOR),params.pix.valor.original,Utils.toNumber(params.pix.valor.original),Utils.toNumber(pcEstcr.VALOR) + Utils.toNumber(params.pix.valor.original));
-
 
                                 /*@todo rastrear as tabelas antes para ver se é so isso que é alterado */
                                 pcEstcr.VALOR = Utils.toNumber(pcEstcr.VALOR) + Utils.toNumber(params.pix.valor.original);
 
 
                                 await pcEstcr.save({transaction:transaction});
-                                Utils.log("downWinthorTitle","ok10.2",pcEstcr.VALOR);
 
                                 /*@todo rastrear as tabelas antes para ver se é so isso que é alterado */
                                 await wintConnection.query(`INSERT INTO PCMOVCR (     
@@ -949,12 +921,10 @@ class SicrediIntegrationsPixController extends RegistersController{
                                     type:Sequelize.QueryTypes.INSERT,
                                     transaction:transaction
                                 });                                
-                                Utils.log("downWinthorTitle","ok10.3");
 
                                 /*pcPrest.NUMTRANS = numtrans;
                                 await pcPrest.save({transaction:transaction});
                                 DESNECESSARIO, JA SALVO NO INICIO*/
-                                Utils.log("downWinthorTitle","ok10.4");
                             } else {
                                 throw new Error(`PCCOB ${pcPrest.CODCOB} not found`);
                             }
@@ -962,23 +932,15 @@ class SicrediIntegrationsPixController extends RegistersController{
                             /*LEMBRAR O USUARIO DE FAZER A CONCILIAÇÃO NA 604*/
 
                             dowed = true;
-                            Utils.log("downWinthorTitle","ok11");
-                        } else {
-                            Utils.log("downWinthorTitle","not found PCPREST");
                         } 
-                        Utils.log("downWinthorTitle","okxxxxxx20");
                         return true; //if in here, no errors occured, commit transaction
                     });
                     result = dowed;
-                } else {
-                    Utils.log("downWinthorTitle","PCPREST not found");
-                }
+                } 
             } 
         } catch (e) {
-            Utils.log("downWinthorTitle","error",e.message);
-            Utils.log(e);
+            Utils.logError(e);
         }
-        Utils.log("downWinthorTitle","END");
         return result;
     }
 
@@ -994,7 +956,7 @@ class SicrediIntegrationsPixController extends RegistersController{
                 }
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return result;
     }
@@ -1018,7 +980,6 @@ class SicrediIntegrationsPixController extends RegistersController{
                 status:'CONCLUIDA'
             });
             if (result?.success) {
-                Utils.log('cobs concluidas: ',result?.data?.cobs?.length);
                 if (Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true) {
                     for(let key in result?.data?.cobs) {
                         let numtrans = null;
@@ -1041,7 +1002,6 @@ class SicrediIntegrationsPixController extends RegistersController{
                             if (pixWint.STATUS != result.data.cobs[key].status) { 
                                 pixWint.STATUS = result.data.cobs[key].status;                            
                                 await pixWint.save();
-                                Utils.log("PcPixCobrancaDados updated status",pixWint.STATUS);
                             }
                         } else {
                             numtrans = this.getFieldFromInfo(result.data.cobs[key],'numtrans');
@@ -1065,23 +1025,17 @@ class SicrediIntegrationsPixController extends RegistersController{
                         }
                     }
                 }
-            } else {
-                Utils.log('result of SicrediApiPixController.getPix not success',result);
-            }
+            } 
         } catch (e) {
-            Utils.log("error on checkCompletedsPix");
-            Utils.log(e);
+            Utils.logError(e);
         }
     }
 
     static async receiveWebhookInformation(req,res,next,getNewApiPixToken,recursiveCount) {
         try {
             let log = `${(new Date()).toISOString()} ${req?.method} ${req?.socket?.remoteAddress} ${JSON.stringify(req?.body||{})}`;
-            Utils.log(log);
-            Utils.log(req);
             let body = req?.body || {};
             let pix = body?.pix || [];
-            Utils.log('implement receive webhook request');
             if (pix.length) {
                 for(let key in pix) {
                     let txid = pix[key].txid;
@@ -1092,20 +1046,21 @@ class SicrediIntegrationsPixController extends RegistersController{
                                 NUMTRANSPAGDIGITAL: txid
                             }
                         });
+
+                        /**
+                         * @TODO IMPLEMENT
+                         */
                         if (pixWinthor) {
-                            //IMPLEMENTAR CONFORME LOG DA 1207 AO BAIXAR UM TITULO
-                            //VER SE MUDA O STATUS DA COB DO PIX TAMBÉM E ATUALIZAR a PcPixCobrancaDados também
-                            Utils.log('implement down title with webhook call and winthor title');
+                            
                         } else {
-                            //pixTemp = this.getPix()
-                            Utils.log('implement down title with webhook call');
+                            
                         }
                     }
                 }
             }
             res.sendResponse(200,true);
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(501,false,e.message || e, null, e);
         }
     }

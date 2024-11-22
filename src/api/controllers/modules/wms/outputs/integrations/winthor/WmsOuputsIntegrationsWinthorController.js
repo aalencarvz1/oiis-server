@@ -112,7 +112,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
             res.data = res.data[0] || [];
             res.sendResponse(200,true);
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(501,false,e.message || e,null,e);
         }
     }
@@ -150,7 +150,6 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                         if (identifiers[key].idorigin == 0) loadingsWinthor.push(identifiers[key].cargo_number)
                         else loadingsBroker.push(identifiers[key].cargo_number);
                     }
-                    //Utils.log('loadingsWinthor',loadingsWinthor);
                     let rcasWinthor = [];
                     if (loadingsWinthor.length) {
                         query = `
@@ -164,10 +163,8 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                         let dataRcasWinthor = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
                         rcasWinthor = dataRcasWinthor[0] || [];
                     }
-                    //Utils.log('rcasWinthor',rcasWinthor);
 
                     let rcasBroker = [];
-                    //Utils.log('loadingsBroker',loadingsBroker);
                     if (loadingsBroker.length) {
                         query = `
                             select distinct
@@ -188,10 +185,8 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                         let dataRcasBroker = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
                         rcasBroker = dataRcasBroker[0] || [];
                     }
-                    //Utils.log('rcasBroker',rcasBroker);
 
                     if (rcasWinthor.length && rcasBroker.length) {
-                        //Utils.log('ok2');
                         let same = false;
                         for(let key in rcasWinthor) {
                             for(let k2 in rcasBroker) {
@@ -222,7 +217,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                 throw new Error("select more than 1 to proced");
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(501,false,e.message || e,null,e);
         }
     }
@@ -258,7 +253,6 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
 
                 data = data[0] || [];
                 if (data.length) {
-                    Utils.log('xxx',data[0].UNIFIEDS,identifiers.length);
                     if (data[0].UNIFIEDS != identifiers.length) throw new Error('cannot print different non-unified payloads');
                     if (data[0].DISTID > 1) throw new Error('não é possível imprimir unificações diferentes juntas(1)');
                 } else {
@@ -432,7 +426,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                 throw new Error("missing data");
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(501,false,e.message || e,null,e);
         }
     }    

@@ -88,7 +88,7 @@ class WinthorIntegrationsRegistersController extends RegistersController {
                 result = await PcClient.getModel().findAll(findParams);
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return result;
     }
@@ -111,7 +111,7 @@ class WinthorIntegrationsRegistersController extends RegistersController {
                 }
             )
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return result;
     }     
@@ -138,7 +138,7 @@ class WinthorIntegrationsRegistersController extends RegistersController {
                 }
             )
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return result;
     }    
@@ -190,7 +190,6 @@ class WinthorIntegrationsRegistersController extends RegistersController {
                     `;
 
                     let clients = await DBConnectionManager.getWinthorDBConnection().query(query,{type:QueryTypes.SELECT, transaction:transaction});
-                    console.log(clients);
 
                     //iterate each client
                     for(let row in clients) {
@@ -321,14 +320,11 @@ class WinthorIntegrationsRegistersController extends RegistersController {
     static async processPostAsWinthorRegister(req,res,next,route,arrRoute,level) {
         try {
             level++;
-            Utils.log(route,level,arrRoute[level]);
-                        
             
             
             let tableClassModel = null;
             let resolvedPath = require.resolve(`../../../../../database/models/winthor/${arrRoute[level]}`).toLowerCase();
             let ind = Object.keys(require.cache).join(',').toLowerCase().split(',').indexOf(resolvedPath);
-            //Utils.log('loading module dinamic',resolvedPath,ind);
             if (ind > -1) {
                 let keyCache = Object.keys(require.cache)[ind];
                 let realKey = Utils.getKey(require.cache[keyCache].exports,arrRoute[level]);
@@ -347,23 +343,18 @@ class WinthorIntegrationsRegistersController extends RegistersController {
                 }
             }
 
-            //Utils.log('dinamic loaded required tablemodel',tableClassModel);
             let params = req.body;
             let queryParams = params.queryParams || params || {};
             if (arrRoute[level+1].trim().toLowerCase() == 'get') {
-                Utils.log('x',queryParams);
                 if (!queryParams.where && Object.keys(queryParams).length && !queryParams.query) {
-                    Utils.log('x2');
                     queryParams = {
                         where:queryParams
                     }
                 }
             }
-            Utils.log('queryParams',queryParams);        
             queryParams = await DatabaseUtils.prepareQueryParams(queryParams);
             switch(tableClassModel.name.trim().toLowerCase()) {
                 case PcFilial.name.trim().toLocaleLowerCase():
-                    //Utils.log(route,level+1,arrRoute[level+1]);
                     switch(arrRoute[level+1].trim().toLowerCase()) {
                         case 'get':                                                        
                             queryParams.where.CODIGO = {
@@ -373,7 +364,6 @@ class WinthorIntegrationsRegistersController extends RegistersController {
                     }
                     break;
                 case PcClient.name.trim().toLocaleLowerCase():
-                    //Utils.log(route,level+1,arrRoute[level+1]);
                     switch(arrRoute[level+1].trim().toLowerCase()) {
                         case 'get':                            
                             queryParams.attributes = queryParams.attributes || [];
@@ -384,7 +374,6 @@ class WinthorIntegrationsRegistersController extends RegistersController {
             }
 
             level++;
-            //Utils.log(route,level,arrRoute[level]);
             switch(arrRoute[level].trim().toLowerCase()) {
                 case 'get':
                     queryParams.raw = true;                    
@@ -400,7 +389,7 @@ class WinthorIntegrationsRegistersController extends RegistersController {
                     }
             }            
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(417,false,e.message || e,null,e);
         }
     }
@@ -408,7 +397,6 @@ class WinthorIntegrationsRegistersController extends RegistersController {
 
     static async processPostAsWinthorPcClientToPeopleRegister(req,res,next,route,arrRoute,level) {
         level++;
-        //Utils.log(route,level,arrRoute[level]);
         switch(arrRoute[level].trim().toLowerCase()) {
             case 'integrate':
                 res.setDataSwap(await this.integratePeople(req.body));
@@ -422,7 +410,6 @@ class WinthorIntegrationsRegistersController extends RegistersController {
     
     static async processPostAsWinthorPcClientRegister(req,res,next,route,arrRoute,level) {
         level++;
-        //Utils.log(route,level,arrRoute[level]);
         switch(arrRoute[level].trim().toLowerCase()) {
             case 'people':
                 await this.processPostAsWinthorPcClientToPeopleRegister(req,res,next,route,arrRoute,level);
@@ -448,7 +435,6 @@ class WinthorIntegrationsRegistersController extends RegistersController {
      */
     static async processPostAsRoute(req,res,next,route,arrRoute,level) {
         level++;
-        //Utils.log(route,level,arrRoute[level]);
         switch(arrRoute[level].trim().toLowerCase()) {
             case 'pcclient':
                 await this.processPostAsWinthorPcClientRegister(req,res,next,route,arrRoute,level);

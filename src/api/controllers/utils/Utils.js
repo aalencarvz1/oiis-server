@@ -173,7 +173,6 @@ class Utils {
                         let objKeys = Object.keys(obj);
                         let keyTemp = key.trim().toLowerCase();
                         for(let i = 0; i < objKeys.length; i++) {
-                            //console.log('comparing ',objKeys[i].trim().toLowerCase() , keyTemp,objKeys[i].trim().toLowerCase() == keyTemp);
                             if (objKeys[i].trim().toLowerCase() == keyTemp) {
                                 result = objKeys[i];
                                 break;
@@ -260,6 +259,10 @@ class Utils {
         } else {
             console.error(Utils.getMomento(),values);
         }        
+    }
+
+    static logError(error) {
+        console.error(error);
     }
 
     static logToFile(...values){
@@ -423,7 +426,6 @@ class Utils {
      * @version 1.0.1
      */
     static getMethodName(obj,methodName) {
-        //console.log('getting method name from ',obj.name || obj.constructor?.name, methodName);
         let ownPropName = `${obj.name}_hashMethodsNames`;
         if (!this.hasValue(obj[ownPropName])) {            
             obj[ownPropName] = {};
@@ -434,26 +436,20 @@ class Utils {
                     let keys = Reflect.ownKeys(obj2);
                     if (keys && typeof keys !== 'undefined' && keys.length > 0) {
                         for (let k in keys) {
-                            //console.log(typeof keys[k], keys[k]);
                             try {
                                 if (typeof keys[k] == 'string' && [ 'caller', 'callee', 'arguments'].indexOf(keys[k]) == -1 && typeof (obj2||{})[keys[k]]  == 'function') obj[ownPropName][keys[k].toLowerCase()] = keys[k];
                             } catch (e) {
-                                //console.log(e);
                                 obj[ownPropName][keys[k].toLowerCase()] = keys[k];
                             }
                         };
                     }
                 }
             } while (obj2 = Reflect.getPrototypeOf(obj2)); 
-            //Utils.log('FL','Utils.getMethodName','storaged methods from ',obj.name,'in','hashMethodsNames',Object.keys(obj[ownPropName]));
         }
 
         if (obj[ownPropName][methodName.trim().toLowerCase()]) {
-            //console.log('encountred method ',methodName);
             return obj[ownPropName][methodName.trim().toLowerCase()];
-        } else {
-            //console.log('not encountred method ',methodName,'in',obj.name || obj.constructor?.name, Object.keys(obj[ownPropName]));
-        }
+        } 
         return null;
     }
 

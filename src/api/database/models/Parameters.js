@@ -8,7 +8,6 @@ const { Data_Types } = require("./Data_Types");
 /**
  * class model
  */
-console.log('Parameters - antes declaracao classe, antes exportacao');
 class Parameters extends BaseTableModel {
   static id = 55;
 
@@ -71,10 +70,4 @@ class Parameters extends BaseTableModel {
   
 };
 
-console.log('Parameters - apos declaracao classe, antes exportacao');
-
-
-
 module.exports = {Parameters}
-
-console.log('Parameters - apos declaracao classe, apos exportacao');
