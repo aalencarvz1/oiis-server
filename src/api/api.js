@@ -13,6 +13,9 @@ const cors = require('cors');
 const compression = require('compression');
 const multer  = require('multer');
 const { Midia_Controller } = require('./controllers/modules/registers/midias/Midia_Controller');
+const DBConnectionManager = require('./database/DBConnectionManager');
+const { QueryTypes } = require('sequelize');
+const { Types } = require('mysql2');
 
 //multer configure
 const storage = multer.diskStorage({
@@ -49,6 +52,52 @@ api.use(AuthController.checkToken); //auth token check middleware
 
 //handle upload midias route
 api.post("/api/controllers/modules/registers/midias/midia_controller/uploadfile",upload.array('files'),Midia_Controller.uploadFile);
+
+api.post("/api/controllers/modules/registers/product",
+    async function datesProduct(req,res) {
+        let termo = req.body.termo
+        termo = termo.split(',')
+        let date = await DBConnectionManager.getWinthorDBConnection().query(`
+        select
+            CODPROD,
+            DESCRICAO,
+            EMBALAGEM,
+            UNIDADE,
+            PESOLIQ,
+            PESOBRUTO,
+            CODEPTO,
+            TEMREPOS,
+            QTUNIT,
+            DTCADASTRO,
+            DTEXCLUSAO,
+            dtultaltcom,
+            PRAZOVAL,
+            REVENDA,
+            QTUNITCX,
+            IMPORTADO,
+            CODAUXILIAR
+        from
+            pcprodut
+        where
+            ${termo.map(el =>{
+                return `
+                (CODPROD like '${el}' 
+                OR UPPER(DESCRICAO) LIKE UPPER('${el}')
+                OR UPPER(EMBALAGEM) LIKE UPPER('${el}')
+                OR UPPER(UNIDADE) LIKE UPPER('${el}')
+                OR PESOLIQ LIKE '${el}'
+                
+                )`
+            }).join(' or ')}
+            `,
+        {
+            type: QueryTypes.SELECT,
+        }
+
+    )
+    res.status(200).send(date)
+    }
+);
 
 //handle all methods and routes
 api.all('*', EndPointsController.processRequest.bind(EndPointsController));
