@@ -446,6 +446,50 @@ class WinthorIntegrationsRegistersController extends RegistersController {
         }         
     }
 
+    static async getProductsTableData(req,res) {
+        let termo = req.body.termo
+        termo = termo.split(',')
+        let data = await DBConnectionManager.getWinthorDBConnection().query(`
+            select
+                CODPROD,
+                DESCRICAO,
+                EMBALAGEM,
+                UNIDADE,
+                PESOLIQ,
+                PESOBRUTO,
+                CODEPTO,
+                TEMREPOS,
+                QTUNIT,
+                DTCADASTRO,
+                DTEXCLUSAO,
+                dtultaltcom,
+                PRAZOVAL,
+                REVENDA,
+                QTUNITCX,
+                IMPORTADO,
+                CODAUXILIAR
+            from
+                pcprodut
+            where
+                ${termo.map(el =>{
+                    return `
+                    (CODPROD like '${el}' 
+                    OR UPPER(DESCRICAO) LIKE UPPER('${el}')
+                    OR UPPER(EMBALAGEM) LIKE UPPER('${el}')
+                    OR UPPER(UNIDADE) LIKE UPPER('${el}')
+                    OR PESOLIQ LIKE '${el}'
+                    
+                    )`
+                }).join(' or ')}
+                `,
+            {
+                type: QueryTypes.SELECT,
+            }
+        
+        )
+        res.status(200).json(data)
+    }
+
 }
 
 module.exports = {WinthorIntegrationsRegistersController}
