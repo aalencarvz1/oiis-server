@@ -23,11 +23,8 @@ module.exports = {
             seedRoutine(routine[i],idModuleSup);
           }
         } else {
-          Utils.log('FL','passing routine ',routine.name);
           if (Utils.hasValue(routine?.subs)) {
-            Utils.log('FL',routine.name,' has subs');
             if (routine.routine_type_id || routine.view_path) {
-              Utils.log('FL',routine.name,' is routine');
               registersRoutines.push({
                 id:routine.id-0,
                 status_reg_id: Record_Status.ACTIVE,
@@ -48,7 +45,6 @@ module.exports = {
                 seedRoutine(routine.subs[i],idModuleSup,routine.id);
               } 
             } else {
-              Utils.log('FL',routine.name,' is module');
               registersModules.push({
                 id:routine.id-0,
                 status_reg_id: Record_Status.ACTIVE,
@@ -68,7 +64,6 @@ module.exports = {
             }
 
           } else {
-            Utils.log('FL',routine.name,' no has subs');
             registersRoutines.push({
               id:routine.id-0,
               status_reg_id: Record_Status.ACTIVE,
@@ -88,14 +83,11 @@ module.exports = {
           }
         }
       } catch(e) {
-        Utils.log(e);
+        Utils.logError(e);
       }
     }
 
     seedRoutine(modules,null);
-    //Utils.log('FL',registersModules);
-    //Utils.log('FL',registersRoutines);
-
     await queryInterface.bulkInsert(Modules.tableName,registersModules,{
       ignoreDuplicates:true,
       updateOnDuplicate:['status_reg_id','parent_id','name','icon']

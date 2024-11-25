@@ -6,7 +6,7 @@ const { Utils } = require('./controllers/utils/Utils');
 Utils.log('NODE_ENV =',process.env.NODE_ENV);
 const { ModelsController } = require('./controllers/database/ModelsController');
 const { ToadScheduler, SimpleIntervalJob, AsyncTask } = require('toad-scheduler');
-const { SicrediIntegrationsPixController } = require('./controllers/modules/outputs/sales/financial_collection/pix/integrations/sicredi/SicrediIntegrationsPixController');
+const { SicrediIntegrationsPixController } = require('./controllers/modules/financial/billing/pix/integrations/sicredi/SicrediIntegrationsPixController');
 const { AuroraIntegrationsRegistersController } = require('./controllers/modules/registers/integrations/aurora/AuroraIntegrationsRegistersController');
 const cors = require('cors');
 //const { MtrixIntegrationsController } = require('./controllers/modules/registers/integrations/mtrix/MtrixIntegrationsController');
@@ -15,10 +15,6 @@ const cors = require('cors');
 const api = express();
 
 api.use(cors());
-
-/*api.listen(process.env.API_SCHEDULERS_PORT||3000,function(){
-    Utils.log('FL',`server api running on port ${process.env.API_SCHEDULERS_PORT||3000} at ${new Date()}`)
-});*/
 
 //init database models
 ModelsController.initModels();

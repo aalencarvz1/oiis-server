@@ -37,7 +37,6 @@ class DeliveryController extends RegistersController{
             }
             if (where.length) where = ` where ${where.join(' and ')} `            
             else where = ' where 1=2 ';//prevent massive database get
-            console.log('where',req.body.id,where);
             let query = `
                 select
                     l.*,
@@ -496,7 +495,7 @@ class DeliveryController extends RegistersController{
                     break;
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(404,false,e.message || e,null,e);
         }
     }
@@ -721,7 +720,7 @@ class DeliveryController extends RegistersController{
                     break;
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(404,false,e.message || e,null,e);
         }
     }
@@ -824,7 +823,7 @@ class DeliveryController extends RegistersController{
                         queryType: QueryTypes.SELECT
                     });
                     dataTemp = Utils.arrayToObject(dataTemp[0] || [],['data_origin_id','id_at_origin']);
-                    Utils.log(dataTemp);
+
                     for(let key in res.data) {
                         res.data[key].logistic_status_id = ((dataTemp[res.data[key].data_origin_id.toString()]||{})[res.data[key].id_at_origin.toString()]||{})[0]?.logistic_status_id;
                         res.data[key].LOGISTICSTATUS = ((dataTemp[res.data[key].data_origin_id.toString()]||{})[res.data[key].id_at_origin.toString()]||{})[0]?.LOGISTICSTATUS;
@@ -866,7 +865,6 @@ class DeliveryController extends RegistersController{
                     break;
             }
         } catch (e) {
-            Utils.log(e);
             res.sendResponse(517,false,e.message || e,null,e);
         }
     }
@@ -974,7 +972,7 @@ class DeliveryController extends RegistersController{
                     break;
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(517,false,e.message || e,null,e);
         }
     }
@@ -1009,7 +1007,7 @@ class DeliveryController extends RegistersController{
                     break;
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(517,false,e.message || e,null,e);
         }
     }

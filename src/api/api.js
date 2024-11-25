@@ -23,7 +23,6 @@ const storage = multer.diskStorage({
       cb(null, 'uploads/')
     },
     filename: function (req, file, cb) {
-        Utils.log('filename object',file);
         let fileExt = file.mimetype?.split('/') || file.filename?.split('.') || ['file'];
         if (fileExt && fileExt.length > 0) {
             fileExt = fileExt[fileExt.length-1];

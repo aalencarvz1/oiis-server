@@ -28,7 +28,6 @@ class BaseSjdTableModel extends BaseTableModel {
      */
     static async runUpMigration(queryInterface, options) {
         options = options || {};
-        Utils.log('migrating table',this.tableName, Object.keys(this.fields));
         await queryInterface.bulkInsert('tables',[{      
             id:this.id,
             created_at: new Date(),
@@ -68,12 +67,11 @@ class BaseSjdTableModel extends BaseTableModel {
                     removeAttr: Utils.firstValid([this.removeAttr ,'']),
                 });
             }
-            //Utils.log(' successfull initied model ',pClassModel.name);
             if (Utils.hasValue(this.removeAttr)) {
                 model.removeAttribute(this.removeAttr);
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return model;
     }

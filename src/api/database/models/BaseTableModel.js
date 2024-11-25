@@ -166,10 +166,8 @@ class BaseTableModel extends Model {
                     if (!this.constraints[i].name) {
                         this.constraints[i].name = this.tableName + '_c' + i;
                     }
-                    Utils.log(' add constraint',this.tableName, this.constraints[i]);
                     await queryInterface.addConstraint(this.tableName, this.constraints[i]);
                 } else {
-                    Utils.log(' add constraint',this.tableName, this.constraints[i]);
                     await queryInterface.sequelize.query(this.constraints[i]);
                 }
             }
@@ -211,11 +209,9 @@ class BaseTableModel extends Model {
                     if (!foreignKey.name) {
                         foreignKey.name = this.tableName + '_fk' + i;
                     }
-                    Utils.log(' add constraint',this.tableName, foreignKey);
                     await queryInterface.addConstraint(this.tableName, foreignKey);                
                 }
             } else {
-                Utils.log(' add constraint',this.tableName, this.foreignsKeys[i]);
                 await queryInterface.sequelize.query(this.foreignsKeys[i]);  
             }
         }        
@@ -230,7 +226,6 @@ class BaseTableModel extends Model {
      */
     static async runUpMigration(queryInterface, options) {
         options = options || {};
-        Utils.log('creating table',this.tableName, Object.keys(this.fields));
         await queryInterface.createTable(this.tableName, this.fields);
         await this.migrateConstraints(queryInterface);    
         await queryInterface.bulkInsert('tables',[{      
@@ -261,8 +256,6 @@ class BaseTableModel extends Model {
         let tableRefClassModel = null;
         try {
             for(let i in (this.foreignsKeys || [])) {
-                //if (this.tableName.indexOf('pc') === 0)
-                    //Utils.log(' associating',this.tableName,i,this.foreignsKeys[i]);
 
                 tableRefClassModel = this.foreignsKeys[i].references.table; //for re-declare if necessary
                 if (typeof tableRefClassModel == 'string') {
@@ -270,11 +263,9 @@ class BaseTableModel extends Model {
                     //require.cache is case sensitive, avoid reload cached model
                     let path = require.resolve(`./${tableRefClassModel.toLowerCase().indexOf('pc') === 0 ? 'winthor/':''}${tableRefClassModel}`).toLowerCase();
                     let ind = Object.keys(require.cache).join(',').toLowerCase().split(',').indexOf(path);
-                    //Utils.log('loading module dinamic',path,ind);
                     if (ind > -1) {
                         let keyCache = Object.keys(require.cache)[ind];                        
                         let realKey = Utils.getKey(require.cache[keyCache].exports,tableRefClassModel);
-                        //console.log('keys',require.cache[keyCache].exports,tableRefClassModel, realKey);
                         if (Utils.hasValue(realKey)) {
                             tableRefClassModel = require.cache[keyCache].exports[realKey];
                         } else {
@@ -305,24 +296,13 @@ class BaseTableModel extends Model {
                 } else {
                     model = tableRefClassModel.getModel();
                 }                
-                //belongsToParams.targetKey = this.foreignsKeys[i].references.field;
-                //if (this.model.tableName.toLowerCase().indexOf('pc') === 0) {
-                    //Utils.log(model.tableName,'hasMany',this.model,hasManyParams);
-                    //Utils.log(this.model.tableName,'belongsTo',model,belongsToParams);
-                //}
                 if (model) {
-                    //Utils.log(`associating ${model.name} hasMany ${this.model.name} ${JSON.stringify(hasManyParams)} ${model && model.prototype} ${model && model.prototype && model.prototype instanceof Model} ${this.model && this.model.prototype} ${this.model && this.model.prototype && this.model.prototype instanceof Model}`);
-                    //Utils.log(`associating ${this.model.name} belongs to ${model.name} ${JSON.stringify(belongsToParams)} ${this.model && this.model.prototype} ${this.model && this.model.prototype && this.model.prototype instanceof Model} ${model && model.prototype} ${model && model.prototype && model.prototype instanceof Model}`);
                     let hasMany = model.hasMany(this.model,hasManyParams);
                     let belongsTo = this.model.belongsTo(model,belongsToParams);
-                    //console.log('belongsTo',belongsTo);
-                    
-                    //console.log('hasMany',hasMany);
                 }                
             }            
         } catch(e) {
-            //Utils.log(' error ',e);
-            Utils.log('tableRefClassModel on error',tableRefClassModel, this.model);
+            Utils.logError(e);
             throw e;
         } 
     }
@@ -357,24 +337,13 @@ class BaseTableModel extends Model {
                 model.removeAttribute(this.removeAttr);
             }            
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return model;
     }
 
     static getModel(pSequelize) {
         if (this.model == null) {
-            /*globalThis.tableModels = globalThis.tableModels || {};
-            let tableModelGlobalKey = `${this.schema||'default'}.${this.name}`;
-            tableModelGlobalKey = tableModelGlobalKey.trim().toLowerCase();
-            //console.log('getModel has globals',tableModelGlobalKey,!Utils.hasValue(globalThis.tableModels[tableModelGlobalKey]));
-            if (!Utils.hasValue(globalThis.tableModels[tableModelGlobalKey])) {
-                globalThis.tableModels[tableModelGlobalKey] = this.initModel(pSequelize);
-                //console.log('getModel initied by globals',tableModelGlobalKey,globalThis.tableModels[tableModelGlobalKey]);
-            }
-            this.model = globalThis.tableModels[tableModelGlobalKey];
-            //console.log('model in getModel',tableModelGlobalKey,this.model);
-            //console.log('keys of global',Object.keys(globalThis.tableModels));*/
             this.model = this.initModel(pSequelize);
             if (!Utils.hasValue(this.model.associations))
                 this.associates();
@@ -426,7 +395,6 @@ class BaseTableModel extends Model {
      */
     static async createData(params,returnRaw) {
         let queryParams = params.queryParams?.values || params.values || params.queryParams || params || {};
-        Utils.log('FL','CREATING WITH PARAMETERS',queryParams);
         let result = await this.getModel().create(queryParams);
         if (typeof this.getData === 'function' && returnRaw !== false && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(result.id) || result
         else return result;
@@ -460,14 +428,10 @@ class BaseTableModel extends Model {
      * @created 2023-11-10
      */
     static async updateData(params) {
-        //let queryParams = params.queryParams || params || {};
         let reg = null;
-        Utils.log('PARAMMMMMSSSSSSSSS',params);
         let values = params.values || params.queryParams?.values || params.queryParams || params ;                
-        Utils.log(params);
         params.where = params.where || params.queryParams?.where || null;
         let primaryKeysFieldsNames = this.getPrimaryKeysFieldsNames();
-        console.log('primaryKeysFieldsNames',primaryKeysFieldsNames);
         if (Utils.hasValue(params.where)) {
             reg = await this.getModel().findOne(params);
         } else if (values.id) { 
@@ -479,14 +443,12 @@ class BaseTableModel extends Model {
                 params.where = {};
                 let keys = Object.keys(values).join(',').trim().toLowerCase().split(',');
                 let ind = -1;
-                Utils.log('KEYSSSSSSSSSSSS',primaryKeysFieldsNames,keys, values);
                 for(let k in primaryKeysFieldsNames) {
                     ind = keys.indexOf(primaryKeysFieldsNames[k].trim().toLowerCase());
                     if (ind > -1) {
                         params.where[Object.keys(values)[ind]] = values[Object.keys(values)[ind]];
                     }
                 }
-                Utils.log(params.where);
                 if (Object.keys(params.where).length > 0) {
                     reg = await this.getModel().findOne({where:params.where,transaction:params.transaction});
                 } else {
@@ -500,13 +462,10 @@ class BaseTableModel extends Model {
         let valuesToUpdate = {};
         if (reg) {
             for(let key in values) {
-                console.log('key',key);
                 if (key != 'id' && key != 'where') {
-                    console.log('antes',reg[key],values[key])
                     if (reg[key] != values[key]) {
                         reg[key] = values[key];
                         valuesToUpdate[key] = values[key];
-                        console.log('apos',reg[key],values[key],Utils.hasValue(primaryKeysFieldsNames),!hasPrimaryKeyOnUpdate)
                         
                         /*sequelize nao atualiza estes campos se forem chaves primarias, 
                         verificar apos o save se houve alteracao de campos chaves primarias e fazer update via query e nao via 
@@ -515,13 +474,9 @@ class BaseTableModel extends Model {
                         testar dica do chatgpt sequelize.queryGenerator.updateQuery, que gera a query sem executala*/
 
                         if (Utils.hasValue(primaryKeysFieldsNames) && !hasPrimaryKeyOnUpdate) {
-                            console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
                             for(let ks in primaryKeysFieldsNames) {
-                                console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh 1');
                                 if (primaryKeysFieldsNames[ks].trim().toLowerCase() == key.trim().toLowerCase()) {
-                                    console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh 2');
                                     if (reg[key] != values[key]) {
-                                        console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh 3');
                                         hasPrimaryKeyOnUpdate = true;
                                         break;
                                     }
@@ -531,7 +486,6 @@ class BaseTableModel extends Model {
                     }
                 }
             }
-            Utils.log('VALUES TO UPDATE: ',reg);
             if (hasPrimaryKeyOnUpdate) {
                 const updateSQL = this.getModel().queryGenerator.updateQuery(
                     this.getTableName(),
@@ -541,7 +495,6 @@ class BaseTableModel extends Model {
                 );
                 console.log(updateSQL);
                 let resultUpdate = await this.getConnection().query(updateSQL,{queryType:QueryTypes.UPDATE,transaction:params.transaction});                
-                console.log('resultUpdate',resultUpdate);
                 if (Utils.hasValue(resultUpdate) && resultUpdate[0]?.rowsAffected >= 1) {
                     if (typeof this.getData === 'function' && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(reg.id) || reg.dataValues
                     else return values;
@@ -573,7 +526,6 @@ class BaseTableModel extends Model {
      */
     static async deleteData(params){
         let queryParams = await DatabaseUtils.prepareQueryParams(params.queryParams || params || {});
-        console.log(queryParams);
         if (Utils.hasValue(queryParams.where) || Utils.hasValue(queryParams.id) || Utils.hasValue(queryParams.identifiers)) {
             let where = {};
             if (Utils.hasValue(queryParams.where)) {
@@ -614,31 +566,15 @@ class BaseTableModel extends Model {
             queryParams.raw = queryParams.raw !== false ? true : queryParams.raw;
             queryParams.limit = queryParams.limit || 1;
             queryParams.transaction = queryParams.transaction || params.transaction;
-            //console.log(queryParams);
             result.data = await this.getModel().findOne(queryParams);
-            /*console.log(result.data);            
-            if (Utils.hasValue(queryParams.transaction)) {
-                delete queryParams.transaction;
-            }
-            console.log(queryParams);
-            let test = await this.getModel().findOne(queryParams);            
-            console.log(test);*/
             if (!result.data) {
                 if (params.createMethod)  {
                     let paramsToCreateMethod = {...queryParams.where,...(queryParams.values||{})};
                     if (params.transaction) {
-                        Utils.log('FL','creating with transaction')
                         paramsToCreateMethod.transaction = params.transaction;
-                    } else {
-                        Utils.log('FL','creating without transaction');
-                    }
+                    } 
                     result = await params.createMethod.bind(this)(paramsToCreateMethod);
                 } else {
-                    if (params.transaction) {
-                        Utils.log('FL','creating with transaction')
-                    } else {
-                        Utils.log('FL','creating without transaction');
-                    }
                     result.data = await this.getModel().create({...queryParams.where,...(queryParams.values||{})},{transaction:params.transaction});
                     if (result.data) {
                         if (queryParams.raw)
@@ -650,7 +586,7 @@ class BaseTableModel extends Model {
                 result.success = true;
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             result.setException(e);
         }
         return result;

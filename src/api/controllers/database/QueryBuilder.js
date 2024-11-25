@@ -29,7 +29,7 @@ class QueryBuilder {
                 }
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return result;
     }

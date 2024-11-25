@@ -69,7 +69,7 @@ class EpIntegrationsRegistersController extends RegistersController{
                 result = await EpPessoas.getModel().findAll(findParams);
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return result;
     }
@@ -91,7 +91,7 @@ class EpIntegrationsRegistersController extends RegistersController{
                 }
             )
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return result;
     }     
@@ -161,7 +161,7 @@ class EpIntegrationsRegistersController extends RegistersController{
                 result = await EpClientes.getModel().findAll(findParams);
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return result;
     }
@@ -181,7 +181,7 @@ class EpIntegrationsRegistersController extends RegistersController{
                 }
             )
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
         }
         return result;
     } 
@@ -190,21 +190,20 @@ class EpIntegrationsRegistersController extends RegistersController{
      *************************************************/ 
     
 
-    static async getRcasCodes(req) {
+    static async getRcasCodes(params) {
         let rcas = null;
-        if (req?.user.access_profile_id == Access_Profiles.SUPERVISOR) {
+        if (params?.user.access_profile_id == Access_Profiles.SUPERVISOR) {
             let dataRel = await Relationships.getModel().findAll({
                 raw:true,
                 where:{
                     relationship_type_id: [Relationship_Types.EP_ID],
                     table_1_id: Users.id,
-                    record_1_id: req.user.id,
+                    record_1_id: params.user.id,
                     table_2_id: EpTrabalhadores.id
                 }
             });
             if (dataRel && dataRel.length) {
                 dataRel = dataRel.map(el=>el.record_2_id);
-                //EpVendedores.initAssociations();
                 let sellers = await EpVendedores.getModel().findAll({
                     raw:true,
                     attributes:[
@@ -233,7 +232,7 @@ class EpIntegrationsRegistersController extends RegistersController{
                 where:{
                     relationship_type_id: [Relationship_Types.EP_ID],
                     table_1_id: Users.id,
-                    record_1_id: req?.user.id ,
+                    record_1_id: params?.user.id ,
                     table_2_id: EpVendedores.id
                 }
             });
@@ -241,14 +240,14 @@ class EpIntegrationsRegistersController extends RegistersController{
                 rcas = dataRel.map(el=>el.record_2_id).join(',');
             }
         }
-        if (Utils.hasValue(req.body.seller_ids)) {
+        if (Utils.hasValue(params.seller_ids)) {
             if (Utils.hasValue(rcas)) {                
-                let seller_ids = Utils.toArray(req.body.seller_ids);
+                let seller_ids = Utils.toArray(params.seller_ids);
                 let rcasTemp = Utils.toArray(rcas);
                 seller_ids = seller_ids.filter(el=>rcasTemp.indexOf(el) > -1);
                 rcas = seller_ids.join(',');                
             } else {
-                rcas = Utils.toArray(req.body.seller_ids).join(',');
+                rcas = Utils.toArray(params.seller_ids).join(',');
             }
         }
         if (!rcas) rcas = `select ev.cod from EP.EPVENDEDORES ev`;

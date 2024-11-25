@@ -26,7 +26,6 @@ class RoutinesController extends RegistersController{
     static  get = async(req,res,next) => {
         res.data = null;
         try {
-            Utils.log('user',req.user);
             let query = `
                  SELECT 
                     MODULES.id,

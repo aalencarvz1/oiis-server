@@ -32,7 +32,6 @@ class Clients_Integration_Controller extends RegistersController{
         try {    
             let pcClient = null;
             if (Utils.hasValue(params.winthorClientCNPJ) || Utils.hasValue(params.winthorClientId)) {
-                Utils.log("ok0");
                 pcClient = await PcClient.getModel().findOne({
                     raw:true,
                     attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.tableName}.${el}`)),
@@ -53,7 +52,6 @@ class Clients_Integration_Controller extends RegistersController{
                         }
                     }
                 });
-                Utils.log("ok1");
 
                 if (!pcClient) {
                     pcClient = await PcClient.getModel().findOne({
@@ -139,7 +137,6 @@ class Clients_Integration_Controller extends RegistersController{
     static async integrateWinthorClients(req,res,next) {
         try {
             let identifiers = req.body.identifiers || []; 
-            Utils.log(identifiers,Utils.typeOf(identifiers));
             if (Utils.typeOf(identifiers) != 'array') identifiers = identifiers.split(',');                    
             if (identifiers.length > 0) {
                 identifiers = identifiers.map(el=>Utils.hasValue(el)?el:'null');
@@ -261,7 +258,7 @@ class Clients_Integration_Controller extends RegistersController{
                 throw new Error("not identifiers for integration");
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(501,false,e.message || e,null,e);
         }
 
@@ -367,7 +364,6 @@ class Clients_Integration_Controller extends RegistersController{
                 origin = [origin];
             }
             for(let o in origin) {
-                Utils.log(origin[o]);
                 switch((origin[o].name || origin[o].name || origin[o].label || origin[o]).trim().toLowerCase()) {
                     case "winthor":                            
                         queryParams.where = queryParams.where || {};
@@ -388,12 +384,6 @@ class Clients_Integration_Controller extends RegistersController{
                                 [Sequelize.Op.not] : null
                             }
                         }
-
-                        Utils.log(queryParams);
-                        /*bodyParams.supervisor = searchSupervisors;
-                        bodyParams.identifier = searchIdentifier;
-                        bodyParams.name = searchName;
-                        bodyParams.fantasy = searchfantasy;*/
 
                         res.data = await PcClient.getModel().findAll(queryParams);
                         res.sendResponse(200,true);

@@ -14,7 +14,6 @@ class Midia_Controller extends RegistersController{
     static async uploadFile(req,res,next){
         Utils.logi(Midia_Controller.name,'uploadFile');
         try {  
-            Utils.log(req.files,req.body);          
             if (req.files && req.files.length > 0 && req.body.registers) {                
                 let rMidias = [];
                 let registers = req.body.registers || {};
@@ -26,7 +25,6 @@ class Midia_Controller extends RegistersController{
                 for(let key in registers) {
                     let file = req.files.filter(el=>el.originalname.trim().toLowerCase() == registers[key].name.trim().toLowerCase())[0];
                     if (Utils.hasValue(file)) {
-                        console.log('FL','file',file);
                         tablesRefs[registers[key].table_name] = tablesRefs[registers[key].table_name] || await Tables.getModel().findOne({
                             raw:true,
                             where:{
@@ -67,11 +65,10 @@ class Midia_Controller extends RegistersController{
                 res.data = rMidias;
                 res.sendResponse(200,true);
             } else {
-                Utils.log('FL',req.files,req.body.registers);
                 throw new Error("no file(s) uploaded(s) or missing data");
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(517,false,e.message || e,null,e);
         }
         Utils.logf(Midia_Controller.name,'uploadFile');

@@ -37,10 +37,8 @@ class BaseEndPointController {
         let result = false;        
         try {
             global.loadedFiles = global.loadedFiles || {};
-            //Utils.log(`${this.name}(${BaseEndPointController.name})`,urlPath,urlPath,methodName,Utils.hasValue(global.loadedFiles[urlPath]));
             let loaded = global.loadedFiles[urlPath];        
             if (loaded) {
-                //if is inherited from BaseEndPointController or has this method 
                 if (typeof loaded.processRequest == 'function') {
                     //prevent infinit loop on re-call self
                     if (loaded.name != this.name) {
@@ -64,10 +62,9 @@ class BaseEndPointController {
                 }
             }
         } catch (e) {
-            console.log(e);
+            Utils.logError(e);
             throw e;
         }
-        //Utils.log(`${this.name}(${BaseEndPointController.name})`,`processOnLoadedFile(${urlPath+(adjustedMethodName?"/"+methodName:'')})`,Object.keys(global.loadedFiles));
         Utils.logf(`${this.name}(${BaseEndPointController.name})`,`processOnLoadedFile(${urlPath}) ${result}`);        
         return result;
     }
@@ -85,7 +82,6 @@ class BaseEndPointController {
         let result = new DataSwap();        
         try {
             let tableClassModel = null;
-            Utils.log(`${this.name}(${BaseEndPointController.name})`,'loading table class model ',tableName,`${this.getDatabaseModelsPath()}/${tableName}`);
             let resolvedPath = require.resolve(`${this.getDatabaseModelsPath()}/${tableName}`).toLowerCase();
             let ind = Object.keys(require.cache).join(',').toLowerCase().split(',').indexOf(resolvedPath);
             if (ind > -1) {
@@ -114,11 +110,8 @@ class BaseEndPointController {
             if (arrUrlPath.length) {
                 global.loadedFiles[arrUrlPath.join("/")] = tableClassModel;
             }
-            Utils.log('NNNNNNNNNNNNN2','UPDATED LOADED FILES',urlPath,tableClassModel.name, arrUrlPath, Object.keys(global.loadedFiles));
-
             result.data = tableClassModel;
             result.success = true;
-            Utils.log(`${this.name}(${BaseEndPointController.name})`,'loading table class model ok');
         } catch (e) {
             result.setException(e);
         }
@@ -139,11 +132,9 @@ class BaseEndPointController {
         try {
             let controllerClass = null;
             let pathToResolve = `${dir || this.getDirName()}${controllerClassPath}`.replace(/\//g,path.sep);
-            console.log('trieing resolve path',pathToResolve);
             let resolvedPath = require.resolve(pathToResolve).toLowerCase(); //resolve raise exception if file not exists
 
             //if path is resolved then code continue, else, throw raised by require.resolve
-            Utils.log('resolved path',resolvedPath);
             let ind = Object.keys(require.cache).join(',').toLowerCase().split(',').indexOf(resolvedPath);
             let controllerClassName = controllerClassPath.split('/');
             controllerClassName = Utils.hasValue(controllerClassName[controllerClassName.length-1]) ? controllerClassName[controllerClassName.length-1] : controllerClassName[controllerClassName.length-2] || controllerClassPath;
@@ -167,7 +158,6 @@ class BaseEndPointController {
 
             global.loadedFiles = global.loadedFiles || {};
             global.loadedFiles[controllerClassPath] = controllerClass;
-            Utils.log('NNNNNNNNNNNNN','UPDATED LOADED FILES',controllerClassPath,controllerClass.name, Object.keys(global.loadedFiles));
 
             result.data = controllerClass;
             result.success = true;
@@ -206,7 +196,6 @@ class BaseEndPointController {
                     case 'update':
                     case 'patch':
                     case 'delete':
-                        console.log('sssssssssssssssssssssssssss',req.body);                
                         result.data = await tableClassModel[`${(method||'get').trim().toLowerCase()}Data`](req.body);
                         break;
                     case 'saveorcreate':
@@ -255,8 +244,6 @@ class BaseEndPointController {
             let initialMethodName = req.method;
             initialFileName = arrUrlPath[currentPathIndex+1]; 
             initialMethodName = arrUrlPath[currentPathIndex+2] || initialMethodName; 
-            console.log('hhhhhhhhhh',this.name.trim().toLowerCase(),arrUrlPath,currentPathIndex,initialFileName,initialMethodName);
-
 
             //check if route refer to member function to this (or inherited class of this)
             let method = null;
@@ -275,14 +262,11 @@ class BaseEndPointController {
             let resultLoadControllerClass = null;
             let methodName = null;
 
-
-            console.log('xxxxxxxxxxxxxxxxxx1',urlPath,arrUrlPath,currentPathIndex,initialFileName,initialMethodName,req.method);
             let processedOnLoadedFile = await this.processOnLoadedFile(req,res,next,urlPath,req.method);
             if (processedOnLoadedFile) return;
             let urlPathTemp = urlPath.split("/");                        
             methodName = urlPathTemp.pop() || methodName;
             urlPathTemp = urlPathTemp.join("/");
-            console.log('xxxxxxxxxxxxxxxxxx2',urlPathTemp,arrUrlPath,currentPathIndex,initialFileName,methodName,req.method);
             processedOnLoadedFile = await this.processOnLoadedFile(req,res,next,urlPathTemp,methodName);
             if (processedOnLoadedFile) return;
 
@@ -292,7 +276,6 @@ class BaseEndPointController {
             //check if url is direct file path
             if (arrUrlPath[arrUrlPath.length-1].trim().toLowerCase() != this.name.trim().toLowerCase()) {
                 let baseDir = path.dirname(path.dirname(require.main.filename));
-                console.log('zzzzzzzzzzzzz1',urlPath,baseDir,req.method);
                 resultLoadControllerClass = this.loadControllerClass(urlPath,baseDir); 
                 methodName = req.method.trim().toLowerCase();
                 if (!resultLoadControllerClass?.success) {
@@ -305,7 +288,6 @@ class BaseEndPointController {
                         methodName = urlPathTemp.pop() || methodName;
                         if (urlPathTemp[urlPathTemp.length-1].trim().toLowerCase() != this.name.trim().toLocaleLowerCase()) {
                             urlPathTemp = urlPathTemp.join("/");
-                            console.log('zzzzzzzzzzzzz2',urlPathTemp,baseDir,req.method);
                             resultLoadControllerClass = this.loadControllerClass(urlPathTemp,baseDir); 
                         }
                     }
@@ -329,7 +311,6 @@ class BaseEndPointController {
                 methodName = req.method.trim().toLowerCase();            
                 do {
                     if (loadedCurrentPathIndex > -1 && loadedControllerPath && previousLoadedControllerPath != loadedControllerPath) {
-                        console.log('yyyyyyyyyyyyyyyy',loadedControllerPath,loadedCurrentPathIndex,loadedMethodName);
                         processedOnLoadedFile = await this.processOnLoadedFile(req,res,next,loadedControllerPath,loadedMethodName);
                         loadedCurrentPathIndex--;
                         if (!processedOnLoadedFile) {
@@ -343,7 +324,6 @@ class BaseEndPointController {
                         }
                     }
                     if (!processedOnLoadedFile && controllerPath) {
-                        console.log('wwwwwwwwww',controllerPath,currentPathIndex,methodName);
                         resultLoadControllerClass = this.loadControllerClass(controllerPath);  
                         if (!resultLoadControllerClass?.success) {
                             if ((resultLoadControllerClass?.exception || resultLoadControllerClass || {message:'error'}).message.toLowerCase().indexOf('no such file or directory') == -1
@@ -375,16 +355,13 @@ class BaseEndPointController {
             if (resultLoadControllerClass?.success && resultLoadControllerClass?.data) {                             
                 //check if method referenced in route or restfull verb exists in localized controller
                 let method = Utils.getMethodName(resultLoadControllerClass.data,methodName || req.method);
-                Utils.log(`${resultLoadControllerClass.data.name}(${BaseEndPointController.name})`,methodName,req.method,typeof method)
                 if (method) {
-                    Utils.log(`calling ${resultLoadControllerClass.data.name}(${BaseEndPointController.name}).${method}`,'OK1');
                     return resultLoadControllerClass.data[method].bind(resultLoadControllerClass.data)(req,res,next);
                 } else {
                     //if method not localizad, check if controller has generic method called processrequest, then call it
                     methodName = 'processrequest';
                     let method = Utils.getMethodName(resultLoadControllerClass.data, methodName);
                     if (method) {
-                        Utils.log(`${this.name}(${BaseEndPointController.name})`,'OK2');
                         return resultLoadControllerClass.data[method].bind(resultLoadControllerClass.data)(req,res,next);                        
                     }  
                 }                    
@@ -405,7 +382,7 @@ class BaseEndPointController {
 
             throw new Error(`url not found(end): ${req.url}`);
         } catch (e) {
-            console.log(e);
+            Utils.logError(e);
             res.setException(e);
             res.sendResponse(517,false);
         }

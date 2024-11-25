@@ -25,8 +25,6 @@ class ReportsController extends RegistersController{
             raw:true,
             where:{}
         };
-        //Utils.log('body',req.body);
-        //Utils.log('query',req.query);
         let dates = req.body.dates || req.query?.dates || [];
         if (Utils.typeOf(dates) != 'array') {
             dates = dates.split(',');
@@ -46,7 +44,6 @@ class ReportsController extends RegistersController{
             queryParams.where.start_date = {[Sequelize.Op.lte]: dates[0]};
             queryParams.where.end_date = {[Sequelize.Op.gte]: dates[1]};
         }
-        //Utils.log(queryParams);
         return await Report_Data_Founts.getModel().findOne(queryParams);
     }
 
@@ -54,7 +51,6 @@ class ReportsController extends RegistersController{
     static async getData(req,res,next,pReport) {
         let result = null;
         try {            
-            Utils.log('test',req.body,req.query);        
             let report = pReport || await this.getReportDataFount(req);
             if (report) {
                 if (Utils.hasValue(req.query?.dates)) {
@@ -89,9 +85,7 @@ class ReportsController extends RegistersController{
                     while(p1 > -1 && p2 > -1 && p2 > p1 && loopLimit > 0) {
                         replaceText = query.substr(p1,(p2-p1)+2);
                         evalText = replaceText.substring(2,replaceText.length-2);
-                        //Utils.log('*************************************',p1,p2,`|${replaceText}|`,`|${evalText}|`);
                         evaluetedValue = await eval(evalText);
-                        //Utils.log('evaluetedValue', evalText, evaluetedValue);
                         query = query.replaceAll(replaceText,evaluetedValue);
                         p1 = query.indexOf("${");
                         p2 = query.indexOf("}$");
@@ -108,7 +102,7 @@ class ReportsController extends RegistersController{
                 throw new Error("report data fount not found or not valid at informed dates");
             }
         } catch (e) {
-            console.log('cath block',e);
+            Utils.logError(e);
             if (res) {
                 res.setException(e);
                 return res.sendResopnse(517,false);
@@ -138,7 +132,6 @@ class ReportsController extends RegistersController{
         let result = null;
         let structuredQueryOrigin = null;
         params = params || {};
-        console.log('params',params.visions);
         let visionsIds = params.visions || [];
         let periods = params.periods || [];
         let conditions = params.conditions || [];
@@ -158,7 +151,6 @@ class ReportsController extends RegistersController{
             if (Utils.hasValue(conditions) && typeof conditions == 'string') {
                 conditions = JSON.parse(conditions);
             }
-            Utils.log('visionsIds',visionsIds,'periods',periods);
             let minPeriod = null;
             let maxPeriod = null;
             for (let p in periods) {
@@ -178,7 +170,6 @@ class ReportsController extends RegistersController{
             let conditionsVisionsIds = params.conditionsVisionsIds || (conditions||[]).map(el=>(el.reportVision || el.vision || {}).id || el.reportVision || el.vision);  
             conditionsVisionsIds = conditionsVisionsIds.map(el=>Utils.hasValue(el)?el:'null');          
             conditionsVisionsIds = [...new Set(conditionsVisionsIds)]; //unique
-            Utils.log('visionsIds',visionsIds,'periods',periods,'min max period',minPeriod,maxPeriod, 'conditionsVisionsIds',conditionsVisionsIds);
 
             //get report data fount
             let query = `
@@ -272,7 +263,6 @@ class ReportsController extends RegistersController{
 
                 //mount unified query
                 let query = await StructuredQueryUtils.mountQuery(structuredQueryData.structuredQuery,params);
-                Utils.log('mounted query',query);
                 let connection = await DBConnectionManager.getConnectionBySchemaName(structuredQueryData.origin);
                 if (!connection) {
                     throw new Error(`connection data not found with schema name:${structuredQueryData.origin}`);
@@ -287,7 +277,6 @@ class ReportsController extends RegistersController{
                     nest:true
                 });
                 data = data || [];
-                Utils.log(data);
                 res.data = res.data || [];
                 res.data.push({
                     DATA: data
@@ -329,7 +318,6 @@ class ReportsController extends RegistersController{
                 let allConditions = [];
                 let allConditionsVisions = [];
                 for(let i = 0; i < commissionsData.length; i++) {
-                    console.log(commissionsData[i]);
                     let condition = [];
                     condition.push(`cm."id" = ${commissionsData[i].id}`)
                     switch((commissionsData[i].entityname || 'rca').trim().toLowerCase()) {
@@ -400,11 +388,9 @@ class ReportsController extends RegistersController{
                     cm."percent2name",
                     cm."percent2"
                 ` + reportQuery.substring(p1);
-                Utils.log('mounted query',reportQuery);
                 res.data = await DBConnectionManager.getEpDBConnection().query(reportQuery,{raw:true,queryType:QueryTypes.SELECT});
                 res.data = res.data[0] || [];
                 res.data = [{DATA:res.data}];
-                console.log(res.data);
                 res.success = true;
             } else {
                 throw new Error('no commissions data found');

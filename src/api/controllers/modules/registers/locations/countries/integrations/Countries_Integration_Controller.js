@@ -12,7 +12,6 @@ const { RegistersController } = require("../../../RegistersController");
 class Countries_Integration_Controller extends RegistersController {
 
     static async integrateWinthorPcPaisToCountry(winthorCountryCode,transaction) {           
-        Utils.log('yyyy');
         if (Utils.hasValue(winthorCountryCode)) {
             let pcpais = await PcPais.getModel().findOne({
                 raw : true,
@@ -76,7 +75,6 @@ class Countries_Integration_Controller extends RegistersController {
     static async integrateWinthorCountries(req,res,next) {
         try {
             let identifiers = req.body.identifiers || []; 
-            Utils.log(identifiers,Utils.typeOf(identifiers));
             if (Utils.typeOf(identifiers) != 'array') identifiers = identifiers.split(',');                    
             if (identifiers.length > 0) {
                 res.data = [];
@@ -88,7 +86,7 @@ class Countries_Integration_Controller extends RegistersController {
                 throw new Error("not identifiers for integration");
             }
         } catch (e) {
-            Utils.log(e);
+            Utils.logError(e);
             res.sendResponse(501,false,e.message || e,null,e);
         }
 
@@ -113,7 +111,6 @@ class Countries_Integration_Controller extends RegistersController {
                 arrUrlPath.shift();
             }
             let currentPathIndex = arrUrlPath.indexOf(this.name.trim().toLowerCase());
-            console.log('xxxxx',currentPathIndex,arrUrlPath);
             let methodName = arrUrlPath[currentPathIndex+1] || req.method; 
             switch(methodName.trim().toLowerCase()) {
                 case 'create':

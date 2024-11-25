@@ -172,7 +172,6 @@ class Logistic_Orders_Controller extends RegistersController {
                 logData = logData[0] || [];
                 if (logData) {
                     logData = _.keyBy(logData,'identifier');
-                    Utils.log(logData);
                     for(let kj in res.data) {                                
                         if (logData[res.data[kj].id.toString()]) {
                             res.data[kj].logistic_order_id = logData[res.data[kj].id.toString()].id;

@@ -14,11 +14,7 @@ const { Connections } = require('../models/Connections');
 
 
 let oldTables = {           
-  report_data_fount_items:{
-    columns:{
-      SQLTEXT:"sql_text"
-    }
-  }  
+  
 }
 
 module.exports = {
