@@ -206,31 +206,36 @@ class DatabaseUtils {
                 fieldsNames = fieldsNames.map(el=>el.trim().toLowerCase());
                 let wheres = [];
                 for(let key in where) {
-                    if (fieldsNames.indexOf(key.trim().toLowerCase()) > -1) {
-                        let fieldWhere = key;
-                        if (tableClassModel && fieldWhere.indexOf('.') == -1 && fieldWhere.indexOf(' ') == -1 && fieldWhere.indexOf('(') == -1) {
-                            fieldWhere = `${tableClassModel.name}.${fieldWhere}`;
-                        }
-                        if (Utils.typeOf(where[key]) == 'object') {
-                            let keys = Object.keys(where[key]);
-                            if (keys.length > 1) throw new Error(`where clause field ${key} has more than 1 object key`);
-                            let fieldKey = keys[0].trim().toLowerCase();
-                            if (fieldKey == 'in' || fieldKey == 'not in') {
-                                wheres.push(`${fieldWhere} ${fieldKey} (${where[key][keys[0]].join(',')})`);
-                            } else /*if (fieldKey == 'like' || fieldKey == 'not like')*/ {
-                                wheres.push(`${fieldWhere} ${fieldKey} ${where[key][keys[0]]}`);
+                    
+
+                    switch(key.trim().toLowerCase()) {
+                        case 'and':
+                        case 'or':
+                            wheres.push(`(${this.whereToString(where[key],tableClassModel,` ${key} `)})`);                            
+                            break;
+                        default:
+                            let fieldWhere = key;
+                            if (fieldsNames.indexOf(key.trim().toLowerCase()) > -1) {
+                                if (tableClassModel && fieldWhere.indexOf('.') == -1 && fieldWhere.indexOf(' ') == -1 && fieldWhere.indexOf('(') == -1) {
+                                    fieldWhere = `${tableClassModel.name}.${fieldWhere}`;
+                                }
                             }
-                        } else {
-                            wheres.push(`${fieldWhere}=${where[key]}`)
-                        }
-                    } else {
-                        switch(key.trim().toLowerCase()) {
-                            case 'and':
-                            case 'or':
-                                wheres.push(`(${this.whereToString(where[key],tableClassModel,` ${key} `)})`);
-                                break;
-                        }
-                    }
+                            if (Utils.typeOf(where[key]) == 'object') {
+                                let keys = Object.keys(where[key]);
+                                if (keys.length > 1) throw new Error(`where clause field ${key} has more than 1 object key`);
+                                let fieldKey = keys[0].trim().toLowerCase();
+                                if (fieldKey == 'in' || fieldKey == 'not in') {
+                                    wheres.push(`${fieldWhere} ${fieldKey} (${Utils.typeOf(where[key][keys[0]]) == 'array' ? where[key][keys[0]].join(',') : where[key][keys[0]]})`);
+                                } else /*if (fieldKey == 'like' || fieldKey == 'not like')*/ {
+                                    wheres.push(`${fieldWhere} ${fieldKey} ${where[key][keys[0]]}`);
+                                }
+                            } else if (Utils.typeOf(where[key]) == 'array') {
+                                wheres.push(`${fieldWhere} in (${where[key].join(',')})`);
+                            } else {
+                                wheres.push(`${fieldWhere}=${where[key]}`)
+                            }
+                            break;
+                    }                                    
                 }
                 result = wheres.join(delimiter || ' and ');
             } else {

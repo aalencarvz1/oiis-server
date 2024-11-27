@@ -1,10 +1,11 @@
-const { Sequelize } = require("sequelize");
+const { Sequelize, QueryTypes } = require("sequelize");
 const DBConnectionManager = require("../../../../../../database/DBConnectionManager");
 const { Utils } = require("../../../../../utils/Utils");
 const _ = require('lodash');
 const { Parameter_Values } = require("../../../../../../database/models/Parameter_Values");
 const { Parameters } = require("../../../../../../database/models/Parameters");
 const { RegistersController } = require("../../../../registers/RegistersController");
+const { DatabaseUtils } = require("../../../../../database/DatabaseUtils");
 
 /**
  * Class controller to handle wms module
@@ -430,6 +431,100 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
             res.sendResponse(501,false,e.message || e,null,e);
         }
     }    
+
+
+
+    static async getVariableWeightSeparationMap(req,res) {
+        try {
+            let where = req.body?.queryParams?.where;
+            console.log('where antes',where);
+            where = DatabaseUtils.whereToString(where);
+            console.log('where depois',where);
+            if (!Utils.hasValue(where)) {
+                where = '1=2';
+            }
+            let query = `
+                select
+                    pcpedc.codfilial,
+                    pcfilial.cidade as filial,
+                    pcpraca.rota as codrota,
+                    pcrotaexp.descricao as rota,
+                    pcpedc.codpraca,
+                    pcpraca.praca,
+                    case 
+                        when nvl(pcconsum.utilizaendporfilial,'N') = 'S' then 
+                            coalesce(pcest.rua,pcest.modulo,pcest.numero,pcest.apto) 
+                        else 
+                            coalesce(pcprodut.rua,pcprodut.modulo,pcprodut.numero,pcprodut.apto) 
+                    end as cam,
+                    pcpedc.numcar,
+                    pcpedc.codcli,
+                    pcclient.cliente,
+                    pcpedc.codusur as codrca,
+                    pcusuari.nome as rca,
+                    pcpedc.numped,
+                    pcpedc.data,
+                    pcpedc.posicao,
+                    pcpedi.codprod,
+                    pcprodut.codfab,
+                    pcprodut.descricao,
+                    nvl(pcembalagem.embalagem,pcprodut.embalagem) as embalagem,
+                    nvl(pcpedi.unidade,pcprodut.unidade) as unidade,
+                    pclote.dtvalidade,
+                    nvl(pcpedi.qtunitcx,pcprodut.qtunitcx) as qtunitcx,
+                    pcprodut.multiplo,
+                    pcpedi.qt + nvl(pcpedi.qtdifpeso,0) as qt,
+                    (pcpedi.qt + nvl(pcpedi.qtdifpeso,0)) / nvl(pcpedi.qtunitcx,pcprodut.qtunitcx) as qtcx,
+                    case 
+                        when nvl(pcpedi.qtdifpeso,0) <> 0 then
+                            pcpedi.qt
+                        else
+                            null
+                    end as qtpesado
+                from
+                    jumbo.pcpedc 
+                    join jumbo.pcconsum on 1=1
+                    join jumbo.pcfilial on pcfilial.codigo = pcpedc.codfilial
+                    join jumbo.pcclient on pcclient.codcli = pcpedc.codcli
+                    join jumbo.pcusuari on pcusuari.codusur = pcpedc.codusur
+                    join jumbo.pcpedi on pcpedi.numped = pcpedc.numped
+                    join jumbo.pcprodut on (
+                        pcprodut.codprod = pcpedi.codprod
+                        AND nvl(pcprodut.tipoestoque, 'PA') = 'FR'
+                        AND nvl(pcprodut.pesovariavel, 'N') = 'S'
+                    )
+                    join jumbo.pcest on (
+                        pcest.codfilial = pcpedc.codfilial
+                        and pcest.codprod = pcpedi.codprod
+                    )
+                    left outer join jumbo.pcembalagem on (
+                        pcembalagem.codfilial = pcpedc.codfilial
+                        and pcembalagem.codauxiliar = pcpedi.codauxiliar
+                    )
+                    left outer join jumbo.pcpraca on pcpraca.codpraca = pcpedc.codpraca
+                    left outer join jumbo.pcrotaexp on pcrotaexp.codrota = pcpraca.rota
+                    left outer join jumbo.pclote on (pclote.codfilial = pcpedc.codfilial and pclote.codprod = pcpedi.codprod and pclote.numlote = pcpedi.numlote)
+                where
+                    ${where}
+            `;
+            let dataResult = await DBConnectionManager.getWinthorDBConnection().query(
+                query,
+                {
+                    type:QueryTypes.SELECT
+                }
+            );
+
+            console.log(dataResult);
+
+            res.data = dataResult || [];
+
+
+            res.sendResponse(200,true);
+        } catch (e) {
+            Utils.logError(e);
+            res.sendResponse(501,false,e.message || e,null,e);
+        }
+    }
 }
 
 module.exports = {WmsOuputsIntegrationsWinthorController}
