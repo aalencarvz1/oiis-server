@@ -351,7 +351,15 @@
             "name" : "INPUTS",            
             "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M80-520v-80h144L52-772l56-56 172 172v-144h80v280H80Zm80 360q-33 0-56.5-23.5T80-240v-200h80v200h320v80H160Zm640-280v-280H440v-80h360q33 0 56.5 23.5T880-720v280h-80ZM560-160v-200h320v200H560Z\"/></svg>",
             "view_path" :"/views/modules/movimentations/inputs",
-            "numeric_order":1100
+            "numeric_order":1100,
+            "subs":[{    
+                "id" :110010,
+                "routine_type_id" : 1,
+                "name" : "PURCHASE SUGGESTION",            
+                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"m40-240 20-80h220l-20 80H40Zm80-160 20-80h260l-20 80H120Zm623 240 20-160 29-240 10-79-59 479ZM240-80q-33 0-56.5-23.5T160-160h583l59-479H692l-11 85q-2 17-15 26.5t-30 7.5q-17-2-26.5-14.5T602-564l9-75H452l-11 84q-2 17-15 27t-30 8q-17-2-27-15t-8-30l9-74H220q4-34 26-57.5t54-23.5h80q8-75 51.5-117.5T550-880q64 0 106.5 47.5T698-720h102q36 1 60 28t19 63l-60 480q-4 30-26.5 49.5T740-80H240Zm220-640h159q1-33-22.5-56.5T540-800q-35 0-55.5 21.5T460-720Z\"/></svg>",
+                "view_path" :"/views/modules/movimentations/inputs/purchase_suggestion",
+                "numeric_order":110010
+            }]
         },{    
             "id" :1150,
             "routine_type_id" : 1,
@@ -551,9 +559,73 @@
                 "routine_type_id" : 1,
                 "name" :"PROJECT",
                 "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
-                "view_path" :"/views/modules/projects:id",
+                "view_path" :"/views/modules/projects/:project_id",
                 "numeric_order":5000000,
-                "show_in_menu":0
+                "show_in_menu":0,
+                "subs":[{      
+                    "id" : 500000000,
+                    "routine_type_id" : 1,
+                    "name" :"PLANNINGS",
+                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                    "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id",
+                    "numeric_order":500000000,
+                    "show_in_menu":0,
+                    "subs":[{      
+                        "id" : 50000000000,
+                        "routine_type_id" : 1,
+                        "name" :"INICIATIVES",
+                        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                        "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id/iniciatives/:iniciatives_id",
+                        "numeric_order":50000000000,
+                        "show_in_menu":0
+                    },{      
+                        "id" : 50000000001,
+                        "routine_type_id" : 1,
+                        "name" :"EPICS",
+                        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                        "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id/epics/:epics_id",
+                        "numeric_order":50000000001,
+                        "show_in_menu":0
+                    },{      
+                        "id" : 50000000002,
+                        "routine_type_id" : 1,
+                        "name" :"FEATURES",
+                        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                        "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id/features/:features_id",
+                        "numeric_order":50000000002,
+                        "show_in_menu":0,
+                        "subs":[
+                            {      
+                                "id" : 5000000000200,
+                                "routine_type_id" : 1,
+                                "name" :"FEATURE",
+                                "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id/features/:features_id/feature/:feature_id",
+                                "numeric_order":5000000000200,
+                                "show_in_menu":0,
+                                "subs":[
+                                    {      
+                                        "id" : 50000000002000,
+                                        "routine_type_id" : 1,
+                                        "name" :"REQUIREMENTS",
+                                        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                        "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id/features/:features_id/feature/:feature_id/requirements/:requirements_id",
+                                        "numeric_order":50000000002000,
+                                        "show_in_menu":0
+                                    }
+                                ]
+                            }
+                        ]
+                    },{      
+                        "id" : 50000000010,
+                        "routine_type_id" : 1,
+                        "name" :"REQUIREMENTS",
+                        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                        "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id/requirements/:requirements_id",
+                        "numeric_order":50000000010,
+                        "show_in_menu":0
+                    }]
+                }]
             }]
         }]
     },{      

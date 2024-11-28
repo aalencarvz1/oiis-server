@@ -10,7 +10,7 @@ const { Tasks_Status_Users } = require("./Tasks_Status_Users");
  * class model
  */
 class Tasks_Status_Users_Logs extends BaseTableModel {
-  static id = 15051;
+  static id = 15151;
   static tableName = this.name.toLowerCase();
   static model = null;
 
