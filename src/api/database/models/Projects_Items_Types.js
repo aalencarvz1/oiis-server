@@ -1,20 +1,27 @@
 'use strict';
 
 /*imports*/
-const { DataTypes } = require("sequelize");
+const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
 
 /**
  * class model
  */
-class Tasks extends BaseTableModel {
-  static id = 15101;
+class Projects_Items_Types extends BaseTableModel {
+  static id = 15001;
   static tableName = this.name.toLowerCase();
   static model = null;
+  
+  static PLANNINGS = 1;
+  static MANAGEMENTS = 2;
+  static INICIATIVES = 10;
+  static EPICS = 20;
+  static FEATURES = 30;
+  static REQUIREMENTS = 100;
 
   static fields = {
-    ...Tasks.getBaseTableModelFields(),...{            
+    ...Projects_Items_Types.getBaseTableModelFields(),...{            
       parent_id: {
         type: DataTypes.BIGINT.UNSIGNED
       },       
@@ -28,31 +35,26 @@ class Tasks extends BaseTableModel {
       anotations: {
         type: DataTypes.TEXT
       },
-      forecast_start_moment: {
-        type: DataTypes.DATE
-      },
-      forecast_end_moment: {
-        type: DataTypes.DATE
-      },
-      start_at: {
-        type: DataTypes.DATE
-      },
-      end_at: {
-        type: DataTypes.DATE
-      }
     }
   };
   
-  static uniqueFields = [];
+  static uniqueFields = [
+    Sequelize.literal(`(COALESCE(parent_id,-1))`),
+    'name'
+  ];
 
-  static constraints = [...(Tasks.getBaseTableModelConstraints() || []),...[]];
+  static constraints = [...(Projects_Items_Types.getBaseTableModelConstraints() || []),...[{
+    name: Projects_Items_Types.tableName + '_u1',
+    fields: Projects_Items_Types.uniqueFields,
+    type:"unique"
+  }]];
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
       fields: ['parent_id'],
       type: 'foreign key',
       references: { 
-          table: Tasks,
+          table: Projects_Items_Types,
           field: 'id'
       },
       onUpdate: 'cascade',
@@ -63,4 +65,4 @@ class Tasks extends BaseTableModel {
 };
 
 
-module.exports = {Tasks}
+module.exports = {Projects_Items_Types}

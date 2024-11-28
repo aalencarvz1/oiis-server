@@ -9,7 +9,7 @@ const { BaseTableModel } = require('./BaseTableModel');
  * class model
  */
 class Task_Status extends BaseTableModel {
-  static id = 15005;
+  static id = 15100;
   static tableName = this.name.toLowerCase();
   static model = null;
 

@@ -1496,7 +1496,51 @@ describe('Running api call tests',()=>{
                             commission_item_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
-                    break;          
+                    break;  
+                case 'projects_items':
+                    getParamsToCreate = ()=>{
+                        let tableName = 'projects_items';
+                        let parentTableName = 'projects';                        
+                        let parent = crudsToDelete.find(el=>el.tableName == parentTableName);         
+                        let parentTableName2 = 'projects_items_types';
+                        let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);         
+                        return {
+                            name:testString,                            
+                            project_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            project_item_type_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
+                        }
+                    };
+                    break;         
+                case 'features':
+                    getParamsToCreate = ()=>{
+                        let tableName = 'features';
+                        let parentTableName = 'projects';                        
+                        let parent = crudsToDelete.find(el=>el.tableName == parentTableName);         
+                        let parentTableName2 = 'projects_items';
+                        let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);         
+                        return {
+                            name:testString,  
+                            identifier: testString,                          
+                            project_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            features_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
+                        }
+                    };
+                    break; 
+                case 'requirements':
+                    getParamsToCreate = ()=>{
+                        let tableName = 'requirements';
+                        let parentTableName = 'projects';                        
+                        let parent = crudsToDelete.find(el=>el.tableName == parentTableName);         
+                        let parentTableName2 = 'projects_items';
+                        let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);         
+                        return {
+                            name:testString,  
+                            identifier: testString,                          
+                            project_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            requirements_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
+                        }
+                    };
+                    break; 
             }
 
             test(`create`, async() => {
