@@ -559,7 +559,7 @@
                 "routine_type_id" : 1,
                 "name" :"PROJECT",
                 "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
-                "view_path" :"/views/modules/projects/:project_id",
+                "view_path" :"/views/modules/projects/project/:project_id",
                 "numeric_order":5000000,
                 "show_in_menu":0,
                 "subs":[{      
@@ -567,63 +567,170 @@
                     "routine_type_id" : 1,
                     "name" :"PLANNINGS",
                     "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
-                    "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id",
+                    "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id",
                     "numeric_order":500000000,
                     "show_in_menu":0,
                     "subs":[{      
-                        "id" : 50000000000,
+                        "id" : 500000001,
                         "routine_type_id" : 1,
-                        "name" :"INICIATIVES",
+                        "name" :"PLANNING",
                         "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
-                        "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id/iniciatives/:iniciatives_id",
-                        "numeric_order":50000000000,
-                        "show_in_menu":0
-                    },{      
-                        "id" : 50000000001,
-                        "routine_type_id" : 1,
-                        "name" :"EPICS",
-                        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
-                        "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id/epics/:epics_id",
-                        "numeric_order":50000000001,
-                        "show_in_menu":0
-                    },{      
-                        "id" : 50000000002,
-                        "routine_type_id" : 1,
-                        "name" :"FEATURES",
-                        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
-                        "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id/features/:features_id",
-                        "numeric_order":50000000002,
+                        "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id",
+                        "numeric_order":500000001,
                         "show_in_menu":0,
-                        "subs":[
-                            {      
-                                "id" : 5000000000200,
+                        "subs":[{      
+                            "id" : 50000000100,
+                            "routine_type_id" : 1,
+                            "name" :"INICIATIVES",
+                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                            "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/iniciatives/:iniciatives_id",
+                            "numeric_order":50000000100,
+                            "show_in_menu":0,
+                            "subs":[{      
+                                "id" : 5000000010000,
                                 "routine_type_id" : 1,
-                                "name" :"FEATURE",
+                                "name" :"INICIATIVE",
                                 "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
-                                "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id/features/:features_id/feature/:feature_id",
-                                "numeric_order":5000000000200,
+                                "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/iniciatives/:iniciatives_id/iniciative/:iniciative_id",
+                                "numeric_order":5000000010000,
                                 "show_in_menu":0,
-                                "subs":[
-                                    {      
-                                        "id" : 50000000002000,
+                                "subs":[{      
+                                    "id" : 500000001000000,
+                                    "routine_type_id" : 1,
+                                    "name" :"EPICS",
+                                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                    "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/iniciatives/:iniciatives_id/iniciative/:iniciative_id/epics/:epics_id",
+                                    "numeric_order":500000001000000,
+                                    "show_in_menu":0,
+                                    "subs":[{      
+                                        "id" : 500000001000001,
                                         "routine_type_id" : 1,
-                                        "name" :"REQUIREMENTS",
+                                        "name" :"EPIC",
                                         "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
-                                        "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id/features/:features_id/feature/:feature_id/requirements/:requirements_id",
-                                        "numeric_order":50000000002000,
-                                        "show_in_menu":0
-                                    }
-                                ]
-                            }
-                        ]
-                    },{      
-                        "id" : 50000000010,
-                        "routine_type_id" : 1,
-                        "name" :"REQUIREMENTS",
-                        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
-                        "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id/requirements/:requirements_id",
-                        "numeric_order":50000000010,
-                        "show_in_menu":0
+                                        "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/iniciatives/:iniciatives_id/iniciative/:iniciative_id/epics/:epics_id/epic/:epic_id",
+                                        "numeric_order":500000001000001,
+                                        "show_in_menu":0,
+                                        "subs":[{                                                         
+                                            "id" : 500000001000002,
+                                            "routine_type_id" : 1,
+                                            "name" :"FEATURES",
+                                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                            "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/iniciatives/:iniciatives_id/iniciative/:iniciative_id/epics/:epics_id/epic/:epic_id/features/:features_id",
+                                            "numeric_order":500000001000002,
+                                            "show_in_menu":0,
+                                            "subs":[
+                                                {          
+                                                    "id" : 500000001000003,
+                                                    "routine_type_id" : 1,
+                                                    "name" :"FEATURE",
+                                                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                                    "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/iniciatives/:iniciatives_id/iniciative/:iniciative_id/epics/:epics_id/epic/:epic_id/features/:features_id/feature/:feature_id",
+                                                    "numeric_order":500000001000003,
+                                                    "show_in_menu":0,
+                                                    "subs":[
+                                                        {          
+                                                            "id" : 500000001000004,
+                                                            "routine_type_id" : 1,
+                                                            "name" :"REQUIREMENTS",
+                                                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                                            "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/iniciatives/:iniciatives_id/iniciative/:iniciative_id/epics/:epics_id/epic/:epic_id/features/:features_id/feature/:feature_id/requirements/:requirements_id",
+                                                            "numeric_order":500000001000004,
+                                                            "show_in_menu":0
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }]
+                                    }]
+                                }]
+                            }]
+                        },{      
+                            "id" : 50000000101,
+                            "routine_type_id" : 1,
+                            "name" :"EPICS",
+                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                            "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/epics/:epics_id",
+                            "numeric_order":50000000101,
+                            "show_in_menu":0,
+                            "subs":[{      
+                                "id" : 5000000010100,
+                                "routine_type_id" : 1,
+                                "name" :"EPIC",
+                                "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/epics/:epics_id/epic/:epic_id",
+                                "numeric_order":5000000010100,
+                                "show_in_menu":0,
+                                "subs":[{      
+                                    "id" : 500000001010000,
+                                    "routine_type_id" : 1,
+                                    "name" :"FEATURES",
+                                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                    "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/epics/:epics_id/epic/:epic_id/features/:features_id",
+                                    "numeric_order":500000001010000,
+                                    "show_in_menu":0,
+                                    "subs":[
+                                        {      
+                                            "id" :50000000101000000,
+                                            "routine_type_id" : 1,
+                                            "name" :"FEATURE",
+                                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                            "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/epics/:epics_id/epic/:epic_id/features/:features_id/feature/:feature_id",
+                                            "numeric_order":50000000101000000,
+                                            "show_in_menu":0,
+                                            "subs":[
+                                                {          
+                                                    "id" : 500000001010000000,
+                                                    "routine_type_id" : 1,
+                                                    "name" :"REQUIREMENTS",
+                                                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                                    "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/epics/:epics_id/epic/:epic_id/features/:features_id/feature/:feature_id/requirements/:requirements_id",
+                                                    "numeric_order":500000001010000000,
+                                                    "show_in_menu":0
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }]
+                            }]
+                        },{      
+                            "id" : 50000000102,
+                            "routine_type_id" : 1,
+                            "name" :"FEATURES",
+                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                            "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/features/:features_id",
+                            "numeric_order":50000000102,
+                            "show_in_menu":0,
+                            "subs":[
+                                {      
+                                    "id" : 5000000010200,
+                                    "routine_type_id" : 1,
+                                    "name" :"FEATURE",
+                                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                    "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/features/:features_id/feature/:feature_id",
+                                    "numeric_order":5000000010200,
+                                    "show_in_menu":0,
+                                    "subs":[
+                                        {      
+                                            "id" : 50000000102000,
+                                            "routine_type_id" : 1,
+                                            "name" :"REQUIREMENTS",
+                                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                            "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/features/:features_id/feature/:feature_id/requirements/:requirements_id",
+                                            "numeric_order":50000000102000,
+                                            "show_in_menu":0
+                                        }
+                                    ]
+                                }
+                            ]
+                        },{      
+                            "id" : 50000000110,
+                            "routine_type_id" : 1,
+                            "name" :"REQUIREMENTS",
+                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                            "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/requirements/:requirements_id",
+                            "numeric_order":50000000110,
+                            "show_in_menu":0
+                        }]
                     }]
                 }]
             }]

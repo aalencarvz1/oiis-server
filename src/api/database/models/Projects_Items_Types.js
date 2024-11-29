@@ -13,12 +13,20 @@ class Projects_Items_Types extends BaseTableModel {
   static tableName = this.name.toLowerCase();
   static model = null;
   
-  static PLANNINGS = 1;
-  static MANAGEMENTS = 2;
-  static INICIATIVES = 10;
-  static EPICS = 20;
-  static FEATURES = 30;
-  static REQUIREMENTS = 100;
+  static PROJECTS = 1;
+  static PROJECT = 2;
+  static PLANNINGS = 20;
+  static PLANNING = 21;
+  static MANAGEMENTS = 30;
+  static MANAGEMENT = 31;
+  static INICIATIVES = 210;
+  static INICIATIVE = 211;
+  static EPICS = 2110;
+  static EPIC = 2111;
+  static FEATURES = 21110;
+  static FEATURE = 21111;
+  static REQUIREMENTS = 200000;
+  static REQUIREMENT = 200001;
 
   static fields = {
     ...Projects_Items_Types.getBaseTableModelFields(),...{            
