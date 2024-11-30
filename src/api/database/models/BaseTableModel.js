@@ -285,7 +285,7 @@ class BaseTableModel extends Model {
                 let columnForeign = this.foreignsKeys[i].fields.join(',');
                 let belongsToParams  = {
                     foreignKey : columnForeign,
-                    targetKey : this.foreignsKeys[i].references.fields?.join(',') || this.foreignsKeys[i].references.field,
+                    targetKey : this.foreignsKeys[i].references.fields?.join(',') || this.foreignsKeys[i].references.field
                 };
                 let hasManyParams = {
                     sourceKey: this.foreignsKeys[i].references.fields?.join(',') || this.foreignsKeys[i].references.field,

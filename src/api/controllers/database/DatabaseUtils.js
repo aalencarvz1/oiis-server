@@ -51,6 +51,41 @@ class DatabaseUtils {
         return result;
     }
 
+    static async prepareInclude(queryParams) {
+        if (Utils.hasValue(queryParams.include)) {
+            for(let key in queryParams.include) {
+                //load dinamic table clas model, require controller path wich control model path
+                if (Utils.hasValue(queryParams.include[key].model) && typeof queryParams.include[key].model == 'string') {
+                    if (Utils.hasValue(queryParams.include[key].modelController)) {
+                        let baseDir = path.dirname(require.main.filename);
+                        baseDir = path.dirname(baseDir);
+                        let modelControllerPath = (baseDir + queryParams.include[key].modelController).split("/");
+                        let modelControllerPath1 = modelControllerPath[0];
+                        modelControllerPath.shift();
+                        if (!Utils.hasValue(modelControllerPath1)) {
+                            modelControllerPath1 = `/${modelControllerPath[0]}/`;
+                            modelControllerPath.shift();
+                        } else {
+                            modelControllerPath1 += "/";
+                        }
+                        modelControllerPath = modelControllerPath.join("/");
+                        let controllerClass = BaseEndPointController.loadControllerClass(modelControllerPath,modelControllerPath1);
+                        let resultTableClassModel = await controllerClass.data.loadTableClassModel(queryParams.include[key].model,controllerClass.data.getDatabaseModelsPath());
+                        queryParams.include[key].model = resultTableClassModel.data.getModel();
+                        if (Utils.hasValue(queryParams.include[key].on)) {
+                            queryParams.include[key].on = DatabaseUtils.prepareLogicalQueryParams(queryParams.include[key].on);
+                        }
+                        if (Utils.hasValue(queryParams.include[key].include)) {
+                            this.prepareInclude(queryParams.include[key]);
+                        }
+                    } else {
+                        throw new Error("missing modelController path property in included object model");
+                    }
+                }
+            }
+        }
+    }
+
     static async prepareQueryParams(queryParams) {
         queryParams = queryParams || {};      
         if (queryParams.where) {
@@ -73,6 +108,8 @@ class DatabaseUtils {
                 queryParams.order[key][0] = Sequelize.literal(queryParams.order[key][0]);
             }
         }
+        /*
+        @TODO 2024-11-30 REMOVE, MOVED TO METHOD
         if (Utils.hasValue(queryParams.include)) {
             for(let key in queryParams.include) {
                 //load dinamic table clas model, require controller path wich control model path
@@ -101,7 +138,8 @@ class DatabaseUtils {
                     }
                 }
             }
-        }
+        }*/
+        await this.prepareInclude(queryParams);
         return queryParams;
     }
 
