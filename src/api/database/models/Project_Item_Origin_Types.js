@@ -62,7 +62,7 @@ class Project_Item_Origin_Types extends BaseTableModel {
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
       fields: ['parent_id'],
-      type: 'foreign key',
+      type: 'foreign key',      
       references: { 
           table: Project_Item_Origin_Types,
           field: 'id'
