@@ -408,7 +408,7 @@ class BaseTableModel extends Model {
      * @async (pay attention to await)
      * @created 2023-11-10
      */
-    static async getData(params) {
+    static async getData(params, req) {
         let queryParams = await DatabaseUtils.prepareQueryParams(params.queryParams || params || {});
         if (queryParams.raw !== false) queryParams.raw = true; 
         if (queryParams.query) {
@@ -416,6 +416,10 @@ class BaseTableModel extends Model {
             result = result[0] || [];
             return result;
         } else {
+            if ((this.accesLevel || 1) == 2 && Utils.hasValue(params.req || req)) {
+                queryParams.where = queryParams.where || {};
+                queryParams.creator_user_id = (params.req || req).user?.id
+            }
             return await this.getModel().findAll(queryParams);
         }        
     }    

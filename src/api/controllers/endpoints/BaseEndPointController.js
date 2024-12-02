@@ -196,7 +196,7 @@ class BaseEndPointController {
                     case 'update':
                     case 'patch':
                     case 'delete':
-                        result.data = await tableClassModel[`${(method||'get').trim().toLowerCase()}Data`](req.body);
+                        result.data = await tableClassModel[`${(method||'get').trim().toLowerCase()}Data`](req.body, req);
                         break;
                     case 'saveorcreate':
                     case 'upsert':
