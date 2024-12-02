@@ -114,6 +114,9 @@ class ReportsController extends RegistersController{
                 res.data = result;
                 res.success = true;
                 return res.sendResponse(200,true);
+            } else if (res) {
+                //return result;
+                return res.sendResponse(517,false);
             } else {
                 return result;
             }

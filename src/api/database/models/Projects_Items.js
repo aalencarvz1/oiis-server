@@ -13,6 +13,7 @@ class Projects_Items extends BaseTableModel {
   static id = 15010;
   static tableName = this.name.toLowerCase();
   static model = null;
+  static accessLevel = 2;
 
   static fields = {
     ...Projects_Items.getBaseTableModelFields(),...{            
@@ -86,7 +87,7 @@ class Projects_Items extends BaseTableModel {
       onUpdate: 'cascade'
     }
   ]];
-  
+ 
 };
 
 
