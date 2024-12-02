@@ -416,7 +416,7 @@ class BaseTableModel extends Model {
             result = result[0] || [];
             return result;
         } else {
-            if ((this.accesLevel || 1) == 2 && Utils.hasValue(params.req || req)) {
+            if ((this.accessLevel || 1) == 2 && Utils.hasValue(params.req || req)) {
                 queryParams.where = queryParams.where || {};
                 queryParams.where.creator_user_id = (params.req || req).user?.id
             }
