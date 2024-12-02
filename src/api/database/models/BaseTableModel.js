@@ -418,7 +418,7 @@ class BaseTableModel extends Model {
         } else {
             if ((this.accesLevel || 1) == 2 && Utils.hasValue(params.req || req)) {
                 queryParams.where = queryParams.where || {};
-                queryParams.creator_user_id = (params.req || req).user?.id
+                queryParams.where.creator_user_id = (params.req || req).user?.id
             }
             return await this.getModel().findAll(queryParams);
         }        
