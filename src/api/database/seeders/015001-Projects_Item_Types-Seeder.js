@@ -136,6 +136,96 @@ module.exports = {
       is_sys_rec : 1,
       parent_id: Projects_Items_Types.REQUIREMENTS,
       name : 'REQUIREMENT'
+    },{      
+      id:Projects_Items_Types.AGILE_METHODOLOGIES,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      parent_id: Projects_Items_Types.MANAGEMENT,
+      name : 'AGILE METHODOLOGIES'
+    },{      
+      id:Projects_Items_Types.AGILE_METHODOLOGY,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      parent_id: Projects_Items_Types.AGILE_METHODOLOGIES,
+      name : 'AGILE METHODOLOGY'
+    },{      
+      id:Projects_Items_Types.SCRUMS,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      parent_id: Projects_Items_Types.AGILE_METHODOLOGY,
+      name : 'SCRUMS'
+    },{      
+      id:Projects_Items_Types.SCRUM,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      parent_id: Projects_Items_Types.SCRUMS,
+      name : 'SCRUM'
+    },{      
+      id:Projects_Items_Types.BACKLOGS,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      parent_id: Projects_Items_Types.SCRUM,
+      name : 'BACKLOGS'
+    },{      
+      id:Projects_Items_Types.BACKLOG,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      parent_id: Projects_Items_Types.BACKLOGS,
+      name : 'BACKLOG'
+    },{      
+      id:Projects_Items_Types.SPRINTS,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      parent_id: Projects_Items_Types.SCRUM,
+      name : 'SPRINTS'
+    },{      
+      id:Projects_Items_Types.SPRINT,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      parent_id: Projects_Items_Types.SPRINTS,
+      name : 'SPRINT'
+    },{      
+      id:Projects_Items_Types.TASKS,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      parent_id: Projects_Items_Types.SPRINT,
+      name : 'TASKS'
+    },{      
+      id:Projects_Items_Types.TASK,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      parent_id: Projects_Items_Types.TASKS,
+      name : 'TASK'
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null
@@ -180,6 +270,58 @@ module.exports = {
       table_2_id: Projects_Items_Types.id,
       record_2_column: 'parent_id',
       record_2_id: Projects_Items_Types.PLANNING,
+    },{      
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      relationship_type_id : Relationship_Types.SUBORDINATED,
+      table_1_id: Projects_Items_Types.id,
+      record_1_column: 'id',
+      record_1_id: Projects_Items_Types.SCRUMS,
+      table_2_id: Projects_Items_Types.id,
+      record_2_column: 'parent_id',
+      record_2_id: Projects_Items_Types.MANAGEMENT,
+    },{      
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      relationship_type_id : Relationship_Types.SUBORDINATED,
+      table_1_id: Projects_Items_Types.id,
+      record_1_column: 'id',
+      record_1_id: Projects_Items_Types.SCRUM,
+      table_2_id: Projects_Items_Types.id,
+      record_2_column: 'parent_id',
+      record_2_id: Projects_Items_Types.MANAGEMENT,
+    },{      
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      relationship_type_id : Relationship_Types.SUBORDINATED,
+      table_1_id: Projects_Items_Types.id,
+      record_1_column: 'id',
+      record_1_id: Projects_Items_Types.BACKLOG,
+      table_2_id: Projects_Items_Types.id,
+      record_2_column: 'parent_id',
+      record_2_id: Projects_Items_Types.SCRUM,
+    },{      
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      relationship_type_id : Relationship_Types.SUBORDINATED,
+      table_1_id: Projects_Items_Types.id,
+      record_1_column: 'id',
+      record_1_id: Projects_Items_Types.TASKS,
+      table_2_id: Projects_Items_Types.id,
+      record_2_column: 'parent_id',
+      record_2_id: Projects_Items_Types.BACKLOG,
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null
