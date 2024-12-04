@@ -447,47 +447,66 @@ class WinthorIntegrationsRegistersController extends RegistersController {
     }
 
     static async getProductsTableData(req,res) {
+        try {
+            
+        
         let termo = req.body.termo
         termo = termo.split(',')
+        let filterAvanced = req.body.filters
+
+        let filterConditions = filterAvanced.map(f => {
+            return `${f.campo} ${f.operador} ${f.valor}`; 
+        });
+        
+        
+        
         let data = await DBConnectionManager.getWinthorDBConnection().query(`
-            select
-                CODPROD,
-                DESCRICAO,
-                EMBALAGEM,
-                UNIDADE,
-                PESOLIQ,
-                PESOBRUTO,
-                CODEPTO,
-                TEMREPOS,
-                QTUNIT,
-                DTCADASTRO,
-                DTEXCLUSAO,
-                dtultaltcom,
-                PRAZOVAL,
-                REVENDA,
-                QTUNITCX,
-                IMPORTADO,
-                CODAUXILIAR
-            from
-                pcprodut
-            where
-                ${termo.map(el =>{
+        
+            SELECT       
+                CODPROD,        
+                DESCRICAO,       
+                EMBALAGEM,       
+                UNIDADE,        
+                PESOLIQ,       
+                PESOBRUTO,        
+                CODEPTO,       
+                TEMREPOS,       
+                QTUNIT,        
+                DTCADASTRO,       
+                DTEXCLUSAO,        
+                dtultaltcom,        
+                PRAZOVAL,       
+                REVENDA,        
+                QTUNITCX,        
+                IMPORTADO,        
+                CODAUXILIAR       
+            FROM       
+                pcprodut        
+            WHERE        
+                ${termo.map(el => {
                     return `
-                    (CODPROD like '${el}' 
+                    (CODPROD LIKE '${el}' 
                     OR UPPER(DESCRICAO) LIKE UPPER('${el}')
                     OR UPPER(EMBALAGEM) LIKE UPPER('${el}')
                     OR UPPER(UNIDADE) LIKE UPPER('${el}')
                     OR PESOLIQ LIKE '${el}'
-                    
-                    )`
-                }).join(' or ')}
-                `,
-            {
-                type: QueryTypes.SELECT,
-            }
+                    ) or`;
+                }).join(' OR ')}
+                ${filterConditions.join( ' AND ')}
         
+        `,
+        
+            {
+        
+                type: QueryTypes.SELECT,
+        
+            }
         )
+    
         res.status(200).json(data)
+    } catch (error) {
+            res.status(400).json()
+    }
     }
 
 }
