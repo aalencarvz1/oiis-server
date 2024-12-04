@@ -109,8 +109,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                     null,
                     u.id 
             `
-            res.data = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
-            res.data = res.data[0] || [];
+            res.data = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,type:Sequelize.QueryTypes.SELECT});
             res.sendResponse(200,true);
         } catch (e) {
             Utils.logError(e);
@@ -136,8 +135,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                     where                        
                         ${identifiers.map(el=>`(u.IDORIGEMINFO = ${el.idorigin} AND u.NRCARGA = ${el.cargo_number})`).join(' or ')}
                 `
-                let data = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
-                data = data[0] || [];
+                let data = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,type:Sequelize.QueryTypes.SELECT});
                 if (data.length) {
                     throw new Error('one or more loadings already unified')
                 }
@@ -161,8 +159,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                             where
                                 numcar in (${loadingsWinthor.join(',')})
                         `;
-                        let dataRcasWinthor = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
-                        rcasWinthor = dataRcasWinthor[0] || [];
+                        rcasWinthor = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,type:Sequelize.QueryTypes.SELECT});
                     }
 
                     let rcasBroker = [];
@@ -183,8 +180,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                                         ca.nro_carga in (${loadingsBroker.join(',')})
                                 )
                         `;
-                        let dataRcasBroker = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
-                        rcasBroker = dataRcasBroker[0] || [];
+                        rcasBroker = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,type:Sequelize.QueryTypes.SELECT});
                     }
 
                     if (rcasWinthor.length && rcasBroker.length) {
@@ -204,13 +200,12 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                 }
 
                 query = `select max(coalesce(id,0))+1 as PROXID from EP.EPUNIFCARGAS`;
-                data = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
-                data = data[0] || [];
+                data = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,type:Sequelize.QueryTypes.SELECT});
                 let proxId = data[0].PROXID || 1;
                 res.data = proxId;
                 let queries = identifiers.map(el=>`insert into EP.EPUNIFCARGAS values (${proxId},${el.idorigin},${el.cargo_number},sysdate,${req.user.id})`);
                 for (let key in queries) {
-                    await DBConnectionManager.getConsultDBConnection().query(queries[key],{queryType:Sequelize.QueryTypes.INSERT});
+                    await DBConnectionManager.getConsultDBConnection().query(queries[key],{type:Sequelize.QueryTypes.INSERT});
                 }
                 res.sendResponse(200,true);
 
@@ -250,9 +245,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                     where
                         ${identifiers.map(el=>` (IDORIGEMINFO=${el.idorigin} AND NRCARGA=${el.cargo_number}) `).join(' OR ')}
                 `
-                data = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
-
-                data = data[0] || [];
+                data = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,type:Sequelize.QueryTypes.SELECT});
                 if (data.length) {
                     if (data[0].UNIFIEDS != identifiers.length) throw new Error('cannot print different non-unified payloads');
                     if (data[0].DISTID > 1) throw new Error('não é possível imprimir unificações diferentes juntas(1)');
@@ -278,8 +271,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                     query = `
                         select max(codfilial) as CODFILIAL from JUMBO.PCPEDC where numcar in (${winthorLoads.join(',')})
                     `;
-                    data = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
-                    data = data[0] || [];
+                    data = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,type:Sequelize.QueryTypes.SELECT});
                     codFilial = data[0].CODFILIAL;
                 } else {
                     winthorLoads.push(-999);
@@ -420,8 +412,7 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                         order by  
                         9,10,12
                 `
-                res.data = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
-                res.data = res.data[0] || [];
+                res.data = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,type:Sequelize.QueryTypes.SELECT});
                 res.sendResponse(200,true);
             } else {
                 throw new Error("missing data");
@@ -507,17 +498,12 @@ class WmsOuputsIntegrationsWinthorController extends RegistersController{
                 where
                     ${where}
             `;
-            let dataResult = await DBConnectionManager.getWinthorDBConnection().query(
+            res.data = await DBConnectionManager.getWinthorDBConnection().query(
                 query,
                 {
                     type:QueryTypes.SELECT
                 }
             );
-
-            console.log(dataResult);
-
-            res.data = dataResult || [];
-
 
             res.sendResponse(200,true);
         } catch (e) {

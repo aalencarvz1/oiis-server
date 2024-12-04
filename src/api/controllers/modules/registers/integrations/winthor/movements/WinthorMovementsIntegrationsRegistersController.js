@@ -2,6 +2,9 @@ const { QueryTypes } = require("sequelize");
 const DBConnectionManager = require("../../../../../../database/DBConnectionManager");
 const { DataSwap } = require("../../../../../data/DataSwap");
 const { RegistersController } = require("../../../RegistersController");
+const { Utils } = require("../../../../../utils/Utils");
+const { DatabaseUtils } = require("../../../../../database/DatabaseUtils");
+const { PcProdut } = require("../../../../../../database/models/winthor/PcProdut");
 
 /**
  * Class controller to handle registers module
@@ -56,7 +59,50 @@ class WinthorMovementsIntegrationsRegistersController extends RegistersControlle
                 order by
                     e.dtent
             `;
-            res.data = await DBConnectionManager.getWinthorDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
+            res.data = await DBConnectionManager.getWinthorDBConnection().query(query,{raw:true,type:QueryTypes.SELECT});
+            res.sendResponse(200,true);
+        } catch (e) {
+            res.setException(e);
+            res.sendResponse();
+        }
+    }
+
+    static async getWinthorPurchaseSuggestions(req,res) {
+        try {
+            let query = `
+                select
+                    pcest.codfilial,
+                    pcprodut.codprod,
+                    pcprodut.descricao,
+                    pcprodut.codfornec,
+                    pcfornec.fornecedor,
+                    pcprodut.codepto,
+                    pcdepto.descricao as departamento,
+                    pcprodut.qtunitcx,
+                    pcprodut.unidade,
+                    nvl(pcfornec.prazoentrega,0) as prazoentrega,
+                    nvl(pcprodut.temrepos,0) as temrepos,
+                    nvl(pcest.qtest,0) as qtest,
+                    nvl(pcest.qtestger,0) as qtestger,
+                    pcgirodiamemoria.json
+                from
+                    jumbo.pcprodut 
+                    join jumbo.pcest on pcest.codprod = pcprodut.codprod
+                    left outer join jumbo.pcfornec on pcfornec.codfornec = pcprodut.codfornec
+                    left outer join jumbo.pcdepto on pcdepto.codepto = pcprodut.codepto
+                    left outer join jumbo.pcgirodiamemoria on pcgirodiamemoria.codprod = pcprodut.codprod and pcgirodiamemoria.codfilial = pcest.codfilial
+            `;
+
+            let where = req.body?.queryParams?.where || req.body?.where || {};
+            if (Utils.hasValue(where)) {
+                where = DatabaseUtils.whereToString(where,PcProdut)
+                query += ` where ${where}`
+            }
+
+            res.data = await DBConnectionManager.getWinthorDBConnection().query(
+                query,{
+                raw:true,type:QueryTypes.SELECT
+            });
             res.sendResponse(200,true);
         } catch (e) {
             res.setException(e);

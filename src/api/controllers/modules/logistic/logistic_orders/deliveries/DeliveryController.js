@@ -213,8 +213,7 @@ class DeliveryController extends RegistersController{
                     lsl.name
             `;
 
-            res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
-            res.data = res.data[0] || [];
+            res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,type:QueryTypes.SELECT});
             res.success = true;
         } catch (e) {
             res.setException(e);
@@ -353,8 +352,7 @@ class DeliveryController extends RegistersController{
             } else {
                 throw new Error(`origin data not expected: ${req.body.data_origin_id}`);
             }
-            res.data = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
-            res.data = res.data[0] || [];
+            res.data = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,type:Sequelize.QueryTypes.SELECT});
 
             query = `
                 select
@@ -438,8 +436,7 @@ class DeliveryController extends RegistersController{
                     i.id                                
             `;
 
-            let delivereds = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
-            delivereds = delivereds[0] || [];
+            let delivereds = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,type:Sequelize.QueryTypes.SELECT});
 
             if (delivereds && delivereds.length) {
                 for(let kd in delivereds) {
@@ -686,8 +683,8 @@ class DeliveryController extends RegistersController{
                     m.seller_id,
                     ps.name
             `;
-            res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
-            res.data = res.data[0] || [];
+            res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,type:QueryTypes.SELECT});
+
             res.sendResponse(200,true);
         } catch (e) {
             res.setException(e);
@@ -799,9 +796,8 @@ class DeliveryController extends RegistersController{
                 `;
                 res.data = await DBConnectionManager.getConsultDBConnection().query(query,{
                     raw:true,
-                    queryType: QueryTypes.SELECT
+                    type: QueryTypes.SELECT
                 }); 
-                res.data = res.data[0] || [];
 
                 if (res.data.length) {
                     query = `
@@ -820,9 +816,9 @@ class DeliveryController extends RegistersController{
                     `;
                     let dataTemp = await DBConnectionManager.getDefaultDBConnection().query(query,{
                         raw:true,
-                        queryType: QueryTypes.SELECT
+                        type: QueryTypes.SELECT
                     });
-                    dataTemp = Utils.arrayToObject(dataTemp[0] || [],['data_origin_id','id_at_origin']);
+                    dataTemp = Utils.arrayToObject(dataTemp,['data_origin_id','id_at_origin']);
 
                     for(let key in res.data) {
                         res.data[key].logistic_status_id = ((dataTemp[res.data[key].data_origin_id.toString()]||{})[res.data[key].id_at_origin.toString()]||{})[0]?.logistic_status_id;
@@ -933,9 +929,8 @@ class DeliveryController extends RegistersController{
                 `;
                 res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{
                     raw:true,
-                    queryType: QueryTypes.SELECT
+                    type: QueryTypes.SELECT
                 }); 
-                res.data = res.data[0] || [];
                 res.success = true;
             } else {
                 throw new Error("missing data");

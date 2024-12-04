@@ -339,9 +339,9 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                     for(let key in cargos) {
                         let data_origin_id = Logistic_Orders_Integration_Controller.getDataOriginId(cargos[key].data_origin_id);
                         let query = `select min(codfilial) as CODFILIAL from JUMBO.PCPEDC where numcar = ${cargos[key].id_at_origin}`;
-                        let codFilial = await DBConnectionManager.getWinthorDBConnection().query(query,{queryType:Sequelize.QueryTypes.SELECT});
-                        if (codFilial) {
-                            codFilial = codFilial[0][0].CODFILIAL;
+                        let codFilial = await DBConnectionManager.getWinthorDBConnection().query(query,{type:Sequelize.QueryTypes.SELECT});
+                        if (Utils.hasValue(codFilial)) {
+                            codFilial = codFilial[0].CODFILIAL;
                         } else {
                             codFilial = 1;
                         }
@@ -353,7 +353,7 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                             },
                             transaction
                         });
-                        if (!businessUnit) throw new Error(`business unit not found: ${codFilial}`);
+                        if (!Utils.hasValue(businessUnit)) throw new Error(`business unit not found: ${codFilial}`);
                         let warehouse = await Warehouses.getModel().findOne({
                             raw:true,
                             where:{
@@ -361,7 +361,7 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                             },
                             transaction
                         });
-                        if (!warehouse) throw new Error(`warehouse not found: ${codFilial}`);
+                        if (!Utils.hasValue(warehouse)) throw new Error(`warehouse not found: ${codFilial}`);
                         let company = await Companies.getModel().findOne({
                             raw:true,
                             where:{
@@ -369,7 +369,7 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                             },
                             transaction
                         });
-                        if (!company) throw new Error(`company not found: ${businessUnit.company_id}`);
+                        if (!Utils.hasValue(company)) throw new Error(`company not found: ${businessUnit.company_id}`);
                         
 
                         
@@ -390,7 +390,7 @@ class Logistic_Orders_Integration_Controller extends BaseEndPointController{
                             },
                             transaction
                         });
-                        if (!logisticOrder) {
+                        if (!Utils.hasValue(logisticOrder)) {
                             logisticOrder = await Logistic_Orders.getModel().create({
                                 creator_user_id: req.user.id,
                                 data_origin_id: data_origin_id,

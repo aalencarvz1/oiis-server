@@ -104,8 +104,7 @@ class RoutinesController extends RegistersController{
                     COALESCE(MODULES.numeric_order, MODULES.id),
                     COALESCE(routines.numeric_order, routines.id);    
             `;
-            res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
-            res.data = res.data[0] || [];
+            res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,type:QueryTypes.SELECT});
             let nestedModules = {};
             for(let i = 0; i < res.data.length; i++) {                
                 nestedModules[res.data[i].id] = nestedModules[res.data[i].id] || res.data[i];
