@@ -140,7 +140,7 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                                                         JUMBO.PCFECHAMENTOMAP 
                                                     where 
                                                         NUMTRANSVENDA = ${nfWint.NUMTRANSVENDA} `,
-                                                    {raw:true,queryType:QueryTypes.SELECT});
+                                                    {raw:true,type:QueryTypes.SELECT});
                                                 preExist = Utils.toBool(preExist[0][0].EXISTS || false);
 
                                                 if (!preExist) {
@@ -177,14 +177,12 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                                                                 )
                                                             FOR UPDATE 
                                                         `,{
-                                                            queryType: QueryTypes.SELECT,
+                                                            type: QueryTypes.SELECT,
                                                             transaction:transaction
                                                         });
-                                                        pcPrests = pcPrests[0];
-
 
                                                         for(let kp in pcPrests) {
-                                                            let nextVal = await wintConnection.query('SELECT DFSEQ_PCFECHAMENTOMAP_NUMSEQ.NEXTVAL FROM DUAL', {raw:true,queryType:QueryTypes.SELECT});
+                                                            let nextVal = await wintConnection.query('SELECT DFSEQ_PCFECHAMENTOMAP_NUMSEQ.NEXTVAL FROM DUAL', {raw:true,type:QueryTypes.SELECT});
                                                             nextVal = nextVal[0][0].NEXTVAL;
 
                                                             await wintConnection.query(`
@@ -269,7 +267,7 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                                                                     )
                                                                     AND PCPREST.PREST = ${pcPrests[kp].PREST}
                                                             `,{
-                                                                queryType: QueryTypes.INSERT,
+                                                                type: QueryTypes.INSERT,
                                                                 transaction: transaction
                                                             });
                                                         }
@@ -299,7 +297,7 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                                                                 'PERD'
                                                             )
                                                         `,{
-                                                            queryType: QueryTypes.UPDATE,
+                                                            type: QueryTypes.UPDATE,
                                                             transaction: transaction
                                                         });
                                                         resultData.COBRANCAS_INTEGRADAS.push({NUMTRANS:logOrder[kl].NUMTRANSVENDA,NUMNOTA:nfWint.NUMNOTA, CODCLI: nfWint.CODCLI,CODRCA:nfWint.CODUSUR,CLIENTE: nfWint.CLIENTE, CODCOB: nfWint.CODCOB, VALOR: nfWint.total_value});    
@@ -563,8 +561,7 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                             order by
                                 1
                         `;
-                        res.data[key].clients = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
-                        res.data[key].clients = res.data[key].clients[0] || [];
+                        res.data[key].clients = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,type:Sequelize.QueryTypes.SELECT});
 
                         if (res.data[key].clients && res.data[key].clients.length) {  
                             
@@ -628,8 +625,7 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                                         s.numtransvenda,
                                         p.prest
                                 `;
-                                let winthorPayments = await DBConnectionManager.getWinthorDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
-                                winthorPayments = winthorPayments[0] || [];
+                                let winthorPayments = await DBConnectionManager.getWinthorDBConnection().query(query,{raw:true,type:Sequelize.QueryTypes.SELECT});
 
                                 //find item invoice data on winthor
                                 query = `
@@ -697,8 +693,7 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                                 `;
 
                                 //attach items winthor to nfs winthor
-                                let itemsWinthor = await DBConnectionManager.getWinthorDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
-                                itemsWinthor = itemsWinthor[0] || [];
+                                let itemsWinthor = await DBConnectionManager.getWinthorDBConnection().query(query,{raw:true,type:Sequelize.QueryTypes.SELECT});
 
                                 for(let kn in nfsWinthor) {
                                     nfsWinthor[kn].payments = nfsWinthor[kn].payments || [];
@@ -765,8 +760,8 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                                 order by 1,2
                             `;
 
-                            let nfsBroker = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
-                            nfsBroker = nfsBroker[0] || [];
+                            let nfsBroker = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,type:Sequelize.QueryTypes.SELECT});
+
                             if (nfsBroker && nfsBroker.length > 0) {                                
 
                                 //find item invoice data on broker (aurora)
@@ -818,8 +813,8 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                                 `;
 
                                 //attach items broker to nfs broker
-                                let itemsBroker = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType:Sequelize.QueryTypes.SELECT});
-                                itemsBroker = itemsBroker[0] || [];                                
+                                let itemsBroker = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,type:Sequelize.QueryTypes.SELECT});
+
                                 for(let kn in nfsBroker) {
                                     nfsBroker[kn].items = nfsBroker[kn].items || [];
                                     for(let ki in itemsBroker) {

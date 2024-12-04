@@ -28,7 +28,9 @@ let datas = {};
 const testString = '__TEST__';
 let canDelete = false;
 tablesNamesIgnoresFKErrors=[
-    'companies'
+    'companies',
+    'projects_items',
+    'requirements'
 ]
 
 
@@ -1509,6 +1511,20 @@ describe('Running api call tests',()=>{
                         }
                     };
                     break;          
+                case 'project_tasks':
+                    getParamsToCreate = ()=>{
+                        let tableName = 'project_tasks';
+                        let parentTableName = 'project_task_types';                        
+                        let parent = crudsToDelete.find(el=>el.tableName == parentTableName);         
+                        let parentTableName2 = 'projects_items';
+                        let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);         
+                        return {
+                            id_at_origin:testString,
+                            task_type_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            project_item_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
+                        }
+                    };
+                    break; 
                 case 'requirements':
                     getParamsToCreate = ()=>{
                         let tableName = 'requirements';

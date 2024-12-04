@@ -355,13 +355,13 @@ class SicrediIntegrationsPixController extends RegistersController{
                                 and nvl(p.prest,1) = ${Utils.firstValid([params?.prest,1])}
                             FOR UPDATE NOWAIT
                         `,{
-                            queryType: QueryTypes.SELECT,
+                            type: QueryTypes.SELECT,
                             model: PcPrest.getModel(wintConnection),                                                        
                         });
-                        if (pcPrest) {
+                        if (Utils.hasValue(pcPrest)) {
                             pcPrest = pcPrest[0];
                         }
-                        if (pcPrest) {
+                        if (Utils.hasValue(pcPrest)) {
                             let pcCob = await PcCob.getModel(wintConnection).findOne({
                                 raw: true,
                                 attributes:[
@@ -383,14 +383,14 @@ class SicrediIntegrationsPixController extends RegistersController{
                                         and codcob='D'
                                     FOR UPDATE NOWAIT
                                 `,{
-                                    queryType: QueryTypes.SELECT,
+                                    type: QueryTypes.SELECT,
                                     model: PcEstcr.getModel(wintConnection),
                                 });                        
-                                if (pcEstcr) {
+                                if (Utils.hasValue(pcEstcr)) {
                                     pcEstcr = pcEstcr[0];
                                 }
 
-                                if (pcEstcr) {
+                                if (Utils.hasValue(pcEstcr)) {
 
                                     if (pcCob.CARTAO == 'S') {
 
@@ -778,10 +778,10 @@ class SicrediIntegrationsPixController extends RegistersController{
                                         1=1
                                     FOR UPDATE                                    
                                 `,{
-                                    queryType: QueryTypes.SELECT,
+                                    type: QueryTypes.SELECT,
                                     model: PcConsum.getModel(wintConnection)
                                 });
-                                if (pcConsum) {
+                                if (Utils.hasValue(pcConsum)) {
                                     pcConsum = pcConsum[0];
                                 }
                                 let numtrans = (pcConsum?.PROXNUMTRANS||0)-0;

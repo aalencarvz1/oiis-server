@@ -443,8 +443,7 @@ class Clients_Integration_Controller extends RegistersController{
                 ORDER BY
                     lc1.datalog;
             `;
-            let responseData = await DBConnectionManager.getWinthorDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
-            res.data = responseData[0] || [];
+            let responseData = await DBConnectionManager.getWinthorDBConnection().query(query,{raw:true,type:QueryTypes.SELECT});
             res.sendResponse(200,true);
         } catch (e) {
             res.setException(e);

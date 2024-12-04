@@ -170,10 +170,9 @@ class AuroraIntegrationsRegistersController extends IntegrationsRegistersControl
                                 await tabPrOrigem.save();
                             } else {
 
-                                let nextId = await DBConnectionManager.getConsultDBConnection().query(`select nvl(max(nvl(T2.CODITEMTABPR,0)),0) as NEXTID from CONSULTA.SJDTABPR_ORIGEM T2`,{raw:true,queryType:QueryTypes.SELECT});
-                                nextId = nextId[0] || null;
-                                if (nextId) nextId = nextId[0] || null;
-                                if (nextId) nextId = Utils.toNumber(nextId.NEXTID) + 1
+                                let nextId = await DBConnectionManager.getConsultDBConnection().query(`select nvl(max(nvl(T2.CODITEMTABPR,0)),0) as NEXTID from CONSULTA.SJDTABPR_ORIGEM T2`,{raw:true,type:QueryTypes.SELECT});
+                                if (Utils.hasValue(nextId)) nextId = nextId[0] || null;
+                                if (Utils.hasValue(nextId)) nextId = Utils.toNumber(nextId.NEXTID) + 1
                                 else nextId = 1;
 
                                 tabPrOrigem = await SjdTabpr_Origem.getModel().create({
@@ -233,7 +232,7 @@ class AuroraIntegrationsRegistersController extends IntegrationsRegistersControl
                 fileContent = fileContent.split(/\r?\n/);
                 fileContent = fileContent.map(el=>el.split('#'));                
 
-                await DBConnectionManager.getConsultDBConnection().query('delete from consulta.arestaurimportacao',{queryType:QueryTypes.DELETE});
+                await DBConnectionManager.getConsultDBConnection().query('delete from consulta.arestaurimportacao',{type:QueryTypes.DELETE});
                 for(let k in fileContent) {                
                     if (Utils.hasValue(fileContent[k][0]) && Utils.hasValue(fileContent[k][1]) && Utils.hasValue(fileContent[k][2])) {
                         await DBConnectionManager.getConsultDBConnection().query(`
@@ -248,15 +247,15 @@ class AuroraIntegrationsRegistersController extends IntegrationsRegistersControl
                                 ${fileContent[k][2]},
                                 to_date('${currentTime.toISOString().substring(0,19).replace('T',' ')}','yyyy-mm-dd hh24:mi:ss')
                             )
-                        `,{queryType:QueryTypes.INSERT});
+                        `,{type:QueryTypes.INSERT});
                     }
                 };
-                //await DBConnectionManager.getConsultDBConnection().query('commit',{queryType:'COMMIT'});
+                //await DBConnectionManager.getConsultDBConnection().query('commit',{type:'COMMIT'});
                 
                 let newFileName = `${path}/processados/${fileName.substring(0,fileName.indexOf('.'))}${currentTime.toISOString().replace(/[\.\-\:]/g,'')}.TXT`;
                 await client.rename(`${path}/${fileName}`,newFileName);
                 let responseProcess = await DBConnectionManager.getConsultDBConnection().query('call consulta.sjdpkg_funcs_sisjd.atualizar_estoque_aurora();');
-                await DBConnectionManager.getConsultDBConnection().query('delete from consulta.arestaurimportacao',{queryType:QueryTypes.DELETE});
+                await DBConnectionManager.getConsultDBConnection().query('delete from consulta.arestaurimportacao',{type:QueryTypes.DELETE});
                 result.success = true;
             } else {
                 throw new Error("no file content");

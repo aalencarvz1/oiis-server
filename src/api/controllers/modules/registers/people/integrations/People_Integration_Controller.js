@@ -119,8 +119,7 @@ class People_Integration_Controller extends RegistersController{
                             ORDER BY    
                                 C.CODCLI                            
                         `;
-                        let winthorRegs = await DBConnectionManager.getWinthorDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
-                        winthorRegs = winthorRegs[0] || [];
+                        let winthorRegs = await DBConnectionManager.getWinthorDBConnection().query(query,{raw:true,type:QueryTypes.SELECT});
                         if (winthorRegs && winthorRegs.length) {
                             winthorRegs = _.keyBy(winthorRegs,'CODCLI');
                             let city = null;

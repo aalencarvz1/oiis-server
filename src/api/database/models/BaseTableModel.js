@@ -412,8 +412,7 @@ class BaseTableModel extends Model {
         let queryParams = await DatabaseUtils.prepareQueryParams(params.queryParams || params || {});
         if (queryParams.raw !== false) queryParams.raw = true; 
         if (queryParams.query) {
-            let result = await this.getConnection().query(queryParams.query,{raw:queryParams.raw,queryType:QueryTypes.SELECT});
-            result = result[0] || [];
+            let result = await this.getConnection().query(queryParams.query,{raw:queryParams.raw,type:QueryTypes.SELECT});
             return result;
         } else {
             if ((this.accessLevel || 1) == 2 && Utils.hasValue(params.req || req)) {
@@ -498,7 +497,7 @@ class BaseTableModel extends Model {
                     this.getModel()
                 );
                 console.log(updateSQL);
-                let resultUpdate = await this.getConnection().query(updateSQL,{queryType:QueryTypes.UPDATE,transaction:params.transaction});                
+                let resultUpdate = await this.getConnection().query(updateSQL,{type:QueryTypes.UPDATE,transaction:params.transaction});                
                 if (Utils.hasValue(resultUpdate) && resultUpdate[0]?.rowsAffected >= 1) {
                     if (typeof this.getData === 'function' && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(reg.id) || reg.dataValues
                     else return values;

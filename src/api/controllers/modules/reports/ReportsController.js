@@ -91,10 +91,7 @@ class ReportsController extends RegistersController{
                         p2 = query.indexOf("}$");
                         loopLimit --;
                     }                    
-                    result = await connectiton.query(query,{raw:true,queryType:QueryTypes.SELECT});
-
-                    result = result[0] || [];                    
-
+                    result = await connectiton.query(query,{raw:true,type:QueryTypes.SELECT});
                 } else {
                     throw new Error(`not expected type_get_value_from: ${report.type_get_value_from}`)
                 }
@@ -219,8 +216,7 @@ class ReportsController extends RegistersController{
                     COALESCE(DR.numeric_order,DR.id)
             `;
 
-            let reportsDatasFounts = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
-            reportsDatasFounts = reportsDatasFounts[0] || [];
+            let reportsDatasFounts = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,type: QueryTypes.SELECT});
             if (reportsDatasFounts && reportsDatasFounts.length) {                
                 for(let k in reportsDatasFounts) {
                     if (reportsDatasFounts[k].type_get_value_from.trim().toUpperCase() == 'STRUCTURED QUERY') {
@@ -275,7 +271,7 @@ class ReportsController extends RegistersController{
                 
                 let data = await connection.query(query,{
                     raw:true,
-                    queryType:QueryTypes.SELECT,
+                    type:QueryTypes.SELECT,
                     mapToModel: false,
                     nest:true
                 });
@@ -315,8 +311,8 @@ class ReportsController extends RegistersController{
                     and trunc(nvl(c."start_date",sysdate)) <= trunc(sysdate)
                     and trunc(nvl(c."end_date",sysdate)) >= trunc(sysdate)
             `;
-            let commissionsData = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
-            commissionsData = commissionsData[0] || [];
+            let commissionsData = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,type:QueryTypes.SELECT});
+
             if (commissionsData && commissionsData.length > 0) {                                    
                 let allConditions = [];
                 let allConditionsVisions = [];
@@ -391,8 +387,7 @@ class ReportsController extends RegistersController{
                     cm."percent2name",
                     cm."percent2"
                 ` + reportQuery.substring(p1);
-                res.data = await DBConnectionManager.getEpDBConnection().query(reportQuery,{raw:true,queryType:QueryTypes.SELECT});
-                res.data = res.data[0] || [];
+                res.data = await DBConnectionManager.getEpDBConnection().query(reportQuery,{raw:true,type:QueryTypes.SELECT});
                 res.data = [{DATA:res.data}];
                 res.success = true;
             } else {
