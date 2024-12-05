@@ -141,7 +141,7 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
                                                     where 
                                                         NUMTRANSVENDA = ${nfWint.NUMTRANSVENDA} `,
                                                     {raw:true,type:QueryTypes.SELECT});
-                                                preExist = Utils.toBool(preExist[0][0].EXISTS || false);
+                                                preExist = Utils.toBool(preExist[0]?.EXISTS || false);
 
                                                 if (!preExist) {
 
@@ -183,7 +183,7 @@ class Logistic_Orders_Winthor_Integration_Controller extends WinthorIntegrations
 
                                                         for(let kp in pcPrests) {
                                                             let nextVal = await wintConnection.query('SELECT DFSEQ_PCFECHAMENTOMAP_NUMSEQ.NEXTVAL FROM DUAL', {raw:true,type:QueryTypes.SELECT});
-                                                            nextVal = nextVal[0][0].NEXTVAL;
+                                                            nextVal = nextVal[0]?.NEXTVAL || 1;
 
                                                             await wintConnection.query(`
                                                                 INSERT INTO PCFECHAMENTOMAP(                       
