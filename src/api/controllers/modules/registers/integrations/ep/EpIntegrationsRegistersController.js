@@ -240,14 +240,16 @@ class EpIntegrationsRegistersController extends RegistersController{
                 rcas = dataRel.map(el=>el.record_2_id).join(',');
             }
         }
-        if (Utils.hasValue(params.seller_ids)) {
+
+        if (Utils.hasValue(params?.sellers_ids || params?.body?.seller_ids)) {
+            console.log('seller_ids',params?.sellers_ids || params?.body?.seller_ids);
             if (Utils.hasValue(rcas)) {                
-                let seller_ids = Utils.toArray(params.seller_ids);
+                let seller_ids = Utils.toArray(params?.sellers_ids || params?.body?.seller_ids);
                 let rcasTemp = Utils.toArray(rcas);
                 seller_ids = seller_ids.filter(el=>rcasTemp.indexOf(el) > -1);
                 rcas = seller_ids.join(',');                
             } else {
-                rcas = Utils.toArray(params.seller_ids).join(',');
+                rcas = Utils.toArray(params?.sellers_ids || params?.body?.seller_ids).join(',');
             }
         }
         if (!rcas) rcas = `select ev.cod from EP.EPVENDEDORES ev`;
