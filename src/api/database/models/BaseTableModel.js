@@ -412,8 +412,7 @@ class BaseTableModel extends Model {
         let queryParams = await DatabaseUtils.prepareQueryParams(params.queryParams || params || {});
         if (queryParams.raw !== false) queryParams.raw = true; 
         if (queryParams.query) {
-            let result = await this.getConnection().query(queryParams.query,{raw:queryParams.raw,type:QueryTypes.SELECT});
-            return result;
+            return await this.getConnection().query(queryParams.query,{raw:queryParams.raw,type:QueryTypes.SELECT});
         } else {
             if ((this.accessLevel || 1) == 2 && Utils.hasValue(params.req || req)) {
                 queryParams.where = queryParams.where || {};

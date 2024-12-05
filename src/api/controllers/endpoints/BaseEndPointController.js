@@ -113,7 +113,7 @@ class BaseEndPointController {
             result.data = tableClassModel;
             result.success = true;
         } catch (e) {
-            result.setException(e);
+            result.setException(e,true);
         }
         Utils.logf(`${this.name}(${BaseEndPointController.name})`,`loadTableClassModel(${tableName})`);        
         return result;
