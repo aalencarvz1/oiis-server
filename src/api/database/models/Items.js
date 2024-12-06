@@ -164,12 +164,11 @@ class Items extends BaseTableModel {
           codorigeminfo = 1
           and cod = ${queryParams.id_at_origin || queryParams.item_id || queryParams.id || queryParams.CODPROD}
       `;
-      let auroraData = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
+      let auroraData = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,type: QueryTypes.SELECT});
+
       if (auroraData && auroraData.length) 
         auroraData = auroraData[0];
-      if (auroraData && auroraData.length) 
-        auroraData = auroraData[0];
-      if (!auroraData || (Utils.typeOf(auroraData) == 'array' && !auroraData.length)) {
+      if (!Utils.hasValue(auroraData)) {
         query = `
           select
             * 
@@ -178,9 +177,7 @@ class Items extends BaseTableModel {
           where
             cod = ${queryParams.id_at_origin || queryParams.item_id || queryParams.id || queryParams.CODPROD}
         `;
-        auroraData = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
-        if (auroraData && auroraData.length) 
-          auroraData = auroraData[0];
+        auroraData = await DBConnectionManager.getConsultDBConnection().query(query,{raw:true,type: QueryTypes.SELECT});
         if (auroraData && auroraData.length) 
           auroraData = auroraData[0];
       }

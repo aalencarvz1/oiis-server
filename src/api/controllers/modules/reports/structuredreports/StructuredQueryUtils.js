@@ -96,8 +96,7 @@ class StructuredQueryUtils {
                 COALESCE(RFI.parent_id,RFI.id)
         `;
 
-        let reportsDataItems = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
-        reportsDataItems = reportsDataItems[0] || [];
+        let reportsDataItems = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,type:QueryTypes.SELECT});
         
         if (reportsDataItems && reportsDataItems.length) {
 

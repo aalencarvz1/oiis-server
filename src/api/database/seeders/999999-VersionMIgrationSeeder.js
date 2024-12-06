@@ -42,13 +42,13 @@ module.exports = {
           from 
             ${pOlddSchemaName}.${oldTableName} t
           order by 1`,
-          {raw:true,queryType: QueryTypes.SELECT}        
+          {raw:true,type: QueryTypes.SELECT}        
         );
         if (regs && regs.length) {
           //Utils.log('FL','regs',regs.length);
           let describeNew = await queryInterface.describeTable(pNewTableName);
           let fields = Object.keys(describeNew).join(',').toLowerCase().split(',');
-          let newRegs = regs[0];
+          let newRegs = regs;
           if (newRegs && newRegs.length) {
             Utils.log('FL','newRegs',newRegs.length);
             let allOldColumns = {};
@@ -122,9 +122,8 @@ module.exports = {
                 count(1) as qty
               from 
                 \`${pNewTableName}\``,
-              {raw:true,queryType: QueryTypes.SELECT}
+              {raw:true,type: QueryTypes.SELECT}
             );
-            qty = qty[0] || [];
             if ((qty[0]?.qty ||0) < newRegs.length) {
               Utils.log(`newregs ${pNewTableName} inserting`,newRegs);
               throw new Error(`${(qty[0]?.qty ||0)} register(s) migrated from old table ${oldTableName} to ${pNewTableName} of ${newRegs.length}`);

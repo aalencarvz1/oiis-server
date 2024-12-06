@@ -188,7 +188,7 @@ class Task_Controller extends RegistersController{
                     AND t.status_id = ${Task_Status.STOPED}
                     AND t.triggering_task_id = ${pIdTask}
             `;
-            let [result,metadata] = await DBConnectionManager.getDefaultDBConnection().query(query,{queryType:QueryTypes.UPDATE});
+            let [result,metadata] = await DBConnectionManager.getDefaultDBConnection().query(query,{type:QueryTypes.UPDATE});
             if (metadata.affectedRows > 0 && pIdNewStatus == Task_Status.RUNNING && idsSups.length > 0) {
                 query = `
                     update
@@ -201,7 +201,7 @@ class Task_Controller extends RegistersController{
                         AND user_id = ${pIdUser}
                         AND status_id = ${Task_Status.RUNNING}
                 `;
-                await DBConnectionManager.getDefaultDBConnection().query(query,{queryType:QueryTypes.UPDATE});
+                await DBConnectionManager.getDefaultDBConnection().query(query,{type:QueryTypes.UPDATE});
             }
         }
     }
@@ -338,12 +338,10 @@ class Task_Controller extends RegistersController{
                     order by parent_id,id                        
                 `;
                 
-                res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
-                res.data = res.data[0] || [];
+                res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,type:QueryTypes.SELECT});
             } else {
                 let query = this.mountQueryToGet(req,req.body.queryParams);
-                res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{queryType:QueryTypes.SELECT,raw:true});
-                res.data = res.data[0] || [];
+                res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{type:QueryTypes.SELECT,raw:true});
             }
             res.sendResponse(200,true);
         } catch (e) {
@@ -393,8 +391,7 @@ class Task_Controller extends RegistersController{
                 await Task_Controller.updateSupStatusToRunning(task.id, taskX.user_id, taskX.status_id);                
             }     
             let query = this.mountQueryToGet(req,{where:{id:task.id}});
-            res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{queryType:QueryTypes.SELECT,raw:true});
-            res.data = (res.data[0] || [])[0];
+            res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{type:QueryTypes.SELECT,raw:true});
             res.sendResponse(200,true);
         } catch (e) {
             Utils.logError(e);
@@ -553,8 +550,7 @@ class Task_Controller extends RegistersController{
                                             t2.parent_id = t.id
                                     )
                             `;
-                            let sup = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
-                            sup = sup[0] || sup;
+                            let sup = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,type:QueryTypes.SELECT});
                             if (sup && sup.length > 0) {
                                 sup = sup[0];
                                 query = `
@@ -566,7 +562,7 @@ class Task_Controller extends RegistersController{
                                     where
                                         id = ${sup.TUID}
                                 `;
-                                await DBConnectionManager.getDefaultDBConnection().query(query,{queryType:QueryTypes.UPDATE});
+                                await DBConnectionManager.getDefaultDBConnection().query(query,{type:QueryTypes.UPDATE});
                                 idSup = sup.parent_id;
                             } else {
                                 break;
@@ -578,8 +574,7 @@ class Task_Controller extends RegistersController{
                 }   
 
                 let query = this.mountQueryToGet(req,{where:{id:task.id}});
-                res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{queryType:QueryTypes.SELECT,raw:true});
-                res.data = (res.data[0] || [])[0];
+                res.data = await DBConnectionManager.getDefaultDBConnection().query(query,{type:QueryTypes.SELECT,raw:true});
                 res.sendResponse(200,true);
             } else {
                 throw new Error(`task ${req.body?.id} not found`);

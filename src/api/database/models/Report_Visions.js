@@ -92,8 +92,7 @@ class Report_Visions extends BaseTableModel {
             order by 
               n.cod
           `;
-          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
-          result = result[0] || [];
+          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,type: QueryTypes.SELECT});
           break;
         case 3: //enterprise
           result = [{id:1,name:'JUMBO ALIMENTOS LTDA'}];
@@ -111,8 +110,7 @@ class Report_Visions extends BaseTableModel {
             order by 
               n.cod
           `;
-          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
-          result = result[0] || [];
+          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,type: QueryTypes.SELECT});
           break;
         case 5: //supplier
           query = `
@@ -126,8 +124,7 @@ class Report_Visions extends BaseTableModel {
             order by 
               n.cod
           `;
-          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
-          result = result[0] || [];
+          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,type: QueryTypes.SELECT});
           break;
         case 6: //city
           query = `
@@ -139,8 +136,7 @@ class Report_Visions extends BaseTableModel {
             order by 
               n.cod
           `;
-          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
-          result = result[0] || [];
+          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,type: QueryTypes.SELECT});
           break;
         case 7: //supervisor
           query = `
@@ -153,8 +149,7 @@ class Report_Visions extends BaseTableModel {
             order by 
               n.codsupervisor
           `;
-          result = await DBConnectionManager.getWinthorDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
-          result = result[0] || [];
+          result = await DBConnectionManager.getWinthorDBConnection().query(query,{raw:true,type: QueryTypes.SELECT});
           break;
         case 8: //seller
           query = `
@@ -167,8 +162,7 @@ class Report_Visions extends BaseTableModel {
             order by 
               n.codusur
           `;
-          result = await DBConnectionManager.getWinthorDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
-          result = result[0] || [];
+          result = await DBConnectionManager.getWinthorDBConnection().query(query,{raw:true,type: QueryTypes.SELECT});
           break;
         case 9: //ramo
           query = `
@@ -181,8 +175,7 @@ class Report_Visions extends BaseTableModel {
             order by 
               n.cod
           `;
-          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
-          result = result[0] || [];
+          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,type: QueryTypes.SELECT});
           break;
         case 10: //department
           query = `
@@ -195,8 +188,7 @@ class Report_Visions extends BaseTableModel {
             order by 
               n.cod
           `;
-          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
-          result = result[0] || [];
+          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,type: QueryTypes.SELECT});
           break;
         case 11: //product
           query = `
@@ -209,8 +201,7 @@ class Report_Visions extends BaseTableModel {
             order by 
               n.cod
           `;
-          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
-          result = result[0] || [];
+          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,type: QueryTypes.SELECT});
           break;
         case 13: //CLIENT
           query = `
@@ -224,8 +215,7 @@ class Report_Visions extends BaseTableModel {
             order by 
               cl.cod
           `;
-          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
-          result = result[0] || [];
+          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,type: QueryTypes.SELECT});
           break;
         case 14: //CUSTOMER NETWORK
           query = `
@@ -238,8 +228,7 @@ class Report_Visions extends BaseTableModel {
             order by 
               n.cod
           `;
-          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
-          result = result[0] || [];
+          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,type: QueryTypes.SELECT});
           break;
         case 15: //ROUTES
           query = `
@@ -252,8 +241,7 @@ class Report_Visions extends BaseTableModel {
             order by 
               n.cod
           `;
-          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
-          result = result[0] || [];
+          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,type: QueryTypes.SELECT});
           break;
         case 16: //SQUARE
           query = `
@@ -266,8 +254,7 @@ class Report_Visions extends BaseTableModel {
             order by 
               n.cod
           `;
-          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
-          result = result[0] || [];
+          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,type: QueryTypes.SELECT});
           break;
         case 19: //BUSINESS ORIGIN
           query = `
@@ -280,8 +267,7 @@ class Report_Visions extends BaseTableModel {
             order by 
               n.cod
           `;
-          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
-          result = result[0] || [];
+          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,type: QueryTypes.SELECT});
           break;
         case 20: //CATEGORY ORIGIN
           query = `
@@ -294,8 +280,7 @@ class Report_Visions extends BaseTableModel {
             order by 
               c.cod
           `;
-          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,queryType: QueryTypes.SELECT});
-          result = result[0] || [];
+          result = await DBConnectionManager.getEpDBConnection().query(query,{raw:true,type: QueryTypes.SELECT});
           break;
         default:
           throw new Error(`id report vision not expected: ${idReportVision}`);

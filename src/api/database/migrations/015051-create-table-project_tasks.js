@@ -1,15 +1,15 @@
 'use strict';
 
 /*imports*/
-const { Features } = require('../models/Features');
+const { Project_Tasks } = require('../models/Project_Tasks');
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await Features.runUpMigration(queryInterface);     
+    await Project_Tasks.runUpMigration(queryInterface);     
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable(Features.tableName);
+    await queryInterface.dropTable(Project_Tasks.tableName);
   }
 };

@@ -4,9 +4,9 @@
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 const { Requirements_Types } = require("./Requirements_Types");
-const { Projects } = require("./Projects");
 const { Projects_Items } = require("./Projects_Items");
-const { Project_Item_Origin_Types } = require("./Project_Item_Origin_Types");
+const { Utils } = require("../../controllers/utils/Utils");
+
 
 
 /**
@@ -19,50 +19,20 @@ class Requirements extends BaseTableModel {
 
   static fields = {
     ...Requirements.getBaseTableModelFields(),...{            
-      project_id:{
+      project_item_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
-      },
-      requirements_id:{
-        type: DataTypes.BIGINT.UNSIGNED,
-        allowNull:false
-      },      
+      },    
       requirement_type_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue: Requirements_Types.FUNCTIONAL
-      },
-      requirement_origin_id:{
-        type: DataTypes.BIGINT.UNSIGNED,
-        allowNull:false,
-        defaultValue: Project_Item_Origin_Types.USER
-      },
-      parent_id: {
-        type: DataTypes.BIGINT.UNSIGNED
-      },
-      identifier:{
-        type: DataTypes.STRING(256),
-        allowNull:false
-      },      
-      name: {
-        type: DataTypes.STRING(256),
-        allowNull:false
-      },
-      description: {
-        type: DataTypes.TEXT
-      },
-      notes: {
-        type: DataTypes.TEXT
       }
     }
   };
   
   static uniqueFields = [
-    'project_id',
-    'requirements_id',
-    'requirement_type_id',
-    Sequelize.literal('(COALESCE(parent_id,-1))'),
-    'identifier'
+    'project_item_id'
   ];
 
   static constraints = [...(Requirements.getBaseTableModelConstraints() || []),...[
@@ -75,29 +45,10 @@ class Requirements extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['project_id'],
-      type: 'foreign key',
-      references: { 
-          table: Projects,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },{
-      fields: ['requirements_id'],
+      fields: ['project_item_id'],
       type: 'foreign key',
       references: { 
           table: Projects_Items,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },
-    {
-      fields: ['parent_id'],
-      type: 'foreign key',
-      references: { 
-          table: Requirements,
           field: 'id'
       },
       onUpdate: 'cascade',
@@ -110,17 +61,39 @@ class Requirements extends BaseTableModel {
           field: 'id'
       },
       onUpdate: 'cascade'
-    },{
-      fields: ['requirement_origin_id'],
-      type: 'foreign key',
-      references: { 
-          table: Project_Item_Origin_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
     }
   ]];
+
+
+
+  static async createData(params) {
+    params = params || {};  
+    if (!Utils.hasValue(params.project_item_id)) {
+      let projectItem = await Projects_Items.createData(params);
+      params.project_item_id = projectItem.id;
+    }                  
+    return await BaseTableModel.createData.bind(Requirements)(params);
+  }  
+  static putData = this.createData;
+
+  static async updateData(params) {
+    params = params || {};  
+    let projectItemParams = {...params,id:params.project_item_id};
+    let projectItem = await Projects_Items.updateData(projectItemParams);
+    return await BaseTableModel.updateData.bind(Requirements)(params);
+  }  
+  static patchData = this.updateData;
   
+
+  static async deleteData(params) {
+    let records = await this.getData(params);
+    let projectsIds = [];
+    if (Utils.hasValue(records)) {
+      projectsIds = records.map(el=>el.project_item_id);
+    }
+    await BaseTableModel.deleteData.bind(Requirements)(params);
+    return Projects_Items.deleteData({queryParams:{where:{id:projectsIds}}});
+  } 
 };
 
 

@@ -28,7 +28,9 @@ let datas = {};
 const testString = '__TEST__';
 let canDelete = false;
 tablesNamesIgnoresFKErrors=[
-    'companies'
+    'companies',
+    'projects_items',
+    'requirements'
 ]
 
 
@@ -1500,44 +1502,40 @@ describe('Running api call tests',()=>{
                 case 'projects_items':
                     getParamsToCreate = ()=>{
                         let tableName = 'projects_items';
-                        let parentTableName = 'projects';                        
+                        let parentTableName = 'projects_items_types';                        
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);         
-                        let parentTableName2 = 'projects_items_types';
-                        let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);         
                         return {
+                            identifier:testString,                            
                             name:testString,                            
-                            project_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
-                            project_item_type_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
+                            project_item_type_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
                         }
                     };
-                    break;         
-                case 'features':
+                    break;          
+                case 'project_tasks':
                     getParamsToCreate = ()=>{
-                        let tableName = 'features';
-                        let parentTableName = 'projects';                        
+                        let tableName = 'project_tasks';
+                        let parentTableName = 'project_task_types';                        
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);         
                         let parentTableName2 = 'projects_items';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);         
                         return {
-                            name:testString,  
-                            identifier: testString,                          
-                            project_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
-                            features_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
+                            id_at_origin:testString,
+                            task_type_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            project_item_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break; 
                 case 'requirements':
                     getParamsToCreate = ()=>{
                         let tableName = 'requirements';
-                        let parentTableName = 'projects';                        
+                        let parentTableName = 'requirements_types';                        
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);         
                         let parentTableName2 = 'projects_items';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);         
                         return {
-                            name:testString,  
-                            identifier: testString,                          
-                            project_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
-                            requirements_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
+                            id_at_origin:testString,
+                            requirement_type_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            project_item_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
                     break; 

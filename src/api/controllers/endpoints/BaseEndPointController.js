@@ -113,7 +113,7 @@ class BaseEndPointController {
             result.data = tableClassModel;
             result.success = true;
         } catch (e) {
-            result.setException(e);
+            result.setException(e,true);
         }
         Utils.logf(`${this.name}(${BaseEndPointController.name})`,`loadTableClassModel(${tableName})`);        
         return result;
@@ -196,7 +196,7 @@ class BaseEndPointController {
                     case 'update':
                     case 'patch':
                     case 'delete':
-                        result.data = await tableClassModel[`${(method||'get').trim().toLowerCase()}Data`](req.body);
+                        result.data = await tableClassModel[`${(method||'get').trim().toLowerCase()}Data`](req.body, req);
                         break;
                     case 'saveorcreate':
                     case 'upsert':

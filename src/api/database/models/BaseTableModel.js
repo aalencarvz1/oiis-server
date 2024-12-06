@@ -285,7 +285,7 @@ class BaseTableModel extends Model {
                 let columnForeign = this.foreignsKeys[i].fields.join(',');
                 let belongsToParams  = {
                     foreignKey : columnForeign,
-                    targetKey : this.foreignsKeys[i].references.fields?.join(',') || this.foreignsKeys[i].references.field,
+                    targetKey : this.foreignsKeys[i].references.fields?.join(',') || this.foreignsKeys[i].references.field
                 };
                 let hasManyParams = {
                     sourceKey: this.foreignsKeys[i].references.fields?.join(',') || this.foreignsKeys[i].references.field,
@@ -408,14 +408,16 @@ class BaseTableModel extends Model {
      * @async (pay attention to await)
      * @created 2023-11-10
      */
-    static async getData(params) {
+    static async getData(params, req) {
         let queryParams = await DatabaseUtils.prepareQueryParams(params.queryParams || params || {});
         if (queryParams.raw !== false) queryParams.raw = true; 
         if (queryParams.query) {
-            let result = await this.getConnection().query(queryParams.query,{raw:queryParams.raw,queryType:QueryTypes.SELECT});
-            result = result[0] || [];
-            return result;
+            return await this.getConnection().query(queryParams.query,{raw:queryParams.raw,type:QueryTypes.SELECT});
         } else {
+            if ((this.accessLevel || 1) == 2 && Utils.hasValue(params.req || req)) {
+                queryParams.where = queryParams.where || {};
+                queryParams.where.creator_user_id = (params.req || req).user?.id
+            }
             return await this.getModel().findAll(queryParams);
         }        
     }    
@@ -494,7 +496,7 @@ class BaseTableModel extends Model {
                     this.getModel()
                 );
                 console.log(updateSQL);
-                let resultUpdate = await this.getConnection().query(updateSQL,{queryType:QueryTypes.UPDATE,transaction:params.transaction});                
+                let resultUpdate = await this.getConnection().query(updateSQL,{type:QueryTypes.UPDATE,transaction:params.transaction});                
                 if (Utils.hasValue(resultUpdate) && resultUpdate[0]?.rowsAffected >= 1) {
                     if (typeof this.getData === 'function' && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(reg.id) || reg.dataValues
                     else return values;

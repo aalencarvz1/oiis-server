@@ -347,10 +347,8 @@
         "numeric_order":11,
         "subs":[{    
             "id" :1100,
-            "routine_type_id" : 1,
             "name" : "INPUTS",            
             "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M80-520v-80h144L52-772l56-56 172 172v-144h80v280H80Zm80 360q-33 0-56.5-23.5T80-240v-200h80v200h320v80H160Zm640-280v-280H440v-80h360q33 0 56.5 23.5T880-720v280h-80ZM560-160v-200h320v200H560Z\"/></svg>",
-            "view_path" :"/views/modules/movimentations/inputs",
             "numeric_order":1100,
             "subs":[{    
                 "id" :110010,
@@ -559,7 +557,7 @@
                 "routine_type_id" : 1,
                 "name" :"PROJECT",
                 "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
-                "view_path" :"/views/modules/projects/:project_id",
+                "view_path" :"/views/modules/projects/project/:project_id",
                 "numeric_order":5000000,
                 "show_in_menu":0,
                 "subs":[{      
@@ -567,63 +565,494 @@
                     "routine_type_id" : 1,
                     "name" :"PLANNINGS",
                     "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
-                    "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id",
+                    "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id",
                     "numeric_order":500000000,
                     "show_in_menu":0,
                     "subs":[{      
-                        "id" : 50000000000,
+                        "id" : 500000001,
                         "routine_type_id" : 1,
-                        "name" :"INICIATIVES",
+                        "name" :"PLANNING",
                         "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
-                        "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id/iniciatives/:iniciatives_id",
-                        "numeric_order":50000000000,
-                        "show_in_menu":0
-                    },{      
-                        "id" : 50000000001,
-                        "routine_type_id" : 1,
-                        "name" :"EPICS",
-                        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
-                        "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id/epics/:epics_id",
-                        "numeric_order":50000000001,
-                        "show_in_menu":0
-                    },{      
-                        "id" : 50000000002,
-                        "routine_type_id" : 1,
-                        "name" :"FEATURES",
-                        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
-                        "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id/features/:features_id",
-                        "numeric_order":50000000002,
+                        "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id",
+                        "numeric_order":500000001,
                         "show_in_menu":0,
-                        "subs":[
-                            {      
-                                "id" : 5000000000200,
+                        "subs":[{      
+                            "id" : 50000000100,
+                            "routine_type_id" : 1,
+                            "name" :"INICIATIVES",
+                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                            "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/iniciatives/:iniciatives_id",
+                            "numeric_order":50000000100,
+                            "show_in_menu":0,
+                            "subs":[{      
+                                "id" : 5000000010000,
                                 "routine_type_id" : 1,
-                                "name" :"FEATURE",
+                                "name" :"INICIATIVE",
                                 "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
-                                "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id/features/:features_id/feature/:feature_id",
-                                "numeric_order":5000000000200,
+                                "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/iniciatives/:iniciatives_id/iniciative/:iniciative_id",
+                                "numeric_order":5000000010000,
                                 "show_in_menu":0,
-                                "subs":[
-                                    {      
-                                        "id" : 50000000002000,
+                                "subs":[{      
+                                    "id" : 500000001000000,
+                                    "routine_type_id" : 1,
+                                    "name" :"EPICS",
+                                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                    "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/iniciatives/:iniciatives_id/iniciative/:iniciative_id/epics/:epics_id",
+                                    "numeric_order":500000001000000,
+                                    "show_in_menu":0,
+                                    "subs":[{      
+                                        "id" : 500000001000001,
                                         "routine_type_id" : 1,
-                                        "name" :"REQUIREMENTS",
+                                        "name" :"EPIC",
                                         "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
-                                        "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id/features/:features_id/feature/:feature_id/requirements/:requirements_id",
-                                        "numeric_order":50000000002000,
-                                        "show_in_menu":0
-                                    }
-                                ]
-                            }
-                        ]
-                    },{      
-                        "id" : 50000000010,
+                                        "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/iniciatives/:iniciatives_id/iniciative/:iniciative_id/epics/:epics_id/epic/:epic_id",
+                                        "numeric_order":500000001000001,
+                                        "show_in_menu":0,
+                                        "subs":[{                                                         
+                                            "id" : 500000001000002,
+                                            "routine_type_id" : 1,
+                                            "name" :"FEATURES",
+                                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                            "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/iniciatives/:iniciatives_id/iniciative/:iniciative_id/epics/:epics_id/epic/:epic_id/features/:features_id",
+                                            "numeric_order":500000001000002,
+                                            "show_in_menu":0,
+                                            "subs":[
+                                                {          
+                                                    "id" : 500000001000003,
+                                                    "routine_type_id" : 1,
+                                                    "name" :"FEATURE",
+                                                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                                    "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/iniciatives/:iniciatives_id/iniciative/:iniciative_id/epics/:epics_id/epic/:epic_id/features/:features_id/feature/:feature_id",
+                                                    "numeric_order":500000001000003,
+                                                    "show_in_menu":0,
+                                                    "subs":[
+                                                        {          
+                                                            "id" : 500000001000004,
+                                                            "routine_type_id" : 1,
+                                                            "name" :"REQUIREMENTS",
+                                                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                                            "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/iniciatives/:iniciatives_id/iniciative/:iniciative_id/epics/:epics_id/epic/:epic_id/features/:features_id/feature/:feature_id/requirements/:requirements_id",
+                                                            "numeric_order":500000001000004,
+                                                            "show_in_menu":0
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }]
+                                    }]
+                                }]
+                            }]
+                        },{      
+                            "id" : 50000000101,
+                            "routine_type_id" : 1,
+                            "name" :"EPICS",
+                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                            "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/epics/:epics_id",
+                            "numeric_order":50000000101,
+                            "show_in_menu":0,
+                            "subs":[{      
+                                "id" : 5000000010100,
+                                "routine_type_id" : 1,
+                                "name" :"EPIC",
+                                "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/epics/:epics_id/epic/:epic_id",
+                                "numeric_order":5000000010100,
+                                "show_in_menu":0,
+                                "subs":[{      
+                                    "id" : 500000001010000,
+                                    "routine_type_id" : 1,
+                                    "name" :"FEATURES",
+                                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                    "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/epics/:epics_id/epic/:epic_id/features/:features_id",
+                                    "numeric_order":500000001010000,
+                                    "show_in_menu":0,
+                                    "subs":[
+                                        {      
+                                            "id" :50000000101000000,
+                                            "routine_type_id" : 1,
+                                            "name" :"FEATURE",
+                                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                            "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/epics/:epics_id/epic/:epic_id/features/:features_id/feature/:feature_id",
+                                            "numeric_order":50000000101000000,
+                                            "show_in_menu":0,
+                                            "subs":[
+                                                {          
+                                                    "id" : 500000001010000000,
+                                                    "routine_type_id" : 1,
+                                                    "name" :"REQUIREMENTS",
+                                                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                                    "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/epics/:epics_id/epic/:epic_id/features/:features_id/feature/:feature_id/requirements/:requirements_id",
+                                                    "numeric_order":500000001010000000,
+                                                    "show_in_menu":0
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }]
+                            }]
+                        },{      
+                            "id" : 50000000102,
+                            "routine_type_id" : 1,
+                            "name" :"FEATURES",
+                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                            "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/features/:features_id",
+                            "numeric_order":50000000102,
+                            "show_in_menu":0,
+                            "subs":[
+                                {      
+                                    "id" : 5000000010200,
+                                    "routine_type_id" : 1,
+                                    "name" :"FEATURE",
+                                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                    "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/features/:features_id/feature/:feature_id",
+                                    "numeric_order":5000000010200,
+                                    "show_in_menu":0,
+                                    "subs":[
+                                        {      
+                                            "id" : 50000000102000,
+                                            "routine_type_id" : 1,
+                                            "name" :"REQUIREMENTS",
+                                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                            "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/features/:features_id/feature/:feature_id/requirements/:requirements_id",
+                                            "numeric_order":50000000102000,
+                                            "show_in_menu":0
+                                        }
+                                    ]
+                                }
+                            ]
+                        },{      
+                            "id" : 50000000110,
+                            "routine_type_id" : 1,
+                            "name" :"REQUIREMENTS",
+                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                            "view_path" :"/views/modules/projects/project/:project_id/plannings/:plannings_id/planning/:planning_id/requirements/:requirements_id",
+                            "numeric_order":50000000110,
+                            "show_in_menu":0
+                        }]
+                    }]
+                },{      
+                    "id" : 500000002,
+                    "routine_type_id" : 1,
+                    "name" :"MANAGEMENTS",
+                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                    "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id",
+                    "numeric_order":500000002,
+                    "show_in_menu":0,
+                    "subs":[{      
+                        "id" : 5000000020,
                         "routine_type_id" : 1,
-                        "name" :"REQUIREMENTS",
+                        "name" :"MANAGEMENT",
                         "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
-                        "view_path" :"/views/modules/projects/:project_id/plannings/:plannings_id/requirements/:requirements_id",
-                        "numeric_order":50000000010,
-                        "show_in_menu":0
+                        "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id",
+                        "numeric_order":5000000020,
+                        "show_in_menu":0,
+                        "subs":[{      
+                            "id" : 50000000200,
+                            "routine_type_id" : 1,
+                            "name" :"AGILE METHODOLOGIES",
+                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                            "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/agile_methodologies/:agile_methodologies_id",
+                            "numeric_order":50000000200,
+                            "show_in_menu":0,
+                            "subs":[{      
+                                "id" : 50000000201,
+                                "routine_type_id" : 1,
+                                "name" :"AGILE METHODOLOGY",
+                                "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/agile_methodologies/:agile_methodologies_id/agile_methodology/:agile_methodology_id",
+                                "numeric_order":50000000201,
+                                "show_in_menu":0,
+                                "subs":[{      
+                                    "id" : 50000000202,
+                                    "routine_type_id" : 1,
+                                    "name" :"SCRUMS",
+                                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                    "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/agile_methodologies/:agile_methodologies_id/agile_methodology/:agile_methodology_id/scrums/:scrums_id",
+                                    "numeric_order":50000000202,
+                                    "show_in_menu":0,
+                                    "subs":[{      
+                                        "id" : 50000000203,
+                                        "routine_type_id" : 1,
+                                        "name" :"SCRUM",
+                                        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                        "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/agile_methodologies/:agile_methodologies_id/agile_methodology/:agile_methodology_id/scrums/:scrums_id/scrum/:scrum_id",
+                                        "numeric_order":50000000203,
+                                        "show_in_menu":0,
+                                        "subs":[{      
+                                            "id" : 50000000204,
+                                            "routine_type_id" : 1,
+                                            "name" :"BACKLOGS",
+                                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                            "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/agile_methodologies/:agile_methodologies_id/agile_methodology/:agile_methodology_id/scrums/:scrums_id/scrum/:scrum_id/backlogs/:backlogs_id",
+                                            "numeric_order":50000000204,
+                                            "show_in_menu":0,
+                                            "subs":[{      
+                                                "id" : 50000000205,
+                                                "routine_type_id" : 1,
+                                                "name" :"BACKLOG",
+                                                "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                                "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/agile_methodologies/:agile_methodologies_id/agile_methodology/:agile_methodology_id/scrums/:scrums_id/scrum/:scrum_id/backlogs/:backlogs_id/backlog/:backlog_id",
+                                                "numeric_order":50000000205,
+                                                "show_in_menu":0,
+                                                "subs":[{      
+                                                    "id" : 50000000210,
+                                                    "routine_type_id" : 1,
+                                                    "name" :"TASKS",
+                                                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                                    "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/agile_methodologies/:agile_methodologies_id/agile_methodology/:agile_methodology_id/scrums/:scrums_id/scrum/:scrum_id/backlogs/:backlogs_id/backlog/:backlog_id/tasks/:tasks_id",
+                                                    "numeric_order":50000000210,
+                                                    "show_in_menu":0,
+                                                    "subs":[{      
+                                                        "id" : 50000000211,
+                                                        "routine_type_id" : 1,
+                                                        "name" :"TASK",
+                                                        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                                        "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/agile_methodologies/:agile_methodologies_id/agile_methodology/:agile_methodology_id/scrums/:scrums_id/scrum/:scrum_id/backlogs/:backlogs_id/backlog/:backlog_id/tasks/:tasks_id/task/:task_id",
+                                                        "numeric_order":50000000211,
+                                                        "show_in_menu":0,
+                                                        "subs":[]
+                                                    }]
+                                                }]
+                                            }]
+                                        },{      
+                                            "id" : 50000000206,
+                                            "routine_type_id" : 1,
+                                            "name" :"SPRINTS",
+                                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                            "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/agile_methodologies/:agile_methodologies_id/agile_methodology/:agile_methodology_id/scrums/:scrums_id/scrum/:scrum_id/sprints/:sprints_id",
+                                            "numeric_order":50000000206,
+                                            "show_in_menu":0,
+                                            "subs":[{      
+                                                "id" : 50000000207,
+                                                "routine_type_id" : 1,
+                                                "name" :"SPRINT",
+                                                "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                                "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/agile_methodologies/:agile_methodologies_id/agile_methodology/:agile_methodology_id/scrums/:scrums_id/scrum/:scrum_id/sprints/:sprints_id/sprint/:sprint_id",
+                                                "numeric_order":50000000207,
+                                                "show_in_menu":0,
+                                                "subs":[{      
+                                                    "id" : 50000000212,
+                                                    "routine_type_id" : 1,
+                                                    "name" :"TASKS",
+                                                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                                    "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/agile_methodologies/:agile_methodologies_id/agile_methodology/:agile_methodology_id/scrums/:scrums_id/scrum/:scrum_id/sprints/:sprints_id/sprint/:sprint_id/tasks/:tasks_id",
+                                                    "numeric_order":50000000212,
+                                                    "show_in_menu":0,
+                                                    "subs":[{      
+                                                        "id" : 50000000213,
+                                                        "routine_type_id" : 1,
+                                                        "name" :"TASK",
+                                                        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                                        "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/agile_methodologies/:agile_methodologies_id/agile_methodology/:agile_methodology_id/scrums/:scrums_id/scrum/:scrum_id/sprints/:sprints_id/sprint/:sprint_id/tasks/:tasks_id/task/:task_id",
+                                                        "numeric_order":50000000213,
+                                                        "show_in_menu":0,
+                                                        "subs":[]
+                                                    }]
+                                                }]
+                                            }]
+                                        }]
+                                    }]
+                                }]
+                            }]
+                        },{      
+                            "id" : 50000000302,
+                            "routine_type_id" : 1,
+                            "name" :"SCRUMS",
+                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                            "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrums/:scrums_id",
+                            "numeric_order":50000000302,
+                            "show_in_menu":0,
+                            "subs":[{      
+                                "id" : 50000000303,
+                                "routine_type_id" : 1,
+                                "name" :"SCRUM",
+                                "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrums/:scrums_id/scrum/:scrum_id",
+                                "numeric_order":50000000303,
+                                "show_in_menu":0,
+                                "subs":[{      
+                                    "id" : 50000000304,
+                                    "routine_type_id" : 1,
+                                    "name" :"BACKLOGS",
+                                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                    "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrums/:scrums_id/scrum/:scrum_id/backlogs/:backlogs_id",
+                                    "numeric_order":50000000304,
+                                    "show_in_menu":0,
+                                    "subs":[{      
+                                        "id" : 50000000305,
+                                        "routine_type_id" : 1,
+                                        "name" :"BACKLOG",
+                                        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                        "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrums/:scrums_id/scrum/:scrum_id/backlogs/:backlogs_id/backlog/:backlog_id",
+                                        "numeric_order":50000000305,
+                                        "show_in_menu":0,
+                                        "subs":[{      
+                                            "id" : 50000000310,
+                                            "routine_type_id" : 1,
+                                            "name" :"TASKS",
+                                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                            "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrums/:scrums_id/scrum/:scrum_id/backlogs/:backlogs_id/backlog/:backlog_id/tasks/:tasks_id",
+                                            "numeric_order":50000000310,
+                                            "show_in_menu":0,
+                                            "subs":[{      
+                                                "id" : 50000000311,
+                                                "routine_type_id" : 1,
+                                                "name" :"TASK",
+                                                "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                                "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrums/:scrums_id/scrum/:scrum_id/backlogs/:backlogs_id/backlog/:backlog_id/tasks/:tasks_id/task/:task_id",
+                                                "numeric_order":50000000311,
+                                                "show_in_menu":0,
+                                                "subs":[]
+                                            }]
+                                        }]
+                                    }]
+                                },{      
+                                    "id" : 50000000306,
+                                    "routine_type_id" : 1,
+                                    "name" :"SPRINTS",
+                                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                    "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrums/:scrums_id/scrum/:scrum_id/sprints/:sprints_id",
+                                    "numeric_order":50000000306,
+                                    "show_in_menu":0,
+                                    "subs":[{      
+                                        "id" : 50000000307,
+                                        "routine_type_id" : 1,
+                                        "name" :"SPRINT",
+                                        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                        "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrums/:scrums_id/scrum/:scrum_id/sprints/:sprints_id/sprint/:sprint_id",
+                                        "numeric_order":50000000307,
+                                        "show_in_menu":0,
+                                        "subs":[{      
+                                            "id" : 50000000312,
+                                            "routine_type_id" : 1,
+                                            "name" :"TASKS",
+                                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                            "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrums/:scrums_id/scrum/:scrum_id/sprints/:sprints_id/sprint/:sprint_id/tasks/:tasks_id",
+                                            "numeric_order":50000000312,
+                                            "show_in_menu":0,
+                                            "subs":[{      
+                                                "id" : 50000000313,
+                                                "routine_type_id" : 1,
+                                                "name" :"TASK",
+                                                "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                                "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrums/:scrums_id/scrum/:scrum_id/sprints/:sprints_id/sprint/:sprint_id/tasks/:tasks_id/task/:task_id",
+                                                "numeric_order":50000000313,
+                                                "show_in_menu":0,
+                                                "subs":[]
+                                            }]
+                                        }]
+                                    }]
+                                }]
+                            }]
+                        },{      
+                            "id" : 50000000403,
+                            "routine_type_id" : 1,
+                            "name" :"SCRUM",
+                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                            "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrum/:scrum_id",
+                            "numeric_order":50000000403,
+                            "show_in_menu":0,
+                            "subs":[{      
+                                "id" : 50000000404,
+                                "routine_type_id" : 1,
+                                "name" :"BACKLOGS",
+                                "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrum/:scrum_id/backlogs/:backlogs_id",
+                                "numeric_order":50000000404,
+                                "show_in_menu":0,
+                                "subs":[{      
+                                    "id" : 50000000405,
+                                    "routine_type_id" : 1,
+                                    "name" :"BACKLOG",
+                                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                    "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrum/:scrum_id/backlogs/:backlogs_id/backlog/:backlog_id",
+                                    "numeric_order":50000000405,
+                                    "show_in_menu":0,
+                                    "subs":[{      
+                                        "id" : 50000000410,
+                                        "routine_type_id" : 1,
+                                        "name" :"TASKS",
+                                        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                        "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrum/:scrum_id/backlogs/:backlogs_id/backlog/:backlog_id/tasks/:tasks_id",
+                                        "numeric_order":50000000410,
+                                        "show_in_menu":0,
+                                        "subs":[{      
+                                            "id" : 50000000411,
+                                            "routine_type_id" : 1,
+                                            "name" :"TASK",
+                                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                            "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrum/:scrum_id/backlogs/:backlogs_id/backlog/:backlog_id/tasks/:tasks_id/task/:task_id",
+                                            "numeric_order":50000000411,
+                                            "show_in_menu":0,
+                                            "subs":[]
+                                        }]
+                                    }]
+                                }]
+                            },{      
+                                "id" : 50000000505,
+                                "routine_type_id" : 1,
+                                "name" :"BACKLOG",
+                                "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrum/:scrum_id/backlog/:backlog_id",
+                                "numeric_order":50000000505,
+                                "show_in_menu":0,
+                                "subs":[{      
+                                    "id" : 50000000510,
+                                    "routine_type_id" : 1,
+                                    "name" :"TASKS",
+                                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                    "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrum/:scrum_id/backlog/:backlog_id/tasks/:tasks_id",
+                                    "numeric_order":50000000510,
+                                    "show_in_menu":0,
+                                    "subs":[{      
+                                        "id" : 50000000511,
+                                        "routine_type_id" : 1,
+                                        "name" :"TASK",
+                                        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                        "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrum/:scrum_id/backlog/:backlog_id/tasks/:tasks_id/task/:task_id",
+                                        "numeric_order":50000000511,
+                                        "show_in_menu":0,
+                                        "subs":[]
+                                    }]
+                                }]
+                            },{      
+                                "id" : 50000000406,
+                                "routine_type_id" : 1,
+                                "name" :"SPRINTS",
+                                "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrum/:scrum_id/sprints/:sprints_id",
+                                "numeric_order":50000000406,
+                                "show_in_menu":0,
+                                "subs":[{      
+                                    "id" : 50000000407,
+                                    "routine_type_id" : 1,
+                                    "name" :"SPRINT",
+                                    "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                    "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrum/:scrum_id/sprints/:sprints_id/sprint/:sprint_id",
+                                    "numeric_order":50000000407,
+                                    "show_in_menu":0,
+                                    "subs":[{      
+                                        "id" : 50000000412,
+                                        "routine_type_id" : 1,
+                                        "name" :"TASKS",
+                                        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                        "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrum/:scrum_id/sprints/:sprints_id/sprint/:sprint_id/tasks/:tasks_id",
+                                        "numeric_order":50000000412,
+                                        "show_in_menu":0,
+                                        "subs":[{      
+                                            "id" : 50000000413,
+                                            "routine_type_id" : 1,
+                                            "name" :"TASK",
+                                            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M600-160v-80H440v-200h-80v80H80v-240h280v80h80v-200h160v-80h280v240H600v-80h-80v320h80v-80h280v240H600Zm80-80h120v-80H680v80ZM160-440h120v-80H160v80Zm520-200h120v-80H680v80Zm0 400v-80 80ZM280-440v-80 80Zm400-200v-80 80Z\"/></svg>",
+                                            "view_path" :"/views/modules/projects/project/:project_id/managements/:managements_id/management/:management_id/scrum/:scrum_id/sprints/:sprints_id/sprint/:sprint_id/tasks/:tasks_id/task/:task_id",
+                                            "numeric_order":50000000413,
+                                            "show_in_menu":0,
+                                            "subs":[]
+                                        }]
+                                    }]
+                                }]
+                            }]
+                        }]
                     }]
                 }]
             }]

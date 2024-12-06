@@ -51,28 +51,7 @@ class DatabaseUtils {
         return result;
     }
 
-    static async prepareQueryParams(queryParams) {
-        queryParams = queryParams || {};      
-        if (queryParams.where) {
-            queryParams.where = DatabaseUtils.prepareLogicalQueryParams(queryParams.where || {});
-        }
-        for(let key in queryParams?.attributes || []) {
-            if (typeof queryParams.attributes[key] === 'string') {
-                if (queryParams.attributes[key].trim().indexOf(' ') > -1
-                    || queryParams.attributes[key].trim().indexOf('(') > -1
-                ) {
-                    queryParams.attributes[key] = Sequelize.literal(queryParams.attributes[key]);
-                }
-            }
-        }        
-        for(let key in queryParams?.order || []) {            
-            if (queryParams.order[key][0]?.toString().trim().indexOf(' ') > -1
-                || queryParams.order[key][0]?.toString().trim().indexOf('(') > -1
-                || (!isNaN(queryParams.order[key][0]) && Number.isInteger(queryParams.order[key][0]-0))
-            ) {
-                queryParams.order[key][0] = Sequelize.literal(queryParams.order[key][0]);
-            }
-        }
+    static async prepareInclude(queryParams) {
         if (Utils.hasValue(queryParams.include)) {
             for(let key in queryParams.include) {
                 //load dinamic table clas model, require controller path wich control model path
@@ -96,12 +75,40 @@ class DatabaseUtils {
                         if (Utils.hasValue(queryParams.include[key].on)) {
                             queryParams.include[key].on = DatabaseUtils.prepareLogicalQueryParams(queryParams.include[key].on);
                         }
+                        if (Utils.hasValue(queryParams.include[key].include)) {
+                            this.prepareInclude(queryParams.include[key]);
+                        }
                     } else {
                         throw new Error("missing modelController path property in included object model");
                     }
                 }
             }
         }
+    }
+
+    static async prepareQueryParams(queryParams) {
+        queryParams = queryParams || {};      
+        if (queryParams.where) {
+            queryParams.where = DatabaseUtils.prepareLogicalQueryParams(queryParams.where || {});
+        }
+        for(let key in queryParams?.attributes || []) {
+            if (typeof queryParams.attributes[key] === 'string') {
+                if (queryParams.attributes[key].trim().indexOf(' ') > -1
+                    || queryParams.attributes[key].trim().indexOf('(') > -1
+                ) {
+                    queryParams.attributes[key] = Sequelize.literal(queryParams.attributes[key]);
+                }
+            }
+        }        
+        for(let key in queryParams?.order || []) {            
+            if (queryParams.order[key][0]?.toString().trim().indexOf(' ') > -1
+                || queryParams.order[key][0]?.toString().trim().indexOf('(') > -1
+                || (!isNaN(queryParams.order[key][0]) && Number.isInteger(queryParams.order[key][0]-0))
+            ) {
+                queryParams.order[key][0] = Sequelize.literal(queryParams.order[key][0]);
+            }
+        }      
+        await this.prepareInclude(queryParams);
         return queryParams;
     }
 

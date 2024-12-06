@@ -1,7 +1,8 @@
 'use strict';
 
+const { Project_Item_Origin_Types } = require('../models/Project_item_Origin_Types');
+
 /*imports*/
-const { Project_Item_Origin_Types } = require('../models/Project_Item_Origin_Types');
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/

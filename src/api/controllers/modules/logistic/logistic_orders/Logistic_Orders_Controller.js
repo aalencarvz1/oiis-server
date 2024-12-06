@@ -151,8 +151,7 @@ class Logistic_Orders_Controller extends RegistersController {
 
             `;
 
-            res.data = await DBConnectionManager.getWinthorDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
-            res.data = res.data[0] || [];
+            res.data = await DBConnectionManager.getWinthorDBConnection().query(query,{raw:true,type:QueryTypes.SELECT});
 
             if (res.data.length) {
                 let numCars = res.data.map(el=>el.id);
@@ -168,9 +167,9 @@ class Logistic_Orders_Controller extends RegistersController {
                     where
                         l.identifier in (${numCars.join(',')})
                 `;
-                let logData = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,queryType:QueryTypes.SELECT});
-                logData = logData[0] || [];
-                if (logData) {
+                let logData = await DBConnectionManager.getDefaultDBConnection().query(query,{raw:true,type:QueryTypes.SELECT});
+
+                if (Utils.hasValue(logData)) {
                     logData = _.keyBy(logData,'identifier');
                     for(let kj in res.data) {                                
                         if (logData[res.data[kj].id.toString()]) {

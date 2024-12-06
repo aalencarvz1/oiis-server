@@ -4,30 +4,36 @@
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 const { Projects_Items_Types } = require("./Projects_Items_Types");
-const { Projects } = require("./Projects");
-
+const { Project_Item_Origin_Types } = require("./Project_item_Origin_Types");
 
 /**
  * class model
  */
 class Projects_Items extends BaseTableModel {
-  static id = 15002;
+  static id = 15010;
   static tableName = this.name.toLowerCase();
   static model = null;
+  static accessLevel = 2;
 
   static fields = {
     ...Projects_Items.getBaseTableModelFields(),...{            
-      project_id: {
-        type: DataTypes.BIGINT.UNSIGNED,
-        allowNull:false
-      },       
       parent_id: {
         type: DataTypes.BIGINT.UNSIGNED
       },       
       project_item_type_id: {
         type: DataTypes.BIGINT.UNSIGNED,
-        allowNull: false
+        allowNull: false,
+        defaultValue: Projects_Items_Types.REQUIREMENTS
       },       
+      project_item_origin_id: {
+        type: DataTypes.BIGINT.UNSIGNED,
+        allowNull: false,
+        defaultValue: Project_Item_Origin_Types.USER
+      },       
+      identifier: {
+        type: DataTypes.STRING(256),
+        allowNull:false
+      },
       name: {
         type: DataTypes.STRING(256),
         allowNull:false
@@ -42,10 +48,9 @@ class Projects_Items extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'project_id',       
     Sequelize.literal(`(COALESCE(parent_id,-1))`),
     'project_item_type_id',
-    'name',
+    'identifier',
   ];
 
   static constraints = [...(Projects_Items.getBaseTableModelConstraints() || []),...[{
@@ -55,16 +60,6 @@ class Projects_Items extends BaseTableModel {
   }]];
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['project_id'],
-      type: 'foreign key',
-      references: { 
-          table: Projects,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },
     {
       fields: ['parent_id'],
       type: 'foreign key',
@@ -82,9 +77,17 @@ class Projects_Items extends BaseTableModel {
           field: 'id'
       },
       onUpdate: 'cascade'
+    },{
+      fields: ['project_item_origin_id'],
+      type: 'foreign key',
+      references: { 
+          table: Project_Item_Origin_Types,
+          field: 'id'
+      },
+      onUpdate: 'cascade'
     }
   ]];
-  
+ 
 };
 
 
