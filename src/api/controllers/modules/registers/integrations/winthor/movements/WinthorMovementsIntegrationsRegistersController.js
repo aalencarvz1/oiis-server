@@ -82,21 +82,42 @@ class WinthorMovementsIntegrationsRegistersController extends RegistersControlle
                     pcprodut.unidade,
                     nvl(pcfornec.prazoentrega,0) as prazoentrega,
                     nvl(pcprodut.temrepos,0) as temrepos,
-                    nvl(pcest.qtest,0) as qtest,
-                    nvl(pcest.qtestger,0) as qtestger,
-                    pcgirodiamemoria.json
+                    sum(nvl(pcest.qtest,0)) as qtest,
+                    sum(nvl(pcest.qtestger,0)) as qtestger,
+                    sum(nvl(pt.qt,0)) as qtterc,
+                    sum(nvl(pcest.qtestger,0)) + sum(nvl(pt.qt,0)) as qttotal,
+                    gdt1.descricao || gdt2.descricao as curva,
+                    (select pcgirodiamemoria.json from jumbo.pcgirodiamemoria where pcgirodiamemoria.codprod = pcprodut.codprod and pcgirodiamemoria.codfilial = pcest.codfilial) as json
                 from
                     jumbo.pcprodut 
                     join jumbo.pcest on pcest.codprod = pcprodut.codprod
                     left outer join jumbo.pcfornec on pcfornec.codfornec = pcprodut.codfornec
                     left outer join jumbo.pcdepto on pcdepto.codepto = pcprodut.codepto
-                    left outer join jumbo.pcgirodiamemoria on pcgirodiamemoria.codprod = pcprodut.codprod and pcgirodiamemoria.codfilial = pcest.codfilial
+                    left outer join jumbo.PCGIRODIATABELAS GDT1 on GDT1.CHAVE = PCEST.CURVA
+                    left outer join jumbo.PCGIRODIATABELAS GDT2 on GDT2.CHAVE = PCEST.SUBCURVA
+                    left outer join jumbo.PRODUTOS_ARMAZENADOS_TERCEIROS pt on pt.codprod = pcprodut.codprod and pt.codfilial = pcest.codfilial
+                __WHERE__
+                group by
+                    pcest.codfilial,
+                    pcprodut.codprod,
+                    pcprodut.descricao,
+                    pcprodut.codfornec,
+                    pcfornec.fornecedor,
+                    pcprodut.codepto,
+                    pcdepto.descricao,
+                    pcprodut.qtunitcx,
+                    pcprodut.unidade,
+                    nvl(pcfornec.prazoentrega,0),
+                    nvl(pcprodut.temrepos,0),
+                    gdt1.descricao || gdt2.descricao
             `;
 
             let where = req.body?.queryParams?.where || req.body?.where || {};
             if (Utils.hasValue(where)) {
                 where = DatabaseUtils.whereToString(where,PcProdut)
-                query += ` where ${where}`
+                query = query.replace('__WHERE__',` where ${where} `);
+            } else {
+                query = query.replace('__WHERE__',' ');
             }
 
             res.data = await DBConnectionManager.getWinthorDBConnection().query(
