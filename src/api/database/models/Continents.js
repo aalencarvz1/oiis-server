@@ -18,9 +18,6 @@ class Continents extends BaseTableModel {
 
   static fields = {
     ...Continents.getBaseTableModelFields(),...{           
-      parent_id:{
-        type: DataTypes.BIGINT.UNSIGNED
-      },
       name:{
         type: DataTypes.STRING(256),
         allowNull:false
@@ -43,15 +40,7 @@ class Continents extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys() || []),...[{
-    fields: ['parent_id'],
-    type: 'foreign key',
-    references: { 
-        table: Continents,
-        field: 'id'
-    },
-    onUpdate: 'cascade'
-  }]];
+  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys() || []),...[]];
   
 };
 
