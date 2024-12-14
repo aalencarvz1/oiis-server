@@ -17,9 +17,6 @@ class Projects_Items extends BaseTableModel {
 
   static fields = {
     ...Projects_Items.getBaseTableModelFields(),...{            
-      parent_id: {
-        type: DataTypes.BIGINT.UNSIGNED
-      },       
       project_item_type_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false,
@@ -48,7 +45,6 @@ class Projects_Items extends BaseTableModel {
   };
   
   static uniqueFields = [
-    Sequelize.literal(`(COALESCE(parent_id,-1))`),
     'project_item_type_id',
     'identifier',
   ];
@@ -59,17 +55,7 @@ class Projects_Items extends BaseTableModel {
     type:"unique"
   }]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['parent_id'],
-      type: 'foreign key',
-      references: { 
-          table: Projects_Items,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },{
+  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
       fields: ['project_item_type_id'],
       type: 'foreign key',
       references: { 

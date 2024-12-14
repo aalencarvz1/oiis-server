@@ -24,9 +24,6 @@ class Financial_Value_Forms extends BaseTableModel {
 
   static fields = {
     ...Financial_Value_Forms.getBaseTableModelFields(),...{
-      parent_id:{
-        type : DataTypes.BIGINT.UNSIGNED,                
-      },
       name:{
         type: DataTypes.STRING(256),
         allowNull:false
@@ -68,7 +65,6 @@ class Financial_Value_Forms extends BaseTableModel {
   };
   
   static uniqueFields = [
-    Sequelize.literal(`(COALESCE(parent_id,0))`),
     'name'
   ];
 
@@ -134,16 +130,7 @@ class Financial_Value_Forms extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['parent_id'],
-    type: 'foreign key',
-    references: { 
-        table: Financial_Value_Forms,
-        field: 'id'
-    },
-    onUpdate: 'cascade',
-    onDelete: 'cascade'
-  }]];
+  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
 
   static getIdByIntegrationId(idOnOrigin) {
     let result = Financial_Value_Forms.MONEY;

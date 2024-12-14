@@ -14,9 +14,6 @@ class Objectives extends BaseTableModel {
   static model = null;
   static fields = {
     ...Objectives.getBaseTableModelFields(),...{                 
-      parent_id:{
-        type: DataTypes.BIGINT.UNSIGNED
-      },
       name:{
         type: DataTypes.STRING(256),
         allowNull:false,
@@ -60,16 +57,7 @@ class Objectives extends BaseTableModel {
 
   static constraints = [...(Objectives.getBaseTableModelConstraints() || []),...[]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['parent_id'],
-    type: 'foreign key',
-    references: { 
-        table: Objectives,
-        field: 'id'
-    },
-    onUpdate: 'cascade',
-    onDelete: 'cascade'
-  }]];
+  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
 
 };
 

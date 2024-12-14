@@ -20,9 +20,6 @@ class Sql_Objects extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull : false
       }, 
-      parent_id: {
-        type: DataTypes.BIGINT.UNSIGNED
-      }, 
       name: {
         type: DataTypes.STRING(256),
         allowNull:false
@@ -35,7 +32,6 @@ class Sql_Objects extends BaseTableModel {
   
   static uniqueFields = [ 
     'sql_object_type_id',
-    Sequelize.literal(`(COALESCE(parent_id,0))`),
     'name'
   ];
 
@@ -56,18 +52,7 @@ class Sql_Objects extends BaseTableModel {
           field: 'id'
       },
       onUpdate: 'cascade'
-    },
-    {
-      fields: ['parent_id'],
-      type: 'foreign key',
-      references: { 
-          table: Sql_Objects,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    }
-  ]];
+    }]];
   
 };
 

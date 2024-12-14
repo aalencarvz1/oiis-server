@@ -17,9 +17,6 @@ class Report_Data_Fount_Items extends BaseTableModel {
   static model = null;
   static fields = {
     ...Report_Data_Fount_Items.getBaseTableModelFields(),...{                 
-      parent_id: {
-        type: DataTypes.BIGINT.UNSIGNED,
-      },
       report_data_source_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
@@ -111,15 +108,6 @@ class Report_Data_Fount_Items extends BaseTableModel {
   }]];
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['parent_id'],
-    type: 'foreign key',
-    references: { 
-        table: Report_Data_Fount_Items,
-        field: 'id'
-    },    
-    onUpdate: 'cascade',
-    onDelete: 'cascade'
-  },{
     fields: ['report_data_source_id'],
     type: 'foreign key',
     references: { 
