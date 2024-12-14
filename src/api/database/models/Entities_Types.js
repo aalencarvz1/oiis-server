@@ -16,10 +16,11 @@ class Entities_Types extends BaseTableModel {
   static model = null;
 
   static DATABASE = 1;
-  static DATABASE_CONNECTION = 2;
-  static DATABASE_USER = 3;
-  static DATABASE_SCHEMA = 4;
-  static DATABASE_TABLE = 5;
+  static CONNECTION = 2;
+  static USER = 3;
+  static SCHEMA = 4;
+  static TABLE = 5;
+  static QUERY = 10;
 
   static fields = {
     ...Entities_Types.getBaseTableModelFields(),...{

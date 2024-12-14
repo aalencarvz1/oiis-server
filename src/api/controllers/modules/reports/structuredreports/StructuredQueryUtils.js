@@ -70,7 +70,7 @@ class StructuredQueryUtils {
                     )
                 )
                 LEFT OUTER JOIN conditions C ON (
-                    C.entity_type_id = ${Entities_Types.DATABASE_TABLE}
+                    C.entity_type_id = ${Entities_Types.TABLE}
                     AND C.entity_id = ${Permissions.id}
                     AND C.record_id = P.id
                 )
