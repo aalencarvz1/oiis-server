@@ -29,6 +29,9 @@ class BaseTableModel extends Model {
                 primaryKey: true,               
                 allowNull: false 
             },
+            parent_id: {
+                type: DataTypes.BIGINT.UNSIGNED
+            },
             status_reg_id: {
                 type: DataTypes.BIGINT.UNSIGNED,                
                 allowNull: false,
@@ -87,12 +90,22 @@ class BaseTableModel extends Model {
 
     static getBaseTableModelUniqueFields = () => {
         return [
+            Sequelize.literal(`(COALESCE(parent_id,0))`),
             'status_reg_id',
             'data_origin_id'
         ];
     };   
     
     static baseTableModelForeignsKeys = [{
+        fields: ['parent_id'],
+        type: 'foreign key',
+        references: { 
+            table: this.tableName,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+    },{
         fields: ['status_reg_id'],
         type: 'foreign key',
         references: { 
@@ -127,7 +140,9 @@ class BaseTableModel extends Model {
     }];
 
     static getBaseTableModelForeignsKeys (){
-        return this.baseTableModelForeignsKeys;
+        let result = JSON.parse(JSON.stringify(this.baseTableModelForeignsKeys));
+        result[0].references.table = this.tableName;
+        return result;
     }
 
     static getBaseTableModelInitHooks = () => {
@@ -194,10 +209,14 @@ class BaseTableModel extends Model {
                         } else {
                             foreignKey[key].field = this.foreignsKeys[i][key].field;
                         }
-                        if (typeof this.foreignsKeys[i][key].table == 'string') {
-                            foreignKey[key].table = this.foreignsKeys[i][key].table.toLowerCase();
+                        if (Utils.hasValue(this.foreignsKeys[i][key].table)) {
+                            if (typeof this.foreignsKeys[i][key].table == 'string') {
+                                foreignKey[key].table = this.foreignsKeys[i][key].table.toLowerCase();
+                            } else {
+                                foreignKey[key].table = this.foreignsKeys[i][key].table.tableName;
+                            }
                         } else {
-                            foreignKey[key].table = this.foreignsKeys[i][key].table.tableName;
+                            foreignKey[key].table = this.tableName;
                         }
                     }
                 }
@@ -257,7 +276,7 @@ class BaseTableModel extends Model {
         try {
             for(let i in (this.foreignsKeys || [])) {
 
-                tableRefClassModel = this.foreignsKeys[i].references.table; //for re-declare if necessary
+                tableRefClassModel = this.foreignsKeys[i].references.table || this; //for re-declare if necessary
                 if (typeof tableRefClassModel == 'string') {
 
                     //require.cache is case sensitive, avoid reload cached model
@@ -291,6 +310,7 @@ class BaseTableModel extends Model {
                     sourceKey: this.foreignsKeys[i].references.fields?.join(',') || this.foreignsKeys[i].references.field,
                     foreignKey : columnForeign
                 };
+                console.log('xxxx',tableRefClassModel);
                 if (tableRefClassModel.tableName.trim() == this.model.tableName.trim().toLowerCase()) {
                     model = this.model;
                 } else {

@@ -15,9 +15,6 @@ class Tasks extends BaseTableModel {
 
   static fields = {
     ...Tasks.getBaseTableModelFields(),...{            
-      parent_id: {
-        type: DataTypes.BIGINT.UNSIGNED
-      },       
       name: {
         type: DataTypes.STRING(256),
         allowNull:false
@@ -47,18 +44,7 @@ class Tasks extends BaseTableModel {
 
   static constraints = [...(Tasks.getBaseTableModelConstraints() || []),...[]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['parent_id'],
-      type: 'foreign key',
-      references: { 
-          table: Tasks,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    }
-  ]];
+  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
   
 };
 

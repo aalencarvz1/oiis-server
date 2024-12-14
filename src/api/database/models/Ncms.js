@@ -37,11 +37,16 @@ class Ncms extends BaseTableModel {
     }
   };
   
-  static uniqueFields = `create unique index ${Ncms.tableName}_u1 on ${Ncms.tableName} (${Ncms.getBaseTableModelUniqueFields().join(',')},ncm,(coalesce(exception,-1))) `;
+  static uniqueFields = [
+    'ncm',
+    Sequelize.literal('(coalesce(exception,-1))')
+  ]
 
-  static constraints = [...(Ncms.getBaseTableModelConstraints() || []),...[
-    Ncms.uniqueFields
-  ]];
+  static constraints = [...(Ncms.getBaseTableModelConstraints() || []),...[{
+      name: Ncms.tableName + '_u1',
+      fields: [...Ncms.getBaseTableModelUniqueFields(),...Ncms.uniqueFields],
+      type:"unique"
+  }]];
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
   

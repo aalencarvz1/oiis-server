@@ -19,9 +19,6 @@ class Modules extends BaseTableModel {
 
   static fields = {
     ...Modules.getBaseTableModelFields(),...{     
-      parent_id: {
-        type: DataTypes.BIGINT.UNSIGNED
-      }, 
       name: {
         type: DataTypes.STRING(256),
         allowNull:false
@@ -42,7 +39,6 @@ class Modules extends BaseTableModel {
   };
   
   static uniqueFields = [ 
-    Sequelize.literal(`(COALESCE(parent_id,0))`),  
     'name'
   ];
 
@@ -54,17 +50,7 @@ class Modules extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['parent_id'],
-      type: 'foreign key',
-      references: { 
-          table: Modules,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
+  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
   
 };
 

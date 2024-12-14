@@ -16,9 +16,6 @@ class Routines extends BaseTableModel {
   static model = null;
   static fields = {
     ...Routines.getBaseTableModelFields(),...{     
-      parent_id: {
-        type: DataTypes.BIGINT.UNSIGNED
-      }, 
       routine_type_id: {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
@@ -52,7 +49,6 @@ class Routines extends BaseTableModel {
   };
   
   static uniqueFields = [ 
-    Sequelize.literal(`(COALESCE(parent_id,0))`),
     'name'
   ];
 
@@ -75,14 +71,6 @@ class Routines extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['parent_id'],
-      type: 'foreign key',
-      references: { 
-          table: Routines,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },{
       fields: ['routine_type_id'],
       type: 'foreign key',
       references: { 
