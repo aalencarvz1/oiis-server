@@ -61,7 +61,7 @@ class Entities_Types extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[{
+  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
     fields: ['table_id'],
     type: 'foreign key',
     references: { 
@@ -69,7 +69,7 @@ class Entities_Types extends BaseTableModel {
         field: 'id'
     },
     onUpdate: 'cascade'
-  }])]
+  }]]
    
 };
 

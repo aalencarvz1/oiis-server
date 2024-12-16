@@ -6,6 +6,8 @@ const { BaseTableModel } = require('./BaseTableModel');
 
 const { Entities_Types } = require("./Entities_Types");
 const { Comparators } = require("./Comparators");
+const { Utils } = require("../../controllers/utils/Utils");
+const { Tables } = require("./Tables");
 
 
 /**
@@ -65,6 +67,8 @@ class Groups extends BaseTableModel {
       onUpdate: 'cascade'
     }
   ]];
+
+  
   
 };
 
