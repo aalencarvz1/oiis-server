@@ -85,6 +85,10 @@ class WinthorMovementsIntegrationsRegistersController extends RegistersControlle
                     sum(nvl(pcest.qtest,0)) as qtest,
                     sum(nvl(pcest.qtestger,0)) as qtestger,
                     sum(nvl(pt.qt,0)) as qtterc,
+                    sum(nvl(pcest.qtpendente,0)) as qtpendente,
+                    sum(nvl(pcest.qtreserv,0)) as qtreserv,
+                    sum(nvl(pcest.estmin,0)) as estmin,
+                    sum(nvl(pcest.qtbloqueada,0)) as qtbloqueada,
                     sum(nvl(pcest.qtestger,0)) + sum(nvl(pt.qt,0)) as qttotal,
                     gdt1.descricao || gdt2.descricao as curva,
                     (select pcgirodiamemoria.json from jumbo.pcgirodiamemoria where pcgirodiamemoria.codprod = pcprodut.codprod and pcgirodiamemoria.codfilial = pcest.codfilial) as json
