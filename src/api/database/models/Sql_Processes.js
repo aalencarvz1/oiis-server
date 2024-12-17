@@ -40,7 +40,7 @@ class Sql_Processes extends BaseTableModel {
   static constraints = [...(Sql_Processes.getBaseTableModelConstraints() || []),...[
     {
       name: Sql_Processes.tableName + '_u1',
-      fields: Sql_Processes.uniqueFields,
+      fields: [...Sql_Processes.getBaseTableModelUniqueFields(),...Sql_Processes.uniqueFields],
       type:"unique"
     }
   ]];

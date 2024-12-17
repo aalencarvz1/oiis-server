@@ -42,7 +42,7 @@ class Project_Item_Origin_Types extends BaseTableModel {
 
   static constraints = [...(Project_Item_Origin_Types.getBaseTableModelConstraints() || []),...[{
     name: Project_Item_Origin_Types.tableName + '_u1',
-    fields: Project_Item_Origin_Types.uniqueFields,
+    fields: [...Project_Item_Origin_Types.getBaseTableModelUniqueFields(),...Project_Item_Origin_Types.uniqueFields],
     type:"unique"
   },{
     name: Project_Item_Origin_Types.tableName + '_c_1',

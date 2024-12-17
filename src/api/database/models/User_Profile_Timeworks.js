@@ -35,7 +35,7 @@ class User_Profile_Timeworks extends BaseTableModel {
   static constraints = [...(User_Profile_Timeworks.getBaseTableModelConstraints() || []),...[
     {
       name: User_Profile_Timeworks.tableName + '_u1',
-      fields: User_Profile_Timeworks.uniqueFields,
+      fields: [...User_Profile_Timeworks.getBaseTableModelUniqueFields(),...User_Profile_Timeworks.uniqueFields],
       type:"unique"
     }
   ]];

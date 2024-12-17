@@ -53,12 +53,12 @@ class User_Timeworks extends BaseTableModel {
   static constraints = [...(User_Timeworks.getBaseTableModelConstraints() || []),...[
     {
       name: User_Timeworks.tableName + '_u1',
-      fields: User_Timeworks.uniqueFields,
+      fields: [...User_Timeworks.getBaseTableModelUniqueFields(),...User_Timeworks.uniqueFields],
       type:"unique"
     },
     {
       name: User_Timeworks.tableName + '_u2',
-      fields: User_Timeworks.uniqueFields2,
+      fields: [...User_Timeworks.getBaseTableModelUniqueFields(),...User_Timeworks.uniqueFields2],
       type:"unique"
     },{
       name: User_Timeworks.tableName + '_c_1',

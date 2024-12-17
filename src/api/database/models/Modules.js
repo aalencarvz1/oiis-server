@@ -45,7 +45,7 @@ class Modules extends BaseTableModel {
   static constraints = [...(Modules.getBaseTableModelConstraints() || []),...[
     {
       name: Modules.tableName + '_u1',
-      fields: Modules.uniqueFields,
+      fields: [...Modules.getBaseTableModelUniqueFields(),...Modules.uniqueFields],
       type:"unique"
     }
   ]];

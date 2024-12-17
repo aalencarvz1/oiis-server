@@ -222,5 +222,27 @@ module.exports = class DBConnectionManager {
         }
         return result;
     }
+
+    static getConnectionByConnectionName(connectionName) {
+        let result = null;
+        switch((connectionName||'').trim().toLowerCase()) {
+            case 'ep':
+                result = DBConnectionManager.getEpDBConnection();
+                break;
+            case 'consult':
+                result = DBConnectionManager.getConsultDBConnection();
+                break;
+            case 'winthor':
+                result = DBConnectionManager.getWinthorDBConnection();
+                break;
+            case 'external_data':
+                result = DBConnectionManager.getExternalDataDBConnection();
+                break;
+            case 'default':
+                result = DBConnectionManager.getDefaultDBConnection();
+                break;
+        }
+        return result;
+    }
 }
 

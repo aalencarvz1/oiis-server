@@ -51,7 +51,7 @@ class Sql_Object_Types extends BaseTableModel {
   static constraints = [...(Sql_Object_Types.getBaseTableModelConstraints() || []),...[
     {
       name: Sql_Object_Types.tableName + '_u1',
-      fields: Sql_Object_Types.uniqueFields,
+      fields: [...Sql_Object_Types.getBaseTableModelUniqueFields(),...Sql_Object_Types.uniqueFields],
       type:"unique"
     }
   ]];

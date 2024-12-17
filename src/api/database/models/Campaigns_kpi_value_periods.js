@@ -40,7 +40,7 @@ class Campaign_Kpis_Value_Periods extends BaseTableModel {
 
   static constraints = [...(Campaign_Kpis_Value_Periods.getBaseTableModelConstraints() || []),...[{
     name: Campaign_Kpis_Value_Periods.tableName + '_u1',
-    fields: Campaign_Kpis_Value_Periods.uniqueFields,
+    fields: [...Campaign_Kpis_Value_Periods.getBaseTableModelUniqueFields(),...Campaign_Kpis_Value_Periods.uniqueFields],
     type:"unique"
   }]];
 

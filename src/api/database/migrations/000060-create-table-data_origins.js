@@ -12,6 +12,7 @@ const { Entities_Types } = require('../models/Entities_Types');
 const { Parameter_Values } = require('../models/Parameter_Values');
 const { Record_Status } = require('../models/Record_Status');
 const { Users } = require('../models/Users');
+const { Action_Status } = require('../models/Action_Status');
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/
@@ -71,6 +72,7 @@ module.exports = {
     await Contexts.migrateForeignKeyContraint(queryInterface,Data_Origins);  
     await Entities_Types.migrateForeignKeyContraint(queryInterface,Data_Origins); 
     await Data_Types.migrateForeignKeyContraint(queryInterface,Data_Origins);  
+    await Action_Status.migrateForeignKeyContraint(queryInterface,Data_Origins); 
     await Parameters.migrateForeignKeyContraint(queryInterface,Data_Origins);  
     await Parameter_Values.migrateForeignKeyContraint(queryInterface,Data_Origins);  
     await Data_Origins.migrateForeignKeyContraint(queryInterface,Data_Origins);  

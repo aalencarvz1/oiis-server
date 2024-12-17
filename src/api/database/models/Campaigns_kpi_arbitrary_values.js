@@ -34,7 +34,7 @@ class Campaign_Kpis_Arbitrary_Values extends BaseTableModel {
 
   static constraints = [...(Campaign_Kpis_Arbitrary_Values.getBaseTableModelConstraints() || []),...[{
     name: Campaign_Kpis_Arbitrary_Values.tableName + '_u1',
-    fields: Campaign_Kpis_Arbitrary_Values.uniqueFields,
+    fields: [...Campaign_Kpis_Arbitrary_Values.getBaseTableModelUniqueFields(),...Campaign_Kpis_Arbitrary_Values.uniqueFields],
     type:"unique"
   }]];
 

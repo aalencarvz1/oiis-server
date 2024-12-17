@@ -49,13 +49,14 @@ class Routines extends BaseTableModel {
   };
   
   static uniqueFields = [ 
+    'module_id',
     'name'
   ];
 
   static constraints = [...(Routines.getBaseTableModelConstraints() || []),...[
     {
       name: Routines.tableName + '_u1',
-      fields: Routines.uniqueFields,
+      fields: [...Routines.getBaseTableModelUniqueFields(),...Routines.uniqueFields],
       type:"unique"
     },{
       name: Routines.tableName + '_c_1',

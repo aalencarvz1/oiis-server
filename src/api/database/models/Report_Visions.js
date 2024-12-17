@@ -61,7 +61,7 @@ class Report_Visions extends BaseTableModel {
 
   static constraints = [...(Report_Visions.getBaseTableModelConstraints() || []),...[{
     name: Report_Visions.tableName + '_u1',
-    fields: Report_Visions.uniqueFields,
+    fields: [...Report_Visions.getBaseTableModelUniqueFields(),...Report_Visions.uniqueFields],
     type:"unique"
   },{
     name: Report_Visions.tableName + '_c_1',

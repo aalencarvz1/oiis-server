@@ -3,7 +3,7 @@
 /*imports*/
 const { DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
-const { Tables } = require("./Tables");
+//const { Tables } = require("./Tables");
 
 
 
@@ -31,6 +31,14 @@ class Entities_Types extends BaseTableModel {
       table_id: {
         type: DataTypes.BIGINT.UNSIGNED
       },
+      identifier_column: {
+        type: DataTypes.STRING(256),
+        allowNull: false
+      },      
+      name_column: {
+        type: DataTypes.STRING(256),
+        allowNull: false
+      },      
       columns: {
         type: DataTypes.TEXT
       },      
@@ -61,15 +69,17 @@ class Entities_Types extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['table_id'],
-    type: 'foreign key',
-    references: { 
-        table: Tables,
-        field: 'id'
-    },
-    onUpdate: 'cascade'
-  }]]
+  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
+    {
+      fields: ['table_id'],
+      type: 'foreign key',
+      references: { 
+          table: 'Tables',
+          field: 'id'
+      },
+      onUpdate: 'cascade'
+    }
+  ]];
    
 };
 
