@@ -95,7 +95,7 @@ module.exports = {
 
     await queryInterface.bulkInsert(Routines.tableName,registersRoutines,{
       ignoreDuplicates:true,
-      updateOnDuplicate:['status_reg_id','module_id','name','icon','view_path']
+      updateOnDuplicate:['status_reg_id','module_id','parent_id','name','icon','view_path']
     });  
   },
 

@@ -36,7 +36,7 @@ class Campaign_Kpi_Result_Value extends BaseTableModel {
 
   static constraints = [...(Campaign_Kpi_Result_Value.getBaseTableModelConstraints() || []),...[{
     name: Campaign_Kpi_Result_Value.tableName + '_u1',
-    fields: Campaign_Kpi_Result_Value.uniqueFields,
+    fields: [...Campaign_Kpi_Result_Value.getBaseTableModelUniqueFields(),...Campaign_Kpi_Result_Value.uniqueFields],
     type:"unique"
   }]];
 

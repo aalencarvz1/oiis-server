@@ -22,6 +22,9 @@ class Connections extends BaseTableModel {
       description: {
         type: DataTypes.TEXT
       },
+      default_env_identifier: {
+        type: DataTypes.STRING(4000)
+      },
       is_default: {
         type: DataTypes.INTEGER(1),
         allowNull: false,

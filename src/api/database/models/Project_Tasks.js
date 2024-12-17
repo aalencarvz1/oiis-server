@@ -44,7 +44,7 @@ class Project_Tasks extends BaseTableModel {
   static constraints = [...(Project_Tasks.getBaseTableModelConstraints() || []),...[
     {
       name: Project_Tasks.tableName + '_u1',
-      fields: Project_Tasks.uniqueFields,
+      fields: [...Project_Tasks.getBaseTableModelUniqueFields(),...Project_Tasks.uniqueFields],
       type:"unique"
     }
   ]];

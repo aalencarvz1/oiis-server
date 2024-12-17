@@ -49,7 +49,7 @@ class Campaigns extends BaseTableModel {
 
   static constraints = [...(Campaigns.getBaseTableModelConstraints() || []),...[{
     name: Campaigns.tableName + '_u1',
-    fields: Campaigns.uniqueFields,
+    fields: [...Campaigns.getBaseTableModelUniqueFields(),...Campaigns.uniqueFields],
     type:"unique"
   }]];
 

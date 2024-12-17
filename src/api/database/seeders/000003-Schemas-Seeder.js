@@ -18,6 +18,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : configDB[`${process.env.NODE_ENV||'development'}`].dialectOptions?.schema || configDB[`${process.env.NODE_ENV||'development'}`].database,
+      default_connection_id: configDB[`${process.env.NODE_ENV||'development'}`].id,
       is_default : 1
     },{      
       id:configDB[`${process.env.NODE_ENV||'development'}_winthor`].id,
@@ -27,6 +28,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : configDB[`${process.env.NODE_ENV||'development'}_winthor`].dialectOptions?.schema || configDB[`${process.env.NODE_ENV||'development'}_winthor`].database,
+      default_connection_id: configDB[`${process.env.NODE_ENV||'development'}_winthor`].id,
       is_default : 0
     },{      
       id:configDB[`${process.env.NODE_ENV||'development'}_consult`].id,
@@ -36,6 +38,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : configDB[`${process.env.NODE_ENV||'development'}_consult`].dialectOptions?.schema || configDB[`${process.env.NODE_ENV||'development'}_consult`].database,
+      default_connection_id: configDB[`${process.env.NODE_ENV||'development'}_consult`].id,
       is_default : 0
     },{      
       id:configDB[`${process.env.NODE_ENV||'development'}_ep`].id,
@@ -45,6 +48,7 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : configDB[`${process.env.NODE_ENV||'development'}_ep`].dialectOptions?.schema || configDB[`${process.env.NODE_ENV||'development'}_ep`].database,
+      default_connection_id: configDB[`${process.env.NODE_ENV||'development'}_ep`].id,
       is_default : 0
     }],{
       ignoreDuplicates:true,

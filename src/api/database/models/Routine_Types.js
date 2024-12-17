@@ -37,7 +37,7 @@ class Routine_Types extends BaseTableModel {
   static constraints = [...(Routine_Types.getBaseTableModelConstraints() || []),...[
     {
       name: Routine_Types.tableName + '_u1',
-      fields: Routine_Types.uniqueFields,
+      fields: [...Routine_Types.getBaseTableModelUniqueFields(),...Routine_Types.uniqueFields],
       type:"unique"
     }
   ]];

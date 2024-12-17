@@ -29,7 +29,7 @@ class Languages extends BaseTableModel {
   static constraints = [...(Languages.getBaseTableModelConstraints() || []),...[
     {
       name: Languages.tableName + '_u1',
-      fields: Languages.uniqueFields,
+      fields: [...Languages.getBaseTableModelUniqueFields(),...Languages.uniqueFields],
       type:"unique"
     }
   ]];

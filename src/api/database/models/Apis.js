@@ -50,7 +50,7 @@ class Apis extends BaseTableModel {
   static constraints = [...(Apis.getBaseTableModelConstraints() || []),...[
     {
       name: Apis.tableName + '_u1',
-      fields: Apis.uniqueFields,
+      fields: [...Apis.getBaseTableModelUniqueFields(),...Apis.uniqueFields],
       type:"unique"
     }
   ]];
