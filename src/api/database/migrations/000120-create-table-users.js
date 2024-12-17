@@ -21,8 +21,8 @@ const { Identifier_Types } = require('../models/Identifier_Types');
 const { Greatnesses } = require('../models/Greatnesses');
 const { Measurement_Units } = require('../models/Measurement_Units');
 const { Access_Profiles } = require('../models/Access_Profiles');
-const { AuthController } = require('../../controllers/auth/AuthController');
 const { Run_Status } = require('../models/Run_Status');
+const { Action_Status } = require('../models/Action_Status');
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/
@@ -52,6 +52,7 @@ module.exports = {
     await Contexts.migrateForeignKeyContraint(queryInterface,Users);  
     await Entities_Types.migrateForeignKeyContraint(queryInterface,Users);      
     await Data_Types.migrateForeignKeyContraint(queryInterface,Users);  
+    await Action_Status.migrateForeignKeyContraint(queryInterface,Users);  
     await Parameters.migrateForeignKeyContraint(queryInterface,Users);  
     await Parameter_Values.migrateForeignKeyContraint(queryInterface,Users);  
     await Data_Origins.migrateForeignKeyContraint(queryInterface,Users);  

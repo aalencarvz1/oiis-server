@@ -51,7 +51,7 @@ class Projects_Items extends BaseTableModel {
 
   static constraints = [...(Projects_Items.getBaseTableModelConstraints() || []),...[{
     name: Projects_Items.tableName + '_u1',
-    fields: Projects_Items.uniqueFields,
+    fields: [...Projects_Items.getBaseTableModelUniqueFields(),...Projects_Items.uniqueFields],
     type:"unique"
   }]];
 

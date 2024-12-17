@@ -32,7 +32,7 @@ class Processes extends BaseTableModel {
   static constraints = [...(Processes.getBaseTableModelConstraints() || []),...[
     {
       name: Processes.tableName + '_u1',
-      fields: Processes.uniqueFields,
+      fields: [...Processes.getBaseTableModelUniqueFields(),...Processes.uniqueFields],
       type:"unique"
     }
   ]];

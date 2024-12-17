@@ -38,7 +38,7 @@ class Requirements extends BaseTableModel {
   static constraints = [...(Requirements.getBaseTableModelConstraints() || []),...[
     {
       name: Requirements.tableName + '_u1',
-      fields: Requirements.uniqueFields,
+      fields: [...Requirements.getBaseTableModelUniqueFields(),...Requirements.uniqueFields],
       type:"unique"
     }
   ]];

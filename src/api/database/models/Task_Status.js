@@ -62,7 +62,7 @@ class Task_Status extends BaseTableModel {
   static constraints = [...(Task_Status.getBaseTableModelConstraints() || []),...[
     {
       name: Task_Status.tableName + '_u1',
-      fields: Task_Status.uniqueFields,
+      fields: [...Task_Status.getBaseTableModelUniqueFields(),...Task_Status.uniqueFields],
       type:"unique"
     }
   ]];

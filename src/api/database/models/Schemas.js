@@ -3,6 +3,7 @@
 /*imports*/
 const { Sequelize, DataTypes } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
+const { Connections } = require("./Connections");
 
 
 
@@ -21,6 +22,9 @@ class Schemas extends BaseTableModel {
       },
       description: {
         type: DataTypes.TEXT
+      },
+      default_connection_id: {
+        type: DataTypes.BIGINT.UNSIGNED,
       },
       is_default: {
         type: DataTypes.INTEGER(1),
@@ -51,7 +55,15 @@ class Schemas extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[])]
+  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
+    fields: ['default_connection_id'],
+    type: 'foreign key',
+    references: { 
+        table: Connections,
+        field: 'id'
+    },
+    onUpdate: 'cascade'
+  }]]
     
 };
 

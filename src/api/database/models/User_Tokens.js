@@ -50,7 +50,7 @@ class User_Tokens extends BaseTableModel {
   static constraints = [...(User_Tokens.getBaseTableModelConstraints() || []),...[
     {
       name: User_Tokens.tableName + '_u1',
-      fields: User_Tokens.uniqueFields,
+      fields: [...User_Tokens.getBaseTableModelUniqueFields(),...User_Tokens.uniqueFields],
       type:"unique"
     },{
       name: User_Tokens.tableName + '_c_1',

@@ -56,7 +56,7 @@ class Users extends BasePeopleModel {
   static constraints = [...(Users.getBaseTableModelConstraints() || []),...[
     {
       name: Users.tableName + '_u1',
-      fields: Users.uniqueFields,
+      fields: [...Users.getBaseTableModelUniqueFields(),...Users.uniqueFields],
       type:"unique"
     }
   ]];  

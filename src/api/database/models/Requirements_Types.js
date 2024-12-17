@@ -42,7 +42,7 @@ class Requirements_Types extends BaseTableModel {
 
   static constraints = [...(Requirements_Types.getBaseTableModelConstraints() || []),...[{
     name: Requirements_Types.tableName + '_u1',
-    fields: Requirements_Types.uniqueFields,
+    fields: [...Requirements_Types.getBaseTableModelUniqueFields(),...Requirements_Types.uniqueFields],
     type:"unique"
   },{
     name: Requirements_Types.tableName + '_c_1',
