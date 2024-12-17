@@ -55,7 +55,7 @@ class Campaigns extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['entity_id'],
+      fields: ['entity_type_id'],
       type: 'foreign key',
       references: { 
           table: Entities_Types,

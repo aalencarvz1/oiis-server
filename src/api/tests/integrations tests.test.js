@@ -1539,6 +1539,32 @@ describe('Running api call tests',()=>{
                         }
                     };
                     break; 
+                case 'campaigns':
+                    getParamsToCreate = ()=>{
+                        let tableName = 'campaigns';
+                        let parentTableName = 'entities_types';                        
+                        let parent = crudsToDelete.find(el=>el.tableName == parentTableName);                
+                        return {
+                            name:testString,
+                            entity_type_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            init_date: new Date(),
+                            end_date: new Date()
+                        }
+                    };
+                    break; 
+                case 'campaign_kpis':
+                    getParamsToCreate = ()=>{
+                        let tableName = 'campaigns_kpis';
+                        let parentTableName = 'campaigns';                        
+                        let parent = crudsToDelete.find(el=>el.tableName == parentTableName);                
+                        return {
+                            name:testString,
+                            unity:testString,
+                            campaign_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                        
+                        }
+                    };
+                    break;    
             }
 
             test(`create`, async() => {
