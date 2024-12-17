@@ -1561,7 +1561,6 @@ describe('Running api call tests',()=>{
                             name:testString,
                             unity:testString,
                             campaign_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
-                        
                         }
                     };
                     break;    
