@@ -7,6 +7,7 @@ const { Parameters } = require('../models/Parameters');
 const { Parameter_Values }  = require('../models/Parameter_Values');
 const { Record_Status } = require('../models/Record_Status');
 const { Users } = require('../models/Users');
+const { Groups } = require('../models/Groups');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {

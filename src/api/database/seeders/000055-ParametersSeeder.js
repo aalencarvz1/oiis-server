@@ -80,7 +80,7 @@ module.exports = {
       is_sys_rec : 1,
       data_type_id: Data_Types.BOOLEAN,
       name : 'WINTHOR_INTEGRATION_NCM_CONSIDER_EXCEPTION_NULL_IF_NOT_EXISTS',
-      default_value: 1
+      default_value: 1 
     },{
       id: Parameters.COMMISSION_MIN_VAL,
       status_reg_id: Record_Status.ACTIVE,
@@ -91,6 +91,16 @@ module.exports = {
       data_type_id: Data_Types.NUMBER,
       name : 'COMMISSION_MIN_VAL',
       default_value: 1844
+    },{
+      id: Parameters.WINTHOR_CUSTOMIZED_GIRO_STOCK_DAYS,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      data_type_id: Data_Types.NUMBER,
+      name : 'WINTHOR_CUSTOMIZED_GIRO_STOCK_DAYS',
+      default_value: null
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

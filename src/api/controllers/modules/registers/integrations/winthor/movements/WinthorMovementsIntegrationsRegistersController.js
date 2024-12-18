@@ -1,10 +1,13 @@
-const { QueryTypes } = require("sequelize");
+const { QueryTypes, Sequelize } = require("sequelize");
 const DBConnectionManager = require("../../../../../../database/DBConnectionManager");
 const { DataSwap } = require("../../../../../data/DataSwap");
 const { RegistersController } = require("../../../RegistersController");
 const { Utils } = require("../../../../../utils/Utils");
 const { DatabaseUtils } = require("../../../../../database/DatabaseUtils");
 const { PcProdut } = require("../../../../../../database/models/winthor/PcProdut");
+const { Parameter_Values } = require("../../../../../../database/models/Parameter_Values");
+const { Parameters } = require("../../../../../../database/models/Parameters");
+const { Groups } = require("../../../../../../database/models/Groups");
 
 /**
  * Class controller to handle registers module
@@ -128,6 +131,8 @@ class WinthorMovementsIntegrationsRegistersController extends RegistersControlle
                 query,{
                 raw:true,type:QueryTypes.SELECT
             });
+
+
             res.sendResponse(200,true);
         } catch (e) {
             res.setException(e);
