@@ -1,7 +1,7 @@
 'use strict';
 
 /*imports*/
-const { Campaign_Entities } = require('../models/Campaign_Entities__');
+const { Campaign_Entities } = require('../models/Campaign_Entities');
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/
