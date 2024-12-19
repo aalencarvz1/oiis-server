@@ -5,6 +5,7 @@ const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
 const { Parameters } = require("./Parameters");
+const { Tables } = require("./Tables");
 
 /**
  * class model
@@ -20,6 +21,12 @@ class Parameter_Values extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull : false,
       },
+      table_id: {
+        type: DataTypes.BIGINT.UNSIGNED
+      },
+      register_id: {
+        type: DataTypes.BIGINT.UNSIGNED
+      },
       value: {
         type: DataTypes.STRING(256)
       },
@@ -31,6 +38,8 @@ class Parameter_Values extends BaseTableModel {
   
   static uniqueFields = [
     'parameter_id',
+    Sequelize.literal(`(COALESCE(table_id,0))`),
+    Sequelize.literal(`(COALESCE(register_id,0))`),
     Sequelize.literal(`(COALESCE(value,'NULL'))`)
   ];
 
@@ -43,18 +52,24 @@ class Parameter_Values extends BaseTableModel {
 
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['parameter_id'],
-      type: 'foreign key',
-      references: { 
-          table: Parameters,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    }
-  ]];
+  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
+    fields: ['parameter_id'],
+    type: 'foreign key',
+    references: { 
+        table: Parameters,
+        field: 'id'
+    },
+    onUpdate: 'cascade',
+    onDelete: 'cascade'
+  },{
+    fields: ['table_id'],
+    type: 'foreign key',
+    references: { 
+        table: Tables,
+        field: 'id'
+    },
+    onUpdate: 'cascade'
+  }]];
 
   static async get(pIdParameter) {
     let result = null;
