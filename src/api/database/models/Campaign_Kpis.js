@@ -49,8 +49,8 @@ class Campaign_Kpis extends BaseTableModel {
   }};
 
   static uniqueFields = [
-    'name',
-    'unity'
+    'campaign_id',
+    'name'
   ];
 
   static constraints = [...(Campaign_Kpis.getBaseTableModelConstraints() || []),...[{
@@ -58,7 +58,7 @@ class Campaign_Kpis extends BaseTableModel {
     fields: [...Campaign_Kpis.getBaseTableModelUniqueFields(),...Campaign_Kpis.uniqueFields],
     type:"unique"    
   },{
-    name: Campaign_Kpis.tableName + '_c_2',
+    name: Campaign_Kpis.tableName + '_c_1',
     fields:['is_participation_criterion'],
     type:"check",
     where:{
