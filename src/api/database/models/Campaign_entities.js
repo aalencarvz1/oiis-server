@@ -16,16 +16,19 @@ class Campaign_Entities extends BaseTableModel {
 
   static fields = {
     ...Campaign_Entities.getBaseTableModelFields(),...{            
-     campaign_id:{
+    
+    
+      campaign_id:{
       type: DataTypes.BIGINT.UNSIGNED,
-      allowNull: false
+      allowNull: false,
+       defaultValue:0
      }
     
 
   }};
 
   static uniqueFields = [
-    'campaign_id'
+    
   ];
 
   static constraints = [...(Campaign_Entities.getBaseTableModelConstraints() || []),...[{

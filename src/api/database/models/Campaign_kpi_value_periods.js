@@ -4,22 +4,23 @@
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
-const { Campaign_Kpis_Values_Getters } = require("./Campaigns_kpi_value_getters");
+const { Campaign_Kpi_Value_Getters } = require("./Campaign_kpi_value_getters");
 
 /**
  * class model
  */
-class Campaign_Kpis_Value_Periods extends BaseTableModel {
+class Campaign_Kpi_Value_Periods extends BaseTableModel {
   static id = 16003;
   static tableName = this.name.toLowerCase();
   static model = null;
 
   static fields = {
-    ...Campaign_Kpis_Value_Periods.getBaseTableModelFields(),...{            
+    ...Campaign_Kpi_Value_Periods.getBaseTableModelFields(),...{            
      
-      id_campaign_kpi_value_get:{
+      campaign_kpi_value_getters_id:{
       type: DataTypes.BIGINT.UNSIGNED,
       allowNull: false,
+      defaultValue:0
      },
       init_date:{
       type: DataTypes.DATE
@@ -35,21 +36,21 @@ class Campaign_Kpis_Value_Periods extends BaseTableModel {
   }};
 
   static uniqueFields = [
-    'id_campaign_kpi_value_get'
+    
   ];
 
-  static constraints = [...(Campaign_Kpis_Value_Periods.getBaseTableModelConstraints() || []),...[{
-    name: Campaign_Kpis_Value_Periods.tableName + '_u1',
-    fields: [...Campaign_Kpis_Value_Periods.getBaseTableModelUniqueFields(),...Campaign_Kpis_Value_Periods.uniqueFields],
+  static constraints = [...(Campaign_Kpi_Value_Periods.getBaseTableModelConstraints() || []),...[{
+    name: Campaign_Kpi_Value_Periods.tableName + '_u1',
+    fields: [...Campaign_Kpi_Value_Periods.getBaseTableModelUniqueFields(),...Campaign_Kpi_Value_Periods.uniqueFields],
     type:"unique"
   }]];
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['id_campaign_kpi_value_get'],
+      fields: ['campaign_kpi_value_getters_id'],
       type: 'foreign key',
       references: { 
-          table: Campaign_Kpis_Values_Getters,
+          table: Campaign_Kpi_Value_Getters,
           field: 'id'
       },
       onUpdate: 'cascade',
@@ -60,4 +61,4 @@ class Campaign_Kpis_Value_Periods extends BaseTableModel {
 };
 
 
-module.exports = {Campaign_Kpis_Value_Periods}
+module.exports = {Campaign_Kpi_Value_Periods}

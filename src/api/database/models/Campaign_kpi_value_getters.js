@@ -3,23 +3,24 @@
 /*imports*/
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
-const {  Campaign_Kpis } = require("./Campaigns_kpis");
+const {  Campaign_Kpis } = require("./Campaign_kpis");
 
 
 /**
  * class model
  */
-class Campaign_Kpis_Values_Getters extends BaseTableModel {
+class Campaign_Kpi_Value_Getters extends BaseTableModel {
   static id = 16002;
   static tableName = this.name.toLowerCase();
   static model = null;
 
   static fields = {
-    ...Campaign_Kpis_Values_Getters.getBaseTableModelFields(),...{      
+    ...Campaign_Kpi_Value_Getters.getBaseTableModelFields(),...{      
       
       campaign_kpi_id:{
         type: DataTypes.BIGINT.UNSIGNED,
-        allowNull: false
+        allowNull: false,
+        defaultvalue:0
       },
       is_arbitrary_value:{
         type: DataTypes.TEXT
@@ -41,12 +42,12 @@ class Campaign_Kpis_Values_Getters extends BaseTableModel {
   }};
 
   static uniqueFields = [
-    'campaign_kpi_id'
+    
   ];
 
-  static constraints = [...(Campaign_Kpis_Values_Getters.getBaseTableModelConstraints() || []),...[{
-    name: Campaign_Kpis_Values_Getters.tableName + '_u1',
-    fields: [...Campaign_Kpis_Values_Getters.getBaseTableModelUniqueFields(),...Campaign_Kpis_Values_Getters.uniqueFields],
+  static constraints = [...(Campaign_Kpi_Value_Getters.getBaseTableModelConstraints() || []),...[{
+    name: Campaign_Kpi_Value_Getters.tableName + '_u1',
+    fields: [...Campaign_Kpi_Value_Getters.getBaseTableModelUniqueFields(),...Campaign_Kpi_Value_Getters.uniqueFields],
     type:"unique"
   }]];
 
@@ -66,4 +67,4 @@ class Campaign_Kpis_Values_Getters extends BaseTableModel {
 };
 
 
-module.exports = {Campaign_Kpis_Values_Getters}
+module.exports = {Campaign_Kpi_Value_Getters}
