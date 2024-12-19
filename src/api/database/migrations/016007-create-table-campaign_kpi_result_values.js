@@ -1,7 +1,7 @@
 'use strict';
 
 /*imports*/
-const { Campaign_Kpi_Result_Values } = require('../models/Campaign_kpi_result_values');
+const { Campaign_Kpi_Result_Values } = require('../models/Campaign_Kpi_Result_Values__');
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/

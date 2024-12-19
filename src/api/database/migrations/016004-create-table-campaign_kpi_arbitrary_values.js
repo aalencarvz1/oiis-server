@@ -1,7 +1,7 @@
 'use strict';
 
 /*imports*/
-const { Campaign_Kpi_Arbitrary_Values } = require('../models/Campaign_kpi_arbitrary_values');
+const { Campaign_Kpi_Arbitrary_Values } = require('../models/Campaign_Kpi_Arbitrary_Values');
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/

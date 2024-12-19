@@ -3,8 +3,8 @@
 /*imports*/
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
-const { Campaign_Entities } = require("./Campaign_entities");
-const {Campaign_Kpi_Result_Values } = require("./Campaign_kpi_result_values");
+const { Campaign_Entities } = require("./Campaign_Entities__");
+const {Campaign_Kpi_Result_Values } = require("./Campaign_Kpi_Result_Values__");
 
 
 /**
@@ -16,25 +16,28 @@ class Campaign_Entitie_Kpi_Result_Values extends BaseTableModel {
   static model = null;
 
   static fields = {
-    ...Campaign_Entitie_Kpi_Result_Values.getBaseTableModelFields(),...{            
-    
-    
-      campaign_entities_id:{
+    ...Campaign_Entitie_Kpi_Result_Values.getBaseTableModelFields(),...{                  
+    campaign_entity_id:{
       type: DataTypes.BIGINT.UNSIGNED,
       allowNull: false
-     },
-      campaign_kpi_result_id:{
-      type: DataTypes.BIGINT.UNSIGNED
-     },
-     value:{
+    },
+    campaign_kpi_result_id:{
+      type: DataTypes.BIGINT.UNSIGNED,
+      allowNull: false
+    },
+    value:{
+      type: DataTypes.DECIMAL(38,12),
+      allowNull: false,
+      defaultValue:0
+    },
+    notes:{
       type: DataTypes.TEXT
-     }
-    
-
+    }
   }};
 
   static uniqueFields = [
-    
+    'campaign_entity_id',
+    'campaign_kpi_result_id'
   ];
 
   static constraints = [...(Campaign_Entitie_Kpi_Result_Values.getBaseTableModelConstraints() || []),...[{
@@ -45,11 +48,11 @@ class Campaign_Entitie_Kpi_Result_Values extends BaseTableModel {
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
     {
-      fields: ['campaign_entities_id'],
+      fields: ['campaign_entity_id'],
       type: 'foreign key',
       references: { 
-          table: Campaign_Entities,
-          field: 'id'
+        table: Campaign_Entities,
+        field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
@@ -58,8 +61,8 @@ class Campaign_Entitie_Kpi_Result_Values extends BaseTableModel {
       fields: ['campaign_kpi_result_id'],
       type: 'foreign key',
       references: { 
-          table: Campaign_Kpi_Result_Values,
-          field: 'id'
+        table: Campaign_Kpi_Result_Values,
+        field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
