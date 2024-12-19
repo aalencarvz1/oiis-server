@@ -4,7 +4,8 @@
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
-const { Campaign_Kpi_Value_Getters } = require("./Campaign_kpi_value_getters");
+const { Campaign_Kpi_Value_Getters } = require("./Campaign_Kpi_Value_Getters");
+const { toDefaultValue } = require("sequelize/lib/utils");
 
 /**
  * class model
@@ -15,22 +16,26 @@ class Campaign_Kpi_Arbitrary_Values extends BaseTableModel {
   static model = null;
 
   static fields = {
-    ...Campaign_Kpi_Arbitrary_Values.getBaseTableModelFields(),...{            
-      
-      campaign_kpi_value_getters_id:{
-        type: DataTypes.BIGINT.UNSIGNED,
-        allowNull: false,
-        defaultValue:0
-       },
-      value:{
-        type: DataTypes.TEXT,
-      }
-    
-
+    ...Campaign_Kpi_Arbitrary_Values.getBaseTableModelFields(),...{                  
+    campaign_kpi_value_getters_id:{
+      type: DataTypes.BIGINT.UNSIGNED,
+      allowNull: false
+      },
+    entity_id:{
+      type: DataTypes.BIGINT.UNSIGNED,
+      allowNull: false,
+      comment:'reference to entity of campain, ex.: id of seller'
+    },
+    value:{
+      type: DataTypes.DECIMAL(38,12),
+      allowNull: false,
+      defaultValue: 0
+    }        
   }};
 
   static uniqueFields = [
-   
+    'campaign_kpi_value_getters_id',
+    'entity_id'
   ];
 
   static constraints = [...(Campaign_Kpi_Arbitrary_Values.getBaseTableModelConstraints() || []),...[{

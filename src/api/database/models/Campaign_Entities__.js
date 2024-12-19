@@ -4,7 +4,7 @@
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
-const { Campaigns } = require("./Campaigns");
+const { Campaigns } = require("./Campaigns__");
 
 /**
  * class model
@@ -15,20 +15,23 @@ class Campaign_Entities extends BaseTableModel {
   static model = null;
 
   static fields = {
-    ...Campaign_Entities.getBaseTableModelFields(),...{            
-    
-    
-      campaign_id:{
+    ...Campaign_Entities.getBaseTableModelFields(),...{                  
+    campaign_id:{
       type: DataTypes.BIGINT.UNSIGNED,
-      allowNull: false,
-       defaultValue:0
-     }
-    
-
+      allowNull: false
+    },
+    entity_id:{
+      type: DataTypes.BIGINT.UNSIGNED,
+      allowNull: false
+    },
+    notes:{
+      type: DataTypes.TEXT
+    }
   }};
 
   static uniqueFields = [
-    
+    'campaign_id',
+    'entity_id'
   ];
 
   static constraints = [...(Campaign_Entities.getBaseTableModelConstraints() || []),...[{

@@ -3,7 +3,8 @@
 /*imports*/
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
-const {  Campaign_Kpis } = require("./Campaign_kpis");
+const { Campaign_Kpis } = require("./Campaign_Kpis__");
+
 
 
 /**
@@ -15,25 +16,25 @@ class Campaign_Kpi_Result_Values extends BaseTableModel {
   static model = null;
 
   static fields = {
-    ...Campaign_Kpi_Result_Values.getBaseTableModelFields(),...{            
-    
-      campaign_kpi_id:{
+    ...Campaign_Kpi_Result_Values.getBaseTableModelFields(),...{                
+    campaign_kpi_id:{
       type: DataTypes.BIGINT.UNSIGNED,
       allowNull: false,
       defaultValue:0
-     },
-     name:{
+    },
+    name:{
       type: DataTypes.STRING(255),
-     },
-     expression:{
+      allowNull: false
+    },
+    expression:{
       type: DataTypes.TEXT,
-     }
-    
-
+      allowNull: false
+    }
   }};
 
   static uniqueFields = [
-    
+    'campaign_kpi_id',
+    'name'
   ];
 
   static constraints = [...(Campaign_Kpi_Result_Values.getBaseTableModelConstraints() || []),...[{
@@ -47,8 +48,8 @@ class Campaign_Kpi_Result_Values extends BaseTableModel {
       fields: ['campaign_kpi_id'],
       type: 'foreign key',
       references: { 
-          table: Campaign_Kpis,
-          field: 'id'
+        table: Campaign_Kpis,
+        field: 'id'
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
