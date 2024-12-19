@@ -1612,6 +1612,8 @@ describe('Running api call tests',()=>{
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);                
                         return {
                             periods_agregation_expression: testString,
+                            init_date: new Date(),
+                            end_date: new Date(),
                             campaign_kpi_value_getters_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
@@ -1619,15 +1621,16 @@ describe('Running api call tests',()=>{
                 case 'campaign_kpi_arbitrary_values':
                     getParamsToCreate = ()=>{
                         let tableName = 'campaign_kpi_arbitrary_values';
-                        let parentTableName = 'campaign_kpi_value_getters';                                                    let parent = crudsToDelete.find(el=>el.tableName == parentTableName);                
+                        let parentTableName = 'campaign_kpi_value_getters';
+                        let parent = crudsToDelete.find(el=>el.tableName == parentTableName);
                         return {
-                            value:testString,
+                            notes:testString,
                             entity_id: 1,
                             campaign_kpi_value_getters_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                 break;    
-                    case 'campaign_kpi_value_details':
+                case 'campaign_kpi_value_details':
                     getParamsToCreate = ()=>{
                         let tableName = 'campaign_kpi_value_details';
                         let parentTableName = 'campaign_kpi_value_getters';                        
@@ -1640,6 +1643,19 @@ describe('Running api call tests',()=>{
                             entity_type_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
+                break;
+                case 'campaign_kpi_value_detail_entities':
+                    getParamsToCreate = ()=>{
+                        let tableName = 'campaign_kpi_value_detail_entities';
+                        let parentTableName = 'campaign_kpi_value_details';                        
+                        let parent = crudsToDelete.find(el=>el.tableName == parentTableName);                
+                        return {
+                            expression:testString,
+                            entity_id:1,
+                            campaign_kpi_value_detail_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
+                        }
+                    };
+                break;
                 case 'campaign_kpi_result_values':
                     getParamsToCreate = ()=>{
                         let tableName = 'campaign_kpi_result_values';
@@ -1647,6 +1663,7 @@ describe('Running api call tests',()=>{
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);                
                         return {
                             name:testString,
+                            expression:testString,
                             campaign_kpi_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
@@ -1658,13 +1675,14 @@ describe('Running api call tests',()=>{
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);                
                         return {
                             notes:testString,
+                            entity_id: 1,
                             campaign_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
                 break;
-                case 'campaign_entitie_kpi_result_values':
+                case 'campaign_entities_kpi_result_values':
                     getParamsToCreate = ()=>{
-                        let tableName = 'campaign_entitie_kpi_result_values';
+                        let tableName = 'campaign_entities_kpi_result_values';
                         let parentTableName = 'campaign_entities';                        
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);
                         let parentTableName2 = 'campaign_kpi_result_values';                        

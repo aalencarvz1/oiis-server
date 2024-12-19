@@ -310,7 +310,6 @@ class BaseTableModel extends Model {
                     sourceKey: this.foreignsKeys[i].references.fields?.join(',') || this.foreignsKeys[i].references.field,
                     foreignKey : columnForeign
                 };
-                console.log('xxxx',tableRefClassModel);
                 if (tableRefClassModel.tableName.trim() == this.model.tableName.trim().toLowerCase()) {
                     model = this.model;
                 } else {
@@ -515,7 +514,7 @@ class BaseTableModel extends Model {
                     params.where,
                     this.getModel()
                 );
-                console.log(updateSQL);
+                Utils.log(updateSQL);
                 let resultUpdate = await this.getConnection().query(updateSQL,{type:QueryTypes.UPDATE,transaction:params.transaction});                
                 if (Utils.hasValue(resultUpdate) && resultUpdate[0]?.rowsAffected >= 1) {
                     if (typeof this.getData === 'function' && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(reg.id) || reg.dataValues

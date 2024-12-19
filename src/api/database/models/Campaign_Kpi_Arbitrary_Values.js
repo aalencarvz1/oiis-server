@@ -30,7 +30,10 @@ class Campaign_Kpi_Arbitrary_Values extends BaseTableModel {
       type: DataTypes.DECIMAL(38,12),
       allowNull: false,
       defaultValue: 0
-    }        
+    },
+    notes:{
+      type: DataTypes.TEXT
+    }      
   }};
 
   static uniqueFields = [
