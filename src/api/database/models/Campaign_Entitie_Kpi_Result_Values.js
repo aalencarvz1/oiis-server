@@ -3,8 +3,8 @@
 /*imports*/
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
-const { Campaign_Entities } = require("./Campaign_Entities__");
-const {Campaign_Kpi_Result_Values } = require("./Campaign_Kpi_Result_Values__");
+const { Campaign_Entities } = require("./Campaign_Entities");
+const {Campaign_Kpi_Result_Values } = require("./Campaign_Kpi_Result_Values");
 
 
 /**

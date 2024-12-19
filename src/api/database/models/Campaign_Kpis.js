@@ -4,7 +4,7 @@
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
 
-const { Campaigns } = require("./Campaigns__");
+const { Campaigns } = require("./Campaigns");
 const { toDefaultValue } = require("sequelize/lib/utils");
 const { Measurement_Units } = require("./Measurement_Units");
 

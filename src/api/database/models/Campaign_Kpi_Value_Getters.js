@@ -3,7 +3,7 @@
 /*imports*/
 const { DataTypes, Sequelize } = require("sequelize");
 const { BaseTableModel } = require('./BaseTableModel');
-const {  Campaign_Kpis } = require("./Campaign_Kpis__");
+const {  Campaign_Kpis } = require("./Campaign_Kpis");
 
 
 /**
