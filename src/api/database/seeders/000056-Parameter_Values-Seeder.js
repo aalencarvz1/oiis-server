@@ -67,6 +67,24 @@ module.exports = {
       parameter_id: Parameters.APPS_DELIVERY_ONLY_ONE_DELIVERY_RUNNING,
       value : 1
     },{
+      id: Parameters.LOOP_RECURSION_LIMIT,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      parameter_id: Parameters.LOOP_RECURSION_LIMIT,
+      value : 100
+    },{
+      id: Parameters.LOOP_RECURSION_INTERVAL,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      parameter_id: Parameters.LOOP_RECURSION_INTERVAL,
+      value : 1000
+    },{
       id: Parameters.WINTHOR_INTEGRATION_NCM_CONSIDER_EXCEPTION_NULL_IF_NOT_EXISTS,
       status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,

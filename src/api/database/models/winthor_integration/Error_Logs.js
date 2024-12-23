@@ -12,33 +12,36 @@ class Error_Logs extends BaseWinthorIntegrationTableModel {
   static tableName = this.name.toLowerCase();
   static model = null;
   static fields = {
-    ...Error_Logs.getBaseTableModelFields(),...{                 
-      object_type:{
-        type: DataTypes.STRING(100)
-      },
-      object_name:{
-        type: DataTypes.STRING(255)
-      },
-      object_line:{
-        type: DataTypes.BIGINT.UNSIGNED,
-      },
-      error_code:{
-        type: DataTypes.STRING(255)
-      },
-      message:{
-        type: DataTypes.TEXT
-      },
-      log_values:{
-        type: DataTypes.TEXT
-      }
+    created_at : {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW
+    },
+    object_type:{
+      type: DataTypes.STRING(100)
+    },
+    object_name:{
+      type: DataTypes.STRING(255)
+    },
+    object_line:{
+      type: DataTypes.BIGINT.UNSIGNED,
+    },
+    error_code:{
+      type: DataTypes.STRING(255)
+    },
+    message:{
+      type: DataTypes.TEXT
+    },
+    log_values:{
+      type: DataTypes.TEXT
     }
   };
   
   static uniqueFields = [];
 
-  static constraints = [...(Error_Logs.getBaseTableModelConstraints() || []),...[]];
+  static constraints = [];
 
-  static foreignsKeys = [...(Error_Logs.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys = [];
   
 };
 
