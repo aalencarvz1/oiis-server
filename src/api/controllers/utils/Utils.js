@@ -167,10 +167,12 @@ class Utils {
     static getKey(obj, key) {
         let result = null;
         try {
-            if (typeof obj !== "undefined" && obj != null) {
-                if (typeof obj == "object") {
+            let tObj = typeof obj;
+            if (tObj !== "undefined" && obj != null) {
+                if (tObj == "object" || tObj == "function") {
                     if (typeof key !== "undefined" && key != null) {
-                        let objKeys = Object.keys(obj);
+                        //let objKeys = Object.keys(obj);
+                        let objKeys = Object.getOwnPropertyNames(obj);
                         let keyTemp = key.trim().toLowerCase();
                         for(let i = 0; i < objKeys.length; i++) {
                             if (objKeys[i].trim().toLowerCase() == keyTemp) {
@@ -319,9 +321,9 @@ class Utils {
                     
                 }
             } else {
-                for(let i in array) { 
-                    result[array[i][key]] = result[array[i][key]];
-                    result[array[i][key]] = array[i];
+                for(let i in array) {
+                    result[array[i][key]] = result[array[i][key]] || []; 
+                    result[array[i][key]].push(array[i]);
                 }
             }
         }
