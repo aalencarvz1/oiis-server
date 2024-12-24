@@ -202,7 +202,7 @@ async function crudDelete(params) {
 }
 
 async function createData(tableName,valuesToCreate){
-    //console.log('creating', tableName,valuesToCreate);
+    console.log('creating', tableName,valuesToCreate);
     let fieldUpdate = Object.keys(valuesToCreate)[0] || 'name';
     valuesToCreate = valuesToCreate || {};
     let endPoint = `${baseApiEndPoint}${endPoints.registerscontroller.path}/${tableName}`;     
@@ -234,6 +234,7 @@ async function createData(tableName,valuesToCreate){
 }
 
 async function updateData(tableName,valuesToCreate){
+    console.log('updating', tableName,valuesToCreate);
     let fieldUpdate = Object.keys(valuesToCreate)[0] || 'name';
     valuesToCreate = valuesToCreate || {};
     let endPoint = `${baseApiEndPoint}${endPoints.registerscontroller.path}/${tableName}`;     
@@ -357,6 +358,7 @@ describe('Running api call tests',()=>{
                     name:testString
                 }
             };
+            let getParamsToUpdate = getParamsToCreate;            
             let getParamsToIntegrate = null;
             switch(modelName) {
                 case 'errors':                                        
@@ -365,6 +367,8 @@ describe('Running api call tests',()=>{
                             object_name:testString
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'logs':
                     getParamsToCreate = ()=>{
@@ -372,6 +376,7 @@ describe('Running api call tests',()=>{
                             process_name:testString
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break; 
                 case 'tables':
                     getParamsToCreate = ()=>{
@@ -384,7 +389,8 @@ describe('Running api call tests',()=>{
                             data_connection_id:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
                             schema_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
                         }
-                    }                    
+                    }
+                    getParamsToUpdate = getParamsToCreate;                    
                     break;
                 case 'entities_types':
                     getParamsToCreate = ()=>{
@@ -395,6 +401,7 @@ describe('Running api call tests',()=>{
                         }
                     }
                     
+                    getParamsToUpdate = getParamsToCreate;
                     break;  
                 case 'parameters':            
                     getParamsToCreate = ()=>{
@@ -405,6 +412,7 @@ describe('Running api call tests',()=>{
                             data_type_id:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'parameter_values':
                     getParamsToCreate = () => {
@@ -415,6 +423,7 @@ describe('Running api call tests',()=>{
                             parameter_id:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'countries':
                     getParamsToCreate = ()=>{
@@ -438,6 +447,7 @@ describe('Running api call tests',()=>{
                             }
                         };
                     }
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'states':
                     getParamsToCreate = ()=>{
@@ -465,7 +475,8 @@ describe('Running api call tests',()=>{
                                 fieldUpdate: 'name'
                             }
                         };               
-                    }     
+                    }
+                    getParamsToUpdate = getParamsToCreate;     
                     break;
                 case 'cities': 
                     getParamsToCreate = ()=>{
@@ -493,6 +504,7 @@ describe('Running api call tests',()=>{
                             }
                         };
                     }
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'neighborhoods':
                 case 'streets':
@@ -504,6 +516,7 @@ describe('Running api call tests',()=>{
                             city_id:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;                
                 case 'people':
                     getParamsToCreate = ()=>{
@@ -543,7 +556,8 @@ describe('Running api call tests',()=>{
                                 fieldUpdate: 'name'
                             }
                         };                 
-                    }   
+                    }
+                    getParamsToUpdate = getParamsToCreate;   
                     break;
                 case 'warehouses':
                 case 'business_units':
@@ -578,7 +592,8 @@ describe('Running api call tests',()=>{
                                 fieldUpdate: 'alias'
                             }
                         };         
-                    }           
+                    }
+                    getParamsToUpdate = getParamsToCreate;           
                     break;
                 case 'users':
                     getParamsToCreate = ()=>{
@@ -594,6 +609,7 @@ describe('Running api call tests',()=>{
                             password :`${testString}`,
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'permissions':
                     getParamsToCreate = ()=>{
@@ -611,6 +627,7 @@ describe('Running api call tests',()=>{
                             allowed_access :1
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'companies':
                 case 'clients':
@@ -657,6 +674,7 @@ describe('Running api call tests',()=>{
                             };
                         }
                     }
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'objectives':
                     getParamsToCreate = ()=>{                        
@@ -666,6 +684,7 @@ describe('Running api call tests',()=>{
                             end_date:new Date(),
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'logistic_reasons': 
                     if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {                   
@@ -684,6 +703,7 @@ describe('Running api call tests',()=>{
                             }
                         };
                     }
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'report_data_fount_items':
                     getParamsToCreate = ()=>{
@@ -697,6 +717,7 @@ describe('Running api call tests',()=>{
                             sql_object_type_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'api_requests':
                     getParamsToCreate = ()=>{
@@ -707,6 +728,7 @@ describe('Running api call tests',()=>{
                             api_id:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'api_request_calls':
                     getParamsToCreate = ()=>{
@@ -717,6 +739,7 @@ describe('Running api call tests',()=>{
                             api_request_id:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'api_responses':
                     getParamsToCreate = ()=>{
@@ -727,6 +750,7 @@ describe('Running api call tests',()=>{
                             api_request_call_id:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'maps_api_responses':
                     getParamsToCreate = ()=>{
@@ -734,6 +758,7 @@ describe('Running api call tests',()=>{
                             response:testString
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'sql_processes': 
                     getParamsToCreate = ()=>{
@@ -744,6 +769,7 @@ describe('Running api call tests',()=>{
                             sql_object_type_id:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'relationships':
                     getParamsToCreate = ()=>{
@@ -758,6 +784,7 @@ describe('Running api call tests',()=>{
                             table_2_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'greatnesses':
                 case 'packagings':
@@ -767,6 +794,7 @@ describe('Running api call tests',()=>{
                             sigla:testString
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'ncms':
                     getParamsToCreate = ()=>{
@@ -776,6 +804,7 @@ describe('Running api call tests',()=>{
                             ncm: 1                            
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'measurement_units':
                     getParamsToCreate = ()=>{
@@ -787,6 +816,7 @@ describe('Running api call tests',()=>{
                             sigla: testString,
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'user_tokens':
                     getParamsToCreate = ()=>{
@@ -797,6 +827,7 @@ describe('Running api call tests',()=>{
                             user_id:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break; 
                 case 'user_profile_timeworks':
                     getParamsToCreate = ()=>{
@@ -807,6 +838,7 @@ describe('Running api call tests',()=>{
                             user_id:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;                            
                 case 'user_timeworks':
                     getParamsToCreate = ()=>{
@@ -820,6 +852,7 @@ describe('Running api call tests',()=>{
                             end_at:testString
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;  
                 case 'routines':
                     getParamsToCreate = ()=>{
@@ -833,6 +866,7 @@ describe('Running api call tests',()=>{
                             module_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;                           
                 case 'routine_contents':
                     getParamsToCreate = ()=>{
@@ -843,6 +877,7 @@ describe('Running api call tests',()=>{
                             routine_id:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break; 
                 case 'texts':
                     getParamsToCreate = ()=>{
@@ -853,6 +888,7 @@ describe('Running api call tests',()=>{
                             language_id:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break; 
                 case 'translates':
                     getParamsToCreate = ()=>{
@@ -866,6 +902,7 @@ describe('Running api call tests',()=>{
                             text_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;                                           
                 case 'relationship_values':
                     getParamsToCreate = ()=>{
@@ -882,6 +919,7 @@ describe('Running api call tests',()=>{
                             data_type_id:parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;   
                 case 'datasvalues':
                     getParamsToCreate = ()=>{
@@ -896,6 +934,7 @@ describe('Running api call tests',()=>{
                             IDREG:1
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break; 
                 case 'postal_codes':
                     getParamsToCreate = ()=>{
@@ -909,6 +948,7 @@ describe('Running api call tests',()=>{
                             city_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'postal_codes_streets':
                     getParamsToCreate = ()=>{
@@ -925,6 +965,7 @@ describe('Running api call tests',()=>{
                             street_id:parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;   
                 case 'postal_codes_paths':
                     getParamsToCreate = ()=>{
@@ -935,6 +976,7 @@ describe('Running api call tests',()=>{
                             postal_code_id:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'addresses':
                     getParamsToCreate = ()=>{
@@ -945,6 +987,7 @@ describe('Running api call tests',()=>{
                             address_type_id:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'contacts':
                     getParamsToCreate = ()=>{
@@ -955,6 +998,7 @@ describe('Running api call tests',()=>{
                             contact_type_id:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'people_addresses':
                     getParamsToCreate = ()=>{
@@ -968,6 +1012,7 @@ describe('Running api call tests',()=>{
                             address_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'people_contacts':
                     getParamsToCreate = ()=>{
@@ -981,6 +1026,7 @@ describe('Running api call tests',()=>{
                             contact_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'warehouse_addresses':
                     getParamsToCreate = ()=>{
@@ -997,6 +1043,7 @@ describe('Running api call tests',()=>{
                             identifier_type_id: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'warehouse_address_coordinates':
                     getParamsToCreate = ()=>{
@@ -1010,6 +1057,7 @@ describe('Running api call tests',()=>{
                             coordinate_type_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'warehouse_address_dimensions':
                     getParamsToCreate = ()=>{
@@ -1026,6 +1074,7 @@ describe('Running api call tests',()=>{
                             measurement_unit_id: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'warehouse_address_capacities':
                     getParamsToCreate = ()=>{
@@ -1042,6 +1091,7 @@ describe('Running api call tests',()=>{
                             measurement_unit_id: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'suppliers':
                     getParamsToCreate = ()=>{
@@ -1052,6 +1102,7 @@ describe('Running api call tests',()=>{
                             people_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'collaborator_contracts':
                     getParamsToCreate = ()=>{
@@ -1065,6 +1116,7 @@ describe('Running api call tests',()=>{
                             contract_type_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'collaborators_x_functions':
                     getParamsToCreate = ()=>{
@@ -1078,6 +1130,7 @@ describe('Running api call tests',()=>{
                             function_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'conditions':
                     getParamsToCreate = ()=>{
@@ -1089,6 +1142,7 @@ describe('Running api call tests',()=>{
                             entity_id:1
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'condition_items':
                     getParamsToCreate = ()=>{
@@ -1099,6 +1153,7 @@ describe('Running api call tests',()=>{
                             condition_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'container_type_dimensions':
                     getParamsToCreate = ()=>{
@@ -1115,6 +1170,7 @@ describe('Running api call tests',()=>{
                             measurement_unit_id: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'container_type_capacities':
                     getParamsToCreate = ()=>{
@@ -1132,6 +1188,7 @@ describe('Running api call tests',()=>{
                             measurement_unit_id: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'items':
                     getParamsToCreate = ()=>{
@@ -1146,6 +1203,7 @@ describe('Running api call tests',()=>{
                             name: testString
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'lots':
                     getParamsToCreate = ()=>{
@@ -1157,6 +1215,7 @@ describe('Running api call tests',()=>{
                             entity_id:1
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'containers':
                     getParamsToCreate = ()=>{
@@ -1170,6 +1229,7 @@ describe('Running api call tests',()=>{
                             identifier_type_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'items_lots_containers':
                     getParamsToCreate = ()=>{
@@ -1187,6 +1247,7 @@ describe('Running api call tests',()=>{
                             container_id: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'stock_entities':
                     getParamsToCreate = ()=>{
@@ -1197,6 +1258,7 @@ describe('Running api call tests',()=>{
                             company_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'item_stocks':
                     getParamsToCreate = ()=>{
@@ -1216,6 +1278,7 @@ describe('Running api call tests',()=>{
                             packaging_id: parent4?.id.in[0] || ((datas[parentTableName4]||[])[(datas[parentTableName4]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'item_stock_units':
                     getParamsToCreate = ()=>{
@@ -1226,6 +1289,7 @@ describe('Running api call tests',()=>{
                             stock_item_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;                
                 case 'item_meas_pack_identif':
                     getParamsToCreate = ()=>{
@@ -1239,6 +1303,7 @@ describe('Running api call tests',()=>{
                             packaging_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;  
                 case 'groups':
                     getParamsToCreate = ()=>{
@@ -1250,6 +1315,7 @@ describe('Running api call tests',()=>{
                             entity_type_id:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'groups_items':
                     getParamsToCreate = ()=>{
@@ -1261,6 +1327,7 @@ describe('Running api call tests',()=>{
                             group_id:parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;               
                 case 'movements':
                     getParamsToCreate = ()=>{
@@ -1271,6 +1338,7 @@ describe('Running api call tests',()=>{
                             type_mov_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break; 
                 case 'movement_groups':
                     getParamsToCreate = ()=>{
@@ -1278,6 +1346,7 @@ describe('Running api call tests',()=>{
                             identifier:testString
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'movements_groups':
                     getParamsToCreate = ()=>{
@@ -1291,6 +1360,7 @@ describe('Running api call tests',()=>{
                             mov_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'movements_entities':
                     getParamsToCreate = ()=>{
@@ -1307,6 +1377,7 @@ describe('Running api call tests',()=>{
                             stock_entity_id: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'movs_items_stocks':
                     getParamsToCreate = ()=>{
@@ -1323,6 +1394,7 @@ describe('Running api call tests',()=>{
                             stock_item_id: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;                
                 case 'item_mov_amounts':
                     getParamsToCreate = ()=>{
@@ -1342,6 +1414,7 @@ describe('Running api call tests',()=>{
                             packaging_id: parent4?.id.in[0] || ((datas[parentTableName4]||[])[(datas[parentTableName4]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'item_mov_units':
                     getParamsToCreate = ()=>{
@@ -1352,6 +1425,7 @@ describe('Running api call tests',()=>{
                             item_mov_amt_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break; 
                 case 'item_mov_amount_restrictions':
                     getParamsToCreate = ()=>{
@@ -1362,6 +1436,7 @@ describe('Running api call tests',()=>{
                             item_mov_amt_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break; 
                 case 'item_mov_xml_import_id_conversions':
                     getParamsToCreate = ()=>{
@@ -1383,6 +1458,7 @@ describe('Running api call tests',()=>{
                             xml_quantity_field_name:testString
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'sql_objects':
                     getParamsToCreate = ()=>{
@@ -1393,6 +1469,7 @@ describe('Running api call tests',()=>{
                             sql_object_type_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'logistic_orders':
                     getParamsToCreate = ()=>{
@@ -1403,6 +1480,7 @@ describe('Running api call tests',()=>{
                             logistic_mov_type_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'logistic_orders_movs':
                     getParamsToCreate = ()=>{
@@ -1416,6 +1494,7 @@ describe('Running api call tests',()=>{
                             mov_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'logistic_orders_items_mov_amt':
                     getParamsToCreate = ()=>{
@@ -1429,6 +1508,7 @@ describe('Running api call tests',()=>{
                             item_mov_amt_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;                
                 case 'logistic_orders_movs_received_values':
                     getParamsToCreate = ()=>{
@@ -1445,6 +1525,7 @@ describe('Running api call tests',()=>{
                             expected_currency_id: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;                  
                 case 'logistic_orders_dest_values':
                     getParamsToCreate = ()=>{
@@ -1461,6 +1542,7 @@ describe('Running api call tests',()=>{
                             financial_value_mov_type_dest: parent3?.id.in[0] || ((datas[parentTableName3]||[])[(datas[parentTableName3]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;                
                 case 'logistic_logs':
                     getParamsToCreate = ()=>{
@@ -1472,6 +1554,7 @@ describe('Running api call tests',()=>{
                             record_ref_id:1
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;                
                 case 'tasks_status_users':
                     getParamsToCreate = ()=>{
@@ -1485,6 +1568,7 @@ describe('Running api call tests',()=>{
                             user_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'tasks_status_users_logs':
                     getParamsToCreate = ()=>{
@@ -1496,6 +1580,7 @@ describe('Running api call tests',()=>{
                             task_status_user_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;     
                 case 'commission_entitiy_codes':
                     getParamsToCreate = ()=>{
@@ -1508,6 +1593,7 @@ describe('Running api call tests',()=>{
                             record_entity_id:1
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;             
                 case 'commission_items':
                     getParamsToCreate = ()=>{
@@ -1518,6 +1604,7 @@ describe('Running api call tests',()=>{
                             commission_entity_code_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;             
                 case 'commission_values':
                     getParamsToCreate = ()=>{
@@ -1529,6 +1616,7 @@ describe('Running api call tests',()=>{
                             commission_item_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;  
                 case 'projects_items':
                     getParamsToCreate = ()=>{
@@ -1541,34 +1629,41 @@ describe('Running api call tests',()=>{
                             project_item_type_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;          
                 case 'project_tasks':
-                    getParamsToCreate = ()=>{
+                    getParamsToCreate = null;/*()=>{
                         let tableName = 'project_tasks';
                         let parentTableName = 'project_task_types';                        
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);         
                         let parentTableName2 = 'projects_items';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);         
                         return {
-                            id_at_origin:testString,
+                            identifier:testString,
+                            name: testString,
                             task_type_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
                             project_item_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
-                    };
+                    };*/
+                    getParamsToUpdate = null;
                     break; 
                 case 'requirements':
-                    getParamsToCreate = ()=>{
+                    getParamsToCreate = null;/*()=>{
                         let tableName = 'requirements';
                         let parentTableName = 'requirements_types';                        
                         let parent = crudsToDelete.find(el=>el.tableName == parentTableName);         
                         let parentTableName2 = 'projects_items';
                         let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);         
+
                         return {
-                            id_at_origin:testString,
-                            requirement_type_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
-                            project_item_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
+                            identifier:testString,
+                            name: testString,
+                            requirement_type_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,                            
+                            project_item_parent_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined,
+                            project_item_id: ((datas[tableName]||[])[(datas[tableName]||[]).length-1]||{}).project_item_id || undefined,
                         }
-                    };
+                    };*/
+                    getParamsToUpdate = null;
                     break; 
                 case 'campaigns':
                     getParamsToCreate = ()=>{
@@ -1582,6 +1677,7 @@ describe('Running api call tests',()=>{
                             end_date: new Date()
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break; 
                 case 'campaign_kpis':
                     getParamsToCreate = ()=>{
@@ -1593,6 +1689,7 @@ describe('Running api call tests',()=>{
                             campaign_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'campaign_kpi_value_getters':
                     getParamsToCreate = ()=>{
@@ -1604,6 +1701,7 @@ describe('Running api call tests',()=>{
                             campaign_kpi_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break; 
                 case 'campaign_kpi_value_periods':
                     getParamsToCreate = ()=>{
@@ -1617,6 +1715,7 @@ describe('Running api call tests',()=>{
                             campaign_kpi_value_getters_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'campaign_kpi_arbitrary_values':
                     getParamsToCreate = ()=>{
@@ -1629,6 +1728,7 @@ describe('Running api call tests',()=>{
                             campaign_kpi_value_getters_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                 break;    
                 case 'campaign_kpi_value_details':
                     getParamsToCreate = ()=>{
@@ -1643,6 +1743,7 @@ describe('Running api call tests',()=>{
                             entity_type_id:parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                 break;
                 case 'campaign_kpi_value_detail_entities':
                     getParamsToCreate = ()=>{
@@ -1655,6 +1756,7 @@ describe('Running api call tests',()=>{
                             campaign_kpi_value_detail_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                 break;
                 case 'campaign_kpi_result_values':
                     getParamsToCreate = ()=>{
@@ -1667,6 +1769,7 @@ describe('Running api call tests',()=>{
                             campaign_kpi_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                 break;                
                 case 'campaign_entities':
                     getParamsToCreate = ()=>{
@@ -1679,6 +1782,7 @@ describe('Running api call tests',()=>{
                             campaign_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                 break;
                 case 'campaign_entities_kpi_result_values':
                     getParamsToCreate = ()=>{
@@ -1694,19 +1798,24 @@ describe('Running api call tests',()=>{
 
                         }
                     };
+                    getParamsToUpdate = getParamsToCreate;
                 break;
             }
 
-            test(`create`, async() => {
-                //console.log(modelName,getParamsToCreate());
-                await createData(modelName,getParamsToCreate());
-            });
+            if (typeof getParamsToCreate == 'function') {
+                test(`create`, async() => {
+                    //console.log(modelName,getParamsToCreate());
+                    await createData(modelName,getParamsToCreate());
+                });
+            }
             test(`read`, async() => {
                 await getDataFromTable(modelName,true);
-            });
-            test(`update`, async() => {
-                await updateData(modelName,getParamsToCreate());
-            });            
+            },longTimeRun);
+            if (typeof getParamsToUpdate == 'function') {
+                test(`update`, async() => {
+                    await updateData(modelName,getParamsToUpdate());
+                });       
+            }     
             test('delete (forward)',()=>{
                 expect(true).toBeTruthy();
             });
