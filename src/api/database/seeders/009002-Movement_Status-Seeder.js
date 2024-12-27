@@ -27,13 +27,13 @@ module.exports = {
       is_started : 1,
       is_running : 1
     },{      
-      id:Movement_Status.STOPED,
+      id:Movement_Status.STOPPED,
       status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      name : 'STOPED',
+      name : 'STOPPED',
       is_stopped : 1
     },{      
       id:Movement_Status.CANCELED,

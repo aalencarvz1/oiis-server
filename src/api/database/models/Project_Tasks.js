@@ -33,6 +33,18 @@ class Project_Tasks extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue: Project_Task_Types.TASK
+      },
+      forecast_start_moment: {
+        type: DataTypes.DATE
+      },
+      forecast_end_moment: {
+        type: DataTypes.DATE
+      },
+      start_at: {
+        type: DataTypes.DATE
+      },
+      end_at: {
+        type: DataTypes.DATE
       }
     }
   };

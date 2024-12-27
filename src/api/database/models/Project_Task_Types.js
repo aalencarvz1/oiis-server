@@ -30,7 +30,7 @@ class Project_Task_Types extends BaseTableModel {
       description: {
         type: DataTypes.TEXT
       },
-      anotations: {
+      notes: {
         type: DataTypes.TEXT
       }
     }

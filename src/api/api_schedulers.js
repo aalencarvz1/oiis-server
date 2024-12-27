@@ -144,7 +144,7 @@ if (process.env.NODE_ENV == 'production') {
     scheduler.addSimpleIntervalJob(jobMtrixIntegration);*/
 
     process.on('SIGINT', function() {
-        Utils.log('FL','stoped application, stoping schedulers');
+        Utils.log('FL','stopped application, stoping schedulers');
         Utils.closeLogFile();
         scheduler.stop();
     });
