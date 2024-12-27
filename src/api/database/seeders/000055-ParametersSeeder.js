@@ -92,6 +92,26 @@ module.exports = {
       name : 'COMMISSION_MIN_VAL',
       default_value: 1844
     },{
+      id: Parameters.LOOP_RECURSION_LIMIT,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      data_type_id: Data_Types.NUMBER,
+      name : 'LOOP_RECURSION_LIMIT',
+      default_value: 100
+    },{
+      id: Parameters.LOOP_RECURSION_INTERVAL,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      data_type_id: Data_Types.NUMBER,
+      name : 'LOOP_RECURSION_INTERVAL',
+      default_value: 1000
+    },{
       id: Parameters.WINTHOR_CUSTOMIZED_GIRO_STOCK_DAYS,
       status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,

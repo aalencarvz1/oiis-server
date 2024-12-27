@@ -15,7 +15,7 @@ class Task_Status extends BaseTableModel {
 
   static NOT_STARTED = 1;
   static RUNNING = 2;
-  static STOPED = 3;
+  static STOPPED = 3;
   static CANCELED = 4;
   static CONCLUDED = 5;
 
@@ -47,6 +47,11 @@ class Task_Status extends BaseTableModel {
         type: DataTypes.INTEGER(1),
         allowNull: false,
         defaultValue: 0
+      },
+      is_visible: {
+        type: DataTypes.INTEGER(1),
+        allowNull: false,
+        defaultValue: 1
       },
       description: {
         type: DataTypes.TEXT

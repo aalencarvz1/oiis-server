@@ -27,13 +27,13 @@ module.exports = {
       name : 'RUNNING',
       is_running:1
     },{      
-      id:Task_Status.STOPED,
+      id:Task_Status.STOPPED,
       status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
-      name : 'STOPED',
+      name : 'STOPPED',
       is_stopped:1
     },{      
       id:Task_Status.CANCELED,
@@ -43,7 +43,8 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'CANCELED',
-      is_canceled:1
+      is_canceled:1,
+      is_visible: 0
     },{      
       id:Task_Status.CONCLUDED,
       status_reg_id: Record_Status.ACTIVE,
@@ -52,7 +53,8 @@ module.exports = {
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       name : 'CONCLUDED',
-      is_concluded:1
+      is_concluded:1,
+      is_visible: 0
     }],{
       ignoreDuplicates:true,
       updateOnDuplicate:null

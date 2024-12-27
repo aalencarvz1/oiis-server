@@ -9,6 +9,7 @@ const { Schemas } = require("../../../../database/models/Schemas");
 const { Connections } = require("../../../../database/models/Connections");
 const DBConnectionManager = require("../../../../database/DBConnectionManager");
 const { Groups_Items } = require("../../../../database/models/Groups_Items");
+const { DataSwap } = require("../../../data/DataSwap");
 
 /**
  * Class controller to handle registers module
@@ -109,9 +110,10 @@ class GroupsController extends RegistersController{
         } 
     }
 
-    static async processSqlCondiction(req,res) {
+    static async process_sql_condiction(params) {
+        let result = new DataSwap();
         try {
-            let queryParams = req.body.queryParams || req.body;
+            let queryParams = params.queryParams || params;
             if (Utils.hasValue(queryParams)) {
                 queryParams = await DatabaseUtils.prepareQueryParams(queryParams);
             }
@@ -179,6 +181,7 @@ class GroupsController extends RegistersController{
                             ${registers[i].where||'1=1'}
                             ${Utils.hasValue(registers[i].sql_condiction) ? ` AND (${registers[i].sql_condiction.replace(/:new/gi,registers[i].table_name)}) `: ''}
                             ${Utils.hasValue(registers[i].items_ids_list) ? ` AND ${registers[i].table_name}.${registers[i].identifier_column} not in (${registers[i].items_ids_list.join(',')})` : ''}
+                            ${Utils.hasValue(params.items_where) ? ` AND (${params.items_where}) `: ''}
                         order by
                             ${registers[i].order_by||'1'}
                     `;
@@ -194,19 +197,30 @@ class GroupsController extends RegistersController{
                 }
 
                 if (Utils.hasValue(newItems)) {
-                    let createResult = await Groups_Items.getModel().bulkCreate(newItems);
-                    console.log(createResult);
-                }
+                    await Groups_Items.getModel().bulkCreate(newItems);
+                } 
 
-                res.sendResponse(200,true);
+                result.success = true;
             } else {
                 throw new Error("no data found");
             }
         } catch (e) {
+            result.setException(e);
+        } 
+        return result;   
+    } 
+    
+    
+    static async req_process_sql_condiction(req,res) {
+        try {
+            let queryParams = req.body.queryParams || req.body;
+            let result = await process_sql_condiction(queryParams);
+            res.setDataSwap(result);            
+        } catch (e) {
             res.setException(e);
-            res.sendResponse(517,false);
-        }    
-    }   
+        }  
+        res.sendResponse();  
+    }  
 }
 
 module.exports = {GroupsController}

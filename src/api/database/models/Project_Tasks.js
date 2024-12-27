@@ -33,6 +33,18 @@ class Project_Tasks extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false,
         defaultValue: Project_Task_Types.TASK
+      },
+      forecast_start_moment: {
+        type: DataTypes.DATE
+      },
+      forecast_end_moment: {
+        type: DataTypes.DATE
+      },
+      start_at: {
+        type: DataTypes.DATE
+      },
+      end_at: {
+        type: DataTypes.DATE
       }
     }
   };
@@ -74,10 +86,20 @@ class Project_Tasks extends BaseTableModel {
 
   static async createData(params, req) {
     params = params || {};  
+ 
     if (!Utils.hasValue(params.project_item_id)) {
-      let projectItem = await Projects_Items.createData(params);
+      let projectItem = null;
+      let projectItemParams = {...params};
+      if (Utils.hasValue(projectItemParams.parent_id)) {
+        projectItemParams.parent_id = null;
+        delete projectItemParams.parent_id;
+      }
+      if (Utils.hasValue(projectItemParams.project_item_parent_id)) {
+        projectItemParams.parent_id = projectItemParams.project_item_parent_id;        
+      } 
+      projectItem = await Projects_Items.createData(projectItemParams);
       params.project_item_id = projectItem.id;
-    }     
+    } 
     
     let result = await BaseTableModel.createData.bind(Project_Tasks)(params);
 
@@ -110,6 +132,13 @@ class Project_Tasks extends BaseTableModel {
   static async updateData(params) {
     params = params || {};  
     let projectItemParams = {...params,id:params.project_item_id};
+    if (Utils.hasValue(projectItemParams.parent_id)) {
+      projectItemParams.parent_id = null;
+      delete projectItemParams.parent_id;
+    }
+    if (Utils.hasValue(projectItemParams.project_item_parent_id)) {
+      projectItemParams.parent_id = projectItemParams.project_item_parent_id;        
+    } 
     let projectItem = await Projects_Items.updateData(projectItemParams);
     return await BaseTableModel.updateData.bind(Project_Tasks)(params);
   }  

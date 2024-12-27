@@ -16,8 +16,17 @@ const { Utils } = require("../../../controllers/utils/Utils");
 class BaseWinthorIntegrationTableModel extends BaseTableModel {    
     static schema = configDB[`${process.env.NODE_ENV||'development'}_winthor_integration`].dialectOptions.schema;  
     static getConnection = DBConnectionManager.getWinthorIntegrationDBConnection;
+
+    static getBaseTableModelUniqueFields = () => {
+        let result = super.getBaseTableModelUniqueFields.bind(this)();
+        result[0] = "parent_id"; //Sequelize.literal(`(COALESCE(parent_id,0))`) is`nt supported by oracle
+        return result;
+    };  
+
     //not has base foreign keys
     static getBaseTableModelForeignsKeys = () => [];
+
+    
 
     /**
      * run migrations of inherited model

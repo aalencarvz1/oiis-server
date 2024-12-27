@@ -9,6 +9,7 @@ const { ToadScheduler, SimpleIntervalJob, AsyncTask } = require('toad-scheduler'
 const { SicrediIntegrationsPixController } = require('./controllers/modules/financial/billing/pix/integrations/sicredi/SicrediIntegrationsPixController');
 const { AuroraIntegrationsRegistersController } = require('./controllers/modules/registers/integrations/aurora/AuroraIntegrationsRegistersController');
 const cors = require('cors');
+const { WinthorIntegrationsRegistersController } = require('./controllers/modules/registers/integrations/winthor/WinthorIntegrationsRegistersController');
 //const { MtrixIntegrationsController } = require('./controllers/modules/registers/integrations/mtrix/MtrixIntegrationsController');
 
 //api create
@@ -83,6 +84,36 @@ if (process.env.NODE_ENV == 'production') {
     scheduler.addSimpleIntervalJob(jobAuroraStockIntegration);
 
 
+    //AURORA STOCK INTEGRATION
+    const taskWinthorRegistersIntegration = new AsyncTask(
+        'simple task', 
+        async () => { 
+            try {
+                await WinthorIntegrationsRegistersController.integrateRegisters();
+            } catch (e) {
+                Utils.log('FL',"error on callback AsyncTask job");
+                Utils.log(e);
+            }
+        },
+        (err) => { 
+            Utils.log('FL',"error returning of callback AsyncTask job");
+            Utils.log(err) 
+        }
+    );
+    const jobWinthorRegistersIntegration = new SimpleIntervalJob(
+        { 
+            minutes: 15,            
+            runImmediately: true
+        }, 
+        taskWinthorRegistersIntegration,
+        { 
+            id: 'integrate_winthor_registers',
+            preventOverrun: true,
+        }
+    );
+    scheduler.addSimpleIntervalJob(jobWinthorRegistersIntegration);
+
+
     //MTRIX INTEGRATION FILES GENERATE 
     /*const taskMtrixIntegration = new AsyncTask(
         'simple task', 
@@ -113,7 +144,7 @@ if (process.env.NODE_ENV == 'production') {
     scheduler.addSimpleIntervalJob(jobMtrixIntegration);*/
 
     process.on('SIGINT', function() {
-        Utils.log('FL','stoped application, stoping schedulers');
+        Utils.log('FL','stopped application, stoping schedulers');
         Utils.closeLogFile();
         scheduler.stop();
     });

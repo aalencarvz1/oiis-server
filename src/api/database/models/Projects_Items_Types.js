@@ -51,7 +51,7 @@ class Projects_Items_Types extends BaseTableModel {
       description: {
         type: DataTypes.TEXT
       },
-      anotations: {
+      notes: {
         type: DataTypes.TEXT
       },
     }

@@ -1,4 +1,5 @@
 const path = require("path");
+const _ = require("lodash");
 const { Sequelize, QueryTypes } = require("sequelize");
 const { Utils } = require("../../../../utils/Utils");
 const { PcFilial } = require("../../../../../database/models/winthor/PcFilial");
@@ -8,12 +9,19 @@ const { Identifier_Types } = require("../../../../../database/models/Identifier_
 const { Data_Origins } = require("../../../../../database/models/Data_Origins");
 const { RegistersController } = require("../../RegistersController");
 const DBConnectionManager = require("../../../../../database/DBConnectionManager");
+const { Integration_Control } = require("../../../../../database/models/winthor_integration/Integration_Control");
+const { Integration_Tables } = require("../../../../../database/models/winthor_integration/Integration_Tables");
+const { DataSwap } = require("../../../../data/DataSwap");
+const { GroupsController } = require("../../groups/GroupsController");
+const { Parameter_Values } = require("../../../../../database/models/Parameter_Values");
+const { Parameters } = require("../../../../../database/models/Parameters");
 
 
 /**
  * Class controller to handle registers module
  * @author Alencar
  * @created 2023-25-08
+ * @version 1.0.0
  */
 class WinthorIntegrationsRegistersController extends RegistersController {
 
@@ -450,63 +458,217 @@ class WinthorIntegrationsRegistersController extends RegistersController {
         try {
             
         
-        let termo = req.body.termo
-        termo = termo.split(',')
-        let filterAvanced = req.body.filters
+            let termo = req.body.termo
+            termo = termo.split(',')
+            let filterAvanced = req.body.filters
 
-        let filterConditions = filterAvanced.map(f => {
-            return `${f.campo} ${f.operador} ${f.valor}`; 
-        });
+            let filterConditions = filterAvanced.map(f => {
+                return `${f.campo} ${f.operador} ${f.valor}`; 
+            });
+            
+            
+            
+            let data = await DBConnectionManager.getWinthorDBConnection().query(`
+            
+                SELECT       
+                    CODPROD,        
+                    DESCRICAO,       
+                    EMBALAGEM,       
+                    UNIDADE,        
+                    PESOLIQ,       
+                    PESOBRUTO,        
+                    CODEPTO,       
+                    TEMREPOS,       
+                    QTUNIT,        
+                    DTCADASTRO,       
+                    DTEXCLUSAO,        
+                    dtultaltcom,        
+                    PRAZOVAL,       
+                    REVENDA,        
+                    QTUNITCX,        
+                    IMPORTADO,        
+                    CODAUXILIAR       
+                FROM       
+                    pcprodut        
+                WHERE        
+                    ${termo.map(el => {
+                        return `
+                        (CODPROD LIKE '${el}' 
+                        OR UPPER(DESCRICAO) LIKE UPPER('${el}')
+                        OR UPPER(EMBALAGEM) LIKE UPPER('${el}')
+                        OR UPPER(UNIDADE) LIKE UPPER('${el}')
+                        OR PESOLIQ LIKE '${el}'
+                        ) or`;
+                    }).join(' OR ')}
+                    ${filterConditions.join( ' AND ')}
+            
+            `,
+            
+                {
+            
+                    type: QueryTypes.SELECT,
+            
+                }
+            )
         
-        
-        
-        let data = await DBConnectionManager.getWinthorDBConnection().query(`
-        
-            SELECT       
-                CODPROD,        
-                DESCRICAO,       
-                EMBALAGEM,       
-                UNIDADE,        
-                PESOLIQ,       
-                PESOBRUTO,        
-                CODEPTO,       
-                TEMREPOS,       
-                QTUNIT,        
-                DTCADASTRO,       
-                DTEXCLUSAO,        
-                dtultaltcom,        
-                PRAZOVAL,       
-                REVENDA,        
-                QTUNITCX,        
-                IMPORTADO,        
-                CODAUXILIAR       
-            FROM       
-                pcprodut        
-            WHERE        
-                ${termo.map(el => {
-                    return `
-                    (CODPROD LIKE '${el}' 
-                    OR UPPER(DESCRICAO) LIKE UPPER('${el}')
-                    OR UPPER(EMBALAGEM) LIKE UPPER('${el}')
-                    OR UPPER(UNIDADE) LIKE UPPER('${el}')
-                    OR PESOLIQ LIKE '${el}'
-                    ) or`;
-                }).join(' OR ')}
-                ${filterConditions.join( ' AND ')}
-        
-        `,
-        
-            {
-        
-                type: QueryTypes.SELECT,
-        
-            }
-        )
-    
-        res.status(200).json(data)
-    } catch (error) {
+            res.status(200).json(data)
+        } catch (error) {
             res.status(400).json()
+        }
     }
+
+
+    /**
+     * Update date of integration_control integrated_at to current date time. 
+     * @param {Object} params 
+     * @recursive
+     * @created 2024-12-23
+     * @version 1.0.0
+     */
+    static async updateIntegratedDate(params){
+        try {
+            if (Utils.hasValue(params?.registers)) {
+                let ids = params.registers.map(el=>el.register_id);
+                let query = `
+                    update 
+                        "${Integration_Control.tableName}"
+                    set
+                        "integrated_at" = sysdate
+                    where
+                        ${params.registers.map(el=>`(
+                            "integration_table_id" = ${el.integration_table_id}
+                            and "register_id" = ${el.register_id}
+                            and "operation" = '${el.operation}'
+                            and "integrated_at" is null
+                        )`).join(' or ')}
+                `;
+                await DBConnectionManager.getWinthorIntegrationDBConnection().query(
+                    query,{
+                        type: QueryTypes.UPDATE
+                    }
+                );
+            }
+        } catch (e) {
+            if (e?.message?.indexOf("duplic") > -1 || e?.message?.indexOf("exclusiv") > -1) {
+                if ((params.recursionCount || 0) <= Utils.toNumber(await Parameter_Values.get(Parameters.LOOP_RECURSION_LIMIT))) {
+                    params.recursionCount = (params.recursionCount || 0) + 1;
+
+                    //recursive call                    
+                    setTimeout(this.updateIntegratedDate,Utils.toNumber(await Parameter_Values.get(Parameters.LOOP_RECURSION_INTERVAL)),params);
+                } else {
+                    Utils.logError(e);
+                }
+            } else {
+                Utils.logError(e);
+            }
+        }
+    }
+
+
+    /**
+     * Integrate products of origin on oiis.
+     * Actualy only check if product pertences to group and insert it in group if not exists.
+     * @param {Object} params 
+     * @returns {DataSwap}
+     * @created 2024-23-12
+     * @version 1.0.0
+     */
+    static async integratePcprodut(params) {
+        let result = new DataSwap();
+        try {
+            if (Utils.hasValue(params?.registers)) {
+                let identifierColumn= params.registers[0].identifier_column;
+                let ids = params.registers.map(el=>el.register_id);
+                result = await GroupsController.process_sql_condiction({items_where:`${identifierColumn} in (${ids.join(',')})`});
+                if (result?.success) {
+                    this.updateIntegratedDate(params);
+                }
+            } else {
+                result.success = true;
+            }
+        } catch (e) {
+            result.setException(e);
+        }
+        return result;
+    }
+
+    /**
+     * Get register for integration of origin integration (integration_control on origin).
+     * If exits function called "integrate{TableName}" then call it, else throw error (result.success = false) because
+     * integrate method not exists.
+     * @param {Object} params 
+     * @returns {DataSwap}
+     * @created 2024-22-11
+     * @version 1.0.0
+     */
+    static async integrateRegisters(params) {
+        let result = new DataSwap();
+        try {            
+            let registers = await Integration_Control.getModel().findAll({
+                raw:true,
+                attributes:[
+                    Sequelize.col(`${Integration_Control.tableName}.*`),
+                    [Sequelize.col(`${Integration_Tables.tableName}.schema_name`),'schema_name'],
+                    [Sequelize.col(`${Integration_Tables.tableName}.table_name`),'table_name'],
+                    [Sequelize.col(`${Integration_Tables.tableName}.identifier_column`),'identifier_column'],
+                ],
+                include:[{
+                    raw:true,    
+                    required:true,                
+                    model:Integration_Tables.getModel(),
+                    attributes:[],
+                    on:Sequelize.where(Sequelize.col(`${Integration_Tables.tableName}.id`),Sequelize.col(`${Integration_Control.tableName}.integration_table_id`))
+                }],
+                where:{                    
+                    integrated_at:{
+                        [Sequelize.Op.is]:null
+                    }
+                }
+            });
+
+            let messages = [];
+            if (Utils.hasValue(registers)) {
+                registers = Utils.arrayToObject(registers,"integration_table_id");
+                for (let k in registers) {                                    
+                    let tableName = registers[k][0].table_name;
+                    let funcKey = Utils.getKey(this,`integrate${tableName}`);
+                    if (Utils.hasValue(funcKey)) {
+                        let resultIntegrate = await this[funcKey]({registers:registers[k]});
+                        if (!resultIntegrate?.success) {
+                            messages.push(resultIntegrate?.message||'error');
+                        }
+                    } else {
+                        messages.push(`not has integrate method to ${tableName}`);
+                    }                    
+                }
+            }
+            if (Utils.hasValue(messages)) {
+                throw new Error(messages.join("."));
+            } else {
+                result.success = true;
+            }
+        } catch (e) {
+            result.setException(e);
+        }
+        return result;
+    }
+
+
+    /**
+     * Receive request for integrate_register of origin integration and handle it.
+     * @param {Object} req 
+     * @param {Object} res 
+     * @created 2024-22-12
+     * @version 1.0.0
+     */
+    static async req_integrate_registers(req,res) {
+        try {            
+            let result = await this.integrateRegisters(req.body);
+            res.setDataSwap(result);
+        } catch (e) {
+            res.setException(e);
+        }
+        res.sendResponse();
     }
 
 }
