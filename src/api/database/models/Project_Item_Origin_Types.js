@@ -25,7 +25,7 @@ class Project_Item_Origin_Types extends BaseTableModel {
       description: {
         type: DataTypes.TEXT
       },
-      anotations: {
+      notes: {
         type: DataTypes.TEXT
       },
       is_system: {

@@ -15,7 +15,7 @@ class Movement_Status extends BaseTableModel {
 
   static NOT_STARTED = 1;
   static STARTED = 2;
-  static STOPED = 3;
+  static STOPPED = 3;
   static CANCELED = 4;
   static CONCLUDED = 5;
 

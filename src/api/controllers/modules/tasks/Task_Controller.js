@@ -138,7 +138,7 @@ class Task_Controller extends RegistersController{
                         status_id=${Task_Status.RUNNING} 
                     where
                         user_id = ${pUserId}
-                        AND status_id = ${Task_Status.STOPED}
+                        AND status_id = ${Task_Status.STOPPED}
                         AND triggering_task_id in (${idsSubs.join(',')})
                 `;
                 await DBConnectionManager.getDefaultDBConnection().query(query);                    
@@ -185,7 +185,7 @@ class Task_Controller extends RegistersController{
                 where
                     t.id NOT IN (${idsPreserve.join(',')})
                     AND t.user_id = ${pIdUser}
-                    AND t.status_id = ${Task_Status.STOPED}
+                    AND t.status_id = ${Task_Status.STOPPED}
                     AND t.triggering_task_id = ${pIdTask}
             `;
             let [result,metadata] = await DBConnectionManager.getDefaultDBConnection().query(query,{type:QueryTypes.UPDATE});
@@ -194,7 +194,7 @@ class Task_Controller extends RegistersController{
                     update
                         ${Tasks_Status_Users.tableName}
                     set
-                        status_id=${Task_Status.STOPED}                        
+                        status_id=${Task_Status.STOPPED}                        
                     where
                         id NOT IN (${idsPreserve.join(',')})
                         AND id IN (${idsSups.join(',')})
@@ -387,7 +387,7 @@ class Task_Controller extends RegistersController{
 
             let taskX = await Tasks_Status_Users.getModel().create(taskXParams);
             if (taskX.status_id == Task_Status.RUNNING) {                
-                await Task_Controller.stopOthers(task.id, taskX.id, taskX.user_id, Task_Status.STOPED);
+                await Task_Controller.stopOthers(task.id, taskX.id, taskX.user_id, Task_Status.STOPPED);
                 await Task_Controller.updateSupStatusToRunning(task.id, taskX.user_id, taskX.status_id);                
             }     
             let query = this.mountQueryToGet(req,{where:{id:task.id}});
@@ -513,13 +513,13 @@ class Task_Controller extends RegistersController{
                 taskLogX = await Tasks_Status_Users_Logs.getModel().create(taskLogX);
 
                 if (taskLogX.new_status_id == Task_Status.RUNNING) {
-                    await Task_Controller.stopOthers(task.id,taskX.id, taskX.user_id, Task_Status.STOPED);
+                    await Task_Controller.stopOthers(task.id,taskX.id, taskX.user_id, Task_Status.STOPPED);
                     await Task_Controller.updateSupStatusToRunning(task.id,taskX.user_id, taskLogX.new_status_id);
                 } else if (Utils.hasValue(taskLogX.new_status_id)) {
                     await Task_Controller.updateSubStatus(task.id,taskX.user_id, taskLogX.new_status_id);                          
                     await Task_Controller.playOthers(task.id,taskX.id, taskX.user_id, Task_Status.RUNNING);
                     //update sups with new status if math rules
-                    if (taskLogX.new_status_id == Task_Status.STOPED) {
+                    if (taskLogX.new_status_id == Task_Status.STOPPED) {
                         let idSup = task.parent_id;
                         while(Utils.hasValue(idSup)) {
                             let query = `

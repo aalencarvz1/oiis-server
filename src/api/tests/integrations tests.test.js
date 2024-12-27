@@ -202,7 +202,7 @@ async function crudDelete(params) {
 }
 
 async function createData(tableName,valuesToCreate){
-    console.log('creating', tableName,valuesToCreate);
+    //console.log('creating', tableName,valuesToCreate);
     let fieldUpdate = Object.keys(valuesToCreate)[0] || 'name';
     valuesToCreate = valuesToCreate || {};
     let endPoint = `${baseApiEndPoint}${endPoints.registerscontroller.path}/${tableName}`;     
@@ -234,7 +234,7 @@ async function createData(tableName,valuesToCreate){
 }
 
 async function updateData(tableName,valuesToCreate){
-    console.log('updating', tableName,valuesToCreate);
+    //console.log('updating', tableName,valuesToCreate);
     let fieldUpdate = Object.keys(valuesToCreate)[0] || 'name';
     valuesToCreate = valuesToCreate || {};
     let endPoint = `${baseApiEndPoint}${endPoints.registerscontroller.path}/${tableName}`;     
@@ -1796,6 +1796,21 @@ describe('Running api call tests',()=>{
                             campaign_entity_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
                             campaign_kpi_result_id: parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
 
+                        }
+                    };
+                    getParamsToUpdate = getParamsToCreate;
+                break;                
+                case 'project_tasks_status_users':
+                    getParamsToCreate = ()=>{
+                        let tableName = 'project_tasks_status_users';
+                        let parentTableName = 'project_tasks';                        
+                        let parent = crudsToDelete.find(el=>el.tableName == parentTableName);
+                        let parentTableName2 = 'users';                        
+                        let parent2 = crudsToDelete.find(el=>el.tableName == parentTableName2);                 
+                        return {
+                            notes:testString,
+                            task_id: parent?.id.in[0] || ((datas[parentTableName]||[])[(datas[parentTableName]||[]).length-1]||{}).id || undefined,
+                            user_id: parent2?.id.in[0] || ((datas[parentTableName2]||[])[(datas[parentTableName2]||[]).length-1]||{}).id || undefined
                         }
                     };
                     getParamsToUpdate = getParamsToCreate;

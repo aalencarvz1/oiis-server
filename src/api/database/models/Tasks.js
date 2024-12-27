@@ -22,7 +22,7 @@ class Tasks extends BaseTableModel {
       description: {
         type: DataTypes.TEXT
       },
-      anotations: {
+      notes: {
         type: DataTypes.TEXT
       },
       forecast_start_moment: {
