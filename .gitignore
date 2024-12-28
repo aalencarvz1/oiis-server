@@ -130,7 +130,7 @@ src/api/assets/certificates/
 .yarn/install-state.gz
 .pnp.*
 
-/src/assets/certificates/*
+/src/api/assets/certificates/*
 *.pem
 *.cer
 *.key
