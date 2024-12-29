@@ -1,5 +1,8 @@
 import { Sequelize } from "sequelize";
 import Utils from "../controllers/utils/Utils.js";
+import config from "./config/config.js";
+import OracleDB from "oracledb";
+
 
 /**
  * Class to manage connections to database
@@ -33,7 +36,8 @@ export default class DBConnectionManager {
     static getDefaultDBConnection() : Sequelize | null {
         try {
             if (DBConnectionManager.#defaultDBConnection == null) {
-                let connectionConfig = configDB[`${process.env.NODE_ENV||'development'}`];
+                console.log('xxxxxxxx config',process.env.NODE_ENV, (config as any)[process.env.NODE_ENV||'development']);
+                let connectionConfig = (config as any)[`${process.env.NODE_ENV||'development'}`];
                 Utils.log('starting sequelize ', connectionConfig);
                 DBConnectionManager.#defaultDBConnection = new Sequelize(connectionConfig);                
             }
@@ -48,7 +52,7 @@ export default class DBConnectionManager {
     static getWinthorDBConnection() : Sequelize | null {
         try {
             if (DBConnectionManager.#winthorDBConnection == null) {
-                let connectionConfig = configDB[`${process.env.NODE_ENV||'development'}_winthor`];
+                let connectionConfig = (config as any)[`${process.env.NODE_ENV||'development'}_winthor`];
 
 
                 if (connectionConfig) {
@@ -74,7 +78,7 @@ export default class DBConnectionManager {
     static getConsultDBConnection() : Sequelize | null {
         try {
             if (DBConnectionManager.#consultDBConnection == null) {
-                let connectionConfig = configDB[`${process.env.NODE_ENV||'development'}_consult`];
+                let connectionConfig = (config as any)[`${process.env.NODE_ENV||'development'}_consult`];
 
 
                 if (connectionConfig) {
@@ -99,7 +103,7 @@ export default class DBConnectionManager {
     static getEpDBConnection() : Sequelize | null {
         try {
             if (DBConnectionManager.#epDBConnection == null) {
-                let connectionConfig = configDB[`${process.env.NODE_ENV||'development'}_ep`];
+                let connectionConfig = (config as any)[`${process.env.NODE_ENV||'development'}_ep`];
 
 
                 if (connectionConfig) {
@@ -125,7 +129,7 @@ export default class DBConnectionManager {
     static getOldDBConnection() : Sequelize | null {
         try {
             if (DBConnectionManager.#oldDBConnection == null) {
-                let connectionConfig = configDB[`${process.env.NODE_ENV||'development'}_old`];
+                let connectionConfig = (config as any)[`${process.env.NODE_ENV||'development'}_old`];
 
                 if (connectionConfig) {
 
@@ -150,7 +154,7 @@ export default class DBConnectionManager {
     static getWinthorIntegrationDBConnection() : Sequelize | null {
         try {
             if (DBConnectionManager.#winthorIntegrationConnection == null) {
-                let connectionConfig = configDB[`${process.env.NODE_ENV||'development'}_winthor_integration`];
+                let connectionConfig = (config as any)[`${process.env.NODE_ENV||'development'}_winthor_integration`];
 
                 if (connectionConfig) {
 
@@ -176,7 +180,7 @@ export default class DBConnectionManager {
     static getExternalDataDBConnection() : Sequelize | null {
         try {
             if (DBConnectionManager.#externalDataConnection == null) {
-                let connectionConfig = configDB[`${process.env.NODE_ENV||'development'}_external_data`];
+                let connectionConfig = (config as any)[`${process.env.NODE_ENV||'development'}_external_data`];
 
                 if (connectionConfig) {
 

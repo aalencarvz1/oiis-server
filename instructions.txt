@@ -1,0 +1,8 @@
+node_modules\sequelize\types\dialects\abstract\query-interface.d.ts
+update bulk insert method to support BulkCreateOptions
+public bulkInsert(
+    tableName: TableName,
+    records: object[],
+    options?: BulkCreateOptions,//QueryOptions,
+    attributes?: Record<string, ModelAttributeColumnOptions>
+): Promise<object | number>;

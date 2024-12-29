@@ -1,0 +1,80 @@
+import Access_Profiles from "../../database/models/Access_Profiles.js";
+import Action_Status from "../../database/models/Action_Status.js";
+import Collaborators from "../../database/models/Collaborators.js";
+import Connections from "../../database/models/Connections.js";
+import Contexts from "../../database/models/Contexts.js";
+import Data_Origins from "../../database/models/Data_Origins.js";
+import Data_Types from "../../database/models/Data_Types.js";
+import Entities_Types from "../../database/models/Entities_Types.js";
+import Errors from "../../database/models/Errors.js";
+import Greatnesses from "../../database/models/Greatnesses.js";
+import Identifier_Types from "../../database/models/Identifier_Types.js";
+import Logs from "../../database/models/Logs.js";
+import Measurement_Units from "../../database/models/Measurement_Units.js";
+import Parameter_Values from "../../database/models/Parameter_Values.js";
+import Parameters from "../../database/models/Parameters.js";
+import People from "../../database/models/People.js";
+import Record_Status from "../../database/models/Record_Status.js";
+import Run_Status from "../../database/models/Run_Status.js";
+import Schemas from "../../database/models/Schemas.js";
+import Sync_Status from "../../database/models/Sync_Status.js";
+import Tables from "../../database/models/Tables.js";
+import User_Tokens from "../../database/models/User_Tokens.js";
+import Users from "../../database/models/Users.js";
+
+
+export default class ModelsController {
+    static async initModels(){
+        Errors.initModel();
+        Logs.initModel();
+        Tables.initModel();
+        Connections.initModel();
+        Schemas.initModel();
+        Contexts.initModel();
+        Entities_Types.initModel();
+        Data_Types.initModel();
+        Action_Status.initModel();
+        Parameters.initModel();
+        Parameter_Values.initModel();
+        Data_Origins.initModel();
+        Record_Status.initModel();
+        Sync_Status.initModel();
+        Run_Status.initModel();
+        Identifier_Types.initModel();
+        Greatnesses.initModel();
+        Measurement_Units.initModel();
+        People.initModel();
+        Collaborators.initModel();
+        Access_Profiles.initModel();
+        Users.initModel();
+        User_Tokens.initModel();
+
+        await this.initAssociations();
+    }
+
+    static async initAssociations() {
+        await Errors.initAssociations();
+        await Logs.initAssociations();
+        await Tables.initAssociations();
+        await Connections.initAssociations();
+        await Schemas.initAssociations();
+        await Contexts.initAssociations();
+        await Entities_Types.initAssociations();
+        await Data_Types.initAssociations();
+        await Action_Status.initAssociations();
+        await Parameters.initAssociations();
+        await Parameter_Values.initAssociations();
+        await Data_Origins.initAssociations();
+        await Record_Status.initAssociations();
+        await Sync_Status.initAssociations();
+        await Run_Status.initAssociations();
+        await Identifier_Types.initAssociations();
+        await Greatnesses.initAssociations();
+        await Measurement_Units.initAssociations();
+        await People.initAssociations();
+        await Collaborators.initAssociations();
+        await Access_Profiles.initAssociations();
+        await Users.initAssociations();
+        await User_Tokens.initAssociations();
+    }
+}

@@ -123,8 +123,12 @@ export default class Utils {
         return Utils.typeOf(obj) == "array";
     }
 
-
-    static hasValue(pValue : any){
+    /**
+     * 
+     * @param {any} pValue 
+     * @returns {boolean}
+     */
+    static hasValue<T>(pValue: T | null | undefined) : pValue is T {
         let result = false;
         let tpof = Utils.typeOf(pValue);
         if (tpof !== "undefined" && pValue != null) {
@@ -136,11 +140,11 @@ export default class Utils {
                     result = true;
                 } 
             } else if (tpof == "array") {
-                if (pValue.length > 0) {
+                if ((pValue as any[]).length > 0) {
                     result = true;
                 }
             } else if (tpof == "string") {
-                if (pValue.trim().length > 0) {
+                if ((pValue as string).trim().length > 0) {
                     result = true;
                 }
             } else {
