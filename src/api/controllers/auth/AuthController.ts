@@ -1,8 +1,14 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, RequestHandler, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import RegistersController from "../modules/registers/RegistersController.js";
 import Utils from "../utils/Utils.js";
+import config from "../../config.js";
+import validator  from "email-validator";
+import { createTransport } from "nodemailer";
+import Users from "../../database/models/Users.js";
+import User_Tokens from "../../database/models/User_Tokens.js";
+import Access_Profiles from "../../database/models/Access_Profiles.js";
 
 /**
  * class to handle authentication
@@ -13,7 +19,7 @@ export default class AuthController extends RegistersController{
     static #cryptSalt : number = 10;    
     static userEmail = process.env.API_EMAIL || "jumbo.ti@jumboalimentos.com.br";
     static userEmailPassword = process.env.API_EMAIL_PASSWORD || "1#__Racnela07__XY##Z";
-    static #mailTransport = null;
+    static #mailTransport : any = null;
 
     /**
      * unsecure routes
@@ -42,22 +48,22 @@ export default class AuthController extends RegistersController{
      * api login method
      * @returns object with token
      */
-    static async login(req: Request,res: Response,next: NextFunction) {
+    static login : RequestHandler = async function(req: Request,res: Response,next: NextFunction) {
         let body = req.body || {};
         if (!body.email || !body.password) return res.sendResponse(401,false,'missing data');
-        let user = await Users.getModel().findOne({
+        let user : Users | null = await Users.findOne({
             where:{email:(body.email||'').trim().toLowerCase()}
         });        
         if (!user) return res.sendResponse(401,false,'user not found'); 
         if (!bcrypt.compareSync(body.password, user.password)) return res.sendResponse(401,false,'password not match'); 
-        let token = jwt.sign({id: user.id,access_profile_id:user.access_profile_id},process.env.API_SECRET, {expiresIn:/*process.env.API_TOKEN_EXPIRATION*/10});
-        let refreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, process.env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
+        let token = jwt.sign({id: user.id,access_profile_id:user.access_profile_id},(process as any).env.API_SECRET, {expiresIn:/*process.env.API_TOKEN_EXPIRATION*/10});
+        let refreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, (process as any).env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
         
         user.last_token = token;
         user.last_timezone_offset = body?.currentTimeZoneOffset || 0;
         await user.save();
 
-        let userToken = await User_Tokens.getModel().findOne({
+        let userToken : User_Tokens | null = await User_Tokens.findOne({
             where:{
                 user_id: user.id,
                 token: token            
@@ -65,7 +71,7 @@ export default class AuthController extends RegistersController{
         })
         if (!Utils.hasValue(userToken)) {
             try {
-                await User_Tokens.getModel().create({
+                await User_Tokens.create({
                     user_id: user.id,
                     token: token,
                     timezone_offset: user.last_timezone_offset
@@ -83,7 +89,7 @@ export default class AuthController extends RegistersController{
             .sendResponse(200,true,'logged',{token:token,refreshToken:refreshToken,user:user});
     }
 
-    static async basicAuth(req: Request, res: Response, next: NextFunction) {        
+    static basic_auth : RequestHandler = async function(req: Request, res: Response, next: NextFunction) {        
         try {
             // check for basic auth header
             if (!req.headers.authorization || req.headers.authorization.indexOf('Basic ') === -1) {
@@ -94,7 +100,7 @@ export default class AuthController extends RegistersController{
             const base64Credentials =  req.headers.authorization.split(' ')[1];
             const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
             const [username, password] = credentials.split(':');
-            let user = await Users.getModel().findOne({where:{email:(username||'').trim().toLowerCase()}});
+            let user : Users | null = await Users.findOne({where:{email:(username||'').trim().toLowerCase()}});
             if (!user) return res.sendResponse(401,false,'user not found'); 
             if (!bcrypt.compareSync(password, user.password)) return res.sendResponse(401,false,'password not match'); 
             
@@ -102,9 +108,9 @@ export default class AuthController extends RegistersController{
             // attach user to request object
             req.user = user
             next();
-        } catch (e) {
+        } catch (e: any) {
             Utils.logError(e);
-            res.sendResponse(517,false,e.message || e);
+            res.sendResponse(517,false,e?.message || e);
         }
     }
 
@@ -113,24 +119,27 @@ export default class AuthController extends RegistersController{
      * api refreshToken method
      * @returns object with token
      */
-    static async refreshToken(req: Request,res: Response,next: NextFunction) {
+    static refresh_token : RequestHandler = async function(req: Request,res: Response,next: NextFunction) {
         let refreshToken = req.cookies.refreshToken || req.body.refreshToken;
-        if (!refreshToken) return res.status(401).json({success:false,message:'no refresh token'});
-        jwt.verify(refreshToken,process.env.API_REFRESH_SECRET,async function(error,decoded) {
+        if (!refreshToken) {
+            res.status(401).json({success:false,message:'no refresh token'});
+            return;
+        }
+        jwt.verify(refreshToken,(process as any).env.API_REFRESH_SECRET,async function(error: any,decoded: any) {
             if (error) return res.status(401).json({success:false,message:error.message || error});
             req.user = {id:decoded.id};  
             if (Utils.hasValue(req.user.id)) {
-                let user = await Users.getModel().findOne({where:{id:req.user.id}});
+                let user : Users | null = await Users.findOne({where:{id:req.user.id}});
                 if (!user) return res.sendResponse(401,false,'user not found'); 
 
-                let token = jwt.sign({id: decoded.id},process.env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});            
-                let newRefreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, process.env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
+                let token = jwt.sign({id: decoded.id},(process as any).env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});            
+                let newRefreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, (process as any).env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
 
                 user.last_token = token;
                 user.last_timezone_offset = req.body?.currentTimeZoneOffset || 0;
                 await user.save();
 
-                let userToken = await User_Tokens.getModel().findOne({
+                let userToken : User_Tokens | null = await User_Tokens.findOne({
                     where:{
                         user_id: user.id,
                         token: token            
@@ -138,18 +147,18 @@ export default class AuthController extends RegistersController{
                 });
                 if (!userToken) {
                     try {
-                        await User_Tokens.getModel().create({
+                        await User_Tokens.create({
                             user_id: user.id,
                             token: token,
-                            TIMEZONEOFFSET: user.last_timezone_offset
+                            timezone_offset: user.last_timezone_offset
                         });
-                    } catch (ex) {
+                    } catch (ex: any) {
                         if (ex.name.trim().toLowerCase().indexOf('unique') == -1) {
                             throw ex;
                         } //else async other request already inserted new user token at same time
                     }
                 } else {
-                    userToken.TIMEZONEOFFSET = user.last_timezone_offset;
+                    userToken.timezone_offset = user.last_timezone_offset;
                     await userToken.save();
                 }
                 //jwt.destroy(refreshToken);
@@ -168,29 +177,34 @@ export default class AuthController extends RegistersController{
      * api register method
      * @returns object with token
      */
-    static async register(req: Request,res: Response,next: NextFunction) {
+    static register : RequestHandler = async function(req: Request,res: Response,next: NextFunction) {
         let body = req.body || {};
         if (!body.email || !body.password) return res.sendResponse(401,false,'missing data');
         if (body.password.trim().length < 8) return res.sendResponse(401,false,'password < 8');
-        let user = await Users.getModel().findOne({where:{email:(body.email||'').trim().toLowerCase()}},{raw:true});
+        let user : Users | null = await Users.findOne({
+            raw:true,
+            where:{
+                email:(body.email||'').trim().toLowerCase()
+            }
+        });
         if (user) return res.sendResponse(401,false,'user already register'); 
-        user = await Users.getModel().create({
+        user = await Users.create({
             creator_user_id : Users.SYSTEM,
             access_profile_id : Access_Profiles.DEFAULT,
             email:(req.body.email||'').trim().toLowerCase(),
-            password: bcrypt.hashSync(req.body.password,(process.env.API_USER_PASSWORD_CRIPTSALT||10)-0)
+            password: bcrypt.hashSync(req.body.password,((process as any).env.API_USER_PASSWORD_CRIPTSALT||10)-0)
         });
-        let token = jwt.sign({id: user.id,access_profile_id:user.access_profile_id},process.env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});
-        let refreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, process.env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
+        let token = jwt.sign({id: user.id,access_profile_id:user.access_profile_id},(process as any).env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});
+        let refreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, (process as any).env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
 
         user.last_token = token;
         user.last_timezone_offset = req.body?.currentTimeZoneOffset || 0;
         await user.save();
 
-        await User_Tokens.getModel().create({
+        await User_Tokens.create({
             user_id: user.id,
             token: token,
-            TIMEZONEOFFSET: user.last_timezone_offset
+            timezone_offset: user.last_timezone_offset
         });
 
         res.cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict', maxAge: 24 * 60 * 60 * 1000 })
@@ -201,7 +215,7 @@ export default class AuthController extends RegistersController{
     /**
      * middleware check autorization, called by all routes (app.use)
      */
-    static checkToken(req: Request,res: Response,next: NextFunction) {      
+    static check_token : RequestHandler = function(req: Request,res: Response,next: NextFunction) : void {      
         if (AuthController.#unsecureRoutes.find(el=>req.url.trim().toLowerCase().indexOf(el.trim().toLowerCase()) === 0)
             && (
             !Utils.hasValue(req.headers['x-access-token'])
@@ -219,12 +233,14 @@ export default class AuthController extends RegistersController{
             if (!token) {
                 let authorization = req.headers['authorization'];
                 if (Utils.hasValue(authorization)) {
-                    return AuthController.basicAuth(req,res,next);
+                    AuthController.basic_auth(req,res,next);
+                    return;
                 } else {                
-                    return res.status(401).json({success:false,message:'no token'});
+                    res.status(401).json({success:false,message:'no token'});
+                    return;
                 }
             }
-            jwt.verify(token,process.env.API_SECRET,function(error,decoded) {
+            jwt.verify(token,(process as any).env.API_SECRET,function(error:any,decoded:any) {
                 if (error) return res.status(401).json({success:false,message:error.message || error});
                 req.user = decoded;
                 next();
@@ -232,14 +248,14 @@ export default class AuthController extends RegistersController{
         }
     }
 
-    static async sendEmailRecoverPassword(req: Request,res: Response, next: NextFunction){
+    static send_email_recover_password : RequestHandler = async function(req: Request,res: Response, next: NextFunction) {
         try {
             let email = req.body.email;
             let path = req.body.path;
             if (Utils.hasValue(email)) {
                 if (validator.validate(email)) {
 
-                    let user = await Users.getModel().findOne({
+                    let user = await Users.findOne({
                         raw:true,
                         where:{
                             email:email
@@ -249,16 +265,16 @@ export default class AuthController extends RegistersController{
 
                     if (user) {
 
-                        AuthController.#mailTransport = AuthController.#mailTransport || createTransport(config[`smtp_${process.env.NODE_ENV||'development'}`]);
+                        AuthController.#mailTransport = AuthController.#mailTransport || createTransport((config as any)[`smtp_${process.env.NODE_ENV||'development'}`]);
                         let verify = await AuthController.#mailTransport.verify();
                         if (verify === true) {
 
-                            let token = jwt.sign({id: user.id},process.env.API_RECOVER_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});
+                            let token = jwt.sign({id: user.id},(process as any).env.API_RECOVER_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});
 
                             let response = await AuthController.#mailTransport.sendMail({
-                                from:config[`smtp_${process.env.NODE_ENV||'development'}`]?.auth?.user || process.env.EMAIL,
+                                from:(config as any)[`smtp_${process.env.NODE_ENV||'development'}`]?.auth?.user || process.env.EMAIL,
                                 to: email,
-                                subject: config[`app_${process.env.NODE_ENV||'development'}`] || process.env.API_NAME || 'Api' + '-Recuperacao de senha',
+                                subject: (config as any)[`app_${process.env.NODE_ENV||'development'}`] || process.env.API_NAME || 'Api' + '-Recuperacao de senha',
                                 text: `Acesse este link para criar uma nova senha: ${path}/${token}`,
                                 html: `Acesse este link para criar uma nova senha: <br /><a href="${path}/${token}">Alterar senha</a>`,
                             });
@@ -279,18 +295,18 @@ export default class AuthController extends RegistersController{
             } else {
                 res.sendResponse(517,false,"empty email");
             }
-        } catch(e) {
+        } catch(e: any) {
             Utils.logError(e);
-            res.sendResponse(517,false,e.message || e);
+            res.sendResponse(517,false,e?.message || e);
         }
     }
 
     static async recover(req: Request,res: Response,next: NextFunction) {
-        AuthController.sendEmailRecoverPassword(req,res,next);
+        AuthController.send_email_recover_password(req,res,next);
     }
 
-    static async passwordChange(req: Request,res: Response,next: NextFunction) {        
-        Utils.logi(`${this.name}`,`passwordChange`);
+    static password_change : RequestHandler = async function(req: Request,res: Response,next: NextFunction) {        
+        //Utils.logi(`${this.name}`,`passwordChange`);
         try {            
             let token = req.body.token || '';
             let password = req.body.password || '';
@@ -298,15 +314,15 @@ export default class AuthController extends RegistersController{
                 res.sendResponse(517,false,"missing data");
             } else {
                 if (password.trim().length < 8) return res.sendResponse(401,false,'password < 8');
-                jwt.verify(token,process.env.API_RECOVER_SECRET,async function(error,decoded) {
+                jwt.verify(token,(process as any).env.API_RECOVER_SECRET,async function(error: any,decoded: any) {
                     if (error) return res.status(401).json({success:false,message:error.message || error});
-                    let user = await Users.getModel().findOne({
+                    let user : Users | null = await Users.findOne({
                         where:{
                             id:decoded.id
                         }
                     });
                     if (user) {
-                        user.password = bcrypt.hashSync(password,(process.env.API_USER_PASSWORD_CRIPTSALT||10)-0);
+                        user.password = bcrypt.hashSync(password,((process as any).env.API_USER_PASSWORD_CRIPTSALT||10)-0);
 
                         await user.save();
                         return res.sendResponse(200,true);
@@ -319,7 +335,7 @@ export default class AuthController extends RegistersController{
             Utils.logError(e);
             res.sendResponse(517,false,e?.message || e);
         }
-        Utils.logf(`${this.name}`,`passwordChange`);
+        //Utils.logf(`${this.name}`,`passwordChange`);
     }
 
 }

@@ -25,7 +25,7 @@ export default class Midia_Controller extends RegistersController{
                 for(let key in registers) {
                     let file = req.files.filter(el=>el.originalname.trim().toLowerCase() == registers[key].name.trim().toLowerCase())[0];
                     if (Utils.hasValue(file)) {
-                        tablesRefs[registers[key].table_name] = tablesRefs[registers[key].table_name] || await Tables.getModel().findOne({
+                        tablesRefs[registers[key].table_name] = tablesRefs[registers[key].table_name] || await Tables.findOne({
                             raw:true,
                             where:{
                                 name: registers[key].table_name.trim().toLowerCase()
@@ -33,7 +33,7 @@ export default class Midia_Controller extends RegistersController{
                         });
 
                         if (registers[key].server_id) {
-                            midia = await Midias.getModel().findOne({
+                            midia = await Midias.findOne({
                                 where:{
                                     id:registers[key].server_id
                                 }
@@ -46,7 +46,7 @@ export default class Midia_Controller extends RegistersController{
                             midia.local_path=file.path;
                             await midia.save();
                         } else {
-                            midia = await Midias.getModel().create({
+                            midia = await Midias.create({
                                 table_ref_id : tablesRefs[registers[key].table_name].id,
                                 record_ref_id: registers[key].record_ref_id,
                                 name: file.filename,

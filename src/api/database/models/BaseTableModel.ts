@@ -3,28 +3,18 @@ import DBConnectionManager from "../DBConnectionManager.js";
 import Utils from "../../controllers/utils/Utils.js";
 import { Request } from "express";
 import DataSwap from "../../controllers/data/DataSwap.js";
-import config from "../config.js";
+import DatabaseUtils from "../../controllers/database/DatabaseUtils.js";
+import config from "../config/config.js";
+import { fileURLToPath, pathToFileURL } from "url";
+import path from "path";
 
 /**
  * class model
  */
 export default class BaseTableModel extends Model { 
-    static configDB : any = (config as any)[process.env.NODE_ENV || 'development'];
-    static schema = this.configDB?.database;  
-    static id : number;
-    static tableName : string;
-    static model : Model | null; 
-    static fields : any;
-    static constraints : any[];
-    static foreignsKeys: any[];
-    static getConnection: Function = DBConnectionManager.getDefaultDBConnection;
-
-    static primaryKeysFieldsNames : any;
-    static removeAttr:any;
 
 
-    continuar aqui, fazer modelo como na documentacao, excluir a propriedade model e tratar a classe como model mesmo
-
+    //table fields
     declare id: number;
     declare parent_id: number;
     declare status_reg_id: number;
@@ -37,6 +27,22 @@ export default class BaseTableModel extends Model {
     declare deleted_at: Date;
     declare is_sys_rec: number;
 
+
+    static configDB : any = (config as any)[process.env.NODE_ENV || 'development'];
+    static schema = this.configDB?.database;  
+    static id : number;
+    static tableName : string = this.name.toLowerCase();
+    static model : Model | null; 
+    static fields : any;
+    static constraints : any[];
+    static foreignsKeys: any[];
+    static getConnection: Function = DBConnectionManager.getDefaultDBConnection;
+
+    static primaryKeysFieldsNames : any;
+    static removeAttr:any;
+    static __dirname = path.dirname(fileURLToPath(import.meta.url));
+    
+    
     
     static getBaseTableModelFields = () => {
         return {
@@ -216,7 +222,7 @@ export default class BaseTableModel extends Model {
      * @async (pay attention to await)
      * @created 2023-11-10
      */
-    static async migrateForeignKeyContraint(queryInterface: QueryInterface, pClassModelRef?: BaseTableModel) {
+    static async migrateForeignKeyContraint(queryInterface: QueryInterface, pClassModelRef?: typeof BaseTableModel) {
         for(let i in (this.foreignsKeys || [])) {
             let foreignKey : any = {};
             if (typeof this.foreignsKeys[i] === 'object') {
@@ -243,9 +249,12 @@ export default class BaseTableModel extends Model {
                 }
                 foreignKey.references.table = foreignKey.references.table.split('.');
                 foreignKey.references.table = foreignKey.references.table[1] || foreignKey.references.table[0];
+                if (foreignKey.references.table.trim().toLowerCase().indexOf('base') === 0 && foreignKey.references.table.trim().toLowerCase().indexOf('model') > -1) {
+                    foreignKey.references.table = this.tableName;
+                }
 
                 //migrate all foreign keys or only specific model ref parameter
-                if (!pClassModelRef || (foreignKey.references.table.trim().toLowerCase() == pClassModelRef.tableName.trim())) {
+                if (!pClassModelRef || (foreignKey.references.table.trim().toLowerCase() == (pClassModelRef as any).tableName.trim())) {
                     if (!foreignKey.name) {
                         foreignKey.name = this.tableName + '_fk' + i;
                     }
@@ -264,7 +273,7 @@ export default class BaseTableModel extends Model {
      * @async (pay attention to await)
      * @created 2023-11-10
      */
-    static async runUpMigration(queryInterface: QueryInterface, options: any) {
+    static async runUpMigration(queryInterface: QueryInterface, options?: any) {
         options = options || {};
         await queryInterface.createTable(this.tableName, this.fields);
         await this.migrateConstraints(queryInterface);    
@@ -275,10 +284,7 @@ export default class BaseTableModel extends Model {
             data_connection_id : this.configDB?.id,
             schema_id : this.configDB?.id,
             name : this.tableName
-        }],{
-            ignoreDuplicates:true,
-            updateOnDuplicate:null
-        });
+        }]);
         if (Object.keys(options).indexOf('migrateForeignKeyContraint') == -1) options.migrateForeignKeyContraint = true;
         if (options.migrateForeignKeyContraint == true) {
             await this.migrateForeignKeyContraint(queryInterface);              
@@ -291,8 +297,7 @@ export default class BaseTableModel extends Model {
      * @static (pay attention to bindings)
      * @created 2023-11-10
      */
-    static associates() {
-        let ignoredForeignsKeys = 0;
+    static async associates() {
         let tableRefClassModel = null;
         try {
             for(let i in (this.foreignsKeys || [])) {
@@ -300,25 +305,24 @@ export default class BaseTableModel extends Model {
                 tableRefClassModel = this.foreignsKeys[i].references.table || this; //for re-declare if necessary
                 if (typeof tableRefClassModel == 'string') {
 
+                    if (tableRefClassModel.trim().toLocaleLowerCase().indexOf('base') === 0 && tableRefClassModel.trim().toLocaleLowerCase().indexOf('model') > -1) {
+                        tableRefClassModel = this.tableName;
+                    }
+
                     //require.cache is case sensitive, avoid reload cached model
-                    let path = require.resolve(`./${tableRefClassModel.toLowerCase().indexOf('pc') === 0 ? 'winthor/':''}${tableRefClassModel}`).toLowerCase();
-                    let ind = Object.keys(require.cache).join(',').toLowerCase().split(',').indexOf(path);
-                    if (ind > -1) {
-                        let keyCache = Object.keys(require.cache)[ind];                        
-                        let realKey : string | null = Utils.getKey(require.cache[keyCache]?.exports,tableRefClassModel);
-                        if (Utils.hasValue(realKey)) {
-                            tableRefClassModel = require.cache[keyCache]?.exports[realKey];
-                        } else {
-                            tableRefClassModel = require.cache[keyCache]?.exports;
-                        }
+                    let fullPath = path.join(this.__dirname,(tableRefClassModel.toLowerCase().indexOf('pc') === 0 ? 'winthor/':'') + tableRefClassModel + ".js");
+                    Utils.log('loading',fullPath);
+                    const fileUrl = pathToFileURL(fullPath);
+                    const module = await import(fileUrl.href);
+
+                
+                    let realKey = Utils.getKey(module,tableRefClassModel);
+                    if (Utils.hasValue(realKey)) {
+                        tableRefClassModel = module[realKey];
+                    } else if (Utils.hasValue(module.default)) {
+                        tableRefClassModel = module.default;
                     } else {
-                        let tempp = require(`./${tableRefClassModel.toLowerCase().indexOf('pc') === 0 ? 'winthor/' : ''}${tableRefClassModel}`);
-                        let realKey = Utils.getKey(tempp,tableRefClassModel);
-                        if (Utils.hasValue(realKey)) {
-                            tableRefClassModel = tempp[realKey];
-                        } else {
-                            tableRefClassModel = tempp;
-                        }
+                        tableRefClassModel = module;
                     }
                 }    
                 let model = null;
@@ -331,14 +335,15 @@ export default class BaseTableModel extends Model {
                     sourceKey: this.foreignsKeys[i].references.fields?.join(',') || this.foreignsKeys[i].references.field,
                     foreignKey : columnForeign
                 };
+                console.log('yyyyyyyy',tableRefClassModel.default);
                 if (tableRefClassModel.tableName.trim() == this.tableName.trim().toLowerCase()) {
-                    model = this.model;
+                    model = this;
                 } else {
-                    model = tableRefClassModel.getModel();
+                    model = tableRefClassModel;
                 }                
                 if (model) {
-                    let hasMany = model.hasMany(this.model,hasManyParams);
-                    let belongsTo = this.model?.belongsTo(model,belongsToParams);
+                    let hasMany = model.hasMany(this,hasManyParams);
+                    let belongsTo = this.belongsTo(model,belongsToParams);
                 }                
             }            
         } catch(e) {
@@ -352,12 +357,11 @@ export default class BaseTableModel extends Model {
      * @static (pay attention to bindings)
      * @created 2023-11-10
      */
-    static initModel(pSequelize: any) : Model {
-        let model : Model | null = null;
+    static initModel(pSequelize?: any) : void {
         try {
             pSequelize = pSequelize || this.getConnection();  
             if (pSequelize) {
-                model = Model.defin(this.fields,{
+                this.init(this.fields,{
                     sequelize: pSequelize,
                     underscored:false,
                     freezeTableName:true,
@@ -372,25 +376,17 @@ export default class BaseTableModel extends Model {
                 });
             }
             if (Utils.hasValue(this.removeAttr)) {
-                model?.removeAttribute(this.removeAttr);
-            }            
+                this.removeAttribute(this.removeAttr);
+            } 
+            if (!Utils.hasValue(this.associations))
+                this.associates();           
         } catch (e) {
             Utils.logError(e);
         }
-        return model;
-    }
-
-    static getModel(pSequelize: any ) {
-        if (this.model == null) {
-            this.model = this.initModel(pSequelize);
-            if (!Utils.hasValue(this.model.associations))
-                this.associates();
-        }
-        return this.model;
-    }
+    }    
       
-    static initAssociations() {
-        this.associates();
+    static async initAssociations() {
+        await this.associates();
     }
 
     /**
@@ -399,20 +395,20 @@ export default class BaseTableModel extends Model {
      * @async (pay attention to await)
      * @created 2023-11-10
      */
-    static async createIfNotExists(queryParams: any , newValues: any){
-        let reg = await this.getModel().findOne(queryParams);
+    static async createIfNotExists(queryParams: any , newValues: any) {
+        let reg : any = await this.findOne(queryParams);
         if(!reg && queryParams.transaction) {
             let transactionTemp = queryParams.transaction;
             queryParams.transaction = undefined;
             delete queryParams.transaction;
-            reg = await this.getModel().findOne(queryParams);
+            reg = await this.findOne(queryParams);
             queryParams.transaction = transactionTemp;
         }
         if (!reg) {
             let options : any = {};            
             if (queryParams.transaction) options.transaction = queryParams.transaction;        
             let values = newValues || queryParams.where;
-            reg = await this.getModel().create(values,options);
+            reg = await this.create(values,options);
         }
         return reg;
     }
@@ -433,7 +429,7 @@ export default class BaseTableModel extends Model {
      */
     static async createData(params: any,returnRaw: boolean = true) {
         let queryParams = params.queryParams?.values || params.values || params.queryParams || params || {};
-        let result = await this.getModel().create(queryParams);
+        let result = await this.create(queryParams);
         if (typeof this.getData === 'function' && returnRaw !== false && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(result.id) || result
         else return result;
     }
@@ -446,17 +442,17 @@ export default class BaseTableModel extends Model {
      * @async (pay attention to await)
      * @created 2023-11-10
      */
-    static async getData(params: any, req: Request) {
+    static async getData(params: any, req?: Request) {
         let queryParams = await DatabaseUtils.prepareQueryParams(params.queryParams || params || {});
         if (queryParams.raw !== false) queryParams.raw = true; 
         if (queryParams.query) {
             return await this.getConnection().query(queryParams.query,{raw:queryParams.raw,type:QueryTypes.SELECT});
         } else {
-            if ((this.accessLevel || 1) == 2 && Utils.hasValue(params.req || req)) {
+            if (((this as any).accessLevel || 1) == 2 && Utils.hasValue(params.req || req)) {
                 queryParams.where = queryParams.where || {};
                 queryParams.where.creator_user_id = (params.req || req).user?.id
             }
-            return await this.getModel().findAll(queryParams);
+            return await this.findAll(queryParams);
         }        
     }    
 
@@ -468,15 +464,15 @@ export default class BaseTableModel extends Model {
      * @created 2023-11-10
      */
     static async updateData(params: any) {
-        let reg = null;
+        let reg : any = null;
         let values = params.values || params.queryParams?.values || params.queryParams || params ;                
         params.where = params.where || params.queryParams?.where || null;
         let primaryKeysFieldsNames = this.getPrimaryKeysFieldsNames();
         if (Utils.hasValue(params.where)) {
-            reg = await this.getModel().findOne(params);
+            reg = await this.findOne(params);
         } else if (values.id) { 
             params.where = {id:values.id}
-            reg = await this.getModel().findOne({where:params.where,transaction:params.transaction});
+            reg = await this.findOne({where:params.where,transaction:params.transaction});
         } else {            
             
             if (primaryKeysFieldsNames.length > 0) {
@@ -490,7 +486,7 @@ export default class BaseTableModel extends Model {
                     }
                 }
                 if (Object.keys(params.where).length > 0) {
-                    reg = await this.getModel().findOne({where:params.where,transaction:params.transaction});
+                    reg = await this.findOne({where:params.where,transaction:params.transaction});
                 } else {
                     throw new Error('missing data (primary key)');    
                 }
@@ -499,7 +495,7 @@ export default class BaseTableModel extends Model {
             }
         }
         let hasPrimaryKeyOnUpdate = false;
-        let valuesToUpdate = {};
+        let valuesToUpdate : any = {};
         if (reg) {
             for(let key in values) {
                 if (key != 'id' && key != 'where') {
@@ -527,11 +523,11 @@ export default class BaseTableModel extends Model {
                 }
             }
             if (hasPrimaryKeyOnUpdate) {
-                const updateSQL = this.getModel().queryGenerator.updateQuery(
+                const updateSQL = (this as any).queryGenerator.updateQuery(
                     this.getTableName(),
                     valuesToUpdate,
                     params.where,
-                    this.getModel()
+                    this
                 );
                 Utils.log(updateSQL);
                 let resultUpdate = await this.getConnection().query(updateSQL,{type:QueryTypes.UPDATE,transaction:params.transaction});                
@@ -583,11 +579,11 @@ export default class BaseTableModel extends Model {
                     } 
                 }
             }
-            let regs = await this.getModel().findAll({
+            let regs = await this.findAll({
                 where:where
             });
             if (regs && regs.length) {
-                await this.getModel().destroy({
+                await this.destroy({
                     where:where
                 });
                 return true;
@@ -606,7 +602,7 @@ export default class BaseTableModel extends Model {
             queryParams.raw = queryParams.raw !== false ? true : queryParams.raw;
             queryParams.limit = queryParams.limit || 1;
             queryParams.transaction = queryParams.transaction || params.transaction;
-            result.data = await this.getModel().findOne(queryParams);
+            result.data = await this.findOne(queryParams);
             if (!result.data) {
                 if (params.createMethod)  {
                     let paramsToCreateMethod = {...queryParams.where,...(queryParams.values||{})};
@@ -615,7 +611,7 @@ export default class BaseTableModel extends Model {
                     } 
                     result = await params.createMethod.bind(this)(paramsToCreateMethod);
                 } else {
-                    result.data = await this.getModel().create({...queryParams.where,...(queryParams.values||{})},{transaction:params.transaction});
+                    result.data = await this.create({...queryParams.where,...(queryParams.values||{})},{transaction:params.transaction});
                     if (result.data) {
                         if (queryParams.raw)
                             result.data = result.data.dataValues;
@@ -636,12 +632,12 @@ export default class BaseTableModel extends Model {
         let result = new DataSwap();
         try {
             let queryParams = params.queryParams || params || {};
-            result.data = await this.getModel().findOne(queryParams);
+            result.data = await this.findOne(queryParams);
             if (!result.data) {
                 if (params.createMethod) 
                     result = await params.createMethod.bind(this)({...queryParams.where,...(queryParams.values||{})},params);
                 else {
-                    result.data = await this.getModel().create({...queryParams.where,...(queryParams.values||{})},params.transaction ? {transaction: params.transaction} : {});
+                    result.data = await this.create({...queryParams.where,...(queryParams.values||{})},params.transaction ? {transaction: params.transaction} : {});
                     if (result.data) {
                         result.success = true;
                     } else throw new Error(`error on create register with ${JSON.parse({...queryParams.where,...(queryParams.values||{})})}`);
