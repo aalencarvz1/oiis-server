@@ -5,7 +5,7 @@ import Data_Types from "../models/Data_Types.js";
 import Tables from "../models/Tables.js";
 import Parameters from "../models/Parameters.js";
 
-/*imports*/
+
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/

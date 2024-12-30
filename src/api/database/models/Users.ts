@@ -1,6 +1,6 @@
 'use strict';
 
-/*imports*/
+
 import { DataTypes } from "sequelize";
 import BasePeopleModel from "./BasePeopleModel.js";
 import bcrypt from "bcrypt";

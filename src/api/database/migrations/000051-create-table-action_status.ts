@@ -3,7 +3,7 @@
 import { QueryInterface } from "sequelize";
 import Action_Status from "../models/Action_Status.js";
 
-/*imports*/
+
 
 /** @type {import('sequelize-cli').Migration} */
 

@@ -5,7 +5,7 @@ import Errors from "../models/Errors.js";
 
 
 
-/*imports*/
+
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/

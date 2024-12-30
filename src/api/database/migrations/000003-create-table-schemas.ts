@@ -8,7 +8,7 @@ import Record_Status from "../models/Record_Status.js";
 import Users from "../models/Users.js";
 import Data_Origins from "../models/Data_Origins.js";
 import Tables from "../models/Tables.js";
-/*imports*/
+
 
 
 /** @type {import('sequelize-cli').Migration} */

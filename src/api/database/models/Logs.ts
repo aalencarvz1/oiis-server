@@ -3,7 +3,7 @@
 import { DataTypes } from "sequelize";
 import BaseTableModel from "./BaseTableModel.js";
 
-/*imports*/
+
 
 /**
  * class model

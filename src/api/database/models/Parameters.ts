@@ -4,7 +4,7 @@ import { DataTypes } from "sequelize";
 import BaseTableModel from "./BaseTableModel.js";
 import Data_Types from "./Data_Types.js";
 
-/*imports*/
+
 
 /**
  * class model

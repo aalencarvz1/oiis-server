@@ -1,6 +1,6 @@
 'use strict';
 
-/*imports*/
+
 import BasePeopleModel from "./BasePeopleModel.js";
 
 

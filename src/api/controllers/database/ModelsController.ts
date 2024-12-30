@@ -1,12 +1,19 @@
 import Access_Profiles from "../../database/models/Access_Profiles.js";
 import Action_Status from "../../database/models/Action_Status.js";
 import Collaborators from "../../database/models/Collaborators.js";
+import Comparators from "../../database/models/Comparators.js";
 import Connections from "../../database/models/Connections.js";
 import Contexts from "../../database/models/Contexts.js";
+import Contract_Types from "../../database/models/Contract_Types.js";
+import Currencies from "../../database/models/Currencies.js";
 import Data_Origins from "../../database/models/Data_Origins.js";
 import Data_Types from "../../database/models/Data_Types.js";
 import Entities_Types from "../../database/models/Entities_Types.js";
 import Errors from "../../database/models/Errors.js";
+import Financial_Value_Forms from "../../database/models/Financial_Value_Forms.js";
+import Financial_Value_Localization_Types from "../../database/models/Financial_Value_Localization_Types.js";
+import Financial_Value_Mov_Types from "../../database/models/Financial_Value_Mov_Types.js";
+import Form_Types from "../../database/models/Form_Types.js";
 import Greatnesses from "../../database/models/Greatnesses.js";
 import Identifier_Types from "../../database/models/Identifier_Types.js";
 import Languages from "../../database/models/Languages.js";
@@ -20,6 +27,9 @@ import Permissions from "../../database/models/Permissions.js";
 import Power_Types from "../../database/models/Power_Types.js";
 import Processes from "../../database/models/Processes.js";
 import Record_Status from "../../database/models/Record_Status.js";
+import Relationship_Types from "../../database/models/Relationship_Types.js";
+import Relationship_Values from "../../database/models/Relationship_Values.js";
+import Relationships from "../../database/models/Relationships.js";
 import Routine_Contents from "../../database/models/Routine_Contents.js";
 import Routine_Types from "../../database/models/Routine_Types.js";
 import Routines from "../../database/models/Routines.js";
@@ -33,6 +43,7 @@ import User_Profile_Timeworks from "../../database/models/User_Profile_Timeworks
 import User_Timeworks from "../../database/models/User_Timeworks.js";
 import User_Tokens from "../../database/models/User_Tokens.js";
 import Users from "../../database/models/Users.js";
+import Value_Names from "../../database/models/Value_Names.js";
 
 
 export default class ModelsController {
@@ -70,6 +81,17 @@ export default class ModelsController {
         Languages.initModel();
         Texts.initModel();
         Translates.initModel();
+        Relationship_Types.initModel();
+        Relationships.initModel();
+        Value_Names.initModel();
+        Relationship_Values.initModel();
+        Comparators.initModel();
+        Contract_Types.initModel();
+        Currencies.initModel();
+        Form_Types.initModel();
+        Financial_Value_Forms.initModel();
+        Financial_Value_Localization_Types.initModel();
+        Financial_Value_Mov_Types.initModel();
         Power_Types.initModel();
         Permissions.initModel();
 
@@ -110,6 +132,17 @@ export default class ModelsController {
         await Languages.initAssociations();
         await Texts.initAssociations();
         await Translates.initAssociations();
+        await Relationship_Types.initAssociations();
+        await Relationships.initAssociations();
+        await Value_Names.initAssociations();
+        await Relationship_Values.initAssociations();
+        await Comparators.initAssociations();
+        await Contract_Types.initAssociations();
+        await Currencies.initAssociations();
+        await Form_Types.initAssociations();
+        await Financial_Value_Forms.initAssociations();
+        await Financial_Value_Localization_Types.initAssociations();
+        await Financial_Value_Mov_Types.initAssociations();
         await Power_Types.initAssociations();
         await Permissions.initAssociations();
     }

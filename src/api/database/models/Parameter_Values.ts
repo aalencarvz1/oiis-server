@@ -5,7 +5,7 @@ import BaseTableModel from "./BaseTableModel.js";
 import Parameters from "./Parameters.js";
 import Tables from "./Tables.js";
 
-/*imports*/
+
 
 /**
  * class model

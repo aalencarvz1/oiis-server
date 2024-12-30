@@ -1,8 +1,7 @@
 'use strict';
 
 import { QueryInterface } from "sequelize";
-import Tables from "../models/Tables.js";
-
+import Relationships from "../models/Relationships.js";
 
 
 /** @type {import('sequelize-cli').Migration} */
@@ -10,10 +9,9 @@ import Tables from "../models/Tables.js";
 /*migration*/
 export default {
   async up(queryInterface: QueryInterface, Sequelize: any) {
-    await Tables.runUpMigration(queryInterface,{migrateForeignKeyContraint:false});          
-    await Tables.migrateForeignKeyContraint(queryInterface,Tables);  
+    await Relationships.runUpMigration(queryInterface);     
   },
   async down(queryInterface: QueryInterface, Sequelize: any) {
-    await queryInterface.dropTable(Tables.tableName);
+    await queryInterface.dropTable(Relationships.tableName);
   }
 };

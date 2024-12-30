@@ -4,7 +4,7 @@ import { QueryInterface } from "sequelize";
 import Tables from "../models/Tables.js";
 import Entities_Types from "../models/Entities_Types.js";
 
-/*imports*/
+
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/
