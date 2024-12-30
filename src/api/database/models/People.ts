@@ -1,7 +1,6 @@
 'use strict';
 
 import { DataTypes, Op, Sequelize } from "sequelize";
-/*imports*/
 import BaseTableModel from "./BaseTableModel.js";
 import Utils from "../../controllers/utils/Utils.js";
 import Identifier_Types from "./Identifier_Types.js";

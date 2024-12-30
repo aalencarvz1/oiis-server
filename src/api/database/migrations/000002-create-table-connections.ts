@@ -1,6 +1,6 @@
 'use strict';
 
-/*imports*/
+
 import { QueryInterface } from "sequelize";
 import Connections from "../models/Connections.js";
 import Users from "../models/Users.js";

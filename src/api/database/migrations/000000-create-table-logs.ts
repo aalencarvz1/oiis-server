@@ -3,7 +3,7 @@
 import { QueryInterface } from "sequelize";
 import Logs from "../models/Logs.js";
 
-/*imports*/
+
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/

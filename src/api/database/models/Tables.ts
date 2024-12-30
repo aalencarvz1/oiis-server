@@ -1,6 +1,6 @@
 'use strict';
 
-/*imports*/
+
 import { DataTypes } from "sequelize";
 import BaseTableModel from "./BaseTableModel.js";
 import Connections from "./Connections.js";

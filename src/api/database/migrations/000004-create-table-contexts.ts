@@ -3,7 +3,7 @@
 import { QueryInterface } from "sequelize";
 import Contexts from "../models/Contexts.js";
 
-/*imports*/
+
 
 /** @type {import('sequelize-cli').Migration} */
 

@@ -4,7 +4,7 @@ import { QueryInterface } from "sequelize";
 import Parameters from "../models/Parameters.js";
 import Parameter_Values from "../models/Parameter_Values.js";
 
-/*imports*/
+
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/

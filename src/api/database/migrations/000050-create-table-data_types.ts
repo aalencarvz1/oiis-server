@@ -3,7 +3,7 @@
 import { QueryInterface } from "sequelize";
 import Data_Types from "../models/Data_Types.js";
 
-/*imports*/
+
 
 /** @type {import('sequelize-cli').Migration} */
 
