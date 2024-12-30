@@ -9,16 +9,28 @@ import Entities_Types from "../../database/models/Entities_Types.js";
 import Errors from "../../database/models/Errors.js";
 import Greatnesses from "../../database/models/Greatnesses.js";
 import Identifier_Types from "../../database/models/Identifier_Types.js";
+import Languages from "../../database/models/Languages.js";
 import Logs from "../../database/models/Logs.js";
 import Measurement_Units from "../../database/models/Measurement_Units.js";
+import Modules from "../../database/models/Modules.js";
 import Parameter_Values from "../../database/models/Parameter_Values.js";
 import Parameters from "../../database/models/Parameters.js";
 import People from "../../database/models/People.js";
+import Permissions from "../../database/models/Permissions.js";
+import Power_Types from "../../database/models/Power_Types.js";
+import Processes from "../../database/models/Processes.js";
 import Record_Status from "../../database/models/Record_Status.js";
+import Routine_Contents from "../../database/models/Routine_Contents.js";
+import Routine_Types from "../../database/models/Routine_Types.js";
+import Routines from "../../database/models/Routines.js";
 import Run_Status from "../../database/models/Run_Status.js";
 import Schemas from "../../database/models/Schemas.js";
 import Sync_Status from "../../database/models/Sync_Status.js";
 import Tables from "../../database/models/Tables.js";
+import Texts from "../../database/models/Texts.js";
+import Translates from "../../database/models/Translates.js";
+import User_Profile_Timeworks from "../../database/models/User_Profile_Timeworks.js";
+import User_Timeworks from "../../database/models/User_Timeworks.js";
 import User_Tokens from "../../database/models/User_Tokens.js";
 import Users from "../../database/models/Users.js";
 
@@ -48,6 +60,18 @@ export default class ModelsController {
         Access_Profiles.initModel();
         Users.initModel();
         User_Tokens.initModel();
+        User_Profile_Timeworks.initModel();
+        User_Timeworks.initModel();
+        Processes.initModel();
+        Routine_Types.initModel();
+        Modules.initModel();
+        Routines.initModel();
+        Routine_Contents.initModel();
+        Languages.initModel();
+        Texts.initModel();
+        Translates.initModel();
+        Power_Types.initModel();
+        Permissions.initModel();
 
         await this.initAssociations();
     }
@@ -76,5 +100,17 @@ export default class ModelsController {
         await Access_Profiles.initAssociations();
         await Users.initAssociations();
         await User_Tokens.initAssociations();
+        await User_Profile_Timeworks.initAssociations();
+        await User_Timeworks.initAssociations();
+        await Processes.initAssociations();
+        await Routine_Types.initAssociations();
+        await Modules.initAssociations();
+        await Routines.initAssociations();
+        await Routine_Contents.initAssociations();        
+        await Languages.initAssociations();
+        await Texts.initAssociations();
+        await Translates.initAssociations();
+        await Power_Types.initAssociations();
+        await Permissions.initAssociations();
     }
 }

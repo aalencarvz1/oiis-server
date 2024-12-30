@@ -142,7 +142,7 @@ export default class EndPointsController{
                     if (this.isRequestHandler(handler)) {
                         let routePath = path.join(basePath, entry.name.replace('.js', ''));
                         routePath = routePath.replaceAll(path.sep,"/").trim().toLowerCase();
-                        console.log(`Registrando endpoint: ${routePath} -> ${exportName}`);
+                        console.log(`Registrando endpoint(1): ${routePath} -> ${exportName}`);
                         this.router.all(routePath, (handler as any)); // Associa ao método HTTP apropriado
                     } else if (typeof handler == 'function') {
                         Object.entries(handler).forEach(([exportName2, handler2]) => {
@@ -151,7 +151,7 @@ export default class EndPointsController{
                                 let routePath = path.join(basePath, entry.name.replace('.js', ''));
                                 routePath = path.join(routePath,handler2.name)
                                 routePath = routePath.replaceAll(path.sep,"/").trim().toLowerCase();
-                                console.log(`Registrando endpoint: ${routePath} -> ${exportName2}`);
+                                console.log(`Registrando endpoint(2): ${routePath} -> ${exportName2}`);
                                 this.router.all(routePath, (handler2 as any)); // Associa ao método HTTP apropriado
                             } else if (typeof handler2 == 'function') {
                                 
