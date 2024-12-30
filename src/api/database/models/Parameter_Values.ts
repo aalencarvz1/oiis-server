@@ -11,9 +11,18 @@ import Tables from "./Tables.js";
  * class model
  */
 export default class Parameter_Values extends BaseTableModel {
+
+  //table fiedls
+  declare parameter_id: number;
+  declare table_id: number;
+  declare register_id: number;
+  declare value: string;
+  declare description: string;
+
+
   static id = 56;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static fields = {
     ...Parameter_Values.getBaseTableModelFields(),...{

@@ -16,7 +16,7 @@ export default class Relationship_Types extends BaseTableModel {
 
   static id = 1000;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static RELATIONSHIP = 1;
   static IDENTIFIER = 2;  

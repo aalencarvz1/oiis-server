@@ -12,9 +12,17 @@ import Connections from "./Connections.js";
  * class model
  */
 export default class Schemas extends BaseTableModel {
+
+  //table fields
+  declare name: string;
+  declare description: string;
+  declare default_connection_id: number;
+  declare is_default: number;
+
+
   static id = 3;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
   static fields = {
     ...Schemas.getBaseTableModelFields(),...{
       name: {

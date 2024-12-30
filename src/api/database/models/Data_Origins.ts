@@ -18,7 +18,7 @@ export default class Data_Origins extends BaseTableModel {
 
   static id = 60;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static DEFAULT_ORIGINDATA = 1;
   static WINTHOR = 2;

@@ -19,7 +19,7 @@ export default class Financial_Value_Localization_Types extends BaseTableModel {
 
   static id = 1033;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static UNKNOWN = 1; //DESCONHECIDO
   static ACCOUNT = 2;

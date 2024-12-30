@@ -21,7 +21,7 @@ export default class Action_Status extends BaseTableModel {
 
   static id = 51;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static NOT_STARTED = 1;
   static RUNNING = 2;

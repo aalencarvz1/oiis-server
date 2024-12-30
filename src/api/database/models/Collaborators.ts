@@ -11,7 +11,7 @@ import BasePeopleModel from "./BasePeopleModel.js";
 export default class Collaborators extends BasePeopleModel {
   static id = 110;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static SYSTEM = 1;
   

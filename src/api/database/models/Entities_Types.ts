@@ -11,9 +11,23 @@ import BaseTableModel from "./BaseTableModel.js";
  * class model
  */
 export default class Entities_Types extends BaseTableModel {
+
+  //table fields 
+  declare name:  string;
+  declare table_id: string;
+  declare identifier_column:  string;      
+  declare name_column:  string;      
+  declare columns:  string;      
+  declare where_clause:  string;
+  declare order_by:  string;
+  declare query:  string;
+  declare description: string;
+
+
+
   static id = 5;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static DATABASE = 1;
   static CONNECTION = 2;
@@ -42,7 +56,7 @@ export default class Entities_Types extends BaseTableModel {
       columns: {
         type: DataTypes.TEXT
       },      
-      where: {
+      where_clause: {
         type: DataTypes.TEXT
       },
       order_by: {

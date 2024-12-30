@@ -25,7 +25,7 @@ export default class Currencies extends BaseTableModel {
   static DOLAR = 1;
   static BRL = 2;
 
-  static model = null;
+  
   static fields = {
     ...Currencies.getBaseTableModelFields(),...{           
       name:{

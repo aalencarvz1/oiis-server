@@ -25,7 +25,7 @@ export default class User_Tokens extends BaseTableModel {
 
   static id = 121;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   
   static fields = {

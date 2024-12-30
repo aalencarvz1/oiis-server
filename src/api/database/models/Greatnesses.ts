@@ -19,7 +19,7 @@ export default class Greatnesses extends BaseTableModel {
 
   static id = 79;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static QUANTITY = 1;
   static MASS = 2;

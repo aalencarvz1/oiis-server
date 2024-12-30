@@ -18,7 +18,7 @@ export default class Routine_Types extends BaseTableModel {
 
   static id = 210;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static SYSTEM = 1;
   static REGISTER = 2;

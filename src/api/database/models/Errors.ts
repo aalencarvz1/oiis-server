@@ -21,37 +21,37 @@ export default class Errors extends BaseTableModel {
     declare data: string;
 
     static tableName = this.name.toLowerCase();
-    static model = null;
+    
     static fields = {
         id: {
-        type : DataTypes.BIGINT.UNSIGNED,                
-        autoIncrement : true,
-        primaryKey: true,               
-        allowNull: false 
+            type : DataTypes.BIGINT.UNSIGNED,                
+            autoIncrement : true,
+            primaryKey: true,               
+            allowNull: false 
         },
         object_type: {
-        type: DataTypes.STRING(255),
-        allowNull: true
+            type: DataTypes.STRING(255),
+            allowNull: true
         },
         object_name: {
-        type: DataTypes.STRING(255),
-        allowNull: true
+            type: DataTypes.STRING(255),
+            allowNull: true
         },
         line: {
-        type: DataTypes.STRING(255),
-        allowNull: true
+            type: DataTypes.STRING(255),
+            allowNull: true
         },
         code: {
-        type: DataTypes.STRING(255),
-        allowNull: true
+            type: DataTypes.STRING(255),
+            allowNull: true
         },
         message: {
-        type: DataTypes.STRING(2000),
-        allowNull: true
+            type: DataTypes.STRING(2000),
+            allowNull: true
         },
         data: {
-        type: DataTypes.STRING(2000),
-        allowNull: true
+            type: DataTypes.STRING(2000),
+            allowNull: true
         }
     };
     static constraints = [];

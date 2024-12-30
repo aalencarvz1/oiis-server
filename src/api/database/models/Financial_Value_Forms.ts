@@ -23,7 +23,7 @@ export default class Financial_Value_Forms extends BaseTableModel {
 
   static id = 1032;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static NONE = 1;
   static MONEY = 2;
