@@ -18,7 +18,7 @@ export default class Form_Types extends BaseTableModel {
 
   static id = 1031;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
   static fields = {
     ...Form_Types.getBaseTableModelFields(),...{           
       name:{

@@ -7,7 +7,6 @@ import Users from "../models/Users.js";
 import Data_Origins from "../models/Data_Origins.js";
 import config from "../config/config.js";
 
-//require('dotenv').config({ path: __dirname + "/../../../../.env" });
 
 /** @type {import('sequelize-cli').Migration} */
 export default {

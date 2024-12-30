@@ -1,7 +1,6 @@
 'use strict';
 
 import { DataTypes, Op } from "sequelize";
-
 import  BaseTableModel  from './BaseTableModel.js';
 
 
@@ -19,7 +18,7 @@ export default class Financial_Value_Mov_Types extends BaseTableModel {
 
   static id = 1034;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static TRANSFERENCE = 1; 
   static DEPOSIT = 2;

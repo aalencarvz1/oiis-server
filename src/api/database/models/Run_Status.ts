@@ -22,7 +22,7 @@ export default class Run_Status extends BaseTableModel {
 
   static id = 67;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static NOT_STARTED = 1;
   static RUNNING = 2;

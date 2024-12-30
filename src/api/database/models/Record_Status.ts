@@ -18,7 +18,7 @@ export default class Record_Status extends BaseTableModel {
 
   static id = 65;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static ACTIVE = 1;
   static INACTIVE = 2;

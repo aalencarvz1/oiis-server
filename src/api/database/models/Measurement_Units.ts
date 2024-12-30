@@ -22,7 +22,7 @@ export default class Measurement_Units extends BaseTableModel {
 
   static id = 80;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static UN = 1;
   static KG = 2;

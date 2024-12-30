@@ -17,7 +17,7 @@ export default class Identifier_Types extends BaseTableModel {
 
   static id = 70;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static IDENTIFIER = 1;
   static CODE = 2;

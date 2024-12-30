@@ -19,7 +19,7 @@ export default class Translates extends BaseTableModel {
 
   static id = 250;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
   static fields = {
     ...Translates.getBaseTableModelFields(),...{     
       language_id:{

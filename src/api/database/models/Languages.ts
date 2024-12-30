@@ -15,7 +15,7 @@ export default class Languages extends BaseTableModel {
 
   static id = 248;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
   static fields = {
     ...Languages.getBaseTableModelFields(),...{     
       name: {

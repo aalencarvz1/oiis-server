@@ -56,7 +56,7 @@ export default class AuthController extends RegistersController{
         });        
         if (!user) return res.sendResponse(401,false,'user not found'); 
         if (!bcrypt.compareSync(body.password, user.password)) return res.sendResponse(401,false,'password not match'); 
-        let token = jwt.sign({id: user.id,access_profile_id:user.access_profile_id},(process as any).env.API_SECRET, {expiresIn:/*process.env.API_TOKEN_EXPIRATION*/10});
+        let token = jwt.sign({id: user.id,access_profile_id:user.access_profile_id},(process as any).env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION || 10});
         let refreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, (process as any).env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
         
         user.last_token = token;

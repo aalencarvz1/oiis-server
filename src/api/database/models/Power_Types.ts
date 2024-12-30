@@ -16,7 +16,7 @@ export default class Power_Types extends BaseTableModel {
 
   static id = 7002;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static SYSTEM = 1;
   static ACCESS = 2;

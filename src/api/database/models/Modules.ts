@@ -23,7 +23,7 @@ export default class Modules extends BaseTableModel {
 
   static id = 230;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static WMS = modules.find((el) => el.name == "WMS")?.id;
   static LOGISTIC = modules.find((el) => el.name == "LOGISTIC")?.id;

@@ -33,7 +33,7 @@ export default class Relationships extends BaseTableModel {
 
   static id = 1001;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
   static fields = {
     ...Relationships.getBaseTableModelFields(),...{     
       relationship_type_id:{

@@ -38,7 +38,7 @@ export default class Permissions extends BaseTableModel {
 
   static id = 7003;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static SYSTEM = 1;
 

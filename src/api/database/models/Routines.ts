@@ -25,7 +25,7 @@ export default class Routines extends BaseTableModel {
 
   static id = 240;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
   static fields = {
     ...Routines.getBaseTableModelFields(),...{     
       routine_type_id: {

@@ -17,7 +17,7 @@ export default class Processes extends BaseTableModel {
   
   static id = 200;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
   static fields = {
     ...Processes.getBaseTableModelFields(),...{      
       name: {

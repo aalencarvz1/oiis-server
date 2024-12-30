@@ -20,7 +20,7 @@ export default class User_Timeworks extends BaseTableModel {
 
   static id = 123;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   
   static fields = {

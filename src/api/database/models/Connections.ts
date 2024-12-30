@@ -10,9 +10,17 @@ import BaseTableModel from "./BaseTableModel.js";
  * class model
  */
 export default class Connections extends BaseTableModel {
+
+  //table fields
+  declare name: string;
+  declare description: string;
+  declare default_env_identifier: string;
+  declare is_default: number;
+
+  
   static id = 2;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
   static fields = {
     ...Connections.getBaseTableModelFields(),...{
       name: {

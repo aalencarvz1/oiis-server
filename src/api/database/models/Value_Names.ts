@@ -16,7 +16,7 @@ export default class Value_Names extends BaseTableModel {
 
   static id = 1002;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static INVOICENUM = 1;
 

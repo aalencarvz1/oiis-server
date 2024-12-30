@@ -34,7 +34,7 @@ export default class Parameters extends BaseTableModel {
   static COMMISSION_MIN_VAL = 9050;
   static WINTHOR_CUSTOMIZED_GIRO_STOCK_DAYS = 30101;
 
-  static model = null;
+  
   static fields = {
     ...Parameters.getBaseTableModelFields(),...{
       data_type_id: {

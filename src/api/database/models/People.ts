@@ -25,7 +25,7 @@ export default class People extends BaseTableModel {
 
   static id = 100;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static SYSTEM = 1;
   

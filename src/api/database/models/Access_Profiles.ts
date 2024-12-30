@@ -20,7 +20,7 @@ export default class Access_Profiles extends BaseTableModel {
 
   static id = 119;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static SYSTEM = 1;
   static DEFAULT = 2;

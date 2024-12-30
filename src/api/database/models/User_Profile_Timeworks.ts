@@ -17,7 +17,7 @@ export default class User_Profile_Timeworks extends BaseTableModel {
 
   static id = 122;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   
   static fields = {

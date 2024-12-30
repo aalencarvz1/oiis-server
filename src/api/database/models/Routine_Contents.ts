@@ -21,7 +21,7 @@ export default class Routine_Contents extends BaseTableModel {
 
   static id = 241;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
   static fields = {
     ...Routine_Contents.getBaseTableModelFields(),...{     
       routine_id: {

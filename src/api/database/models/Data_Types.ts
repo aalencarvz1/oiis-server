@@ -42,7 +42,7 @@ export default class Data_Types extends BaseTableModel {
   static TIME = 9;
   static DATETIME = 10;
 
-  static model = null;
+  
   static fields = {
     ...Data_Types.getBaseTableModelFields(),...{
       name: {

@@ -16,7 +16,7 @@ export default class Comparators extends BaseTableModel {
 
   static id = 1005;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
 
   static EQUAL = 1;
   static DIFFERENT = 2;

@@ -14,7 +14,7 @@ export default class Contract_Types extends BaseTableModel {
 
   static id = 1020;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
   static fields = {
     ...Contract_Types.getBaseTableModelFields(),...{           
       name:{

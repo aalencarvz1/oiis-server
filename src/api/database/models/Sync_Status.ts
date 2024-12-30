@@ -15,7 +15,7 @@ export default class Sync_Status extends BaseTableModel {
 
   static id = 66;
   static tableName = this.name.toLowerCase();
-  static model = null;
+  
   static fields = {
     ...Sync_Status.getBaseTableModelFields(),...{
       name: {
