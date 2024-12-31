@@ -121,12 +121,10 @@ export default class EndPointsController{
      * @param basePath 
      */
     static async autoLoadEndPoints(dir: string, basePath = '/') {
-        //console.log('loading controllers from ',dir);
         const entries = await fs.readdir(dir, { withFileTypes: true });
     
         for (const entry of entries) {
             const fullPath = path.join(dir, entry.name);
-            //console.log('fullPath',fullPath);
     
             if (entry.isDirectory()) {
                 // Recursivamente carregar subdiretórios
@@ -138,20 +136,18 @@ export default class EndPointsController{
     
                 // Mapear as funções exportadas como endpoints
                 Object.entries(module).forEach(([exportName, handler]) => {
-                    //console.log('handler',typeof handler, typeof handler == 'function' ? handler.name : '');
                     if (this.isRequestHandler(handler)) {
                         let routePath = path.join(basePath, entry.name.replace('.js', ''));
                         routePath = routePath.replaceAll(path.sep,"/").trim().toLowerCase();
-                        console.log(`Registrando endpoint(1): ${routePath} -> ${exportName}`);
+                        //console.log(`Registrando endpoint(1): ${routePath} -> ${exportName}`);
                         this.router.all(routePath, (handler as any)); // Associa ao método HTTP apropriado
                     } else if (typeof handler == 'function') {
                         Object.entries(handler).forEach(([exportName2, handler2]) => {
-                            //console.log('handler',typeof handler2, typeof handler2 == 'function' ? handler2.name : '');
                             if (this.isRequestHandler(handler2)) {
                                 let routePath = path.join(basePath, entry.name.replace('.js', ''));
                                 routePath = path.join(routePath,handler2.name)
                                 routePath = routePath.replaceAll(path.sep,"/").trim().toLowerCase();
-                                console.log(`Registrando endpoint(2): ${routePath} -> ${exportName2}`);
+                                //console.log(`Registrando endpoint(2): ${routePath} -> ${exportName2}`);
                                 this.router.all(routePath, (handler2 as any)); // Associa ao método HTTP apropriado
                             } else if (typeof handler2 == 'function') {
                                 
@@ -189,7 +185,7 @@ export default class EndPointsController{
                 let routeArray = layer.route.path.split("/");
                 let controllerName = (routeArray[routeArray.length-2] || routeArray[routeArray.length-1]).trim().toLowerCase();
                 let methodName = routeArray[routeArray.length-1].trim().toLowerCase();
-                console.log('controllerName',controllerName,'methodName',methodName,layer.route.path);
+                //console.log('controllerName',controllerName,'methodName',methodName,layer.route.path);
                 if (this.namedEndpoints.indexOf(methodName) > -1) {
                     routes[methodName] = {
                         path: layer.route.path,
