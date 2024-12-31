@@ -311,7 +311,6 @@ export default class BaseTableModel extends Model {
 
                     //require.cache is case sensitive, avoid reload cached model
                     let fullPath = path.join(this.__dirname,(tableRefClassModel.toLowerCase().indexOf('pc') === 0 ? 'winthor/':'') + tableRefClassModel + ".js");
-                    Utils.log('loading',fullPath);
                     const fileUrl = pathToFileURL(fullPath);
                     const module = await import(fileUrl.href);
 
@@ -335,7 +334,6 @@ export default class BaseTableModel extends Model {
                     sourceKey: this.foreignsKeys[i].references.fields?.join(',') || this.foreignsKeys[i].references.field,
                     foreignKey : columnForeign
                 };
-                console.log('yyyyyyyy',tableRefClassModel.default);
                 if (tableRefClassModel.tableName.trim() == this.tableName.trim().toLowerCase()) {
                     model = this;
                 } else {
