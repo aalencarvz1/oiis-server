@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import RegistersController from "../RegistersController.js";
 import { NextFunction } from "express-serve-static-core";
 
 
@@ -8,7 +7,7 @@ import { NextFunction } from "express-serve-static-core";
  * @author Alencar
  * @created 2023-09-05
  */
-export default class Midia_Controller extends RegistersController{
+export default class Midia_Controller{
 
 
     static async uploadFile(req: Request,res: Response,next: NextFunction) {

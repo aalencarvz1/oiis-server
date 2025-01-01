@@ -36,7 +36,6 @@ export default class DBConnectionManager {
     static getDefaultDBConnection() : Sequelize | null {
         try {
             if (DBConnectionManager.#defaultDBConnection == null) {
-                console.log('xxxxxxxx config',process.env.NODE_ENV, (config as any)[process.env.NODE_ENV||'development']);
                 let connectionConfig = (config as any)[`${process.env.NODE_ENV||'development'}`];
                 Utils.log('starting sequelize ', connectionConfig);
                 DBConnectionManager.#defaultDBConnection = new Sequelize(connectionConfig);                

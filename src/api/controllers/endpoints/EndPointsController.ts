@@ -1,4 +1,3 @@
-
 import {NextFunction, Request, RequestHandler, Response, Router } from "express";
 import fs from 'fs/promises';
 import path from "path";
@@ -34,7 +33,7 @@ export default class EndPointsController{
     ]
 
     /**
-     * Customize reponse properties
+     * Custom midleware reponse properties
      * @param req 
      * @param res 
      * @param next 
@@ -99,7 +98,7 @@ export default class EndPointsController{
     }
 
     static isRequestHandler(func: any): func is RequestHandler {
-        return typeof func === 'function' && func.length >= 2; // Pelo menos req e res
+        return typeof func == 'function' && !Utils.isClass(func) && func.length >= 2 && func.__isRequestHandler; // Pelo menos req e res
     }
 
     /**
@@ -111,7 +110,7 @@ export default class EndPointsController{
         this.router.all('/api/online',function(req:Request,res:Response) {
             res.sendResponse(200,true);
         });
-        this.router.all('/api/endpoints',EndPointsController.get_endpoints);
+        this.router.all('/api/endpoints',EndPointsController.get_endpoints);    
     }
 
 
@@ -121,38 +120,54 @@ export default class EndPointsController{
      * @param basePath 
      */
     static async autoLoadEndPoints(dir: string, basePath = '/') {
+        //console.log('scaning dir ',dir);
         const entries = await fs.readdir(dir, { withFileTypes: true });
-    
+        //console.log('entries',entries);
         for (const entry of entries) {
-            const fullPath = path.join(dir, entry.name);
-    
+            const fullPath = path.join(dir, entry.name);            
             if (entry.isDirectory()) {
                 // Recursivamente carregar subdiretórios
                 await this.autoLoadEndPoints(fullPath, path.join(basePath, entry.name));
             } else if (entry.isFile() && entry.name.endsWith('.js')) {
                 // Carregar módulo dinamicamente
+                //console.log('scaning file ',fullPath);
                 const fileUrl = pathToFileURL(fullPath);
                 const module = await import(fileUrl.href);
     
                 // Mapear as funções exportadas como endpoints
                 Object.entries(module).forEach(([exportName, handler]) => {
                     if (this.isRequestHandler(handler)) {
-                        let routePath = path.join(basePath, entry.name.replace('.js', ''));
+                        let routePath : string = path.join(basePath, entry.name.replace('.js', ''));
                         routePath = routePath.replaceAll(path.sep,"/").trim().toLowerCase();
                         //console.log(`Registrando endpoint(1): ${routePath} -> ${exportName}`);
                         this.router.all(routePath, (handler as any)); // Associa ao método HTTP apropriado
-                    } else if (typeof handler == 'function') {
-                        Object.entries(handler).forEach(([exportName2, handler2]) => {
-                            if (this.isRequestHandler(handler2)) {
-                                let routePath = path.join(basePath, entry.name.replace('.js', ''));
-                                routePath = path.join(routePath,handler2.name)
-                                routePath = routePath.replaceAll(path.sep,"/").trim().toLowerCase();
-                                //console.log(`Registrando endpoint(2): ${routePath} -> ${exportName2}`);
-                                this.router.all(routePath, (handler2 as any)); // Associa ao método HTTP apropriado
-                            } else if (typeof handler2 == 'function') {
-                                
+                    } else if (Utils.isClass(handler)) {
+                        //console.log('entries of ',fullPath,Object.entries(handler));
+
+
+                        //trocar por get all keys (inclusive herdadas);
+                        //Object.entries(handler).forEach(([exportName2, handler2]) => {
+                        let objKeys : string[] = Utils.getAllProperties(handler);
+                        //console.log('objKeys',fullPath,objKeys);
+                        for (let i in objKeys) {
+                            if (['caller','callee','arguments'].indexOf(objKeys[i]) == -1) {
+                                let handler2 : any = (handler as any)[objKeys[i]];
+                                if (this.isRequestHandler(handler2)) {
+                                    let routePath : string = path.join(basePath, entry.name.replace('.js', ''));
+                                    routePath = routePath.replaceAll(path.sep,"/").trim().toLowerCase();
+                                    let methodName : string = handler2.name||'';
+                                    let routePathWithMethod =`${routePath}/${methodName}`
+                                    console.log(`Registrando endpoint(2): ${routePathWithMethod}->${methodName}`);
+                                    this.router.all(routePathWithMethod, handler2.bind(handler)); // Associa ao método HTTP apropriado
+                                    if (['get','post','put','patch','delete'].indexOf(methodName.trim().toLowerCase()) > -1) {
+                                        console.log(`Registrando endpoint(3): ${routePath} -> ${methodName}`);
+                                        (this.router as any)[methodName.trim().toLowerCase()](routePath, handler2.bind(handler)); // Associa ao método HTTP apropriado
+                                    }
+                                } else if (typeof handler2 == 'function') {
+                                    //@todo closured function
+                                }
                             }
-                        });
+                        };
                     }
                 });
             }
@@ -171,14 +186,18 @@ export default class EndPointsController{
                 // Captura métodos HTTP e caminhos
                 let methods : any = {};
                 Object.keys(layer.route.methods).map(el=>{
-                    methods[el.substring(1).toLowerCase()] = [el.substring(1).toUpperCase()];
+                    if (el.indexOf("_") === 0) {
+                        methods[el.substring(1).toLowerCase()] = el.substring(1).toUpperCase();
+                    } else {
+                        methods[el.toLowerCase()] = el.toUpperCase();
+                    }
                 });
                 if (Object.keys(methods)[0] == 'all') {
                     methods = {
-                        post:['POST'],
-                        get:['GET'],
-                        put:['PUT'],
-                        delete:['DELETE']
+                        post:'POST',
+                        get:'GET',
+                        put:'PUT',
+                        delete:'DELETE'
                     };
                 }
                 

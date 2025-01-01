@@ -1,7 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import RegistersController from "../modules/registers/RegistersController.js";
 import Utils from "../utils/Utils.js";
 import config from "../../config.js";
 import validator  from "email-validator";
@@ -13,7 +12,7 @@ import Access_Profiles from "../../database/models/Access_Profiles.js";
 /**
  * class to handle authentication
  */
-export default class AuthController extends RegistersController{
+export default class AuthController {
 
 
     static #cryptSalt : number = 10;    
@@ -88,6 +87,7 @@ export default class AuthController extends RegistersController{
             .header('Authorization', token) //web applications use header, but others applications like mobile or direct request from database triggers, use only body
             .sendResponse(200,true,'logged',{token:token,refreshToken:refreshToken,user:user});
     }
+
 
     static basic_auth : RequestHandler = async function(req: Request, res: Response, next: NextFunction) {        
         try {
@@ -336,6 +336,24 @@ export default class AuthController extends RegistersController{
             res.sendResponse(517,false,e?.message || e);
         }
         //Utils.logf(`${this.name}`,`passwordChange`);
+    }
+
+
+    static {
+        [
+            this.login,
+            this.basic_auth,
+            this.refresh_token,
+            this.register,
+            this.check_token,
+            this.send_email_recover_password,
+            this.password_change,
+        ].forEach(el=>Object.defineProperty(el, "__isRequestHandler", {
+            value: true,
+            writable: false,
+            configurable: false,
+            enumerable: false, // Mantém a propriedade oculta em loops
+        }));
     }
 
 }

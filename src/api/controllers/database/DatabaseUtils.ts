@@ -50,7 +50,7 @@ export default class DatabaseUtils {
         return result;
     }
 
-    static async prepareQueryParams(queryParams?: any) {
+    static prepareQueryParams(queryParams?: any) : any{
         queryParams = queryParams || {};      
         if (queryParams.where) {
             queryParams.where = DatabaseUtils.prepareLogicalQueryParams(queryParams.where || {});

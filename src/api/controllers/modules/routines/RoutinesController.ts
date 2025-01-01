@@ -165,4 +165,15 @@ export default class RoutinesController {
             res.sendResponse(517,false);
         } 
     }
+
+    static {
+        [
+            this.get
+        ].forEach(el=>Object.defineProperty(el, "__isRequestHandler", {
+            value: true,
+            writable: false,
+            configurable: false,
+            enumerable: false, // Mantém a propriedade oculta em loops
+        }));
+    }
 }
