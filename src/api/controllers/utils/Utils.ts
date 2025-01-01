@@ -494,4 +494,29 @@ export default class Utils {
         }
         return result;
     }
+
+    static isClass(func: any): boolean {
+        return (
+            typeof func === 'function' &&
+            func.prototype &&
+            Object.getOwnPropertyNames(func.prototype).includes('constructor')
+        );
+    }
+
+    /**
+     * Retorna todas as propriedades e métodos, incluindo as herdadas.
+     * @param obj Objeto ou protótipo a ser analisado.
+     * @returns Lista de nomes de propriedades e métodos.
+     */
+    static getAllProperties(obj: any): string[] {
+        const properties = new Set<string>();
+
+        while (obj && obj !== Object.prototype) {
+            // Adiciona todas as propriedades e métodos do nível atual
+            Object.getOwnPropertyNames(obj).forEach((prop) => properties.add(prop));
+            obj = Object.getPrototypeOf(obj); // Move para o próximo nível da herança
+        }
+
+        return [...properties];
+    }
 }

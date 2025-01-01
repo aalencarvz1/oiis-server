@@ -69,10 +69,22 @@ api.post("/api/controllers/modules/registers/midias/midia_controller/uploadfile"
 
 //handle all methods and routes
 (async()=>{
-  console.log('dir is ',__dirname);
+
+  //only controllers can receive requests
+  let requestHandlersRootDir = `${__dirname}/controllers`;
+  console.log('dir is ',requestHandlersRootDir);
   EndPointsController.loadDefaultEndPoints();
-  await EndPointsController.autoLoadEndPoints(__dirname,"/api/");
+
+  //base end point is /api/controllers
+  await EndPointsController.autoLoadEndPoints(requestHandlersRootDir,"/api/controllers/");
   api.use(EndPointsController.getRouter());
+
+  //falback (404)
+  api.use((req,res,next) => {
+    res.success = false;
+    res.message = "resource not found";
+    res.sendResponse(404,false);
+  })
   console.log('endpoints',EndPointsController.getEndPoints(EndPointsController.getRouter()));
 })();
 
