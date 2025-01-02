@@ -219,6 +219,9 @@ import Legal_Natures from '../../database/models/external_data/Legal_Natures.js'
 import Reasons from '../../database/models/external_data/Reasons.js'
 import Responsible_Person_Qualifications from '../../database/models/external_data/Responsible_Person_Qualifications.js'
 import Utils from "../utils/Utils.js";
+import Midias from "../../database/models/Midias.js";
+import Meas_X_Meas_Origins from "../../database/models/Meas_X_Meas_Origins.js";
+import Packs_X_Packs_Origins from "../../database/models/Packs_X_Packs_Origins.js";
 
 
 export default class ModelsController {
@@ -377,6 +380,9 @@ export default class ModelsController {
         Api_Request_Calls.initModel();
         Api_Responses.initModel();
         Maps_Api_Responses.initModel();
+        Packs_X_Packs_Origins.initModel();
+        Meas_X_Meas_Origins.initModel();
+        Midias.initModel();
 
         if (Utils.toBool(process.env.HAS_DB_EXTERNAL_DATA) == true) {
             Businesses.initModel();
@@ -614,6 +620,10 @@ export default class ModelsController {
         await Api_Request_Calls.initAssociations();
         await Api_Responses.initAssociations();
         await Maps_Api_Responses.initAssociations();
+        await Packs_X_Packs_Origins.initAssociations();
+        await Meas_X_Meas_Origins.initAssociations();
+        await Midias.initAssociations();
+
 
         if (Utils.toBool(process.env.HAS_DB_EXTERNAL_DATA) == true) {
             await Businesses.initAssociations();
