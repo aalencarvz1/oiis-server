@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Request } from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
@@ -14,13 +14,10 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import compression from 'compression';
 import multer from 'multer';
-import { JsonStreamStringify } from 'json-stream-stringify';
 import AuthController from "./controllers/auth/AuthController.js";
-//import EndPointsController from "./controllers/endpoints/EndPointsController.js";
-import Midia_Controller from "./controllers/modules/registers/midias/Midia_Controller.js";
-import DataSwap from './controllers/data/DataSwap.js';
 import EndPointsController from './controllers/endpoints/EndPointsController.js';
 import ModelsController from './controllers/database/ModelsController.js';
+import MidiasController from './controllers/modules/registers/MidiasController.js';
 
 
 //multer configure
@@ -64,7 +61,7 @@ api.use(AuthController.check_token); //auth token check middleware
 
 
 //handle upload midias route
-api.post("/api/controllers/modules/registers/midias/midia_controller/uploadfile",upload.array('files'),Midia_Controller.uploadFile);
+api.post("/api/controllers/modules/registers/midiascontroller/uploadfile",upload.array('files'),MidiasController.uploadFile);
 
 
 //handle all methods and routes
