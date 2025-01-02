@@ -19,114 +19,109 @@ export default class RoutinesController extends BaseRegistersController {
          return Routines;
     }
 
-    
-
     /**
-     * get the user menu({module:{routine:...}}) according user permissions
-     * @created 2023-08-21
+     * get data from tasks and include joins
+     * @created 2025-01-01
      * @version 1.0.0
-     * @updates
-     *  2024-07-12 - adjusted query to get all data in one query
-     *  2024-12-28 - migrated to typescript
      */
-    static async get(req: Request, res: Response, next: NextFunction) : Promise<void> {
-        res.data = null;
+    static async get_nested(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
+            let result : any = null;
             let query = `
-                 SELECT 
-                    MODULES.id,
-                    MODULES.parent_id,
-                    MODULES.name,
-                    MODULES.icon,
-                    MODULES.path,
-                    MODULES.numeric_order,
-                    MODULES.description,
-                    routines.id AS routine_id,
-                    routines.parent_id AS routine_sup_id,
-                    routines.routine_type_id AS routine_routine_type_id,
-                    routines.module_id AS routine_module_id,
-                    routines.name AS routine_name,
-                    routines.icon AS routine_icon,
-                    routines.view_path AS routine_view_path,
-                    routines.numeric_order AS routine_order_num,
-                    routines.show_in_menu AS routine_show_in_menu,
-                    routines.description AS routine_description
-                FROM
-                    MODULES	                    
-                    INNER JOIN USERS ON (
-                        USERS.id = ${req.user.id}
-                        AND USERS.status_reg_id = ${Record_Status.ACTIVE}
-                        AND USERS.deleted_at IS NULL
+                SELECT 
+                MODULES.id,
+                MODULES.parent_id,
+                MODULES.name,
+                MODULES.icon,
+                MODULES.path,
+                MODULES.numeric_order,
+                MODULES.description,
+                routines.id AS routine_id,
+                routines.parent_id AS routine_sup_id,
+                routines.routine_type_id AS routine_routine_type_id,
+                routines.module_id AS routine_module_id,
+                routines.name AS routine_name,
+                routines.icon AS routine_icon,
+                routines.view_path AS routine_view_path,
+                routines.numeric_order AS routine_order_num,
+                routines.show_in_menu AS routine_show_in_menu,
+                routines.description AS routine_description
+            FROM
+                MODULES	                    
+                INNER JOIN USERS ON (
+                    USERS.id = ${req.user.id}
+                    AND USERS.status_reg_id = ${Record_Status.ACTIVE}
+                    AND USERS.deleted_at IS NULL
+                )
+                INNER JOIN access_profiles ON (
+                    access_profiles.id = USERS.access_profile_id
+                    AND access_profiles.status_reg_id = ${Record_Status.ACTIVE}
+                    AND access_profiles.deleted_at IS NULL
+                )
+                INNER JOIN PERMISSIONS ON (
+                    PERMISSIONS.status_reg_id = ${Record_Status.ACTIVE}
+                    AND PERMISSIONS.deleted_at IS NULL
+                    AND COALESCE(PERMISSIONS.access_profile_id,
+                        USERS.access_profile_id) = USERS.access_profile_id
+                    AND COALESCE(PERMISSIONS.user_id, USERS.id) = USERS.id
+                    AND COALESCE(PERMISSIONS.module_id, MODULES.id) = MODULES.id
+                    AND PERMISSIONS.allowed_access = 1
+                )
+                LEFT OUTER JOIN (
+                    routines
+                    INNER JOIN USERS UR ON (
+                        UR.id = ${req.user.id}
+                        AND UR.status_reg_id = ${Record_Status.ACTIVE}
+                        AND UR.deleted_at IS NULL
                     )
-                    INNER JOIN access_profiles ON (
-                        access_profiles.id = USERS.access_profile_id
-                        AND access_profiles.status_reg_id = ${Record_Status.ACTIVE}
-                        AND access_profiles.deleted_at IS NULL
+                    INNER JOIN access_profiles AR ON (
+                        AR.id = UR.access_profile_id
+                        AND AR.status_reg_id = ${Record_Status.ACTIVE}
+                        AND AR.deleted_at IS NULL
                     )
-                    INNER JOIN PERMISSIONS ON (
-                        PERMISSIONS.status_reg_id = ${Record_Status.ACTIVE}
-                        AND PERMISSIONS.deleted_at IS NULL
-                        AND COALESCE(PERMISSIONS.access_profile_id,
-                            USERS.access_profile_id) = USERS.access_profile_id
-                        AND COALESCE(PERMISSIONS.user_id, USERS.id) = USERS.id
-                        AND COALESCE(PERMISSIONS.module_id, MODULES.id) = MODULES.id
-                        AND PERMISSIONS.allowed_access = 1
+                    INNER JOIN PERMISSIONS P2 ON (
+                        P2.status_reg_id = ${Record_Status.ACTIVE}
+                        AND P2.deleted_at IS NULL
+                        AND COALESCE(P2.access_profile_id,
+                            UR.access_profile_id) = UR.access_profile_id
+                        AND COALESCE(P2.user_id, UR.id) = UR.id
+                        AND COALESCE(P2.module_id, routines.module_id) = routines.module_id
+                        AND COALESCE(P2.routine_id,
+                            CASE
+                                WHEN AR.allow_access_to_all_module_routines = 0 THEN - 1
+                                ELSE routines.id
+                            END) = routines.id
+                        AND P2.allowed_access = 1
                     )
-                    LEFT OUTER JOIN (
-                        routines
-                        INNER JOIN USERS UR ON (
-                            UR.id = ${req.user.id}
-                            AND UR.status_reg_id = ${Record_Status.ACTIVE}
-                            AND UR.deleted_at IS NULL
-                        )
-                        INNER JOIN access_profiles AR ON (
-                            AR.id = UR.access_profile_id
-                            AND AR.status_reg_id = ${Record_Status.ACTIVE}
-                            AND AR.deleted_at IS NULL
-                        )
-                        INNER JOIN PERMISSIONS P2 ON (
-                            P2.status_reg_id = ${Record_Status.ACTIVE}
-                            AND P2.deleted_at IS NULL
-                            AND COALESCE(P2.access_profile_id,
-                                UR.access_profile_id) = UR.access_profile_id
-                            AND COALESCE(P2.user_id, UR.id) = UR.id
-                            AND COALESCE(P2.module_id, routines.module_id) = routines.module_id
-                            AND COALESCE(P2.routine_id,
-                                CASE
-                                    WHEN AR.allow_access_to_all_module_routines = 0 THEN - 1
-                                    ELSE routines.id
-                                END) = routines.id
-                            AND P2.allowed_access = 1
-                        )
-                    ) ON (
-                        routines.module_id = MODULES.id
-                    )                    
-                WHERE
-                    (
-                        PERMISSIONS.table_id IS NULL
-                        OR PERMISSIONS.module_id IS NOT NULL
-                    )    
-                ORDER BY 
-                    COALESCE(MODULES.numeric_order, MODULES.id),
-                    COALESCE(routines.numeric_order, routines.id);    
+                ) ON (
+                    routines.module_id = MODULES.id
+                )                    
+            WHERE
+                (
+                    PERMISSIONS.table_id IS NULL
+                    OR PERMISSIONS.module_id IS NOT NULL
+                )    
+            ORDER BY 
+                COALESCE(MODULES.numeric_order, MODULES.id),
+                COALESCE(routines.numeric_order, routines.id);    
             `;
-            res.data = await DBConnectionManager.getDefaultDBConnection()?.query(query,{raw:true,type:QueryTypes.SELECT});
+            result = await DBConnectionManager.getDefaultDBConnection()?.query(query,{raw:true,type:QueryTypes.SELECT});
             let nestedModules : any = {};
-            for(let i = 0; i < res.data.length; i++) {                
-                nestedModules[res.data[i].id] = nestedModules[res.data[i].id] || res.data[i];
-                if (Utils.hasValue(res.data[i].routine_id)) {
-                    nestedModules[res.data[i].id].routines = nestedModules[res.data[i].id].routines || {};
-                    nestedModules[res.data[i].id].routines[res.data[i].routine_id] = {
-                        id: res.data[i].routine_id,
-                        parent_id: res.data[i].routine_sup_id,
-                        routine_type_id: res.data[i].routine_routine_type_id,
-                        module_id: res.data[i].routine_module_id,
-                        name: res.data[i].routine_name,
-                        icon: res.data[i].routine_icon,
-                        view_path: res.data[i].routine_view_path,
-                        numeric_order: res.data[i].routine_order_num,
-                        show_in_menu: res.data[i].routine_show_in_menu,
-                        description: res.data[i].routine_description
+            for(let i = 0; i < result.length; i++) {                
+                nestedModules[result[i].id] = nestedModules[result[i].id] || result[i];
+                if (Utils.hasValue(result[i].routine_id)) {
+                    nestedModules[result[i].id].routines = nestedModules[result[i].id].routines || {};
+                    nestedModules[result[i].id].routines[result[i].routine_id] = {
+                        id: result[i].routine_id,
+                        parent_id: result[i].routine_sup_id,
+                        routine_type_id: result[i].routine_routine_type_id,
+                        module_id: result[i].routine_module_id,
+                        name: result[i].routine_name,
+                        icon: result[i].routine_icon,
+                        view_path: result[i].routine_view_path,
+                        numeric_order: result[i].routine_order_num,
+                        show_in_menu: result[i].routine_show_in_menu,
+                        description: result[i].routine_description
                     };
                 }
             }
@@ -172,5 +167,14 @@ export default class RoutinesController extends BaseRegistersController {
 
     static {
         this.configureRequestHandlers();
+        [
+            this.get_nested
+        ].forEach(el=>Object.defineProperty(el, "__isRequestHandler", {
+            value: true,
+            writable: false,
+            configurable: false,
+            enumerable: false, // Mantém a propriedade oculta em loops
+        }));
+
     }
 }

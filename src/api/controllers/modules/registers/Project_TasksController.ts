@@ -73,8 +73,9 @@ export default class Project_TasksController extends BaseRegistersController {
     }
 
     static async get(req: Request, res: Response, next: NextFunction) : Promise<void> {
-        try {          
-            res.data = await this._get(req.body);
+        try {  
+            let queryParams = req.body.queryParams || req.body || {};        
+            res.data = await this._get(queryParams);
             res.sendResponse(200,true);
         } catch (e: any) {
             res.setException(e);
