@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config();
 process.env.API_INTERNAL_PROTOCOL = process?.env?.API_INTERNAL_PROTOCOL || "http";
 process.env.API_INTERNAL_IP = process?.env?.API_INTERNAL_IP || "localhost";
 process.env.API_PORT = process?.env?.API_PORT || "3004";
@@ -180,7 +181,7 @@ async function getDataFromTable(tableName, checkHasData) {
     return jsonData?.data;
 }
 async function getDataFromWinthorTable(params) {
-    let endPoint = `${baseApiEndPoint}${endPoints.registers.path}/integrations/winthor/winthorintegrationsregisterscontroller/${params.winthorTableName}/get`;
+    let endPoint = `${baseApiEndPoint}${endPoints[`winthor${params.tableName}integrationscontroller`].path}/get`;
     let options = {
         ...defaultLoggedOptions,
         method: 'POST',
@@ -295,7 +296,7 @@ async function integrateDataFromWinthorTable(params) {
     jsonResponse.data = jsonResponse.data[0];
     expect(hasValue(jsonResponse.data.id)).toBeTruthy();
 }
-describe('Running api call tests', () => {
+describe('Running api call tests', () => {    
     test('api onlne', async () => {
         let endPoint = `${baseApiEndPoint}/api/online`;
         let jsonData = await callApi(endPoint);
@@ -355,7 +356,7 @@ describe('Running api call tests', () => {
     for (let i in fileList) {
         //break;
         let modelName = fileList[i].replace(/\d|\-|create|\.js/g, '').trim().toLowerCase();
-        //if (['projects_items','project_tasks','requirements'].indexOf(modelName) > -1)
+        //if (['data_origins','task_types','tasks'].indexOf(modelName) > -1)
         describe(modelName, () => {
             let getParamsToCreate = () => {
                 return {
@@ -443,7 +444,7 @@ describe('Running api call tests', () => {
                                 tableName: modelName,
                                 winthorTableName: 'PCPAIS',
                                 winthorTableFields: ['CODPAIS', 'DESCRICAO'],
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}_integration_controller/integrate`,
+                                endPointIntegration: `${baseApiEndPoint}${endPoints[`${modelName}integrationscontroller`].path}/integrate`,
                                 identifierWithorField: 'CODPAIS',
                                 fieldUpdate: 'name'
                             };
@@ -471,7 +472,7 @@ describe('Running api call tests', () => {
                                     'UF',
                                     'ESTADO'
                                 ],
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}_integration_controller/integrate`,
+                                endPointIntegration: `${baseApiEndPoint}${endPoints[`${modelName}integrationscontroller`].path}/integrate`,
                                 identifierWithorField: 'UF',
                                 fieldUpdate: 'name'
                             };
@@ -498,7 +499,7 @@ describe('Running api call tests', () => {
                                     'CODCIDADE',
                                     'NOMECIDADE'
                                 ],
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/locations/${modelName}/integrations/${modelName}_integration_controller/integrate`,
+                                endPointIntegration: `${baseApiEndPoint}${endPoints[`${modelName}integrationscontroller`].path}/integrate`,
                                 identifierWithorField: 'CODCIDADE',
                                 fieldUpdate: 'name'
                             };
@@ -541,7 +542,7 @@ describe('Running api call tests', () => {
                                     'CLIENTE',
                                     'FANTASIA'
                                 ],
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/${modelName}/integrations/${modelName}_integration_controller/integrate`,
+                                endPointIntegration: `${baseApiEndPoint}${endPoints[`${modelName}integrationscontroller`].path}/integrate`,
                                 identifierWithorField: (origin, data) => {
                                     return {
                                         origin: origin,
@@ -585,7 +586,7 @@ describe('Running api call tests', () => {
                                     'UF',
                                     'CODCLI'
                                 ],
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}_integration_controller/integrate`,
+                                endPointIntegration: `${baseApiEndPoint}${endPoints[`${modelName}integrationscontroller`].path}/integrate`,
                                 identifierWithorField: 'CODIGO',
                                 fieldUpdate: 'alias'
                             };
@@ -645,7 +646,7 @@ describe('Running api call tests', () => {
                                     tableName: modelName,
                                     winthorTableName: 'PCCLIENT',
                                     winthorTableFields: undefined,
-                                    endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}_integration_controller/integrate`,
+                                    endPointIntegration: `${baseApiEndPoint}${endPoints[`${modelName}integrationscontroller`].path}/integrate`,
                                     identifierWithorField: 'CODCLI',
                                     fieldUpdate: 'alias'
                                 };
@@ -665,7 +666,7 @@ describe('Running api call tests', () => {
                                         'UF',
                                         'CODCLI'
                                     ],
-                                    endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/people/${modelName}/integrations/${modelName}_integration_controller/integrate`,
+                                    endPointIntegration: `${baseApiEndPoint}${endPoints[`${modelName}integrationscontroller`].path}/integrate`,
                                     identifierWithorField: 'CODIGO',
                                     fieldUpdate: 'alias'
                                 };
@@ -695,7 +696,7 @@ describe('Running api call tests', () => {
                                     'MOTIVO',
                                     'TIPO'
                                 ],
-                                endPointIntegration: `${baseApiEndPoint}${endPoints.registers.path}/logistic/reasons/integrations/${modelName}_integration_controller/integrate`,
+                                endPointIntegration: `${baseApiEndPoint}${endPoints[`${modelName}integrationscontroller`].path}/integrate`,
                                 identifierWithorField: 'CODDEVOL',
                                 fieldUpdate: 'name'
                             };

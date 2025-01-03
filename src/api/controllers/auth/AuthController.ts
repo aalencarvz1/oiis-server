@@ -8,6 +8,7 @@ import { createTransport } from "nodemailer";
 import Users from "../../database/models/Users.js";
 import User_Tokens from "../../database/models/User_Tokens.js";
 import Access_Profiles from "../../database/models/Access_Profiles.js";
+import EndPointsController from "../endpoints/EndPointsController.js";
 
 /**
  * class to handle authentication
@@ -348,12 +349,7 @@ export default class AuthController {
             this.check_token,
             this.send_email_recover_password,
             this.password_change,
-        ].forEach(el=>Object.defineProperty(el, "__isRequestHandler", {
-            value: true,
-            writable: false,
-            configurable: false,
-            enumerable: false, // Mantém a propriedade oculta em loops
-        }));
+        ].forEach(el=>EndPointsController.markAsRequestHandler(el));
     }
 
 }

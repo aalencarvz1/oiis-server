@@ -5,6 +5,7 @@ import { QueryTypes } from "sequelize";
 import Utils from "../../utils/Utils.js";
 import BaseRegistersController from "../registers/BaseRegistersController.js";
 import Routines from "../../../database/models/Routines.js";
+import EndPointsController from "../../endpoints/EndPointsController.js";
 
 /**
  * Class controller to handle registers module
@@ -169,12 +170,7 @@ export default class RoutinesController extends BaseRegistersController {
         this.configureRequestHandlers();
         [
             this.get_nested
-        ].forEach(el=>Object.defineProperty(el, "__isRequestHandler", {
-            value: true,
-            writable: false,
-            configurable: false,
-            enumerable: false, // Mantém a propriedade oculta em loops
-        }));
+        ].forEach(el=>EndPointsController.markAsRequestHandler(el));
 
     }
 }

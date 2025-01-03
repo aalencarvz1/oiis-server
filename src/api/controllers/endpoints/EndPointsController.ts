@@ -72,7 +72,7 @@ export default class EndPointsController{
           res.exception = exception || null;        
         };
       
-        res.sendResponse = function(status: number = 517,success: boolean = false,message: string | null = null,data:any = null,exception:any = null) {
+        res.sendResponse = function(status?: number,success?: boolean ,message?: string | null,data?:any,exception?:any) {
           if (Utils.hasValue(success)) res.success = res.success || success;
           if (Utils.hasValue(message)) res.message = res.message || message;
           if (Utils.hasValue(data)) res.data = res.data || data;            
@@ -85,7 +85,11 @@ export default class EndPointsController{
                   }
               }
           }
-          if (status) res.status(status);
+          if (status) {
+            res.status(status);
+          } else {
+            res.status(res.success ? 200 : 517);
+          }
       
           res.setHeader('Content-Type', 'application/json');
       
@@ -95,6 +99,15 @@ export default class EndPointsController{
         };
       
         next();
+    }
+
+    static markAsRequestHandler(func: any) : void {
+        Object.defineProperty(func, "__isRequestHandler", {
+            value: true,
+            writable: false,
+            configurable: false,
+            enumerable: false, // Mantém a propriedade oculta em loops
+        });
     }
 
     static isRequestHandler(func: any): func is RequestHandler {

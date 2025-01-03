@@ -128,6 +128,7 @@ export default class TasksController extends BaseRegistersController {
             }     
             let query = this.mountQueryToGet(req,{where:{id:task.id}});
             res.data = await DBConnectionManager.getDefaultDBConnection()?.query(query,{type:QueryTypes.SELECT,raw:true});
+            res.data = res.data[0] || res.data;
             res.sendResponse(200,true);
         } catch (e: any) {
             res.setException(e);
@@ -137,30 +138,33 @@ export default class TasksController extends BaseRegistersController {
 
     static async patch(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {  
-            let task : any = await Tasks.findOne({
-                where:{
-                    id: req.body?.id
-                }
-            });
-            let taskX : any = await Tasks_Status_Users.findOne({
-                where:{
-                    task_id: req.body?.id,
-                    user_id: req.user.id
-                }
-            });            
+            let queryParams = req.body.queryParams || req.body;
+            let task : any = await Tasks.patchData(queryParams);
             if (task) {
+                task = await Tasks.findOne({
+                    where:{
+                        id: task.id
+                    }
+                });
+                let taskX : any = await Tasks_Status_Users.findOne({
+                    where:{
+                        task_id: task.id,
+                        user_id: req.user.id
+                    }
+                });            
+
                 let taskLogX : any = {
                     task_id: task.id,
                     user_id: req.user.id,
                     operation: 'UPDATE'
                 };
-                for(let key in req.body) {
+                for(let key in queryParams.values || queryParams) {
                     if (['id','creator_user_id','created_at'].indexOf(key) == -1) {                        
                         if (typeof task[key] !== "undefined") {
-                            if (task[key] != req.body[key]
-                                && (task[key] != null || (task[key] == null && Utils.hasValue(req.body[key])))
+                            if (task[key] != (queryParams.values || queryParams)[key]
+                                && (task[key] != null || (task[key] == null && Utils.hasValue((queryParams.values || queryParams)[key])))
                             ) {                                                                                     
-                                task[key] = req.body[key]; 
+                                task[key] = (queryParams.values || queryParams)[key]; 
                                 if (key.indexOf("MOMENT") > -1 && Utils.hasValue(task[key]) && typeof task[key] == 'string') {
                                     task[key] = Sequelize.fn('str_to_date',task[key],'%Y-%m-%d %H:%i:%s')//new Date(task[key]);
                                 }                                
@@ -168,14 +172,14 @@ export default class TasksController extends BaseRegistersController {
                         }
 
                         if (typeof taskX[key] !== "undefined") {
-                            if (taskX[key] != req.body[key]
-                                && (taskX[key] != null || (taskX[key] == null && Utils.hasValue(req.body[key])))
+                            if (taskX[key] != (queryParams.values || queryParams)[key]
+                                && (taskX[key] != null || (taskX[key] == null && Utils.hasValue((queryParams.values || queryParams)[key])))
                             ) {         
                                 if (key == 'status_id') {
                                     taskLogX.old_status_id = taskX[key];
-                                    taskLogX.new_status_id = req.body[key];
+                                    taskLogX.new_status_id = (queryParams.values || queryParams)[key];
                                 }                                                                              
-                                taskX[key] = req.body[key]; 
+                                taskX[key] = (queryParams.values || queryParams)[key]; 
                                 if (key.indexOf("DATE") > -1 && Utils.hasValue(taskX[key]) && typeof taskX[key] == 'string') {
                                     taskX[key] = Sequelize.fn('str_to_date',taskX[key],'%Y-%m-%d %H:%i:%s')//new Date(taskX[key]);
                                 }                                
@@ -187,15 +191,15 @@ export default class TasksController extends BaseRegistersController {
                 taskX.updater_user_id = req.user.id;
 
                 if (taskLogX.new_status_id == Task_Status.CONCLUDED) {
-                    if (!Utils.hasValue(req.body?.end_at)) {
+                    if (!Utils.hasValue((queryParams.values || queryParams)?.end_at)) {
                         task.end_at = Sequelize.literal('current_timestamp');
                         taskX.end_at = Sequelize.literal('current_timestamp');
                     }
                 }
 
                 if (taskLogX.new_status_id == Task_Status.RUNNING) {
-                    taskX.last_run = req.body?.start_at ? Sequelize.fn('str_to_date',req.body?.start_at,'%Y-%m-%d %H:%i:%s') : Sequelize.literal('current_timestamp');
-                    if (!Utils.hasValue(req.body?.start_at)) {
+                    taskX.last_run = (queryParams.values || queryParams)?.start_at ? Sequelize.fn('str_to_date',(queryParams.values || queryParams)?.start_at,'%Y-%m-%d %H:%i:%s') : Sequelize.literal('current_timestamp');
+                    if (!Utils.hasValue((queryParams.values || queryParams)?.start_at)) {
                         if (!Utils.hasValue(task.start_at)) {
                             task.start_at = Sequelize.literal('current_timestamp');
                         }
@@ -275,9 +279,10 @@ export default class TasksController extends BaseRegistersController {
 
                 let query = this.mountQueryToGet(req,{where:{id:task.id}});
                 res.data = await DBConnectionManager.getDefaultDBConnection()?.query(query,{type:QueryTypes.SELECT,raw:true});
+                res.data = res.data[0] || res.data;
                 res.sendResponse(200,true);
             } else {
-                throw new Error(`task ${req.body?.id} not found`);
+                throw new Error(`task not found`);
             } 
         } catch (e: any) {
             res.setException(e);
