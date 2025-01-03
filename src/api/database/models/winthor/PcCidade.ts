@@ -3,6 +3,7 @@
 
 import { DataTypes } from "sequelize";
 import  BaseWinthorTableModel  from './BaseWinthorTableModel.js';
+import PcEstado from "./PcEstado.js";
 
 /**
  * class model
@@ -54,7 +55,7 @@ export default class PcCidade extends BaseWinthorTableModel {
     fields: ['UF'],
     type: 'foreign key',
     references: { 
-        table: 'PCESTADO',
+        table: PcEstado,
         field: 'UF'
     }
   }];

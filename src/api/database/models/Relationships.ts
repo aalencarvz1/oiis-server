@@ -163,8 +163,6 @@ export default class Relationships extends BaseTableModel {
   }
 
 
-  static async createIfNotExists(queryParams: any, newValues: any){
-    return await BaseTableModel.createIfNotExists.bind(Relationships)(queryParams, newValues);
-  }
+  
   
 };

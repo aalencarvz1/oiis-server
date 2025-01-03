@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import DatabaseUtils from "../../database/DatabaseUtils.js";
+import EndPointsController from "../../endpoints/EndPointsController.js";
 
 
 /**
@@ -93,11 +94,6 @@ export default abstract class BaseRegistersController {
             this.put,
             this.patch,
             this.delete
-        ].forEach(el=>Object.defineProperty(el, "__isRequestHandler", {
-            value: true,
-            writable: false,
-            configurable: false,
-            enumerable: false, // Mantém a propriedade oculta em loops
-        }));
+        ].forEach(el=>EndPointsController.markAsRequestHandler(el));
     }
 }

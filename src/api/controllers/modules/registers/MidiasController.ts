@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Midias from "../../../database/models/Midias.js";
 import BaseRegistersController from "./BaseRegistersController.js";
+import EndPointsController from "../../endpoints/EndPointsController.js";
 
 export default class MidiasController extends BaseRegistersController {
     static getTableClassModel() : any {
@@ -21,12 +22,7 @@ export default class MidiasController extends BaseRegistersController {
         this.configureRequestHandlers();
         [
             this.uploadFile
-        ].forEach(el=>Object.defineProperty(el, "__isRequestHandler", {
-            value: true,
-            writable: false,
-            configurable: false,
-            enumerable: false, // Mantém a propriedade oculta em loops
-        }));
+        ].forEach(el=>EndPointsController.markAsRequestHandler(el));
 
     }
 }

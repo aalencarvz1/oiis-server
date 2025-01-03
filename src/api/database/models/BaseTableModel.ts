@@ -393,7 +393,7 @@ export default class BaseTableModel extends Model {
      * @async (pay attention to await)
      * @created 2023-11-10
      */
-    static async createIfNotExists(queryParams: any , newValues: any) {
+    static async createIfNotExists(queryParams: any , newValues?: any) {
         let reg : any = await this.findOne(queryParams);
         if(!reg && queryParams.transaction) {
             let transactionTemp = queryParams.transaction;

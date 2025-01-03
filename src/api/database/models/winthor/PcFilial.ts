@@ -3,6 +3,7 @@
 
 import { DataTypes } from "sequelize";
 import  BaseWinthorTableModel  from './BaseWinthorTableModel.js';
+import PcClient from "./PcClient.js";
 
 /**
  * class model
@@ -54,7 +55,7 @@ export default class PcFilial extends BaseWinthorTableModel {
     fields: ['CODCLI'],
     type: 'foreign key',
     references: { 
-        table: 'PCCLIENT',
+        table: PcClient,
         field: 'CODCLI'
     }
   }];
