@@ -7,6 +7,6 @@ export default class Commission_Entitiy_CodesController extends BaseRegistersCon
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

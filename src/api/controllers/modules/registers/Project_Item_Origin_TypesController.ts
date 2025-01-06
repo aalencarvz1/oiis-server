@@ -7,6 +7,6 @@ export default class Project_Item_Origin_TypesController extends BaseRegistersCo
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

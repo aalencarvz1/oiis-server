@@ -7,6 +7,6 @@ export default class Tasks_Status_Users_LogsController extends BaseRegistersCont
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

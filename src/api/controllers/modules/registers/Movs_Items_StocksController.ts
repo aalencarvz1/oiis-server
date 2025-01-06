@@ -7,6 +7,6 @@ export default class Movs_Items_StocksController extends BaseRegistersController
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

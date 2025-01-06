@@ -7,6 +7,6 @@ export default class Measurement_UnitsController extends BaseRegistersController
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

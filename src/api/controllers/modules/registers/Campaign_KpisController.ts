@@ -7,6 +7,6 @@ export default class Campaign_KpisController extends BaseRegistersController {
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

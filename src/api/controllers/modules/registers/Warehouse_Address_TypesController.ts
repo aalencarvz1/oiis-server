@@ -7,6 +7,6 @@ export default class Warehouse_Address_TypesController extends BaseRegistersCont
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

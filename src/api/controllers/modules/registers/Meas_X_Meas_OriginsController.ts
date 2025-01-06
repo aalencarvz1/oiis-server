@@ -7,6 +7,6 @@ export default class Meas_X_Meas_OriginsController extends BaseRegistersControll
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

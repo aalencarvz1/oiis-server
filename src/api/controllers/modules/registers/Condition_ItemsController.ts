@@ -7,6 +7,6 @@ export default class Condition_ItemsController extends BaseRegistersController {
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

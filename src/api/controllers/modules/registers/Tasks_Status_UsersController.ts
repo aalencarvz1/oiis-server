@@ -7,6 +7,6 @@ export default class Tasks_Status_UsersController extends BaseRegistersControlle
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

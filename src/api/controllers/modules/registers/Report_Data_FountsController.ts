@@ -7,6 +7,6 @@ export default class Report_Data_FountsController extends BaseRegistersControlle
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

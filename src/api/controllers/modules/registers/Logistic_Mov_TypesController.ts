@@ -7,6 +7,6 @@ export default class Logistic_Mov_TypesController extends BaseRegistersControlle
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

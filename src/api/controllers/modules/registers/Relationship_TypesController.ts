@@ -7,6 +7,6 @@ export default class Relationship_TypesController extends BaseRegistersControlle
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

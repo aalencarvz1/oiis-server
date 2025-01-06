@@ -62,7 +62,7 @@ export default class EndPointsController{
           }
         }
       
-        res.setException = function(exception: any,notShowConsole : boolean = false) {;  
+        res.setException = function(exception: any,notShowConsole : boolean = false) {  
           if (!notShowConsole) console.error(exception);
           res.success = false;
           res.message = exception?.message || exception;

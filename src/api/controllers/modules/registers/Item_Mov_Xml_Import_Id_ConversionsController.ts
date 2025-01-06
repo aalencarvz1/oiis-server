@@ -7,6 +7,6 @@ export default class Item_Mov_Xml_Import_Id_ConversionsController extends BaseRe
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

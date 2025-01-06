@@ -7,6 +7,6 @@ export default class Relationship_ValuesController extends BaseRegistersControll
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

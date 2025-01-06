@@ -7,6 +7,6 @@ export default class Movement_Entity_Relationship_TypesController extends BaseRe
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

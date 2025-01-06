@@ -7,6 +7,6 @@ export default class Commission_ValuesController extends BaseRegistersController
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

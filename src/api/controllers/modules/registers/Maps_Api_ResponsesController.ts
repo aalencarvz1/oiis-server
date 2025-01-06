@@ -7,6 +7,6 @@ export default class Maps_Api_ResponsesController extends BaseRegistersControlle
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

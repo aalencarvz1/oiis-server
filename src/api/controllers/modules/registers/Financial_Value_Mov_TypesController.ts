@@ -7,6 +7,6 @@ export default class Financial_Value_Mov_TypesController extends BaseRegistersCo
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

@@ -7,6 +7,6 @@ export default class Campaign_Kpi_Value_Detail_EntitiesController extends BaseRe
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

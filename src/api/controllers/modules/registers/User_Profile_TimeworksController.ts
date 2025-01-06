@@ -7,6 +7,6 @@ export default class User_Profile_TimeworksController extends BaseRegistersContr
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

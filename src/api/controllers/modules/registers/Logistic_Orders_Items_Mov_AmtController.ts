@@ -7,6 +7,6 @@ export default class Logistic_Orders_Items_Mov_AmtController extends BaseRegiste
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

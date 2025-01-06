@@ -7,6 +7,6 @@ export default class Access_ProfilesController extends BaseRegistersController {
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

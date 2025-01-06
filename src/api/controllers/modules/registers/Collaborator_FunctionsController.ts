@@ -7,6 +7,6 @@ export default class Collaborator_FunctionsController extends BaseRegistersContr
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

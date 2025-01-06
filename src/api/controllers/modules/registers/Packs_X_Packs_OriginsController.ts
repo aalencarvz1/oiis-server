@@ -7,6 +7,6 @@ export default class Packs_X_Packs_OriginsController extends BaseRegistersContro
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

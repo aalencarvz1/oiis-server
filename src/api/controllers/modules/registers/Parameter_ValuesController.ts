@@ -7,6 +7,6 @@ export default class Parameter_ValuesController extends BaseRegistersController 
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

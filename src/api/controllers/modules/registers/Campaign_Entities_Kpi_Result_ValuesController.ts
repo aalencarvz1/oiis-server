@@ -7,6 +7,6 @@ export default class Campaign_Entities_Kpi_Result_ValuesController extends BaseR
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

@@ -7,6 +7,6 @@ export default class Financial_Value_FormsController extends BaseRegistersContro
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

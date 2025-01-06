@@ -7,6 +7,6 @@ export default class Stock_EntitiesController extends BaseRegistersController {
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

@@ -7,6 +7,6 @@ export default class Warehouse_Address_DimensionsController extends BaseRegister
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

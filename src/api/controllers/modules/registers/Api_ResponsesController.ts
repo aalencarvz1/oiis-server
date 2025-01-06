@@ -7,6 +7,6 @@ export default class Api_ResponsesController extends BaseRegistersController {
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

@@ -7,6 +7,6 @@ export default class Logistic_Orders_Movs_Received_ValuesController extends Base
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

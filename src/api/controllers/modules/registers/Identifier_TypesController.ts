@@ -7,6 +7,6 @@ export default class Identifier_TypesController extends BaseRegistersController 
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

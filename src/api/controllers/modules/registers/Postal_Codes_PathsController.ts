@@ -7,6 +7,6 @@ export default class Postal_Codes_PathsController extends BaseRegistersControlle
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

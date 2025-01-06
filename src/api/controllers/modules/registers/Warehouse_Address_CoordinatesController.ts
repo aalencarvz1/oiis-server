@@ -7,6 +7,6 @@ export default class Warehouse_Address_CoordinatesController extends BaseRegiste
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

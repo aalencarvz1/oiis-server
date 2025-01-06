@@ -7,6 +7,6 @@ export default class Item_Meas_Pack_IdentifController extends BaseRegistersContr
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

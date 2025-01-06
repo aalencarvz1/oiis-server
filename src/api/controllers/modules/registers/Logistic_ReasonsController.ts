@@ -7,6 +7,6 @@ export default class Logistic_ReasonsController extends BaseRegistersController 
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

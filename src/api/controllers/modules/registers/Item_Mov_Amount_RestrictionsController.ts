@@ -7,6 +7,6 @@ export default class Item_Mov_Amount_RestrictionsController extends BaseRegister
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

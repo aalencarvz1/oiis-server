@@ -7,6 +7,6 @@ export default class Item_Mov_AmountsController extends BaseRegistersController 
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

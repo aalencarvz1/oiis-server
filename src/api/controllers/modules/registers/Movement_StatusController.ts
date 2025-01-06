@@ -7,6 +7,6 @@ export default class Movement_StatusController extends BaseRegistersController {
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

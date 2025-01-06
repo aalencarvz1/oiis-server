@@ -7,6 +7,6 @@ export default class Logistic_LogsController extends BaseRegistersController {
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

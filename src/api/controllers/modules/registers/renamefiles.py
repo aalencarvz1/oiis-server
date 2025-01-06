@@ -13,7 +13,7 @@ export default class __X__Controller extends BaseRegistersController {
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }
 '''
