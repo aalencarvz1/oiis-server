@@ -6,3 +6,4 @@ public bulkInsert(
     options?: BulkCreateOptions,//QueryOptions,
     attributes?: Record<string, ModelAttributeColumnOptions>
 ): Promise<object | number>;
+
