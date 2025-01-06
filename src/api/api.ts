@@ -61,7 +61,7 @@ api.use(AuthController.check_token); //auth token check middleware
 
 
 //handle upload midias route
-api.post("/api/controllers/modules/registers/midiascontroller/uploadfile",upload.array('files'),MidiasController.uploadFile);
+api.post("/api/controllers/modules/registers/midiascontroller/upload_file",upload.array('files'),MidiasController.upload_file);
 
 
 //handle all methods and routes

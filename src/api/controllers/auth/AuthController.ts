@@ -29,13 +29,13 @@ export default class AuthController {
         "/api/online",        
         "/api/endpoints",        
         "/api/controllers/auth/authcontroller/login",
-        "/api/controllers/auth/authcontroller/refreshtoken",
+        "/api/controllers/auth/authcontroller/refresh_token",
         "/api/controllers/auth/authcontroller/register",
-        "/api/controllers/auth/authcontroller/recover",
-        "/api/controllers/auth/authcontroller/passwordchange",
+        "/api/controllers/auth/authcontroller/send_email_recover_password",
+        "/api/controllers/auth/authcontroller/password_change",
         "/api/controllers/modules/outputs/sales/financial_collection/pix/integrations/sicredi/webhooks/5545991334657",
         "/api/controllers/modules/outputs/sales/financial_collection/pix/integrations/sicredi/webhooks/5545991334657/pix",
-        "/api/controllers/modules/registers/midias/midia_controller/uploadfile",
+        "/api/controllers/modules/registers/midiascontroller/upload_file",
         '/api/controllers/modules/webhooks/api_requests',
         '/api/test/'
     ];
@@ -307,7 +307,7 @@ export default class AuthController {
     }
 
     static password_change : RequestHandler = async function(req: Request,res: Response,next: NextFunction) {        
-        //Utils.logi(`${this.name}`,`passwordChange`);
+        //Utils.logi(`${this.name}`,`password_Change`);
         try {            
             let token = req.body.token || '';
             let password = req.body.password || '';
@@ -336,7 +336,7 @@ export default class AuthController {
             Utils.logError(e);
             res.sendResponse(517,false,e?.message || e);
         }
-        //Utils.logf(`${this.name}`,`passwordChange`);
+        //Utils.logf(`${this.name}`,`password_Change`);
     }
 
 

@@ -11,12 +11,12 @@ export default class MidiasController extends BaseRegistersController {
 
     /**
      * handle uploaded midia file(s) with multer
-     * @requesthandler
-     * @midleware
+     * @requesthandler configured on api start, because configurations multer is needed
+     * @midleware 
      * @created 2024-31-12
      * @version 1.0.0
      */
-    static async uploadFile(req: Request, res: Response, next: NextFunction) {
+    static async upload_file(req: Request, res: Response, next: NextFunction) {
         try {
             let files : any = req.files;
             if (files && files.length > 0 && req.body.registers) {                
@@ -79,6 +79,6 @@ export default class MidiasController extends BaseRegistersController {
     }
 
     static {
-        this.configureDefaultRequestHandlers([this.uploadFile]);
+        this.configureDefaultRequestHandlers();
     }
 }
