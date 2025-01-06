@@ -10,250 +10,22 @@ import Relationship_Types from "../../../database/models/Relationship_Types.js";
 import Report_Visions from "../../../database/models/Report_Visions.js";
 import Report_Data_Founts from "../../../database/models/Report_Data_Founts.js";
 
+
+/**
+ * Class to manage structured queries. 
+ * Basicaly, caller must have call this.getStructuredQueryData to get strucured data according params. Then,
+ * must have this.mountQuery to mount string query based on response of previous call.
+ * 
+ * @author Alencar
+ * @created 2024-01-06
+ * @version 1.0.0
+ */
 export default class StructuredQueryUtils {   
 
 
-    /**
-     * Get data from customized (structured) query
-     * @created 2024-07-22
-     * @version 2.0.0
-     */
-    static async getStructuredQueryData(params: any) : Promise<any> {
-        let result = null;
-        let structuredQueryOrigin = null;
-        params = params || {};
-        let visionsIds = params.visions || [];
-        let periods = params.periods || [];
-        let conditions = params.conditions || [];
-        if (visionsIds.length && periods.length) {            
-            if (Utils.typeOf(visionsIds) != "array") {
-                visionsIds = Utils.toArray(visionsIds,",");
-            }
-            visionsIds = visionsIds.map((el: any)=>Utils.hasValue(el)?el:'null');
-            if (Utils.typeOf(periods) != "array") {
-                periods = Utils.toArray(periods,",");
-            }
-            periods = periods.map((el: any)=>Utils.hasValue(el)?el:'null');
-
-            //wraper perios in array o 2 elements [[init,end],..]
-            periods = Utils.singleArrayTo2LevelArray(periods);
-            visionsIds = [...new Set(visionsIds)]; //unique
-            if (Utils.hasValue(conditions) && typeof conditions == 'string') {
-                conditions = JSON.parse(conditions);
-            }
-            let minPeriod = null;
-            let maxPeriod = null;
-            for (let p in periods) {
-                for (let d in periods[p]) {
-                    if (typeof periods[p][d] != 'object') {
-                        periods[p][d] = new Date(periods[p][d]);
-                    }
-                    if (!minPeriod || minPeriod > periods[p][d]) {
-                        minPeriod = periods[p][d];
-                    } 
-                    if (!maxPeriod || maxPeriod < periods[p][d]) {
-                        maxPeriod = periods[p][d];
-                    } 
-                }
-            }
-            
-            let conditionsVisionsIds = params.conditionsVisionsIds || (conditions||[]).map((el: any)=>(el.reportVision || el.vision || {}).id || el.reportVision || el.vision);  
-            conditionsVisionsIds = conditionsVisionsIds.map((el: any)=>Utils.hasValue(el)?el:'null');          
-            conditionsVisionsIds = [...new Set(conditionsVisionsIds)]; //unique
-
-            //get report data fount
-            let query = `
-                SELECT
-                    RF.id,
-                    RV.id AS IDVISION,                    
-                    RF.start_date,
-                    RF.end_date,
-                    RF.conditions,
-                    RF.type_get_expected_data_from,
-                    RF.origin_get_expected_data_from,
-                    RF.get_expected_data_from,
-                    RF.type_get_value_from,
-                    RF.origin_get_value_from,
-                    RF.get_value_from,
-                    COALESCE(DR.numeric_order,DR.id) AS numeric_order,
-                    CASE WHEN RV.id IN (${visionsIds.join(',')}) THEN 1 ELSE 0 END AS ISVISION,
-                    CASE WHEN RV.id IN (${conditionsVisionsIds.length ? conditionsVisionsIds.join(',') : '-1'}) THEN 1 ELSE 0 END AS ISCONDITIONVISION
-                FROM
-                    report_visions RV
-                    JOIN relationships DR ON (
-                        DR.relationship_type_id = ${Relationship_Types.RELATIONSHIP}
-                        AND DR.table_1_id = ${Report_Visions.id}
-                        AND DR.record_1_id = RV.id
-                        AND DR.table_2_id = ${Report_Data_Founts.id}
-                        AND DR.status_reg_id = ${Record_Status.ACTIVE}
-                        AND COALESCE(DR.start_at,STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
-                        AND COALESCE(DR.end_at,STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
-                    )
-                    JOIN report_data_founts RF ON (
-                        RF.id = DR.record_2_id
-                        AND RF.status_reg_id = ${Record_Status.ACTIVE}
-                        AND COALESCE(RF.start_date,STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
-                        AND COALESCE(RF.end_date,STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
-                    )
-                WHERE
-                    (
-                        RV.id IN (${visionsIds.join(',')})
-                        ${conditionsVisionsIds.length ? `OR RV.id IN (${conditionsVisionsIds.join(',')}) ` : ''}
-                    )
-                    AND RV.status_reg_id = ${Record_Status.ACTIVE}
-                ORDER BY
-                    RV.id,
-                    COALESCE(DR.numeric_order,DR.id)
-            `;
-
-            let reportsDatasFounts : any = await DBConnectionManager.getDefaultDBConnection()?.query(query,{raw:true,type: QueryTypes.SELECT});
-            if (reportsDatasFounts && reportsDatasFounts.length) {                
-                for(let k in reportsDatasFounts) {
-                    if (reportsDatasFounts[k].type_get_value_from.trim().toUpperCase() == 'STRUCTURED QUERY') {
-
-                        //unify all structured report data fount in one
-                        structuredQueryOrigin = structuredQueryOrigin || reportsDatasFounts[k].origin_get_value_from;
-                        if (structuredQueryOrigin != reportsDatasFounts[k].origin_get_value_from) {
-                            throw new Error(`unsuported different origins in same structured report: ${structuredQueryOrigin},${reportsDatasFounts[k].origin_get_value_from}`);
-                        }
-                        result = result || [];
-                        result = await StructuredQueryUtils.unifyStructuredQuery(result,reportsDatasFounts[k],params);                       
-                    } else {
-                        throw new Error(`type_get_value_from of report data found id ${reportsDatasFounts[k].id} not expected: ${reportsDatasFounts[k].type_get_value_from}`)
-                    }
-                }                     
-            } else {
-                throw new Error("relationed reports to visions not found");
-            }                    
-        } else {
-            throw new Error(`missing data (vision or periods)`);
-        }
-        return {
-            origin: structuredQueryOrigin,
-            structuredQuery: result            
-        }
-    }
-
-
-
-    static sortNestedReportDataFoutItems(currentItems?: any) : any {        
-        if (currentItems) {
-            if (Utils.typeOf(currentItems) == 'array') {
-                currentItems = currentItems.sort(function(a: any,b: any){return ((a.numeric_order||a.id)-0) - ((b.numeric_order||b.id)-0)});
-                for(let k in currentItems) {
-                    if (currentItems[k].subs && currentItems[k].subs.length) {
-                        currentItems[k].subs = StructuredQueryUtils.sortNestedReportDataFoutItems(currentItems[k].subs);
-                    }
-                }
-            } else if (Utils.typeOf(currentItems) == 'object') { 
-                if (currentItems.subs && currentItems.subs.length) {
-                    currentItems.subs = StructuredQueryUtils.sortNestedReportDataFoutItems(currentItems.subs);
-                }
-            }
-        } 
-        return currentItems;
-    }
-
-
-    /**
-     * get report data fount items of an structured query
-     * @created 2024-04-02
-     */
-    static async getStructuredReportDataItems(reportDataFount: any,params: any) : Promise<null|any[]> {
-        let result = null;
-        //get report data fount items
-        let query = `
-            SELECT
-                RFI.*,
-                ${reportDataFount.IDVISION||'NULL'} as IDVISION,
-                ${reportDataFount.ISVISION||0} as ISVISION,
-                ${reportDataFount.ISCONDITIONVISION||0} as ISCONDITIONVISION,
-                P.id AS IDPERMISSION,
-                C.expression
-            FROM
-                report_data_fount_items RFI 
-                LEFT OUTER JOIN tables T ON (   
-                    RFI.sql_object_type_id = ${Sql_Object_Types.TABLE}
-                    AND T.id = RFI.sql_object_id
-                )
-                LEFT OUTER JOIN USERS U ON (
-                    U.id = ${params.user.id}
-                )
-                LEFT OUTER JOIN PERMISSIONS P ON (
-                    P.table_id IS NOT NULL 
-                    AND P.table_id = T.id 
-                    AND (
-                        P.user_id = U.id
-                        OR (
-                            P.user_id IS NULL
-                            AND P.access_profile_id = U.access_profile_id
-                        )
-                    )
-                )
-                LEFT OUTER JOIN conditions C ON (
-                    C.entity_type_id = ${Entities_Types.TABLE}
-                    AND C.entity_id = ${Permissions.id}
-                    AND C.record_id = P.id
-                )
-            WHERE
-                RFI.report_data_source_id = ${reportDataFount.id}
-                AND RFI.status_reg_id = ${Record_Status.ACTIVE}
-                AND (
-                    ${reportDataFount.ISVISION||0} = 1
-                    OR (
-                        ${reportDataFount.ISVISION||0} <> 1  
-                        AND ${reportDataFount.ISCONDITIONVISION||0} = 1 
-                        AND (
-                            RFI.sql_object_type_id <> ${Sql_Object_Types.FIELD}
-                            OR (
-                                RFI.sql_object_type_id = ${Sql_Object_Types.FIELD}
-                                AND NOT EXISTS (SELECT 1 FROM report_data_fount_items RFI2 WHERE RFI2.id = RFI.parent_id AND RFI2.sql_object_type_id = ${Sql_Object_Types.SELECT})
-                            )
-
-                        )
-                    )
-                )
-            ORDER BY
-                COALESCE(RFI.parent_id,RFI.id)
-        `;
-
-        let reportsDataItems = await DBConnectionManager.getDefaultDBConnection()?.query(query,{raw:true,type:QueryTypes.SELECT});
-        
-        if (reportsDataItems && reportsDataItems.length) {
-
-            //scructure in sub nested elements
-            let structuredReportsDataItems : any = _.keyBy(reportsDataItems,'id');
-            for(let k in structuredReportsDataItems) {
-                if (Utils.hasValue(structuredReportsDataItems[k].existence_critery)) {
-                    if (!Utils.toBool(eval(structuredReportsDataItems[k].existence_critery))) {
-                        structuredReportsDataItems[k].MOVED = true;
-                        continue;    
-                    };
-                }
-                if (structuredReportsDataItems[k].parent_id) {
-                    structuredReportsDataItems[structuredReportsDataItems[k].parent_id].subs = structuredReportsDataItems[structuredReportsDataItems[k].parent_id].subs || [];
-                    structuredReportsDataItems[structuredReportsDataItems[k].parent_id].subs.push(structuredReportsDataItems[k]);
-                    structuredReportsDataItems[k].MOVED = true;
-                }
-            }
-            for(let k in structuredReportsDataItems) {
-                if (structuredReportsDataItems[k].MOVED) {
-                    delete structuredReportsDataItems[k].MOVED;
-                    structuredReportsDataItems[k] = null;
-                    delete structuredReportsDataItems[k];
-                }
-            }
-
-
-            let arrStructuredReportsDataItems = [];
-            for(let k in structuredReportsDataItems) {
-                arrStructuredReportsDataItems.push(structuredReportsDataItems[k]);
-            }
-            arrStructuredReportsDataItems = StructuredQueryUtils.sortNestedReportDataFoutItems(arrStructuredReportsDataItems);            
-            result = arrStructuredReportsDataItems;
-        }
-        return result;
-    }
+    /************************************************************************************
+     *                     INIT METHODS CALLED ON EVAL TEXTS                            *
+     ***********************************************************************************/
 
     static mountPeriodsField(params: any,field: string) : null | string {
         let result = null;
@@ -462,7 +234,17 @@ export default class StructuredQueryUtils {
     }
     static mountCondictionsByReportVision = StructuredQueryUtils.mountConditionsByReportVision;
 
+    /************************************************************************************
+     *                          END METHODS CALLED ON EVAL TEXTS                        *
+     ***********************************************************************************/
 
+
+
+    /**
+     * method to eval sql text in expressions of query items
+     * @created 2024-06-01
+     * @version 1.0.0
+     */
     static async evalSqlText(sqlText?: any,params?: any) : Promise<any> {
         let result = sqlText;
         try {
@@ -489,6 +271,12 @@ export default class StructuredQueryUtils {
         return result;
     }
 
+
+    /**
+     * method to get mounted text according fields of structured query item
+     * @created 2024-06-01
+     * @version 1.0.0
+     */
     static async getMountedSqlText(item?: any,params?: any) : Promise<any> {
         let result = null;
         try {
@@ -497,13 +285,13 @@ export default class StructuredQueryUtils {
                     if (item.assembled_sql_text) {
                         result = item.assembled_sql_text;
                     } else {
-                        item.before_sql_text = await StructuredQueryUtils.evalSqlText(item.before_sql_text,params);
-                        item.sql_text = await StructuredQueryUtils.evalSqlText(item.sql_text,params);
+                        item.before_sql_text = await this.evalSqlText(item.before_sql_text,params);
+                        item.sql_text = await this.evalSqlText(item.sql_text,params);
                         result = `${item.before_sql_text||''} ${item.sql_text}`;
                         item.assembled_sql_text = result;
                     }
                 } else {
-                    result = await StructuredQueryUtils.evalSqlText(item,params);
+                    result = await this.evalSqlText(item,params);
                 }
             }
         } catch (e) {
@@ -511,7 +299,14 @@ export default class StructuredQueryUtils {
         }
         return result;
     }
-    
+
+
+    /**
+     * @caller this.unifyStructuredQuery
+     * @recursive
+     * @created 2024-06-01
+     * @version 1.0.0
+     */
     static async unifyStructuredQueryItems(currentStructure?: any,currentItems?: any,params?: any) : Promise<any> {
         if (Utils.hasValue(currentItems)) {
             if (Utils.typeOf(currentItems) == 'array') {
@@ -522,12 +317,12 @@ export default class StructuredQueryUtils {
                     let text2;
                     for(let k in currentItems) {
                         preexistent = false;
-                        text1 = await StructuredQueryUtils.getMountedSqlText(currentItems[k],params);                        
+                        text1 = await this.getMountedSqlText(currentItems[k],params);                        
                         text1 = text1 || '';                        
                         //find preexistent and unique in groupment
                         for(let j in currentStructure) {
 
-                            text2 = await StructuredQueryUtils.getMountedSqlText(currentStructure[j],params);
+                            text2 = await this.getMountedSqlText(currentStructure[j],params);
                             text2 = text2 || '';
                             isEqual = text1.trim().replace(/\s/g,' ').toLowerCase() == text2.trim().replace(/\s/g,' ').toLowerCase();
 
@@ -542,7 +337,7 @@ export default class StructuredQueryUtils {
                                         && Utils.toBool(currentItems[k].subs[0].is_unique_in_groupment||false) && Utils.toBool(currentStructure[j].subs[0].is_unique_in_groupment||false)
                                     ) {
                                         preexistent = true;
-                                        await StructuredQueryUtils.unifyStructuredQueryItems(currentStructure[j].subs, currentItems[k].subs, params);
+                                        await this.unifyStructuredQueryItems(currentStructure[j].subs, currentItems[k].subs, params);
                                         break;
                                     }
                                 }
@@ -551,7 +346,7 @@ export default class StructuredQueryUtils {
                                     preexistent = true;
                                     if (Utils.hasValue(currentItems[k].subs)) {
                                         currentStructure[j].subs =  currentStructure[j].subs || [];
-                                        await StructuredQueryUtils.unifyStructuredQueryItems(currentStructure[j].subs, currentItems[k].subs, params);
+                                        await this.unifyStructuredQueryItems(currentStructure[j].subs, currentItems[k].subs, params);
                                     }
                                     break;
                                 }
@@ -569,36 +364,298 @@ export default class StructuredQueryUtils {
         }
     }
 
+
+    /**
+     * sort report data fount items considering scope (nested) and numeric_order field
+     * @recursive
+     * @caller this.getStructuredReportDataItems
+     * @created 2024-04-02
+     * @version 1.0.0
+     */
+    static sortNestedReportDataFoutItems(currentItems?: any) : any {        
+        if (currentItems) {
+            if (Utils.typeOf(currentItems) == 'array') {
+                currentItems = currentItems.sort(function(a: any,b: any){return ((a.numeric_order||a.id)-0) - ((b.numeric_order||b.id)-0)});
+                for(let k in currentItems) {
+                    if (currentItems[k].subs && currentItems[k].subs.length) {
+                        currentItems[k].subs = this.sortNestedReportDataFoutItems(currentItems[k].subs);
+                    }
+                }
+            } else if (Utils.typeOf(currentItems) == 'object') { 
+                if (currentItems.subs && currentItems.subs.length) {
+                    currentItems.subs = this.sortNestedReportDataFoutItems(currentItems.subs);
+                }
+            }
+        } 
+        return currentItems;
+    }
+
+    /**
+     * get report data fount items of an structured query
+     * @caller this.unifyStructuredQuery
+     * @created 2024-04-02
+     * @version 1.0.0
+     */
+    static async getStructuredReportDataItems(reportDataFount: any,params: any) : Promise<null|any[]> {
+        let result = null;
+        //get report data fount items
+        let query = `
+            SELECT
+                RFI.*,
+                ${reportDataFount.IDVISION||'NULL'} as IDVISION,
+                ${reportDataFount.ISVISION||0} as ISVISION,
+                ${reportDataFount.ISCONDITIONVISION||0} as ISCONDITIONVISION,
+                P.id AS IDPERMISSION,
+                C.expression
+            FROM
+                report_data_fount_items RFI 
+                LEFT OUTER JOIN tables T ON (   
+                    RFI.sql_object_type_id = ${Sql_Object_Types.TABLE}
+                    AND T.id = RFI.sql_object_id
+                )
+                LEFT OUTER JOIN USERS U ON (
+                    U.id = ${params.user.id}
+                )
+                LEFT OUTER JOIN PERMISSIONS P ON (
+                    P.table_id IS NOT NULL 
+                    AND P.table_id = T.id 
+                    AND (
+                        P.user_id = U.id
+                        OR (
+                            P.user_id IS NULL
+                            AND P.access_profile_id = U.access_profile_id
+                        )
+                    )
+                )
+                LEFT OUTER JOIN conditions C ON (
+                    C.entity_type_id = ${Entities_Types.TABLE}
+                    AND C.entity_id = ${Permissions.id}
+                    AND C.record_id = P.id
+                )
+            WHERE
+                RFI.report_data_source_id = ${reportDataFount.id}
+                AND RFI.status_reg_id = ${Record_Status.ACTIVE}
+                AND (
+                    ${reportDataFount.ISVISION||0} = 1
+                    OR (
+                        ${reportDataFount.ISVISION||0} <> 1  
+                        AND ${reportDataFount.ISCONDITIONVISION||0} = 1 
+                        AND (
+                            RFI.sql_object_type_id <> ${Sql_Object_Types.FIELD}
+                            OR (
+                                RFI.sql_object_type_id = ${Sql_Object_Types.FIELD}
+                                AND NOT EXISTS (SELECT 1 FROM report_data_fount_items RFI2 WHERE RFI2.id = RFI.parent_id AND RFI2.sql_object_type_id = ${Sql_Object_Types.SELECT})
+                            )
+
+                        )
+                    )
+                )
+            ORDER BY
+                COALESCE(RFI.parent_id,RFI.id)
+        `;
+
+        let reportsDataItems = await DBConnectionManager.getDefaultDBConnection()?.query(query,{raw:true,type:QueryTypes.SELECT});
+        
+        if (reportsDataItems && reportsDataItems.length) {
+
+            //scructure in sub nested elements
+            let structuredReportsDataItems : any = _.keyBy(reportsDataItems,'id');
+            for(let k in structuredReportsDataItems) {
+                if (Utils.hasValue(structuredReportsDataItems[k].existence_critery)) {
+                    if (!Utils.toBool(eval(structuredReportsDataItems[k].existence_critery))) {
+                        structuredReportsDataItems[k].MOVED = true;
+                        continue;    
+                    };
+                }
+                if (structuredReportsDataItems[k].parent_id) {
+                    structuredReportsDataItems[structuredReportsDataItems[k].parent_id].subs = structuredReportsDataItems[structuredReportsDataItems[k].parent_id].subs || [];
+                    structuredReportsDataItems[structuredReportsDataItems[k].parent_id].subs.push(structuredReportsDataItems[k]);
+                    structuredReportsDataItems[k].MOVED = true;
+                }
+            }
+            for(let k in structuredReportsDataItems) {
+                if (structuredReportsDataItems[k].MOVED) {
+                    delete structuredReportsDataItems[k].MOVED;
+                    structuredReportsDataItems[k] = null;
+                    delete structuredReportsDataItems[k];
+                }
+            }
+
+
+            let arrStructuredReportsDataItems = [];
+            for(let k in structuredReportsDataItems) {
+                arrStructuredReportsDataItems.push(structuredReportsDataItems[k]);
+            }
+            arrStructuredReportsDataItems = this.sortNestedReportDataFoutItems(arrStructuredReportsDataItems);            
+            result = arrStructuredReportsDataItems;
+        }
+        return result;
+    }
+
+    
     /**
      * unify structured queries in on
+     * @caller this.getStructuredQueryData
      * @created 2024-04-02
      */
     static async unifyStructuredQuery(structuredQuery?: any[],reportDataFount?: any,params?: any) : Promise<any> {        
-        let arrStructuredReportsDataItems = await StructuredQueryUtils.getStructuredReportDataItems(reportDataFount,params);
+        let arrStructuredReportsDataItems = await this.getStructuredReportDataItems(reportDataFount,params);
         if (arrStructuredReportsDataItems && arrStructuredReportsDataItems.length) {
             structuredQuery = structuredQuery || [];            
             if (!structuredQuery.length) {
                 structuredQuery = arrStructuredReportsDataItems
             } else {
-                await StructuredQueryUtils.unifyStructuredQueryItems(structuredQuery,arrStructuredReportsDataItems,params);
+                await this.unifyStructuredQueryItems(structuredQuery,arrStructuredReportsDataItems,params);
             }
         } 
         return structuredQuery;
     };
 
+
+    /**
+     * Get strucured data to mount customized query report
+     * @caller external
+     * @created 2024-07-22
+     * @version 2.0.0
+     */
+    static async getStructuredQueryData(params: any) : Promise<any> {
+        let result = null;
+        let structuredQueryOrigin = null;
+        params = params || {};
+        let visionsIds = params.visions || [];
+        let periods = params.periods || [];
+        let conditions = params.conditions || [];
+        if (visionsIds.length && periods.length) {            
+            if (Utils.typeOf(visionsIds) != "array") {
+                visionsIds = Utils.toArray(visionsIds,",");
+            }
+            visionsIds = visionsIds.map((el: any)=>Utils.hasValue(el)?el:'null');
+            if (Utils.typeOf(periods) != "array") {
+                periods = Utils.toArray(periods,",");
+            }
+            periods = periods.map((el: any)=>Utils.hasValue(el)?el:'null');
+
+            //wraper perios in array o 2 elements [[init,end],..]
+            periods = Utils.singleArrayTo2LevelArray(periods);
+            visionsIds = [...new Set(visionsIds)]; //unique
+            if (Utils.hasValue(conditions) && typeof conditions == 'string') {
+                conditions = JSON.parse(conditions);
+            }
+            let minPeriod = null;
+            let maxPeriod = null;
+            for (let p in periods) {
+                for (let d in periods[p]) {
+                    if (typeof periods[p][d] != 'object') {
+                        periods[p][d] = new Date(periods[p][d]);
+                    }
+                    if (!minPeriod || minPeriod > periods[p][d]) {
+                        minPeriod = periods[p][d];
+                    } 
+                    if (!maxPeriod || maxPeriod < periods[p][d]) {
+                        maxPeriod = periods[p][d];
+                    } 
+                }
+            }
+            
+            let conditionsVisionsIds = params.conditionsVisionsIds || (conditions||[]).map((el: any)=>(el.reportVision || el.vision || {}).id || el.reportVision || el.vision);  
+            conditionsVisionsIds = conditionsVisionsIds.map((el: any)=>Utils.hasValue(el)?el:'null');          
+            conditionsVisionsIds = [...new Set(conditionsVisionsIds)]; //unique
+
+            //get report data fount
+            let query = `
+                SELECT
+                    RF.id,
+                    RV.id AS IDVISION,                    
+                    RF.start_date,
+                    RF.end_date,
+                    RF.conditions,
+                    RF.type_get_expected_data_from,
+                    RF.origin_get_expected_data_from,
+                    RF.get_expected_data_from,
+                    RF.type_get_value_from,
+                    RF.origin_get_value_from,
+                    RF.get_value_from,
+                    COALESCE(DR.numeric_order,DR.id) AS numeric_order,
+                    CASE WHEN RV.id IN (${visionsIds.join(',')}) THEN 1 ELSE 0 END AS ISVISION,
+                    CASE WHEN RV.id IN (${conditionsVisionsIds.length ? conditionsVisionsIds.join(',') : '-1'}) THEN 1 ELSE 0 END AS ISCONDITIONVISION
+                FROM
+                    report_visions RV
+                    JOIN relationships DR ON (
+                        DR.relationship_type_id = ${Relationship_Types.RELATIONSHIP}
+                        AND DR.table_1_id = ${Report_Visions.id}
+                        AND DR.record_1_id = RV.id
+                        AND DR.table_2_id = ${Report_Data_Founts.id}
+                        AND DR.status_reg_id = ${Record_Status.ACTIVE}
+                        AND COALESCE(DR.start_at,STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
+                        AND COALESCE(DR.end_at,STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
+                    )
+                    JOIN report_data_founts RF ON (
+                        RF.id = DR.record_2_id
+                        AND RF.status_reg_id = ${Record_Status.ACTIVE}
+                        AND COALESCE(RF.start_date,STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${minPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
+                        AND COALESCE(RF.end_date,STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')) <= STR_TO_DATE('${maxPeriod.toISOString().slice(0, 19).replace('T', ' ')}','%Y-%m-%d %k:%i:%s')
+                    )
+                WHERE
+                    (
+                        RV.id IN (${visionsIds.join(',')})
+                        ${conditionsVisionsIds.length ? `OR RV.id IN (${conditionsVisionsIds.join(',')}) ` : ''}
+                    )
+                    AND RV.status_reg_id = ${Record_Status.ACTIVE}
+                ORDER BY
+                    RV.id,
+                    COALESCE(DR.numeric_order,DR.id)
+            `;
+
+            let reportsDatasFounts : any = await DBConnectionManager.getDefaultDBConnection()?.query(query,{raw:true,type: QueryTypes.SELECT});
+            if (reportsDatasFounts && reportsDatasFounts.length) {                
+                for(let k in reportsDatasFounts) {
+                    if (reportsDatasFounts[k].type_get_value_from.trim().toUpperCase() == 'STRUCTURED QUERY') {
+
+                        //unify all structured report data fount in one
+                        structuredQueryOrigin = structuredQueryOrigin || reportsDatasFounts[k].origin_get_value_from;
+                        if (structuredQueryOrigin != reportsDatasFounts[k].origin_get_value_from) {
+                            throw new Error(`unsuported different origins in same structured report: ${structuredQueryOrigin},${reportsDatasFounts[k].origin_get_value_from}`);
+                        }
+                        result = result || [];
+                        result = await this.unifyStructuredQuery(result,reportsDatasFounts[k],params);                       
+                    } else {
+                        throw new Error(`type_get_value_from of report data found id ${reportsDatasFounts[k].id} not expected: ${reportsDatasFounts[k].type_get_value_from}`)
+                    }
+                }                     
+            } else {
+                throw new Error("relationed reports to visions not found");
+            }                    
+        } else {
+            throw new Error(`missing data (vision or periods)`);
+        }
+        return {
+            origin: structuredQueryOrigin,
+            structuredQuery: result            
+        }
+    }
+
+    
+    
+    /**
+     * 
+     * @caller this.mountQuery
+     * @recursive
+     * @created 2024-06-01
+     * @version 1.0.0
+     */
     static async mountQueryItems(queryItems?: any,params?: any) : Promise<any> {
         let result = null;        
         if (Utils.typeOf(queryItems) == 'array') {
             result = [];
             for(let k in queryItems) {
-                result.push(await StructuredQueryUtils.mountQueryItems(queryItems[k],params));
+                result.push(await this.mountQueryItems(queryItems[k],params));
             }
         } else {
             if (queryItems) {
-                result = await StructuredQueryUtils.getMountedSqlText(queryItems, params) || '';
+                result = await this.getMountedSqlText(queryItems, params) || '';
                 if (typeof queryItems == 'object') {                    
                     if (Utils.hasValue(queryItems.subs)) {
-                        let resultSubs = await StructuredQueryUtils.mountQueryItems(queryItems.subs,params);
+                        let resultSubs = await this.mountQueryItems(queryItems.subs,params);
                         if (Utils.hasValue(resultSubs)) {
                         let delimiter = ' ';
                             if ([Sql_Object_Types.SELECT,Sql_Object_Types.GROUP_BY, Sql_Object_Types.ORDER_BY].indexOf((queryItems.sql_object_type_id||0)-0) > -1) {
@@ -682,6 +739,13 @@ export default class StructuredQueryUtils {
         return result;
     }
 
+
+    /**
+     * @caller this.mountQuery
+     * @recursive
+     * @created 2024-06-01
+     * @version 1.0.0
+     */
     static orderStructuredQueryItems(structuredQuery:any[],visionsSort?: any,sup?: any) : any {
         structuredQuery = structuredQuery.sort(function(a,b){
             let result = 0;
@@ -718,12 +782,19 @@ export default class StructuredQueryUtils {
         });
         for(let i = 0; i < structuredQuery.length; i++) {
             if (structuredQuery[i].subs && structuredQuery[i].subs.length) {
-                structuredQuery[i].subs = StructuredQueryUtils.orderStructuredQueryItems(structuredQuery[i].subs,visionsSort,structuredQuery[i]);
+                structuredQuery[i].subs = this.orderStructuredQueryItems(structuredQuery[i].subs,visionsSort,structuredQuery[i]);
             }
         }
         return structuredQuery;        
     }
 
+    /**
+     * process expression field of condiction associated to permission table of strucured query items
+     * @caller this.mountQuery
+     * @recursive
+     * @created 2024-06-01
+     * @version 1.0.0
+     */
     static async processAccessCriteriesStructuredQueryItems(params?: any,structuredQuery?: any,pCurrentSelect?: any ) : Promise<any> {
         let currentSelect = pCurrentSelect;
         for(let k in structuredQuery) {
@@ -754,24 +825,31 @@ export default class StructuredQueryUtils {
                 }
             }
             if (structuredQuery[k].subs && structuredQuery[k].subs.length) {
-                await StructuredQueryUtils.processAccessCriteriesStructuredQueryItems(params,structuredQuery[k].subs, currentSelect);
+                //recursive
+                await this.processAccessCriteriesStructuredQueryItems(params,structuredQuery[k].subs, currentSelect);
             }
         }
     }
 
+
+    /**
+     * mount query according structured query params
+     * @caller external
+     * @created 2024-06-01
+     * @version 1.0.0
+     */
     static async mountQuery(structuredQuery?: any,params?: any) : Promise<string> {
         let visionsIds = params.visions || [];
         let visionsSort : any = {};
         for(let i = 0; i < visionsIds.length; i++) {
             visionsSort[visionsIds[i]] = i;
         }
-        let orderedStructuredQuery = StructuredQueryUtils.orderStructuredQueryItems(structuredQuery,visionsSort);
-        await StructuredQueryUtils.processAccessCriteriesStructuredQueryItems(params,orderedStructuredQuery);
-        let result = await StructuredQueryUtils.mountQueryItems(orderedStructuredQuery,params);
+        let orderedStructuredQuery = this.orderStructuredQueryItems(structuredQuery,visionsSort);
+        await this.processAccessCriteriesStructuredQueryItems(params,orderedStructuredQuery);
+        let result = await this.mountQueryItems(orderedStructuredQuery,params);
         if (Utils.typeOf(result) == 'array') {
             result = result.join(' ');
         }
-        //incluir a clausula in no structured na pagina no pivot para testar
         return result;
     }
 }

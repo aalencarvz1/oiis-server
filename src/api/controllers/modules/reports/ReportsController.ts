@@ -262,6 +262,12 @@ export default class ReportsController extends BaseRegistersController {
     }
 
 
+    /**
+     * get data according request parameters, parameterid is essential
+     * @requesthandler
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static async get_data(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let params = req.body || req.query || {};
@@ -273,6 +279,13 @@ export default class ReportsController extends BaseRegistersController {
         res.sendResponse();
     }
 
+
+    /**
+     * get customized report data according request parameters and configured registers of report data fount
+     * @requesthandler
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static async get_customized_report_data(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let params = req.body || req.query || {};
@@ -284,7 +297,12 @@ export default class ReportsController extends BaseRegistersController {
         res.sendResponse();
     }
 
-    
+    /**
+     * get commision data
+     * @requesthandler
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static async get_commissions_data(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let params = req.body || req.query || {};

@@ -72,7 +72,10 @@ api.post("/api/controllers/modules/registers/midiascontroller/upload_file",uploa
   console.log('dir is ',requestHandlersRootDir);
   EndPointsController.loadDefaultEndPoints();
 
-  //base end point is /api/controllers
+  /**
+   * base end point is /api/controllers
+   * auto load configure this app with router of all controlers that has methods with request handler signature as a endpoint.
+   */  
   await EndPointsController.autoLoadEndPoints(requestHandlersRootDir,"/api/controllers/");
   api.use(EndPointsController.getRouter());
 
