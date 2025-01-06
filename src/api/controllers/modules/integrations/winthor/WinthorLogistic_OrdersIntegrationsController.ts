@@ -12,6 +12,14 @@ import Movements from "../../../../database/models/Movements.js";
 import Logistic_Orders_Items_Mov_Amt from "../../../../database/models/Logistic_Orders_Items_Mov_Amt.js";
 import PcNfsaid from "../../../../database/models/winthor/PcNfsaid.js";
 import _ from "lodash";
+import DataSwap from "../../../data/DataSwap.js";
+import Relationships from "../../../../database/models/Relationships.js";
+import Users from "../../../../database/models/Users.js";
+import PcCarreg from "../../../../database/models/winthor/PcCarreg.js";
+import Record_Status from "../../../../database/models/Record_Status.js";
+import PcEmpr from "../../../../database/models/winthor/PcEmpr.js";
+import PcVeicul from "../../../../database/models/winthor/PcVeicul.js";
+import PcDocEletronico from "../../../../database/models/winthor/PcDocEletronico.js";
 
 export default class WinthorLogistic_OrdersIntegrationsController extends BaseIntegrationsRegistersController{
 
@@ -466,5 +474,456 @@ export default class WinthorLogistic_OrdersIntegrationsController extends BaseIn
             resultData.ERRORS.push(e.message || e);
         }
         return resultData;
+    }
+
+
+    /**
+     * Get delivery data with nested child data (invoice, items, lots, etc)
+     * @created 2023-01-12
+     */
+    static async getCargosDataForDelivery(params: any) : Promise<DataSwap> {
+        let result = new DataSwap();
+        try {
+            let identifiers = params.identifiers || [];
+            if (typeof identifiers === 'string') identifiers = identifiers.split(',');
+            if (identifiers.length > 0) {
+
+                let wherePcCarreg : any = { 
+                    [Op.and] : [
+                        {
+                            NUMCAR:{
+                            [Op.in] : identifiers
+                            }
+                        },
+                        {
+                            DT_CANCEL:{
+                                [Op.is] : null
+                            }
+                        }
+                    ]
+                }
+
+                //check relationship PCCARREG (codmotorista) for olny allow download with relationed driver
+                let dataRels = await Relationships.findAll({
+                    raw:true,
+                    where:{
+                        table_1_id: Users.id,
+                        record_1_id: params.user.id,
+                        table_2_id: PcCarreg.id,
+                        status_reg_id: Record_Status.ACTIVE
+                    }
+                });
+                if (dataRels && dataRels.length) {
+                    let orDataRels = [];
+                    for(let kd in dataRels) {
+                        let and : any = [];
+                        if (dataRels[kd].record_2_id) {
+
+                            and.push({
+                                [dataRels[kd].record_2_column||'NUMCAR']:dataRels[kd].record_2_id
+                            });
+                        }
+                        if (dataRels[kd].record_2_conditions) {
+                            and.push(Sequelize.literal(dataRels[kd].record_2_conditions));
+                        }
+                        orDataRels.push({[Op.and]:and});
+                    }
+                    if (orDataRels.length) {
+                        wherePcCarreg[Op.and].push({[Op.or]:orDataRels});
+                    }
+                }
+
+                //find delivery                
+                result.data = await PcCarreg.findAll({
+                    raw:true,
+                    attributes: [
+                        [Sequelize.literal('0'), "data_origin_id"],
+                        ['NUMCAR','id_at_origin'],
+                        ['DTSAIDA','out_date'],
+                        ['CODMOTORISTA','driver_id'],
+                        ['CODVEICULO','vehicle_id'],
+                        ['TOTPESO','total_weight'],
+                        ['VLTOTAL','total_value'],
+                        ['NUMNOTAS','invoices_qty'],
+                        ['NUMENT','deliveries_qty'],
+                        ['DESTINO','destiny'],
+                        ['DT_CANCEL','cancel_date'],
+                        [Sequelize.col(`${PcEmpr.tableName}.NOME`),'driver_name'],
+                        [Sequelize.col(`${PcVeicul.tableName}.PLACA`),'plate']                        
+                    ],
+                    include:[{
+                        model:PcEmpr,
+                        attributes:[],
+                        on:Sequelize.where(Sequelize.col(`${PcCarreg.tableName}.CODMOTORISTA`), Sequelize.col(`${PcEmpr.tableName}.MATRICULA`))
+                    },{
+                        model:PcVeicul,
+                        attributes:[],
+                        on: Sequelize.where(Sequelize.col(`${PcCarreg.tableName}.CODVEICULO`), Sequelize.col(`${PcVeicul.tableName}.CODVEICULO`))
+                    }],
+                    where:wherePcCarreg
+                });
+                if (Utils.hasValue(result.data)) {                    
+
+                    for(let key in result.data) {
+
+                        //find invoice client data of this delivery
+                        let query = `
+                            select 
+                                *
+                            from
+                                (
+                                    select
+                                        0 as "data_origin_id",
+                                        c.CODCLI AS "id_at_origin",
+                                        to_number(regexp_replace(c.CGCENT,'[^0-9]','')) as "document",
+                                        c.CLIENTE AS "name",
+                                        c.FANTASIA as "fantasy",
+                                        c.ESTENT AS "state",
+                                        c.MUNICENT AS "city",
+                                        c.BAIRROENT AS "neighborhood",
+                                        c.ENDERENT AS "address",                                        
+                                        c.NUMEROENT AS "address_number",                                        
+                                        c.TELENT AS "telephone",
+                                        c.CODUSUR1 as "seller_1_id",
+                                        c.CODUSUR2 as "seller_2_id"
+                                    from
+                                        JUMBO.PCCARREG cr 
+                                        join JUMBO.PCNFSAID s on (
+                                            s.numcar = cr.numcar
+                                            and s.dtcancel is null
+                                        )
+                                        join JUMBO.PCMOV m on (                                            
+                                            m.numtransvenda = s.numtransvenda
+                                            and m.dtcancel is null
+                                        )
+                                        join JUMBO.PCCLIENT c on c.codcli = s.codcli
+                                    where
+                                        cr.numcar = ${result.data[key].id_at_origin}
+                                    union 
+                                    select
+                                        decode(cj.codcli,null,1,0) as "data_origin_id",
+                                        nvl(cj.codcli,p.COD) AS "id_at_origin",
+                                        to_number(regexp_replace(nvl(cj.cgcent,p.coddocidentificador),'[^0-9]','')) as "document",
+                                        nvl(cj.cliente,p.NOMERAZAO) AS "name",
+                                        nvl(cj.fantasia,p.FANTASIA) as "fantasy",
+                                        nvl(cj.estent,ci.uf) AS "state",
+                                        nvl(cj.municent,ci.nome) AS "city",
+                                        nvl(cj.bairroent,p.BAIRRO) AS "neighborhood",
+                                        nvl(cj.enderent,p.ENDERECO) AS "address", 
+                                        nvl(cj.numeroent,P.NUMERO) AS "address_number",
+                                        nvl(cj.telent,null) AS "telephone",
+                                        nvl(cj.codusur1,c.codvendedor1) as "seller_1_id",
+                                        nvl(cj.codusur2,c.codvendedor2) as "seller_2_id"
+                                    from
+                                        EP.EPUNIFCARGAS u 
+                                        join EP.EPNFSSAIDA s on (
+                                            s.nrcarga = u.nrcarga
+                                            and s.dtcancel is null
+                                        )
+                                        join EP.EPMOVIMENTACOESSAIDA m on (                                            
+                                            m.codnfsaida = s.cod
+                                            and m.dtcancel is null
+                                        )
+                                        join EP.EPCLIENTES c on c.cod = s.codcliente
+                                        join EP.EPPESSOAS p on p.cod = c.codpessoa
+                                        left outer join EP.EPCIDADES ci on ci.cod = p.codcidade
+                                        left outer join JUMBO.PCCLIENT cj on cj.codcli = p.cod
+                                    where
+                                        u.id = (select u2.id from EP.EPUNIFCARGAS u2 where u2.NRCARGA = ${result.data[key].id_at_origin})
+                                        and u.IDORIGEMINFO = 1
+                                )
+                            order by
+                                1
+                        `;
+                        result.data[key].clients = await DBConnectionManager.getConsultDBConnection()?.query(query,{raw:true,type:QueryTypes.SELECT});
+
+                        if (result.data[key].clients && result.data[key].clients.length) {  
+                            
+                            //find invoice data on winthor
+                            let nfsWinthor : any = await PcNfsaid.findAll({
+                                raw:true,
+                                attributes:[
+                                    [Sequelize.literal('0'),"data_origin_id"],
+                                    ['NUMTRANSVENDA','id_at_origin'],
+                                    ['NUMNOTA','invoice_number'],
+                                    ['DTSAIDA','issue_date'],
+                                    ['CODCOB','financial_value_form_id'],
+                                    ['CODPLPAG','payment_plan_id'],
+                                    ['TOTPESO','total_weight'],
+                                    ['VLTOTAL','total_value'],
+                                    ['DTCANCEL','cancel_date'],
+                                    ['CODCLI','client_id'],
+                                    ['CHAVENFE','invoice_key'],
+                                    [Sequelize.col(`${PcDocEletronico.tableName}.XMLNFE`),'xml']
+                                ],
+                                where:{
+                                    NUMCAR: result.data[key].id_at_origin,
+                                    DTCANCEL: {
+                                        [Op.is] : null
+                                    }
+                                },
+                                include:[{
+                                    model:PcDocEletronico,
+                                    attributes:[],
+                                    where:{
+                                        MOVIMENTO:'S'
+                                    }
+                                }],
+                                order:[
+                                    ['NUMNOTA', 'ASC']
+                                ]
+                            });                            
+                            if (nfsWinthor && nfsWinthor.length > 0) {
+                                
+                                //find winthor payments
+                                query = `
+                                    select
+                                        s.numtransvenda as "invoice_id",
+                                        p.codcob as "financial_value_form_id",
+                                        p.prest as "numeric_order",
+                                        p.valor as "value",
+                                        x.qrcode as "qrcode"
+                                    from
+                                        pcnfsaid s 
+                                        join jumbo.pcprest p on p.numtransvenda = s.numtransvenda
+                                        left outer join jumbo.pcpixcobrancadados x on x.numtransvenda = s.numtransvenda and coalesce(x.prest,'1') = p.prest and x.status = 'ATIVA'
+                                    where
+                                        s.numcar = ${result.data[key].id_at_origin}
+                                        and p.dtpag is null
+                                        and p.dtdesd is null
+                                        and p.dtbaixa is null
+                                        and p.codbaixa is null
+                                        and coalesce(p.valor,0) > 0
+                                    order by
+                                        s.numcar,
+                                        s.numtransvenda,
+                                        p.prest
+                                `;
+                                let winthorPayments : any = await DBConnectionManager.getWinthorDBConnection()?.query(query,{raw:true,type:QueryTypes.SELECT});
+
+                                //find item invoice data on winthor
+                                query = `
+                                    select
+                                        0 AS "data_origin_id",
+                                        m.NUMTRANSVENDA as "invoice_id",
+                                        m.CODPROD AS "item_id",
+                                        coalesce(m.descricao,p.descricao,'') as "description",
+                                        p.CODAUXILIARTRIB AS "gtin_trib_un",
+                                        p.CODAUXILIAR AS "gtin_sell_un",
+                                        p.CODAUXILIAR2 AS "gtin_master_un",
+                                        coalesce(m.unidade,p.unidade,'UN') as "un",
+                                        coalesce(p.UNIDADEMASTER,m.embalagem,'CX') as "package",
+                                        coalesce(m.qtunitcx,p.qtunitcx,1) as "package_un_qty",
+                                        coalesce(m.pesoliq,p.pesoliq,1) as "liq_weight",
+                                        sum(coalesce(m.qt,m.qtcont,0)) as "qty",
+                                        max(coalesce(m.punit,m.punitcont,0)) as "un_value",
+                                        '[' || (SELECT
+                                            listagg('{"identifier":"'||l.numlote||'","expirartion_date":"'||l.dtvalidade||'","qty":'||replace(to_char(coalesce(m2.qt,m2.qtcont,0),'999999999990.9999990'),',','.')||'}',',') within group (order by m.numtransvenda,m.codprod)
+                                        FROM
+                                            JUMBO.PCLOTE l 
+                                            join JUMBO.PCMOV m2 on (
+                                                m2.codprod = l.codprod
+                                                and m2.numtransvenda = m.numtransvenda
+                                                and m2.codprod = m.codprod
+                                                and m2.numlote = l.numlote
+                                            )
+                                        where 
+                                            l.codfilial = coalesce(m.codfilialretira,m.codfilial) 
+                                            and l.codprod = m.codprod 
+                                        ) || ']' AS "lots"
+                                    from
+                                        JUMBO.PCNFSAID s
+                                        join JUMBO.PCMOV m on (
+                                            m.numtransvenda = s.numtransvenda
+                                            and m.dtcancel is null
+                                            and coalesce(m.qt,m.qtcont) > 0
+                                        )
+                                        join JUMBO.PCPRODUT p on p.codprod = m.codprod
+                                        left outer join JUMBO.PCLOTE l on (
+                                            l.codfilial = coalesce(m.codfilialretira,m.codfilial) 
+                                            and l.codprod = m.codprod 
+                                            and l.numlote = m.numlote
+                                        )
+                                    where
+                                        s.numcar = ${result.data[key].id_at_origin}
+                                        and s.dtcancel is null     
+                                    group by
+                                        0,
+                                        m.CODPROD,
+                                        coalesce(m.descricao,p.descricao,''),
+                                        p.CODAUXILIARTRIB,
+                                        p.CODAUXILIAR,
+                                        p.CODAUXILIAR2,
+                                        coalesce(m.unidade,p.unidade,'UN'),
+                                        coalesce(p.UNIDADEMASTER,m.embalagem,'CX'),
+                                        coalesce(m.qtunitcx,p.qtunitcx,1),
+                                        coalesce(m.pesoliq,p.pesoliq,1),
+                                        coalesce(m.codfilialretira,m.codfilial),
+                                        m.NUMTRANSVENDA
+                                    having
+                                        sum(coalesce(m.qt,m.qtcont,0)) > 0
+                                    order by
+                                        m.NUMTRANSVENDA,1
+                                `;
+
+                                //attach items winthor to nfs winthor
+                                let itemsWinthor : any = await DBConnectionManager.getWinthorDBConnection()?.query(query,{raw:true,type:QueryTypes.SELECT});
+
+                                for(let kn in nfsWinthor) {
+                                    nfsWinthor[kn].payments = nfsWinthor[kn].payments || [];
+                                    nfsWinthor[kn].items = nfsWinthor[kn].items || [];
+
+                                    for(let kp in winthorPayments) {
+                                        if (winthorPayments[kp].invoice_id == nfsWinthor[kn].id_at_origin) {
+                                            nfsWinthor[kn].payments.push(winthorPayments[kp]);
+                                        }
+                                    }
+
+                                    for(let ki in itemsWinthor) {
+                                        if (typeof itemsWinthor[ki].logs === 'string') {
+                                            if (itemsWinthor[ki].logs.trim() == '[]') itemsWinthor[ki].logs = []
+                                            else itemsWinthor[ki].logs = JSON.parse(itemsWinthor[ki].logs);
+                                        }
+                                        if (itemsWinthor[ki].invoice_id == nfsWinthor[kn].id_at_origin) {
+                                            nfsWinthor[kn].items.push(itemsWinthor[ki]);
+                                        }
+                                    }
+                                }
+
+                               
+                                
+                                //attach nfs winthor to cients
+                                for(let kc in result.data[key].clients) {
+                                    result.data[key].clients[kc].invoices = result.data[key].clients[kc].invoices || [];
+                                    for(let kn in nfsWinthor) {
+                                        if (nfsWinthor[kn].client_id == result.data[key].clients[kc].id_at_origin) {
+                                            result.data[key].clients[kc].invoices.push(nfsWinthor[kn]);
+                                        }
+                                    }
+                                }
+                            }
+
+                            //find invoice data on broker (aurora)
+                            query = `
+                                select
+                                    1 AS "data_origin_id",
+                                    s.cod as "id_at_origin",
+                                    s.NUMNOTAORIGEM AS "invoice_number",
+                                    s.DTEMISSAO as "issue_date",
+                                    null as "financial_value_form_id",
+                                    null as "payment_plan_id",
+                                    sum(nvl(ms.qtsaida,0) - nvl(ms.qtdevolvida,0)) as "total_weight",
+                                    sum((nvl(ms.qtsaida,0) - nvl(ms.qtdevolvida,0)) * nvl(ms.vlun,0)) as "total_value",
+                                    s.DTCANCEL as "cancel_date",
+                                    S.CODCLIENTE as "client_id",
+                                    s.CHAVENFE as "invoice_key"
+                                from
+                                    EP.EPNFSSAIDA s
+                                    JOIN EP.EPMOVIMENTACOESSAIDA ms on ms.codnfsaida = s.cod
+                                where
+                                    s.nrcarga = (select u2.nrcarga from EP.EPUNIFCARGAS u2 where u2.idorigeminfo = 1 and u2.id = (select u.id from EP.EPUNIFCARGAS u where u.idorigeminfo = 0 and u.nrcarga = ${result.data[key].id_at_origin}) and u2.idorigeminfo = 1)
+                                GROUP BY
+                                    1,
+                                    s.NUMNOTAORIGEM,
+                                    s.DTEMISSAO,
+                                    null,
+                                    s.DTCANCEL,
+                                    S.COD,
+                                    S.CODCLIENTE,
+                                    s.CHAVENFE
+                                order by 1,2
+                            `;
+
+                            let nfsBroker : any = await DBConnectionManager.getConsultDBConnection()?.query(query,{raw:true,type:QueryTypes.SELECT});
+
+                            if (nfsBroker && nfsBroker.length > 0) {                                
+
+                                //find item invoice data on broker (aurora)
+                                query = `
+                                    select
+                                        1 AS "data_origin_id",
+                                        m.cod AS "id_at_origin",
+                                        m.CODNFSAIDA as "invoice_id",
+                                        m.CODPROD AS "item_id",
+                                        coalesce(p.descricao,'') as "description",
+                                        p.CODAUXILIARTRIB AS "gtin_trib_un",
+                                        p.CODAUXILIAR AS "gtin_sell_un",
+                                        p.CODAUXILIAR2 AS "gtin_master_un",
+                                        coalesce(p.unidade,'UN') as "un",
+                                        coalesce(p.UNIDADEMASTER,'CX') as "package",
+                                        coalesce(p.qtunitcx,1) as "package_un_qty",
+                                        coalesce(p.pesoliq,1) as "liq_weight",
+                                        sum(coalesce(m.qtsaida,0)) as "qty", 
+                                        max(coalesce(m.vlun,0)) as "un_value",  
+                                        '[]' AS "lots"
+                                    from
+                                        EP.EPNFSSAIDA s
+                                        join EP.EPMOVIMENTACOESSAIDA m on (
+                                            m.codnfsaida = s.cod
+                                            and m.dtcancel is null
+                                            and coalesce(m.qtsaida,0) > 0
+                                        )
+                                        left outer join JUMBO.PCPRODUT p on p.codprod = m.codprod
+                                    where
+                                        s.nrcarga = (select u2.nrcarga from EP.EPUNIFCARGAS u2 where u2.idorigeminfo = 1 and u2.id = (select u.id from EP.EPUNIFCARGAS u where u.idorigeminfo = 0 and u.nrcarga = ${result.data[key].id_at_origin}))
+                                        and s.dtcancel is null     
+                                    group by
+                                        1,
+                                        m.cod,
+                                        m.CODPROD,
+                                        coalesce(p.descricao,''),
+                                        p.CODAUXILIARTRIB,
+                                        p.CODAUXILIAR,
+                                        p.CODAUXILIAR2,
+                                        coalesce(p.unidade,'UN'),
+                                        coalesce(p.UNIDADEMASTER,'CX'),
+                                        coalesce(p.qtunitcx,1),
+                                        coalesce(p.pesoliq,1),
+                                        m.CODNFSAIDA
+                                    having
+                                        sum(coalesce(m.qtsaida,0)) > 0
+                                    order by
+                                        m.CODNFSAIDA,1
+                                `;
+
+                                //attach items broker to nfs broker
+                                let itemsBroker : any = await DBConnectionManager.getConsultDBConnection()?.query(query,{raw:true,type:QueryTypes.SELECT});
+
+                                for(let kn in nfsBroker) {
+                                    nfsBroker[kn].items = nfsBroker[kn].items || [];
+                                    for(let ki in itemsBroker) {
+                                        if (typeof itemsBroker[ki].lots === 'string') {
+                                            if (itemsBroker[ki].lots.trim() == '[]') itemsBroker[ki].lots = []
+                                            else itemsBroker[ki].lots = JSON.parse(itemsBroker[ki].lots);
+                                        }
+                                        if (itemsBroker[ki].invoice_id == nfsBroker[kn].id_at_origin) {
+                                            nfsBroker[kn].items.push(itemsBroker[ki]);
+                                        }
+                                    }
+                                }
+                                
+                                //attach nfs broker to cients                                                               
+                                for(let kc in result.data[key].clients) {
+                                    result.data[key].clients[kc].invoices = result.data[key].clients[kc].invoices || [];
+                                    for(let kn in nfsBroker) {
+                                        if (nfsBroker[kn].client_id == result.data[key].clients[kc].id_at_origin) {
+                                            result.data[key].clients[kc].invoices.push(nfsBroker[kn]);
+                                        }
+                                    }
+                                }
+                            }
+                        }   
+                    }
+                    result.success = true;
+                } else {
+                    throw new Error("no data found");
+                }
+            } else {
+                throw new Error("missing data");
+            }            
+        } catch (e) {
+            result.setException(e);
+        }
+        return result;
     }
 }
