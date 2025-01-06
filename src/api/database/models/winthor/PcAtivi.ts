@@ -1,0 +1,34 @@
+'use strict';
+
+
+import { DataTypes } from "sequelize";
+import  BaseWinthorTableModel  from './BaseWinthorTableModel.js';
+
+/**
+ * class model
+ */
+export default class PcAtivi extends BaseWinthorTableModel {
+
+  //table fields
+  declare CODATIV: string;
+  declare RAMO: string;
+
+
+  static id = 30011;
+  static tableName = this.name.toUpperCase();
+  static model = null;
+
+
+  static fields = {      
+      CODATIV:{
+        type: DataTypes.STRING,
+        primaryKey:true
+      },
+      RAMO: {
+        type: DataTypes.STRING(2000)
+      }
+  };
+
+  static foreignsKeys = [];
+ 
+};

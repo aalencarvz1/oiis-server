@@ -1,0 +1,210 @@
+'use strict';
+
+import  Report_Visions  from '../models/Report_Visions.js';
+import  Data_Origins  from '../models/Data_Origins.js';
+import  Record_Status  from '../models/Record_Status.js';
+import  Users  from '../models/Users.js';
+import { QueryInterface } from 'sequelize';
+
+/** @type {import('sequelize-cli').Migration} */
+export default {
+  async up(queryInterface: QueryInterface, Sequelize: any) {    
+    await queryInterface.bulkInsert(Report_Visions.tableName,[{      
+      id:Report_Visions.VALUES,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'VALUES',
+      is_visible : 0,
+    },{      
+      id:Report_Visions.ORIGIN_DATA,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'ORIGIN DATA',
+      is_visible : 1,
+    },{      
+      id:Report_Visions.COMPANY,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'COMPANY',
+      is_visible : 1,
+    },{      
+      id:Report_Visions.BUSINESS_UNIT,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'BUSINESS UNIT',
+      is_visible : 1,
+    },{      
+      id:Report_Visions.SUPPLIER,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'SUPPLIER',
+      is_visible : 1,
+    },{      
+      id:Report_Visions.CITY,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'CITY',
+      is_visible : 1,
+    },{      
+      id:Report_Visions.SUPERVISOR,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'SUPERVISOR',
+      is_visible : 1,
+    },{      
+      id:Report_Visions.SELLER,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'SELLER',
+      is_visible : 1,
+    },{      
+      id:Report_Visions.BUSINESS_AREA,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'BUSINESS AREA',
+      is_visible : 1,
+    },{      
+      id:Report_Visions.DEPARTMENT,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'DEPARTMENT',
+      is_visible : 1,
+    },{      
+      id:Report_Visions.PRODUCT,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'PRODUCT',
+      is_visible : 1,
+    },{      
+      id:Report_Visions.EVOLUTION,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'EVOLUTION',
+      is_visible : 1,
+    },{      
+      id:Report_Visions.CLIENT,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'CLIENT',
+      is_visible : 1,
+    },{      
+      id:Report_Visions.NETWORK_CLIENT,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'NETWORK CLIENT',
+      is_visible : 1,
+    },{      
+      id:Report_Visions.ROUTE,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'ROUTE',
+      is_visible : 1,
+    },{      
+      id:Report_Visions.SQUARE,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'SQUARE',
+      is_visible : 1,
+    },{      
+      id:Report_Visions.INVOICE,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'INVOICE',
+      is_visible : 1,
+    },{      
+      id:Report_Visions.ITEM_INVOICE,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'ITEM INVOICE',
+      is_visible : 1,
+    },{      
+      id:Report_Visions.ORIGIN_BUSINESS,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'ORIGIN BUSINESS',
+      is_visible : 1,
+    },{      
+      id:Report_Visions.ORIGIN_CATEGORY,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'ORIGIN CATEGORY',
+      is_visible : 1,
+    },{      
+      id:Report_Visions.PLATE,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      name : 'PLATE',
+      is_visible : 1,
+    }],{
+      ignoreDuplicates:true
+    });
+     
+  },
+
+  async down(queryInterface: QueryInterface, Sequelize: any) {
+     await queryInterface.bulkDelete(Report_Visions.tableName, {});
+  }
+};
