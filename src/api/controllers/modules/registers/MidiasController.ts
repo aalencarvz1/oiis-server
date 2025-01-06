@@ -9,6 +9,13 @@ export default class MidiasController extends BaseRegistersController {
         return Midias;
     }
 
+    /**
+     * handle uploaded midia file(s) with multer
+     * @requesthandler
+     * @midleware
+     * @created 2024-31-12
+     * @version 1.0.0
+     */
     static async uploadFile(req: Request, res: Response, next: NextFunction) {
         try {
             let files : any = req.files;

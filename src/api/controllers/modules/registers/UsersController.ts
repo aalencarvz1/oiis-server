@@ -7,6 +7,12 @@ import BaseRegistersController from "./BaseRegistersController.js";
 import { NextFunction, Request, Response } from "express";
 
 export default class UsersController extends BaseRegistersController {
+
+    /**
+     * @override
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static getTableClassModel() : any {
         return Users;
     }
@@ -33,6 +39,13 @@ export default class UsersController extends BaseRegistersController {
         return await Users.findAll(params);
     }
 
+
+    /**
+     * @requesthandler
+     * @override
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static async get(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {  
             let queryParams = req.body.queryParams || req.body || {};        

@@ -6,6 +6,11 @@ import WinthorDeliveriesIntegrationsController from "./winthor/WinthorDeliveries
 export default class DeliveriesIntegrationsController extends BaseIntegrationsController {
 
 
+    /**
+     * @requesthandler
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static async get_invoices_with_integrations_datas(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let origin = req.body.origin || "";
@@ -23,6 +28,11 @@ export default class DeliveriesIntegrationsController extends BaseIntegrationsCo
         }
     }
 
+    /**
+     * @requesthandler
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static async get_invoice_with_integrations_datas(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let origin = req.body.origin || "";
@@ -40,6 +50,11 @@ export default class DeliveriesIntegrationsController extends BaseIntegrationsCo
         }
     }
 
+    /**
+     * @requesthandler
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static async get_items_invoice_with_integrations_datas(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let origin = req.body.origin || "";

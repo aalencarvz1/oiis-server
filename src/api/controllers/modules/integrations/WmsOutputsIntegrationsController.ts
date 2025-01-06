@@ -9,11 +9,23 @@ import DatabaseUtils from "../../database/DatabaseUtils.js";
 
 
 export default class WmsOutputsIntegrationsController extends BaseIntegrationsController {
+
+    /**
+     * @override
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static getTableClassModel() : any {
         return null;
     } 
 
-    static async getLoadsWithBroker(req: Request, res: Response, next: NextFunction) : Promise<void> {
+
+    /**
+     * @requesthandler
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
+    static async get_loads_with_broker(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let params = req.body || {};
             let id = params?.id || [];
@@ -116,7 +128,12 @@ export default class WmsOutputsIntegrationsController extends BaseIntegrationsCo
         }
     }
 
-    static async unifyLoadings(req: Request, res: Response, next: NextFunction) : Promise<void> {
+    /**
+     * @requesthandler
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
+    static async unify_loadings(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let identifiers = req.body.identifiers || []; 
             if (Utils.typeOf(identifiers) != 'array') {
@@ -217,7 +234,12 @@ export default class WmsOutputsIntegrationsController extends BaseIntegrationsCo
         }
     }
 
-    static async getLoadingsItemsForPrint(req: Request, res: Response, next: NextFunction) : Promise<void> {
+    /**
+     * @requesthandler
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
+    static async get_loadings_items_for_print(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let identifiers = req.body.identifiers || [];
             if (Utils.typeOf(identifiers) != 'array') {
@@ -422,7 +444,12 @@ export default class WmsOutputsIntegrationsController extends BaseIntegrationsCo
         }
     }    
 
-    static async getVariableWeightSeparationMap(req: Request, res: Response, next: NextFunction) : Promise<void> {
+    /**
+     * @requesthandler
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
+    static async get_variable_weight_separation_map(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let where = req.body?.queryParams?.where;
             console.log('where antes',where);
@@ -511,10 +538,10 @@ export default class WmsOutputsIntegrationsController extends BaseIntegrationsCo
     
     static {
         this.configureDefaultRequestHandlers([
-            this.getLoadsWithBroker,
-            this.unifyLoadings,
-            this.getLoadingsItemsForPrint,
-            this.getVariableWeightSeparationMap
+            this.get_loads_with_broker,
+            this.unify_loadings,
+            this.get_loadings_items_for_print,
+            this.get_variable_weight_separation_map
         ]);
     }
 }

@@ -2,13 +2,11 @@ import DataSwap from "../../data/DataSwap.js";
 import Utils from "../../utils/Utils.js";
 
 export default class BaseIntegrationsRegistersController {
+    
     /**
      * generic method to integrate winthor register
-     * @static
-     * @async     
-     * @param {Object} params 
-     * @returns {DataSwap}
      * @created 2024-02-03
+     * @version 1.0.0
      */
     static async integrateRegisters(params: any) : Promise<any> {
         let result = new DataSwap();

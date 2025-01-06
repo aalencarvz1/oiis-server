@@ -16,12 +16,19 @@ import EndPointsController from "../../endpoints/EndPointsController.js";
  *      - 2024-12-29 migrated do typescript
  */
 export default class RoutinesController extends BaseRegistersController {
+
+    /**
+     * @override
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static getTableClassModel() : any {
          return Routines;
     }
 
     /**
      * get data from tasks and include joins
+     * @requesthandler
      * @created 2025-01-01
      * @version 1.0.0
      */

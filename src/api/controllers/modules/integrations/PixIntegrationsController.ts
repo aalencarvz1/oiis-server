@@ -6,6 +6,12 @@ import PcPrestController from "./winthor/PcPrestController.js";
 export default class PixIntegrationsController extends BaseIntegrationsController {
 
 
+    /**
+     * @requesthandler
+     * @override
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static async get(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let origin = req.body.origin || "";
@@ -23,6 +29,11 @@ export default class PixIntegrationsController extends BaseIntegrationsControlle
         }
     }
 
+    /**
+     * @requesthandler
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static async get_all_ware_pix_cobs(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let origin = req.body.origin || "";
@@ -40,6 +51,12 @@ export default class PixIntegrationsController extends BaseIntegrationsControlle
         }
     }
 
+    /**
+     * @requesthandler
+     * @override
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static async put(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let origin = req.body.origin || "";
@@ -58,6 +75,12 @@ export default class PixIntegrationsController extends BaseIntegrationsControlle
         }
     }
 
+    /**
+     * @requesthandler
+     * @override
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static async delete(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let origin = req.body.origin || "";

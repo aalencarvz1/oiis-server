@@ -6,10 +6,23 @@ import DBConnectionManager from "../../../database/DBConnectionManager.js";
 import { QueryTypes } from "sequelize";
 
 export default class Report_VisionsController extends BaseRegistersController {
+
+    /**
+     * @override
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static getTableClassModel() : any {
         return Report_Visions;
     }    
 
+
+    /**
+     * get data (records) from report vision
+     * @requesthandler
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static async get_report_vision_data(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let idReportVision = req.body?.idReportVision;

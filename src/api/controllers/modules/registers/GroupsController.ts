@@ -17,9 +17,11 @@ export default class GroupsController extends BaseRegistersController {
         return Groups;
     }
     
-
-
-     
+    /**
+     * process sql condiction and include items that according it
+     * @created 2024-12-31
+     * @version 1.0.0
+     */ 
     static async _process_sql_condiction(params?: any) : Promise<DataSwap> {
         let result = new DataSwap();
         try {
@@ -121,6 +123,12 @@ export default class GroupsController extends BaseRegistersController {
     } 
 
 
+    /**
+     * get items children of group and join to origin to get name of item
+     * request handler
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static async get_items_with_names(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let queryParams = req.body.queryParams || req.body;            
