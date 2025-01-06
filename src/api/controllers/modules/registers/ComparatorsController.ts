@@ -7,6 +7,6 @@ export default class ComparatorsController extends BaseRegistersController {
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

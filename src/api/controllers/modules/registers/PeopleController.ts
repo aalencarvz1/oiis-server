@@ -46,6 +46,6 @@ export default class PeopleController extends BaseRegistersController {
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

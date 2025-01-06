@@ -7,6 +7,6 @@ export default class CitiesController extends BaseRegistersController {
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

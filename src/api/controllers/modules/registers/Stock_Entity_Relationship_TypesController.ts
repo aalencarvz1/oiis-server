@@ -7,6 +7,6 @@ export default class Stock_Entity_Relationship_TypesController extends BaseRegis
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

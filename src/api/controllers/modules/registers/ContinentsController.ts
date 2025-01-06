@@ -7,6 +7,6 @@ export default class ContinentsController extends BaseRegistersController {
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

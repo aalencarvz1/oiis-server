@@ -7,6 +7,6 @@ export default class Item_Stock_UnitsController extends BaseRegistersController 
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

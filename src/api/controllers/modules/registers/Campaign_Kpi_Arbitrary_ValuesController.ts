@@ -7,6 +7,6 @@ export default class Campaign_Kpi_Arbitrary_ValuesController extends BaseRegiste
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

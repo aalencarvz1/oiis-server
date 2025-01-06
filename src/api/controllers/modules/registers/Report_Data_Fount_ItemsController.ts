@@ -7,6 +7,6 @@ export default class Report_Data_Fount_ItemsController extends BaseRegistersCont
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

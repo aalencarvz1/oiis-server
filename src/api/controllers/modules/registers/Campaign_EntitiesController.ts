@@ -7,6 +7,6 @@ export default class Campaign_EntitiesController extends BaseRegistersController
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

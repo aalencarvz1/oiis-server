@@ -7,6 +7,6 @@ export default class Container_Type_DimensionsController extends BaseRegistersCo
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

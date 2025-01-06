@@ -7,6 +7,6 @@ export default class Postal_Codes_StreetsController extends BaseRegistersControl
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

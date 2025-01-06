@@ -7,6 +7,6 @@ export default class Project_Task_TypesController extends BaseRegistersControlle
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

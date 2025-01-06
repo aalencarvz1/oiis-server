@@ -381,10 +381,11 @@ export default class Utils {
         return previousDate;
     }
 
-    static toArray(value: any,delimiter: string = ',') : any[] | null | undefined {
+    static toArray(value?: any,delimiter?: string ) : any[] | null | undefined {
         let result = value;
         if (value) {
             if (typeof value == 'string') {
+                delimiter = delimiter || ',';
                 result = value.split(delimiter || ',');
             } else if (Utils.typeOf(value) != 'array') {
                 result = [value];

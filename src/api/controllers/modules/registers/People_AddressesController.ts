@@ -7,6 +7,6 @@ export default class People_AddressesController extends BaseRegistersController 
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

@@ -7,6 +7,6 @@ export default class Routine_ContentsController extends BaseRegistersController 
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

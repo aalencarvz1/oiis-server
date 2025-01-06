@@ -7,6 +7,6 @@ export default class Logistic_Orders_Dest_ValuesController extends BaseRegisters
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

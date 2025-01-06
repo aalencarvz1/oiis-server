@@ -7,6 +7,6 @@ export default class Financial_Value_Localization_TypesController extends BaseRe
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

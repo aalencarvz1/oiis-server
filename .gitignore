@@ -99,7 +99,7 @@ dist
 
 uploads/
 files/
-src/api/assets/certificates/
+assets/certificates/
 
 # vuepress build output
 .vuepress/dist
@@ -130,7 +130,7 @@ src/api/assets/certificates/
 .yarn/install-state.gz
 .pnp.*
 
-/src/api/assets/certificates/*
+/assets/certificates/*
 *.pem
 *.cer
 *.key

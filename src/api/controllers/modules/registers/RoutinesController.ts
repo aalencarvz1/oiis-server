@@ -167,10 +167,6 @@ export default class RoutinesController extends BaseRegistersController {
     }
 
     static {
-        this.configureRequestHandlers();
-        [
-            this.get_nested
-        ].forEach(el=>EndPointsController.markAsRequestHandler(el));
-
+        this.configureDefaultRequestHandlers([this.get_nested]);
     }
 }

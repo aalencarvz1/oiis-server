@@ -7,6 +7,6 @@ export default class Sql_Object_TypesController extends BaseRegistersController 
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

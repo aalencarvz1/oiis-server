@@ -7,6 +7,6 @@ export default class Items_Lots_ContainersController extends BaseRegistersContro
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

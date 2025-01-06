@@ -181,11 +181,12 @@ async function getDataFromTable(tableName, checkHasData) {
     return jsonData?.data;
 }
 async function getDataFromWinthorTable(params) {
-    let endPoint = `${baseApiEndPoint}${endPoints[`winthor${params.tableName}integrationscontroller`].path}/get`;
+    let endPoint = `${baseApiEndPoint}${endPoints[`${params.tableName}integrationscontroller`].path}/get`;
     let options = {
         ...defaultLoggedOptions,
         method: 'POST',
         body: JSON.stringify({
+            origin: params.origin,
             queryParams: {
                 attributes: params.fields
             }
@@ -279,7 +280,7 @@ async function updateData(tableName, valuesToCreate) {
 ;
 async function integrateDataFromWinthorTable(params) {
     let options = { ...defaultLoggedOptions, method: 'POST' };
-    let origin = datas['data_origins'].find((el) => el.name == 'WINTHOR');
+    let origin = datas['data_origins'].find((el) => el.name.toLowerCase() == params.origin.toLowerCase());
     let valuesToCreate = null;
     let data = await getDataFromWinthorTable(params);
     if (typeof params.identifierWithorField == 'function') {
@@ -356,7 +357,7 @@ describe('Running api call tests', () => {
     for (let i in fileList) {
         //break;
         let modelName = fileList[i].replace(/\d|\-|create|\.js/g, '').trim().toLowerCase();
-        //if (['data_origins','task_types','tasks'].indexOf(modelName) > -1)
+        //if (['data_origins','identifier_types','people'].indexOf(modelName) > -1)
         describe(modelName, () => {
             let getParamsToCreate = () => {
                 return {
@@ -441,6 +442,7 @@ describe('Running api call tests', () => {
                     if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
                         getParamsToIntegrate = () => {
                             return {
+                                origin: 'WINTHOR',
                                 tableName: modelName,
                                 winthorTableName: 'PCPAIS',
                                 winthorTableFields: ['CODPAIS', 'DESCRICAO'],
@@ -464,6 +466,7 @@ describe('Running api call tests', () => {
                     if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
                         getParamsToIntegrate = () => {
                             return {
+                                origin: 'WINTHOR',
                                 tableName: modelName,
                                 winthorTableName: 'PCESTADO',
                                 winthorTableFields: [
@@ -492,6 +495,7 @@ describe('Running api call tests', () => {
                     if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
                         getParamsToIntegrate = () => {
                             return {
+                                origin: 'WINTHOR',
                                 tableName: modelName,
                                 winthorTableName: 'PCCIDADE',
                                 winthorTableFields: [
@@ -532,6 +536,7 @@ describe('Running api call tests', () => {
                     if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
                         getParamsToIntegrate = () => {
                             return {
+                                origin: 'WINTHOR',
                                 tableName: modelName,
                                 winthorTableName: 'PCCLIENT',
                                 winthorTableFields: [
@@ -575,6 +580,7 @@ describe('Running api call tests', () => {
                     if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
                         getParamsToIntegrate = () => {
                             return {
+                                origin: 'WINTHOR',
                                 tableName: modelName,
                                 winthorTableName: 'PCFILIAL',
                                 winthorTableFields: [
@@ -643,6 +649,7 @@ describe('Running api call tests', () => {
                         if (modelName == 'clients') {
                             getParamsToIntegrate = () => {
                                 return {
+                                    origin: 'WINTHOR',
                                     tableName: modelName,
                                     winthorTableName: 'PCCLIENT',
                                     winthorTableFields: undefined,
@@ -655,6 +662,7 @@ describe('Running api call tests', () => {
                         else if (modelName == 'companies') {
                             getParamsToIntegrate = () => {
                                 return {
+                                    origin: 'WINTHOR',
                                     tableName: modelName,
                                     winthorTableName: 'PCFILIAL',
                                     winthorTableFields: [
@@ -689,6 +697,7 @@ describe('Running api call tests', () => {
                     if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
                         getParamsToIntegrate = () => {
                             return {
+                                origin: 'WINTHOR',
                                 tableName: modelName,
                                 winthorTableName: 'PCTABDEV',
                                 winthorTableFields: [

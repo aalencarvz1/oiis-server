@@ -7,6 +7,6 @@ export default class Sql_ProcessesController extends BaseRegistersController {
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

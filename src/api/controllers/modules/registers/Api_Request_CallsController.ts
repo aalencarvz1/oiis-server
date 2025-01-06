@@ -7,6 +7,6 @@ export default class Api_Request_CallsController extends BaseRegistersController
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

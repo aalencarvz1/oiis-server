@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import DatabaseUtils from "../../database/DatabaseUtils.js";
 import EndPointsController from "../../endpoints/EndPointsController.js";
+import Utils from "../../utils/Utils.js";
 
 
 /**
@@ -77,6 +78,7 @@ export default abstract class BaseRegistersController {
     static async delete(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let queryParams = req.body.queryParams || req.body;
+            console.log("okxx2",queryParams);
             res.data = await this.getTableClassModel().deleteData(queryParams);
             res.sendResponse(200,true);
         } catch (e: any) {
@@ -88,12 +90,16 @@ export default abstract class BaseRegistersController {
     /**
      * call its on inherited class at static block to configure this methodos as request handlers
      */
-    static configureRequestHandlers(){
+    static configureDefaultRequestHandlers(funcs?: Function[]){
         [
             this.get,
             this.put,
             this.patch,
             this.delete
         ].forEach(el=>EndPointsController.markAsRequestHandler(el));
+
+        if (Utils.hasValue(funcs)) {
+            funcs.forEach(el=>EndPointsController.markAsRequestHandler(el));
+        }
     }
 }

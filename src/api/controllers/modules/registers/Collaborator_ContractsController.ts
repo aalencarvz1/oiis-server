@@ -7,6 +7,6 @@ export default class Collaborator_ContractsController extends BaseRegistersContr
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

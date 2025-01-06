@@ -7,6 +7,6 @@ export default class NeighborHoodsController extends BaseRegistersController {
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

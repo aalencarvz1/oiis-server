@@ -7,6 +7,6 @@ export default class Campaign_Kpi_Result_ValuesController extends BaseRegistersC
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

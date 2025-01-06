@@ -7,6 +7,6 @@ export default class Movement_GroupsController extends BaseRegistersController {
     }
 
     static {
-        this.configureRequestHandlers();
+        this.configureDefaultRequestHandlers();
     }
 }

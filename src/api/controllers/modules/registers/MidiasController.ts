@@ -19,10 +19,6 @@ export default class MidiasController extends BaseRegistersController {
     }
 
     static {
-        this.configureRequestHandlers();
-        [
-            this.uploadFile
-        ].forEach(el=>EndPointsController.markAsRequestHandler(el));
-
+        this.configureDefaultRequestHandlers([this.uploadFile]);
     }
 }
