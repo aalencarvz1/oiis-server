@@ -101,6 +101,12 @@ export default class EndPointsController{
         next();
     }
 
+
+    /**
+     * configura func parameter as request handler
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static markAsRequestHandler(func: any) : void {
         Object.defineProperty(func, "__isRequestHandler", {
             value: true,
@@ -110,6 +116,10 @@ export default class EndPointsController{
         });
     }
 
+
+    /**
+     * check if func parameter has request handler signature
+     */
     static isRequestHandler(func: any): func is RequestHandler {
         return typeof func == 'function' && !Utils.isClass(func) && func.length >= 2 && func.__isRequestHandler; // Pelo menos req e res
     }
@@ -133,9 +143,7 @@ export default class EndPointsController{
      * @param basePath 
      */
     static async autoLoadEndPoints(dir: string, basePath = '/') {
-        //console.log('scaning dir ',dir);
         const entries = await fs.readdir(dir, { withFileTypes: true });
-        //console.log('entries',entries);
         for (const entry of entries) {
             const fullPath = path.join(dir, entry.name);            
             if (entry.isDirectory()) {
@@ -143,7 +151,6 @@ export default class EndPointsController{
                 await this.autoLoadEndPoints(fullPath, path.join(basePath, entry.name));
             } else if (entry.isFile() && entry.name.endsWith('.js')) {
                 // Carregar módulo dinamicamente
-                //console.log('scaning file ',fullPath);
                 const fileUrl = pathToFileURL(fullPath);
                 const module = await import(fileUrl.href);
     
@@ -152,16 +159,9 @@ export default class EndPointsController{
                     if (this.isRequestHandler(handler)) {
                         let routePath : string = path.join(basePath, entry.name.replace('.js', ''));
                         routePath = routePath.replaceAll(path.sep,"/").trim().toLowerCase();
-                        //console.log(`Registrando endpoint(1): ${routePath} -> ${exportName}`);
                         this.router.all(routePath, (handler as any)); // Associa ao método HTTP apropriado
                     } else if (Utils.isClass(handler)) {
-                        //console.log('entries of ',fullPath,Object.entries(handler));
-
-
-                        //trocar por get all keys (inclusive herdadas);
-                        //Object.entries(handler).forEach(([exportName2, handler2]) => {
                         let objKeys : string[] = Utils.getAllProperties(handler);
-                        //console.log('objKeys',fullPath,objKeys);
                         for (let i in objKeys) {
                             if (['caller','callee','arguments'].indexOf(objKeys[i]) == -1) {
                                 let handler2 : any = (handler as any)[objKeys[i]];
@@ -217,7 +217,6 @@ export default class EndPointsController{
                 let routeArray = layer.route.path.split("/");
                 let controllerName = (routeArray[routeArray.length-2] || routeArray[routeArray.length-1]).trim().toLowerCase();
                 let methodName = routeArray[routeArray.length-1].trim().toLowerCase();
-                //console.log('controllerName',controllerName,'methodName',methodName,layer.route.path);
                 if (this.namedEndpoints.indexOf(methodName) > -1) {
                     routes[methodName] = {
                         path: layer.route.path,
@@ -248,6 +247,11 @@ export default class EndPointsController{
         return routes;
     }
 
+    /**
+     * @requesthandler
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static get_endpoints: RequestHandler = (req:Request, res: Response, next: NextFunction)=>{
         try {
             res.data = this.getEndPoints(this.getRouter());
