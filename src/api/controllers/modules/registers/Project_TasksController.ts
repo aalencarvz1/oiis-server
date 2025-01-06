@@ -16,6 +16,12 @@ import Requirements from "../../../database/models/Requirements.js";
 import Relationships from "../../../database/models/Relationships.js";
 
 export default class Project_TasksController extends BaseRegistersController {
+
+    /**
+     * @override
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static getTableClassModel() : any {
         return Project_Tasks;
     }
@@ -72,6 +78,13 @@ export default class Project_TasksController extends BaseRegistersController {
         return await Project_Tasks.findAll(params);
     }
 
+
+    /**
+     * @requesthandler
+     * @override
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static async get(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {  
             let queryParams = req.body.queryParams || req.body || {};        
@@ -83,6 +96,12 @@ export default class Project_TasksController extends BaseRegistersController {
         }
     }
 
+    /**
+     * @requesthandler
+     * @override
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static async put(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let queryParams = req.body.queryParams?.values || req.body.values || req.body.queryParams || req.body || {};
@@ -133,6 +152,12 @@ export default class Project_TasksController extends BaseRegistersController {
         }
     }
 
+    /**
+     * @requesthandler
+     * @override
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static async patch(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let params : any = req.body?.queryParams || req.body || {};  
@@ -180,6 +205,12 @@ export default class Project_TasksController extends BaseRegistersController {
         }
     }
         
+    /**
+     * @requesthandler
+     * @override
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static async delete(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let queryParams = req.body.queryParams || req.body;

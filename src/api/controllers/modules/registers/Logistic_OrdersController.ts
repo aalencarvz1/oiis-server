@@ -12,7 +12,8 @@ export default class Logistic_OrdersController extends BaseRegistersController {
     }
 
     /**
-     * 
+     * get sumary details of delivery, such as resuming of invoice count, delivery count, financial values sums
+     * @requesthandler
      * @created 2024-05-01
      * @version 1.0.0
      */

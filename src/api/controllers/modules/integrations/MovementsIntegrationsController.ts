@@ -7,7 +7,12 @@ import WinthorMovementsIntegrationsController from "./winthor/WinthorMovementsIn
 export default class MovementsIntegrationsController extends BaseIntegrationsController {
 
 
-    static async getPurchaseSuggestions(req: Request, res: Response, next: NextFunction) : Promise<void> {
+    /**
+     * @requesthandler    
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
+    static async get_purchase_suggestions(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let origin = req.body.origin || "";
             switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
@@ -25,6 +30,6 @@ export default class MovementsIntegrationsController extends BaseIntegrationsCon
     }
     
     static {
-        this.configureDefaultRequestHandlers([this.getPurchaseSuggestions]);
+        this.configureDefaultRequestHandlers([this.get_purchase_suggestions]);
     }
 }

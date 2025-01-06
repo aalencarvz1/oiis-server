@@ -10,11 +10,21 @@ import DBConnectionManager from "../../../database/DBConnectionManager.js";
 import Tasks_Status_Users_Logs from "../../../database/models/Tasks_Status_Users_Logs.js";
 
 export default class TasksController extends BaseRegistersController {
+
+    /**
+     * @override
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static getTableClassModel() : any {
         return Tasks;
     }
 
-
+    /**    
+     * mount query (default) to get tasks
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static mountQueryToGet(req: Request,queryParams?: any) : string {
         let query = `
             select 
@@ -74,6 +84,13 @@ export default class TasksController extends BaseRegistersController {
         return await Tasks.findAll(params);
     }
 
+
+    /**
+     * @requesthandler
+     * @override
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static async get(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {  
             let queryParams = req.body.queryParams || req.body || {};        
@@ -85,6 +102,13 @@ export default class TasksController extends BaseRegistersController {
         }
     }
 
+
+    /**
+     * @requesthandler
+     * @override
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static async put(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {  
             let bodyParams = req.body || {};
@@ -136,6 +160,13 @@ export default class TasksController extends BaseRegistersController {
         }
     }
 
+
+    /**
+     * @requesthandler
+     * @override
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static async patch(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {  
             let queryParams = req.body.queryParams || req.body;

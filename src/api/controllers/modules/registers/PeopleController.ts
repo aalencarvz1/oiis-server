@@ -8,6 +8,12 @@ export default class PeopleController extends BaseRegistersController {
         return People;
     }
 
+
+    /**
+     * get people by identifier docs
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static async getPeopleByIdentifiersDocs(identifiersDocs?: any,options?: any) : Promise<any> {    
         let result = null;
         let queryParams = options?.queryParams || options || {};

@@ -43,6 +43,11 @@ import EpClientsIntegrationsController from "./ep/EpClientsIntegrationsControlle
 
 export default class Logistic_OrdersIntegrationsController extends BaseIntegrationsController {
 
+
+    /**
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static getDataOriginId(data_origin_id: number) : number {
         let result = Data_Origins.DEFAULT_ORIGINDATA;
         switch(data_origin_id) {
@@ -56,6 +61,10 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
         return result;
     }
 
+    /**
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static getFinancialValueFormID(idOnOrigin?: any) : number {
         let result = Financial_Value_Forms.MONEY;
         idOnOrigin = (idOnOrigin || '').toString().trim().toUpperCase();
@@ -71,6 +80,10 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
         return result;
     }
 
+    /**
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static async saveLog(creator_user_id: number, idTableRef: number,idRegisterRef: number, logs: any, messages: any, exceptions: any, transaction?: Transaction) : Promise<void>{
         try {
             for(let kl in logs || []) {
@@ -109,6 +122,10 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
         }
     }
 
+    /**
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static async getOrCreateLotFromOriginLot(params: any,originLot: any,transaction?: Transaction) : Promise<any> {
         let result = await Lots.findOne({
             where:{
@@ -142,6 +159,10 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
     }
 
 
+    /**
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static async getOrCreateLogistic_Orders_Items_Mov_AmtFromOriginItem(
         params: any, 
         company: any, 
@@ -323,7 +344,10 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
     }
 
 
-
+    /**
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static async sendLogisticOrderData(params: any) : Promise<any> {
         let result = new DataSwap();
         try {
@@ -729,6 +753,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                     result.exception = exceptions;
                 } else {
                     result.data = cargos;
+                    result.success = true;
                     try {
                         if (idsLogOrders.length > 0 && Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true && Utils.toBool(await Parameter_Values.get(Parameters.LOGISTIC_INTEGRATE_AUTOMATIC_CLOSE_BOX_DRIVER)) == true) {
                             // not await
@@ -747,6 +772,11 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
         return result;
     } 
 
+    /**
+     * @requesthandler
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static async get_with_integration_data(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let origin = req.body.origin || "";
@@ -765,6 +795,11 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
     }
 
 
+    /**
+     * @requesthandler
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static async get_cargos_data_for_delivery(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let origin = req.body.origin || "";
@@ -783,6 +818,11 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
         res.sendResponse();
     }
     
+    /**
+     * @requesthandler
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static async send_logistic_order_data(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {            
             let params = req.body || req.query;
@@ -795,6 +835,11 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
         res.sendResponse();
     }
 
+    /**
+     * @requesthandler
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static async integrate_box_closing(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let origin = req.body.origin || "";

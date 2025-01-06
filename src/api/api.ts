@@ -48,8 +48,8 @@ api.use(express.json({limit: '50mb'}));
 api.use(express.urlencoded({limit: '50mb', extended: true }));
 api.use(bodyParser.json({limit: '50mb'}));
 api.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
-api.use('/uploads', express.static('uploads'));
-api.use('/files', express.static('files'));
+api.use('../uploads', express.static('uploads'));
+api.use('../files', express.static('files'));
 api.use(cookieParser());
 
 

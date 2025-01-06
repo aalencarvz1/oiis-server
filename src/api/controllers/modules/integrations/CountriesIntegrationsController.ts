@@ -4,6 +4,12 @@ import BaseIntegrationsController from "./BaseIntegrationsController.js";
 
 export default class CountriesIntegrationsController extends BaseIntegrationsController{
 
+    /**
+     * @requesthandler
+     * @override
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static async get(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let origin = req.body.origin || "";
@@ -21,6 +27,11 @@ export default class CountriesIntegrationsController extends BaseIntegrationsCon
         }
     }
 
+    /**
+     * @requesthandler
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static async integrate(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let origin = req.body.origin || "";

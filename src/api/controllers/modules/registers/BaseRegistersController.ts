@@ -7,18 +7,25 @@ import Utils from "../../utils/Utils.js";
 /**
  * Abstract class to use as registers (table) controller.
  * This class avoid use of arrow functions to correct user of context of this
+ * This class provide 4 basic methods to management table class model: get, put, patch and delete.
  * @author Alencar
  * @version 1.0.0
  * @created 2024-12-31
  */
 export default abstract class BaseRegistersController {
 
+
+    /**
+     * The class that inherit this must have return a class model wich is principal table class model of controller
+     * @abstract
+     */
     static getTableClassModel() : any {
         throw new Error(`abstract method ${this.name}.getTableClassModel not implemented`);
     }
 
     /**
      * default RequestHandler method to get registers of table model controller
+     * @requesthandler
      * @created 2024-12-31
      * @version 1.0.0
      */
@@ -38,6 +45,7 @@ export default abstract class BaseRegistersController {
 
     /**
      * default RequestHandler method to put registers of table model controller
+     * @requesthandler
      * @created 2024-12-31
      * @version 1.0.0
      */
@@ -55,6 +63,7 @@ export default abstract class BaseRegistersController {
 
     /**
      * default RequestHandler method to patch registers of table model controller
+     * @requesthandler
      * @created 2024-12-31
      * @version 1.0.0
      */
@@ -72,6 +81,7 @@ export default abstract class BaseRegistersController {
 
     /**
      * default RequestHandler method to patch registers of table model controller
+     * @requesthandler
      * @created 2024-12-31
      * @version 1.0.0
      */

@@ -5,7 +5,12 @@ import WinthorSupervisorsIntegrationsController from "./winthor/WinthorSuperviso
 
 export default class SupervisorsIntegrationsController extends BaseIntegrationsController {
 
-
+    /**
+     * @requesthandler
+     * @override
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static async get(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let origin = req.body.origin || "";

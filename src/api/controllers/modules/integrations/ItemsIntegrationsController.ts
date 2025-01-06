@@ -7,6 +7,12 @@ import WinthorItemsIntegrationsController from "./winthor/WinthorItemsIntegratio
 export default class ItemsIntegrationsController extends BaseIntegrationsController {
 
 
+    /**
+     * @requesthandler
+     * @override
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
     static async get(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let origin = req.body.origin || "";

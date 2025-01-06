@@ -7,10 +7,23 @@ import { Sequelize } from "sequelize";
 import Project_Item_Origin_Types from "../../../database/models/Project_Item_Origin_Types.js";
 
 export default class Projects_ItemsController extends BaseRegistersController {
+
+    /**
+     * @override
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static getTableClassModel() : any {
         return Projects_Items;
     }
 
+
+    /**
+     * @requesthandler
+     * @override
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
     static async get(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let queryParams = req.body.queryParams || req.body;
