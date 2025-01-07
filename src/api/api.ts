@@ -48,10 +48,12 @@ api.use(express.json({limit: '50mb'}));
 api.use(express.urlencoded({limit: '50mb', extended: true }));
 api.use(bodyParser.json({limit: '50mb'}));
 api.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
-api.use('../uploads', express.static('uploads'));
-api.use('../files', express.static('files'));
-api.use(cookieParser());
 
+//serve files
+api.use('/uploads', express.static(path.join(__dirname, '../../uploads')));
+api.use('/files', express.static(path.join(__dirname, '../../files')));
+
+api.use(cookieParser());
 
 //customize response properties
 api.use(EndPointsController.custom_response);

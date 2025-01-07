@@ -26,6 +26,7 @@ export default class AuthController {
      */
     static #unsecureRoutes = [        
         "/public",
+        "/uploads",
         "/api/online",        
         "/api/endpoints",        
         "/api/controllers/auth/authcontroller/login",
