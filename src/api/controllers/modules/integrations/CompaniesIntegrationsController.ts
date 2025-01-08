@@ -4,9 +4,7 @@ import WinthorCompaniesIntegrationsController from "./winthor/WinthorCompaniesIn
 import BaseRegistersController from "../registers/BaseRegistersController.js";
 import BaseIntegrationsController from "./BaseIntegrationsController.js";
 
-
 export default class CompaniesIntegrationsController extends BaseIntegrationsController {
-
 
     /**
      * @requesthandler

@@ -4,7 +4,6 @@ import BaseIntegrationsController from "./BaseIntegrationsController.js";
 
 export default class CitiesIntegrationsController extends BaseIntegrationsController {
 
-
     /**
      * @requesthandler
      * @override
