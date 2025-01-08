@@ -2,9 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import WinthorBusiness_UnitsIntegrationsController from "./winthor/WinthorBusiness_UnitsIntegrationsController.js";
 import BaseIntegrationsController from "./BaseIntegrationsController.js";
 
-
-
-
 export default class Business_UnitsIntegrationsController extends BaseIntegrationsController{
 
     /**

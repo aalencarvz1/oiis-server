@@ -2,9 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import BaseIntegrationsController from "./BaseIntegrationsController.js";
 import WinthorDeliveriesIntegrationsController from "./winthor/WinthorDeliveriesIntegrationsController.js";
 
-
 export default class DeliveriesIntegrationsController extends BaseIntegrationsController {
-
 
     /**
      * @requesthandler
@@ -72,8 +70,7 @@ export default class DeliveriesIntegrationsController extends BaseIntegrationsCo
         }
     }
 
-    
-    
+        
     static {
         this.configureDefaultRequestHandlers([
             this.get_invoices_with_integrations_datas,

@@ -71,7 +71,6 @@ api.post("/api/controllers/modules/registers/midiascontroller/upload_file",uploa
 
   //only controllers can receive requests
   let requestHandlersRootDir = `${__dirname}/controllers`;
-  console.log('dir is ',requestHandlersRootDir);
   EndPointsController.loadDefaultEndPoints();
 
   /**
@@ -87,7 +86,7 @@ api.post("/api/controllers/modules/registers/midiascontroller/upload_file",uploa
     res.message = "resource not found";
     res.sendResponse(404,false);
   })
-  console.log('endpoints',EndPointsController.getEndPoints(EndPointsController.getRouter()));
+  Utils.log('endpoints',EndPointsController.getEndPoints(EndPointsController.getRouter()));
 })();
 
 
