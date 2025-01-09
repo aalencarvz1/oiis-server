@@ -19,7 +19,7 @@ export default {
             :creator_user_id as creator_user_id,
             sysdate as created_at,
             :name as name,          
-            :value AS value
+            :value AS "value"
           FROM 
               dual
         ) source
@@ -38,7 +38,7 @@ export default {
             source.creator_user_id, 
             source.created_at, 
             source.name, 
-            source.value
+            source."value"
           )
       `;
       await DBConnectionManager.getWinthorIntegrationDBConnection()?.query(
