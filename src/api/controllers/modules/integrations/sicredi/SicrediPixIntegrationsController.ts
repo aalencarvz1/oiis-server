@@ -585,9 +585,9 @@ export default class SicrediPixIntegrationsController extends BaseIntegrationsRe
                         if ((pixWint?.STATUS || result.data.cobs[key].status) == 'CONCLUIDA' && (pixWint?.BAIXADOPCPRESTVIAAPI || 0) == 0) {
                             let downed : any = null;
                             if (numtrans) {
-                                downed = await WinthorFinancialIntegrationsController.closePixPayment({numtrans:numtrans,prest:prest,valor:result.data.cobs[key].pix.valor.original});
+                                downed = await WinthorFinancialIntegrationsController.closePixPayment({numtrans:numtrans,prest:prest,valor:Utils.toNumber(result.data.cobs[key].pix.valor?.original || result.data.cobs[key].pix.valor)});
                             } else if (numnf) {
-                                downed = await WinthorFinancialIntegrationsController.closePixPayment({numnf:numnf,prest:prest,valor:result.data.cobs[key].pix.valor.original});
+                                downed = await WinthorFinancialIntegrationsController.closePixPayment({numnf:numnf,prest:prest,valor:Utils.toNumber(result.data.cobs[key].pix.valor?.original || result.data.cobs[key].pix.valor)});
                             }
                             if (downed?.success && pixWint) {
                                 pixWint.BAIXADOPCPRESTVIAAPI = 1;
