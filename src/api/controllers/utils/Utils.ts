@@ -1,13 +1,4 @@
-import fs from 'node:fs';
-import {stringify} from 'flatted';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
 export default class Utils { 
-
-    static #logFile = fs.createWriteStream(__dirname + '/../../log.log', {flags : 'a'});
-
 
     static getMomento() : string {
         let momento : any = new Date();
@@ -78,30 +69,6 @@ export default class Utils {
 
     static logError(error: any) : void {
         console.error(error);
-    }
-
-    static logToFile(...values: any) : void {
-        let log = [Utils.getMomento()];
-        for(let key in values) {
-            switch(Utils.typeOf(values[key])) {
-                case 'object':
-                case 'array':
-                    log.push(stringify(values[key]));
-                    break;
-                case 'function':
-                    log.push(values[key].name);
-                    break;
-                default:
-                    log.push(values[key]);
-                    break;
-            }
-        }
-        Utils.#logFile.write(log.join(' ') + '\n');
-        Utils.log(...values);
-    }
-
-    static closeLogFile(){
-        Utils.#logFile.close();
     }
 
 
