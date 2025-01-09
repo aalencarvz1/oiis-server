@@ -222,6 +222,7 @@ import Utils from "../utils/Utils.js";
 import Midias from "../../database/models/Midias.js";
 import Meas_X_Meas_Origins from "../../database/models/Meas_X_Meas_Origins.js";
 import Packs_X_Packs_Origins from "../../database/models/Packs_X_Packs_Origins.js";
+import PcEst from "../../database/models/winthor/PcEst.js";
 
 
 export default class ModelsController {
@@ -412,6 +413,7 @@ export default class ModelsController {
             PcConsum.initModel();
             PcDepto.initModel();
             PcProdut.initModel();
+            PcEst.initModel();
             PcDocEletronico.initModel();
             PcEmpr.initModel(); 
             PcNfsaid.initModel();           
@@ -653,6 +655,7 @@ export default class ModelsController {
             await PcConsum.initAssociations();
             await PcDepto.initAssociations();
             await PcProdut.initAssociations();
+            await PcEst.initAssociations();
             await PcDocEletronico.initAssociations();
             await PcEmpr.initAssociations(); 
             await PcNfsaid.initAssociations();           
