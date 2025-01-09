@@ -14,6 +14,7 @@ import PcClient from "../../../../database/models/winthor/PcClient.js";
 import { Op, Sequelize } from "sequelize";
 import PcNfsaid from "../../../../database/models/winthor/PcNfsaid.js";
 import PcPixCobrancaDados from "../../../../database/models/winthor/PcPixCobrancaDados.js";
+import WinthorFinancialIntegrationsController from "../winthor/WinthorFinancialIntegrationsController.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -28,15 +29,15 @@ export default class SicrediPixIntegrationsController extends BaseIntegrationsRe
     
     
     
-    private static apiPixSicrediCertificate = fs.existsSync(path.resolve(__dirname,'../../../../../../../assets/certificates/sicredi/api_pix/sicredi_certs/85522043000190.pem'))
+    private static apiPixSicrediCertificate = fs.existsSync(path.resolve(__dirname,'../../../../../../assets/certificates/sicredi/api_pix/sicredi_certs/85522043000190.pem'))
         ? fs.readFileSync(
-            path.resolve(__dirname,'../../../../../../../assets/certificates/sicredi/api_pix/sicredi_certs/85522043000190.pem'),
+            path.resolve(__dirname,'../../../../../../assets/certificates/sicredi/api_pix/sicredi_certs/85522043000190.pem'),
             'utf-8'
         )
         : undefined;
-    private static apiPixSicredikey = fs.existsSync(path.resolve(__dirname,'../../../../../../../assets/certificates/sicredi/api_pix/APLICACAO.key'))
+    private static apiPixSicredikey = fs.existsSync(path.resolve(__dirname,'../../../../../../assets/certificates/sicredi/api_pix/APLICACAO.key'))
         ? fs.readFileSync(
-            path.resolve(__dirname,'../../../../../../../assets/certificates/sicredi/api_pix/APLICACAO.key'),
+            path.resolve(__dirname,'../../../../../../assets/certificates/sicredi/api_pix/APLICACAO.key'),
             'utf-8'                            
         )
         : undefined;
@@ -212,8 +213,8 @@ export default class SicrediPixIntegrationsController extends BaseIntegrationsRe
             if (logged) {
                 p_PixReqParams = p_PixReqParams || {};
                 let status = p_PixReqParams?.status;
-                let inicio = p_PixReqParams?.init || this.getDefaultInitDateTiime();
-                let fim = p_PixReqParams?.end || this.getDefaultEndDateTiime();                
+                let inicio = p_PixReqParams?.init || p_PixReqParams?.inicio || this.getDefaultInitDateTiime();
+                let fim = p_PixReqParams?.end || p_PixReqParams?.fim || this.getDefaultEndDateTiime();                
                 if (inicio.length == 10) inicio += "T00:00:00Z";
                 if (fim.length == 10) fim += "T23:59:59Z";
 
@@ -511,4 +512,94 @@ export default class SicrediPixIntegrationsController extends BaseIntegrationsRe
         }
         return result;
     }
+
+    static getFieldFromInfo(pix: any,field?: string) : any{
+        let result = null;
+        try {
+            if (pix.infoAdicionais?.length) {
+                for(let keyInfo in pix.infoAdicionais) {
+                    if (pix.infoAdicionais[keyInfo]?.nome == field) {
+                        result = pix.infoAdicionais[keyInfo].valor;
+                        break;
+                    }
+                }
+            }
+        } catch (e) {
+            Utils.logError(e);
+        }
+        return result;
+    }
+
+
+
+    /**
+     * called in job
+     */
+    static async checkCompletedsPix(){
+        try {
+            let inicio : any = new Date();
+            inicio.setDate(inicio.getDate()-15);
+            inicio.setHours(0);
+            inicio.setUTCHours(0);
+            inicio.setMinutes(0);
+            inicio.setSeconds(0);
+            inicio.setMilliseconds(0);
+            inicio = inicio.toISOString();
+            let result = await this.get({
+                init:inicio,
+                end: this.getDefaultEndDateTiime(),
+                status:'CONCLUIDA'
+            });
+            if (result?.success) {
+                if (Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true) {
+                    for(let key in result?.data?.cobs) {
+                        let numtrans = null;
+                        let numnf = null;
+                        let prest = null;
+                        let pixWint = await PcPixCobrancaDados.findOne({
+                            where:{
+                                NUMTRANSPAGDIGITAL: result.data.cobs[key].txid,
+                                BAIXADOPCPRESTVIAAPI: 0
+                            }
+                        });
+                        if (pixWint) {
+                            if (Utils.hasValue(pixWint.NUMTRANSVENDA)) {
+                                numtrans = pixWint.NUMTRANSVENDA || this.getFieldFromInfo(result.data.cobs[key],'numtrans');
+                                prest = pixWint.PREST || this.getFieldFromInfo(result.data.cobs[key],'prest');
+                            } else {
+                                numtrans = this.getFieldFromInfo(result.data.cobs[key],'numtrans');
+                                prest = this.getFieldFromInfo(result.data.cobs[key],'prest');
+                            }
+                            if (pixWint.STATUS != result.data.cobs[key].status) { 
+                                pixWint.STATUS = result.data.cobs[key].status;                            
+                                await pixWint.save();
+                            }
+                        } else {
+                            numtrans = this.getFieldFromInfo(result.data.cobs[key],'numtrans');
+                            prest = this.getFieldFromInfo(result.data.cobs[key],'prest');
+                        }
+
+                        if (!numtrans) {
+                            numnf = this.getFieldFromInfo(result.data.cobs[key],'numnf');
+                        }
+                        if ((pixWint?.STATUS || result.data.cobs[key].status) == 'CONCLUIDA' && (pixWint?.BAIXADOPCPRESTVIAAPI || 0) == 0) {
+                            let downed : any = null;
+                            if (numtrans) {
+                                downed = await WinthorFinancialIntegrationsController.closePixPayment({numtrans:numtrans,prest:prest,valor:result.data.cobs[key].pix.valor.original});
+                            } else if (numnf) {
+                                downed = await WinthorFinancialIntegrationsController.closePixPayment({numnf:numnf,prest:prest,valor:result.data.cobs[key].pix.valor.original});
+                            }
+                            if (downed?.success && pixWint) {
+                                pixWint.BAIXADOPCPRESTVIAAPI = 1;
+                                await pixWint.save();
+                            }
+                        }
+                    }
+                }
+            } 
+        } catch (e) {
+            Utils.logError(e);
+        }
+    }
+
 }

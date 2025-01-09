@@ -61,7 +61,7 @@ use attributes in findOne/findAll sequelize methods only if strict necessary, an
 TO DEPLOY SERVER
 check if pm2 service is istalled and running
 in project folder
-pm2 start src\api.js --name OiisApi
+pm2 start dist/api/api.js --node-args="--max-old-space-size=32768" --name OiisApi
 pm2 -f save
 
 

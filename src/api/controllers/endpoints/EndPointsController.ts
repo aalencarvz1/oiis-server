@@ -1,5 +1,5 @@
 import {NextFunction, Request, RequestHandler, Response, Router } from "express";
-import fs from 'fs/promises';
+import * as fs from 'node:fs/promises';
 import path from "path";
 import { pathToFileURL } from "url";
 import Utils from "../utils/Utils.js";

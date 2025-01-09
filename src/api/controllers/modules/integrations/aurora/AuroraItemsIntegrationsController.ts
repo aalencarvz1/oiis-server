@@ -10,15 +10,18 @@ import Items from "../../../../database/models/Items.js";
 import DBConnectionManager from "../../../../database/DBConnectionManager.js";
 import { QueryTypes } from "sequelize";
 import WinthorNcmsIntegrationsController from "../winthor/WinthorNcmsIntegrationsController.js";
+import EpProdutos from "../../../../database/models/ep/EpProdutos.js";
 
 
 export default class AuroraItemsIntegrationsController extends BaseIntegrationsRegistersController{
 
-    static async get(params?:any) : Promise<void | PcProdut[]> {
+    static async get(params?:any) : Promise<void | EpProdutos[]> {
         let queryParams = params?.queryParams || params || {};
         queryParams = DatabaseUtils.prepareQueryParams(queryParams);
         queryParams.raw = Utils.firstValid([queryParams.raw,true]);
-        return await PcProdut.findAll(queryParams);
+        queryParams.where = queryParams.where || {};
+        queryParams.where.codorigeminfo = 1;
+        return await EpProdutos.findAll(queryParams);
     }  
     
     
