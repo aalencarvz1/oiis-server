@@ -372,7 +372,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                             where:{
                                 id:codFilial
                             },
-                            transaction
+                            //transaction
                         });
                         if (!Utils.hasValue(businessUnit)) throw new Error(`business unit not found: ${codFilial}`);
                         let warehouse = await Warehouses.findOne({
@@ -380,7 +380,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                             where:{
                                 id:codFilial
                             },
-                            transaction
+                            //transaction
                         });
                         if (!Utils.hasValue(warehouse)) throw new Error(`warehouse not found: ${codFilial}`);
                         let company = await Companies.findOne({
@@ -388,7 +388,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                             where:{
                                 id:businessUnit.company_id
                             },
-                            transaction
+                            //transaction
                         });
                         if (!Utils.hasValue(company)) throw new Error(`company not found: ${businessUnit.company_id}`);
                         
@@ -409,9 +409,9 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                     ]
                                 }]
                             },
-                            transaction
+                            //transaction
                         });
-                        if (!Utils.hasValue(logisticOrder)) {
+                        if (!Utils.hasValue(logisticOrder)) {                            
                             logisticOrder = await Logistic_Orders.create({
                                 creator_user_id: params.user.id,
                                 data_origin_id: data_origin_id,
@@ -441,7 +441,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                 where:{
                                     id:cargos[key].invoices[kn].server_id || -1,                                    
                                 },
-                                transaction
+                                //transaction
                             });
                             let mov = null;
 
@@ -451,7 +451,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                         data_origin_id: idOriginMov,
                                         id_at_origin:cargos[key].invoices[kn].id_at_origin
                                     },
-                                    transaction
+                                    //transaction
                                 });
 
                                 if (!Utils.hasValue(mov)) {
@@ -519,7 +519,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                         logistic_order_id: logisticOrder.id,
                                         mov_id: mov.id,                                
                                     },
-                                    transaction
+                                    //transaction
                                 });
                                 if (!Utils.hasValue(logisticOrderXMov)) {
                                     logisticOrderXMov = await Logistic_Orders_Movs.create({
@@ -548,7 +548,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                     where:{
                                         id : logisticOrderXMov.mov_id
                                     },
-                                    transaction
+                                    //transaction
                                 });
                             }
 
@@ -564,7 +564,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                             where:{
                                                 id: cargos[key].invoices[kn].items[ki].lots[kl].server_id||-1
                                             },
-                                            transaction
+                                            //transaction
                                         });
                                         if (Utils.hasValue(logXItemMovAmt)) {
                                             logXItemMovAmt.action_status_id =  logisticOrder.action_status_id;
@@ -595,7 +595,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                         where:{
                                             id: cargos[key].invoices[kn].items[ki].server_id||-1
                                         },
-                                        transaction
+                                        //transaction
                                     });
                                     if (Utils.hasValue(logXItemMovAmt)) {
                                         logXItemMovAmt.action_status_id =  logisticOrder.action_status_id;
@@ -648,7 +648,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                             ]
                                         }]
                                     },
-                                    transaction
+                                    //transaction
                                 });
                                 if (!Utils.hasValue(receivedValue)) {
                                     receivedValue = await Logistic_Orders_Movs_Received_Values.create({                                
@@ -714,7 +714,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                         ]
                                     }]
                                 },
-                                transaction
+                                //transaction
                             });
 
                             if (!Utils.hasValue(logDestVal)) {
