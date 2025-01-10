@@ -53,7 +53,7 @@ export default class AuroraStockIntegrationsController extends BaseIntegrationsR
                 
                 let newFileName = `${path}/processados/${fileName.substring(0,fileName.indexOf('.'))}${currentTime.toISOString().replace(/[\.\-\:]/g,'')}.TXT`;
                 await client.rename(`${path}/${fileName}`,newFileName);
-                await DBConnectionManager.getConsultDBConnection()?.query('exec consulta.sjdpkg_funcs_sisjd.atualizar_estoque_aurora()', {type: QueryTypes.RAW});
+                await DBConnectionManager.getConsultDBConnection()?.query('call consulta.sjdpkg_funcs_sisjd.atualizar_estoque_aurora()', {type: QueryTypes.RAW});
                 await DBConnectionManager.getConsultDBConnection()?.query('delete from consulta.arestaurimportacao',{type:QueryTypes.DELETE});
                 result.success = true;
             } else {
