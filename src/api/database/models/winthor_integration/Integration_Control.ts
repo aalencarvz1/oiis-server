@@ -29,7 +29,7 @@ export default class Integration_Control extends BaseWinthorIntegrationTableMode
   static model = null;
   static fields = {
     creator_user_id: {
-      type: DataTypes.BIGINT.UNSIGNED,                
+      type: DataTypes.BIGINT,                
       allowNull: false,
       defaultValue:1 
     },
@@ -39,13 +39,13 @@ export default class Integration_Control extends BaseWinthorIntegrationTableMode
         defaultValue: DataTypes.NOW
     },
     updater_user_id: {
-        type: DataTypes.BIGINT.UNSIGNED,
+        type: DataTypes.BIGINT,
     },
     updated_at : {
         type: DataTypes.DATE
     },                
     integration_table_id:{
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       allowNull:false
     },
     register_id:{
