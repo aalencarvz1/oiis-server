@@ -32,12 +32,12 @@ export default class Integration_Tables extends BaseWinthorIntegrationTableModel
   static model = null;
   static fields = {
     id: {
-      type : DataTypes.BIGINT.UNSIGNED,                
+      type : DataTypes.BIGINT,                
       primaryKey: true,
       allowNull: false 
     },
     creator_user_id: {
-      type: DataTypes.BIGINT.UNSIGNED,                
+      type: DataTypes.BIGINT,                
       allowNull: false,
       defaultValue:1 
     },
@@ -47,7 +47,7 @@ export default class Integration_Tables extends BaseWinthorIntegrationTableModel
         defaultValue: DataTypes.NOW
     },
     updater_user_id: {
-        type: DataTypes.BIGINT.UNSIGNED,
+        type: DataTypes.BIGINT,
     },
     updated_at : {
         type: DataTypes.DATE

@@ -16,7 +16,7 @@ api.use(cors());
 ModelsController.initModels();
 
 //job to query complete pixs
-if (process.env.NODE_ENV == 'development') {
+if (process.env.NODE_ENV == 'production') {
     const scheduler = new ToadScheduler();
 
     //API PIX SICREDI INTEGRATION CHECKER
@@ -107,7 +107,10 @@ if (process.env.NODE_ENV == 'development') {
     });
 }
 
-console.info('schedulers running');
+api.listen(process.env.API_SCHEDULERS_PORT||3001,function(){
+    console.info(`schedulers api running ${process.env.NODE_ENV} on port ${process.env.API_SCHEDULERS_PORT||3001} at ${new Date()}`)
+});
+
 
 
 

@@ -35,7 +35,7 @@ export default class Error_Logs extends BaseWinthorIntegrationTableModel {
       type: DataTypes.STRING(255)
     },
     object_line:{
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
     },
     error_code:{
       type: DataTypes.STRING(255)
