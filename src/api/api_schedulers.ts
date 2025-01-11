@@ -48,7 +48,7 @@ if (process.env.NODE_ENV == 'production') {
 
 
     //AURORA STOCK INTEGRATION
-    /*const taskAuroraStockIntegration = new AsyncTask(
+    const taskAuroraStockIntegration = new AsyncTask(
         'simple task', 
         async () => { 
             try {
@@ -72,7 +72,7 @@ if (process.env.NODE_ENV == 'production') {
             preventOverrun: true,
         }
     );
-    scheduler.addSimpleIntervalJob(jobAuroraStockIntegration);*/
+    scheduler.addSimpleIntervalJob(jobAuroraStockIntegration);
 
 
     //MTRIX INTEGRATION FILES GENERATE 
