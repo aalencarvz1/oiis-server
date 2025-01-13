@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import BaseIntegrationsController from "./BaseIntegrationsController.js";
-import WinthorLogistic_RoutesIntegrationsController from "./winthor/WinthorLogistic_RoutesIntegrationsController.js";
-
+import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
+import PcRotaExpController from "./winthor/registers/PcRotaExpController.js";
 
 export default class Logistic_RoutesIntegrationsController extends BaseIntegrationsController {
 
@@ -17,8 +16,7 @@ export default class Logistic_RoutesIntegrationsController extends BaseIntegrati
             let origin = req.body.origin || "";
             switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
                 case "winthor":
-                    res.data = await WinthorLogistic_RoutesIntegrationsController.get(req.body);
-                    res.sendResponse(200,true);
+                    PcRotaExpController.get(req,res,next);
                     break; 
                 default:
                     throw new Error(`origin not expected: ${origin}`);

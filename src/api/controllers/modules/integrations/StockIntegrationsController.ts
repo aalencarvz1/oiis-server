@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import BaseIntegrationsController from "./BaseIntegrationsController.js";
-import WinthorStockIntegrationsController from "./winthor/WinthorStockIntegrationsController.js";
+import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
+import PcEstController from "./winthor/registers/PcEstController.js";
 
 
 /**
@@ -24,7 +24,7 @@ export default class StockIntegrationsController extends BaseIntegrationsControl
                 case "winthor":
                     let params = req.body || req.query || {};
                     params.user = req.user;
-                    res.data = await WinthorStockIntegrationsController.get(params);
+                    res.data = await PcEstController.getWithBrokerAndThird(params);
                     res.sendResponse(200,true);
                     break; 
                 default:

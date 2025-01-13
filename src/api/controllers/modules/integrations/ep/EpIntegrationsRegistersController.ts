@@ -1,6 +1,6 @@
 import { Op, Sequelize } from "sequelize";
 import Utils from "../../../utils/Utils.js";
-import BaseIntegrationsRegistersController from "../BaseIntegrationsRegistersController.js";
+import BaseRegistersIntegrationsController from "../BaseRegistersIntegrationsController.js";
 import EpPessoas from "../../../../database/models/ep/EpPessoas.js";
 import Data_Origins from "../../../../database/models/Data_Origins.js";
 import Identifier_Types from "../../../../database/models/Identifier_Types.js";
@@ -17,7 +17,7 @@ import EpVendedores from "../../../../database/models/ep/EpVendedores.js";
  * @author Alencar
  * @created 2023-25-08
  */
-export default class EpIntegrationsRegistersController extends BaseIntegrationsRegistersController{
+export default class EpIntegrationsRegistersController extends BaseRegistersIntegrationsController{
 
     static async getSellersIds(params?: any) : Promise<any> {
         let result : any = null;

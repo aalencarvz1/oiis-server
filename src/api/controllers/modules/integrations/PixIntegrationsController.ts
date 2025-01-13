@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import BaseIntegrationsController from "./BaseIntegrationsController.js";
+import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
 import SicrediPixIntegrationsController from "./sicredi/SicrediPixIntegrationsController.js";
-import PcPrestController from "./winthor/PcPrestController.js";
+import PcPrestController from "./winthor/registers/PcPrestController.js";
 
 export default class PixIntegrationsController extends BaseIntegrationsController {
 

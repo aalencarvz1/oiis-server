@@ -2,7 +2,7 @@ import { Op, Sequelize } from "sequelize";
 import DataSwap from "../../../data/DataSwap.js";
 import Data_Origins from "../../../../database/models/Data_Origins.js";
 import Utils from "../../../utils/Utils.js";
-import BaseIntegrationsRegistersController from "../BaseIntegrationsRegistersController.js";
+import BaseRegistersIntegrationsController from "../BaseRegistersIntegrationsController.js";
 import _ from "lodash";
 import Clients from "../../../../database/models/Clients.js";
 import Relationships from "../../../../database/models/Relationships.js";
@@ -15,13 +15,10 @@ import EpPessoas from "../../../../database/models/ep/EpPessoas.js";
 import Identifier_Types from "../../../../database/models/Identifier_Types.js";
 import People from "../../../../database/models/People.js";
 
-export default class EpPeopleIntegrationsController extends BaseIntegrationsRegistersController{
+export default class EpPeopleIntegrationsController extends BaseRegistersIntegrationsController{
 
-    static async get(params?:any) : Promise<void | EpClientes[]> {
-        let queryParams = params?.queryParams || params || {};
-        queryParams = DatabaseUtils.prepareQueryParams(queryParams);
-        queryParams.raw = Utils.firstValid([queryParams.raw,true]);
-        return await EpClientes.findAll(queryParams);
+    static getTableClassModel() {
+        return EpPessoas;
     }
 
 
@@ -121,7 +118,7 @@ export default class EpPeopleIntegrationsController extends BaseIntegrationsRegi
                         }]);
                     }
                 }
-                result = await this.integrateRegisters(interateRegsParams);
+                result = await this.defaultIntegrate(interateRegsParams);
 
                 //relationships
                 if (result.success) {

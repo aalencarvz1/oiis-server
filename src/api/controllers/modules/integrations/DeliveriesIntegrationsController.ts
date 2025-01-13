@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import BaseIntegrationsController from "./BaseIntegrationsController.js";
-import WinthorDeliveriesIntegrationsController from "./winthor/WinthorDeliveriesIntegrationsController.js";
+import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
+import PcCarregController from "./winthor/registers/PcCarregController.js";
+
 
 export default class DeliveriesIntegrationsController extends BaseIntegrationsController {
 
@@ -14,7 +15,7 @@ export default class DeliveriesIntegrationsController extends BaseIntegrationsCo
             let origin = req.body.origin || "";
             switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
                 case "winthor":
-                    res.data = await WinthorDeliveriesIntegrationsController.getInvoicesWithIntegrationsDatas(req.body);
+                    res.data = await PcCarregController.getInvoicesWithIntegrationsDatas(req.body);
                     res.sendResponse(200,true);
                     break; 
                 default:
@@ -36,7 +37,7 @@ export default class DeliveriesIntegrationsController extends BaseIntegrationsCo
             let origin = req.body.origin || "";
             switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
                 case "winthor":
-                    res.data = await WinthorDeliveriesIntegrationsController.getInvoiceWithIntegrationsDatas(req.body);
+                    res.data = await PcCarregController.getInvoiceWithIntegrationsDatas(req.body);
                     res.sendResponse(200,true);
                     break; 
                 default:
@@ -58,7 +59,7 @@ export default class DeliveriesIntegrationsController extends BaseIntegrationsCo
             let origin = req.body.origin || "";
             switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
                 case "winthor":
-                    res.data = await WinthorDeliveriesIntegrationsController.getItemsInvoiceWithIntegrationsDatas(req.body);
+                    res.data = await PcCarregController.getItemsInvoiceWithIntegrationsDatas(req.body);
                     res.sendResponse(200,true);
                     break; 
                 default:
