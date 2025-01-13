@@ -29,6 +29,7 @@ export default class ItemsIntegrationsController extends BaseIntegrationsControl
         }
     }
     
+    
     static {
         this.configureDefaultRequestHandlers();
     }
