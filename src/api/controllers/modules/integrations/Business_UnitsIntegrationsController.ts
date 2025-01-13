@@ -37,6 +37,7 @@ export default class Business_UnitsIntegrationsController extends BaseIntegratio
             switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
                 case "winthor":
                     res.setDataSwap(await PcFilialController.integrateMultiples(req.body));
+                    console.log('sssssssssssss',res.success,res.data,res.message,res.exception);
                     res.sendResponse();
                     break; 
                 default:

@@ -468,8 +468,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                                 client = client?.data[0];
                                             }
                                         } else {
-                                            if (client.exception) throw client.exception
-                                            else throw new Error(client.message);                            
+                                            client?.throw();                         
                                         }
                                     } else {
                                         client = client.data;

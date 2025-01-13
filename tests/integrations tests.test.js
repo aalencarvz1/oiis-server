@@ -210,7 +210,6 @@ async function crudDelete(params) {
         }
     });
     //console.log('DELETING',`${params.endPoint}`,params,options);
-    //console.log('yyyyyyyy',params.tableName.trim(),tablesNamesIgnoresFKErrors.indexOf(params.tableName.trim().toLowerCase()), tablesNamesIgnoresFKErrors.indexOf(params.tableName.trim().toLowerCase()) > -1);
     jsonData = await callApi(`${params.endPoint}`, options, tablesNamesIgnoresFKErrors.indexOf(params.tableName.trim().toLowerCase()) >-1);
     expect(tablesNamesIgnoresFKErrors.indexOf(params.tableName.trim().toLowerCase()) > -1 || jsonData.success).toBeTruthy();
     return jsonData;
@@ -291,7 +290,7 @@ async function integrateDataFromWinthorTable(params) {
             origin: origin,
             identifiers: [data[0][params.identifierWithorField] || params.identifierWithorField]
         };
-    }
+    }    
     options.body = JSON.stringify(valuesToCreate);
     let jsonResponse = await callApi(params.endPointIntegration, options);
     jsonResponse.data = jsonResponse.data[0];
