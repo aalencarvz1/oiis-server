@@ -13,63 +13,69 @@ export default class PcPaisController extends WinthorBaseRegistersIntegrationsCo
     }  
 
 
-    static async integrate(winthorCountryCode?: number,transaction?: Transaction) : Promise<void | Countries> {           
-        if (Utils.hasValue(winthorCountryCode)) {
-            let pcpais = await PcPais.findOne({
-                raw : true,
-                where:{
-                    CODPAIS:winthorCountryCode
-                },
-            });
-            if (!pcpais) throw new Error(`country not found in pcpais: ${winthorCountryCode}`);
-
-            let continent = await Continents.findOne({
-                raw:true,
-                where:{
-                    id:Continents.SOUTH_AMERICA
-                }
-            });
-
-            if (!continent) {
-                continent = await Continents.create({
-                    id: Continents.SOUTH_AMERICA,
-                    sigla: 'AL',
-                    name: 'SOUTH AMERICA'
+    static async integrate(winthorCountryCode?: number,transaction?: Transaction) : Promise<DataSwap> {           
+        let result = new DataSwap();
+        try {
+            if (Utils.hasValue(winthorCountryCode)) {
+                let pcpais = await PcPais.findOne({
+                    raw : true,
+                    where:{
+                        CODPAIS:winthorCountryCode
+                    },
                 });
-            }
-                                       
-            let queryParams : any = {
-                where: {
-                    continent_id: continent.id,
-                    id: winthorCountryCode
-                }
-            };
-            if (transaction) queryParams.transaction = transaction;
+                if (!pcpais) throw new Error(`country not found in pcpais: ${winthorCountryCode}`);
 
-            let country : any = await Countries.findOne(queryParams);
-            let options : any = {};
-            if (transaction) options.transaction = transaction;
+                let continent = await Continents.findOne({
+                    raw:true,
+                    where:{
+                        id:Continents.SOUTH_AMERICA
+                    }
+                });
 
-            //try preserve winthor code, if unique or primary key viloated, then raise exception here
-            if (country) {
-                if (country.name != pcpais.DESCRICAO) {
-                    country.name = pcpais.DESCRICAO;
-                    await country.save(options);                
+                if (!continent) {
+                    continent = await Continents.create({
+                        id: Continents.SOUTH_AMERICA,
+                        sigla: 'AL',
+                        name: 'SOUTH AMERICA'
+                    });
                 }
+                                        
+                let queryParams : any = {
+                    where: {
+                        continent_id: continent.id,
+                        id: winthorCountryCode
+                    }
+                };
+                if (transaction) queryParams.transaction = transaction;
+
+                let country : any = await Countries.findOne(queryParams);
+                let options : any = {};
+                if (transaction) options.transaction = transaction;
+
+                //try preserve winthor code, if unique or primary key viloated, then raise exception here
+                if (country) {
+                    if (country.name != pcpais.DESCRICAO) {
+                        country.name = pcpais.DESCRICAO;
+                        await country.save(options);                
+                    }
+                } else {
+                    country = await Countries.create({                    
+                        id : winthorCountryCode,
+                        data_origin_id: Data_Origins.WINTHOR,
+                        continent_id: continent.id,
+                        name: pcpais.DESCRICAO,
+                        sigla: pcpais.DESCRICAO.substring(0,2)
+                    },options)
+                }
+                result.data = country;
+                result.success = true;
             } else {
-                country = await Countries.create({                    
-                    id : winthorCountryCode,
-                    data_origin_id: Data_Origins.WINTHOR,
-                    continent_id: continent.id,
-                    name: pcpais.DESCRICAO,
-                    sigla: pcpais.DESCRICAO.substring(0,2)
-                },options)
+                throw new Error("winthorCountryCode is empty");
             }
-            return country;
-        } else {
-            throw new Error("winthorCountryCode is empty");
+        } catch(e: any) {
+            result.setException(e);
         }
-
+        return result;
     }
 
 
@@ -80,10 +86,17 @@ export default class PcPaisController extends WinthorBaseRegistersIntegrationsCo
             if (Utils.typeOf(identifiers) != 'array') identifiers = identifiers.split(',');                    
             if (identifiers.length > 0) {
                 result.data = [];
+                let hasFail = false;
                 for(let key in identifiers) {
-                    result.data.push(await this.integrate(identifiers[key]));
+                    let integrationResult = await this.integrate(identifiers[key]);
+                    if (integrationResult?.success) {
+                        result.data.push(integrationResult.data);
+                    } else {
+                        hasFail = true;
+                        result.setException(integrationResult.exception);
+                    }
                 }
-                result.success = true;
+                result.success = !hasFail;
             } else {
                 throw new Error("not identifiers for integration");
             }

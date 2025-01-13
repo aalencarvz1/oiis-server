@@ -36,7 +36,7 @@ export default class PcCidadeController extends WinthorBaseRegistersIntegrations
                 if (!state) {
                     let stateIntegrateResult = await PcEstadoController.integrate(pccidade.UF);
                     if (!stateIntegrateResult?.success) {
-                        throw new Error(`state ${pccidade.UF} not found`);
+                        stateIntegrateResult?.throw();
                     }
                     state = stateIntegrateResult.data;
                 }

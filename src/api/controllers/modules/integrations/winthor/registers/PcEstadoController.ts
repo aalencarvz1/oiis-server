@@ -34,8 +34,10 @@ export default class PcEstadoController extends WinthorBaseRegistersIntegrations
 
                 if (!country) {
                     country = await PcPaisController.integrate(pcestado.CODPAIS);
-                    if (!country) {
-                        throw new Error(`country ${pcestado.CODPAIS} not found`);
+                    if (!country?.success) {
+                        country?.throw();
+                    } else {
+                        country = country.data;
                     }
                 }
                                         

@@ -85,7 +85,7 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
     static async getPcClientByIdentifierDocToIntegrate(identifiersDocs: any) : Promise<any> {
         let result = null;
         try {
-            result = await this.getPcClientByIdentifiersDocs(
+            result = await PcClientController.getPcClientByIdentifiersDocs(
                 identifiersDocs,{
                     attributes:[
                         [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CGCENT'),'[^0-9]',''),'DECIMAL(32)'),'id'], //for people, use document as id to avoid duplicate registers
@@ -209,7 +209,12 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                                     postalCode = null;
                                     address = null;
                                     if (winthorRegs[people[k].id_at_origin].CODCIDADE) {
-                                        city = await PcCidadeController.integrate(winthorRegs[people[k].id_at_origin].CODCIDADE);
+                                        let cityIntegrationResult : DataSwap = await PcCidadeController.integrate(winthorRegs[people[k].id_at_origin].CODCIDADE);
+                                        if (cityIntegrationResult?.success) {
+                                            city = cityIntegrationResult.data[0] || cityIntegrationResult.data;
+                                        } else {
+                                            cityIntegrationResult?.throw();
+                                        }
                                     }
                                     if (winthorRegs[people[k].id_at_origin].CODBAIRROENT) {
                                         neighborhoodParams = {
@@ -231,6 +236,8 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                                         neighborhood = await NeighborHoods.getOrCreate(neighborhoodParams);
                                         if (neighborhood && neighborhood.success) {
                                             neighborhood = neighborhood.data;
+                                        } else {
+                                            neighborhood?.throw();
                                         }
                                     }
 
@@ -245,6 +252,8 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                                         });
                                         if (street && street.success) {
                                             street = street.data;
+                                        } else {
+                                            street?.throw();
                                         }
 
                                         postalCode = await Postal_Codes.getOrCreate({
@@ -259,6 +268,8 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                                         });
                                         if (postalCode && postalCode.success) {
                                             postalCode = postalCode.data;                                            
+                                        } else {
+                                            postalCode?.throw();
                                         }
                                     }
 
@@ -279,7 +290,7 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                                     });
                                     if (address && address.success) {
                                         address = address.data;
-                                        await People_Addresses.getOrCreate({
+                                        let peopleAddressResult = await People_Addresses.getOrCreate({
                                             raw:true,
                                             where:{
                                                 people_id : people[k].id,
@@ -287,7 +298,12 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                                                 address_type_id: address.address_type_id
                                             }
                                         });
-                                    }                                    
+                                        if (!peopleAddressResult?.success) {
+                                            peopleAddressResult?.throw();
+                                        }
+                                    } else {
+                                        address?.throw();
+                                    }                                   
                                 }
                             }
                             result.success = true;
@@ -601,11 +617,8 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                             winthorClientCNPJ: integrations[key].CGCENT,
                             transaction
                         });
-                        if (!client) {
-                            throw new Error("client is null as return of integration client");
-                        } else if (!client.success) {
-                            if (client.exception) throw client.exception
-                            else throw new Error(client.message);                            
+                        if (!client?.success) {
+                            client?.throw();
                         } else {
                             client = client.data;
                         }
