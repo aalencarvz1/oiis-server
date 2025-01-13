@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import WinthorStatesIntegrationsController from "./winthor/WinthorStatesIntegrationsController.js";
-import BaseIntegrationsController from "./BaseIntegrationsController.js";
+import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
+import PcEstadoController from "./winthor/registers/PcEstadoController.js";
 
 export default class StatesIntegrationsController extends BaseIntegrationsController {
 
@@ -16,8 +16,7 @@ export default class StatesIntegrationsController extends BaseIntegrationsContro
             let origin = req.body.origin || "";
             switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
                 case "winthor":
-                    res.data = await WinthorStatesIntegrationsController.get(req.body);
-                    res.sendResponse(200,true);
+                    PcEstadoController.get(req,res,next);
                     break; 
                 default:
                     throw new Error(`origin not expected: ${origin}`);
@@ -38,7 +37,7 @@ export default class StatesIntegrationsController extends BaseIntegrationsContro
             let origin = req.body.origin || "";
             switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
                 case "winthor":
-                    res.setDataSwap(await WinthorStatesIntegrationsController.integrateWinthorStates(req.body));
+                    res.setDataSwap(await PcEstadoController.integrateMultiples(req.body));
                     res.sendResponse();
                     break; 
                 default:

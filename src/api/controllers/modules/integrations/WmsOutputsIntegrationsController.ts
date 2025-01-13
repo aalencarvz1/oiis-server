@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import BaseIntegrationsController from "./BaseIntegrationsController.js";
+import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
 import Utils from "../../utils/Utils.js";
 import DBConnectionManager from "../../../database/DBConnectionManager.js";
 import { QueryTypes } from "sequelize";

@@ -1,7 +1,4 @@
 import Utils from "../../../utils/Utils.js";
-import BaseIntegrationsRegistersController from "../BaseIntegrationsRegistersController.js";
-import DatabaseUtils from "../../../database/DatabaseUtils.js";
-import PcEmpr from "../../../../database/models/winthor/PcEmpr.js";
 import DataSwap from "../../../data/DataSwap.js";
 import path from "path";
 import * as fs from 'node:fs';
@@ -11,14 +8,14 @@ import { fileURLToPath } from "node:url";
 import Parameter_Values from "../../../../database/models/Parameter_Values.js";
 import Parameters from "../../../../database/models/Parameters.js";
 import PcClient from "../../../../database/models/winthor/PcClient.js";
-import { Op, Sequelize } from "sequelize";
+import { Op } from "sequelize";
 import PcNfsaid from "../../../../database/models/winthor/PcNfsaid.js";
 import PcPixCobrancaDados from "../../../../database/models/winthor/PcPixCobrancaDados.js";
-import WinthorFinancialIntegrationsController from "../winthor/WinthorFinancialIntegrationsController.js";
+import PcPrestController from "../winthor/registers/PcPrestController.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export default class SicrediPixIntegrationsController extends BaseIntegrationsRegistersController{
+export default class SicrediPixIntegrationsController{
 
     private static pixKey = "+5545991334657";
     private static RECUSIVE_LIMIT = 5;
@@ -586,13 +583,13 @@ export default class SicrediPixIntegrationsController extends BaseIntegrationsRe
                         if ((pixWint?.STATUS || result.data.cobs[key].status) == 'CONCLUIDA' && (pixWint?.BAIXADOPCPRESTVIAAPI || 0) == 0) {
                             let downed : any = null;
                             if (numtrans) {
-                                downed = await WinthorFinancialIntegrationsController.closePixPayment({
+                                downed = await PcPrestController.closePixPayment({
                                     numtrans:numtrans,
                                     prest:prest,
                                     valor:Utils.toNumber(result.data.cobs[key].pix[0]?.valor?.original || result.data.cobs[key].pix[0]?.valor)
                                 });
                             } else if (numnf) {
-                                downed = await WinthorFinancialIntegrationsController.closePixPayment({
+                                downed = await PcPrestController.closePixPayment({
                                     numnf:numnf,
                                     prest:prest,
                                     valor:Utils.toNumber(result.data.cobs[key].pix[0]?.valor?.original || result.data.cobs[key].pix[0]?.valor)

@@ -1,24 +1,18 @@
-import Utils from "../../../utils/Utils.js";
-import BaseIntegrationsRegistersController from "../BaseIntegrationsRegistersController.js";
-import DatabaseUtils from "../../../database/DatabaseUtils.js";
-import PcProdut from "../../../../database/models/winthor/PcProdut.js";
-import DataSwap from "../../../data/DataSwap.js";
-import Data_Origins from "../../../../database/models/Data_Origins.js";
-import Identifier_Types from "../../../../database/models/Identifier_Types.js";
-import Ncms from "../../../../database/models/Ncms.js";
-import Items from "../../../../database/models/Items.js";
-import WinthorNcmsIntegrationsController from "./WinthorNcmsIntegrationsController.js";
+import Data_Origins from "../../../../../database/models/Data_Origins.js";
+import Identifier_Types from "../../../../../database/models/Identifier_Types.js";
+import Items from "../../../../../database/models/Items.js";
+import Ncms from "../../../../../database/models/Ncms.js";
+import PcProdut from "../../../../../database/models/winthor/PcProdut.js";
+import DataSwap from "../../../../data/DataSwap.js";
+import Utils from "../../../../utils/Utils.js";
+import PcNcmController from "./PcNcmsController.js";
+import WinthorBaseRegistersIntegrationsController from "./WinthorBaseRegistersIntegrationsController.js";
 
-export default class WinthorItemsIntegrationsController extends BaseIntegrationsRegistersController{
-
-    static async get(params?:any) : Promise<void | PcProdut[]> {
-        let queryParams = params?.queryParams || params || {};
-        queryParams = DatabaseUtils.prepareQueryParams(queryParams);
-        queryParams.raw = Utils.firstValid([queryParams.raw,true]);
-        return await PcProdut.findAll(queryParams);
+export default class PcProdutController extends WinthorBaseRegistersIntegrationsController{
+    static getTableClassModel() : any {
+        return PcProdut;
     }  
-    
-    
+
     static async integrate(params: any) : Promise<DataSwap> {
         let result = new DataSwap();
         try {
@@ -43,7 +37,7 @@ export default class WinthorItemsIntegrationsController extends BaseIntegrations
                             exception: Utils.hasValue(winthorData.CODNCMEX.split('.')[1]) ? winthorData.CODNCMEX.split('.')[1] : null
                         },
                         transaction:params.transaction,
-                        createMethod: WinthorNcmsIntegrationsController.integrate
+                        createMethod: PcNcmController.integrate
                     });
                     if (ncm.success) {
                         queryParams.ncm_id = ncm.data.id;
@@ -67,5 +61,8 @@ export default class WinthorItemsIntegrationsController extends BaseIntegrations
         }
         return result;
     }
-
+    
+    static {
+        this.configureDefaultRequestHandlers();
+    }
 }

@@ -1,23 +1,17 @@
-import Utils from "../../../utils/Utils.js";
-import BaseIntegrationsRegistersController from "../BaseIntegrationsRegistersController.js";
-import DatabaseUtils from "../../../database/DatabaseUtils.js";
-import PcNcm from "../../../../database/models/winthor/PcNcm.js";
-import DataSwap from "../../../data/DataSwap.js";
-import Parameter_Values from "../../../../database/models/Parameter_Values.js";
-import Parameters from "../../../../database/models/Parameters.js";
-import Data_Origins from "../../../../database/models/Data_Origins.js";
-import Ncms from "../../../../database/models/Ncms.js";
+import Data_Origins from "../../../../../database/models/Data_Origins.js";
+import Ncms from "../../../../../database/models/Ncms.js";
+import Parameter_Values from "../../../../../database/models/Parameter_Values.js";
+import Parameters from "../../../../../database/models/Parameters.js";
+import PcNcm from "../../../../../database/models/winthor/PcNcm.js";
+import DataSwap from "../../../../data/DataSwap.js";
+import Utils from "../../../../utils/Utils.js";
+import WinthorBaseRegistersIntegrationsController from "./WinthorBaseRegistersIntegrationsController.js";
 
-export default class WinthorNcmsIntegrationsController extends BaseIntegrationsRegistersController{
+export default class PcNcmController extends WinthorBaseRegistersIntegrationsController{
+    static getTableClassModel() : any {
+        return PcNcm;
+    }  
 
-    static async get(params?:any) : Promise<void | PcNcm[]> {
-        let queryParams = params?.queryParams || params || {};
-        queryParams = DatabaseUtils.prepareQueryParams(queryParams);
-        queryParams.raw = Utils.firstValid([queryParams.raw,true]);        
-        return await PcNcm.findAll(queryParams);
-    }    
-    
-    
     static async integrate(params: any) : Promise<DataSwap> {
         let result = new DataSwap();
         try {
@@ -55,5 +49,9 @@ export default class WinthorNcmsIntegrationsController extends BaseIntegrationsR
             result.setException(e);
         }
         return result;
+    }
+    
+    static {
+        this.configureDefaultRequestHandlers();
     }
 }

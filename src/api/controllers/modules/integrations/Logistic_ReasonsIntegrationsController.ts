@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import WinthorLogistic_ReasonsIntegrationsController from "./winthor/WinthorLogistic_ReasonsIntegrationsController.js";
-import BaseIntegrationsController from "./BaseIntegrationsController.js";
+import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
+import PcTabDevController from "./winthor/registers/PcTabDevController.js";
 
 export default class Logistic_ReasonsIntegrationsController extends BaseIntegrationsController {
 
@@ -15,8 +15,7 @@ export default class Logistic_ReasonsIntegrationsController extends BaseIntegrat
             let origin = req.body.origin || "";
             switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
                 case "winthor":
-                    res.data = await WinthorLogistic_ReasonsIntegrationsController.get(req.body);
-                    res.sendResponse(200,true);
+                    PcTabDevController.get(req,res,next);
                     break; 
                 default:
                     throw new Error(`origin not expected: ${origin}`);
@@ -37,7 +36,7 @@ export default class Logistic_ReasonsIntegrationsController extends BaseIntegrat
             let origin = req.body.origin || "";
             switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
                 case "winthor":
-                    res.setDataSwap(await WinthorLogistic_ReasonsIntegrationsController.integrateWinthorLogisticReasons(req.body));
+                    res.setDataSwap(await PcTabDevController.integrateMultiples(req.body));
                     res.sendResponse();
                     break; 
                 default:

@@ -1,23 +1,19 @@
 import { Transaction } from "sequelize";
-import Countries from "../../../../database/models/Countries.js";
-import Utils from "../../../utils/Utils.js";
-import PcPais from "../../../../database/models/winthor/PcPais.js";
-import Continents from "../../../../database/models/Continents.js";
-import Data_Origins from "../../../../database/models/Data_Origins.js";
-import DataSwap from "../../../data/DataSwap.js";
-import BaseIntegrationsRegistersController from "../BaseIntegrationsRegistersController.js";
-import DatabaseUtils from "../../../database/DatabaseUtils.js";
+import PcPais from "../../../../../database/models/winthor/PcPais.js";
+import WinthorBaseRegistersIntegrationsController from "./WinthorBaseRegistersIntegrationsController.js";
+import Countries from "../../../../../database/models/Countries.js";
+import Utils from "../../../../utils/Utils.js";
+import Continents from "../../../../../database/models/Continents.js";
+import Data_Origins from "../../../../../database/models/Data_Origins.js";
+import DataSwap from "../../../../data/DataSwap.js";
 
-export default class WinthorCountriesIntegrationsController extends BaseIntegrationsRegistersController{
+export default class PcPaisController extends WinthorBaseRegistersIntegrationsController{
+    static getTableClassModel() : any {
+        return PcPais;
+    }  
 
-    static async get(params?:any) : Promise<void | PcPais[]> {
-        let queryParams = params?.queryParams || params || {};
-        queryParams = DatabaseUtils.prepareQueryParams(queryParams);
-        queryParams.raw = Utils.firstValid([queryParams.raw,true]);
-        return await PcPais.findAll(queryParams);
-    }
-    
-    static async integrateWinthorPcPaisToCountry(winthorCountryCode?: number,transaction?: Transaction) : Promise<void | Countries> {           
+
+    static async integrate(winthorCountryCode?: number,transaction?: Transaction) : Promise<void | Countries> {           
         if (Utils.hasValue(winthorCountryCode)) {
             let pcpais = await PcPais.findOne({
                 raw : true,
@@ -77,7 +73,7 @@ export default class WinthorCountriesIntegrationsController extends BaseIntegrat
     }
 
 
-    static async integrateWinthorCountries(params: any) : Promise<DataSwap> {
+    static async integrateMultiples(params: any) : Promise<DataSwap> {
         let result = new DataSwap();
         try {
             let identifiers = params.identifiers || params || []; 
@@ -85,7 +81,7 @@ export default class WinthorCountriesIntegrationsController extends BaseIntegrat
             if (identifiers.length > 0) {
                 result.data = [];
                 for(let key in identifiers) {
-                    result.data.push(await this.integrateWinthorPcPaisToCountry(identifiers[key]));
+                    result.data.push(await this.integrate(identifiers[key]));
                 }
                 result.success = true;
             } else {
@@ -97,4 +93,8 @@ export default class WinthorCountriesIntegrationsController extends BaseIntegrat
         return result;
     }
 
+    
+    static {
+        this.configureDefaultRequestHandlers();
+    }
 }

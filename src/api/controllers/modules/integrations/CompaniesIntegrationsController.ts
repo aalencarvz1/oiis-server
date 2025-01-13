@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import EndPointsController from "../../endpoints/EndPointsController.js";
-import WinthorCompaniesIntegrationsController from "./winthor/WinthorCompaniesIntegrationsController.js";
-import BaseRegistersController from "../registers/BaseRegistersController.js";
-import BaseIntegrationsController from "./BaseIntegrationsController.js";
+import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
+import PcFilialController from "./winthor/registers/PcFilialController.js";
 
 export default class CompaniesIntegrationsController extends BaseIntegrationsController {
 
@@ -17,8 +15,7 @@ export default class CompaniesIntegrationsController extends BaseIntegrationsCon
             let origin = req.body.origin || "";
             switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
                 case "winthor":
-                    res.data = await WinthorCompaniesIntegrationsController.get(req.body);
-                    res.sendResponse(200,true);
+                    PcFilialController.get(req,res,next);
                     break; 
                 default:
                     throw new Error(`origin not expected: ${origin}`);
@@ -39,7 +36,7 @@ export default class CompaniesIntegrationsController extends BaseIntegrationsCon
             let origin = req.body.origin || "";
             switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
                 case "winthor":
-                    res.setDataSwap(await WinthorCompaniesIntegrationsController.integrateWinthorCompanies(req.body));
+                    res.setDataSwap(await PcFilialController.integrateMultiplesCompanies(req.body));
                     res.sendResponse();
                     break; 
                 default:

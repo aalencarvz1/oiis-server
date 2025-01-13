@@ -1,14 +1,59 @@
+import { NextFunction, Request, Response } from "express";
+import BaseRegistersController from "../registers/BaseRegistersController.js";
 import DataSwap from "../../data/DataSwap.js";
 import Utils from "../../utils/Utils.js";
 
-export default class BaseIntegrationsRegistersController {
-    
+export default class BaseRegistersIntegrationsController extends BaseRegistersController{
+
     /**
-     * generic method to integrate winthor register
+     * @override
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
+    static getTableClassModel() : any {
+        return null;
+    }    
+
+    /**
+     * Integration request methods handlers, by default, not can change origin information, only get     
+     * @requesthandler
+     * @override
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
+    static async put(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        res.sendResponse(517,false,"no change integration")
+    }
+
+    /**
+     * Integration request methods handlers, by default, not can change origin information, only get     
+     * @requesthandler
+     * @override
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
+    static async path(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        res.sendResponse(517,false,"no change integration")
+    }
+
+    /**
+     * Integration request methods handlers, by default, not can change origin information, only get     
+     * @requesthandler
+     * @override
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
+    static async delete(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        res.sendResponse(517,false,"no change integration")
+    }
+
+
+    /**
+     * default method to integrate registers
      * @created 2024-02-03
      * @version 1.0.0
      */
-    static async integrateRegisters(params: any) : Promise<any> {
+    static async defaultIntegrate(params: any) : Promise<any> {
         let result = new DataSwap();
         try {
             if (params.registersIds) {
@@ -60,7 +105,7 @@ export default class BaseIntegrationsRegistersController {
                                 newParams.registersIds = toCreate;
 
                                 //recurse with only not preexists registers
-                                await BaseIntegrationsRegistersController.integrateRegisters(newParams);
+                                await this.defaultIntegrate(newParams);
 
 
                                 result.data = await params.getIntegratedsByOriginIds(params.registersIds,{raw:Utils.firstValid([params?.raw,true])});
@@ -116,4 +161,5 @@ export default class BaseIntegrationsRegistersController {
         }
         return result;
     }
+    
 }

@@ -1,12 +1,12 @@
 import Utils from "../../../utils/Utils.js";
-import BaseIntegrationsRegistersController from "../BaseIntegrationsRegistersController.js";
 import DataSwap from "../../../data/DataSwap.js";
 import DBConnectionManager from "../../../../database/DBConnectionManager.js";
 import { QueryTypes } from "sequelize";
 import { Client } from "basic-ftp";
 import * as fs from 'node:fs';
+import BaseRegistersIntegrationsController from "../BaseRegistersIntegrationsController.js";
 
-export default class AuroraStockIntegrationsController extends BaseIntegrationsRegistersController{
+export default class AuroraStockIntegrationsController extends BaseRegistersIntegrationsController{
 
     
     

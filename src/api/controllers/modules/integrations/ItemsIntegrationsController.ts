@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import BaseIntegrationsController from "./BaseIntegrationsController.js";
-import WinthorItemsIntegrationsController from "./winthor/WinthorItemsIntegrationsController.js";
+import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
+import PcProdutController from "./winthor/registers/PcProdutController.js";
 
 
 
@@ -18,8 +18,7 @@ export default class ItemsIntegrationsController extends BaseIntegrationsControl
             let origin = req.body.origin || "";
             switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
                 case "winthor":
-                    res.data = await WinthorItemsIntegrationsController.get(req.body);
-                    res.sendResponse(200,true);
+                    PcProdutController.get(req,res,next);
                     break; 
                 default:
                     throw new Error(`origin not expected: ${origin}`);

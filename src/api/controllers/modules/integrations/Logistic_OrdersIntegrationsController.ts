@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import BaseIntegrationsController from "./BaseIntegrationsController.js";
-import WinthorLogistic_OrdersIntegrationsController from "./winthor/WinthorLogistic_OrdersIntegrationsController.js";
+import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
 import DataSwap from "../../data/DataSwap.js";
 import Utils from "../../utils/Utils.js";
 import DBConnectionManager from "../../../database/DBConnectionManager.js";
@@ -35,10 +34,11 @@ import Measurement_Units from "../../../database/models/Measurement_Units.js";
 import Packagings from "../../../database/models/Packagings.js";
 import Movs_Items_Stocks from "../../../database/models/Movs_Items_Stocks.js";
 import Item_Mov_Amounts from "../../../database/models/Item_Mov_Amounts.js";
-import WinthorItemsIntegrationsController from "./winthor/WinthorItemsIntegrationsController.js";
 import AuroraItemsIntegrationsController from "./aurora/AuroraItemsIntegrationsController.js";
-import WinthorClientsIntegrationsController from "./winthor/WinthorClientsIntegrationsController.js";
 import EpClientsIntegrationsController from "./ep/EpClientsIntegrationsController.js";
+import PcClientController from "./winthor/registers/PcClientController.js";
+import PcProdutController from "./winthor/registers/PcProdutController.js";
+import PcCarregController from "./winthor/registers/PcCarregController.js";
 
 
 export default class Logistic_OrdersIntegrationsController extends BaseIntegrationsController {
@@ -183,7 +183,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                 data_origin_id: mov.data_origin_id,
                 id_at_origin: movItem.item_id,   
             },
-            createMethod: mov.data_origin_id == Data_Origins.AURORA ? AuroraItemsIntegrationsController.integrate : WinthorItemsIntegrationsController.integrate,
+            createMethod: mov.data_origin_id == Data_Origins.AURORA ? AuroraItemsIntegrationsController.integrate : PcProdutController.integrate,
             transaction
         });
         if (item.success) item = item.data
@@ -455,7 +455,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                 });
 
                                 if (!Utils.hasValue(mov)) {
-                                    let client : any = await WinthorClientsIntegrationsController.integrateWinthorPcClientToClient({
+                                    let client : any = await PcClientController.integrate({
                                         winthorClientId:cargos[key].invoices[kn].client_id_at_origin,
                                         transaction
                                     });
@@ -757,7 +757,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                     try {
                         if (idsLogOrders.length > 0 && Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true && Utils.toBool(await Parameter_Values.get(Parameters.LOGISTIC_INTEGRATE_AUTOMATIC_CLOSE_BOX_DRIVER)) == true) {
                             // not await
-                            WinthorLogistic_OrdersIntegrationsController.integrateBoxClosing(idsLogOrders);
+                            PcCarregController.integrateBoxClosing(idsLogOrders);
                         }   
                     } catch (ex) {
                         Utils.logError(ex); //not re-send data to user, separated 'thred'
@@ -782,7 +782,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
             let origin = req.body.origin || "";
             switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
                 case "winthor":
-                    res.data = await WinthorLogistic_OrdersIntegrationsController.getWithWinthorData(req.body);
+                    res.data = await PcCarregController.getWithWinthorData(req.body);
                     res.sendResponse(200,true);
                     break; 
                 default:
@@ -807,7 +807,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
             params.user = req.user;
             switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
                 case "winthor":
-                    res.setDataSwap(await WinthorLogistic_OrdersIntegrationsController.getCargosDataForDelivery(params));
+                    res.setDataSwap(await PcCarregController.getCargosDataForDelivery(params));
                     break; 
                 default:
                     throw new Error(`origin not expected: ${origin}`);
@@ -845,7 +845,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
             let origin = req.body.origin || "";
             switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
                 case "winthor":
-                    res.data = await WinthorLogistic_OrdersIntegrationsController.integrateBoxClosing(req.body.ids);
+                    res.data = await PcCarregController.integrateBoxClosing(req.body.ids);
                     res.sendResponse(200,true);
                     break; 
                 default:

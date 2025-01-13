@@ -1,7 +1,5 @@
 import Utils from "../../../utils/Utils.js";
-import BaseIntegrationsRegistersController from "../BaseIntegrationsRegistersController.js";
 import DatabaseUtils from "../../../database/DatabaseUtils.js";
-import PcProdut from "../../../../database/models/winthor/PcProdut.js";
 import DataSwap from "../../../data/DataSwap.js";
 import Data_Origins from "../../../../database/models/Data_Origins.js";
 import Identifier_Types from "../../../../database/models/Identifier_Types.js";
@@ -9,13 +7,14 @@ import Ncms from "../../../../database/models/Ncms.js";
 import Items from "../../../../database/models/Items.js";
 import DBConnectionManager from "../../../../database/DBConnectionManager.js";
 import { QueryTypes } from "sequelize";
-import WinthorNcmsIntegrationsController from "../winthor/WinthorNcmsIntegrationsController.js";
 import EpProdutos from "../../../../database/models/ep/EpProdutos.js";
+import BaseRegistersIntegrationsController from "../BaseRegistersIntegrationsController.js";
+import PcNcmController from "../winthor/registers/PcNcmsController.js";
 
 
-export default class AuroraItemsIntegrationsController extends BaseIntegrationsRegistersController{
+export default class AuroraItemsIntegrationsController extends BaseRegistersIntegrationsController{
 
-    static async get(params?:any) : Promise<void | EpProdutos[]> {
+    static async _get(params?:any) : Promise<void | EpProdutos[]> {
         let queryParams = params?.queryParams || params || {};
         queryParams = DatabaseUtils.prepareQueryParams(queryParams);
         queryParams.raw = Utils.firstValid([queryParams.raw,true]);
@@ -68,7 +67,7 @@ export default class AuroraItemsIntegrationsController extends BaseIntegrationsR
                         ncm: 1
                         },
                         transaction:params.transaction,
-                        createMethod: WinthorNcmsIntegrationsController.integrate
+                        createMethod: PcNcmController.integrate
                     });
                     if (ncm.success) {
                         queryParams.ncm_id = ncm.data.id;

@@ -2,28 +2,25 @@ import { Op, Sequelize } from "sequelize";
 import DataSwap from "../../../data/DataSwap.js";
 import Data_Origins from "../../../../database/models/Data_Origins.js";
 import Utils from "../../../utils/Utils.js";
-import BaseIntegrationsRegistersController from "../BaseIntegrationsRegistersController.js";
+import BaseRegistersIntegrationsController from "../BaseRegistersIntegrationsController.js";
 import _ from "lodash";
 import Clients from "../../../../database/models/Clients.js";
 import Relationships from "../../../../database/models/Relationships.js";
 import Record_Status from "../../../../database/models/Record_Status.js";
 import Relationship_Types from "../../../../database/models/Relationship_Types.js";
 import Modules from "../../../../database/models/Modules.js";
-import DatabaseUtils from "../../../database/DatabaseUtils.js";
 import EpClientes from "../../../../database/models/ep/EpClientes.js";
 import EpPessoas from "../../../../database/models/ep/EpPessoas.js";
 import Identifier_Types from "../../../../database/models/Identifier_Types.js";
 import People from "../../../../database/models/People.js";
 import EpPeopleIntegrationsController from "./EpPeopleIntegrationsController.js";
 
-export default class EpClientsIntegrationsController extends BaseIntegrationsRegistersController{
+export default class EpClientsIntegrationsController extends BaseRegistersIntegrationsController{
 
-    static async get(params?:any) : Promise<void | EpClientes[]> {
-        let queryParams = params?.queryParams || params || {};
-        queryParams = DatabaseUtils.prepareQueryParams(queryParams);
-        queryParams.raw = Utils.firstValid([queryParams.raw,true]);
-        return await EpClientes.findAll(queryParams);
+    static getTableClassModel() {
+        return EpClientes;
     }
+
 
     static async getClientsByIdentifiersDocs(identifiersDocs?: any, options?: any) : Promise<any> {
         let result = null;
@@ -155,7 +152,7 @@ export default class EpClientsIntegrationsController extends BaseIntegrationsReg
                             }]);
                         }
                     }
-                    result = await this.integrateRegisters(interateRegsParams);
+                    result = await this.defaultIntegrate(interateRegsParams);
 
                     //relationships
                     if (result.success) {
