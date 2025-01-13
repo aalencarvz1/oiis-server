@@ -1,3 +1,4 @@
+import { NextFunction, Request, Response } from "express";
 import Data_Origins from "../../../../../database/models/Data_Origins.js";
 import Identifier_Types from "../../../../../database/models/Identifier_Types.js";
 import Items from "../../../../../database/models/Items.js";
@@ -60,6 +61,15 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
             result.setException(e);
         }
         return result;
+    }
+
+    static async getProductData(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        try {
+            
+        } catch (e: any) {
+            res.setException(e);
+            res.sendResponse(517,false);
+        }
     }
     
     static {
