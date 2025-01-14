@@ -41,14 +41,14 @@ export default class SicrediPixIntegrationsController{
     private static apiPixSicrediCertPhrase = " aAazZz$ Xy|Z? JUMBO alimENTOS_ _  * $ lkjsaLkLKJLKJkjkjJKJKJkjkjk";
 
     private static httpsAgent = new https.Agent({
-        cert: this.apiPixSicrediCertificate,
-        key: this.apiPixSicredikey,
-        passphrase: this.apiPixSicrediCertPhrase
+        cert: SicrediPixIntegrationsController.apiPixSicrediCertificate,
+        key: SicrediPixIntegrationsController.apiPixSicredikey,
+        passphrase: SicrediPixIntegrationsController.apiPixSicrediCertPhrase
     });
 
     private static apiPixSicrediBasePath = "https://api-pix.sicredi.com.br/";  
     private static apiPixSicrediApiBasePath = "api/v2/";   
-    private static apiPisSicrediAddress = this.apiPixSicrediBasePath + this.apiPixSicrediApiBasePath;
+    private static apiPisSicrediAddress = SicrediPixIntegrationsController.apiPixSicrediBasePath + SicrediPixIntegrationsController.apiPixSicrediApiBasePath;
 
     static DEFAULT_RESPONSE_SUCCESS_STATUS = [200,201,202,203,204,205];
 
@@ -64,7 +64,7 @@ export default class SicrediPixIntegrationsController{
         let log = null;
         try {
             resultObject = resultObject || new DataSwap();
-            successesCodes = successesCodes || this.DEFAULT_RESPONSE_SUCCESS_STATUS;
+            successesCodes = successesCodes || SicrediPixIntegrationsController.DEFAULT_RESPONSE_SUCCESS_STATUS;
             dataJsonExpected = dataJsonExpected || false;
             resultObject.status = apiRequestResponse.status;
             let responseText = await apiRequestResponse.text();
@@ -101,7 +101,7 @@ export default class SicrediPixIntegrationsController{
                     if (responseJson?.status == 403 && responseJson?.detail?.indexOf('expired') > -1 && caller) {
                         callerParams[1] = callerParams[1] || true; //new token
                         callerParams[2] = callerParams[2] || 0; //recursive count
-                        if (callerParams[2] > this.RECUSIVE_LIMIT) throw new Error("recursive limit extrapoled");
+                        if (callerParams[2] > SicrediPixIntegrationsController.RECUSIVE_LIMIT) throw new Error("recursive limit extrapoled");
                         return await caller(...callerParams);
                     } else {
                         resultObject.data = responseJson;
@@ -126,26 +126,26 @@ export default class SicrediPixIntegrationsController{
         let result = new DataSwap();
 
         try {
-            if (!this.apiPixSicrediToken || newToken) {
+            if (!SicrediPixIntegrationsController.apiPixSicrediToken || newToken) {
                 let params = new URLSearchParams();                
                 params.append('grant_type','client_credentials');
-                params.append('scope',this.apiPixSicrediScope);
+                params.append('scope',SicrediPixIntegrationsController.apiPixSicrediScope);
                 let options = {
                     method: "POST",
                     body: params,
                     headers:{
                         "Accept":"*/*",
-                        "Authorization": this.apiPixSicrediLoginAutorization,
+                        "Authorization": SicrediPixIntegrationsController.apiPixSicrediLoginAutorization,
                         "Content-Type":"application/x-www-form-urlencoded"
                     },
-                    agent: this.httpsAgent
+                    agent: SicrediPixIntegrationsController.httpsAgent
                 }
-                let apiPixRequestResponse = await fetch(this.apiPixSicrediBasePath + "/oauth/token",options);
-                await this.handleApiRequestResult(apiPixRequestResponse,result,null,true);
+                let apiPixRequestResponse = await fetch(SicrediPixIntegrationsController.apiPixSicrediBasePath + "/oauth/token",options);
+                await SicrediPixIntegrationsController.handleApiRequestResult(apiPixRequestResponse,result,null,true);
                 if (!result?.data?.access_token) throw new Error("api response not contain access_token");
-                this.apiPixSicrediToken = result?.data?.access_token;
-            } else if (this.apiPixSicrediToken) {
-                result.data = {access_token: this.apiPixSicrediToken};
+                SicrediPixIntegrationsController.apiPixSicrediToken = result?.data?.access_token;
+            } else if (SicrediPixIntegrationsController.apiPixSicrediToken) {
+                result.data = {access_token: SicrediPixIntegrationsController.apiPixSicrediToken};
                 result.success = true;
             }
         } catch (e: any) {
@@ -157,7 +157,7 @@ export default class SicrediPixIntegrationsController{
     static getDefaultApiRequestHeaders(){
         return {
             "Accept":"*/*",
-            "Authorization": `Bearer ${this.apiPixSicrediToken}`,
+            "Authorization": `Bearer ${SicrediPixIntegrationsController.apiPixSicrediToken}`,
             "Content-Type":"application/json"
         };
     }
@@ -166,8 +166,8 @@ export default class SicrediPixIntegrationsController{
         params = params || {};
         let result : any = {
             method: params?.method || "GET",
-            headers: params?.headers || this.getDefaultApiRequestHeaders(),
-            agent: this.httpsAgent
+            headers: params?.headers || SicrediPixIntegrationsController.getDefaultApiRequestHeaders(),
+            agent: SicrediPixIntegrationsController.httpsAgent
         }
         if (params?.body) {
             if (typeof params.body == 'string') {
@@ -206,12 +206,12 @@ export default class SicrediPixIntegrationsController{
     static async get(p_PixReqParams: any,getNewApiPixToken?: boolean,recursiveCount?: number) : Promise<DataSwap> {
         let result = new DataSwap();
         try {
-            let logged = await this.login(getNewApiPixToken || false);
+            let logged = await SicrediPixIntegrationsController.login(getNewApiPixToken || false);
             if (logged) {
                 p_PixReqParams = p_PixReqParams || {};
                 let status = p_PixReqParams?.status;
-                let inicio = p_PixReqParams?.init || p_PixReqParams?.inicio || this.getDefaultInitDateTiime();
-                let fim = p_PixReqParams?.end || p_PixReqParams?.fim || this.getDefaultEndDateTiime();                
+                let inicio = p_PixReqParams?.init || p_PixReqParams?.inicio || SicrediPixIntegrationsController.getDefaultInitDateTiime();
+                let fim = p_PixReqParams?.end || p_PixReqParams?.fim || SicrediPixIntegrationsController.getDefaultEndDateTiime();                
                 if (inicio.length == 10) inicio += "T00:00:00Z";
                 if (fim.length == 10) fim += "T23:59:59Z";
 
@@ -224,16 +224,16 @@ export default class SicrediPixIntegrationsController{
                     pixParams.status = status;
                 }
                 
-                let options = this.getDefaultApiRequestOptions();
+                let options = SicrediPixIntegrationsController.getDefaultApiRequestOptions();
                 let url = null;
                 if (p_PixReqParams.txid) {
-                    url = new URL(this.apiPisSicrediAddress + `cob/${p_PixReqParams.txid}`);
+                    url = new URL(SicrediPixIntegrationsController.apiPisSicrediAddress + `cob/${p_PixReqParams.txid}`);
                 } else {
-                    url = new URL(this.apiPisSicrediAddress + "cob");
+                    url = new URL(SicrediPixIntegrationsController.apiPisSicrediAddress + "cob");
                 }
                 url.search = new URLSearchParams(pixParams).toString();
                 let apiPixRequestResponse = await fetch(url,options);
-                await this.handleApiRequestResult(apiPixRequestResponse,result,null,true,this.get,p_PixReqParams);                
+                await SicrediPixIntegrationsController.handleApiRequestResult(apiPixRequestResponse,result,null,true,SicrediPixIntegrationsController.get,p_PixReqParams);                
             } else {
                 throw new Error("not logged on api pix sicredi");
             }
@@ -247,7 +247,7 @@ export default class SicrediPixIntegrationsController{
     static async createPix(p_PixReqParams: any ,getNewApiPixToken?: boolean,recursiveCount?: number) : Promise<DataSwap> {
         let result = new DataSwap();
         try {
-            let logged = await this.login(getNewApiPixToken || false);
+            let logged = await SicrediPixIntegrationsController.login(getNewApiPixToken || false);
             if (logged) {
                 p_PixReqParams = p_PixReqParams || {};
                 if (!p_PixReqParams || !p_PixReqParams?.valor?.original) throw new Error("missing data");
@@ -255,11 +255,11 @@ export default class SicrediPixIntegrationsController{
                 if (!p_PixReqParams.valor.original || p_PixReqParams.valor.original < 0) throw new Error("value invalid");
 
                 p_PixReqParams.calendario = p_PixReqParams?.calendario || {expiracao:864000};
-                p_PixReqParams.chave = p_PixReqParams?.chave || this.pixKey;
+                p_PixReqParams.chave = p_PixReqParams?.chave || SicrediPixIntegrationsController.pixKey;
             
-                let options = this.getDefaultApiRequestOptions({method:"POST",body:p_PixReqParams});
-                let apiPixRequestResponse = await fetch(this.apiPisSicrediAddress + "cob",options);
-                await this.handleApiRequestResult(apiPixRequestResponse,result,null,true,this.createPix,p_PixReqParams);
+                let options = SicrediPixIntegrationsController.getDefaultApiRequestOptions({method:"POST",body:p_PixReqParams});
+                let apiPixRequestResponse = await fetch(SicrediPixIntegrationsController.apiPisSicrediAddress + "cob",options);
+                await SicrediPixIntegrationsController.handleApiRequestResult(apiPixRequestResponse,result,null,true,SicrediPixIntegrationsController.createPix,p_PixReqParams);
             } else {
                 throw new Error("not logged on api pix sicredi");
             } 
@@ -272,19 +272,19 @@ export default class SicrediPixIntegrationsController{
     static async deletePix(p_PixReqParams?: any,getNewApiPixToken?: boolean,recursiveCount?: number) : Promise<DataSwap>{
         let result = new DataSwap();
         try {
-            let logged = await this.login(getNewApiPixToken || false);
+            let logged = await SicrediPixIntegrationsController.login(getNewApiPixToken || false);
             if (logged) {
                 p_PixReqParams = p_PixReqParams || {};
                 if (!p_PixReqParams || !p_PixReqParams?.txid) throw new Error("missing data");
-                let url = new URL(`${this.apiPisSicrediAddress}cob/${p_PixReqParams.txid}`);
+                let url = new URL(`${SicrediPixIntegrationsController.apiPisSicrediAddress}cob/${p_PixReqParams.txid}`);
                 p_PixReqParams.status = 'REMOVIDA_PELO_USUARIO_RECEBEDOR';
 
                 //not allowed update txid on bacen pix api
                 p_PixReqParams.txid = null;
                 delete p_PixReqParams.txid;
-                let options = this.getDefaultApiRequestOptions({method:"PATCH",body:p_PixReqParams});                
+                let options = SicrediPixIntegrationsController.getDefaultApiRequestOptions({method:"PATCH",body:p_PixReqParams});                
                 let apiPixRequestResponse = await fetch(url,options);
-                await this.handleApiRequestResult(apiPixRequestResponse,result,null,true,this.deletePix,p_PixReqParams);                
+                await SicrediPixIntegrationsController.handleApiRequestResult(apiPixRequestResponse,result,null,true,SicrediPixIntegrationsController.deletePix,p_PixReqParams);                
             } else {
                 throw new Error("not logged on api pix sicredi");
             }        
@@ -307,7 +307,7 @@ export default class SicrediPixIntegrationsController{
                 valor: {
                     original: Utils.toNumber(params?.value)
                 },
-                chave: this.pixKey
+                chave: SicrediPixIntegrationsController.pixKey
             };
 
             if (!pixParams.valor.original || pixParams.valor.original < 0) throw new Error("value invalid");
@@ -407,7 +407,7 @@ export default class SicrediPixIntegrationsController{
                 });
             }
 
-            let responseJson : any = await this.createPix(pixParams);                      
+            let responseJson : any = await SicrediPixIntegrationsController.createPix(pixParams);                      
             if (!responseJson) throw new Error("responseJson is null");
             result.data = responseJson?.data || responseJson;
             if (result.data?.status != 'ATIVA' && result.data?.status > 400 && result.data?.status < 499) {
@@ -485,7 +485,7 @@ export default class SicrediPixIntegrationsController{
             }
 
             for(let key in txIdentifiers) {
-                let responseJson = await this.deletePix({txid:txIdentifiers[key]});                
+                let responseJson = await SicrediPixIntegrationsController.deletePix({txid:txIdentifiers[key]});                
                 if (!responseJson) throw new Error("responseJson is null");
                 if (responseJson?.data?.status > 400 && responseJson?.data?.status < 499 ) {
                     throw new Error((responseJson?.data?.title || '')+':' + (responseJson?.data?.detail || '') + '('+responseJson?.data?.violacoes.reduce((prev?:any,current?:any)=>prev += current?.razao + '['+current?.propriedade+']')+')');
@@ -543,9 +543,9 @@ export default class SicrediPixIntegrationsController{
             inicio.setSeconds(0);
             inicio.setMilliseconds(0);
             inicio = inicio.toISOString();
-            let result = await this.get({
+            let result = await SicrediPixIntegrationsController.get({
                 init:inicio,
-                end: this.getDefaultEndDateTiime(),
+                end: SicrediPixIntegrationsController.getDefaultEndDateTiime(),
                 status:'CONCLUIDA'
             });
             if (result?.success) {
@@ -562,23 +562,23 @@ export default class SicrediPixIntegrationsController{
                         });
                         if (pixWint) {
                             if (Utils.hasValue(pixWint.NUMTRANSVENDA)) {
-                                numtrans = pixWint.NUMTRANSVENDA || this.getFieldFromInfo(result.data.cobs[key],'numtrans');
-                                prest = pixWint.PREST || this.getFieldFromInfo(result.data.cobs[key],'prest');
+                                numtrans = pixWint.NUMTRANSVENDA || SicrediPixIntegrationsController.getFieldFromInfo(result.data.cobs[key],'numtrans');
+                                prest = pixWint.PREST || SicrediPixIntegrationsController.getFieldFromInfo(result.data.cobs[key],'prest');
                             } else {
-                                numtrans = this.getFieldFromInfo(result.data.cobs[key],'numtrans');
-                                prest = this.getFieldFromInfo(result.data.cobs[key],'prest');
+                                numtrans = SicrediPixIntegrationsController.getFieldFromInfo(result.data.cobs[key],'numtrans');
+                                prest = SicrediPixIntegrationsController.getFieldFromInfo(result.data.cobs[key],'prest');
                             }
                             if (pixWint.STATUS != result.data.cobs[key].status) { 
                                 pixWint.STATUS = result.data.cobs[key].status;                            
                                 await pixWint.save();
                             }
                         } else {
-                            numtrans = this.getFieldFromInfo(result.data.cobs[key],'numtrans');
-                            prest = this.getFieldFromInfo(result.data.cobs[key],'prest');
+                            numtrans = SicrediPixIntegrationsController.getFieldFromInfo(result.data.cobs[key],'numtrans');
+                            prest = SicrediPixIntegrationsController.getFieldFromInfo(result.data.cobs[key],'prest');
                         }
 
                         if (!numtrans) {
-                            numnf = this.getFieldFromInfo(result.data.cobs[key],'numnf');
+                            numnf = SicrediPixIntegrationsController.getFieldFromInfo(result.data.cobs[key],'numnf');
                         }
                         if ((pixWint?.STATUS || result.data.cobs[key].status) == 'CONCLUIDA' && (pixWint?.BAIXADOPCPRESTVIAAPI || 0) == 0) {
                             let downed : any = null;
