@@ -31,6 +31,7 @@ export default class UsersController extends BaseRegistersController {
             raw:true,
             model: People,
             attributes:[
+                Sequelize.literal(`${People.tableName}.name as name`),
                 Sequelize.literal(`${People.tableName}.identifier_doc as identifier_doc`)
             ],
             on: Sequelize.where(Sequelize.col(`${People.tableName}.id`),Sequelize.col(`${Users.tableName}.people_id`))
