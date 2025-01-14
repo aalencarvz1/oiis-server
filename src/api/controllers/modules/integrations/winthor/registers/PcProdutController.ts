@@ -8,6 +8,8 @@ import DataSwap from "../../../../data/DataSwap.js";
 import Utils from "../../../../utils/Utils.js";
 import PcNcmController from "./PcNcmsController.js";
 import WinthorBaseRegistersIntegrationsController from "./WinthorBaseRegistersIntegrationsController.js";
+import DBConnectionManager from "../../../../../database/DBConnectionManager.js";
+import { QueryTypes } from "sequelize";
 
 export default class PcProdutController extends WinthorBaseRegistersIntegrationsController{
     static getTableClassModel() : any {
@@ -63,16 +65,76 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
         return result;
     }
 
-    static async getProductData(req: Request, res: Response, next: NextFunction) : Promise<void> {
+    static async get_product_data(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        
+        type Filter = {
+            campo: String;
+            operador: any;
+            valor: String | number | null;
+        }
+
+        let where : Filter[] = req.body.filters
+        console.log(where)
         try {
+            let query =`
+            SELECT
+                CODPROD,
+                DESCRICAO,
+                EMBALAGEM,
+                UNIDADE,
+                PESOLIQ,
+                PESOBRUTO,
+                CODEPTO,
+                TEMREPOS,
+                QTUNIT,
+                DTCADASTRO,
+                DTEXCLUSAO,
+                DTULTALTCOM,
+                PRAZOVAL,
+                REVENDA,
+                QTUNITCX,
+                IMPORTADO,
+                CODAUXILIAR
+            FROM
+                PCPRODUT
+            WHERE
+             `
+            const conditions = where.map(f => {
+                const { campo, operador, valor } = f;
+
+                if (valor === null || valor === undefined) {
+                    return `(${campo} IS NULL)`;
+                }
+                if (campo === 'DTCADASTRO' || campo === 'DTEXCLUSAO' || campo === 'DTULTALTCOM') {
+                    return `${campo} = TO_DATE('${valor}', 'dd/mm/yyyy')`; // Para datas
+                }
+                if (typeof valor === 'number') {
+                    return `(${campo} ${operador || '='} ${valor})`;
+                }
+                if (typeof valor === 'string') {
+                    return `(${campo} ${operador || 'LIKE'} '${valor}')`;
+                }
+                return `(${campo} ${operador || '='} '${valor}')`;
+            });
+
+            query += conditions.join(' AND ');
             
+            
+           let result = await DBConnectionManager.getWinthorDBConnection()?.query(query, {type: QueryTypes.SELECT})
+            if(result){
+                res.status(200).json(result)
+            }else{
+                res.status(404).json({message: 'Nenhum registro encontrado.'})
+            }
         } catch (e: any) {
             res.setException(e);
             res.sendResponse(517,false);
         }
     }
+
+    
     
     static {
-        this.configureDefaultRequestHandlers();
+        this.configureDefaultRequestHandlers([this.get_product_data]);
     }
 }
