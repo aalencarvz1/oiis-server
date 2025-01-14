@@ -25,11 +25,104 @@ import People_Addresses from "../../../../../database/models/People_Addresses.js
 import PcCidadeController from "./PcCidadeController.js";
 import _ from "lodash";
 import Clients from "../../../../../database/models/Clients.js";
+import { NextFunction, Request, Response } from "express";
+import DatabaseUtils from "../../../../database/DatabaseUtils.js";
 
 export default class PcClientController extends WinthorBaseRegistersIntegrationsController{
     static getTableClassModel() : any {
         return PcClient;
     }
+
+
+
+    /**
+     * default RequestHandler method to get registers of table model controller
+     * @requesthandler
+     * @override
+     * @created 2025-01-14
+     * @version 1.0.0
+     */
+    static async get(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        try {
+            let bodyParams = req.body;
+            let queryParams = req.body.queryParams || req.body;
+            queryParams = DatabaseUtils.prepareQueryParams(queryParams);
+            queryParams.raw = true;
+
+            queryParams.where = queryParams.where || {};
+            if (Utils.hasValue(bodyParams.id)) {
+                queryParams.where.CODCLI = bodyParams.id
+            }
+            if (Utils.hasValue(bodyParams.filial)) {
+                queryParams.where.CODFILIALNF = bodyParams.filial
+            }
+            if (Utils.hasValue(bodyParams.seller)) {
+                queryParams.where.CODUSUR1 = bodyParams.seller
+            }
+            if (Utils.hasValue(bodyParams.state)) {
+                queryParams.where.ESTENT = bodyParams.state
+            }
+            if (Utils.hasValue(bodyParams.city)) {                
+                queryParams.where.CODCIDADE = bodyParams.city
+            }            
+            if (Utils.hasValue(bodyParams.identifier)) {
+                bodyParams.identifier = Utils.toArray(bodyParams.identifier);
+                queryParams.where[Op.and] = queryParams.where[Op.and] || [];
+                queryParams.where[Op.and].push(Sequelize.where(
+                    Sequelize.fn(
+                        'regexp_replace',
+                        Sequelize.col("CGCENT"),
+                        "^[0-9]",
+                        ""
+                    ),
+                    "in",
+                    bodyParams.identifier.map((el: any)=>el.toString().replace(/[^0-9]/g,''))
+                ))
+            }
+            if (Utils.hasValue(bodyParams.name)) {
+                bodyParams.name = Utils.toArray(bodyParams.name);
+                queryParams.where[Op.and] = queryParams.where[Op.and] || [];
+                let or = [];
+                or.push(Sequelize.where(
+                    Sequelize.col("CLIENTE"),
+                    "like",
+                    bodyParams.name.map((el: any)=>el.toString())
+                ));
+                queryParams.where[Op.and].push({
+                    [Op.or]: or
+                })
+            }
+            if (Utils.hasValue(bodyParams.fantasy)) {
+                bodyParams.fantasy = Utils.toArray(bodyParams.fantasy);
+                queryParams.where[Op.and] = queryParams.where[Op.and] || [];
+                let or = [];
+                or.push(Sequelize.where(
+                    Sequelize.col("FANTASIA"),
+                    "like",
+                    bodyParams.fantasy.map((el: any)=>el.toString())
+                ));
+                queryParams.where[Op.and].push({
+                    [Op.or]: or
+                })
+            }
+            if (Utils.toBool(Utils.firstValid([bodyParams.onlyWithCoordinates,false]))) {
+                queryParams.where[Op.and] = queryParams.where[Op.and] || [];
+                queryParams.where.LATITUDE = {[Op.not]: null}
+            }
+            if (Utils.hasValue(bodyParams.supervisor)) {
+                bodyParams.supervisor = Utils.toArray(bodyParams.supervisor);
+                queryParams.where[Op.and] = queryParams.where[Op.and] || [];
+                queryParams.where[Op.and].push(Sequelize.fn('exists',Sequelize.literal(`select 1 from jumbo.pcsuperv s join jumbo.pcusuari u on u.codsupervisor = s.codsupervisor where u.codusur in("PCCLIENT"."CODUSUR1","PCCLIENT"."CODUSUR2") and s.codsupervisor in (${bodyParams.supervisor.join(',')})`)))
+            }
+
+            res.data = await this.getTableClassModel().findAll(queryParams);
+            res.sendResponse(200,true);
+        } catch (e: any) {
+            res.setException(e);
+            res.sendResponse(517,false);
+        }
+    }
+
 
     static async getPcClientByIdentifiersDocs(identifiersDocs: any, options: any) : Promise<any> {
         let result = null;
