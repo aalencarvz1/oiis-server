@@ -593,7 +593,14 @@ export default class BaseTableModel extends Model {
         }
     }
 
-    static async getOrCreate(params: any) {
+    /**
+     * get record according where property or create according where and values properties if not exists
+     * @created 2024-02-01
+     * @version 2.0.0
+     * @updates
+     *  -2025-01-14 - @version 2.0.0 - implemented unique constraint checks and preventions of concurrent process
+     */
+    static async getOrCreate(params: any) : Promise<DataSwap> {
         let result = new DataSwap();
         try {
             let queryParams = params.queryParams || params || {};
@@ -601,20 +608,53 @@ export default class BaseTableModel extends Model {
             queryParams.limit = queryParams.limit || 1;
             queryParams.transaction = queryParams.transaction || params.transaction;
             result.data = await this.findOne(queryParams);
-            if (!result.data) {
-                if (params.createMethod)  {
-                    let paramsToCreateMethod = {...queryParams.where,...(queryParams.values||{})};
-                    if (params.transaction) {
-                        paramsToCreateMethod.transaction = params.transaction;
-                    } 
-                    result = await params.createMethod.bind(this)(paramsToCreateMethod);
-                } else {
-                    result.data = await this.create({...queryParams.where,...(queryParams.values||{})},{transaction:params.transaction});
-                    if (result.data) {
-                        if (queryParams.raw)
-                            result.data = result.data.dataValues;
-                        result.success = true;
-                    } else throw new Error(`error on create register with ${JSON.parse({...queryParams.where,...(queryParams.values||{})})}`);
+
+            //check if register eixsts out of current transaction
+            if (!Utils.hasValue(result.data) && Utils.hasValue(queryParams.transaction)) {
+                let transactionTemp = queryParams.transaction;
+                queryParams.transaction = null;
+                delete queryParams.transaction;
+                result.data = await this.findOne(queryParams);
+                queryParams.transaction = transactionTemp; //restore transaction
+            }
+
+            //if record not exists, then create
+            if (!Utils.hasValue(result.data)) {
+                try {
+                    if (params.createMethod)  {
+                        let paramsToCreateMethod = {...queryParams.where,...(queryParams.values||{})};
+                        if (params.transaction) {
+                            paramsToCreateMethod.transaction = params.transaction;
+                        } 
+                        result = await params.createMethod.bind(this)(paramsToCreateMethod);
+                    } else {
+                        result.data = await this.create({...queryParams.where,...(queryParams.values||{})},{transaction:params.transaction});
+                        if (result.data) {
+                            if (queryParams.raw)
+                                result.data = result.data.dataValues;
+                            result.success = true;
+                        } else throw new Error(`error on create register with ${JSON.parse({...queryParams.where,...(queryParams.values||{})})}`);
+                    }
+                } catch (createError: any) {
+
+                    /**
+                     * Recursive(only 1)
+                     * prevent unique violated when record is created by other concurrent process
+                     * @created 2025-01-14
+                     * */
+                    if (createError.name?.trim().toLowerCase().indexOf('unique') > -1
+                        || createError.constructor?.name?.trim().toLowerCase().indexOf('unique') > -1
+                    ) {
+                        if (!params[`${this.name}_getOrCreate_inRecursion`]) {
+                            Utils.log(this.name, 'getOrCreate','recursing by unique constraint violated', params.where);
+                            params[`${this.name}_getOrCreate_inRecursion`] = true; //only 1 recursive call
+                            result = await this.getOrCreate(params);
+                        } else {
+                            throw createError;
+                        }
+                    }
+
+
                 }
             } else {
                 result.success = true;
