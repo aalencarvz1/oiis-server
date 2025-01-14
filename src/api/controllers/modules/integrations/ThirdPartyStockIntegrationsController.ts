@@ -10,15 +10,6 @@ import Produtos_Armazenados_TerceirosController from "./winthor/registers/Produt
 export default class ThirdPartyStockIntegrationsController extends BaseIntegrationsController {
 
     /**
-     * @override
-     * @created 2025-01-04
-     * @version 1.0.0
-     */
-    static getTableClassModel() : any {
-        return Produtos_Armazenados_Terceiros;
-    } 
-
-    /**
      * @requesthandler
      * @override
      * @created 2025-01-04
@@ -41,36 +32,6 @@ export default class ThirdPartyStockIntegrationsController extends BaseIntegrati
         }
     }
 
-    /**
-     * @requesthandler
-     * @override
-     * @created 2025-01-04
-     * @version 1.0.0
-     */
-    static async put(req: Request, res: Response, next: NextFunction) : Promise<void> {
-        BaseRegistersController.put.bind(this)(req,res,next);
-    }
-
-    /**
-     * @requesthandler
-     * @override
-     * @created 2025-01-04
-     * @version 1.0.0
-     */
-    static async patch(req: Request, res: Response, next: NextFunction) : Promise<void> {
-        BaseRegistersController.patch.bind(this)(req,res,next);
-    }
-
-    /**
-     * @requesthandler
-     * @override
-     * @created 2025-01-04
-     * @version 1.0.0
-     */
-    static async delete(req: Request, res: Response, next: NextFunction) : Promise<void> {
-        console.log("okxx1'");
-        BaseRegistersController.delete.bind(this)(req,res,next);
-    }
     
     static {
         this.configureDefaultRequestHandlers();
