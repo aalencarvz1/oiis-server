@@ -491,14 +491,19 @@ export default class PcCarregController extends WinthorBaseRegistersIntegrations
         let result = new DataSwap();
         try {
             let identifiers = params.identifiers || [];
-            if (typeof identifiers === 'string') identifiers = identifiers.split(',');
+            identifiers = Utils.toArray(identifiers);            
             if (identifiers.length > 0) {
+                for(let k in identifiers) {
+                    if ((identifiers[k]||'').toString().match(/[^0-9]/g)?.length ||  isNaN(identifiers[k])) {
+                        throw new Error("invalid number");
+                    }
+                }
 
                 let wherePcCarreg : any = { 
                     [Op.and] : [
                         {
                             NUMCAR:{
-                            [Op.in] : identifiers
+                                [Op.in] : identifiers
                             }
                         },
                         {

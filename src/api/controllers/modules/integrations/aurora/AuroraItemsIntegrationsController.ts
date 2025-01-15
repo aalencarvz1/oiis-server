@@ -63,17 +63,13 @@ export default class AuroraItemsIntegrationsController extends BaseRegistersInte
                     let ncm = await Ncms.getOrCreate({
                         raw:true,
                         where:{
-                        data_origin_id: Data_Origins.WINTHOR,
-                        ncm: 1
+                            data_origin_id: Data_Origins.WINTHOR,
+                            ncm: 1
                         },
                         transaction:params.transaction,
                         createMethod: PcNcmController.integrate
                     });
-                    if (ncm.success) {
-                        queryParams.ncm_id = ncm.data.id;
-                    } else {
-                        return ncm;                
-                    }
+                    queryParams.ncm_id = ncm.id;
                 }
                 queryParams.name = queryParams.name || auroraData.DESCRICAO;
                 queryParams.description = queryParams.description;

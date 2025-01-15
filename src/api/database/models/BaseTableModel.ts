@@ -593,47 +593,68 @@ export default class BaseTableModel extends Model {
         }
     }
 
+
+    /**
+     * get record according where property in current transaction or not
+     * @created 2025-01-15
+     * @version 1.0.0
+     */
+    static async findOneWithTransactionOrNot(params: any) : Promise<any> {
+        let result = null;
+        result = await this.findOne(params);
+
+        //check if register eixsts out of current transaction
+        if (!Utils.hasValue(result) && Utils.hasValue(params.transaction)) {
+            let transactionTemp = params.transaction;
+            params.transaction = null;
+            delete params.transaction;
+            result = await this.findOne(params);
+            params.transaction = transactionTemp; //restore transaction
+        }
+        return result;
+    }
+
+
     /**
      * get record according where property or create according where and values properties if not exists
      * @created 2024-02-01
-     * @version 2.0.0
+     * @version 3.0.0
      * @updates
      *  -2025-01-14 - @version 2.0.0 - implemented unique constraint checks and preventions of concurrent process
+     *  -2025-01-15 - @version 3.0.0 - by default returns data record, optionaly DataSwap: when return data, then re-throw errors, else, errors returned in DataSwap object
      */
-    static async getOrCreate(params: any) : Promise<DataSwap> {
-        let result = new DataSwap();
+    static async getOrCreate(params: any) : Promise<any> {
+        let result = null;
         try {
             let queryParams = params.queryParams || params || {};
-            queryParams.raw = queryParams.raw !== false ? true : queryParams.raw;
-            queryParams.limit = queryParams.limit || 1;
             queryParams.transaction = queryParams.transaction || params.transaction;
-            result.data = await this.findOne(queryParams);
 
-            //check if register eixsts out of current transaction
-            if (!Utils.hasValue(result.data) && Utils.hasValue(queryParams.transaction)) {
-                let transactionTemp = queryParams.transaction;
-                queryParams.transaction = null;
-                delete queryParams.transaction;
-                result.data = await this.findOne(queryParams);
-                queryParams.transaction = transactionTemp; //restore transaction
-            }
+            result = await this.findOneWithTransactionOrNot(queryParams);
 
             //if record not exists, then create
-            if (!Utils.hasValue(result.data)) {
+            if (!Utils.hasValue(result)) {
                 try {
-                    if (params.createMethod)  {
-                        let paramsToCreateMethod = {...queryParams.where,...(queryParams.values||{})};
+                    let useWhereAsValues = Utils.firstValid([params.useWhereAsValues,true]);
+                    let paramsToCreateMethod : any = {};
+
+                    if (useWhereAsValues) {
+                        paramsToCreateMethod = {...queryParams.where,...(queryParams.values||{})};
+                    } else {
+                        paramsToCreateMethod = queryParams.values||{};
+                    }
+
+                    if (params.createMethod)  {                        
                         if (params.transaction) {
                             paramsToCreateMethod.transaction = params.transaction;
                         } 
                         result = await params.createMethod.bind(this)(paramsToCreateMethod);
                     } else {
-                        result.data = await this.create({...queryParams.where,...(queryParams.values||{})},{transaction:params.transaction});
-                        if (result.data) {
+                        result = await this.create(paramsToCreateMethod,{transaction:params.transaction});
+                        if (result) {
                             if (queryParams.raw)
-                                result.data = result.data.dataValues;
+                                result = result.dataValues;
                             result.success = true;
-                        } else throw new Error(`error on create register with ${JSON.parse({...queryParams.where,...(queryParams.values||{})})}`);
+                        } else throw new Error(`error on create register with ${JSON.parse(paramsToCreateMethod)}`);
                     }
                 } catch (createError: any) {
 
@@ -642,26 +663,34 @@ export default class BaseTableModel extends Model {
                      * prevent unique violated when record is created by other concurrent process
                      * @created 2025-01-14
                      * */
-                    if (createError.name?.trim().toLowerCase().indexOf('unique') > -1
-                        || createError.constructor?.name?.trim().toLowerCase().indexOf('unique') > -1
+                    if (createError.name?.toLowerCase().indexOf('unique') > -1
+                        || createError.constructor?.name?.toLowerCase().indexOf('unique') > -1
                     ) {
                         if (!params[`${this.name}_getOrCreate_inRecursion`]) {
                             Utils.log(this.name, 'getOrCreate','recursing by unique constraint violated', params.where);
                             params[`${this.name}_getOrCreate_inRecursion`] = true; //only 1 recursive call
-                            result = await this.getOrCreate(params);
+                            return await this.getOrCreate(params);
                         } else {
                             throw createError;
                         }
+                    } else {
+                        throw createError;
                     }
-
-
                 }
-            } else {
+            } 
+            if (params?.returnDataSwap) {
+                let dataTemp = result;
+                result = new DataSwap();
+                result.data = dataTemp;
                 result.success = true;
             }
-        } catch (e) {
-            Utils.logError(e);
-            result.setException(e);
+        } catch (e: any) {
+            if (params?.returnDataSwap) {
+                result = new DataSwap();
+                result.setException(e);
+            } else {
+                throw e; //re-throw
+            }
         }
         return result;
     }
