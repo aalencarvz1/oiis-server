@@ -35,7 +35,7 @@ import Packagings from "../../../database/models/Packagings.js";
 import Movs_Items_Stocks from "../../../database/models/Movs_Items_Stocks.js";
 import Item_Mov_Amounts from "../../../database/models/Item_Mov_Amounts.js";
 import AuroraItemsIntegrationsController from "./aurora/AuroraItemsIntegrationsController.js";
-import EpClientsIntegrationsController from "./ep/EpClientsIntegrationsController.js";
+import EpClientsIntegrationsController from "./ep/registers/EpClientsIntegrationsController.js";
 import PcClientController from "./winthor/registers/PcClientController.js";
 import PcProdutController from "./winthor/registers/PcProdutController.js";
 import PcCarregController from "./winthor/registers/PcCarregController.js";
