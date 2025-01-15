@@ -327,11 +327,6 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                                     }
                                     if (neighborhoodParams) {
                                         neighborhood = await NeighborHoods.getOrCreate(neighborhoodParams);
-                                        if (neighborhood && neighborhood.success) {
-                                            neighborhood = neighborhood.data;
-                                        } else {
-                                            neighborhood?.throw();
-                                        }
                                     }
 
                                     if (city) {
@@ -343,11 +338,6 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                                                 name: winthorRegs[people[k].id_at_origin].ENDERENT
                                             }
                                         });
-                                        if (street && street.success) {
-                                            street = street.data;
-                                        } else {
-                                            street?.throw();
-                                        }
 
                                         postalCode = await Postal_Codes.getOrCreate({
                                             raw:true,
@@ -359,11 +349,6 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                                                 address_type_id: people[k].identifier_doc_type_id == Identifier_Types.CPF ? Address_Types.RESIDENTIAL : Address_Types.BUSINESS
                                             }
                                         });
-                                        if (postalCode && postalCode.success) {
-                                            postalCode = postalCode.data;                                            
-                                        } else {
-                                            postalCode?.throw();
-                                        }
                                     }
 
                                     address = await Addresses.getOrCreate({
@@ -381,22 +366,15 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                                             address_type_id: people[k].identifier_doc_type_id == Identifier_Types.CPF ? Address_Types.RESIDENTIAL : Address_Types.BUSINESS
                                         }
                                     });
-                                    if (address && address.success) {
-                                        address = address.data;
-                                        let peopleAddressResult = await People_Addresses.getOrCreate({
-                                            raw:true,
-                                            where:{
-                                                people_id : people[k].id,
-                                                address_id: address.id,
-                                                address_type_id: address.address_type_id
-                                            }
-                                        });
-                                        if (!peopleAddressResult?.success) {
-                                            peopleAddressResult?.throw();
+
+                                    await People_Addresses.getOrCreate({
+                                        raw:true,
+                                        where:{
+                                            people_id : people[k].id,
+                                            address_id: address.id,
+                                            address_type_id: address.address_type_id
                                         }
-                                    } else {
-                                        address?.throw();
-                                    }                                   
+                                    });
                                 }
                             }
                             result.success = true;

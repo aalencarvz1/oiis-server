@@ -105,6 +105,8 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                         latitude: logs[kl].latitude,
                         longitude: logs[kl].longitude
                     },
+                    useWhereAsValues: false,
+                    returnDataSwap:true,
                     transaction
                 });
                 if (log.success) {
@@ -127,7 +129,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
      * @version 1.0.0
      */
     static async getOrCreateLotFromOriginLot(params: any,originLot: any,transaction?: Transaction) : Promise<any> {
-        let result = await Lots.findOne({
+        let result = await Lots.getOrCreate({
             where:{
                 [Op.or]: [{
                     id: originLot.server_id || -1,
@@ -142,19 +144,16 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                     ]
                 }]
             },
-            transaction
-        });
-        
-        if (!Utils.hasValue(result)) {
-            result = await Lots.create({                
+            values:{
                 creator_user_id: params.user.id,
                 identifier_type_id: Identifier_Types.IDENTIFIER,
                 identifier: originLot.identifier||null,
                 expiration_date: originLot.expirartion_date||null
-            },{
-                transaction
-            });
-        };
+            },
+            useWhereAsValues: false,
+            transaction
+        });
+        
         return result;
     }
 
@@ -186,10 +185,6 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
             createMethod: mov.data_origin_id == Data_Origins.AURORA ? AuroraItemsIntegrationsController.integrate : PcProdutController.integrate,
             transaction
         });
-        if (item.success) item = item.data
-        else {
-            throw item.exception || new Error(item.message);
-        }
 
         //stockEntity
         let stockEntity : any = await Stock_Entities.getOrCreate({
@@ -208,10 +203,6 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
             },
             transaction
         });
-        if (stockEntity.success) stockEntity = stockEntity.data
-        else {
-            throw stockEntity.exception || new Error(stockEntity.message);
-        }
 
 
         let itemXLotXConteiner : any = await Items_Lots_Containers.getOrCreate({
@@ -227,13 +218,9 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
             },
             transaction
         });
-        if (itemXLotXConteiner.success) itemXLotXConteiner = itemXLotXConteiner.data
-        else {
-            throw itemXLotXConteiner.exception || new Error(itemXLotXConteiner.message);
-        }
     
         //itemStock
-        let itemStock : any = await Item_Stocks.findOne({
+        let itemStock : any = await Item_Stocks.getOrCreate({
             raw:true,
             where:{
                 data_origin_id: itemXLotXConteiner.data_origin_id,
@@ -243,22 +230,11 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                 measurement_unit_id: (Measurement_Units as any)[movItem.un] || Measurement_Units.KG,
                 packaging_id: (Packagings as any)[movItem.package] || Packagings.BOX
             },
+            values:{
+                creator_user_id: params.user.id,
+            },
             transaction
         });
-        if (!itemStock) {
-            itemStock = await Item_Stocks.create({
-                creator_user_id: params.user.id,
-                data_origin_id: itemXLotXConteiner.data_origin_id,
-                item_lot_container_id: itemXLotXConteiner.id,
-                stock_relationship_type_id: Stock_Entity_Relationship_Types.OWNER,
-                stock_entity_id: stockEntity.id,
-                measurement_unit_id: (Measurement_Units as any)[movItem.un] || Measurement_Units.KG,
-                packaging_id: (Packagings as any)[movItem.package] || Packagings.BOX
-            },{
-                transaction
-            });
-            itemStock = itemStock.dataValues;
-        }                                
 
         //movXItemStock
         let movXItemStock : any = await Movs_Items_Stocks.getOrCreate({
@@ -274,11 +250,6 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
             },
             transaction
         });
-        if (movXItemStock.success) movXItemStock = movXItemStock.data
-        else {
-            throw movXItemStock.exception || new Error(movXItemStock.message);
-        }
-
         
 
         let itemMovAmt : any = await Item_Mov_Amounts.saveOrCreate({
@@ -394,7 +365,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                         
 
                         
-                        let logisticOrder = await Logistic_Orders.findOne({                        
+                        let logisticOrder : any = await Logistic_Orders.getOrCreate({                        
                             where: {
                                 [Op.or]: [{
                                     id:cargos[key].server_id || -1,
@@ -409,10 +380,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                     ]
                                 }]
                             },
-                            //transaction
-                        });
-                        if (!Utils.hasValue(logisticOrder)) {                            
-                            logisticOrder = await Logistic_Orders.create({
+                            values: {
                                 creator_user_id: params.user.id,
                                 data_origin_id: data_origin_id,
                                 id_at_origin:cargos[key].id_at_origin,
@@ -420,16 +388,18 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                 identifier_type_id: Identifier_Types.CODE,
                                 identifier: cargos[key].id_at_origin,
                                 logistic_status_id: cargos[key].delivery_status_id
-                            },{
-                                transaction
-                            });
-                        } else {
-                            if (logisticOrder.logistic_status_id != cargos[key].delivery_status_id) {
-                                logisticOrder.logistic_status_id = cargos[key].delivery_status_id;
-                                logisticOrder.updater_user_id = params.user.id;
-                                await logisticOrder.save({transaction});
-                            }
+                            },
+                            useWhereAsValues: false,
+                            transaction
+                        });
+                       
+                        
+                        if (logisticOrder.logistic_status_id != cargos[key].delivery_status_id) {
+                            logisticOrder.logistic_status_id = cargos[key].delivery_status_id;
+                            logisticOrder.updater_user_id = params.user.id;
+                            await logisticOrder.save({transaction});
                         }
+                        
                         cargos[key].server_id = logisticOrder.id;
                         idsLogOrders.push(logisticOrder.id);
 
@@ -437,21 +407,21 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                             let idOriginMov = this.getDataOriginId(cargos[key].invoices[kn].data_origin_id);                        
 
                             //logisticOrderXMov
-                            let logisticOrderXMov = await Logistic_Orders_Movs.findOne({
+                            let logisticOrderXMov = await Logistic_Orders_Movs.findOneWithTransactionOrNot({
                                 where:{
                                     id:cargos[key].invoices[kn].server_id || -1,                                    
                                 },
-                                //transaction
+                                transaction
                             });
                             let mov = null;
 
                             if (!Utils.hasValue(logisticOrderXMov)) {
-                                mov = await Movements.findOne({
+                                mov = await Movements.findOneWithTransactionOrNot({
                                     where:{
                                         data_origin_id: idOriginMov,
                                         id_at_origin:cargos[key].invoices[kn].id_at_origin
                                     },
-                                    //transaction
+                                    transaction
                                 });
 
                                 if (!Utils.hasValue(mov)) {
@@ -475,11 +445,14 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                     }
                                     let idFinancialValueForm = Financial_Value_Forms.getIdByIntegrationId(cargos[key].invoices[kn].financial_value_form_id||'');                            
 
-                                    try {
-                                        mov = await Movements.create({
-                                            creator_user_id: params.user.id,
+
+                                    mov = await Movements.getOrCreate({
+                                        where:{
                                             data_origin_id: idOriginMov,
-                                            id_at_origin: cargos[key].invoices[kn].id_at_origin,
+                                            id_at_origin:cargos[key].invoices[kn].id_at_origin
+                                        },
+                                        values:{
+                                            creator_user_id: params.user.id,
                                             type_mov_id: Movement_Types.OUTPUT,
                                             identifier_type_id: Identifier_Types.CODE,
                                             identifier: cargos[key].invoices[kn].invoice_number,
@@ -489,65 +462,44 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                             client_id: client?.id,
                                             financial_value_form_id : idFinancialValueForm,
                                             seller_id: cargos[key].invoices[kn].seller_id
-                                        },{
-                                            transaction
-                                        });
-                                    } catch (eMov: any) {
-                                        if (eMov.name == 'SequelizeUniqueConstraintError'
-                                            || eMov.message?.toLowerCase().contains('duplicate') || eMov.code == 'ER_DUP_ENTRY' || eMov.errno == 1062
-                                        ) {
-                                            mov = await Movements.findOne({
-                                                where:{
-                                                    data_origin_id: idOriginMov,
-                                                    id_at_origin:cargos[key].invoices[kn].id_at_origin
-                                                },
-                                                //transaction possible created by other transaction
-                                            }); 
-                                            if (!mov) {
-                                                throw eMov;
-                                            }
-                                        } else {
-                                            throw eMov;
-                                        }
-                                    }                                
+                                        },
+                                        transaction
+                                    });
+                                                                   
                                 } 
 
-                                logisticOrderXMov = await Logistic_Orders_Movs.findOne({
+                                logisticOrderXMov = await Logistic_Orders_Movs.getOrCreate({
                                     where:{
                                         data_origin_id: idOriginMov,
                                         logistic_order_id: logisticOrder.id,
                                         mov_id: mov.id,                                
                                     },
-                                    //transaction
-                                });
-                                if (!Utils.hasValue(logisticOrderXMov)) {
-                                    logisticOrderXMov = await Logistic_Orders_Movs.create({
-                                        data_origin_id: idOriginMov,
-                                        logistic_order_id: logisticOrder.id,
-                                        mov_id: mov.id,
+                                    values:{
                                         creator_user_id: params.user.id,
                                         logistic_status_id: cargos[key].invoices[kn].delivery_status_id
-                                    },{
-                                        transaction
-                                    });
-                                } else {
-                                    if (logisticOrderXMov.logistic_status_id != cargos[key].invoices[kn].delivery_status_id) {
-                                        logisticOrderXMov.logistic_status_id = cargos[key].invoices[kn].delivery_status_id;
-                                        logisticOrderXMov.updater_user_id = params.user.id;
-                                        await logisticOrderXMov.save({transaction});
-                                    }    
-                                }
+                                    },
+                                    transaction
+                                });
+
+
+                               
+                                if (logisticOrderXMov.logistic_status_id != cargos[key].invoices[kn].delivery_status_id) {
+                                    logisticOrderXMov.logistic_status_id = cargos[key].invoices[kn].delivery_status_id;
+                                    logisticOrderXMov.updater_user_id = params.user.id;
+                                    await logisticOrderXMov.save({transaction});
+                                }    
+
                             } else {                            
                                 if (logisticOrderXMov.logistic_status_id != cargos[key].invoices[kn].delivery_status_id) {
                                     logisticOrderXMov.logistic_status_id = cargos[key].invoices[kn].delivery_status_id;
                                     logisticOrderXMov.updater_user_id = params.user.id;
                                     await logisticOrderXMov.save({transaction});
                                 }
-                                mov = await Movements.findOne({
+                                mov = await Movements.findOneWithTransactionOrNot({
                                     where:{
                                         id : logisticOrderXMov.mov_id
                                     },
-                                    //transaction
+                                    transaction
                                 });
                             }
 
@@ -559,11 +511,11 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                 let logXItemMovAmt : any = null;
                                 if ((cargos[key].invoices[kn].items[ki].lots ||[]).length > 0) {
                                     for(let kl in cargos[key].invoices[kn].items[ki].lots) {
-                                        logXItemMovAmt = await Logistic_Orders_Items_Mov_Amt.findOne({
+                                        logXItemMovAmt = await Logistic_Orders_Items_Mov_Amt.findOneWithTransactionOrNot({
                                             where:{
                                                 id: cargos[key].invoices[kn].items[ki].lots[kl].server_id||-1
                                             },
-                                            //transaction
+                                            transaction
                                         });
                                         if (Utils.hasValue(logXItemMovAmt)) {
                                             logXItemMovAmt.action_status_id =  logisticOrder.action_status_id;
@@ -590,11 +542,11 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                         }
                                     } 
                                 } else {
-                                    logXItemMovAmt = await Logistic_Orders_Items_Mov_Amt.findOne({
+                                    logXItemMovAmt = await Logistic_Orders_Items_Mov_Amt.findOneWithTransactionOrNot({
                                         where:{
                                             id: cargos[key].invoices[kn].items[ki].server_id||-1
                                         },
-                                        //transaction
+                                        transaction
                                     });
                                     if (Utils.hasValue(logXItemMovAmt)) {
                                         logXItemMovAmt.action_status_id =  logisticOrder.action_status_id;
@@ -622,7 +574,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
 
                             for(let kr in cargos[key].invoices[kn].receivments || []) {
 
-                                let receivedValue : any = await Logistic_Orders_Movs_Received_Values.findOne({
+                                let receivedValue : any = await Logistic_Orders_Movs_Received_Values.findOneWithTransactionOrNot({
                                     where:{
                                         [Op.or]: [{
                                             id:cargos[key].invoices[kn].receivments[kr].server_id || -1
@@ -647,7 +599,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                             ]
                                         }]
                                     },
-                                    //transaction
+                                    transaction
                                 });
                                 if (!Utils.hasValue(receivedValue)) {
                                     receivedValue = await Logistic_Orders_Movs_Received_Values.create({                                
@@ -694,7 +646,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                             let idFinValForm = Financial_Value_Forms.getIdByIntegrationId(cargos[key].destination_values[kd].financial_value_form_id || 'D');
                             let idFinValMovType = Financial_Value_Mov_Types.getIdByIntegrationId(cargos[key].destination_values[kd].send_value_type || 'DEPÓSITO');
 
-                            let logDestVal : any = await Logistic_Orders_Dest_Values.findOne({
+                            let logDestVal : any = await Logistic_Orders_Dest_Values.findOneWithTransactionOrNot({
                                 where:{
                                     [Op.or]: [{
                                         id:cargos[key].destination_values[kd].id || -1
@@ -713,7 +665,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                         ]
                                     }]
                                 },
-                                //transaction
+                                transaction
                             });
 
                             if (!Utils.hasValue(logDestVal)) {

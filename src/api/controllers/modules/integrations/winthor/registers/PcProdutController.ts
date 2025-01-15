@@ -42,11 +42,7 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                         transaction:params.transaction,
                         createMethod: PcNcmController.integrate
                     });
-                    if (ncm.success) {
-                        queryParams.ncm_id = ncm.data.id;
-                    } else {
-                        return ncm;                
-                    }
+                    queryParams.ncm_id = ncm.id;
                 }
                 queryParams.name = queryParams.name || winthorData.DESCRICAO;
                 queryParams.description = queryParams.description;
