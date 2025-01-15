@@ -1,9 +1,9 @@
-import PcSuperv from "../../../../../database/models/winthor/PcSuperv.js";
+import PcFornec from "../../../../../database/models/winthor/PcFornec.js";
 import WinthorBaseRegistersIntegrationsController from "./WinthorBaseRegistersIntegrationsController.js";
 
 export default class PcFornecController extends WinthorBaseRegistersIntegrationsController{
     static getTableClassModel() : any {
-        return PcSuperv;
+        return PcFornec;
     }  
     
     static {
