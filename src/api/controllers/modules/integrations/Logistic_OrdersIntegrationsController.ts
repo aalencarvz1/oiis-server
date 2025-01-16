@@ -87,13 +87,9 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
     static async saveLog(creator_user_id: number, idTableRef: number,idRegisterRef: number, logs: any, messages: any, exceptions: any, transaction?: Transaction) : Promise<void>{
         try {
             for(let kl in logs || []) {
-                let log : any = await Logistic_Logs.getOrCreate({
-                    raw:false,
-                    where:{
-                        id: logs[kl].server_id || -1
-                    },
-                    values:{
-                        id:undefined,
+                let log : any = null;
+                if (!(Utils.hasValue(logs[kl].server_id) && logs[kl].server_id > 0)) {                    
+                    log = await Logistic_Logs.create({
                         creator_user_id: creator_user_id,
                         table_ref_id: idTableRef,
                         record_ref_id: idRegisterRef,
@@ -103,20 +99,14 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                         old_value: logs[kl].old_value,
                         new_value: logs[kl].new_value,
                         latitude: logs[kl].latitude,
-                        longitude: logs[kl].longitude
-                    },
-                    useWhereAsValues: false,
-                    returnDataSwap:true,
-                    transaction
-                });
-                if (log.success) {
-                    log = log.data;
-                    logs[kl].server_id = log.id;
-                } else {
-                    messages.push(log.message);
-                    if (log.exception) exceptions.push(log.exception);
-                    continue;
+                        longitude: logs[kl].longitude                        
+                    },{
+                        transaction
+                    });
                 }
+                if (Utils.hasValue(log)) {
+                    logs[kl].server_id = log.id;
+                } 
             }
         } catch (e: any) {
             messages.push(e.message);
@@ -407,12 +397,16 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                             let idOriginMov = this.getDataOriginId(cargos[key].invoices[kn].data_origin_id);                        
 
                             //logisticOrderXMov
-                            let logisticOrderXMov = await Logistic_Orders_Movs.findOneWithTransactionOrNot({
-                                where:{
-                                    id:cargos[key].invoices[kn].server_id || -1,                                    
-                                },
-                                transaction
-                            });
+                            let logisticOrderXMov : any = null;
+                            if (Utils.hasValue(cargos[key].invoices[kn].server_id) && cargos[key].invoices[kn].server_id > 0) {
+                                logisticOrderXMov = await Logistic_Orders_Movs.findOneWithTransactionOrNot({
+                                    where:{
+                                        id:cargos[key].invoices[kn].server_id, 
+                                    },
+                                    transaction
+                                });
+                            }
+                            
                             let mov = null;
 
                             if (!Utils.hasValue(logisticOrderXMov)) {
@@ -511,12 +505,15 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                 let logXItemMovAmt : any = null;
                                 if ((cargos[key].invoices[kn].items[ki].lots ||[]).length > 0) {
                                     for(let kl in cargos[key].invoices[kn].items[ki].lots) {
-                                        logXItemMovAmt = await Logistic_Orders_Items_Mov_Amt.findOneWithTransactionOrNot({
-                                            where:{
-                                                id: cargos[key].invoices[kn].items[ki].lots[kl].server_id||-1
-                                            },
-                                            transaction
-                                        });
+                                        logXItemMovAmt = null;
+                                        if (Utils.hasValue(cargos[key].invoices[kn].items[ki].lots[kl].server_id) && cargos[key].invoices[kn].items[ki].lots[kl].server_id > 0) {
+                                            logXItemMovAmt = await Logistic_Orders_Items_Mov_Amt.findOneWithTransactionOrNot({
+                                                where:{
+                                                    id: cargos[key].invoices[kn].items[ki].lots[kl].server_id
+                                                },
+                                                transaction
+                                            });
+                                        }
                                         if (Utils.hasValue(logXItemMovAmt)) {
                                             logXItemMovAmt.action_status_id =  logisticOrder.action_status_id;
                                             logXItemMovAmt.expected_amt =  Utils.toNumber(Utils.firstValid([cargos[key].invoices[kn].items[ki].lots[kl].qty,cargos[key].invoices[kn].items[ki].qty]));
@@ -542,12 +539,14 @@ export default class Logistic_OrdersIntegrationsController extends BaseIntegrati
                                         }
                                     } 
                                 } else {
-                                    logXItemMovAmt = await Logistic_Orders_Items_Mov_Amt.findOneWithTransactionOrNot({
-                                        where:{
-                                            id: cargos[key].invoices[kn].items[ki].server_id||-1
-                                        },
-                                        transaction
-                                    });
+                                    if (Utils.hasValue(cargos[key].invoices[kn].items[ki].server_id) && cargos[key].invoices[kn].items[ki].server_id > 0) {
+                                        logXItemMovAmt = await Logistic_Orders_Items_Mov_Amt.findOneWithTransactionOrNot({
+                                            where:{
+                                                id: cargos[key].invoices[kn].items[ki].server_id
+                                            },
+                                            transaction
+                                        });
+                                    }
                                     if (Utils.hasValue(logXItemMovAmt)) {
                                         logXItemMovAmt.action_status_id =  logisticOrder.action_status_id;
                                         logXItemMovAmt.expected_amt =  Utils.toNumber(cargos[key].invoices[kn].items[ki].qty || 0);
