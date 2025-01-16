@@ -467,10 +467,10 @@ export default class BaseTableModel extends Model {
         params.where = params.where || params.queryParams?.where || null;
         let primaryKeysFieldsNames = this.getPrimaryKeysFieldsNames();
         if (Utils.hasValue(params.where)) {
-            reg = await this.findOne(params);
+            reg = await this.findOneWithTransactionOrNot(params);
         } else if (values.id) { 
             params.where = {id:values.id}
-            reg = await this.findOne({where:params.where,transaction:params.transaction});
+            reg = await this.findOneWithTransactionOrNot({where:params.where,transaction:params.transaction});
         } else {            
             
             if (primaryKeysFieldsNames.length > 0) {
@@ -484,7 +484,7 @@ export default class BaseTableModel extends Model {
                     }
                 }
                 if (Object.keys(params.where).length > 0) {
-                    reg = await this.findOne({where:params.where,transaction:params.transaction});
+                    reg = await this.findOneWithTransactionOrNot({where:params.where,transaction:params.transaction});
                 } else {
                     throw new Error('missing data (primary key)');    
                 }
