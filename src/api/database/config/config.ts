@@ -15,9 +15,6 @@ export default {
       "host": process.env.DB_HOST || "localhost",
       "port": process.env.DB_PORT || "3306",
       "dialect": process.env.DB_DIALECT ||"mysql",
-      "dialectOptions":{
-        "maxAllowedPacket": 1024 * 1024 * 1024, // 1024MB
-      },
       "logQueryParameters":true,
       "define":{
         "freezeTableName": true
@@ -31,9 +28,6 @@ export default {
       "host": process.env.DB_OLD_HOST || "localhost",
       "port": process.env.DB_OLD_PORT || "3306",
       "dialect": process.env.DB_OLD_DIALECT ||"mysql",
-      "dialectOptions":{
-        "maxAllowedPacket": 1024 * 1024 * 1024, // 1024MB
-      },
       "logQueryParameters":true,
       //"logging":true,
       "define":{
@@ -48,9 +42,6 @@ export default {
       "host": process.env.DB_DEV_HOST || "localhost",
       "port": process.env.DB_DEV_PORT || "3306",
       "dialect": process.env.DB_DEV_DIALECT ||"mysql",
-      "dialectOptions":{
-        "maxAllowedPacket": 1024 * 1024 * 1024, // 1024MB
-      },
       "logQueryParameters":true,
       logging: console.log, // Enable logging of SQL queries
       "define":{
@@ -66,9 +57,6 @@ export default {
       "host": process.env.DB_DEV_OLD_HOST || "localhost",
       "port": process.env.DB_DEV_OLD_PORT || "3306",
       "dialect": process.env.DB_DEV_OLD_DIALECT ||"mysql",
-      "dialectOptions":{
-        "maxAllowedPacket": 1024 * 1024 * 1024, // 1024MB
-      },
       "logQueryParameters":true,
       "define":{
         "freezeTableName": true
@@ -178,9 +166,6 @@ export default {
       "host": process.env.DB_EXTERNAL_DATA_PROD_HOST || "localhost",
       "port": process.env.DB_EXTERNAL_DATA_PROD_PORT || "3306",
       "dialect": process.env.DB_EXTERNAL_DATA_PROD_DIALECT ||"mysql",
-      "dialectOptions":{
-        "maxAllowedPacket": 1024 * 1024 * 1024, // 1024MB
-      },
       "logQueryParameters":true,
       //"logging":true,
       "define":{
