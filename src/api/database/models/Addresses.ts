@@ -65,7 +65,8 @@ export default class Addresses extends BaseTableModel {
     Sequelize.literal(`(COALESCE(postal_code_id,0))`),
     Sequelize.literal(`(COALESCE(latitude,0))`),
     Sequelize.literal(`(COALESCE(longitude,0))`),
-    Sequelize.literal(`(COALESCE(number,'NULL'))`)
+    Sequelize.literal(`(COALESCE(number,'NULL'))`),
+    Sequelize.literal(`(COALESCE(CAST(complement AS CHAR(255)), 'NULL'))`)    //255 to respect index size limit
   ];
 
   static constraints = [...(Addresses.getBaseTableModelConstraints() || []),...[
