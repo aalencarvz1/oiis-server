@@ -650,10 +650,9 @@ export default class BaseTableModel extends Model {
                         result = await params.createMethod.bind(this)(paramsToCreateMethod);
                     } else {
                         result = await this.create(paramsToCreateMethod,{transaction:params.transaction});
-                        if (result) {
+                        if (Utils.hasValue(result)) {
                             if (queryParams.raw)
                                 result = result.dataValues;
-                            result.success = true;
                         } else throw new Error(`error on create register with ${JSON.parse(paramsToCreateMethod)}`);
                     }
                 } catch (createError: any) {
@@ -678,7 +677,7 @@ export default class BaseTableModel extends Model {
                     }
                 }
             } 
-            if (params?.returnDataSwap) {
+            if (params?.returnDataSwap && !(result instanceof DataSwap)) {
                 let dataTemp = result;
                 result = new DataSwap();
                 result.data = dataTemp;
@@ -695,19 +694,42 @@ export default class BaseTableModel extends Model {
         return result;
     }
 
+
+    /**
+     * save existent register or create if not exists according where property of params
+     * @created 2024-02-01
+     * @version 1.1.0
+     */
     static async saveOrCreate(params: any) {
         let result = new DataSwap();
         try {
             let queryParams = params.queryParams || params || {};
-            result.data = await this.findOne(queryParams);
-            if (!result.data) {
+            result.data = await this.findOneWithTransactionOrNot(queryParams);
+            if (!Utils.hasValue(result.data)) {
+                let useWhereAsValues = Utils.firstValid([params.useWhereAsValues,true]);
+                let paramsToCreateMethod : any = {};
+
+                if (useWhereAsValues) {
+                    paramsToCreateMethod = {...queryParams.where,...(queryParams.values||{})};
+                } else {
+                    paramsToCreateMethod = queryParams.values||{};
+                }
+
                 if (params.createMethod) 
-                    result = await params.createMethod.bind(this)({...queryParams.where,...(queryParams.values||{})},params);
-                else {
-                    result.data = await this.create({...queryParams.where,...(queryParams.values||{})},params.transaction ? {transaction: params.transaction} : {});
-                    if (result.data) {
+                    result = await params.createMethod.bind(this)(paramsToCreateMethod,params);
+
+                    if (!(result instanceof DataSwap)) {
+                        let resultTemp = result;
+                        result = new DataSwap();
+                        result.data = resultTemp;
                         result.success = true;
-                    } else throw new Error(`error on create register with ${JSON.parse({...queryParams.where,...(queryParams.values||{})})}`);
+                    }
+
+                else {
+                    result.data = await this.create(paramsToCreateMethod,params.transaction ? {transaction: params.transaction} : {});
+                    if (Utils.hasValue(result.data)) {
+                        result.success = true;
+                    } else throw new Error(`error on create register with ${JSON.parse(paramsToCreateMethod)}`);
                 }
             } else {
                 await this.updateData({
