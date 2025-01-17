@@ -53,9 +53,9 @@ export default class SicrediPixIntegrationsController{
     static DEFAULT_RESPONSE_SUCCESS_STATUS = [200,201,202,203,204,205];
 
     private static async handleApiRequestResult(
-        apiRequestResponse: any, 
+        apiRequestResponse?: any, 
         resultObject?: DataSwap,
-        successesCodes?: any,
+        successesCodes?: undefined | null | number[],
         dataJsonExpected?: boolean,        
         caller?: Function, //to recall if token expired
         ...callerParams: any
@@ -66,27 +66,45 @@ export default class SicrediPixIntegrationsController{
             resultObject = resultObject || new DataSwap();
             successesCodes = successesCodes || SicrediPixIntegrationsController.DEFAULT_RESPONSE_SUCCESS_STATUS;
             dataJsonExpected = dataJsonExpected || false;
-            resultObject.status = apiRequestResponse.status;
-            let responseText = await apiRequestResponse.text();
-            if (successesCodes.indexOf(resultObject.status) > -1) {    
-                if (dataJsonExpected) {                                    
-                    let responseJson = JSON.parse(responseText);
-                    if (!responseJson) throw new Error("responseJson is null");                    
+            resultObject.status = apiRequestResponse?.status || -1;
+            let responseText : string = await apiRequestResponse?.text();            
+
+            if (successesCodes.indexOf(resultObject.status) > -1) {//success
+
+                if (dataJsonExpected) {//expect json                                    
+
+                    let responseJson = JSON.parse(responseText); //parse
+
+                    if (!Utils.hasValue(responseJson)) throw new Error("responseJson is null");                    
+
                     resultObject.data = responseJson;                    
-                    if (!isNaN(resultObject?.data?.status||"x")) {
+                    if (!isNaN(resultObject?.data?.status||"x")) {//has status in json object, override status of Response
                         resultObject.status = resultObject.data.status - 0;
-                        if (successesCodes.indexOf(resultObject.status) > -1) {
+                        if (successesCodes.indexOf(resultObject.status) > -1) {//success on Json
                             resultObject.success = true;
-                        } else {
-                            resultObject.success = false;
+                        } else { //fail on Json
+                            if (resultObject.data?.status == 403 && resultObject.data?.detail?.indexOf('expired') > -1 && caller) {
+                                callerParams[1] = callerParams[1] || true; //new token
+                                callerParams[2] = (callerParams[2] || 0) + 1; //recursive count
+                                if (callerParams[2] > SicrediPixIntegrationsController.RECUSIVE_LIMIT) throw new Error("recursive limit extrapoled");
+                                return await caller(...callerParams);
+                            } else {
+                                Utils.logError(resultObject.data);
+                                resultObject.exception = resultObject.data;
+                                resultObject.message = (resultObject.data?.title||'title') + ":" + (resultObject.data?.detail || '');
+                                if (resultObject.data?.violacoes?.length) {
+                                    resultObject.message += ':' + resultObject.data?.violacoes?.map((el: any)=>`${el?.razao}(${el?.propriedade})`).join(',');
+                                }
+                                resultObject.success = false;
+                            }                            
                         }
-                    } else {
+                    } else {//success on Response
                         resultObject.success = true;
                     }
-                } else {
+                } else {//success on Response, no has body response
                     resultObject.success = true;
                 }
-            } else {
+            } else {//fail on Response
                 resultObject.success = false;
                 let responseJson = null;
                 try {
@@ -100,10 +118,11 @@ export default class SicrediPixIntegrationsController{
                 if (responseJson != null) {
                     if (responseJson?.status == 403 && responseJson?.detail?.indexOf('expired') > -1 && caller) {
                         callerParams[1] = callerParams[1] || true; //new token
-                        callerParams[2] = callerParams[2] || 0; //recursive count
+                        callerParams[2] = (callerParams[2] || 0) + 1; //recursive count
                         if (callerParams[2] > SicrediPixIntegrationsController.RECUSIVE_LIMIT) throw new Error("recursive limit extrapoled");
                         return await caller(...callerParams);
                     } else {
+                        Utils.logError(responseJson);
                         resultObject.data = responseJson;
                         resultObject.exception = responseJson;
                         resultObject.message = (responseJson?.title||'title') + ":" + (responseJson?.detail || '');
@@ -115,9 +134,9 @@ export default class SicrediPixIntegrationsController{
                     resultObject.data = responseText;
                 }
             }
-        } catch (e: any) {            
-            resultObject?.setException(e);
+        } catch (e: any) {
             Utils.logError(e);
+            resultObject?.setException(e);            
         } 
         return resultObject;
     }
