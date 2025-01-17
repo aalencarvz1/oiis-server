@@ -210,7 +210,6 @@ async function crudDelete(params) {
         }
     });
     //console.log('DELETING',`${params.endPoint}`,params,options);
-    //console.log('yyyyyyyy',params.tableName.trim(),tablesNamesIgnoresFKErrors.indexOf(params.tableName.trim().toLowerCase()), tablesNamesIgnoresFKErrors.indexOf(params.tableName.trim().toLowerCase()) > -1);
     jsonData = await callApi(`${params.endPoint}`, options, tablesNamesIgnoresFKErrors.indexOf(params.tableName.trim().toLowerCase()) >-1);
     expect(tablesNamesIgnoresFKErrors.indexOf(params.tableName.trim().toLowerCase()) > -1 || jsonData.success).toBeTruthy();
     return jsonData;
@@ -283,15 +282,15 @@ async function integrateDataFromWinthorTable(params) {
     let origin = datas['data_origins'].find((el) => el.name.toLowerCase() == params.origin.toLowerCase());
     let valuesToCreate = null;
     let data = await getDataFromWinthorTable(params);
-    if (typeof params.identifierWithorField == 'function') {
-        valuesToCreate = params.identifierWithorField(origin, data);
+    if (typeof params.identifierWinthorField == 'function') {
+        valuesToCreate = params.identifierWinthorField(origin, data);
     }
     else {
         valuesToCreate = {
             origin: origin,
-            identifiers: [data[0][params.identifierWithorField] || params.identifierWithorField]
+            identifiers: [data[0][params.identifierWinthorField] || params.identifierWinthorField]
         };
-    }
+    }    
     options.body = JSON.stringify(valuesToCreate);
     let jsonResponse = await callApi(params.endPointIntegration, options);
     jsonResponse.data = jsonResponse.data[0];
@@ -447,7 +446,7 @@ describe('Running api call tests', () => {
                                 winthorTableName: 'PCPAIS',
                                 winthorTableFields: ['CODPAIS', 'DESCRICAO'],
                                 endPointIntegration: `${baseApiEndPoint}${endPoints[`${modelName}integrationscontroller`].path}/integrate`,
-                                identifierWithorField: 'CODPAIS',
+                                identifierWinthorField: 'CODPAIS',
                                 fieldUpdate: 'name'
                             };
                         };
@@ -476,7 +475,7 @@ describe('Running api call tests', () => {
                                     'ESTADO'
                                 ],
                                 endPointIntegration: `${baseApiEndPoint}${endPoints[`${modelName}integrationscontroller`].path}/integrate`,
-                                identifierWithorField: 'UF',
+                                identifierWinthorField: 'UF',
                                 fieldUpdate: 'name'
                             };
                         };
@@ -504,7 +503,7 @@ describe('Running api call tests', () => {
                                     'NOMECIDADE'
                                 ],
                                 endPointIntegration: `${baseApiEndPoint}${endPoints[`${modelName}integrationscontroller`].path}/integrate`,
-                                identifierWithorField: 'CODCIDADE',
+                                identifierWinthorField: 'CODCIDADE',
                                 fieldUpdate: 'name'
                             };
                         };
@@ -548,7 +547,7 @@ describe('Running api call tests', () => {
                                     'FANTASIA'
                                 ],
                                 endPointIntegration: `${baseApiEndPoint}${endPoints[`${modelName}integrationscontroller`].path}/integrate`,
-                                identifierWithorField: (origin, data) => {
+                                identifierWinthorField: (origin, data) => {
                                     return {
                                         origin: origin,
                                         identifiers: [data[0].CODCLI],
@@ -593,7 +592,7 @@ describe('Running api call tests', () => {
                                     'CODCLI'
                                 ],
                                 endPointIntegration: `${baseApiEndPoint}${endPoints[`${modelName}integrationscontroller`].path}/integrate`,
-                                identifierWithorField: 'CODIGO',
+                                identifierWinthorField: 'CODIGO',
                                 fieldUpdate: 'alias'
                             };
                         };
@@ -654,7 +653,7 @@ describe('Running api call tests', () => {
                                     winthorTableName: 'PCCLIENT',
                                     winthorTableFields: undefined,
                                     endPointIntegration: `${baseApiEndPoint}${endPoints[`${modelName}integrationscontroller`].path}/integrate`,
-                                    identifierWithorField: 'CODCLI',
+                                    identifierWinthorField: 'CODCLI',
                                     fieldUpdate: 'alias'
                                 };
                             };
@@ -675,7 +674,7 @@ describe('Running api call tests', () => {
                                         'CODCLI'
                                     ],
                                     endPointIntegration: `${baseApiEndPoint}${endPoints[`${modelName}integrationscontroller`].path}/integrate`,
-                                    identifierWithorField: 'CODIGO',
+                                    identifierWinthorField: 'CODIGO',
                                     fieldUpdate: 'alias'
                                 };
                             };
@@ -706,7 +705,7 @@ describe('Running api call tests', () => {
                                     'TIPO'
                                 ],
                                 endPointIntegration: `${baseApiEndPoint}${endPoints[`${modelName}integrationscontroller`].path}/integrate`,
-                                identifierWithorField: 'CODDEVOL',
+                                identifierWinthorField: 'CODDEVOL',
                                 fieldUpdate: 'name'
                             };
                         };

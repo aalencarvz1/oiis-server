@@ -23,4 +23,8 @@ export default class DataSwap{
         }
         this.exception = exception;        
     }
+
+    throw() {
+        throw this.exception || new Error(this.message || 'error');
+    }
 }

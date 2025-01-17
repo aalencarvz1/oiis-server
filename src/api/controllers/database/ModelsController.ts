@@ -179,6 +179,8 @@ import PcUsuari from '../../database/models/winthor/PcUsuari.js';
 import PcVeicul from '../../database/models/winthor/PcVeicul.js';
 import Produtos_Armazenados_Terceiros from '../../database/models/winthor/Produtos_Armazenados_Terceiros.js';
 import SjdProduto_Origem from '../../database/models/sjd/SjdProduto_Origem.js';
+import SjdEstoque_Origem from '../../database/models/sjd/SjdEstoque_Origem.js';
+import SjdHistEst_Origem from '../../database/models/sjd/SjdHistEst_Origem.js';
 import SjdTabpr_Origem from '../../database/models/sjd/SjdTabpr_Origem.js';
 import SjdTabpr_Origem_Log from '../../database/models/sjd/SjdTabpr_Origem_Log.js';
 import XMLBroker from '../../database/models/sjd/XMLBroker.js';
@@ -434,6 +436,8 @@ export default class ModelsController {
 
         if (Utils.toBool(process.env.HAS_CONSULT_INTEGRATION) == true) {
             SjdProduto_Origem.initModel();
+            SjdEstoque_Origem.initModel();
+            SjdHistEst_Origem.initModel();
             SjdTabpr_Origem.initModel();
             SjdTabpr_Origem_Log.initModel();
             XMLBroker.initModel();
@@ -676,6 +680,8 @@ export default class ModelsController {
 
         if (Utils.toBool(process.env.HAS_CONSULT_INTEGRATION) == true) {
             await SjdProduto_Origem.initAssociations();
+            await SjdEstoque_Origem.initAssociations();
+            await SjdHistEst_Origem.initAssociations();
             await SjdTabpr_Origem.initAssociations();
             await SjdTabpr_Origem_Log.initAssociations();
             await XMLBroker.initAssociations();

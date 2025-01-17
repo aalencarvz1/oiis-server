@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import DatabaseUtils from "../../database/DatabaseUtils.js";
 import EndPointsController from "../../endpoints/EndPointsController.js";
 import Utils from "../../utils/Utils.js";
+import { QueryTypes } from "sequelize";
 
 
 /**
@@ -34,7 +35,20 @@ export default abstract class BaseRegistersController {
             let queryParams = req.body.queryParams || req.body;
             queryParams = DatabaseUtils.prepareQueryParams(queryParams);
             queryParams.raw = true;
-            res.data = await this.getTableClassModel().findAll(queryParams);
+            if (queryParams.query) {
+                res.data = await this.getTableClassModel().getConnection().query(
+                    queryParams.query,{
+                        raw:queryParams.raw,
+                        type:QueryTypes.SELECT
+                    }
+                );
+            } else {
+                if (((this.getTableClassModel() as any).accessLevel || 1) == 2 ) {
+                    queryParams.where = queryParams.where || {};
+                    queryParams.where.creator_user_id = req.user?.id
+                }
+                res.data = await this.getTableClassModel().findAll(queryParams);
+            }
             res.sendResponse(200,true);
         } catch (e: any) {
             res.setException(e);

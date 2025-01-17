@@ -467,10 +467,10 @@ export default class BaseTableModel extends Model {
         params.where = params.where || params.queryParams?.where || null;
         let primaryKeysFieldsNames = this.getPrimaryKeysFieldsNames();
         if (Utils.hasValue(params.where)) {
-            reg = await this.findOne(params);
+            reg = await this.findOneWithTransactionOrNot(params);
         } else if (values.id) { 
             params.where = {id:values.id}
-            reg = await this.findOne({where:params.where,transaction:params.transaction});
+            reg = await this.findOneWithTransactionOrNot({where:params.where,transaction:params.transaction});
         } else {            
             
             if (primaryKeysFieldsNames.length > 0) {
@@ -484,7 +484,7 @@ export default class BaseTableModel extends Model {
                     }
                 }
                 if (Object.keys(params.where).length > 0) {
-                    reg = await this.findOne({where:params.where,transaction:params.transaction});
+                    reg = await this.findOneWithTransactionOrNot({where:params.where,transaction:params.transaction});
                 } else {
                     throw new Error('missing data (primary key)');    
                 }
@@ -593,52 +593,143 @@ export default class BaseTableModel extends Model {
         }
     }
 
-    static async getOrCreate(params: any) {
-        let result = new DataSwap();
-        try {
-            let queryParams = params.queryParams || params || {};
-            queryParams.raw = queryParams.raw !== false ? true : queryParams.raw;
-            queryParams.limit = queryParams.limit || 1;
-            queryParams.transaction = queryParams.transaction || params.transaction;
-            result.data = await this.findOne(queryParams);
-            if (!result.data) {
-                if (params.createMethod)  {
-                    let paramsToCreateMethod = {...queryParams.where,...(queryParams.values||{})};
-                    if (params.transaction) {
-                        paramsToCreateMethod.transaction = params.transaction;
-                    } 
-                    result = await params.createMethod.bind(this)(paramsToCreateMethod);
-                } else {
-                    result.data = await this.create({...queryParams.where,...(queryParams.values||{})},{transaction:params.transaction});
-                    if (result.data) {
-                        if (queryParams.raw)
-                            result.data = result.data.dataValues;
-                        result.success = true;
-                    } else throw new Error(`error on create register with ${JSON.parse({...queryParams.where,...(queryParams.values||{})})}`);
-                }
-            } else {
-                result.success = true;
-            }
-        } catch (e) {
-            Utils.logError(e);
-            result.setException(e);
+
+    /**
+     * get record according where property in current transaction or not
+     * @created 2025-01-15
+     * @version 1.0.0
+     */
+    static async findOneWithTransactionOrNot(params: any) : Promise<any> {
+        let result = null;
+        result = await this.findOne(params);
+
+        //check if register eixsts out of current transaction
+        if (!Utils.hasValue(result) && Utils.hasValue(params.transaction)) {
+            let transactionTemp = params.transaction;
+            params.transaction = null;
+            delete params.transaction;
+            result = await this.findOne(params);
+            params.transaction = transactionTemp; //restore transaction
         }
         return result;
     }
 
+
+    /**
+     * get record according where property or create according where and values properties if not exists
+     * @created 2024-02-01
+     * @version 3.0.0
+     * @updates
+     *  -2025-01-14 - @version 2.0.0 - implemented unique constraint checks and preventions of concurrent process
+     *  -2025-01-15 - @version 3.0.0 - by default returns data record, optionaly DataSwap: when return data, then re-throw errors, else, errors returned in DataSwap object
+     */
+    static async getOrCreate(params: any) : Promise<any> {
+        let result = null;
+        try {
+            let queryParams = params.queryParams || params || {};
+            queryParams.transaction = queryParams.transaction || params.transaction;
+
+            result = await this.findOneWithTransactionOrNot(queryParams);
+
+            //if record not exists, then create
+            if (!Utils.hasValue(result)) {
+                try {
+                    let useWhereAsValues = Utils.firstValid([params.useWhereAsValues,true]);
+                    let paramsToCreateMethod : any = {};
+
+                    if (useWhereAsValues) {
+                        paramsToCreateMethod = {...queryParams.where,...(queryParams.values||{})};
+                    } else {
+                        paramsToCreateMethod = queryParams.values||{};
+                    }
+
+                    if (params.createMethod)  {                        
+                        if (params.transaction) {
+                            paramsToCreateMethod.transaction = params.transaction;
+                        } 
+                        result = await params.createMethod.bind(this)(paramsToCreateMethod);
+                    } else {
+                        result = await this.create(paramsToCreateMethod,{transaction:params.transaction});
+                        if (Utils.hasValue(result)) {
+                            if (queryParams.raw)
+                                result = result.dataValues;
+                        } else throw new Error(`error on create register with ${JSON.parse(paramsToCreateMethod)}`);
+                    }
+                } catch (createError: any) {
+
+                    /**
+                     * Recursive(only 1)
+                     * prevent unique violated when record is created by other concurrent process
+                     * @created 2025-01-14
+                     * */
+                    if (createError.name?.toLowerCase().indexOf('unique') > -1
+                        || createError.constructor?.name?.toLowerCase().indexOf('unique') > -1
+                    ) {
+                        if (!params[`${this.name}_getOrCreate_inRecursion`]) {
+                            Utils.log(this.name, 'getOrCreate','recursing by unique constraint violated', params.where);
+                            params[`${this.name}_getOrCreate_inRecursion`] = true; //only 1 recursive call
+                            return await this.getOrCreate(params);
+                        } else {
+                            throw createError;
+                        }
+                    } else {
+                        throw createError;
+                    }
+                }
+            } 
+            if (params?.returnDataSwap && !(result instanceof DataSwap)) {
+                let dataTemp = result;
+                result = new DataSwap();
+                result.data = dataTemp;
+                result.success = true;
+            }
+        } catch (e: any) {
+            if (params?.returnDataSwap) {
+                result = new DataSwap();
+                result.setException(e);
+            } else {
+                throw e; //re-throw
+            }
+        }
+        return result;
+    }
+
+
+    /**
+     * save existent register or create if not exists according where property of params
+     * @created 2024-02-01
+     * @version 1.1.0
+     */
     static async saveOrCreate(params: any) {
         let result = new DataSwap();
         try {
             let queryParams = params.queryParams || params || {};
-            result.data = await this.findOne(queryParams);
-            if (!result.data) {
+            result.data = await this.findOneWithTransactionOrNot(queryParams);
+            if (!Utils.hasValue(result.data)) {
+                let useWhereAsValues = Utils.firstValid([params.useWhereAsValues,true]);
+                let paramsToCreateMethod : any = {};
+
+                if (useWhereAsValues) {
+                    paramsToCreateMethod = {...queryParams.where,...(queryParams.values||{})};
+                } else {
+                    paramsToCreateMethod = queryParams.values||{};
+                }
+
                 if (params.createMethod) 
-                    result = await params.createMethod.bind(this)({...queryParams.where,...(queryParams.values||{})},params);
-                else {
-                    result.data = await this.create({...queryParams.where,...(queryParams.values||{})},params.transaction ? {transaction: params.transaction} : {});
-                    if (result.data) {
+                    result = await params.createMethod.bind(this)(paramsToCreateMethod,params);
+
+                    if (!(result instanceof DataSwap)) {
+                        let resultTemp = result;
+                        result = new DataSwap();
+                        result.data = resultTemp;
                         result.success = true;
-                    } else throw new Error(`error on create register with ${JSON.parse({...queryParams.where,...(queryParams.values||{})})}`);
+                    }
+
+                else {
+                    result.data = await this.create(paramsToCreateMethod,params.transaction ? {transaction: params.transaction} : {});
+                    if (Utils.hasValue(result.data)) {
+                        result.success = true;
+                    } else throw new Error(`error on create register with ${JSON.parse(paramsToCreateMethod)}`);
                 }
             } else {
                 await this.updateData({

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
-import PcSupervController from "./winthor/registers/PcSupervController.js";
+import PcFornecController from "./winthor/registers/PcFornecController.js";
 
 
 export default class SuppliersIntegrationsController extends BaseIntegrationsController {
@@ -16,7 +16,7 @@ export default class SuppliersIntegrationsController extends BaseIntegrationsCon
             let origin = req.body.origin || "";
             switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
                 case "winthor":
-                    PcSupervController.get(req, res, next);
+                    PcFornecController.get(req, res, next);
                     break; 
                 default:
                     throw new Error(`origin not expected: ${origin}`);

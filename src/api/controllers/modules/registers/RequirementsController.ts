@@ -143,7 +143,7 @@ export default class RequirementsController extends BaseRegistersController {
             if (Utils.hasValue(projectItemParams.project_item_parent_id)) {
                 projectItemParams.parent_id = projectItemParams.project_item_parent_id;        
             } 
-            let projectItem = await Projects_Items.updateData(projectItemParams);
+            await Projects_Items.updateData(projectItemParams);
             super.patch.bind(this)(req,res,next);
         } catch (e: any) {
             res.setException(e);

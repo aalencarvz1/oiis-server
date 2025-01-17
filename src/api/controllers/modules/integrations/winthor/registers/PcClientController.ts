@@ -25,11 +25,104 @@ import People_Addresses from "../../../../../database/models/People_Addresses.js
 import PcCidadeController from "./PcCidadeController.js";
 import _ from "lodash";
 import Clients from "../../../../../database/models/Clients.js";
+import { NextFunction, Request, Response } from "express";
+import DatabaseUtils from "../../../../database/DatabaseUtils.js";
 
 export default class PcClientController extends WinthorBaseRegistersIntegrationsController{
     static getTableClassModel() : any {
         return PcClient;
     }
+
+
+
+    /**
+     * default RequestHandler method to get registers of table model controller
+     * @requesthandler
+     * @override
+     * @created 2025-01-14
+     * @version 1.0.0
+     */
+    static async get(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        try {
+            let bodyParams = req.body;
+            let queryParams = req.body.queryParams || req.body;
+            queryParams = DatabaseUtils.prepareQueryParams(queryParams);
+            queryParams.raw = true;
+
+            queryParams.where = queryParams.where || {};
+            if (Utils.hasValue(bodyParams.id)) {
+                queryParams.where.CODCLI = bodyParams.id
+            }
+            if (Utils.hasValue(bodyParams.filial)) {
+                queryParams.where.CODFILIALNF = bodyParams.filial
+            }
+            if (Utils.hasValue(bodyParams.seller)) {
+                queryParams.where.CODUSUR1 = bodyParams.seller
+            }
+            if (Utils.hasValue(bodyParams.state)) {
+                queryParams.where.ESTENT = bodyParams.state
+            }
+            if (Utils.hasValue(bodyParams.city)) {                
+                queryParams.where.CODCIDADE = bodyParams.city
+            }            
+            if (Utils.hasValue(bodyParams.identifier)) {
+                bodyParams.identifier = Utils.toArray(bodyParams.identifier);
+                queryParams.where[Op.and] = queryParams.where[Op.and] || [];
+                queryParams.where[Op.and].push(Sequelize.where(
+                    Sequelize.fn(
+                        'regexp_replace',
+                        Sequelize.col("CGCENT"),
+                        "^[0-9]",
+                        ""
+                    ),
+                    "in",
+                    bodyParams.identifier.map((el: any)=>el.toString().replace(/[^0-9]/g,''))
+                ))
+            }
+            if (Utils.hasValue(bodyParams.name)) {
+                bodyParams.name = Utils.toArray(bodyParams.name);
+                queryParams.where[Op.and] = queryParams.where[Op.and] || [];
+                let or = [];
+                or.push(Sequelize.where(
+                    Sequelize.col("CLIENTE"),
+                    "like",
+                    bodyParams.name.map((el: any)=>el.toString())
+                ));
+                queryParams.where[Op.and].push({
+                    [Op.or]: or
+                })
+            }
+            if (Utils.hasValue(bodyParams.fantasy)) {
+                bodyParams.fantasy = Utils.toArray(bodyParams.fantasy);
+                queryParams.where[Op.and] = queryParams.where[Op.and] || [];
+                let or = [];
+                or.push(Sequelize.where(
+                    Sequelize.col("FANTASIA"),
+                    "like",
+                    bodyParams.fantasy.map((el: any)=>el.toString())
+                ));
+                queryParams.where[Op.and].push({
+                    [Op.or]: or
+                })
+            }
+            if (Utils.toBool(Utils.firstValid([bodyParams.onlyWithCoordinates,false]))) {
+                queryParams.where[Op.and] = queryParams.where[Op.and] || [];
+                queryParams.where.LATITUDE = {[Op.not]: null}
+            }
+            if (Utils.hasValue(bodyParams.supervisor)) {
+                bodyParams.supervisor = Utils.toArray(bodyParams.supervisor);
+                queryParams.where[Op.and] = queryParams.where[Op.and] || [];
+                queryParams.where[Op.and].push(Sequelize.fn('exists',Sequelize.literal(`select 1 from jumbo.pcsuperv s join jumbo.pcusuari u on u.codsupervisor = s.codsupervisor where u.codusur in("PCCLIENT"."CODUSUR1","PCCLIENT"."CODUSUR2") and s.codsupervisor in (${bodyParams.supervisor.join(',')})`)))
+            }
+
+            res.data = await this.getTableClassModel().findAll(queryParams);
+            res.sendResponse(200,true);
+        } catch (e: any) {
+            res.setException(e);
+            res.sendResponse(517,false);
+        }
+    }
+
 
     static async getPcClientByIdentifiersDocs(identifiersDocs: any, options: any) : Promise<any> {
         let result = null;
@@ -85,7 +178,7 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
     static async getPcClientByIdentifierDocToIntegrate(identifiersDocs: any) : Promise<any> {
         let result = null;
         try {
-            result = await this.getPcClientByIdentifiersDocs(
+            result = await PcClientController.getPcClientByIdentifiersDocs(
                 identifiersDocs,{
                     attributes:[
                         [Sequelize.cast(Sequelize.fn('regexp_replace',Sequelize.col('CGCENT'),'[^0-9]',''),'DECIMAL(32)'),'id'], //for people, use document as id to avoid duplicate registers
@@ -209,7 +302,12 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                                     postalCode = null;
                                     address = null;
                                     if (winthorRegs[people[k].id_at_origin].CODCIDADE) {
-                                        city = await PcCidadeController.integrate(winthorRegs[people[k].id_at_origin].CODCIDADE);
+                                        let cityIntegrationResult : DataSwap = await PcCidadeController.integrate(winthorRegs[people[k].id_at_origin].CODCIDADE);
+                                        if (cityIntegrationResult?.success) {
+                                            city = cityIntegrationResult.data[0] || cityIntegrationResult.data;
+                                        } else {
+                                            cityIntegrationResult?.throw();
+                                        }
                                     }
                                     if (winthorRegs[people[k].id_at_origin].CODBAIRROENT) {
                                         neighborhoodParams = {
@@ -229,9 +327,6 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                                     }
                                     if (neighborhoodParams) {
                                         neighborhood = await NeighborHoods.getOrCreate(neighborhoodParams);
-                                        if (neighborhood && neighborhood.success) {
-                                            neighborhood = neighborhood.data;
-                                        }
                                     }
 
                                     if (city) {
@@ -243,9 +338,6 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                                                 name: winthorRegs[people[k].id_at_origin].ENDERENT
                                             }
                                         });
-                                        if (street && street.success) {
-                                            street = street.data;
-                                        }
 
                                         postalCode = await Postal_Codes.getOrCreate({
                                             raw:true,
@@ -257,9 +349,6 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                                                 address_type_id: people[k].identifier_doc_type_id == Identifier_Types.CPF ? Address_Types.RESIDENTIAL : Address_Types.BUSINESS
                                             }
                                         });
-                                        if (postalCode && postalCode.success) {
-                                            postalCode = postalCode.data;                                            
-                                        }
                                     }
 
                                     address = await Addresses.getOrCreate({
@@ -277,17 +366,15 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                                             address_type_id: people[k].identifier_doc_type_id == Identifier_Types.CPF ? Address_Types.RESIDENTIAL : Address_Types.BUSINESS
                                         }
                                     });
-                                    if (address && address.success) {
-                                        address = address.data;
-                                        await People_Addresses.getOrCreate({
-                                            raw:true,
-                                            where:{
-                                                people_id : people[k].id,
-                                                address_id: address.id,
-                                                address_type_id: address.address_type_id
-                                            }
-                                        });
-                                    }                                    
+
+                                    await People_Addresses.getOrCreate({
+                                        raw:true,
+                                        where:{
+                                            people_id : people[k].id,
+                                            address_id: address.id,
+                                            address_type_id: address.address_type_id
+                                        }
+                                    });
                                 }
                             }
                             result.success = true;
@@ -601,11 +688,8 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                             winthorClientCNPJ: integrations[key].CGCENT,
                             transaction
                         });
-                        if (!client) {
-                            throw new Error("client is null as return of integration client");
-                        } else if (!client.success) {
-                            if (client.exception) throw client.exception
-                            else throw new Error(client.message);                            
+                        if (!client?.success) {
+                            client?.throw();
                         } else {
                             client = client.data;
                         }

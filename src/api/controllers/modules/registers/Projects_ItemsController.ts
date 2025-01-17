@@ -5,6 +5,7 @@ import DatabaseUtils from "../../database/DatabaseUtils.js";
 import Projects_Items_Types from "../../../database/models/Projects_Items_Types.js";
 import { Sequelize } from "sequelize";
 import Project_Item_Origin_Types from "../../../database/models/Project_Item_Origin_Types.js";
+import EndPointsController from "../../endpoints/EndPointsController.js";
 
 export default class Projects_ItemsController extends BaseRegistersController {
 
@@ -57,7 +58,32 @@ export default class Projects_ItemsController extends BaseRegistersController {
         }
     }
 
+    /**
+     * @requesthandler
+     * @override
+     * @created 2025-01-17
+     * @version 1.0.0
+     */
+    static async get_next_identifier(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        try {
+            let queryParams = req.body.queryParams || req.body;
+            queryParams = DatabaseUtils.prepareQueryParams(queryParams);
+            queryParams.raw = true;
+            queryParams.attributes = [
+                Sequelize.literal(`max(coalesce(identifier,0)) as identifier`)
+            ]
+            res.data = await Projects_Items.findAll(queryParams);
+            res.data = (res.data[0]?.identifier || 0)-0+1;
+            res.sendResponse(200,true);
+        } catch (e: any) {
+            res.setException(e);
+            res.sendResponse(517,false);
+        }
+    }
+
     static {
-        this.configureDefaultRequestHandlers();
+        this.configureDefaultRequestHandlers([
+            this.get_next_identifier
+        ]);
     }
 }

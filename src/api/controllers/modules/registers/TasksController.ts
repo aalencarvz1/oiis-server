@@ -74,11 +74,15 @@ export default class TasksController extends BaseRegistersController {
         params.include = params.include || [];
         params.include.push({
             raw:true,
+            required:true,
             model: Tasks_Status_Users,
             attributes:[
                 Sequelize.literal(`${Tasks_Status_Users.tableName}.status_id as status_id`)
             ],
-            on: Sequelize.where(Sequelize.col(`${Tasks_Status_Users.tableName}.task_id`),Sequelize.col(`${Tasks.tableName}.id`))
+            on: [
+                Sequelize.where(Sequelize.col(`${Tasks_Status_Users.tableName}.task_id`),Sequelize.col(`${Tasks.tableName}.id`)),
+                Sequelize.where(Sequelize.col(`${Tasks_Status_Users.tableName}.user_id`),Sequelize.literal(params.user?.id))
+            ]
         });
         
         return await Tasks.findAll(params);
@@ -93,7 +97,8 @@ export default class TasksController extends BaseRegistersController {
      */
     static async get(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {  
-            let queryParams = req.body.queryParams || req.body || {};        
+            let queryParams = req.body.queryParams || req.body || {};      
+            queryParams.user = req.user;  
             res.data = await this._get(queryParams);
             res.sendResponse(200,true);
         } catch (e: any) {
@@ -160,6 +165,200 @@ export default class TasksController extends BaseRegistersController {
         }
     }
 
+    static async getIdsSupsX(pTaskId: number,pUserId: number) : Promise<any> {
+        let result : any = [];
+        let query = `
+            select
+                x.id
+            from
+                (select  id,
+                        parent_id,
+                        start_at
+                from    (select * from tasks
+                        order by parent_id desc, id desc) products_sorted,
+                        (select @pv := '${pTaskId}') initialisation
+                where   find_in_set(id, @pv)
+                and     length(@pv := concat(@pv, ',', coalesce(parent_id,id)))
+                order by
+                    parent_id,ID
+                ) t
+                join ${Tasks_Status_Users.tableName} x on (
+                    x.task_id = t.id
+                    and x.user_id = ${pUserId}
+                )
+        `;
+        let sups : any = await DBConnectionManager.getDefaultDBConnection()?.query(query);
+        sups = sups[0] || sups;
+        if (sups) {
+            result = sups.map((el: any)=>el.id);
+            result.pop(); //remove self, return only sups
+        }
+        return result;
+    }
+
+
+    static async updateSupStatusToRunning(pIdTask: number,pIdUser: number,pIdNewStatus: number) : Promise<void> {
+        let idsSups = await this.getIdsSupsX(pIdTask,pIdUser);            
+        if (idsSups && idsSups.length > 0) {
+
+            let query = `
+                update
+                    ${Tasks_Status_Users.tableName}
+                set
+                    status_id=${pIdNewStatus},
+                    start_at=coalesce(start_at,current_timestamp),
+                    last_run=CASE WHEN ${pIdNewStatus} = 2 THEN current_timestamp else last_run END
+                where
+                    id IN (${idsSups.join(',')})
+                    AND user_id = ${pIdUser}
+                    AND status_id != ${pIdNewStatus}
+            `;
+            await DBConnectionManager.getDefaultDBConnection()?.query(query);
+        }
+    } 
+
+
+
+    static async getIdsSubsX(pTaskId: number, pUserId: number): Promise<any> {
+        let result : any = [];
+        let query = `
+            select
+                x.id
+            from
+                (select  id,
+                        parent_id,
+                        start_at,
+                        @pv
+                from    (select * from tasks
+                        order by parent_id, id) products_sorted,
+                        (select @pv := '${pTaskId}') initialisation
+                where   find_in_set(parent_id, @pv)
+                and     length(@pv := concat(@pv, ',', id))
+                order by
+                    parent_id,ID
+                ) t
+                join ${Tasks_Status_Users.tableName} x on (
+                    x.task_id = t.id
+                    and x.user_id = ${pUserId}
+                )
+        `;
+        let subs : any = await DBConnectionManager.getDefaultDBConnection()?.query(query);
+        subs = subs[0] || subs;
+        if (subs) {
+            result = subs.map((el: any)=>el.id); 
+            //result.shift(); //remove self, return only sups //returning without self, not necessary shift
+        }
+        return result;
+    }
+
+
+    static async updateSubStatus(pTaskId: number,pUserId: number,pIdNewStatus: number) : Promise<any>{
+        let idsSubs = await this.getIdsSubsX(pTaskId,pUserId);            
+        if (idsSubs && idsSubs.length > 0) {                
+            let query = `
+                update
+                    ${Tasks_Status_Users.tableName} t1
+                    join ${Task_Status.tableName} ts on ts.id = t1.status_id
+                    join ${Task_Status.tableName} tsn on tsn.id = ${pIdNewStatus}
+                set
+                    t1.status_id=${pIdNewStatus},
+                    t1.end_at=CASE WHEN coalesce(tsn.is_concluded,0) = 1 then current_timestamp else t1.end_at end
+                where
+                    t1.id IN (${idsSubs.join(',')})
+                    and t1.user_id = ${pUserId}
+                    and coalesce(tsn.is_running,0) = 0 
+                    and (
+                        coalesce(ts.is_running,0) = 1
+                        or (
+                            1 in (coalesce(tsn.is_concluded,0),coalesce(tsn.is_canceled,0))
+                            and 1 not in (coalesce(ts.is_concluded,0),coalesce(ts.is_canceled,0))
+                        )
+                        or (
+                            coalesce(tsn.is_stopped,0) = 1
+                            and coalesce(ts.is_running,0) = 1
+                        )
+                    )                                           
+            `;
+            await DBConnectionManager.getDefaultDBConnection()?.query(query);
+
+            if (pIdNewStatus != Task_Status.RUNNING) {
+                let query = `
+                    update
+                        ${Tasks_Status_Users.tableName}
+                    set
+                        status_id=${Task_Status.RUNNING} 
+                    where
+                        user_id = ${pUserId}
+                        AND status_id = ${Task_Status.STOPPED}
+                        AND triggering_task_id in (${idsSubs.join(',')})
+                `;
+                await DBConnectionManager.getDefaultDBConnection()?.query(query);                    
+            }
+        }
+    }
+
+
+    static async stopOthers(pIdTask: number,pIdX: number,pIdUser: number,pIdNewStatus: number) : Promise<void>{
+        let idsSups = await this.getIdsSupsX(pIdTask,pIdUser);            
+        let idsSubs = await this.getIdsSubsX(pIdTask,pIdUser);            
+        idsSups = idsSups || [];
+        idsSubs = idsSubs || [];
+        let idsPreserve = idsSups.concat(idsSubs);
+        idsPreserve.push(pIdX);
+        if (idsPreserve && idsPreserve.length > 0) {
+            let query = `
+                update
+                    ${Tasks_Status_Users.tableName}
+                set
+                    status_id=${pIdNewStatus},
+                    triggering_task_id=${pIdTask}
+                where
+                    id NOT IN (${idsPreserve.join(',')})
+                    AND user_id = ${pIdUser}
+                    AND status_id = ${Task_Status.RUNNING}
+            `;
+            await DBConnectionManager.getDefaultDBConnection()?.query(query);
+        }
+    }
+
+
+    static async playOthers(pIdTask: number,pIdX: number,pIdUser: number,pIdNewStatus: number) : Promise<void>{
+        let idsSups = await this.getIdsSupsX(pIdTask,pIdUser);            
+        let idsSubs = await this.getIdsSubsX(pIdTask,pIdUser);            
+        idsSups = idsSups || [];
+        idsSubs = idsSubs || [];
+        let idsPreserve = idsSups.concat(idsSubs);
+        idsPreserve.push(pIdX);
+        if (idsPreserve && idsPreserve.length > 0) {
+            let query = `
+                update
+                    ${Tasks_Status_Users.tableName} t
+                set
+                    t.status_id=${pIdNewStatus}                        
+                where
+                    t.id NOT IN (${idsPreserve.join(',')})
+                    AND t.user_id = ${pIdUser}
+                    AND t.status_id = ${Task_Status.STOPPED}
+                    AND t.triggering_task_id = ${pIdTask}
+            `;
+            let [result,metadata] : any = await DBConnectionManager.getDefaultDBConnection()?.query(query,{type:QueryTypes.UPDATE});
+            if (metadata.affectedRows > 0 && pIdNewStatus == Task_Status.RUNNING && idsSups.length > 0) {
+                query = `
+                    update
+                        ${Tasks_Status_Users.tableName}
+                    set
+                        status_id=${Task_Status.STOPPED}                        
+                    where
+                        id NOT IN (${idsPreserve.join(',')})
+                        AND id IN (${idsSups.join(',')})
+                        AND user_id = ${pIdUser}
+                        AND status_id = ${Task_Status.RUNNING}
+                `;
+                await DBConnectionManager.getDefaultDBConnection()?.query(query,{type:QueryTypes.UPDATE});
+            }
+        }
+    }
+
 
     /**
      * @requesthandler
@@ -190,7 +389,7 @@ export default class TasksController extends BaseRegistersController {
                     operation: 'UPDATE'
                 };
                 for(let key in queryParams.values || queryParams) {
-                    if (['id','creator_user_id','created_at'].indexOf(key) == -1) {                        
+                    if (['id','creator_user_id','created_at','where'].indexOf(key) == -1) {                        
                         if (typeof task[key] !== "undefined") {
                             if (task[key] != (queryParams.values || queryParams)[key]
                                 && (task[key] != null || (task[key] == null && Utils.hasValue((queryParams.values || queryParams)[key])))
@@ -248,11 +447,11 @@ export default class TasksController extends BaseRegistersController {
                 taskLogX = await Tasks_Status_Users_Logs.create(taskLogX);
 
                 if (taskLogX.new_status_id == Task_Status.RUNNING) {
-                    //await Task_Controller.stopOthers(task.id,taskX.id, taskX.user_id, Task_Status.STOPPED);
-                    //await Task_Controller.updateSupStatusToRunning(task.id,taskX.user_id, taskLogX.new_status_id);
+                    await this.stopOthers(task.id,taskX.id, taskX.user_id, Task_Status.STOPPED);
+                    await this.updateSupStatusToRunning(task.id,taskX.user_id, taskLogX.new_status_id);
                 } else if (Utils.hasValue(taskLogX.new_status_id)) {
-                    //await Task_Controller.updateSubStatus(task.id,taskX.user_id, taskLogX.new_status_id);                          
-                    //await Task_Controller.playOthers(task.id,taskX.id, taskX.user_id, Task_Status.RUNNING);
+                    await this.updateSubStatus(task.id,taskX.user_id, taskLogX.new_status_id);                          
+                    await this.playOthers(task.id,taskX.id, taskX.user_id, Task_Status.RUNNING);
                     //update sups with new status if math rules
                     if (taskLogX.new_status_id == Task_Status.STOPPED) {
                         let idSup = task.parent_id;
