@@ -30,7 +30,9 @@ export default class EndPointsController{
         'logistic_orders_integration_controller',
         'logistic_orders_winthor_integration_controller',
         'midia_controller'
-    ]
+    ];
+
+    private static endPoints : any[] = [];
 
     /**
      * Custom midleware reponse properties
@@ -192,59 +194,67 @@ export default class EndPointsController{
     }
     
     // Função para listar todas as rotas carregadas
-    static getEndPoints(router: Router) {
-        const routes: any = {};
-        router.stack.forEach((layer: any) => {
-            if (layer.route) {
-                // Captura métodos HTTP e caminhos
-                let methods : any = {};
-                Object.keys(layer.route.methods).map(el=>{
-                    if (el.indexOf("_") === 0) {
-                        methods[el.substring(1).toLowerCase()] = el.substring(1).toUpperCase();
-                    } else {
-                        methods[el.toLowerCase()] = el.toUpperCase();
-                    }
-                });
-                if (Object.keys(methods)[0] == 'all') {
-                    methods = {
-                        post:'POST',
-                        get:'GET',
-                        put:'PUT',
-                        delete:'DELETE'
-                    };
-                }
-                
-                let routeArray = layer.route.path.split("/");
-                let controllerName = (routeArray[routeArray.length-2] || routeArray[routeArray.length-1]).trim().toLowerCase();
-                let methodName = routeArray[routeArray.length-1].trim().toLowerCase();
-                if (this.namedEndpoints.indexOf(methodName) > -1) {
-                    routes[methodName] = {
-                        path: layer.route.path,
-                        methods
-                    }
-                } else {
-                    if (controllerName.indexOf("controller") > -1) {
-                        let routePathTemp = layer.route.path.split("/");
-                        routePathTemp.pop();
-                        routePathTemp = routePathTemp.join("/");
-                        routes[controllerName] = {
-                            path: routePathTemp,
-                            methods
+    static getEndPoints(router: Router,params?: any) : any {
+        let result = this.endPoints;
+        if (!Utils.hasValue(result)) {
+            const routes: any = {};
+            router.stack.forEach((layer: any) => {
+                if (layer.route) {
+                    // Captura métodos HTTP e caminhos
+                    let methods : any = {};
+                    Object.keys(layer.route.methods).map(el=>{
+                        if (el.indexOf("_") === 0) {
+                            methods[el.substring(1).toLowerCase()] = el.substring(1).toUpperCase();
+                        } else {
+                            methods[el.toLowerCase()] = el.toUpperCase();
+                        }
+                    });
+                    if (Object.keys(methods)[0] == 'all') {
+                        methods = {
+                            post:'POST',
+                            get:'GET',
+                            put:'PUT',
+                            delete:'DELETE'
                         };
-                        routes[layer.route.path] = {
+                    }
+                    
+                    let routeArray = layer.route.path.split("/");
+                    let controllerName = (routeArray[routeArray.length-2] || routeArray[routeArray.length-1]).trim().toLowerCase();
+                    let methodName = routeArray[routeArray.length-1].trim().toLowerCase();
+                    if (this.namedEndpoints.indexOf(methodName) > -1) {
+                        routes[methodName] = {
                             path: layer.route.path,
                             methods
                         }
                     } else {
-                        routes[layer.route.path] = {
-                            path: layer.route.path,
-                            methods
+                        if (controllerName.indexOf("controller") > -1) {
+                            let routePathTemp = layer.route.path.split("/");
+                            routePathTemp.pop();
+                            routePathTemp = routePathTemp.join("/");
+                            routes[controllerName] = {
+                                path: routePathTemp,
+                                methods
+                            };
+                            routes[layer.route.path] = {
+                                path: layer.route.path,
+                                methods
+                            }
+                        } else {
+                            routes[layer.route.path] = {
+                                path: layer.route.path,
+                                methods
+                            }
                         }
                     }
                 }
-            }
-        });
-        return routes;
+            });
+            this.endPoints = routes;
+            result = this.endPoints;
+        }
+        if (Utils.hasValue(params?.key)) {
+            result = result[params.key];
+        }
+        return result;
     }
 
     /**
@@ -254,7 +264,8 @@ export default class EndPointsController{
      */
     static get_endpoints: RequestHandler = (req:Request, res: Response, next: NextFunction)=>{
         try {
-            res.data = this.getEndPoints(this.getRouter());
+            let params = req.body || {};
+            res.data = this.getEndPoints(this.getRouter(),params);
             res.success = true;
             res.sendResponse(200,true);
         } catch (e:any) {
