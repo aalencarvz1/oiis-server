@@ -588,9 +588,9 @@ export default [
         "subs":[{      
             "id" :8000,
             "routine_type_id" : 1,
-            "name" : "CAMPANHA 2024",
+            "name" : "CAMPANHA 2025",
             "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M400-320q100 0 170-70t70-170q0-100-70-170t-170-70q-100 0-170 70t-70 170q0 100 70 170t170 70Zm-40-120v-280h80v280h-80Zm-140 0v-200h80v200h-80Zm280 0v-160h80v160h-80ZM824-80 597-307q-41 32-91 49.5T400-240q-134 0-227-93T80-560q0-134 93-227t227-93q134 0 227 93t93 227q0 56-17.5 106T653-363l227 227-56 56Z\"/></svg>",
-            "view_path" :"/views/modules/reports/campanha2024",
+            "view_path" :"/views/modules/reports/sinergy_campaign",
             "numeric_order":8000
         },{      
             "id" :8001,
@@ -602,9 +602,9 @@ export default [
         },{      
             "id" :8002,
             "routine_type_id" : 1,
-            "name" : "CAMPANHA 2024 PBI",
+            "name" : "CAMPANHA 2025 PBI",
             "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M160-120q-33 0-56.5-23.5T80-200v-640l67 67 66-67 67 67 67-67 66 67 67-67 67 67 66-67 67 67 67-67 66 67 67-67v640q0 33-23.5 56.5T800-120H160Zm0-80h280v-240H160v240Zm360 0h280v-80H520v80Zm0-160h280v-80H520v80ZM160-520h640v-120H160v120Z\"/></svg>",
-            "view_path" :"/views/modules/reports/campanha2024pbi",
+            "view_path" :"/views/modules/reports/sinergy_campaign_pbi",
             "numeric_order":8001
         },{      
             "id" :8005,
