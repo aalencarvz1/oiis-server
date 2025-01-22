@@ -1,7 +1,7 @@
 import Warehouses from "../../../database/models/Warehouses.js";
-import BaseRegistersController from "./BaseRegistersController.js";
+import BasePeopleRegistersController from "./BasePopleRegistersController.js";
 
-export default class WarehousesController extends BaseRegistersController {
+export default class WarehousesController extends BasePeopleRegistersController {
     static getTableClassModel() : any {
         return Warehouses;
     }
