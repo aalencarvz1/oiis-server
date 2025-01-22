@@ -7,7 +7,7 @@ export default class PeopleController extends BaseRegistersController {
     static getTableClassModel() : any {
         return People;
     }
-
+   
 
     /**
      * get people by identifier docs
