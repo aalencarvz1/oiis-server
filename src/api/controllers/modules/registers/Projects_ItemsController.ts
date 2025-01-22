@@ -20,6 +20,33 @@ export default class Projects_ItemsController extends BaseRegistersController {
 
 
     /**
+     * include defaulut Project_Items foreign keys joins
+     * @created 2025-01-22
+     * @version 1.0.0
+     */
+    static includeJoins(queryParams: any) : void {
+        queryParams.include = queryParams.include || [];
+        queryParams.include.push({
+            required:true,
+            model: Projects_Items_Types,
+            attributes:[
+                Sequelize.literal(`${Projects_Items_Types.tableName}.name as project_item_type_name`)
+            ],
+            on: Sequelize.where(Sequelize.col(`${Projects_Items_Types.tableName}.id`),Sequelize.col(`${Projects_Items.tableName}.project_item_type_id`))
+        });
+
+        queryParams.include.push({
+            required:true,
+            model: Project_Item_Origin_Types,
+            attributes:[
+                Sequelize.literal(`${Project_Item_Origin_Types.tableName}.name as project_item_origin_name`)
+            ],
+            on: Sequelize.where(Sequelize.col(`${Project_Item_Origin_Types.tableName}.id`),Sequelize.col(`${Projects_Items.tableName}.project_item_origin_id`))
+        });
+    }
+
+
+    /**
      * @requesthandler
      * @override
      * @created 2024-12-31
@@ -30,26 +57,7 @@ export default class Projects_ItemsController extends BaseRegistersController {
             let queryParams = req.body.queryParams || req.body;
             queryParams = DatabaseUtils.prepareQueryParams(queryParams);
             queryParams.raw = true;
-
-            queryParams.include = queryParams.include || [];
-            queryParams.include.push({
-                raw:true,
-                model: Projects_Items_Types,
-                attributes:[
-                    Sequelize.literal(`${Projects_Items_Types.tableName}.name as project_item_type_name`)
-                ],
-                on: Sequelize.where(Sequelize.col(`${Projects_Items_Types.tableName}.id`),Sequelize.col(`${Projects_Items.tableName}.project_item_type_id`))
-            });
-
-            queryParams.include.push({
-                raw:true,
-                model: Project_Item_Origin_Types,
-                attributes:[
-                    Sequelize.literal(`${Project_Item_Origin_Types.tableName}.name as project_item_origin_name`)
-                ],
-                on: Sequelize.where(Sequelize.col(`${Project_Item_Origin_Types.tableName}.id`),Sequelize.col(`${Projects_Items.tableName}.project_item_origin_id`))
-            });
-
+            this.includeJoins(queryParams);
             res.data = await Projects_Items.findAll(queryParams);
             res.sendResponse(200,true);
         } catch (e: any) {
