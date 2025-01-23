@@ -27,14 +27,15 @@ export default class RequirementsController extends BaseRegistersController {
      * @created 2025-01-01
      * @version 1.0.0
      */
-    static async _get(params: any) : Promise<any[]> {
-        params = DatabaseUtils.prepareQueryParams(params);
-        params.raw = Utils.firstValid([params.raw,true]);
-        params.include = params.include || [];
-        Projects_ItemsController.includeJoins(params);
+    static async _get(params?: any) : Promise<any[]> {
+        let queryParams = params?.queryParams || params || {};
+        queryParams = DatabaseUtils.prepareQueryParams( queryParams);
+        queryParams.raw = Utils.firstValid([queryParams.raw,true]);
+        queryParams.include = queryParams.include || [];
+        Projects_ItemsController.includeJoins(queryParams);
 
         //include requirements join
-        params.include.push({
+        queryParams.include.push({
             required:true,
             model: Requirements,
             attributes:[
@@ -50,7 +51,7 @@ export default class RequirementsController extends BaseRegistersController {
             }]
         });
 
-        return await Projects_Items.findAll(params);
+        return await Projects_Items.findAll(queryParams);
     }
 
     /**
@@ -60,7 +61,7 @@ export default class RequirementsController extends BaseRegistersController {
      * @version 1.0.0
      */
     static async get(req: Request, res: Response, next: NextFunction) : Promise<void> {
-        try {          
+        try {                      
             res.data = await this._get(req.body);
             res.sendResponse(200,true);
         } catch (e: any) {
