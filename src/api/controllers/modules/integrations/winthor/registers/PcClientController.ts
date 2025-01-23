@@ -755,8 +755,177 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
         }
         return result;
     }
+
+
+    /**
+     * change winthor client to use margin by order 
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     * @created 2024-10-16
+     * @version 1.0.0
+     */
+    static async change_client_to_margin_by_order(req: Request,res:Response,next: NextFunction) : Promise<void>{
+        try {
+            let codcli = req.body.codcli;
+            if (Utils.hasValue(codcli)) {
+                codcli = Utils.toArray(codcli);
+
+                //use transaction over all process
+                await DBConnectionManager.getWinthorDBConnection()?.transaction(async (transaction)=>{
+
+                    //select all clientes requesteds
+                    let query = `
+                        select
+                            c.codcli,
+                            c.codplpag,
+                            p.descricao,
+                            coalesce(c.codfilialnf,case when c.codusur1 between 200 and 299 then '2' else '1' end) as codfilialnf,
+                            p.numdias,                            
+                            coalesce(
+                                p2.codplpag,
+                                (
+                                    select min(p3.codplpag)
+                                    from jumbo.pcplpag p3
+                                    where p3.descricao like '%MARGEM%'
+                                )
+                            ) as "new_codplpag"                             
+                        from
+                            jumbo.pcclient c
+                            join jumbo.pcplpag p on p.codplpag = c.codplpag
+                            left outer join jumbo.pcplpag p2 on p2.numdias = p.numdias and p2.descricao like '%MARGEM%'
+                        where
+                            c.codcli in (${codcli.join(',')})
+                    `;
+
+                    let clients : any[any] = await DBConnectionManager.getWinthorDBConnection()?.query(query,{type:QueryTypes.SELECT, transaction:transaction});
+
+                    //iterate each client
+                    for(let row in clients) {
+
+                        //update client record
+                        query = `
+                            update 
+                                jumbo.pcclient 
+                            set 
+                                codplpag = ${clients[row].new_codplpag},
+                                usadebcredrca = 'N',
+                                plpagneg='S'
+                            where
+                                codcli = ${clients[row].CODCLI}
+                        `;
+                        await DBConnectionManager.getWinthorDBConnection()?.query(query,{type:QueryTypes.UPDATE, transaction:transaction});
+
+                        //get plans wich client has acess
+                        query = `
+                            select 
+                                *
+                            from
+                                jumbo.pcplpag p
+                            where 
+                                p.numdias <= ${clients[row].NUMDIAS}
+                                and p.descricao like '%MARGEM%'
+                            order by
+                                p.numdias
+                        `;
+                        let plans : any[any] = await DBConnectionManager.getWinthorDBConnection()?.query(query,{type:QueryTypes.SELECT, transaction:transaction});
+
+                        //delete previous records from pcplpagcli (routine 308 winthor)
+                        query = `
+                            delete 
+                            from
+                                jumbo.pcplpagcli
+                            where
+                                codcli=${clients[row].CODCLI}
+                        `;
+                        await DBConnectionManager.getWinthorDBConnection()?.query(query,{type:QueryTypes.DELETE, transaction:transaction});
+
+                        //iterate each plan client has access
+                        for(let rowPlan in plans) {
+
+                            //insert restriction in plan if not exists
+                            query = `
+                                select 
+                                    1
+                                from
+                                    jumbo.pcplpagrestricao pr
+                                where 
+                                    pr.tiporestricao = 'CL'
+                                    and pr.codplpag = ${plans[rowPlan].CODPLPAG}
+                                    and pr.codrestricao = ${clients[row].CODCLI}
+                            `;
+                            let restriction = await DBConnectionManager.getWinthorDBConnection()?.query(query,{type:QueryTypes.SELECT, transaction:transaction});
+                            if (!Utils.hasValue(restriction)) {
+                                query = `
+                                    insert into jumbo.pcplpagrestricao (
+                                        codplpag,
+                                        tiporestricao,
+                                        codrestricao
+                                    ) values (
+                                        ${plans[rowPlan].CODPLPAG},
+                                        'CL',
+                                        ${clients[row].CODCLI}
+                                    )
+                                `;
+                                await DBConnectionManager.getWinthorDBConnection()?.query(query,{type:QueryTypes.INSERT, transaction:transaction});
+                            }
+
+                            //insert specific plan wich client has acess (routine 308 winthor)
+                            query = `
+                                insert into jumbo.pcplpagcli (
+                                    codplpag,
+                                    codcli
+                                ) values (
+                                    ${plans[rowPlan].CODPLPAG},
+                                    ${clients[row].CODCLI}
+                                )
+                            `;
+                            await DBConnectionManager.getWinthorDBConnection()?.query(query,{type:QueryTypes.INSERT, transaction:transaction});
+                        }
+
+
+                        //delete previous records from pctabprcli
+                        query = `
+                            delete 
+                            from
+                                jumbo.pctabprcli
+                            where
+                                codcli=${clients[row].CODCLI}
+                        `;
+                        await DBConnectionManager.getWinthorDBConnection()?.query(query,{type:QueryTypes.DELETE, transaction:transaction});
+
+                        //re-insert client price table
+                        query = `
+                            insert into jumbo.pctabprcli (
+                                codcli,
+                                codfilialnf,
+                                numregiao,
+                                dtultalter,
+                                codfuncultalter
+                            ) values (
+                                ${clients[row].CODCLI},
+                                ${clients[row].CODFILIALNF},
+                                ${clients[row].CODFILIALNF == 2 ? 110 : 101},
+                                sysdate,
+                                142
+                            )
+                        `;
+                        await DBConnectionManager.getWinthorDBConnection()?.query(query,{type:QueryTypes.INSERT, transaction:transaction});                        
+                    }                    
+
+                    res.success = true;
+                    return res.success;
+                });
+            } else {
+                throw new Error("missing data");
+            }            
+        } catch (e) {
+            res.setException(e);            
+        }
+        res.sendResponse();
+    }
     
     static {
-        this.configureDefaultRequestHandlers();
+        this.configureDefaultRequestHandlers([this.change_client_to_margin_by_order]);
     }
 }
