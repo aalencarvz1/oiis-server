@@ -18,6 +18,12 @@ export default {
       "logQueryParameters":true,
       "define":{
         "freezeTableName": true
+      },
+      "pool":{
+        "max": 150,
+        "min": 0,
+        "acquire": 300000,
+        "idle": 100000
       }
     },
     "production_old": {
@@ -32,6 +38,12 @@ export default {
       //"logging":true,
       "define":{
         "freezeTableName": true
+      },
+      "pool":{
+        "max": 150,
+        "min": 0,
+        "acquire": 300000,
+        "idle": 100000
       }
     },
     "development": {
@@ -48,6 +60,12 @@ export default {
         "freezeTableName": true
       },
       //"logging":true
+      "pool":{
+        "max": 150,
+        "min": 0,
+        "acquire": 300000,
+        "idle": 100000
+      }
     },
     "development_old": {
       "id":11,
@@ -60,6 +78,12 @@ export default {
       "logQueryParameters":true,
       "define":{
         "freezeTableName": true
+      },
+      "pool":{
+        "max": 150,
+        "min": 0,
+        "acquire": 300000,
+        "idle": 100000
       }
     },
     "production_winthor": {
@@ -72,6 +96,12 @@ export default {
       "logQueryParameters":true,
       "dialectOptions":{      
         "schema": "JUMBO"
+      },
+      "pool":{
+        "max": 150,
+        "min": 0,
+        "acquire": 300000,
+        "idle": 100000
       }
     },
     "development_winthor": {
@@ -84,6 +114,12 @@ export default {
       "logQueryParameters":true,
       "dialectOptions":{      
         "schema": "JUMBO"
+      },
+      "pool":{
+        "max": 150,
+        "min": 0,
+        "acquire": 300000,
+        "idle": 100000
       }
     },
     "production_winthor_integration": {
@@ -96,6 +132,12 @@ export default {
       "logQueryParameters":true,
       "dialectOptions":{      
         "schema": "OIIS"
+      },
+      "pool":{
+        "max": 150,
+        "min": 0,
+        "acquire": 300000,
+        "idle": 100000
       }
     },
     "development_winthor_integration": {
@@ -108,6 +150,12 @@ export default {
       "logQueryParameters":true,
       "dialectOptions":{      
         "schema": "OIIS"
+      },
+      "pool":{
+        "max": 150,
+        "min": 0,
+        "acquire": 300000,
+        "idle": 100000
       }
     },
     "production_consult": {
@@ -120,6 +168,12 @@ export default {
       "logQueryParameters":true,
       "dialectOptions":{      
         "schema": "CONSULTA"
+      },
+      "pool":{
+        "max": 150,
+        "min": 0,
+        "acquire": 300000,
+        "idle": 100000
       }
     },
     "development_consult": {
@@ -132,6 +186,12 @@ export default {
       "logQueryParameters":true,
       "dialectOptions":{      
         "schema": "CONSULTA"
+      },
+      "pool":{
+        "max": 150,
+        "min": 0,
+        "acquire": 300000,
+        "idle": 100000
       }
     },
     "production_ep": {
@@ -144,6 +204,12 @@ export default {
       "logQueryParameters":true,
       "dialectOptions":{      
         "schema": "EP"
+      },
+      "pool":{
+        "max": 150,
+        "min": 0,
+        "acquire": 300000,
+        "idle": 100000
       }
     },
     "development_ep": {
@@ -156,6 +222,12 @@ export default {
       "logQueryParameters":true,
       "dialectOptions":{      
         "schema": "EP"
+      },
+      "pool":{
+        "max": 150,
+        "min": 0,
+        "acquire": 300000,
+        "idle": 100000
       }
     },
     "production_external_data": {
@@ -170,6 +242,12 @@ export default {
       //"logging":true,
       "define":{
         "freezeTableName": true
+      },
+      "pool":{
+        "max": 150,
+        "min": 0,
+        "acquire": 300000,
+        "idle": 100000
       }
     },
     "development_external_data": {
@@ -184,6 +262,12 @@ export default {
       "define":{
         "freezeTableName": true
       },
-      //"logging":true
+      //"logging":true,
+      "pool":{
+        "max": 150,
+        "min": 0,
+        "acquire": 300000,
+        "idle": 100000
+      }
     },
   }

@@ -32,7 +32,6 @@ export default class Utils {
             }
         }catch(e:any){
             Utils.log(e);					  
-            alert(e?.message || e);									
         }
     };
 
@@ -46,7 +45,6 @@ export default class Utils {
             }
         }catch(e: any){
             Utils.log(e);					  
-            alert(e?.message || e);								
         }
     };
 
@@ -159,7 +157,6 @@ export default class Utils {
             return null;
         }catch(e: any){
             Utils.log(e);
-            alert(e?.message || e);            
             return null;
         } 
     };
