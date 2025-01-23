@@ -5,10 +5,9 @@ import Utils from "../../utils/Utils.js";
 import BaseRegistersController from "./BaseRegistersController.js";
 import DatabaseUtils from "../../database/DatabaseUtils.js";
 import Requirements_Types from "../../../database/models/Requirements_Types.js";
-import { Sequelize } from "sequelize";
-import Projects_Items_Types from "../../../database/models/Projects_Items_Types.js";
-import Project_Item_Origin_Types from "../../../database/models/Project_Item_Origin_Types.js";
+import { QueryTypes, Sequelize } from "sequelize";
 import Projects_ItemsController from "./Projects_ItemsController.js";
+import DBConnectionManager from "../../../database/DBConnectionManager.js";
 
 export default class RequirementsController extends BaseRegistersController {
 
@@ -28,30 +27,37 @@ export default class RequirementsController extends BaseRegistersController {
      * @version 1.0.0
      */
     static async _get(params?: any) : Promise<any[]> {
-        let queryParams = params?.queryParams || params || {};
-        queryParams = DatabaseUtils.prepareQueryParams( queryParams);
-        queryParams.raw = Utils.firstValid([queryParams.raw,true]);
-        queryParams.include = queryParams.include || [];
-        Projects_ItemsController.includeJoins(queryParams);
+        let result : any[any] = [];
+        let queryParams : any = params?.queryParams || params || {};
+        if (Utils.hasValue(queryParams?.query)) {
+            result = await DBConnectionManager.getDefaultDBConnection()?.query(queryParams.query,{type:QueryTypes.SELECT});
+        } else {
+            queryParams = DatabaseUtils.prepareQueryParams( queryParams);
+            queryParams.raw = Utils.firstValid([queryParams.raw,true]);
+            queryParams.include = queryParams.include || [];
+            Projects_ItemsController.includeJoins(queryParams);
 
-        //include requirements join
-        queryParams.include.push({
-            required:true,
-            model: Requirements,
-            attributes:[
-                Sequelize.literal(`${Requirements.tableName}.requirement_type_id as requirement_type_id`)
-            ],
-            on: Sequelize.where(Sequelize.col(`${Requirements.tableName}.project_item_id`),Sequelize.col(`${Projects_Items.tableName}.id`)),
-            include:[{
-                model: Requirements_Types,
+            //include requirements join
+            queryParams.include.push({
+                required:true,
+                model: Requirements,
                 attributes:[
-                    Sequelize.literal(`\`${Requirements.tableName}->${Requirements_Types.tableName}\`.name as requirement_type_name`)
+                    Sequelize.literal(`${Requirements.tableName}.id as requirement_id`),
+                    Sequelize.literal(`${Requirements.tableName}.requirement_type_id as requirement_type_id`)
                 ],
-                on: Sequelize.where(Sequelize.col(`\`${Requirements.tableName}->${Requirements_Types.tableName}\`.id`),Sequelize.col(`${Requirements.tableName}.requirement_type_id`))
-            }]
-        });
+                on: Sequelize.where(Sequelize.col(`${Requirements.tableName}.project_item_id`),Sequelize.col(`${Projects_Items.tableName}.id`)),
+                include:[{
+                    model: Requirements_Types,
+                    attributes:[
+                        Sequelize.literal(`\`${Requirements.tableName}->${Requirements_Types.tableName}\`.name as requirement_type_name`)
+                    ],
+                    on: Sequelize.where(Sequelize.col(`\`${Requirements.tableName}->${Requirements_Types.tableName}\`.id`),Sequelize.col(`${Requirements.tableName}.requirement_type_id`))
+                }]
+            });
+            result = await Projects_Items.findAll(queryParams);
+        }
 
-        return await Projects_Items.findAll(queryParams);
+        return result;
     }
 
     /**
@@ -79,19 +85,12 @@ export default class RequirementsController extends BaseRegistersController {
     static async put(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let queryParams = req.body.queryParams?.values || req.body.values || req.body.queryParams || req.body || {};
+            let projectItemQueryParams = {...queryParams};
 
             //create project item if not has project_item_id
-            if (!Utils.hasValue(queryParams.project_item_id)) {
-                let projectItem : any = null;
-                let projectItemParams : any = {...queryParams};
+            let projectItem = await Projects_Items.createData(projectItemQueryParams);
 
-                //replace possible virtual column "project_item_parent_id" to real column "parent_id" if present
-                if (Utils.hasValue(projectItemParams.project_item_parent_id)) {
-                    projectItemParams.parent_id = projectItemParams.project_item_parent_id;        
-                } 
-                projectItem = await Projects_Items.createData(projectItemParams);
-                queryParams.project_item_id = projectItem.id;
-            } 
+            queryParams.project_item_id = projectItem.id;
             
             //parent_id is used to project_items, not to requirements
             if (Utils.hasValue(queryParams.parent_id)) {
@@ -100,6 +99,7 @@ export default class RequirementsController extends BaseRegistersController {
             } 
             
             let result = await Requirements.create(queryParams);
+
             res.data = await this._get({where:{"id":queryParams.project_item_id}});
             res.data = res.data[0] || null;
             res.sendResponse(200,true);
@@ -117,22 +117,25 @@ export default class RequirementsController extends BaseRegistersController {
      */
     static async patch(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
-            let params : any = req.body?.queryParams || req.body || {};  
-            let projectItemParams : any = {};
-            if (params.values) {
-                projectItemParams = {...params.values,id:params.values.project_item_id};
-            } else {
-                projectItemParams = {...params,id:params.project_item_id};
-            }
-            if (Utils.hasValue(projectItemParams.parent_id)) {
-                projectItemParams.parent_id = null;
-                delete projectItemParams.parent_id;
-            }
-            if (Utils.hasValue(projectItemParams.project_item_parent_id)) {
-                projectItemParams.parent_id = projectItemParams.project_item_parent_id;        
+            let queryParams = req.body.queryParams?.values || req.body.values || req.body.queryParams || req.body || {};
+            let projectItemQueryParams = {...queryParams};
+
+            //uprete project item if not has project_item_id
+            await Projects_Items.updateData(projectItemQueryParams);
+           
+            //parent_id is used to project_items, not to requirements
+            if (Utils.hasValue(queryParams.parent_id)) {
+                queryParams.parent_id = undefined;
+                delete queryParams.parent_id;
             } 
-            await Projects_Items.updateData(projectItemParams);
-            super.patch.bind(this)(req,res,next);
+           
+            let projectItemId = queryParams.id;
+            queryParams.id = queryParams.requirement_id;
+            await Requirements.updateData(queryParams);
+
+            res.data = await this._get({where:{"id":projectItemId}});
+            res.data = res.data[0] || null;
+            res.sendResponse(200,true);
         } catch (e: any) {
             res.setException(e);
             res.sendResponse(517,false);

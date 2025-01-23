@@ -5,14 +5,6 @@ import { DataTypes } from "sequelize";
 import  BaseTableModel  from './BaseTableModel.js';
 import  Project_Task_Types  from "./Project_Task_Types.js";
 import  Projects_Items  from "./Projects_Items.js";
-import  Utils  from "../../controllers/utils/Utils.js";
-import  Record_Status  from "./Record_Status.js";
-import  Users  from "./Users.js";
-import  Data_Origins  from "./Data_Origins.js";
-import  Relationship_Types  from "./Relationship_Types.js";
-import  Relationships  from "./Relationships.js";
-import  Requirements  from "./Requirements.js";
-import { Request } from "express";
 
 
 
