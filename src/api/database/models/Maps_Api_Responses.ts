@@ -14,6 +14,7 @@ export default class Maps_Api_Responses extends BaseTableModel {
   declare entity: string;
   declare entity_id: string;
   declare library: string;  
+  declare request_params: string;  
   declare response_status_code: number;
   declare response_status: string; 
   declare response: string;
@@ -34,6 +35,9 @@ export default class Maps_Api_Responses extends BaseTableModel {
       },
       library: {
         type: DataTypes.STRING(255)
+      },
+      request_params: {
+        type: DataTypes.TEXT
       },
       response_status_code: {
         type: DataTypes.INTEGER.UNSIGNED

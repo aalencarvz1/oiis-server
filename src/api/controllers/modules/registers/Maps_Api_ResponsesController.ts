@@ -18,17 +18,17 @@ export default class Maps_Api_ResponsesController extends BaseRegistersControlle
         try {            
             let bodyParams = req.body || req.query ;
             if (bodyParams.library == 'geocoding') {
-                let apiParams = bodyParams.entity;
+                let apiParams = bodyParams.parameters;
                 if (typeof apiParams != 'string') {
                     apiParams = JSON.stringify(apiParams);
                 }
                 let apiRes : any = await Maps_Api_Responses.findOne({
                     raw:true,
                     where:{
-                        //entity: bodyParams.entity || 'PEOPLE',
+                        entity: bodyParams.entity || 'PEOPLE',
                         entity_id: bodyParams.entity_id,
                         library: bodyParams.library || 'geocoding',
-                        entity: apiParams,
+                        request_params: apiParams,
                         [Op.and]:[{
                             [Op.or]:[{
                                 response_status_code:200
@@ -69,7 +69,7 @@ export default class Maps_Api_ResponsesController extends BaseRegistersControlle
                             entity:bodyParams.entity || 'PEOPLE',
                             entity_id:bodyParams.entity_id,
                             library:bodyParams.library || 'geocoding',
-                            //entity: apiParams,
+                            request_params: apiParams,
                             response_status_code:apiRes.status,
                             response_status:apiRes.statusText,
                             response:res.data
