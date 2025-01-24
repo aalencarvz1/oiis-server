@@ -924,8 +924,62 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
         }
         res.sendResponse();
     }
+
+    static async get_log_last_updated_coordinates(req: Request,res:Response,next: NextFunction) : Promise<void> {
+        try {
+            let origin = req.body.origin || ["WINTHOR"];
+            let whereRowids : any[any] | string = [];
+            let whereRowid = [];
+            for(let k in req.body.rowids) {
+                whereRowid.push(`'${req.body.rowids[k]}'`);
+                if (whereRowid.length >= 999) {
+                    whereRowids.push(whereRowid);
+                    whereRowid = [];
+                }
+            }
+            if (whereRowid.length) {
+                whereRowids.push(whereRowid);
+            }
+            whereRowids = `(lc1.rowidcampo in (${whereRowids.map((el?: any)=>el.join(',')).join(') or lc1.rowidcampo in (')}))`;
+            let query = `
+                SELECT
+                    lc1.rowidcampo,
+                    lc1.matriculausuario,
+                    lc1.datalog,
+                    lc1.nomeaplicacao
+                FROM
+                    JUMBO.PCLOGCADASTRO lc1
+                WHERE
+                        lc1.nomeobjeto = 'PCCLIENT'
+                    AND lc1.valornew LIKE '%LATITUDE%'
+                    AND lc1.nomeaplicacao LIKE '%Ion%'
+                    AND lc1.datalog = (
+                        SELECT
+                            MAX(lc2.datalog) AS datalog
+                        FROM
+                            JUMBO.PCLOGCADASTRO lc2
+                        WHERE
+                                lc2.nomeobjeto = lc1.nomeobjeto
+                            AND lc2.rowidcampo = lc1.rowidcampo
+                            AND lc2.valornew LIKE '%LATITUDE%'
+                            AND lc2.nomeaplicacao LIKE '%Ion%'
+                    )
+                    and ${whereRowids}
+                ORDER BY
+                    lc1.datalog;
+            `;
+            res.data = await DBConnectionManager.getWinthorDBConnection()?.query(query,{type:QueryTypes.SELECT});
+            res.success = true;
+        } catch (e) {
+            res.setException(e);            
+        }
+        res.sendResponse();
+    }
     
     static {
-        this.configureDefaultRequestHandlers([this.change_client_to_margin_by_order]);
+        this.configureDefaultRequestHandlers([
+            this.change_client_to_margin_by_order,
+            this.get_log_last_updated_coordinates
+        ]);
     }
 }
