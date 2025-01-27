@@ -1,6 +1,6 @@
 'use strict';
 
-import { DataTypes } from "sequelize";
+import { DataTypes, Op } from "sequelize";
 import BaseTableModel from "./BaseTableModel.js";
 import modules from "../catalogs/modules.js";
 
@@ -18,6 +18,7 @@ export default class Modules extends BaseTableModel {
   declare path: string;
   declare numeric_order: number;
   declare description: string;
+  declare show_in_menu: number;
 
 
 
@@ -45,7 +46,12 @@ export default class Modules extends BaseTableModel {
       },   
       description: {
         type: DataTypes.TEXT
-      }
+      },
+      show_in_menu: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue:1
+      },
     }
   };
   
@@ -58,6 +64,15 @@ export default class Modules extends BaseTableModel {
       name: Modules.tableName + '_u1',
       fields: [...Modules.getBaseTableModelUniqueFields(),...Modules.uniqueFields],
       type:"unique"
+    },{
+      name: Modules.tableName + '_c_1',
+      fields:['show_in_menu'],
+      type:"check",
+      where:{
+        show_in_menu: {
+              [Op.in]: [0,1]
+          }
+      }
     }
   ]];
 
