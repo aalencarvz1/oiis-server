@@ -682,6 +682,12 @@ export default class BaseTableModel extends Model {
                 result = new DataSwap();
                 result.data = dataTemp;
                 result.success = true;
+            } else if (!params?.returnDataSwap && (result instanceof DataSwap)) {
+                if (result.success) {
+                    result = result.data;
+                } else {
+                    result.throw();
+                }
             }
         } catch (e: any) {
             if (params?.returnDataSwap) {

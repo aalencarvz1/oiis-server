@@ -9,7 +9,7 @@ import Permissions from "../../../database/models/Permissions.js";
 import Relationship_Types from "../../../database/models/Relationship_Types.js";
 import Report_Visions from "../../../database/models/Report_Visions.js";
 import Report_Data_Founts from "../../../database/models/Report_Data_Founts.js";
-
+import EpIntegrationsRegistersController from "../integrations/ep/EpIntegrationsRegistersController.js";
 
 /**
  * Class to manage structured queries. 
@@ -27,12 +27,13 @@ export default class StructuredQueryUtils {
      *                     INIT METHODS CALLED ON EVAL TEXTS                            *
      ***********************************************************************************/
 
-    static mountPeriodsField(params: any,field: string) : null | string {
+    static mountPeriodsField(params: any,field: string) : null | string {        
         let result = null;
         let periods = params.periods || [];
         let fieldPeriods = [];
         let newPeriods : any = [];
 
+        
         if (Utils.typeOf(periods) != "array") {
             periods = Utils.toArray(periods,",");
         }
@@ -122,6 +123,21 @@ export default class StructuredQueryUtils {
             result = result.join(',');
         } else {
             result = '-1'
+        }
+        return result;
+    }
+
+
+    static async getSellersIdsFromOrigin(params?: any, origin?: any) : Promise<any> {
+        let result = null;
+        origin = (origin || params?.origin?.name || params?.origin?.label || params?.origin||'default').trim().toLowerCase();
+        switch(origin) {
+            case "ep":
+                result = await EpIntegrationsRegistersController.getSellersIds(params);
+            break;
+            default:
+                throw new Error(`not expected origin: ${origin}`);
+            break;
         }
         return result;
     }
@@ -258,6 +274,7 @@ export default class StructuredQueryUtils {
                 while(p1 > -1 && p2 > -1 && p2 > p1 && loopLimit > 0) {
                     replaceText = result.substr(p1,(p2-p1)+2);
                     evalText = replaceText.substring(2,replaceText.length-2);
+                    console.log('executing eval',evalText);
                     evaluetedValue = await eval(evalText);
                     result = result.replaceAll(replaceText,evaluetedValue);
                     p1 = result.indexOf("${");
@@ -522,6 +539,7 @@ export default class StructuredQueryUtils {
         let result = null;
         let structuredQueryOrigin = null;
         params = params || {};
+        console.log(params);
         let visionsIds = params.visions || [];
         let periods = params.periods || [];
         let conditions = params.conditions || [];
