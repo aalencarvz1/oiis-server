@@ -57,7 +57,9 @@ export default {
                 parent_id: idModuleSup,
                 name:routine.name,
                 numeric_order: routine.numeric_order,
-                icon:routine.icon
+                path: routine.path,
+                icon:routine.icon,
+                show_in_menu: Utils.firstValid([routine.show_in_menu,1]),
               });
 
               for(let i = 0; i < routine.subs.length; i++) {
@@ -66,22 +68,40 @@ export default {
             }
 
           } else {
-            registersRoutines.push({
-              id:routine.id-0,
-              status_reg_id: Record_Status.ACTIVE,
-              creator_user_id : Users.SYSTEM,
-              created_at: new Date(),
-              data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
-              is_sys_rec : 1,
-              module_id: idModuleSup,
-              parent_id: idRoutineSup,
-              routine_type_id : routine.routine_type_id-0,
-              name:routine.name,
-              icon:routine.icon,
-              view_path:routine.view_path,
-              numeric_order: routine.numeric_order,
-              show_in_menu: Utils.firstValid([routine.show_in_menu,1]),
-            });
+            if (routine.routine_type_id || routine.view_path) {
+              registersRoutines.push({
+                id:routine.id-0,
+                status_reg_id: Record_Status.ACTIVE,
+                creator_user_id : Users.SYSTEM,
+                created_at: new Date(),
+                data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+                is_sys_rec : 1,
+                module_id: idModuleSup,
+                parent_id: idRoutineSup,
+                routine_type_id : routine.routine_type_id-0,
+                name:routine.name,
+                icon:routine.icon,
+                view_path:routine.view_path,
+                numeric_order: routine.numeric_order,
+                show_in_menu: Utils.firstValid([routine.show_in_menu,1]),
+              });
+            } else {
+              //single module
+              registersModules.push({
+                id:routine.id-0,
+                status_reg_id: Record_Status.ACTIVE,
+                creator_user_id : Users.SYSTEM,
+                created_at: new Date(),
+                data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+                is_sys_rec : 1,
+                parent_id: idModuleSup,
+                name:routine.name,
+                numeric_order: routine.numeric_order,
+                path: routine.path,
+                icon:routine.icon,
+                show_in_menu: Utils.firstValid([routine.show_in_menu,1]),
+              });
+            }
           }
         }
       } catch(e) {
