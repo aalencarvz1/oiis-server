@@ -72,7 +72,10 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
         let where : Filter[] = req.body.filters
         console.log(where)
         try {
-            let query =`
+            let result: any;
+            let query: any;
+            if(where.length > 0) {
+            query =`
             SELECT
                 CODPROD,
                 DESCRICAO,
@@ -97,7 +100,6 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
              `
             const conditions = where.map(f => {
                 const { campo, operador, valor } = f;
-
                 if (valor === null || valor === undefined) {
                     return `(${campo} IS NULL)`;
                 }
@@ -112,11 +114,45 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                 }
                 return `(${campo} ${operador || '='} '${valor}')`;
             });
-
             query += conditions.join(' AND ');
-            
-            
-           let result = await DBConnectionManager.getWinthorDBConnection()?.query(query, {type: QueryTypes.SELECT})
+            result = await DBConnectionManager.getWinthorDBConnection()?.query(query, {type: QueryTypes.SELECT})
+        }else{
+            query =`
+            SELECT
+                CODPROD,
+                DESCRICAO,
+                EMBALAGEM,
+                UNIDADE,
+                PESOLIQ,
+                PESOBRUTO,
+                CODEPTO,
+                TEMREPOS,
+                QTUNIT,
+                DTCADASTRO,
+                DTEXCLUSAO,
+                DTULTALTCOM,
+                PRAZOVAL,
+                REVENDA,
+                QTUNITCX,
+                IMPORTADO,
+                CODAUXILIAR
+            FROM
+                PCPRODUT
+            WHERE
+
+                CODPROD LIKE '%${req.body.termo}%'
+                OR DESCRICAO LIKE '%${req.body.termo}%'
+                OR EMBALAGEM LIKE '%${req.body.termo}%'
+                OR UNIDADE LIKE '%${req.body.termo}%'
+                OR CODEPTO LIKE '%${req.body.termo}%'
+                OR DTCADASTRO LIKE '%${req.body.termo}%'
+                OR DTEXCLUSAO LIKE '%${req.body.termo}%'
+                OR DTULTALTCOM LIKE '%${req.body.termo}%'
+                OR PRAZOVAL LIKE '%${req.body.termo}%'
+                OR CODAUXILIAR LIKE '%${req.body.termo}%'
+             `
+             result = await DBConnectionManager.getWinthorDBConnection()?.query(query, {type: QueryTypes.SELECT})
+        }
             if(result){
                 res.status(200).json(result)
             }else{
