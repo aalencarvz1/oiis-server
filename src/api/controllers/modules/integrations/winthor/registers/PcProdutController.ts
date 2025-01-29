@@ -23,7 +23,7 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
             let winthorData = await PcProdut.findOne({
                 raw:true,
                 where:{
-                CODPROD: queryParams.id_at_origin || queryParams.item_id || queryParams.id || queryParams.CODPROD
+                    CODPROD: queryParams.id_at_origin || queryParams.item_id || queryParams.id || queryParams.CODPROD
                 }
             });
             if (winthorData) {
