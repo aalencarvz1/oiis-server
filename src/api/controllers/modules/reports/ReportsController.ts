@@ -1,4 +1,4 @@
-import { Op, QueryTypes } from "sequelize";
+import { Op, QueryTypes, Sequelize } from "sequelize";
 import DBConnectionManager from "../../../database/DBConnectionManager.js";
 import Report_Data_Founts from "../../../database/models/Report_Data_Founts.js";
 import DataSwap from "../../data/DataSwap.js";
@@ -51,8 +51,17 @@ export default class ReportsController extends BaseRegistersController {
         if (dates && dates.length) {
             dates[0] = new Date(dates[0]);
             dates[1] = new Date(dates[1] || dates[0]);
-            queryParams.where.start_date = {[Op.lte]: dates[0]};
-            queryParams.where.end_date = {[Op.gte]: dates[1]};
+            queryParams.where[Op.and] = queryParams.where[Op.and] || [];
+            queryParams.where[Op.and].push(Sequelize.where(
+                Sequelize.fn('coalesce',Sequelize.cast(Sequelize.col('start_date'), 'datetime'),Sequelize.cast(dates[0],'datetime')),
+                Op.gte,
+                Sequelize.cast(dates[0],'datetime')
+            ));
+            queryParams.where[Op.and].push(Sequelize.where(
+                Sequelize.fn('coalesce',Sequelize.cast(Sequelize.col('end_date'), 'datetime'),Sequelize.cast(dates[1],'datetime')),
+                Op.gte,
+                Sequelize.cast(dates[1],'datetime')
+            ));
         }
         return await Report_Data_Founts.findOne(queryParams);
     }
