@@ -228,8 +228,9 @@ export default class StructuredQueryUtils {
                 if (typeof conditions == 'string') {
                     conditions = JSON.parse(conditions);
                 }
-                conditions = conditions.filter((el: any)=>(el.reportVision || el.vision || {}).id || el.reportVision || el.vision == visionId);
+                conditions = conditions.filter((el: any)=>((el.reportVision || el.vision || {}).id || el.reportVision || el.vision) == visionId);
                 if (Utils.hasValue(conditions)) {
+                    console.log('nnnnnnnnn',conditions,visionId);
                     let or = [];
                     for(let k in conditions) {
                         if ((conditions[k].selecteds || conditions[k].values) && (conditions[k].selecteds || conditions[k].values).length) {
