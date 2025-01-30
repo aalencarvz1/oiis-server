@@ -10,6 +10,7 @@ import Relationship_Types from "../../../database/models/Relationship_Types.js";
 import Report_Visions from "../../../database/models/Report_Visions.js";
 import Report_Data_Founts from "../../../database/models/Report_Data_Founts.js";
 import EpIntegrationsRegistersController from "../integrations/ep/EpIntegrationsRegistersController.js";
+import DatabaseUtils from "../../database/DatabaseUtils.js";
 
 /**
  * Class to manage structured queries. 
@@ -230,7 +231,6 @@ export default class StructuredQueryUtils {
                 }
                 conditions = conditions.filter((el: any)=>((el.reportVision || el.vision || {}).id || el.reportVision || el.vision) == visionId);
                 if (Utils.hasValue(conditions)) {
-                    console.log('nnnnnnnnn',conditions,visionId);
                     let or = [];
                     for(let k in conditions) {
                         if ((conditions[k].selecteds || conditions[k].values) && (conditions[k].selecteds || conditions[k].values).length) {
@@ -250,6 +250,14 @@ export default class StructuredQueryUtils {
         return result;
     }
     static mountCondictionsByReportVision = StructuredQueryUtils.mountConditionsByReportVision;
+
+    static mountExtraConditions(params?: any, logicalJoin?: string) : any {
+        let result = params?.queryParams?.where || params?.where || params || '';
+        if (Utils.hasValue(result)) {
+            result = ` ${logicalJoin} (${DatabaseUtils.whereToString(result)}) `;
+        }
+        return result;
+    }
 
     /************************************************************************************
      *                          END METHODS CALLED ON EVAL TEXTS                        *
