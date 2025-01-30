@@ -50,19 +50,38 @@ export default class ReportsController extends BaseRegistersController {
 
         if (dates && dates.length) {
             dates[0] = new Date(dates[0]);
-            dates[1] = new Date(dates[1] || dates[0]);
-            queryParams.where[Op.and] = queryParams.where[Op.and] || [];
-            queryParams.where[Op.and].push(Sequelize.where(
-                Sequelize.fn('coalesce',Sequelize.cast(Sequelize.col('start_date'), 'datetime'),Sequelize.cast(dates[0],'datetime')),
-                Op.gte,
-                Sequelize.cast(dates[0],'datetime')
-            ));
-            queryParams.where[Op.and].push(Sequelize.where(
-                Sequelize.fn('coalesce',Sequelize.cast(Sequelize.col('end_date'), 'datetime'),Sequelize.cast(dates[1],'datetime')),
-                Op.gte,
-                Sequelize.cast(dates[1],'datetime')
-            ));
+            dates[1] = new Date(dates[1] || dates[0]);            
+            queryParams.where[Op.or] = queryParams.where[Op.or] || [];
+            queryParams.where[Op.or].push({
+                [Op.and]:[
+                    Sequelize.where(
+                        Sequelize.fn('coalesce',Sequelize.cast(Sequelize.col('start_date'), 'datetime'),Sequelize.cast(dates[0],'datetime')),
+                        Op.lte,
+                        Sequelize.cast(dates[0],'datetime')
+                    ),
+                    Sequelize.where(
+                        Sequelize.fn('coalesce',Sequelize.cast(Sequelize.col('end_date'), 'datetime'),Sequelize.cast(dates[0],'datetime')),
+                        Op.gte,
+                        Sequelize.cast(dates[0],'datetime')
+                    )
+                ]
+            });
+            queryParams.where[Op.or].push({
+                [Op.and]:[
+                    Sequelize.where(
+                        Sequelize.fn('coalesce',Sequelize.cast(Sequelize.col('end_date'), 'datetime'),Sequelize.cast(dates[1],'datetime')),
+                        Op.gte,
+                        Sequelize.cast(dates[1],'datetime')
+                    ),
+                    Sequelize.where(
+                        Sequelize.fn('coalesce',Sequelize.cast(Sequelize.col('start_date'), 'datetime'),Sequelize.cast(dates[1],'datetime')),
+                        Op.lte,
+                        Sequelize.cast(dates[1],'datetime')
+                    )
+                ]
+            });
         }
+        console.log('xxxxxxxxxxxxxxxxxx',queryParams.where);
         return await Report_Data_Founts.findOne(queryParams);
     }
 
