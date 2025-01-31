@@ -5,8 +5,14 @@ import Utils from "../../utils/Utils.js";
 import Campaign_Entities from "../../../database/models/Campaign_Entities.js";
 import Campaign_Kpis from "../../../database/models/Campaign_Kpis.js";
 import DatabaseUtils from "../../database/DatabaseUtils.js";
-import { QueryTypes } from "sequelize";
+import { QueryTypes, Sequelize } from "sequelize";
 import Entities_Types from "../../../database/models/Entities_Types.js";
+import Tables from "../../../database/models/Tables.js";
+import Schemas from "../../../database/models/Schemas.js";
+import Connections from "../../../database/models/Connections.js";
+import DBConnectionManager from "../../../database/DBConnectionManager.js";
+import QueryBuilder from "../../database/QueryBuilder.js";
+
 
 export default class CampaignsController extends BaseRegistersController {
     static getTableClassModel() : any {
@@ -69,15 +75,11 @@ export default class CampaignsController extends BaseRegistersController {
                     model: Entities_Types
                 })
 
-
-
-
-
-                if (((this.getTableClassModel() as any).accessLevel || 1) == 2 ) {
-                    queryParams.where = queryParams.where || {};
-                    queryParams.where.creator_user_id = req.user?.id
-                }
-                res.data = await this.getTableClassModel().findAll(queryParams);
+            if (((this.getTableClassModel() as any).accessLevel || 1) == 2 ) {
+                queryParams.where = queryParams.where || {};
+                queryParams.where.creator_user_id = req.user?.id
+            }
+            res.data = await this.getTableClassModel().findAll(queryParams);
             }
 
             res.sendResponse(200,true);
@@ -86,9 +88,121 @@ export default class CampaignsController extends BaseRegistersController {
             res.sendResponse(517,false);
         }
     }
+    static async get_entities_type_data(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        try {
+            const campaignId = req.body.campaignId
+            if(campaignId!){
+                let campaign = await Campaigns.findOne({
+                    raw:true,
+                    where: {
+                        id: campaignId
+                        },
+                })
+                if(Utils.hasValue(campaign)){
+                    let campaignEntities = await Campaign_Entities.findAll({
+                        raw:true,
+                        where:{
+                            campaign_id: campaign.id
+                        }
+                    })
+                    campaignEntities = Utils.hasValue(campaignEntities)? campaignEntities :  ([{entity_id: -1}] as any)
+                    let entityType = await Entities_Types.findOne({
+                        raw: true,
+                        where: {
+                            id: campaign.entity_type_id,       
+                        },
+                        include: [
+                            {
+                                //raw:true,
+                                model: Tables,
+                                attributes:[
+                                    Sequelize.literal(`${Tables.tableName}.name as table_name`) as any
+                                ],
+                                on:Sequelize.where(Sequelize.col(`${Tables.tableName}.id`),Sequelize.col(`${Entities_Types.tableName}.table_id`)),
+                                include:[
+                                    {
+                                        model: Schemas,
+                                        attributes:[
+                                            Sequelize.literal(`\`${Tables.tableName}->${Schemas.tableName}\`.name as schema_name`) as any
+                                        ],
+                                        on:Sequelize.where(Sequelize.col(`\`${Tables.tableName}->${Schemas.tableName}\`.id`),Sequelize.col(`${Tables.tableName}.schema_id`))    
+                                    },
+                                    {
+                                        model: Connections,
+                                        attributes:[
+                                            Sequelize.literal(`\`${Tables.tableName}->${Connections.tableName}\`.name as connection_name`) as any
+                                        ],
+                                        on:Sequelize.where(Sequelize.col(`\`${Tables.tableName}->${Connections.tableName}\`.id`),Sequelize.col(`${Tables.tableName}.data_connection_id`)) 
+                                        
+                                    }
+                                ]
+                            }
+                            
+                        ]
+                    })                
+                    let query = `
+                    SELECT
+                        ${entityType?.identifier_column} as id,
+                        ${entityType?.name_column} as name
+                    FROM
+                        ${(entityType as any)?.schema_name}.${(entityType as any)?.table_name}
+                    WHERE
+                        ${QueryBuilder.mountInClause(entityType?.identifier_column,campaignEntities.map((el: any)=> el.entity_id) )}
+                    `
+                    console.log(query)
+                    let connection = DBConnectionManager.getConnectionByConnectionName((entityType as any)?.connection_name) 
+                    res.data = await connection?.query(query, {type:QueryTypes.SELECT});
 
+                    res.sendResponse(200,true);
+                }else{
+                    throw new Error('not found')
+                }
+            }else{
+                throw new Error('missing data')
+            }
+         
+        } catch (e: any) {
+            res.setException(e);
+            res.sendResponse(517,false);
+        }
+    }
+    static async patch(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        try {
+            let queryParams = req.body.queryParams || req.body;
 
+            if(Utils.hasValue(queryParams.entities) && Utils.hasValue(queryParams.entity_type_id) && Utils.hasValue(queryParams.id)){
+                await Campaign_Entities.destroy({
+                    where: {
+                        campaign_id: queryParams.id
+                    }
+                })
+                await Campaign_Kpis.destroy({
+                    where: {
+                        campaign_id: queryParams.id
+                    }
+                })
+                res.data = await this.getTableClassModel().patchData(queryParams);
+            
+                for(let k in queryParams.entities) {
+                    queryParams.entities[k].campaign_id = queryParams.id;
+                    await Campaign_Entities.create(queryParams.entities[k])
+                }
+                if (Utils.hasValue(queryParams.kpis)) {
+                    for(let k in queryParams.kpis) {
+                        queryParams.kpis[k].campaign_id = queryParams.id;
+                        await Campaign_Kpis.create(queryParams.kpis[k])
+                    }
+                }
+                res.sendResponse(200,true);
+            }else{
+                throw new Error('missing data')
+            }
+        } catch (e: any) {
+            res.setException(e);
+            res.sendResponse(517,false);
+        }
+    }
     static {
-        this.configureDefaultRequestHandlers();
+        this.configureDefaultRequestHandlers([this.get_entities_type_data]);
     }
 }
