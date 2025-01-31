@@ -283,7 +283,7 @@ export default class StructuredQueryUtils {
                 while(p1 > -1 && p2 > -1 && p2 > p1 && loopLimit > 0) {
                     replaceText = result.substr(p1,(p2-p1)+2);
                     evalText = replaceText.substring(2,replaceText.length-2);
-                    console.log('executing eval',evalText);
+                    //console.log('executing eval',evalText);
                     evaluetedValue = await eval(evalText);
                     result = result.replaceAll(replaceText,evaluetedValue);
                     p1 = result.indexOf("${");
