@@ -33,6 +33,13 @@ export default class CampaignsController extends BaseRegistersController {
             if (Utils.hasValue(queryParams.entities)) {
                 for(let k in queryParams.entities) {
                     queryParams.entities[k].campaign_id = res.data.id;
+                    if (Utils.hasValue(queryParams.entities[k].id)) {
+                        if (!Utils.hasValue(queryParams.entities[k].entity_id)) {
+                            queryParams.entities[k].entity_id = queryParams.entities[k].id;
+                        }
+                        queryParams.entities[k].id = undefined;
+                        delete queryParams.entities[k].id;
+                    }
                     await Campaign_Entities.create(queryParams.entities[k])
                 }
             }
@@ -142,8 +149,8 @@ export default class CampaignsController extends BaseRegistersController {
                     })                
                     let query = `
                     SELECT
-                        ${entityType?.identifier_column} as id,
-                        ${entityType?.name_column} as name
+                        ${entityType?.identifier_column} as "id",
+                        ${entityType?.name_column} as "name"
                     FROM
                         ${(entityType as any)?.schema_name}.${(entityType as any)?.table_name}
                     WHERE

@@ -56,8 +56,8 @@ export default class Entities_TypesController extends BaseRegistersController {
                 
                 let query = `
                 SELECT
-                    ${entityType?.identifier_column} as id,
-                    ${entityType?.name_column} as name
+                    ${entityType?.identifier_column} as "id",
+                    ${entityType?.name_column} as "name"
                 FROM
                     ${(entityType as any)?.schema_name}.${(entityType as any)?.table_name}
                 `
