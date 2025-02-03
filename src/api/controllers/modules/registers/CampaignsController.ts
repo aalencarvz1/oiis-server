@@ -18,45 +18,8 @@ export default class CampaignsController extends BaseRegistersController {
     static getTableClassModel() : any {
         return Campaigns;
     }
-    /**
-     * default RequestHandler method to put registers of table model controller
-     * @requesthandler
-     * @override
-     * @created 2024-12-31
-     * @version 1.0.0
-     */
-    static async put(req: Request, res: Response, next: NextFunction) : Promise<void> {
-        try {
-            let queryParams = req.body.queryParams || req.body;
-            res.data = await this.getTableClassModel().createData(queryParams);
 
-            if (Utils.hasValue(queryParams.entities)) {
-                for(let k in queryParams.entities) {
-                    queryParams.entities[k].campaign_id = res.data.id;
-                    if (Utils.hasValue(queryParams.entities[k].id)) {
-                        if (!Utils.hasValue(queryParams.entities[k].entity_id)) {
-                            queryParams.entities[k].entity_id = queryParams.entities[k].id;
-                        }
-                        queryParams.entities[k].id = undefined;
-                        delete queryParams.entities[k].id;
-                    }
-                    await Campaign_Entities.create(queryParams.entities[k])
-                }
-            }
 
-            if (Utils.hasValue(queryParams.kpis)) {
-                for(let k in queryParams.kpis) {
-                    queryParams.kpis[k].campaign_id = res.data.id;
-                    await Campaign_Kpis.create(queryParams.kpis[k])
-                }
-            }
-
-            res.sendResponse(200,true);
-        } catch (e: any) {
-            res.setException(e);
-            res.sendResponse(517,false);
-        }
-    }
     /**
      * default RequestHandler method to put registers of table model controller
      * @requesthandler
@@ -95,6 +58,95 @@ export default class CampaignsController extends BaseRegistersController {
             res.sendResponse(517,false);
         }
     }
+
+
+
+    /**
+     * default RequestHandler method to put registers of table model controller
+     * @requesthandler
+     * @override
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
+    static async put(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        try {
+            let queryParams = req.body.queryParams || req.body;
+            res.data = await this.getTableClassModel().createData(queryParams);
+
+            if (Utils.hasValue(queryParams.entities)) {
+                for(let k in queryParams.entities) {
+                    queryParams.entities[k].campaign_id = res.data.id;
+                    if (Utils.hasValue(queryParams.entities[k].id)) {
+                        if (!Utils.hasValue(queryParams.entities[k].entity_id)) {
+                            queryParams.entities[k].entity_id = queryParams.entities[k].id;
+                            queryParams.entities[k].id = undefined;
+                            delete queryParams.entities[k].id;
+                        }                        
+                    }
+                    await Campaign_Entities.create(queryParams.entities[k])
+                }
+            }
+
+            if (Utils.hasValue(queryParams.kpis)) {
+                for(let k in queryParams.kpis) {
+                    queryParams.kpis[k].campaign_id = res.data.id;
+                    await Campaign_Kpis.create(queryParams.kpis[k])
+                }
+            }
+
+            res.sendResponse(200,true);
+        } catch (e: any) {
+            res.setException(e);
+            res.sendResponse(517,false);
+        }
+    }
+
+
+    static async patch(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        try {
+            let queryParams = req.body.queryParams || req.body;
+
+            if(Utils.hasValue(queryParams.entities) && Utils.hasValue(queryParams.entity_type_id) && Utils.hasValue(queryParams.id)){
+                await Campaign_Entities.destroy({
+                    where: {
+                        campaign_id: queryParams.id
+                    }
+                })
+                await Campaign_Kpis.destroy({
+                    where: {
+                        campaign_id: queryParams.id
+                    }
+                })
+                res.data = await this.getTableClassModel().patchData(queryParams);
+            
+                for(let k in queryParams.entities) {
+                    queryParams.entities[k].campaign_id = queryParams.id;
+                    if (Utils.hasValue(queryParams.entities[k].id)) {
+                        if (!Utils.hasValue(queryParams.entities[k].entity_id)) {
+                            queryParams.entities[k].entity_id = queryParams.entities[k].id;
+                            queryParams.entities[k].id = undefined;
+                            delete queryParams.entities[k].id;
+                        }                                                
+                    }
+                    await Campaign_Entities.create(queryParams.entities[k])
+                }
+                if (Utils.hasValue(queryParams.kpis)) {
+                    for(let k in queryParams.kpis) {
+                        queryParams.kpis[k].campaign_id = queryParams.id;
+                        await Campaign_Kpis.create(queryParams.kpis[k])
+                    }
+                }
+                res.sendResponse(200,true);
+            }else{
+                throw new Error('missing data')
+            }
+        } catch (e: any) {
+            res.setException(e);
+            res.sendResponse(517,false);
+        }
+    }
+    
+    
     static async get_entities_type_data(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             const campaignId = req.body.campaignId
@@ -173,42 +225,9 @@ export default class CampaignsController extends BaseRegistersController {
             res.sendResponse(517,false);
         }
     }
-    static async patch(req: Request, res: Response, next: NextFunction) : Promise<void> {
-        try {
-            let queryParams = req.body.queryParams || req.body;
+    
 
-            if(Utils.hasValue(queryParams.entities) && Utils.hasValue(queryParams.entity_type_id) && Utils.hasValue(queryParams.id)){
-                await Campaign_Entities.destroy({
-                    where: {
-                        campaign_id: queryParams.id
-                    }
-                })
-                await Campaign_Kpis.destroy({
-                    where: {
-                        campaign_id: queryParams.id
-                    }
-                })
-                res.data = await this.getTableClassModel().patchData(queryParams);
-            
-                for(let k in queryParams.entities) {
-                    queryParams.entities[k].campaign_id = queryParams.id;
-                    await Campaign_Entities.create(queryParams.entities[k])
-                }
-                if (Utils.hasValue(queryParams.kpis)) {
-                    for(let k in queryParams.kpis) {
-                        queryParams.kpis[k].campaign_id = queryParams.id;
-                        await Campaign_Kpis.create(queryParams.kpis[k])
-                    }
-                }
-                res.sendResponse(200,true);
-            }else{
-                throw new Error('missing data')
-            }
-        } catch (e: any) {
-            res.setException(e);
-            res.sendResponse(517,false);
-        }
-    }
+
     static {
         this.configureDefaultRequestHandlers([this.get_entities_type_data]);
     }
