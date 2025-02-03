@@ -178,6 +178,7 @@ import PcTabDev from '../../database/models/winthor/PcTabDev.js';
 import PcUsuari from '../../database/models/winthor/PcUsuari.js';
 import PcVeicul from '../../database/models/winthor/PcVeicul.js';
 import Produtos_Armazenados_Terceiros from '../../database/models/winthor/Produtos_Armazenados_Terceiros.js';
+import SjdOrigemDeDados from '../../database/models/sjd/SjdOrigemDeDados.js';
 import SjdProduto_Origem from '../../database/models/sjd/SjdProduto_Origem.js';
 import SjdEstoque_Origem from '../../database/models/sjd/SjdEstoque_Origem.js';
 import SjdHistEst_Origem from '../../database/models/sjd/SjdHistEst_Origem.js';
@@ -435,6 +436,7 @@ export default class ModelsController {
         }
 
         if (Utils.toBool(process.env.HAS_CONSULT_INTEGRATION) == true) {
+            SjdOrigemDeDados.initModel();
             SjdProduto_Origem.initModel();
             SjdEstoque_Origem.initModel();
             SjdHistEst_Origem.initModel();
@@ -679,6 +681,7 @@ export default class ModelsController {
         }
 
         if (Utils.toBool(process.env.HAS_CONSULT_INTEGRATION) == true) {
+            SjdOrigemDeDados.initAssociations();
             await SjdProduto_Origem.initAssociations();
             await SjdEstoque_Origem.initAssociations();
             await SjdHistEst_Origem.initAssociations();

@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import BaseRegistersIntegrationsController from "./BaseRegistersIntegrationsController.js";
-import PcSupervController from "./winthor/registers/PcSupervController.js";
+import SjdOrigemDeDadosController from "./sjd/registers/SjdOrigemDeDadosController.js";
 
 
-export default class SupervisorsIntegrationsController extends BaseRegistersIntegrationsController {
+export default class Data_OriginsIntegrationsController extends BaseRegistersIntegrationsController {
+
 
     /**
      * @requesthandler
@@ -15,8 +16,10 @@ export default class SupervisorsIntegrationsController extends BaseRegistersInte
         try {
             let origin = req.body.origin || "";
             switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
-                case "winthor":
-                    PcSupervController.get(req,res,next);
+                case "sjd":
+                case "consult":
+                case "consulta":
+                    SjdOrigemDeDadosController.get(req,res,next);
                     break; 
                 default:
                     throw new Error(`origin not expected: ${origin}`);

@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
+import BaseRegistersIntegrationsController from "./BaseRegistersIntegrationsController.js";
 import PcClientController from "./winthor/registers/PcClientController.js";
 
-export default class ClientsIntegrationsController extends BaseIntegrationsController {
+export default class ClientsIntegrationsController extends BaseRegistersIntegrationsController {
 
     /**
      * @override

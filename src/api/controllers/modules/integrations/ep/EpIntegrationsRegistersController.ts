@@ -1,10 +1,6 @@
 import { Op, Sequelize } from "sequelize";
 import Utils from "../../../utils/Utils.js";
 import BaseRegistersIntegrationsController from "../BaseRegistersIntegrationsController.js";
-import EpPessoas from "../../../../database/models/ep/EpPessoas.js";
-import Data_Origins from "../../../../database/models/Data_Origins.js";
-import Identifier_Types from "../../../../database/models/Identifier_Types.js";
-import EpClientes from "../../../../database/models/ep/EpClientes.js";
 import Access_Profiles from "../../../../database/models/Access_Profiles.js";
 import Relationships from "../../../../database/models/Relationships.js";
 import Relationship_Types from "../../../../database/models/Relationship_Types.js";

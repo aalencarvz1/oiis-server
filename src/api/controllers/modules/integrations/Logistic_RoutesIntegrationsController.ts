@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
+import BaseRegistersIntegrationsController from "./BaseRegistersIntegrationsController.js";
 import PcRotaExpController from "./winthor/registers/PcRotaExpController.js";
 
-export default class Logistic_RoutesIntegrationsController extends BaseIntegrationsController {
+export default class Logistic_RoutesIntegrationsController extends BaseRegistersIntegrationsController {
 
 
     /**

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
+import BaseRegistersIntegrationsController from "./BaseRegistersIntegrationsController.js";
 import AuroraPricesIntegrationsController from "./aurora/AuroraPricesIntegrationsController.js";
 
 
@@ -8,7 +8,7 @@ import AuroraPricesIntegrationsController from "./aurora/AuroraPricesIntegration
  * @created 2025-01-08
  * @version 1.0.0
  */
-export default class PricesIntegrationsController extends BaseIntegrationsController {
+export default class PricesIntegrationsController extends BaseRegistersIntegrationsController {
 
 
     /**

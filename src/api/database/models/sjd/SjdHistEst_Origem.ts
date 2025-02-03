@@ -20,7 +20,7 @@ export default class SjdHistEst_Origem extends BaseSjdTableModel {
     declare QTMOV: number;
 
     
-    static id = 40110;
+    static id = 39102;
     static tableName = this.name.toUpperCase();
     static model = null;
 

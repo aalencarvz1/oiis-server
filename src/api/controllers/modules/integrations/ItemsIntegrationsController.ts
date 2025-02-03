@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
+import BaseRegistersIntegrationsController from "./BaseRegistersIntegrationsController.js";
 import PcProdutController from "./winthor/registers/PcProdutController.js";
 
 
 
-export default class ItemsIntegrationsController extends BaseIntegrationsController {
+export default class ItemsIntegrationsController extends BaseRegistersIntegrationsController {
 
 
     /**
