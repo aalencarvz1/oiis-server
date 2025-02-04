@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
+import BaseRegistersIntegrationsController from "./BaseRegistersIntegrationsController.js";
 import Utils from "../../utils/Utils.js";
 import DBConnectionManager from "../../../database/DBConnectionManager.js";
 import { QueryTypes } from "sequelize";
@@ -8,7 +8,7 @@ import Parameters from "../../../database/models/Parameters.js";
 import DatabaseUtils from "../../database/DatabaseUtils.js";
 
 
-export default class WmsOutputsIntegrationsController extends BaseIntegrationsController {
+export default class WmsOutputsIntegrationsController extends BaseRegistersIntegrationsController {
 
     /**
      * @override

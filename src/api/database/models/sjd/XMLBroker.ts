@@ -23,7 +23,7 @@ export default class XMLBroker extends BaseSjdTableModel {
 	declare XMLNFE: string;
 
 
-	static id = 40800;
+	static id = 39200;
 	static tableName = this.name.toUpperCase();
 	static model = null;
 

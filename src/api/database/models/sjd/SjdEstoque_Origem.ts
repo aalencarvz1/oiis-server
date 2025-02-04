@@ -54,7 +54,7 @@ export default class SjdEstoque_Origem extends BaseSjdTableModel {
     declare CODSITUACAOREGISTRO: number;
 
 
-    static id = 40110;
+    static id = 39101;
     static tableName = this.name.toUpperCase();
     static model = null;
 

@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
+import BaseRegistersIntegrationsController from "./BaseRegistersIntegrationsController.js";
 import PcEstController from "./winthor/registers/PcEstController.js";
 
 
 
-export default class MovementsIntegrationsController extends BaseIntegrationsController {
+export default class MovementsIntegrationsController extends BaseRegistersIntegrationsController {
 
 
     /**

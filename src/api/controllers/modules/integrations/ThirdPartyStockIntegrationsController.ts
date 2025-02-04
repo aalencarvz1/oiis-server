@@ -1,13 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
-import BaseRegistersController from "../registers/BaseRegistersController.js";
-import Produtos_Armazenados_Terceiros from "../../../database/models/winthor/Produtos_Armazenados_Terceiros.js";
+import BaseRegistersIntegrationsController from "./BaseRegistersIntegrationsController.js";
 import Produtos_Armazenados_TerceirosController from "./winthor/registers/Produtos_Armazenados_TerceirosController.js";
 
 
 
 
-export default class ThirdPartyStockIntegrationsController extends BaseIntegrationsController {
+export default class ThirdPartyStockIntegrationsController extends BaseRegistersIntegrationsController {
 
     /**
      * @requesthandler

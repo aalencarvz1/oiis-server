@@ -25,7 +25,7 @@ export default class BaseSjdTableModel extends BaseTableModel {
      * @async (pay attention to await)
      * @created 2023-11-10
      */
-    static async runUpMigration(queryInterface: QueryInterface, options: any) {
+    static async runUpMigration(queryInterface: QueryInterface, options?: any) {
         options = options || {};
         await queryInterface.bulkInsert('tables',[{      
             id:this.id,

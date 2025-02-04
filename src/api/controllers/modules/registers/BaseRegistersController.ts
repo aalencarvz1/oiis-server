@@ -47,6 +47,7 @@ export default abstract class BaseRegistersController {
                     queryParams.where = queryParams.where || {};
                     queryParams.where.creator_user_id = req.user?.id
                 }
+                console.log('xxxxxxxxxxn1',queryParams);
                 res.data = await this.getTableClassModel().findAll(queryParams);
             }
             res.sendResponse(200,true);
