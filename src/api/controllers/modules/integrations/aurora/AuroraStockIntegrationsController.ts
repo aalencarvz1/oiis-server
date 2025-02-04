@@ -1,7 +1,6 @@
 import Utils from "../../../utils/Utils.js";
 import DataSwap from "../../../data/DataSwap.js";
-import DBConnectionManager from "../../../../database/DBConnectionManager.js";
-import { Op, QueryTypes, Sequelize } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import { Client } from "basic-ftp";
 import * as fs from 'node:fs';
 import BaseRegistersIntegrationsController from "../BaseRegistersIntegrationsController.js";

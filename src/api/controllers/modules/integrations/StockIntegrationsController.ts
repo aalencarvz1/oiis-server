@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
+import BaseRegistersIntegrationsController from "./BaseRegistersIntegrationsController.js";
 import PcEstController from "./winthor/registers/PcEstController.js";
 
 
@@ -8,7 +8,7 @@ import PcEstController from "./winthor/registers/PcEstController.js";
  * @created 2025-01-08
  * @version 1.0.0
  */
-export default class StockIntegrationsController extends BaseIntegrationsController {
+export default class StockIntegrationsController extends BaseRegistersIntegrationsController {
 
 
     /**

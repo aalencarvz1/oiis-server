@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
+import BaseRegistersIntegrationsController from "./BaseRegistersIntegrationsController.js";
 import PcDeptoController from "./winthor/registers/PcDeptoController.js";
 
 
-export default class DepartmentsIntegrationsController extends BaseIntegrationsController {
+export default class DepartmentsIntegrationsController extends BaseRegistersIntegrationsController {
 
 
     /**

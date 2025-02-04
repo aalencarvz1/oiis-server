@@ -19,6 +19,7 @@ export default class EndPointsController{
         'register',
         'refresh_token',
         'recover',
+        'send_email_recover_password',
         'password_change',
         'controllers',
         'modules',

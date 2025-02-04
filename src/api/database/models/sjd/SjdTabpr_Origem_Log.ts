@@ -83,7 +83,7 @@ export default class SjdTabpr_Origem_Log extends BaseSjdTableModel {
 
     
 
-    static id = 40112;
+    static id = 39103;
     static tableName = this.name.toUpperCase();
     static model = null;
 

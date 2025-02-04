@@ -82,7 +82,7 @@ export default class SjdTabpr_Origem extends BaseSjdTableModel {
     declare CODSITUACAOREGISTRO: number;
 
 
-    static id = 40111;
+    static id = 39104;
     static tableName = this.name.toUpperCase();
     static model = null;
 

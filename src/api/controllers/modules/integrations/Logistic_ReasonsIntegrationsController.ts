@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import BaseIntegrationsController from "./BaseRegistersIntegrationsController.js";
+import BaseRegistersIntegrationsController from "./BaseRegistersIntegrationsController.js";
 import PcTabDevController from "./winthor/registers/PcTabDevController.js";
 
-export default class Logistic_ReasonsIntegrationsController extends BaseIntegrationsController {
+export default class Logistic_ReasonsIntegrationsController extends BaseRegistersIntegrationsController {
 
     /**
      * @requesthandler
