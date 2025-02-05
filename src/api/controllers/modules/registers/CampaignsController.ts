@@ -291,6 +291,7 @@ export default class CampaignsController extends BaseRegistersController {
             params.user = req.user;
             let queryParams = params.queryParams || params;
             queryParams = DatabaseUtils.prepareQueryParams(queryParams);
+            //queryParams.raw = true;
             queryParams.include = queryParams.include || [];
             queryParams.include.push({
                 model: Entities_Types
@@ -302,14 +303,17 @@ export default class CampaignsController extends BaseRegistersController {
                 model: Campaign_Kpis
             })
             res.data = await this.getTableClassModel().findAll(params);
+            res.data = res.data.map((el?:any)=>el.dataValues); //without raw option, data is immutable
             if (Utils.hasValue(res.data)) {
                 for(let k in res.data) {
+                    res.data[k].campaign_entities = res.data[k].campaign_entities.map((el?: any)=>el.dataValues);
                     let campaignEntities = Utils.hasValue(res.data[k].campaign_entities)? res.data[k].campaign_entities :  ([{entity_id: -1}] as any)
-                    res.data[k].campaign_entities = await Entities_TypesController._get_entities_type_data(
+                    let newEntities = await Entities_TypesController._get_entities_type_data(
                         res.data[k].entity_type_id,
                         (entityType?: any)=>QueryBuilder.mountInClause(entityType?.identifier_column,campaignEntities.map((el: any)=> el.entity_id))
                     );
-                    console.log('yyyyyyyyyyyyyyy',res.data[k].campaign_entities);
+
+                    res.data[k].campaign_entities = res.data[k].campaign_entities.map((el?:any)=>({...el,name:newEntities.find(entity=>entity.id == el.entity_id)?.name}))
                 }
             }
             res.sendResponse(200,true);
