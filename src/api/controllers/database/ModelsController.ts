@@ -226,6 +226,7 @@ import Midias from "../../database/models/Midias.js";
 import Meas_X_Meas_Origins from "../../database/models/Meas_X_Meas_Origins.js";
 import Packs_X_Packs_Origins from "../../database/models/Packs_X_Packs_Origins.js";
 import PcEst from "../../database/models/winthor/PcEst.js";
+import Gtin_Produtos from "../../database/models/sjd/Gtin_Produtos.js";
 
 
 export default class ModelsController {
@@ -443,6 +444,7 @@ export default class ModelsController {
             SjdTabpr_Origem.initModel();
             SjdTabpr_Origem_Log.initModel();
             XMLBroker.initModel();
+            await Gtin_Produtos.initModel();
         }
 
         if (Utils.toBool(process.env.HAS_EP_INTEGRATION) == true) {
@@ -688,6 +690,7 @@ export default class ModelsController {
             await SjdTabpr_Origem.initAssociations();
             await SjdTabpr_Origem_Log.initAssociations();
             await XMLBroker.initAssociations();
+            await Gtin_Produtos.initAssociations();
         }
 
         if (Utils.toBool(process.env.HAS_EP_INTEGRATION) == true) {
