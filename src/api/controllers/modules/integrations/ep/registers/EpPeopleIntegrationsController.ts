@@ -67,7 +67,7 @@ export default class EpPeopleIntegrationsController extends BaseRegistersIntegra
 
     static async getPeopleByIdentifierDocToIntegrate(identifiersDocs?: any): Promise<any> {
         let result = null;
-        result = await this.getPeopleByIdentifiersDocs(
+        result = await EpPeopleIntegrationsController.getPeopleByIdentifiersDocs(
             identifiersDocs,{
                 attributes:[
                     ['COD','id'],
@@ -119,7 +119,7 @@ export default class EpPeopleIntegrationsController extends BaseRegistersIntegra
 
                 //relationships
                 if (result.success) {
-                    let originalPeople = await this.getPeopleByIdentifierDocToIntegrate(params.registersIdentifiersDocs);
+                    let originalPeople = await EpPeopleIntegrationsController.getPeopleByIdentifierDocToIntegrate(params.registersIdentifiersDocs);
                     for(let k in originalPeople) {
                         await Relationships.createIfNotExists({
                             where: {
