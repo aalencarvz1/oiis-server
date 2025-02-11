@@ -233,8 +233,8 @@ export default class StructuredQueryUtils {
                 if (Utils.hasValue(conditions)) {
                     let or = [];
                     for(let k in conditions) {
-                        if ((conditions[k].selecteds || conditions[k].values) && (conditions[k].selecteds || conditions[k].values).length) {
-                            or.push(`${field} ${conditions[k].operation.id || conditions[k].operation} (${(conditions[k].selecteds || conditions[k].values).map((el: any)=>el.id || el ||'null').join(',')})`);
+                        if (Utils.hasValue(conditions[k].selecteds || conditions[k].values)) {
+                            or.push(`${field} ${conditions[k].operation.id || conditions[k].operation} (${(conditions[k].selecteds || conditions[k].values).map((el: any)=>Utils.firstValid([el?.id,el,'null'])).join(',')})`);
                         }
                     }
                     if (or.length > 1) {
