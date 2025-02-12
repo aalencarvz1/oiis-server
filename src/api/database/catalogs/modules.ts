@@ -614,6 +614,13 @@ export default [
             "view_path" :"/views/modules/reports/sinergy_campaign_pbi",
             "numeric_order":8001
         },{      
+            "id" :8003,
+            "routine_type_id" : 1,
+            "name" : "CUSTOMIZED POSITIVITY",
+            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M400-160h160v-160H400v160ZM160-400h160v-160H160v160Zm240 0h160v-160H400v160Zm240 0h160v-160H640v160Zm0-240h160v-160H640v160ZM320-80v-240H80v-320h480v-240h320v560H640v240H320Z\"/></svg>",
+            "view_path" :"/views/modules/reports/customizedpositivity",
+            "numeric_order":8003
+        },{      
             "id" :8005,
             "routine_type_id" : 1,
             "name" : "COMMISSIONS",
