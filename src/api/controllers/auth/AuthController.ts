@@ -57,8 +57,8 @@ export default class AuthController {
         });        
         if (!user) return res.sendResponse(401,false,'user not found'); 
         if (!bcrypt.compareSync(body.password, user.password)) return res.sendResponse(401,false,'password not match'); 
-        let token = jwt.sign({id: user.id,access_profile_id:user.access_profile_id},(process as any).env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION || 10});
-        let refreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, (process as any).env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
+        let token = jwt.sign({id: user.id,access_profile_id:user.access_profile_id},(process as any).env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION || 10} as any);
+        let refreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, (process as any).env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION} as any); 
         
         user.last_token = token;
         user.last_timezone_offset = body?.currentTimeZoneOffset || 0;
@@ -134,8 +134,8 @@ export default class AuthController {
                 let user : Users | null = await Users.findOne({where:{id:req.user.id}});
                 if (!user) return res.sendResponse(401,false,'user not found'); 
 
-                let token = jwt.sign({id: decoded.id},(process as any).env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});            
-                let newRefreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, (process as any).env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
+                let token = jwt.sign({id: decoded.id},(process as any).env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION} as any);            
+                let newRefreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, (process as any).env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION} as any); 
 
                 user.last_token = token;
                 user.last_timezone_offset = req.body?.currentTimeZoneOffset || 0;
@@ -196,8 +196,8 @@ export default class AuthController {
             email:(req.body.email||'').trim().toLowerCase(),
             password: bcrypt.hashSync(req.body.password,((process as any).env.API_USER_PASSWORD_CRIPTSALT||10)-0)
         });
-        let token = jwt.sign({id: user.id,access_profile_id:user.access_profile_id},(process as any).env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});
-        let refreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, (process as any).env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION}); 
+        let token = jwt.sign({id: user.id,access_profile_id:user.access_profile_id},(process as any).env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION} as any);
+        let refreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, (process as any).env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION} as any); 
 
         user.last_token = token;
         user.last_timezone_offset = req.body?.currentTimeZoneOffset || 0;
@@ -271,7 +271,7 @@ export default class AuthController {
                         let verify = await AuthController.#mailTransport.verify();
                         if (verify === true) {
 
-                            let token = jwt.sign({id: user.id},(process as any).env.API_RECOVER_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION});
+                            let token = jwt.sign({id: user.id},(process as any).env.API_RECOVER_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION} as any);
 
                             let response = await AuthController.#mailTransport.sendMail({
                                 from:(config as any)[`smtp_${process.env.NODE_ENV||'development'}`]?.auth?.user || process.env.EMAIL,

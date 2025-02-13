@@ -7,6 +7,7 @@ import { NextFunction, Request, Response } from "express";
 import StructuredQueryUtils from "./StructuredQueryUtils.js";
 import Utils from "../../utils/Utils.js";
 import EpIntegrationsRegistersController from "../integrations/ep/EpIntegrationsRegistersController.js";
+import Sql_Object_Types from "../../../database/models/Sql_Object_Types.js";
 
 
 export default class ReportsController extends BaseRegistersController {
@@ -183,6 +184,103 @@ export default class ReportsController extends BaseRegistersController {
     }
 
 
+    static findVisionFields(params : any, visionId: number, parentTypeId?: number) : any[] {
+        let result : any[] = [];
+        if (Utils.hasValue(params)) {
+            if (Utils.typeOf(params) == 'array') {
+                for(let i = 0; i < params.length; i++) {
+                    if (parentTypeId == Sql_Object_Types.SELECT && params[i].IDVISION == visionId && params[i].sql_object_type_id == Sql_Object_Types.FIELD
+                        && params[i].numeric_order < 900000 && params[i].sql_text != '*'
+                    ) {
+                        result.push(params[i]);
+                    } else if (Utils.hasValue(params[i].subs)){
+                        result = [...result,...this.findVisionFields(params[i].subs,visionId,params[i].sql_object_type_id)];
+                    }
+                } 
+            } else {
+                if (parentTypeId == Sql_Object_Types.SELECT && params.IDVISION == visionId && params.sql_object_type_id == Sql_Object_Types.FIELD
+                    && params.numeric_order < 900000 && params.sql_text != '*'
+                ) {
+                    result.push(params);
+                } else if (Utils.hasValue(params.subs)){
+                    result = [...result,...this.findVisionFields(params.subs,visionId,params.sql_object_type_id)];
+                }
+            }
+        }
+        return result;
+    }
+
+
+    /**
+     * Get data from customized (structured) positivity
+     * @created 2025-02-11
+     * @version 3.0.0
+     */
+    static async getCustomizedPositivityData(params: any) : Promise<DataSwap> {
+        let result = new DataSwap();
+        try {
+            result.data = null;
+            let columnsVisions = params.visions;
+            params.visions = [...new Set([...params.visions,...params.positivityVisions])];
+            let structuredQueryData = await StructuredQueryUtils.getStructuredQueryData(params);
+            let columns : any[] = [];
+            let columnsPivot : any[] = [];
+
+            //normal columns
+            for(let i = 0; i < columnsVisions.length; i++) {
+                columns = [...columns,...this.findVisionFields(structuredQueryData.structuredQuery,columnsVisions[i])];
+            }
+            columns = [...new Set(columns.map(el=>el.sql_alias))];
+
+            //pivoted columns
+            for(let i = 0; i < params.positivityVisions.length; i++) {
+                columnsPivot = [...columnsPivot,...this.findVisionFields(structuredQueryData.structuredQuery,params.positivityVisions[i])];
+            }
+            columnsPivot = [...new Set([...columnsPivot,{sql_alias:"periodos"}].map(el=>el.sql_alias))];
+            let pivotColumn = columnsPivot.join('_');
+            pivotColumn += '_xml';
+            pivotColumn = `XMLSERIALIZE(CONTENT ${pivotColumn} as clob) as xml`
+            columns.push(pivotColumn);
+
+            
+            if (structuredQueryData) {
+
+                //mount unified query
+                let query = await StructuredQueryUtils.mountQuery(structuredQueryData.structuredQuery,params);
+                query = query.trim().replace(/\s{2,}/g," ");
+                query = query.replace(/select\s+\*\s+from/i,`select ${columns.join(',')} from`);
+                query = query.replace(/pivot\s*\(/i,"pivot xml(");
+                query = query.replace(/for\s+periodos/i,`for (${columnsPivot.join(',')})`);
+                let p1 = query.indexOf("for (")+4;
+                p1 = query.indexOf(")",p1+1);
+                p1 = query.indexOf("in (",p1+1)+4;
+                let p2 = query.indexOf(")",p1+1);
+                query = `${query.substring(0,p1)}${columnsPivot.map(el=>"any").join(",")}${query.substring(p2)}`;
+                let connection = await DBConnectionManager.getConnectionBySchemaName(structuredQueryData.origin);
+                if (!connection) {
+                    throw new Error(`connection data not found with schema name:${structuredQueryData.origin}`);
+                }
+                
+                let data = await connection.query(query,{
+                    raw:true,
+                    type:QueryTypes.SELECT
+                });
+                data = data || [];
+                result.data = result.data || [];
+                result.data.push({
+                    DATA: data
+                });                        
+                result.success = true;
+            } else {
+                throw new Error(`structured data query not found`);
+            }
+        } catch (e : any) {
+            result.setException(e);
+        } 
+        return result;
+    }
+
+
     /**
      * @created 2024-04-02
      * @version 2.0.0
@@ -325,6 +423,26 @@ export default class ReportsController extends BaseRegistersController {
         res.sendResponse();
     }
 
+    
+    /**
+     * get customized positivity data according request parameters and configured registers of report data fount
+     * @requesthandler
+     * @created 2025-02-11
+     * @version 1.0.0
+     */
+    static async get_customized_positivity_data(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        try {
+            let params = req.body || req.query || {};
+            params.user = req.user;
+            res.setDataSwap(await this.getCustomizedPositivityData(params));
+        } catch (e: any) {
+            res.setException(e);
+        }
+        res.sendResponse();
+    }
+
+    
+
     /**
      * get commision data
      * @requesthandler
@@ -347,6 +465,7 @@ export default class ReportsController extends BaseRegistersController {
         this.configureDefaultRequestHandlers([
             this.get_data,
             this.get_customized_report_data,
+            this.get_customized_positivity_data,
             this.get_commissions_data
         ]);
     }
