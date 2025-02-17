@@ -79,22 +79,22 @@ export default class DeliveriesIntegrationsController extends BaseRegistersInteg
             if (req.body.id_at_origin) {
                 let query = `
                     select
-                        date_format(lg.created_at,'%Y-%m-%d %H:%i') as created_at,
-                        MAX(lg.latitude) as latitude,
-                        MAX(lg.longitude) AS longitude,
+                        date_format(lg.created_at,'%Y-%m-%d %H:%i') as "created_at",
+                        MAX(lg.latitude) as "latitude",
+                        MAX(lg.longitude) AS "longitude",
                         cast(regexp_replace(p.identifier_doc,'[^0-9]','') as decimal(32)) as "identifier_doc",
                         p.name,
                         p.fantasy,
-                        ctr.name as COUNTRY,
-                        stt.name as STATE,
-                        ct.name as CITY,
-                        nb.name as NEIGHBOORHOOD,
-                        st.name as STREET,
+                        ctr.name as "country",
+                        stt.name as "state",
+                        ct.name as "city",
+                        nb.name as "neighboorhood",
+                        st.name as "street",
                         a.number,
-                        a.latitude as CLIENT_latitude,
-                        a.longitude AS CLIENT_longitude,
+                        a.latitude as "client_latitude",
+                        a.longitude AS "client_longitude",
                         pc.postal_code,
-                        concat(st.name,',',a.number,',',ct.name,' - ',stt.sigla,',',ctr.name) as GOOGLEADDRESS
+                        concat(st.name,',',a.number,',',ct.name,' - ',stt.sigla,',',ctr.name) as "googleaddress"
                     from
                         logistic_logs lg 
                         join tables t on LOWER(t.name) = LOWER('logistic_orders_items_mov_amt') and lg.table_ref_id = t.id
