@@ -66,6 +66,8 @@ export default class PcCarregController extends WinthorBaseRegistersIntegrations
             identifier = identifier.map((el: any)=>Utils.hasValue(el)?el:'null');
             where.push(`c.numcar in (${identifier.join(',')})`);
         }
+        where.push(`c.codmotorista not in (0)`);
+        where.push(`c.numcar > 2`);
         if (where.length) where = ` where ${where.join(' and ')} `
         else where = ' where 1=2 ';//prevent massive database get
         let query = `
