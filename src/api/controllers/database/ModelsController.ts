@@ -227,6 +227,7 @@ import Meas_X_Meas_Origins from "../../database/models/Meas_X_Meas_Origins.js";
 import Packs_X_Packs_Origins from "../../database/models/Packs_X_Packs_Origins.js";
 import PcEst from "../../database/models/winthor/PcEst.js";
 import Gtin_Produtos from "../../database/models/sjd/Gtin_Produtos.js";
+import SjdLogAnaliseEnt from "../../database/models/sjd/SjdLogAnaliseEnt.js";
 
 
 export default class ModelsController {
@@ -443,6 +444,7 @@ export default class ModelsController {
             SjdHistEst_Origem.initModel();
             SjdTabpr_Origem.initModel();
             SjdTabpr_Origem_Log.initModel();
+            SjdLogAnaliseEnt.initModel();
             XMLBroker.initModel();
             await Gtin_Produtos.initModel();
         }
@@ -689,6 +691,7 @@ export default class ModelsController {
             await SjdHistEst_Origem.initAssociations();
             await SjdTabpr_Origem.initAssociations();
             await SjdTabpr_Origem_Log.initAssociations();
+            await SjdLogAnaliseEnt.initAssociations();
             await XMLBroker.initAssociations();
             await Gtin_Produtos.initAssociations();
         }
