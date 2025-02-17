@@ -93,11 +93,14 @@ export default class SjdLogAnaliseEntController extends SjdBaseRegistersIntegrat
                     where.push(`e.numped in (${params.order_number})`)
                 }  
                 if (Utils.hasValue(params.start_date)) {
-                    where.push(`trunc(e.dtent) >= trunc(to_date('${params.start_date.substring(0,19).replace("T"," ")}','yyyy-mm-dd hh24:mi:ss'))`)
+                    where.push(`e.dtent >= to_date('${params.start_date.substring(0,19).replace("T"," ")}','yyyy-mm-dd hh24:mi:ss')`)
                 } 
                 if (Utils.hasValue(params.end_date)) {
-                    where.push(`trunc(e.dtent) <= trunc(to_date('${params.end_date.substring(0,19).replace("T"," ")}','yyyy-mm-dd hh24:mi:ss'))`)
+                    where.push(`e.dtent <= to_date('${params.end_date.substring(0,19).replace("T"," ")}','yyyy-mm-dd hh24:mi:ss')`)
                 } 
+
+
+
                 if (where.length) {
                     where = ` where ${where.join(' and ')}`;
                 } else {
