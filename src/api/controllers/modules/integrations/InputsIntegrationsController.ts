@@ -28,8 +28,32 @@ export default class InputsIntegrationsController extends BaseRegistersIntegrati
         }
         res.sendResponse();
     }
+
+     /**
+     * @requesthandler    
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
+     static async get_input_analise_details(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        try {
+            let origin = req.body.origin || "";
+            switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
+                case "winthor":
+                    res.setDataSwap(await SjdLogAnaliseEntController.getInputAnaliseDetails(req.body));
+                    break; 
+                default:
+                    throw new Error(`origin not expected: ${origin}`);
+            }
+        } catch (e: any) {
+            res.setException(e);
+        }
+        res.sendResponse();
+    }
     
     static {
-        this.configureDefaultRequestHandlers([this.get_input_analise]);
+        this.configureDefaultRequestHandlers([
+            this.get_input_analise,
+            this.get_input_analise_details
+        ]);
     }
 }
