@@ -23,26 +23,37 @@ export default {
       sigla: 'UN',
       is_scalar: 1
     },{
-      id: Measurement_Units.KG,
+      id: Measurement_Units.WT,
       status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       greatness_id: Greatnesses.MASS,
-      name : 'KILOGRAM',
-      sigla: 'KG',
+      name : 'WEIGHT',
+      sigla: 'WT',
       is_scalar: 1
     },{
-      id: Measurement_Units.L,
+      id: Measurement_Units.VL,
       status_reg_id: Record_Status.ACTIVE,
       creator_user_id : Users.SYSTEM,
       created_at: new Date(),
       data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
       is_sys_rec : 1,
       greatness_id: Greatnesses.VOLUM,
-      name : 'LITER',
-      sigla: 'L',
+      name : 'VALUE',
+      sigla: 'VL',
+      is_scalar: 1
+    },{
+      id: Measurement_Units.DT,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      greatness_id: Greatnesses.VOLUM,
+      name : 'DISTINCT ITEM',
+      sigla: 'DT',
       is_scalar: 1
     },{
       id: Measurement_Units.PC,
@@ -54,6 +65,17 @@ export default {
       greatness_id: Greatnesses.QUANTITY,
       name : 'PIECE',
       sigla: 'PC',
+      is_scalar: 1
+    },{
+      id: Measurement_Units.L,
+      status_reg_id: Record_Status.ACTIVE,
+      creator_user_id : Users.SYSTEM,
+      created_at: new Date(),
+      data_origin_id : Data_Origins.DEFAULT_ORIGINDATA,
+      is_sys_rec : 1,
+      greatness_id: Greatnesses.VOLUM,
+      name : 'LITER',
+      sigla: 'L',
       is_scalar: 1
     },{
       id: Measurement_Units.PKG,

@@ -40,7 +40,7 @@ export default class Campaign_Kpis extends BaseTableModel {
     measurement_unit_id:{
       type: DataTypes.BIGINT.UNSIGNED,
       allowNull: false,
-      defaultValue: Measurement_Units.KG
+      defaultValue: Measurement_Units.WT
     },
     description:{
       type: DataTypes.TEXT
