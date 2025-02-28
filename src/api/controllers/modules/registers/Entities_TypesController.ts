@@ -83,7 +83,7 @@ export default class Entities_TypesController extends BaseRegistersController {
         try {
             const entitieTypesId = req.body.entitieTypesId
             if(Utils.hasValue(entitieTypesId)){                                
-                res.data = await this._get_entities_type_data(entitieTypesId);
+                res.data = await this._get_entities_type_data(entitieTypesId,req.body.whereClause);
             } else {
                 throw new Error("missing data");
             }
