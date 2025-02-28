@@ -217,7 +217,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseRegisters
                 item_lot_container_id: itemXLotXConteiner.id,
                 stock_relationship_type_id: Stock_Entity_Relationship_Types.OWNER,
                 stock_entity_id: stockEntity.id,
-                measurement_unit_id: (Measurement_Units as any)[movItem.un] || Measurement_Units.KG,
+                measurement_unit_id: (Measurement_Units as any)[movItem.un] || Measurement_Units.WT,
                 packaging_id: (Packagings as any)[movItem.package] || Packagings.BOX
             },
             values:{

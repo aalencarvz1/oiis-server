@@ -77,8 +77,11 @@ export default class AuthController {
                     token: token,
                     timezone_offset: user.last_timezone_offset
                 });
-            } catch (e) {
-                Utils.logError(e);
+            } catch (e: any) {
+                //paralell requests are causing this error
+                if(!(e.message.toLowerCase().indexOf("unique") > -1 || e.message.toLowerCase().indexOf("duplicate") > -1)) {
+                    Utils.logError(e);
+                }
             }
         } else {
             userToken.timezone_offset = user.last_timezone_offset;

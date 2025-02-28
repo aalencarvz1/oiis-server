@@ -7,12 +7,13 @@ import Campaign_Kpis from "../../../database/models/Campaign_Kpis.js";
 import DatabaseUtils from "../../database/DatabaseUtils.js";
 import { QueryTypes, Sequelize } from "sequelize";
 import Entities_Types from "../../../database/models/Entities_Types.js";
-import Tables from "../../../database/models/Tables.js";
-import Schemas from "../../../database/models/Schemas.js";
-import Connections from "../../../database/models/Connections.js";
-import DBConnectionManager from "../../../database/DBConnectionManager.js";
 import QueryBuilder from "../../database/QueryBuilder.js";
 import Entities_TypesController from "./Entities_TypesController.js";
+import DBConnectionManager from "../../../database/DBConnectionManager.js";
+import Campaign_Kpi_Result_Values from "../../../database/models/Campaign_Kpi_Result_Values.js";
+import Campaign_Kpi_Value_Getters from "../../../database/models/Campaign_Kpi_Value_Getters.js";
+import Campaign_EntitiesController from "./Campaign_EntitiesController.js";
+import Campaign_KpisController from "./Campaign_KpisController.js";
 
 
 export default class CampaignsController extends BaseRegistersController {
@@ -74,6 +75,15 @@ export default class CampaignsController extends BaseRegistersController {
     }
 
 
+    /**
+     * create all items of campaign, such as entities and kpis
+     * @version 1.0.0
+     */
+    static async createCampaignItems(params : any) : Promise<void>{
+        await Campaign_EntitiesController.createEntitiesFromCampaign(params);
+        await Campaign_KpisController.createKpisFromCampaign(params);
+    }
+
 
     /**
      * default RequestHandler method to put registers of table model controller
@@ -85,29 +95,12 @@ export default class CampaignsController extends BaseRegistersController {
     static async put(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let queryParams = req.body.queryParams || req.body;
-            res.data = await this.getTableClassModel().createData(queryParams);
-
-            if (Utils.hasValue(queryParams.campaign_entities)) {
-                for(let k in queryParams.campaign_entities) {
-                    queryParams.campaign_entities[k].campaign_id = res.data.id;
-                    if (Utils.hasValue(queryParams.campaign_entities[k].id)) {
-                        if (!Utils.hasValue(queryParams.campaign_entities[k].entity_id)) {
-                            queryParams.campaign_entities[k].entity_id = queryParams.campaign_entities[k].id;
-                            queryParams.campaign_entities[k].id = undefined;
-                            delete queryParams.campaign_entities[k].id;
-                        }                        
-                    }
-                    await Campaign_Entities.create(queryParams.campaign_entities[k])
-                }
-            }
-
-            if (Utils.hasValue(queryParams.campaign_kpis)) {
-                for(let k in queryParams.campaign_kpis) {
-                    queryParams.campaign_kpis[k].campaign_id = res.data.id;
-                    await Campaign_Kpis.create(queryParams.campaign_kpis[k])
-                }
-            }
-
+            await DBConnectionManager.getDefaultDBConnection()?.transaction(async transaction=>{
+                res.data = await this.getTableClassModel().create(queryParams, {transaction});
+                let params = {campaign:{...queryParams,...res.data.dataValues}, transaction};
+                await CampaignsController.createCampaignItems(params);                                
+                return true;
+            });
             res.sendResponse(200,true);
         } catch (e: any) {
             res.setException(e);
@@ -121,35 +114,27 @@ export default class CampaignsController extends BaseRegistersController {
             let queryParams = req.body.queryParams || req.body;
 
             if(Utils.hasValue(queryParams.campaign_entities) && Utils.hasValue(queryParams.entity_type_id) && Utils.hasValue(queryParams.id)){
-                await Campaign_Entities.destroy({
-                    where: {
-                        campaign_id: queryParams.id
-                    }
-                })
-                await Campaign_Kpis.destroy({
-                    where: {
-                        campaign_id: queryParams.id
-                    }
-                })
-                res.data = await this.getTableClassModel().patchData(queryParams);
-            
-                for(let k in queryParams.campaign_entities) {
-                    queryParams.campaign_entities[k].campaign_id = queryParams.id;
-                    if (Utils.hasValue(queryParams.campaign_entities[k].id)) {
-                        if (!Utils.hasValue(queryParams.campaign_entities[k].entity_id)) {
-                            queryParams.campaign_entities[k].entity_id = queryParams.campaign_entities[k].id;
-                            queryParams.campaign_entities[k].id = undefined;
-                            delete queryParams.campaign_entities[k].id;
-                        }                                                
-                    }
-                    await Campaign_Entities.create(queryParams.campaign_entities[k])
-                }
-                if (Utils.hasValue(queryParams.campaign_kpis)) {
-                    for(let k in queryParams.campaign_kpis) {
-                        queryParams.campaign_kpis[k].campaign_id = queryParams.id;
-                        await Campaign_Kpis.create(queryParams.campaign_kpis[k])
-                    }
-                }
+                await DBConnectionManager.getDefaultDBConnection()?.transaction(async transaction=>{
+                    await Campaign_Entities.destroy({
+                        where: {
+                            campaign_id: queryParams.id
+                        },
+                        transaction
+                    });
+                    await Campaign_Kpis.destroy({
+                        where: {
+                            campaign_id: queryParams.id
+                        },
+                        transaction
+                    })
+
+                    queryParams.transaction = transaction;
+                    res.data = await this.getTableClassModel().patchData(queryParams);
+
+                    let params = {...queryParams,...res.data, transaction};
+                    await CampaignsController.createCampaignItems(params);                                
+                    return true;
+                });
                 res.sendResponse(200,true);
             }else{
                 throw new Error('missing data')

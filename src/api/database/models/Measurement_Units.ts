@@ -25,9 +25,19 @@ export default class Measurement_Units extends BaseTableModel {
   
 
   static UN = 1;
-  static KG = 2;
-  static L = 3;
+
+  //static KG = 2;
+  static WT = 2; //WEIGHT
+  
+  static VL = 3; //VALUE
+
+  static DT = 4; //DISTINCT ITEMS
+  
   static PC = 5; //PIECE
+
+  //static L = 3;
+  static L = 6;
+
   static PKG = 10; //PACKAGE
   static BOX = 11; 
   static BCK = 12; //BUCKET (BALDE)
