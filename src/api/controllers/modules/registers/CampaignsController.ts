@@ -95,9 +95,13 @@ export default class CampaignsController extends BaseRegistersController {
     static async put(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let queryParams = req.body.queryParams || req.body;
+            if (Utils.hasValue(queryParams.conditions) && typeof queryParams.conditions != 'string') {
+                queryParams.conditions = JSON.stringify(queryParams.conditions);
+            }
             await DBConnectionManager.getDefaultDBConnection()?.transaction(async transaction=>{
                 res.data = await this.getTableClassModel().create(queryParams, {transaction});
-                let params = {campaign:{...queryParams,...res.data.dataValues}, transaction};
+                let params : any = {campaign:{...queryParams,...res.data.dataValues || res.data}};
+                params.transaction = transaction;
                 await CampaignsController.createCampaignItems(params);                                
                 return true;
             });
@@ -112,8 +116,10 @@ export default class CampaignsController extends BaseRegistersController {
     static async patch(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let queryParams = req.body.queryParams || req.body;
-
-            if(Utils.hasValue(queryParams.campaign_entities) && Utils.hasValue(queryParams.entity_type_id) && Utils.hasValue(queryParams.id)){
+            if (Utils.hasValue(queryParams.conditions) && typeof queryParams.conditions != 'string') {
+                queryParams.conditions = JSON.stringify(queryParams.conditions);
+            }
+            if(Utils.hasValue(queryParams.campaign_entities) && Utils.hasValue(queryParams.entity_type_id) && Utils.hasValue(queryParams.id)) {
                 await DBConnectionManager.getDefaultDBConnection()?.transaction(async transaction=>{
                     await Campaign_Entities.destroy({
                         where: {
@@ -130,8 +136,8 @@ export default class CampaignsController extends BaseRegistersController {
 
                     queryParams.transaction = transaction;
                     res.data = await this.getTableClassModel().patchData(queryParams);
-
-                    let params = {...queryParams,...res.data, transaction};
+                    let params : any = {campaign:{...queryParams,...res.data.dataValues || res.data}};
+                    params.transaction = transaction;
                     await CampaignsController.createCampaignItems(params);                                
                     return true;
                 });

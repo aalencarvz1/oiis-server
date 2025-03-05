@@ -14,15 +14,13 @@ export default class Campaign_Kpis extends BaseTableModel {
   //table fields
   declare campaign_id:number;
   declare name: string;
-  declare measurement_unit_id: number;
   declare description: string;    
   declare conditions:string;
-  declare is_participation_criterion:number;
-  declare manipulation_kpis:string;
+  declare notes:string;
 
 
 
-  static id = 16001;
+  static id = 16005;
   static tableName = this.name.toLowerCase();
   
 
@@ -37,25 +35,15 @@ export default class Campaign_Kpis extends BaseTableModel {
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    measurement_unit_id:{
-      type: DataTypes.BIGINT.UNSIGNED,
-      allowNull: false,
-      defaultValue: Measurement_Units.WT
-    },
     description:{
       type: DataTypes.TEXT
     },    
     conditions:{
       type: DataTypes.TEXT,      
     },
-    is_participation_criterion:{
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue:0
+    notes:{
+      type: DataTypes.TEXT,      
     },
-    manipulation_kpis:{
-      type: DataTypes.TEXT,
-    }  
   }};
 
   static uniqueFields = [
@@ -67,15 +55,6 @@ export default class Campaign_Kpis extends BaseTableModel {
     name: Campaign_Kpis.tableName + '_u1',
     fields: [...Campaign_Kpis.getBaseTableModelUniqueFields(),...Campaign_Kpis.uniqueFields],
     type:"unique"    
-  },{
-    name: Campaign_Kpis.tableName + '_c_1',
-    fields:['is_participation_criterion'],
-    type:"check",
-    where:{
-      is_participation_criterion: {
-            [Op.in]: [0,1]
-        }
-    }
   }
 ]];
 
@@ -88,13 +67,5 @@ export default class Campaign_Kpis extends BaseTableModel {
     },
     onUpdate: 'cascade',
     onDelete: 'cascade'
-  },{
-    fields: ['measurement_unit_id'],
-    type: 'foreign key',
-    references: { 
-        table: Measurement_Units,
-        field: 'id'
-    },
-    onUpdate: 'cascade'
   }]]; 
 };

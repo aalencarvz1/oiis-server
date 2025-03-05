@@ -15,11 +15,14 @@ export default class Campaign_KpisController extends BaseRegistersController {
      * @version 1.0.0
      */
     static async createKpisFromCampaign(params : any) : Promise<void>{
-        if (Utils.hasValue(params.campaign.campaign_kpis)) {
+        if (Utils.hasValue(params?.campaign?.campaign_kpis)) {
 
             //campaign kpis
             for(let k in params.campaign.campaign_kpis) {                
                 params.campaign.campaign_kpis[k].campaign_id = params.campaign.id;
+                if (Utils.hasValue(params.campaign.campaign_kpis[k].conditions) && typeof params.campaign.campaign_kpis[k].conditions != 'string') {
+                    params.campaign.campaign_kpis[k].conditions = JSON.stringify(params.campaign.campaign_kpis[k].conditions);
+                }
                 params.campaign.campaign_kpis[k] = {...params.campaign.campaign_kpis[k],...(await Campaign_Kpis.create(params.campaign.campaign_kpis[k],{transaction: params.transaction})).dataValues};
                 
                 //campaign kpi value getters

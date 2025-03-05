@@ -19,7 +19,7 @@ export default class Campaign_Kpi_Value_Details extends BaseTableModel {
 
 
 
-  static id = 16005;
+  static id = 16008;
   static tableName = this.name.toLowerCase();
   
 

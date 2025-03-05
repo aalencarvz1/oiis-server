@@ -1,9 +1,12 @@
 'use strict';
 
 
-import { DataTypes, Op } from "sequelize";
+import { DataTypes, Op, Sequelize } from "sequelize";
 import  BaseTableModel  from './BaseTableModel.js';
 import   Campaign_Kpis  from "./Campaign_Kpis.js";
+import Report_Visions from "./Report_Visions.js";
+import Measurement_Units from "./Measurement_Units.js";
+import Campaign_Entities from "./Campaign_Entities.js";
 
 
 /**
@@ -14,13 +17,23 @@ export default class Campaign_Kpi_Value_Getters extends BaseTableModel {
 
   //table fields
   declare campaign_kpi_id: number;
-  declare is_arbitrary_value: number;
+  declare campaign_entity_id: number;
+  declare name: string;  
+  declare report_vision_id: number;
   declare init_date: Date;
-  declare end_date: Date;
+  declare end_date: Date;    
+  declare measurement_unit_id: number;
+  declare consider_normal_sales: number;
+  declare consider_returns: number;
+  declare consider_bonuses: number;
   declare conditions: string;
+  declare objective_query: string;
+  declare value_query: string;
+  declare objective: number;
+  declare value: number;
+  declare notes: string;
 
-
-  static id = 16002;
+  static id = 16006;
   static tableName = this.name.toLowerCase();
   
 
@@ -28,18 +41,20 @@ export default class Campaign_Kpi_Value_Getters extends BaseTableModel {
     ...Campaign_Kpi_Value_Getters.getBaseTableModelFields(),...{            
       campaign_kpi_id:{
         type: DataTypes.BIGINT.UNSIGNED,
-        allowNull: false,
-        defaultvalue:0
+        allowNull: false
+      },
+      campaign_entity_id:{
+        type: DataTypes.BIGINT.UNSIGNED
       },
       name:{
         type: DataTypes.STRING(512),
         allowNull: false,
       },  
-      is_arbitrary_value:{
-        type: DataTypes.INTEGER,
+      report_vision_id:{
+        type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false,
-        defaultValue:0
-      },
+        defaultValue: Report_Visions.VALUES
+      },      
       init_date:{
         type: DataTypes.DATE,
         allowNull: false
@@ -48,13 +63,49 @@ export default class Campaign_Kpi_Value_Getters extends BaseTableModel {
         type: DataTypes.DATE,
         allowNull: false
       },     
+      measurement_unit_id:{
+        type: DataTypes.BIGINT.UNSIGNED,
+        allowNull: false,
+        defaultValue: Measurement_Units.WT      
+      },
+      consider_normal_sales:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue:1
+      },
+      consider_returns:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue:1
+      },
+      consider_bonuses:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue:0
+      },
       conditions:{
         type: DataTypes.TEXT,
-      }  
+      }, 
+      objective_query:{
+        type: DataTypes.TEXT,
+      }, 
+      value_query:{
+        type: DataTypes.TEXT,
+      },  
+      objective:{
+        type: DataTypes.DECIMAL,
+      },
+      value:{
+        type: DataTypes.DECIMAL,
+      },
+      notes:{
+        type: DataTypes.TEXT,
+      }
   }};
 
   static uniqueFields = [
     'campaign_kpi_id',
+    Sequelize.literal(`(COALESCE(campaign_entity_id,0))`),
     'name'
   ];
 
@@ -64,10 +115,28 @@ export default class Campaign_Kpi_Value_Getters extends BaseTableModel {
     type:"unique"
   },{
     name: Campaign_Kpi_Value_Getters.tableName + '_c_2',
-    fields:['is_arbitrary_value'],
+    fields:['consider_normal_sales'],
     type:"check",
     where:{
-      is_arbitrary_value: {
+      consider_normal_sales: {
+        [Op.in]: [0,1]
+      }
+    }
+  },{
+    name: Campaign_Kpi_Value_Getters.tableName + '_c_3',
+    fields:['consider_returns'],
+    type:"check",
+    where:{
+      consider_returns: {
+        [Op.in]: [0,1]
+      }
+    }
+  },{
+    name: Campaign_Kpi_Value_Getters.tableName + '_c_4',
+    fields:['consider_bonuses'],
+    type:"check",
+    where:{
+      consider_bonuses: {
         [Op.in]: [0,1]
       }
     }
@@ -82,6 +151,31 @@ export default class Campaign_Kpi_Value_Getters extends BaseTableModel {
     },
     onUpdate: 'cascade',
     onDelete: 'cascade',
+  },{
+    fields: ['campaign_entity_id'],
+    type: 'foreign key',
+    references: { 
+      table: Campaign_Entities,
+      field: 'id'
+    },
+    onUpdate: 'cascade',
+    onDelete: 'cascade',
+  },{
+    fields: ['report_vision_id'],
+    type: 'foreign key',
+    references: { 
+      table: Report_Visions,
+      field: 'id'
+    },
+    onUpdate: 'cascade'
+  },{
+    fields: ['measurement_unit_id'],
+    type: 'foreign key',
+    references: { 
+      table: Measurement_Units,
+      field: 'id'
+    },
+    onUpdate: 'cascade'
   }]];
  
 };

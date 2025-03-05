@@ -16,7 +16,7 @@ export default class Campaign_Kpi_Value_Detail_Entities extends BaseTableModel {
   declare expression: string;
 
 
-  static id = 16009;
+  static id = 16011;
   static tableName = this.name.toLowerCase();
   
 
