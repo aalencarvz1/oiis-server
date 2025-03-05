@@ -13,7 +13,7 @@ import Campaign_Kpi_Result_Values  from "./Campaign_Kpi_Result_Values.js";
 export default class Campaign_Entities_Kpi_Result_Values extends BaseTableModel {
 
   //table 
-  static id = 16008;
+  static id = 16010;
   static tableName = this.name.toLowerCase();
   
 
