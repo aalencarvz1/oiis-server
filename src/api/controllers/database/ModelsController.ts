@@ -140,7 +140,6 @@ import Project_Tasks_Status_Users from '../../database/models/Project_Tasks_Stat
 import Campaigns from '../../database/models/Campaigns.js';
 import Campaign_Kpis from '../../database/models/Campaign_Kpis.js';
 import Campaign_Kpi_Value_Getters from '../../database/models/Campaign_Kpi_Value_Getters.js';
-import Campaign_Kpi_Arbitrary_Values from '../../database/models/Campaign_Kpi_Arbitrary_Values.js';
 import Campaign_Kpi_Value_Details from '../../database/models/Campaign_Kpi_Value_Details.js';
 import Campaign_Entities from '../../database/models/Campaign_Entities.js';
 import Campaign_Kpi_Result_Values from '../../database/models/Campaign_Kpi_Result_Values.js';
@@ -373,7 +372,6 @@ export default class ModelsController {
         Campaigns.initModel();
         Campaign_Kpis.initModel();
         Campaign_Kpi_Value_Getters.initModel();
-        Campaign_Kpi_Arbitrary_Values.initModel();
         Campaign_Kpi_Value_Details.initModel();
         Campaign_Entities.initModel();
         Campaign_Kpi_Result_Values.initModel();
@@ -619,7 +617,6 @@ export default class ModelsController {
         await Campaigns.initAssociations();
         await Campaign_Kpis.initAssociations();
         await Campaign_Kpi_Value_Getters.initAssociations();
-        await Campaign_Kpi_Arbitrary_Values.initAssociations();
         await Campaign_Kpi_Value_Details.initAssociations();
         await Campaign_Entities.initAssociations();
         await Campaign_Kpi_Result_Values.initAssociations();

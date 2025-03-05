@@ -1710,33 +1710,6 @@ describe('Running api call tests', () => {
                     };
                     getParamsToUpdate = getParamsToCreate;
                     break;
-                case 'campaign_kpi_value_periods':
-                    getParamsToCreate = () => {
-                        let tableName = 'campaign_kpi_value_periods';
-                        let parentTableName = 'campaign_kpi_value_getters';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
-                        return {
-                            periods_agregation_expression: testString,
-                            init_date: new Date(),
-                            end_date: new Date(),
-                            campaign_kpi_value_getters_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
-                        };
-                    };
-                    getParamsToUpdate = getParamsToCreate;
-                    break;
-                case 'campaign_kpi_arbitrary_values':
-                    getParamsToCreate = () => {
-                        let tableName = 'campaign_kpi_arbitrary_values';
-                        let parentTableName = 'campaign_kpi_value_getters';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
-                        return {
-                            notes: testString,
-                            entity_id: 1,
-                            campaign_kpi_value_getters_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
-                        };
-                    };
-                    getParamsToUpdate = getParamsToCreate;
-                    break;
                 case 'campaign_kpi_value_details':
                     getParamsToCreate = () => {
                         let tableName = 'campaign_kpi_value_details';

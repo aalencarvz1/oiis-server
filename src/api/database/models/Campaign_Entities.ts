@@ -17,7 +17,7 @@ export default class Campaign_Entities extends BaseTableModel {
   declare notes:string;
 
 
-  static id = 16006;
+  static id = 16001;
   static tableName = this.name.toLowerCase();
   
 
