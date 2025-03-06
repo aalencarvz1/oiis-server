@@ -3,7 +3,7 @@ import Campaign_Kpi_Value_Getters from "../../../database/models/Campaign_Kpi_Va
 import Utils from "../../utils/Utils.js";
 import BaseRegistersController from "./BaseRegistersController.js";
 import DatabaseUtils from "../../database/DatabaseUtils.js";
-import { QueryTypes } from "sequelize";
+import { Op, QueryTypes } from "sequelize";
 import Campaign_Kpis from "../../../database/models/Campaign_Kpis.js";
 import Campaigns from "../../../database/models/Campaigns.js";
 import Relationships from "../../../database/models/Relationships.js";
@@ -15,6 +15,7 @@ import ReportsController from "../reports/ReportsController.js";
 import Measurement_Units from "../../../database/models/Measurement_Units.js";
 import Campaign_Entities_Kpi_Result_Values from "../../../database/models/Campaign_Entities_Kpi_Result_Values.js";
 import Campaign_Entities_Kpi_Value_Getters_Values from "../../../database/models/Campaign_Entities_Kpi_Value_Getters_Values.js";
+import Campaign_Kpi_Result_Values from "../../../database/models/Campaign_Kpi_Result_Values.js";
 
 export default class Campaign_Kpi_Value_GettersController extends BaseRegistersController {
     static getTableClassModel() : any {
@@ -45,7 +46,7 @@ export default class Campaign_Kpi_Value_GettersController extends BaseRegistersC
 
 
     /**
-     * calculate the result of kpi getter
+     * calculate the result of kpi getter and relationed expressions
      * @requesthandler
      * @created 2025-03-06
      * @version 1.0.0
@@ -105,6 +106,11 @@ export default class Campaign_Kpi_Value_GettersController extends BaseRegistersC
                             reportParams.considerNormalSales = Utils.toBool(kpiValueGetter.consider_normal_sales);
                             reportParams.considerReturns = Utils.toBool(kpiValueGetter.consider_returns);
                             reportParams.considerBonuses = Utils.toBool(kpiValueGetter.consider_bonuses);
+
+                            if ([Measurement_Units.WT,Measurement_Units.VL,Measurement_Units.UN].indexOf(kpiValueGetter.measurement_unit_id) == -1) {
+                                throw new Error(`not expecter unit ${kpiValueGetter.measurement_unit_id}`)
+                            }
+
                             reportParams.viewAmount = [Measurement_Units.UN,Measurement_Units.DT].indexOf(kpiValueGetter.measurement_unit_id) > -1;
                             reportParams.viewWeight = kpiValueGetter.measurement_unit_id == Measurement_Units.WT;
                             reportParams.viewValue = kpiValueGetter.measurement_unit_id == Measurement_Units.VL;
@@ -120,21 +126,45 @@ export default class Campaign_Kpi_Value_GettersController extends BaseRegistersC
                             }
 
                             if (Utils.hasValue(kpiValueGetter[`${Campaign_Kpis.tableName.toLowerCase()}.${Campaigns.tableName.toLowerCase()}.conditions`])) {
-                                reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiValueGetter[`${Campaign_Kpis.tableName.toLowerCase()}.${Campaigns.tableName.toLowerCase()}.conditions`])];
+                                //reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiValueGetter[`${Campaign_Kpis.tableName.toLowerCase()}.${Campaigns.tableName.toLowerCase()}.conditions`])];
+                                throw new Error("do implement conditions");
                             }
                             if (Utils.hasValue(kpiValueGetter[`${Campaign_Kpis.tableName.toLowerCase()}.conditions`])) {
-                                reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiValueGetter[`${Campaign_Kpis.tableName.toLowerCase()}.conditions`])];
+                                //reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiValueGetter[`${Campaign_Kpis.tableName.toLowerCase()}.conditions`])];
+                                throw new Error("do implement conditions");
                             }
                             if (Utils.hasValue(kpiValueGetter.conditions)) {
-                                reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiValueGetter.conditions)];
+                                //reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiValueGetter.conditions)];
+                                throw new Error("do implement conditions");
                             }
+
                             res.setDataSwap(await ReportsController.getCustomizedReportData(reportParams));
                             if (res.success) {
                                 res.data = res.data[0].DATA || [];
 
+                                let kpiResults = await Campaign_Kpi_Result_Values.findAll({
+                                    raw:true,
+                                    where:{
+                                        [Op.or]: [{
+                                            [Op.and]: [{
+                                                campaign_kpi_id: kpiValueGetter.campaign_kpi_id,
+                                            },{
+                                                expression:{
+                                                    [Op.like]:`%\$\{${kpiValueGetter.name}.%`
+                                                }
+                                            }]
+                                        },{
+                                            expression:{
+                                                [Op.like]:`%\$\{${kpiValueGetter[`${Campaign_Kpis.tableName.toLowerCase()}.name`]}.${kpiValueGetter.name}.%`
+                                            }
+                                        }]
+                                    }
+                                });
+
                                 for(let k in res.data) {
                                     let keys = Object.keys(res.data[k]);
 
+                                    //upsert kpi value getter value
                                     await Campaign_Entities_Kpi_Value_Getters_Values.saveOrCreate({
                                         where:{
                                             campaign_entity_id: entities.find(el=>el.entity_id == res.data[k][keys[0]])?.id,
@@ -144,6 +174,35 @@ export default class Campaign_Kpi_Value_GettersController extends BaseRegistersC
                                             value: res.data[k][keys[keys.length - 1]]
                                         }                                        
                                     });
+
+                                    for(let j in kpiResults) {
+                                        let exp = kpiResults[j].expression;
+                                        if (Utils.hasValue(exp)) {
+                                            exp = exp.replaceAll(`\$\{${kpiValueGetter[`${Campaign_Kpis.tableName.toLowerCase()}.name`]}.${kpiValueGetter.name}.objective\}`,kpiValueGetter.objective);
+                                            exp = exp.replaceAll(`\$\{${kpiValueGetter[`${Campaign_Kpis.tableName.toLowerCase()}.name`]}.${kpiValueGetter.name}.value\}`,kpiValueGetter.value || res.data[k][keys[keys.length - 1]]);
+                                            exp = exp.replaceAll(`\$\{${kpiValueGetter.name}.objective\}`,kpiValueGetter.objective);
+                                            exp = exp.replaceAll(`\$\{${kpiValueGetter.name}.value\}`,kpiValueGetter.value || res.data[k][keys[keys.length - 1]]);
+
+                                            /*@todo check if depend of others kpis or getters or resuts (others ${})*/
+                                            if (exp.indexOf('${') > -1) {
+                                                throw new Error('do implement multiple fonts from expression');
+                                            }
+
+                                            let val = eval(exp);
+
+                                            //upsert kpi result value
+                                            await Campaign_Entities_Kpi_Result_Values.saveOrCreate({
+                                                where:{
+                                                    campaign_entity_id: entities.find(el=>el.entity_id == res.data[k][keys[0]])?.id,
+                                                    campaign_kpi_result_id: kpiResults[j].id
+                                                },
+                                                values:{
+                                                    value: val
+                                                }                                        
+                                            });
+
+                                        }
+                                    }
                                 }
                             }
                         } else {
