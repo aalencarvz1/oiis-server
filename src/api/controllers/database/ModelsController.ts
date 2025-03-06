@@ -143,8 +143,9 @@ import Campaign_Kpi_Value_Getters from '../../database/models/Campaign_Kpi_Value
 import Campaign_Kpi_Value_Details from '../../database/models/Campaign_Kpi_Value_Details.js';
 import Campaign_Entities from '../../database/models/Campaign_Entities.js';
 import Campaign_Kpi_Result_Values from '../../database/models/Campaign_Kpi_Result_Values.js';
-import Campaign_Entities_Kpi_Result_Values from '../../database/models/Campaign_Entities_Kpi_Result_Values.js';
 import Campaign_Kpi_Value_Detail_Entities from '../../database/models/Campaign_Kpi_Value_Detail_Entities.js';
+import Campaign_Entities_Kpi_Result_Values from '../../database/models/Campaign_Entities_Kpi_Result_Values.js';
+import Campaign_Entities_Kpi_Value_Getters_Values from '../../database/models/Campaign_Entities_Kpi_Value_Getters_Values.js';
 import Apis from '../../database/models/Apis.js';
 import Api_Requests from '../../database/models/Api_Requests.js';
 import Api_Request_Calls from '../../database/models/Api_Request_Calls.js';
@@ -374,9 +375,10 @@ export default class ModelsController {
         Campaign_Kpi_Value_Getters.initModel();
         Campaign_Kpi_Value_Details.initModel();
         Campaign_Entities.initModel();
-        Campaign_Kpi_Result_Values.initModel();
+        Campaign_Kpi_Result_Values.initModel();        
+        Campaign_Kpi_Value_Detail_Entities.initModel();        
+        Campaign_Entities_Kpi_Value_Getters_Values.initModel();
         Campaign_Entities_Kpi_Result_Values.initModel();
-        Campaign_Kpi_Value_Detail_Entities.initModel();
         Apis.initModel();
         Api_Requests.initModel();
         Api_Request_Calls.initModel();
@@ -619,9 +621,10 @@ export default class ModelsController {
         await Campaign_Kpi_Value_Getters.initAssociations();
         await Campaign_Kpi_Value_Details.initAssociations();
         await Campaign_Entities.initAssociations();
-        await Campaign_Kpi_Result_Values.initAssociations();
-        await Campaign_Entities_Kpi_Result_Values.initAssociations();
+        await Campaign_Kpi_Result_Values.initAssociations();        
         await Campaign_Kpi_Value_Detail_Entities.initAssociations();
+        await Campaign_Entities_Kpi_Value_Getters_Values.initAssociations();
+        await Campaign_Entities_Kpi_Result_Values.initAssociations();        
         await Apis.initAssociations();
         await Api_Requests.initAssociations();
         await Api_Request_Calls.initAssociations();

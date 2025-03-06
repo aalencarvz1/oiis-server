@@ -26,12 +26,10 @@ export default class Logs extends BaseTableModel {
       allowNull: false 
     },
     process_name: {
-      type: DataTypes.STRING(256),
-      allowNull: true
+      type: DataTypes.STRING(256)
     },    
     values_names: {
-      type: DataTypes.STRING(2000),
-      allowNull: true
+      type: DataTypes.STRING(2000)
     }
   };
   static constraints = [];

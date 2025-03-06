@@ -30,28 +30,22 @@ export default class Errors extends BaseTableModel {
             allowNull: false 
         },
         object_type: {
-            type: DataTypes.STRING(255),
-            allowNull: true
+            type: DataTypes.STRING(255)
         },
         object_name: {
-            type: DataTypes.STRING(255),
-            allowNull: true
+            type: DataTypes.STRING(255)
         },
         line: {
-            type: DataTypes.STRING(255),
-            allowNull: true
+            type: DataTypes.STRING(255)
         },
         code: {
-            type: DataTypes.STRING(255),
-            allowNull: true
+            type: DataTypes.STRING(255)
         },
         message: {
-            type: DataTypes.STRING(2000),
-            allowNull: true
+            type: DataTypes.STRING(2000)
         },
         data: {
-            type: DataTypes.STRING(2000),
-            allowNull: true
+            type: DataTypes.STRING(2000)
         }
     };
     static constraints = [];
