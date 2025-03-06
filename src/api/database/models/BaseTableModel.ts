@@ -16,14 +16,15 @@ export default class BaseTableModel extends Model {
 
     //table fields
     declare id: number;
-    declare parent_id: number;
+    declare parent_id: number; //to "nested" registers or hierarquic representations
     declare status_reg_id: number;
     declare creator_user_id: number;
     declare created_at: Date;
     declare updater_user_id: number;
     declare updated_at: Date;
-    declare data_origin_id: number;
-    declare id_at_origin: string;
+    declare data_origin_id: number; //to indicate external origin of record
+    declare id_at_origin: string; //to indicate id on external origin
+    declare source_id: number; //to indicate source of record, ex.: a record duplicated from other
     declare deleted_at: Date;
     declare is_sys_rec: number;
 
@@ -74,8 +75,7 @@ export default class BaseTableModel extends Model {
                 type: DataTypes.BIGINT.UNSIGNED,
             },
             updated_at : {
-                type: DataTypes.DATE,
-                allowNull: true
+                type: DataTypes.DATE
             },
             data_origin_id: {
                 type: DataTypes.BIGINT.UNSIGNED,                
@@ -85,9 +85,11 @@ export default class BaseTableModel extends Model {
             id_at_origin: {
                 type: DataTypes.STRING(256)
             },
+            source_id: {
+                type: DataTypes.BIGINT.UNSIGNED
+            },
             deleted_at:{
-                type: DataTypes.DATE,
-                allowNull : true
+                type: DataTypes.DATE
             },
             is_sys_rec: {
                 type: DataTypes.INTEGER({
@@ -161,6 +163,14 @@ export default class BaseTableModel extends Model {
         type: 'foreign key',
         references: { 
             table: 'Data_Origins',
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+    },{
+        fields: ['source_id'],
+        type: 'foreign key',
+        references: { 
+            table: this.tableName,
             field: 'id'
         },
         onUpdate: 'cascade'
