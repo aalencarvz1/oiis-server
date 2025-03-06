@@ -13,6 +13,8 @@ import Relationship_Types from "../../../database/models/Relationship_Types.js";
 import Campaign_Entities from "../../../database/models/Campaign_Entities.js";
 import ReportsController from "../reports/ReportsController.js";
 import Measurement_Units from "../../../database/models/Measurement_Units.js";
+import Campaign_Entities_Kpi_Result_Values from "../../../database/models/Campaign_Entities_Kpi_Result_Values.js";
+import Campaign_Entities_Kpi_Value_Getters_Values from "../../../database/models/Campaign_Entities_Kpi_Value_Getters_Values.js";
 
 export default class Campaign_Kpi_Value_GettersController extends BaseRegistersController {
     static getTableClassModel() : any {
@@ -107,11 +109,16 @@ export default class Campaign_Kpi_Value_GettersController extends BaseRegistersC
                             reportParams.viewWeight = kpiValueGetter.measurement_unit_id == Measurement_Units.WT;
                             reportParams.viewValue = kpiValueGetter.measurement_unit_id == Measurement_Units.VL;
                             reportParams.conditions = [];
-                            /*reportParams.conditions.push({
+                            reportParams.conditions.push({
                                 reportVision:{id:visionRelationship.record_2_id},
                                 operation:{id:'IN'},
                                 selecteds: entities.map(el=>({id:el.entity_id}))
-                            })*/
+                            });
+
+                            if (Utils.hasValue(kpiValueGetter.campaign_entity_ids)) {
+                                reportParams.conditions[0].selecteds = (Utils.toArray(kpiValueGetter.campaign_entity_ids) as any).map((el:any)=>({id:el}))
+                            }
+
                             if (Utils.hasValue(kpiValueGetter[`${Campaign_Kpis.tableName.toLowerCase()}.${Campaigns.tableName.toLowerCase()}.conditions`])) {
                                 reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiValueGetter[`${Campaign_Kpis.tableName.toLowerCase()}.${Campaigns.tableName.toLowerCase()}.conditions`])];
                             }
@@ -121,8 +128,24 @@ export default class Campaign_Kpi_Value_GettersController extends BaseRegistersC
                             if (Utils.hasValue(kpiValueGetter.conditions)) {
                                 reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiValueGetter.conditions)];
                             }
-                            console.log(JSON.stringify(reportParams.conditions));
-                            res.data = await ReportsController.getCustomizedReportData(reportParams);
+                            res.setDataSwap(await ReportsController.getCustomizedReportData(reportParams));
+                            if (res.success) {
+                                res.data = res.data[0].DATA || [];
+
+                                for(let k in res.data) {
+                                    let keys = Object.keys(res.data[k]);
+
+                                    await Campaign_Entities_Kpi_Value_Getters_Values.saveOrCreate({
+                                        where:{
+                                            campaign_entity_id: entities.find(el=>el.entity_id == res.data[k][keys[0]])?.id,
+                                            campaign_kpi_value_getter_id: kpiValueGetter.id
+                                        },
+                                        values:{
+                                            value: res.data[k][keys[keys.length - 1]]
+                                        }                                        
+                                    });
+                                }
+                            }
                         } else {
                             throw new Error('no has entities');
                         }
@@ -133,11 +156,11 @@ export default class Campaign_Kpi_Value_GettersController extends BaseRegistersC
                     throw new Error('no data found');
                 }
             }
-            res.sendResponse(200,true);
+            
         } catch (e: any) {
             res.setException(e);
-            res.sendResponse(517,false);
         }
+        res.sendResponse();
     }
 
 

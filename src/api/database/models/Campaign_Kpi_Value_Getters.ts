@@ -17,7 +17,7 @@ export default class Campaign_Kpi_Value_Getters extends BaseTableModel {
 
   //table fields
   declare campaign_kpi_id: number;
-  declare campaign_entity_id: number;
+  declare campaign_entity_ids: number;
   declare name: string;  
   declare report_vision_id: number;
   declare init_date: Date;
