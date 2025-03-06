@@ -43,17 +43,15 @@ export default class Campaign_Kpi_Value_Getters extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false
       },
-      campaign_entity_id:{
-        type: DataTypes.BIGINT.UNSIGNED
+      campaign_entity_ids:{
+        type: DataTypes.STRING(255)
       },
       name:{
-        type: DataTypes.STRING(512),
+        type: DataTypes.STRING(255),
         allowNull: false,
       },  
       report_vision_id:{
-        type: DataTypes.BIGINT.UNSIGNED,
-        allowNull: false,
-        defaultValue: Report_Visions.VALUES
+        type: DataTypes.BIGINT.UNSIGNED
       },      
       init_date:{
         type: DataTypes.DATE,
@@ -105,7 +103,7 @@ export default class Campaign_Kpi_Value_Getters extends BaseTableModel {
 
   static uniqueFields = [
     'campaign_kpi_id',
-    Sequelize.literal(`(COALESCE(campaign_entity_id,0))`),
+    'campaign_entity_ids',
     'name'
   ];
 
@@ -147,15 +145,6 @@ export default class Campaign_Kpi_Value_Getters extends BaseTableModel {
     type: 'foreign key',
     references: { 
       table: Campaign_Kpis,
-      field: 'id'
-    },
-    onUpdate: 'cascade',
-    onDelete: 'cascade',
-  },{
-    fields: ['campaign_entity_id'],
-    type: 'foreign key',
-    references: { 
-      table: Campaign_Entities,
       field: 'id'
     },
     onUpdate: 'cascade',
