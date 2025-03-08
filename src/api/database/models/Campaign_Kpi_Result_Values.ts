@@ -15,7 +15,7 @@ export default class Campaign_Kpi_Result_Values extends BaseTableModel {
 
   //table fields
   declare campaign_kpi_id:number;
-  declare campaign_entity_id:number;
+  declare campaign_entity_ids:string;
   declare name:string;
   declare expression:string;
   declare is_participation_criterion:number;
@@ -34,8 +34,8 @@ export default class Campaign_Kpi_Result_Values extends BaseTableModel {
       allowNull: false,
       defaultValue:0
     },
-    campaign_entity_id:{
-      type: DataTypes.BIGINT.UNSIGNED
+    campaign_entity_ids:{
+      type: DataTypes.STRING(255),
     },
     name:{
       type: DataTypes.STRING(255),
@@ -57,7 +57,7 @@ export default class Campaign_Kpi_Result_Values extends BaseTableModel {
 
   static uniqueFields = [
     'campaign_kpi_id',
-    Sequelize.literal(`(COALESCE(campaign_entity_id,0))`),
+    'campaign_entity_ids',
     'name'
   ];
 
@@ -82,15 +82,6 @@ export default class Campaign_Kpi_Result_Values extends BaseTableModel {
       type: 'foreign key',
       references: { 
         table: Campaign_Kpis,
-        field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },{
-      fields: ['campaign_entity_id'],
-      type: 'foreign key',
-      references: { 
-        table: Campaign_Entities,
         field: 'id'
       },
       onUpdate: 'cascade',
