@@ -31,6 +31,15 @@ export default class Campaign_KpisController extends BaseRegistersController {
                 //campaign kpi result values
                 for(let j in params.campaign.campaign_kpis[k].kpi_result_values	||[]) {
                     params.campaign.campaign_kpis[k].kpi_result_values[j].campaign_kpi_id = params.campaign.campaign_kpis[k].id;
+
+                    if (params.campaign.campaign_kpis[k].kpi_result_values[j]?.campaign_entity_ids && typeof params.campaign.campaign_kpis[k].kpi_result_values[j].campaign_entity_ids != 'string') {
+                        if (Utils.hasValue(params.campaign.campaign_kpis[k].kpi_result_values[j].campaign_entity_ids)) {
+                            params.campaign.campaign_kpis[k].kpi_result_values[j].campaign_entity_ids = params.campaign.campaign_kpis[k].kpi_result_values[j].campaign_entity_ids.join(",");
+                        } else {
+                            params.campaign.campaign_kpis[k].kpi_result_values[j].campaign_entity_ids = null;
+                        }                                
+                    }
+
                     await Campaign_Kpi_Result_Values.create(params.campaign.campaign_kpis[k].kpi_result_values[j],{transaction: params.transaction});
                 }                
             }

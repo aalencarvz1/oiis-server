@@ -245,7 +245,7 @@ export default [
             "id" : 245,
             "routine_type_id" : 1,
             "name" : "GROUPS",
-            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"#e8eaed\"><path d=\"M320-320q33 0 56.5-23.5T400-400q0-33-23.5-56.5T320-480q-33 0-56.5 23.5T240-400q0 33 23.5 56.5T320-320Zm320 0q33 0 56.5-23.5T720-400q0-33-23.5-56.5T640-480q-33 0-56.5 23.5T560-400q0 33 23.5 56.5T640-320ZM480-560q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0 480q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z\"/></svg>",
+            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M320-320q33 0 56.5-23.5T400-400q0-33-23.5-56.5T320-480q-33 0-56.5 23.5T240-400q0 33 23.5 56.5T320-320Zm320 0q33 0 56.5-23.5T720-400q0-33-23.5-56.5T640-480q-33 0-56.5 23.5T560-400q0 33 23.5 56.5T640-320ZM480-560q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0 480q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z\"/></svg>",
             "view_path" :"/views/modules/registers/groups",
             "numeric_order":245,
             "subs":[{
@@ -267,13 +267,13 @@ export default [
         },{
             "id" : 255,
             "name" : "REPORTS",
-            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M120-120v-80l80-80v160h-80Zm160 0v-240l80-80v320h-80Zm160 0v-320l80 81v239h-80Zm160 0v-239l80-80v319h-80Zm160 0v-400l80-80v480h-80ZM120-327v-113l280-280 160 160 280-280v113L560-447 400-607 120-327Z\"/></svg>",
+            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"m296-80-56-56 276-277 140 140 207-207 57 57-264 263-140-140L296-80Zm-136-40q-33 0-56.5-23.5T80-200v-560q0-33 23.5-56.5T160-840h560q33 0 56.5 23.5T800-760v168H160v472Zm0-552h560v-88H160v88Zm0 0v-88 88Z\"/></svg>",
             "numeric_order":255,
             "subs":[{
                 "id" : 25500,
                 "routine_type_id" : 1,
                 "name" : "REPORTS DATAS FOUNTS",
-                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M400-320q100 0 170-70t70-170q0-100-70-170t-170-70q-100 0-170 70t-70 170q0 100 70 170t170 70Zm-40-120v-280h80v280h-80Zm-140 0v-200h80v200h-80Zm280 0v-160h80v160h-80ZM824-80 597-307q-41 32-91 49.5T400-240q-134 0-227-93T80-560q0-134 93-227t227-93q134 0 227 93t93 227q0 56-17.5 106T653-363l227 227-56 56Z\"/></svg>",
+                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M472-120q-73-1-137.5-13.5t-112-34Q175-189 147.5-218T120-280q0 33 27.5 62t75 50.5q47.5 21.5 112 34T472-120Zm-71-204q-30-3-58-8t-53.5-12q-25.5-7-48-15.5T200-379q19 11 41.5 19.5t48 15.5q25.5 7 53.5 12t58 8Zm79-275q86 0 177.5-26T760-679q-11-29-100.5-55T480-760q-91 0-178.5 25.5T200-679q15 29 104.5 54.5T480-599Zm-61 396q10 23 23 44t30 39q-73-1-137.5-13.5t-112-34Q175-189 147.5-218T120-280v-400q0-33 28.5-62t77.5-51q49-22 114.5-34.5T480-840q74 0 139.5 12.5T734-793q49 22 77.5 51t28.5 62q0 33-28.5 62T734-567q-49 22-114.5 34.5T480-520q-85 0-157-15t-123-44v101q40 37 100 54t121 22q-8 15-13 34.5t-7 43.5q-60-7-111.5-20T200-379v99q14 25 77 47t142 30ZM864-40 756-148q-22 13-46 20.5t-50 7.5q-75 0-127.5-52.5T480-300q0-75 52.5-127.5T660-480q75 0 127.5 52.5T840-300q0 26-7.5 50T812-204L920-96l-56 56ZM660-200q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Z\"/></svg>",
                 "view_path" :"/views/modules/registers/reports/datas",
                 "numeric_order":25500
             },{
@@ -283,6 +283,37 @@ export default [
                 "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v333q-19-11-39-20t-41-16v-137H520v137q-46 14-86 40t-74 63H200v160h82q11 22 22 42t24 38H200Zm0-320h240v-160H200v160Zm0-240h560v-80H200v80Zm280 200Zm0 0Zm0 0Zm0 0ZM640-40q-91 0-168-48T360-220q35-84 112-132t168-48q91 0 168 48t112 132q-35 84-112 132T640-40Zm0-80q57 0 107.5-26t82.5-74q-32-48-82.5-74T640-320q-57 0-107.5 26T450-220q32 48 82.5 74T640-120Zm0-40q-25 0-42.5-17.5T580-220q0-25 17.5-42.5T640-280q25 0 42.5 17.5T700-220q0 25-17.5 42.5T640-160Z\"/></svg>",
                 "view_path" :"/views/modules/registers/reports/visions",
                 "numeric_order":25599
+            },{
+                "id" : 25502,
+                "name" : "CAMPAIGNS",
+                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M120-120v-80l80-80v160h-80Zm160 0v-240l80-80v320h-80Zm160 0v-320l80 81v239h-80Zm160 0v-239l80-80v319h-80Zm160 0v-400l80-80v480h-80ZM120-327v-113l280-280 160 160 280-280v113L560-447 400-607 120-327Z\"/></svg>",
+                "numeric_order":25502,
+                "subs":[{
+                    "id" : 2550200,
+                    "routine_type_id": 1,
+                    "name" : "CUSTOMIZED CAMPAIGNS",
+                    "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M160-120v-720h640v400H240v80h200v80H240v80h200v80H160Zm456 0L504-232l56-56 56 56 142-142 56 56-198 198ZM240-520h200v-80H240v80Zm280 0h200v-80H520v80ZM240-680h200v-80H240v80Zm280 0h200v-80H520v80Z\"/></svg>",
+                    "view_path" :"/views/modules/registers/reports/campaigns/customized_campaigns",
+                    "numeric_order":2550200,
+                    "subs":[{
+                        "id" : 255020000,
+                        "routine_type_id" : 1,
+                        "name" : "MANEGEMENT CAMPAIGN",
+                        "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M480-80Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q10 0 19.5.5T520-877v81q-10-2-20-3t-20-1q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186q122-112 181-203.5T720-552q0-2-.5-4t-.5-4h80q0 2 .5 4t.5 4q0 100-79.5 217.5T480-80Zm0-450Zm195-108 84-84 84 84 56-56-84-84 84-84-56-56-84 84-84-84-56 56 84 84-84 84 56 56ZM480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Z\"/></svg>",
+                        "view_path" :"/views/modules/registers/reports/campaigns/customized_campaigns/manegement/:campaign_id",
+                        "numeric_order":255020000,
+                        "show_in_menu":0,
+                        "subs":[{
+                                "id" : 25502000000,
+                                "routine_type_id" : 1,
+                                "name" : "KPI CAMPAIGN",
+                                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M480-80Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q10 0 19.5.5T520-877v81q-10-2-20-3t-20-1q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186q122-112 181-203.5T720-552q0-2-.5-4t-.5-4h80q0 2 .5 4t.5 4q0 100-79.5 217.5T480-80Zm0-450Zm195-108 84-84 84 84 56-56-84-84 84-84-56-56-84 84-84-84-56 56 84 84-84 84 56 56ZM480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Z\"/></svg>",
+                                "view_path" :"/views/modules/registers/reports/campaigns/customized_campaigns/manegement/:campaign_id/kpis/manegement/:kpi_id",
+                                "numeric_order":25502000000,
+                                "show_in_menu":0
+                            }]
+                    }]
+                }]
             }]
         },{
             "id" : 258,
@@ -338,36 +369,6 @@ export default [
                 "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M200-280v-280h80v280h-80Zm240 0v-280h80v280h-80ZM80-640v-80l400-200 400 200v80H80Zm179-80h442L480-830 259-720ZM80-120v-80h482q2 21 5 40.5t9 39.5H80Zm600-310v-130h80v90l-80 40ZM800 0q-69-17-114.5-79.5T640-218v-102l160-80 160 80v102q0 76-45.5 138.5T800 0Zm-29-120 139-138-42-42-97 95-39-39-42 43 81 81ZM259-720h442-442Z\"/></svg>",
                 "view_path" :"/views/modules/registers/external_datas/rfb",
                 "numeric_order":29500
-            }]
-        },{
-            "id" : 296,
-            "name" : "CAMPAIGNS",
-            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M560-160v-80h104L537-367l57-57 126 126v-102h80v240H560Zm-344 0-56-56 504-504H560v-80h240v240h-80v-104L216-160Zm151-377L160-744l56-56 207 207-56 56Z\"/></svg>",            "numeric_order":298,
-            "subs":[{
-                "id" : 29600,
-                "routine_type_id": 1,
-                "name" : "CAMPAIGNS",
-                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 0 512 512\"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M403.8 34.4c12-5 25.7-2.2 34.9 6.9l64 64c6 6 9.4 14.1 9.4 22.6s-3.4 16.6-9.4 22.6l-64 64c-9.2 9.2-22.9 11.9-34.9 6.9s-19.8-16.6-19.8-29.6l0-32-32 0c-10.1 0-19.6 4.7-25.6 12.8L284 229.3 244 176l31.2-41.6C293.3 110.2 321.8 96 352 96l32 0 0-32c0-12.9 7.8-24.6 19.8-29.6zM164 282.7L204 336l-31.2 41.6C154.7 401.8 126.2 416 96 416l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0c10.1 0 19.6-4.7 25.6-12.8L164 282.7zm274.6 188c-9.2 9.2-22.9 11.9-34.9 6.9s-19.8-16.6-19.8-29.6l0-32-32 0c-30.2 0-58.7-14.2-76.8-38.4L121.6 172.8c-6-8.1-15.5-12.8-25.6-12.8l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0c30.2 0 58.7 14.2 76.8 38.4L326.4 339.2c6 8.1 15.5 12.8 25.6 12.8l32 0 0-32c0-12.9 7.8-24.6 19.8-29.6s25.7-2.2 34.9 6.9l64 64c6 6 9.4 14.1 9.4 22.6s-3.4 16.6-9.4 22.6l-64 64z\"/></svg>",
-                "view_path" :"/views/modules/registers/campaigns",
-                "numeric_order":2900,
-                "subs":[{
-                    "id" : 2960000,
-                    "routine_type_id" : 1,
-                    "name" : "MANEGEMENT CAMPAIGN",
-                    "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M480-80Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q10 0 19.5.5T520-877v81q-10-2-20-3t-20-1q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186q122-112 181-203.5T720-552q0-2-.5-4t-.5-4h80q0 2 .5 4t.5 4q0 100-79.5 217.5T480-80Zm0-450Zm195-108 84-84 84 84 56-56-84-84 84-84-56-56-84 84-84-84-56 56 84 84-84 84 56 56ZM480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Z\"/></svg>",
-                    "view_path" :"/views/modules/registers/campaigns/manegement/:campaign_id",
-                    "numeric_order":2960000,
-                    "show_in_menu":0,
-                    "subs":[{
-                            "id" : 296000000,
-                            "routine_type_id" : 1,
-                            "name" : "KPI CAMPAIGN",
-                            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M480-80Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q10 0 19.5.5T520-877v81q-10-2-20-3t-20-1q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186q122-112 181-203.5T720-552q0-2-.5-4t-.5-4h80q0 2 .5 4t.5 4q0 100-79.5 217.5T480-80Zm0-450Zm195-108 84-84 84 84 56-56-84-84 84-84-56-56-84 84-84-84-56 56 84 84-84 84 56 56ZM480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Z\"/></svg>",
-                            "view_path" :"/views/modules/registers/campaigns/manegement/:campaign_id/kpis/manegement/:kpi_id",
-                            "numeric_order":296000000,
-                            "show_in_menu":0
-                        }]
-                }]
             }]
         },{
             "id" : 297,
@@ -597,34 +598,56 @@ export default [
     },{      
         "id" : 80,
         "name" : "REPORTS",
-        "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M120-120v-80l80-80v160h-80Zm160 0v-240l80-80v320h-80Zm160 0v-320l80 81v239h-80Zm160 0v-239l80-80v319h-80Zm160 0v-400l80-80v480h-80ZM120-327v-113l280-280 160 160 280-280v113L560-447 400-607 120-327Z\"/></svg>",
+        "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"m296-80-56-56 276-277 140 140 207-207 57 57-264 263-140-140L296-80Zm-136-40q-33 0-56.5-23.5T80-200v-560q0-33 23.5-56.5T160-840h560q33 0 56.5 23.5T800-760v168H160v472Zm0-552h560v-88H160v88Zm0 0v-88 88Z\"/></svg>",
         "numeric_order":80,
         "subs":[{      
             "id" :8000,
-            "routine_type_id" : 1,
-            "name" : "CAMPANHA 2025",
-            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M400-320q100 0 170-70t70-170q0-100-70-170t-170-70q-100 0-170 70t-70 170q0 100 70 170t170 70Zm-40-120v-280h80v280h-80Zm-140 0v-200h80v200h-80Zm280 0v-160h80v160h-80ZM824-80 597-307q-41 32-91 49.5T400-240q-134 0-227-93T80-560q0-134 93-227t227-93q134 0 227 93t93 227q0 56-17.5 106T653-363l227 227-56 56Z\"/></svg>",
-            "view_path" :"/views/modules/reports/sinergy_campaign",
-            "numeric_order":8000
+            "name" : "CAMPAIGNS",
+            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M120-120v-80l80-80v160h-80Zm160 0v-240l80-80v320h-80Zm160 0v-320l80 81v239h-80Zm160 0v-239l80-80v319h-80Zm160 0v-400l80-80v480h-80ZM120-327v-113l280-280 160 160 280-280v113L560-447 400-607 120-327Z\"/></svg>",
+            "numeric_order":8000,
+            "subs":[{      
+                "id" :800000,
+                "routine_type_id" : 1,
+                "name" : "CAMPANHA 2025",
+                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M400-320q100 0 170-70t70-170q0-100-70-170t-170-70q-100 0-170 70t-70 170q0 100 70 170t170 70Zm-40-120v-280h80v280h-80Zm-140 0v-200h80v200h-80Zm280 0v-160h80v160h-80ZM824-80 597-307q-41 32-91 49.5T400-240q-134 0-227-93T80-560q0-134 93-227t227-93q134 0 227 93t93 227q0 56-17.5 106T653-363l227 227-56 56Z\"/></svg>",
+                "view_path" :"/views/modules/reports/campaigns/sinergy_campaign",
+                "numeric_order":800000
+            },{      
+                "id" :800001,
+                "routine_type_id" : 1,
+                "name" : "CAMPANHA 2025 PBI",
+                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M160-120q-33 0-56.5-23.5T80-200v-640l67 67 66-67 67 67 67-67 66 67 67-67 67 67 66-67 67 67 67-67 66 67 67-67v640q0 33-23.5 56.5T800-120H160Zm0-80h280v-240H160v240Zm360 0h280v-80H520v80Zm0-160h280v-80H520v80ZM160-520h640v-120H160v120Z\"/></svg>",
+                "view_path" :"/views/modules/reports/campaigns/sinergy_campaign_pbi",
+                "numeric_order":800001
+            },{      
+                "id" :800002,
+                "routine_type_id" : 1,
+                "name" : "CUSTOMIZED CAMPAIGNS",
+                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M160-120v-720h640v400H240v80h200v80H240v80h200v80H160Zm456 0L504-232l56-56 56 56 142-142 56 56-198 198ZM240-520h200v-80H240v80Zm280 0h200v-80H520v80ZM240-680h200v-80H240v80Zm280 0h200v-80H520v80Z\"/></svg>",
+                "view_path" :"/views/modules/reports/campaigns/customized_campaigns",
+                "numeric_order":800002,
+                "subs":[{      
+                    "id" :80000200,
+                    "routine_type_id" : 1,
+                    "name" : "CUSTOMIZED CAMPAIGN",
+                    "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M160-120v-720h640v400H240v80h200v80H240v80h200v80H160Zm456 0L504-232l56-56 56 56 142-142 56 56-198 198ZM240-520h200v-80H240v80Zm280 0h200v-80H520v80ZM240-680h200v-80H240v80Zm280 0h200v-80H520v80Z\"/></svg>",
+                    "view_path" :"/views/modules/reports/campaigns/customized_campaigns/:id",
+                    "numeric_order":80000200,
+                    "show_in_menu":0
+                }]
+            }]
         },{      
             "id" :8001,
             "routine_type_id" : 1,
             "name" : "CUSTOMIZED REPORT",
-            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"m296-80-56-56 276-277 140 140 207-207 57 57-264 263-140-140L296-80Zm-136-40q-33 0-56.5-23.5T80-200v-560q0-33 23.5-56.5T160-840h560q33 0 56.5 23.5T800-760v168H160v472Zm0-552h560v-88H160v88Zm0 0v-88 88Z\"/></svg>",
+            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M760-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120ZM200-640h560v-120H200v120Zm100 80H200v360h100v-360Zm360 0v360h100v-360H660Zm-80 0H380v360h200v-360Z\"/></svg>",
             "view_path" :"/views/modules/reports/customizedreport",
             "numeric_order":8002
-        },{      
-            "id" :8002,
-            "routine_type_id" : 1,
-            "name" : "CAMPANHA 2025 PBI",
-            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M160-120q-33 0-56.5-23.5T80-200v-640l67 67 66-67 67 67 67-67 66 67 67-67 67 67 66-67 67 67 67-67 66 67 67-67v640q0 33-23.5 56.5T800-120H160Zm0-80h280v-240H160v240Zm360 0h280v-80H520v80Zm0-160h280v-80H520v80ZM160-520h640v-120H160v120Z\"/></svg>",
-            "view_path" :"/views/modules/reports/sinergy_campaign_pbi",
-            "numeric_order":8001
         },{      
             "id" :8003,
             "routine_type_id" : 1,
             "name" : "CUSTOMIZED POSITIVITY",
-            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M400-160h160v-160H400v160ZM160-400h160v-160H160v160Zm240 0h160v-160H400v160Zm240 0h160v-160H640v160Zm0-240h160v-160H640v160ZM320-80v-240H80v-320h480v-240h320v560H640v240H320Z\"/></svg>",
+            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M400-640v-200h360q33 0 56.5 23.5T840-760v120H400ZM200-120q-33 0-56.5-23.5T120-200v-360h200v440H200Zm-80-520v-120q0-33 23.5-56.5T200-840h120v200H120ZM520-80 360-240l160-160 56 56-62 64h86q33 0 56.5-23.5T680-360v-88l-64 64-56-56 160-160 160 160-56 56-64-64v88q0 66-47 113t-113 47h-86l62 64-56 56Z\"/></svg>",
             "view_path" :"/views/modules/reports/customizedpositivity",
             "numeric_order":8003
         },{      
@@ -637,13 +660,13 @@ export default [
         },{      
             "id" :8010,
             "name" : "CLIENTS",
-            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M260-361v-40H160v-80h200v-80H200q-17 0-28.5-11.5T160-601v-160q0-17 11.5-28.5T200-801h60v-40h80v40h100v80H240v80h160q17 0 28.5 11.5T440-601v160q0 17-11.5 28.5T400-401h-60v40h-80Zm298 240L388-291l56-56 114 114 226-226 56 56-282 282Z\"/></svg>",
+            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z\"/></svg>",
             "numeric_order":8010,
             "subs":[{      
                 "id" :801000,
                 "routine_type_id" : 1,
                 "name" : "ACTIVES X POSITIVEDS",
-                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\" width=\"24px\" fill=\"#e8eaed\"><path d=\"M702-480 560-622l57-56 85 85 170-170 56 57-226 226Zm-342 0q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 260Zm0-340Z\"/></svg>",
+                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M702-480 560-622l57-56 85 85 170-170 56 57-226 226Zm-342 0q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 260Zm0-340Z\"/></svg>",
                 "view_path" :"/views/modules/reports/clients/actives_x_positiveds",
                 "numeric_order":801000
             }]

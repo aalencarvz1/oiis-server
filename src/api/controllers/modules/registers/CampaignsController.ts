@@ -313,6 +313,44 @@ export default class CampaignsController extends BaseRegistersController {
             res.sendResponse(517,false);
         }
     }
+
+
+
+    /**
+     * request handler to get campaign report data
+     * @requesthandler
+     * @override
+     * @created 2025-03-07
+     * @version 1.0.0
+     */
+    static async get_campaign_report_data(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        try {
+            let params = req.body || {};            
+            let query = `
+                select
+                    ce.entity_id,
+                    ck.name as kpi_name,
+                    cv.name as result_name,
+                    cev.value
+                from
+                    campaigns c
+                    join campaign_entities ce on ce.campaign_id = c.id
+                    left outer join campaign_kpis ck on ck.campaign_id = c.id
+                    left outer join campaign_kpi_result_values cv on cv.campaign_kpi_id = ck.id
+                    left outer join campaign_entities_kpi_result_values cev on (
+                        cev.campaign_entity_id = ce.id
+                        and cev.campaign_kpi_result_id = cv.id
+                    )
+                where
+                    c.id = ${params.id}
+            `;
+            res.data = await DBConnectionManager.getDefaultDBConnection()?.query(query, {type:QueryTypes.SELECT});
+            res.sendResponse(200,true);
+        } catch (e: any) {
+            res.setException(e);
+            res.sendResponse(517,false);
+        }
+    }
     
 
 
@@ -320,7 +358,8 @@ export default class CampaignsController extends BaseRegistersController {
         this.configureDefaultRequestHandlers([
             this.get_entities_type_data,
             this.get_kpis_data,
-            this.get_with_sub_datas
+            this.get_with_sub_datas,
+            this.get_campaign_report_data
         ]);
     }
 }
