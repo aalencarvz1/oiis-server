@@ -5,15 +5,16 @@ import Utils from "../../utils/Utils.js";
 import Campaign_Entities from "../../../database/models/Campaign_Entities.js";
 import Campaign_Kpis from "../../../database/models/Campaign_Kpis.js";
 import DatabaseUtils from "../../database/DatabaseUtils.js";
-import { QueryTypes, Sequelize } from "sequelize";
+import { QueryTypes } from "sequelize";
 import Entities_Types from "../../../database/models/Entities_Types.js";
 import QueryBuilder from "../../database/QueryBuilder.js";
 import Entities_TypesController from "./Entities_TypesController.js";
 import DBConnectionManager from "../../../database/DBConnectionManager.js";
-import Campaign_Kpi_Result_Values from "../../../database/models/Campaign_Kpi_Result_Values.js";
-import Campaign_Kpi_Value_Getters from "../../../database/models/Campaign_Kpi_Value_Getters.js";
 import Campaign_EntitiesController from "./Campaign_EntitiesController.js";
 import Campaign_KpisController from "./Campaign_KpisController.js";
+import Campaign_Kpi_Result_Values from "../../../database/models/Campaign_Kpi_Result_Values.js";
+import Campaign_Kpi_Result_ValuesController from "./Campaign_Kpi_Result_ValuesController.js";
+import DataSwap from "../../data/DataSwap.js";
 
 
 export default class CampaignsController extends BaseRegistersController {
@@ -75,6 +76,17 @@ export default class CampaignsController extends BaseRegistersController {
     }
 
 
+    static handleFieldsToSave(queryParams: any) : void {
+        if (queryParams?.conditions && typeof queryParams.conditions != 'string') {
+            if (Utils.hasValue(queryParams?.conditions)) {
+                queryParams.conditions = JSON.stringify(queryParams.conditions);
+            } else {
+                queryParams.conditions = null;
+            }
+        }
+    }
+
+
     /**
      * create all items of campaign, such as entities and kpis
      * @version 1.0.0
@@ -83,6 +95,18 @@ export default class CampaignsController extends BaseRegistersController {
         await Campaign_EntitiesController.createEntitiesFromCampaign(params);
         await Campaign_KpisController.createKpisFromCampaign(params);
     }
+
+
+    /**
+     * path all items of campaign, such as entities and kpis
+     * @version 1.0.0
+     */
+    static async pathCampaignItems(params : any) : Promise<void>{
+        await Campaign_EntitiesController.pathEntitiesFromCampaign(params);
+        await Campaign_KpisController.pathKpisFromCampaign(params);
+    }
+
+    
 
 
     /**
@@ -95,9 +119,7 @@ export default class CampaignsController extends BaseRegistersController {
     static async put(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let queryParams = req.body.queryParams || req.body;
-            if (Utils.hasValue(queryParams.conditions) && typeof queryParams.conditions != 'string') {
-                queryParams.conditions = JSON.stringify(queryParams.conditions);
-            }
+            this.handleFieldsToSave(queryParams);
             await DBConnectionManager.getDefaultDBConnection()?.transaction(async transaction=>{
                 res.data = await this.getTableClassModel().create(queryParams, {transaction});
                 let params : any = {campaign:{...queryParams,...res.data.dataValues || res.data}};
@@ -116,29 +138,35 @@ export default class CampaignsController extends BaseRegistersController {
     static async patch(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let queryParams = req.body.queryParams || req.body;
-            if (Utils.hasValue(queryParams.conditions) && typeof queryParams.conditions != 'string') {
-                queryParams.conditions = JSON.stringify(queryParams.conditions);
-            }
-            if(Utils.hasValue(queryParams.campaign_entities) && Utils.hasValue(queryParams.entity_type_id) && Utils.hasValue(queryParams.id)) {
+            this.handleFieldsToSave(queryParams);
+            if(Utils.hasValue(queryParams.id)) {
                 await DBConnectionManager.getDefaultDBConnection()?.transaction(async transaction=>{
-                    await Campaign_Entities.destroy({
-                        where: {
-                            campaign_id: queryParams.id
-                        },
-                        transaction
-                    });
-                    await Campaign_Kpis.destroy({
-                        where: {
-                            campaign_id: queryParams.id
-                        },
-                        transaction
-                    })
+
+                    if (Utils.hasValue(queryParams.entities_ids_to_exclude)) {
+
+                        await Campaign_Entities.destroy({
+                            where: {
+                                id: Utils.toArray(queryParams.entities_ids_to_exclude)?.map(Utils.toNumber)
+                            },
+                            transaction
+                        });
+                    }
+
+
+                    if (Utils.hasValue(queryParams.kpis_ids_to_exclude)) {
+                        await Campaign_Kpis.destroy({
+                            where: {
+                                id: Utils.toArray(queryParams.kpis_ids_to_exclude)?.map(Utils.toNumber)
+                            },
+                            transaction
+                        })
+                    }                                    
 
                     queryParams.transaction = transaction;
                     res.data = await this.getTableClassModel().patchData(queryParams);
                     let params : any = {campaign:{...queryParams,...res.data.dataValues || res.data}};
                     params.transaction = transaction;
-                    await CampaignsController.createCampaignItems(params);                                
+                    await CampaignsController.pathCampaignItems(params);                                
                     return true;
                 });
                 res.sendResponse(200,true);
@@ -336,10 +364,23 @@ export default class CampaignsController extends BaseRegistersController {
                     campaigns c
                     join campaign_entities ce on ce.campaign_id = c.id
                     left outer join campaign_kpis ck on ck.campaign_id = c.id
-                    left outer join campaign_kpi_result_values cv on cv.campaign_kpi_id = ck.id
+                    left outer join campaign_kpi_result_values cv on (
+                        cv.campaign_kpi_id = ck.id
+                        and (
+                            cv.campaign_entity_ids is null 
+                            or (
+                                cv.campaign_entity_ids is not null 
+                                and (
+                                    cv.campaign_entity_ids = ce.entity_id
+                                    or instr(cv.campaign_entity_ids,ce.entity_id+',') > 0
+                                    or instr(cv.campaign_entity_ids,','+ce.entity_id) > 0
+                                )
+                            )            
+                        )
+                    )
                     left outer join campaign_entities_kpi_result_values cev on (
                         cev.campaign_entity_id = ce.id
-                        and cev.campaign_kpi_result_id = cv.id
+                        and cev.campaign_kpi_result_value_id = cv.id
                     )
                 where
                     c.id = ${params.id}
@@ -351,6 +392,75 @@ export default class CampaignsController extends BaseRegistersController {
             res.sendResponse(517,false);
         }
     }
+
+
+    /**
+     * calculate campaign values
+     * @created 2025-03-10
+     * @version 1.0.0
+     */
+    static async _calculate(params?: any) : Promise<DataSwap> {
+        let result = new DataSwap();
+        try {
+            params = params || {};            
+            let campaignId = params.campaign_id;
+            if (Utils.hasValue(campaignId)) {
+                let resultValues = await Campaign_Kpi_Result_Values.findAll({
+                    raw:true,
+                    include:[{
+                        model: Campaign_Kpis,
+                        where:{
+                            campaign_id: campaignId
+                        }
+                    }]
+                })
+                if (Utils.hasValue(resultValues)) {
+                    let currentDate = new Date();
+                    for(let k in resultValues) {
+                        let resultTemp = await Campaign_Kpi_Result_ValuesController._calculate({
+                            user: params.user,
+                            currentDate: currentDate,
+                            queryParams:{
+                                where:{
+                                    id: resultValues[k].id
+                                }
+                            }
+                        });
+                        if (!resultTemp.success) {
+                            resultTemp.throw();
+                        }
+                    }
+                    result.success = true;
+                } else {
+                    throw new Error("no data found");
+                }                
+            } else {
+                throw new Error('missing data');
+            }            
+        } catch (e: any) {
+            result.setException(e);
+        }
+        return result;
+    }
+
+
+    /**
+     * request handler to calculate campaign values
+     * @requesthandler
+     * @override
+     * @created 2025-03-10
+     * @version 1.0.0
+     */
+    static async calculate(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        try {
+            let params = req.body || {};            
+            params.user = req.user;
+            res.setDataSwap(await this._calculate(params));
+        } catch (e: any) {
+            res.setException(e);            
+        }
+        res.sendResponse();
+    }
     
 
 
@@ -359,7 +469,8 @@ export default class CampaignsController extends BaseRegistersController {
             this.get_entities_type_data,
             this.get_kpis_data,
             this.get_with_sub_datas,
-            this.get_campaign_report_data
+            this.get_campaign_report_data,
+            this.calculate
         ]);
     }
 }

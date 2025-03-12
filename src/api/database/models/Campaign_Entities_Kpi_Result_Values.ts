@@ -12,6 +12,13 @@ import Campaign_Kpi_Result_Values  from "./Campaign_Kpi_Result_Values.js";
  */
 export default class Campaign_Entities_Kpi_Result_Values extends BaseTableModel {
 
+
+  declare campaign_entity_id: number;
+  declare campaign_kpi_result_value_id: number;
+  declare value: number;
+  declare calculated_at: Date;
+  declare notes: string;
+
   //table 
   static id = 16060;
   static tableName = this.name.toLowerCase();
@@ -23,7 +30,7 @@ export default class Campaign_Entities_Kpi_Result_Values extends BaseTableModel 
       type: DataTypes.BIGINT.UNSIGNED,
       allowNull: false
     },
-    campaign_kpi_result_id:{
+    campaign_kpi_result_value_id:{
       type: DataTypes.BIGINT.UNSIGNED,
       allowNull: false
     },
@@ -32,6 +39,9 @@ export default class Campaign_Entities_Kpi_Result_Values extends BaseTableModel 
       allowNull: false,
       defaultValue:0
     },
+    calculated_at:{
+      type: DataTypes.DATE(3),
+    },
     notes:{
       type: DataTypes.TEXT
     }
@@ -39,7 +49,7 @@ export default class Campaign_Entities_Kpi_Result_Values extends BaseTableModel 
 
   static uniqueFields = [
     'campaign_entity_id',
-    'campaign_kpi_result_id'
+    'campaign_kpi_result_value_id'
   ];
 
   static constraints = [...(Campaign_Entities_Kpi_Result_Values.getBaseTableModelConstraints() || []),...[{
@@ -60,7 +70,7 @@ export default class Campaign_Entities_Kpi_Result_Values extends BaseTableModel 
       onDelete: 'cascade'
     },
     {
-      fields: ['campaign_kpi_result_id'],
+      fields: ['campaign_kpi_result_value_id'],
       type: 'foreign key',
       references: { 
         table: Campaign_Kpi_Result_Values,
