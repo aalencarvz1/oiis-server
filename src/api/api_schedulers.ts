@@ -4,7 +4,7 @@ import cors from 'cors';
 import ModelsController from './controllers/database/ModelsController.js';
 import { AsyncTask, SimpleIntervalJob, ToadScheduler } from 'toad-scheduler';
 import SicrediPixIntegrationsController from './controllers/modules/integrations/sicredi/SicrediPixIntegrationsController.js';
-import AuroraStockIntegrationsController from './controllers/modules/integrations/aurora/AuroraStockIntegrationsController.js';
+//import AuroraStockIntegrationsController from './controllers/modules/integrations/aurora/AuroraStockIntegrationsController.js';
 //const { MtrixIntegrationsController } = require('./controllers/modules/registers/integrations/mtrix/MtrixIntegrationsController');
 
 //api create
@@ -48,7 +48,7 @@ if (process.env.NODE_ENV == 'production') {
 
 
     //AURORA STOCK INTEGRATION
-    const taskAuroraStockIntegration = new AsyncTask(
+    /*const taskAuroraStockIntegration = new AsyncTask(
         'simple task', 
         async () => { 
             try {
@@ -72,7 +72,7 @@ if (process.env.NODE_ENV == 'production') {
             preventOverrun: true,
         }
     );
-    scheduler.addSimpleIntervalJob(jobAuroraStockIntegration);
+    scheduler.addSimpleIntervalJob(jobAuroraStockIntegration);*/
 
 
     //MTRIX INTEGRATION FILES GENERATE 
