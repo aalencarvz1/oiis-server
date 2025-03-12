@@ -16,6 +16,8 @@ export default class Campaign_Kpis extends BaseTableModel {
   declare name: string;
   declare description: string;    
   declare conditions:string;
+  declare is_visible: number;
+  declare order_num: number;
   declare notes:string;
 
 
@@ -41,6 +43,16 @@ export default class Campaign_Kpis extends BaseTableModel {
     conditions:{
       type: DataTypes.TEXT,      
     },
+    is_visible:{
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue:1
+    },
+    order_num:{
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue:1
+    },
     notes:{
       type: DataTypes.TEXT,      
     },
@@ -55,6 +67,15 @@ export default class Campaign_Kpis extends BaseTableModel {
     name: Campaign_Kpis.tableName + '_u1',
     fields: [...Campaign_Kpis.getBaseTableModelUniqueFields(),...Campaign_Kpis.uniqueFields],
     type:"unique"    
+  },{
+    name: Campaign_Kpis.tableName + '_c_1',
+    fields:['is_visible'],
+    type:"check",
+    where:{
+      is_visible: {
+        [Op.in]: [0,1]
+      }
+    }
   }
 ]];
 

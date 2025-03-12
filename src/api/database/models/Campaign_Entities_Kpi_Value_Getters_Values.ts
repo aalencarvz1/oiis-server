@@ -12,6 +12,14 @@ import Campaign_Kpi_Value_Getters from "./Campaign_Kpi_Value_Getters.js";
  */
 export default class Campaign_Entities_Kpi_Value_Getters_Values extends BaseTableModel {
 
+
+  declare campaign_entity_id: number;
+  declare campaign_kpi_value_getter_id: number;
+  declare value: number;
+  declare calculated_at: Date;
+  declare notes: string;
+
+
   //table 
   static id = 16050;
   static tableName = this.name.toLowerCase();
@@ -31,6 +39,9 @@ export default class Campaign_Entities_Kpi_Value_Getters_Values extends BaseTabl
       type: DataTypes.DECIMAL(38,12),
       allowNull: false,
       defaultValue:0
+    },
+    calculated_at:{
+      type: DataTypes.DATE(3),
     },
     notes:{
       type: DataTypes.TEXT

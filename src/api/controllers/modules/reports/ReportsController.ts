@@ -150,6 +150,7 @@ export default class ReportsController extends BaseRegistersController {
         let result = new DataSwap();
         try {
             result.data = null;
+            console.log('ccccccccccccc',params.conditions);
             let structuredQueryData = await StructuredQueryUtils.getStructuredQueryData(params);            
             if (structuredQueryData) {
 

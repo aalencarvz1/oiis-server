@@ -1774,7 +1774,7 @@ describe('Running api call tests', () => {
                         return {
                             notes: testString,
                             campaign_entity_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
-                            campaign_kpi_result_id: parent2?.id.in[0] || ((datas[parentTableName2] || [])[(datas[parentTableName2] || []).length - 1] || {}).id || undefined
+                            campaign_kpi_result_value_id: parent2?.id.in[0] || ((datas[parentTableName2] || [])[(datas[parentTableName2] || []).length - 1] || {}).id || undefined
                         };
                     };
                     getParamsToUpdate = getParamsToCreate;
