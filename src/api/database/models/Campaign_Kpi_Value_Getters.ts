@@ -31,7 +31,8 @@ export default class Campaign_Kpi_Value_Getters extends BaseTableModel {
   declare value_query: string;
   declare objective: number;
   declare value: number;
-  declare notes: string;
+  declare calculated_at: Date;
+  declare notes: string;  
 
   static id = 16006;
   static tableName = this.name.toLowerCase();
@@ -95,6 +96,9 @@ export default class Campaign_Kpi_Value_Getters extends BaseTableModel {
       },
       value:{
         type: DataTypes.DECIMAL,
+      },
+      calculated_at:{
+        type: DataTypes.DATE(3),
       },
       notes:{
         type: DataTypes.TEXT,

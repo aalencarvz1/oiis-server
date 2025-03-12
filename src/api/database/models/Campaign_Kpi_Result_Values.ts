@@ -19,7 +19,10 @@ export default class Campaign_Kpi_Result_Values extends BaseTableModel {
   declare name:string;
   declare expression:string;
   declare is_participation_criterion:number;
-  declare notes:string;
+  declare is_visible: number;
+  declare order_num: number;
+  declare calculated_at: Date;
+  declare notes:string;  
   
 
 
@@ -50,6 +53,19 @@ export default class Campaign_Kpi_Result_Values extends BaseTableModel {
       allowNull: false,
       defaultValue:0
     },
+    is_visible:{
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue:1
+    },
+    order_num:{
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue:1
+    },
+    calculated_at:{
+      type: DataTypes.DATE(3),
+    },
     notes:{
       type: DataTypes.TEXT
     },
@@ -71,6 +87,15 @@ export default class Campaign_Kpi_Result_Values extends BaseTableModel {
     type:"check",
     where:{
       is_participation_criterion: {
+        [Op.in]: [0,1]
+      }
+    }
+  },{
+    name: Campaign_Kpi_Result_Values.tableName + '_c_2',
+    fields:['is_visible'],
+    type:"check",
+    where:{
+      is_visible: {
         [Op.in]: [0,1]
       }
     }
