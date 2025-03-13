@@ -310,9 +310,9 @@ export default class CampaignsController extends BaseRegistersController {
             let query = `
                 select
                     ce.entity_id,                    
+                    ck.name as kpi_name,
                     null as entity_name,
-                    c.entity_type_id,
-                    ck.name as kpi_name,                    
+                    c.entity_type_id,                    
                     cv.name as result_name,
                     c.init_date,
                     c.end_date,                    
