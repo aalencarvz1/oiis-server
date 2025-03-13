@@ -633,7 +633,16 @@ export default [
                     "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M160-120v-720h640v400H240v80h200v80H240v80h200v80H160Zm456 0L504-232l56-56 56 56 142-142 56 56-198 198ZM240-520h200v-80H240v80Zm280 0h200v-80H520v80ZM240-680h200v-80H240v80Zm280 0h200v-80H520v80Z\"/></svg>",
                     "view_path" :"/views/modules/reports/campaigns/customized_campaigns/:id",
                     "numeric_order":80000200,
-                    "show_in_menu":0
+                    "show_in_menu":0,
+                    "subs":[{      
+                        "id" :8000020000,
+                        "routine_type_id" : 1,
+                        "name" : "CUSTOMIZED CAMPAIGN ENTITY",
+                        "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M160-120v-720h640v400H240v80h200v80H240v80h200v80H160Zm456 0L504-232l56-56 56 56 142-142 56 56-198 198ZM240-520h200v-80H240v80Zm280 0h200v-80H520v80ZM240-680h200v-80H240v80Zm280 0h200v-80H520v80Z\"/></svg>",
+                        "view_path" :"/views/modules/reports/campaigns/customized_campaigns/:id/entities/:entity_id",
+                        "numeric_order":8000020000,
+                        "show_in_menu":0
+                    }]
                 }]
             }]
         },{      
