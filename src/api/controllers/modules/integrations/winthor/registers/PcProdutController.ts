@@ -64,95 +64,86 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
     static async get_product_data(req: Request, res: Response, next: NextFunction) : Promise<void> {
         
         type Filter = {
-            campo: String;
-            operador: any;
+            campo: String | null;
+            operador: any | null;
             valor: String | number | null;
         }
+        let campos = ['pp.codprod',
+            'pp.codfab',
+            'pp.descricao',
+            'pe.codfilial',
+            'pe.qtest',
+            'pe.dtultent',
+            'pe.dtultsaida',
+            'pp.embalagem',
+            'pp.unidade',
+            'pp.pesoliq',
+            'pp.pesobruto',
+            'pp.codepto',
+            'pp.temrepos',
+            'pp.qtunit',
+            'pp.dtcadastro',
+            'pp.dtexclusao',
+            'pp.dtultaltcom',
+            'pp.prazoval',
+            'pp.revenda',
+            'pp.qtunitcx',
+            'pp.importado',
+            'pp.codauxiliar']
 
-        let where : Filter[] = req.body.filters
-        console.log(where)
+        let camposTerm = [
+            'pp.codprod',
+            'pp.codfab',
+            'pe.codfilial',
+            ]
+
+        let whereAvanced : Filter[] = req.body.filters || null
+        let whereTerm = req.body.termo || null
+        console.log(whereAvanced,"Pesquisa avançada")
+        console.log(whereTerm,"Pesquisa por termo")
         try {
             let result: any;
             let query: any;
-            if(where.length > 0) {
             query =`
             SELECT
-                CODPROD,
-                DESCRICAO,
-                EMBALAGEM,
-                UNIDADE,
-                PESOLIQ,
-                PESOBRUTO,
-                CODEPTO,
-                TEMREPOS,
-                QTUNIT,
-                DTCADASTRO,
-                DTEXCLUSAO,
-                DTULTALTCOM,
-                PRAZOVAL,
-                REVENDA,
-                QTUNITCX,
-                IMPORTADO,
-                CODAUXILIAR
+                ${campos}
             FROM
-                PCPRODUT
-            WHERE
-             `
-            const conditions = where.map(f => {
-                const { campo, operador, valor } = f;
-                if (valor === null || valor === undefined) {
-                    return `(${campo} IS NULL)`;
+                pcprodut pp 
+                join pcest pe on(
+                    pp.codprod = pe.codprod
+                )
+            WHERE 
+     
+            `
+            if(Utils.hasValue(whereAvanced[0].campo) && Utils.hasValue(whereAvanced[0].operador) && Utils.hasValue(whereAvanced[0].valor)){
+        
+                    const conditions = whereAvanced.map(f => {
+                        const { campo, operador, valor } = f;
+                        if (valor === null || valor === undefined) {
+                            return `(${campo} IS NULL)`;
+                        }
+                        if (campo === 'DTCADASTRO' || campo === 'DTEXCLUSAO' || campo === 'DTULTALTCOM') {
+                            return `${campo} = TO_DATE('${valor}', 'dd/mm/yyyy')`; // Para datas
+                        }
+                        if (typeof valor === 'number') {
+                            return `(${campo} ${operador || '='} ${valor})`;
+                        }
+                        if (typeof valor === 'string') {
+                            return `(${campo} ${operador || 'LIKE'} '${valor}')`;
+                        }
+                        return `(${campo} ${operador || '='} '${valor}')`;
+                    });
+                    query += conditions.join(' AND ');
+                    console.log("Where1")
+                }else{  
+                    
+                    
+                        const conditions = camposTerm.map( c => `${ c } = '${ whereTerm }'` );
+                        query += conditions.join(' or ');
+                    
                 }
-                if (campo === 'DTCADASTRO' || campo === 'DTEXCLUSAO' || campo === 'DTULTALTCOM') {
-                    return `${campo} = TO_DATE('${valor}', 'dd/mm/yyyy')`; // Para datas
-                }
-                if (typeof valor === 'number') {
-                    return `(${campo} ${operador || '='} ${valor})`;
-                }
-                if (typeof valor === 'string') {
-                    return `(${campo} ${operador || 'LIKE'} '${valor}')`;
-                }
-                return `(${campo} ${operador || '='} '${valor}')`;
-            });
-            query += conditions.join(' AND ');
             result = await DBConnectionManager.getWinthorDBConnection()?.query(query, {type: QueryTypes.SELECT})
-        }else{
-            query =`
-            SELECT
-                CODPROD,
-                DESCRICAO,
-                EMBALAGEM,
-                UNIDADE,
-                PESOLIQ,
-                PESOBRUTO,
-                CODEPTO,
-                TEMREPOS,
-                QTUNIT,
-                DTCADASTRO,
-                DTEXCLUSAO,
-                DTULTALTCOM,
-                PRAZOVAL,
-                REVENDA,
-                QTUNITCX,
-                IMPORTADO,
-                CODAUXILIAR
-            FROM
-                PCPRODUT
-            WHERE
-
-                CODPROD LIKE '%${req.body.termo}%'
-                OR DESCRICAO LIKE '%${req.body.termo}%'
-                OR EMBALAGEM LIKE '%${req.body.termo}%'
-                OR UNIDADE LIKE '%${req.body.termo}%'
-                OR CODEPTO LIKE '%${req.body.termo}%'
-                OR DTCADASTRO LIKE '%${req.body.termo}%'
-                OR DTEXCLUSAO LIKE '%${req.body.termo}%'
-                OR DTULTALTCOM LIKE '%${req.body.termo}%'
-                OR PRAZOVAL LIKE '%${req.body.termo}%'
-                OR CODAUXILIAR LIKE '%${req.body.termo}%'
-             `
-             result = await DBConnectionManager.getWinthorDBConnection()?.query(query, {type: QueryTypes.SELECT})
-        }
+       
             if(result){
                 res.status(200).json(result)
             }else{
