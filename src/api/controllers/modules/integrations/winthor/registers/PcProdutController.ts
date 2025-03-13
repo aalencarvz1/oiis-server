@@ -113,7 +113,7 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                     pp.codprod = pe.codprod
                 )
             WHERE 
-            
+     
             `
             if(Utils.hasValue(whereAvanced[0].campo) && Utils.hasValue(whereAvanced[0].operador) && Utils.hasValue(whereAvanced[0].valor)){
         
