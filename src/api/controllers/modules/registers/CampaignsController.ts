@@ -203,53 +203,6 @@ export default class CampaignsController extends BaseRegistersController {
                         (entityType?: any)=>QueryBuilder.mountInClause(entityType?.identifier_column,campaignEntities.map((el: any)=> el.entity_id))
                     );
 
-                    /*let entityType = await Entities_Types.findOne({
-                        raw: true,
-                        where: {
-                            id: campaign.entity_type_id,       
-                        },
-                        include: [
-                            {
-                                //raw:true,
-                                model: Tables,
-                                attributes:[
-                                    Sequelize.literal(`${Tables.tableName}.name as table_name`) as any
-                                ],
-                                on:Sequelize.where(Sequelize.col(`${Tables.tableName}.id`),Sequelize.col(`${Entities_Types.tableName}.table_id`)),
-                                include:[
-                                    {
-                                        model: Schemas,
-                                        attributes:[
-                                            Sequelize.literal(`\`${Tables.tableName}->${Schemas.tableName}\`.name as schema_name`) as any
-                                        ],
-                                        on:Sequelize.where(Sequelize.col(`\`${Tables.tableName}->${Schemas.tableName}\`.id`),Sequelize.col(`${Tables.tableName}.schema_id`))    
-                                    },
-                                    {
-                                        model: Connections,
-                                        attributes:[
-                                            Sequelize.literal(`\`${Tables.tableName}->${Connections.tableName}\`.name as connection_name`) as any
-                                        ],
-                                        on:Sequelize.where(Sequelize.col(`\`${Tables.tableName}->${Connections.tableName}\`.id`),Sequelize.col(`${Tables.tableName}.data_connection_id`)) 
-                                        
-                                    }
-                                ]
-                            }
-                            
-                        ]
-                    })                
-                    let query = `
-                    SELECT
-                        ${entityType?.identifier_column} as "id",
-                        ${entityType?.name_column} as "name"
-                    FROM
-                        ${(entityType as any)?.schema_name}.${(entityType as any)?.table_name}
-                    WHERE
-                        ${QueryBuilder.mountInClause(entityType?.identifier_column,campaignEntities.map((el: any)=> el.entity_id) )}
-                    `
-                    console.log(query)
-                    let connection = DBConnectionManager.getConnectionByConnectionName((entityType as any)?.connection_name) 
-                    res.data = await connection?.query(query, {type:QueryTypes.SELECT});*/
-
                     res.sendResponse(200,true);
                 }else{
                     throw new Error('not found')
@@ -356,13 +309,17 @@ export default class CampaignsController extends BaseRegistersController {
             let params = req.body || {};            
             let query = `
                 select
-                    ce.entity_id,
-                    ck.name as kpi_name,
+                    ce.entity_id,                    
+                    null as entity_name,
+                    c.entity_type_id,
+                    ck.name as kpi_name,                    
                     cv.name as result_name,
+                    c.init_date,
+                    c.end_date,                    
                     cev.value
                 from
-                    campaigns c
-                    join campaign_entities ce on ce.campaign_id = c.id
+                    ${Campaigns.tableName} c
+                    join ${Campaign_Entities.tableName} ce on ce.campaign_id = c.id
                     left outer join campaign_kpis ck on ck.campaign_id = c.id
                     left outer join campaign_kpi_result_values cv on (
                         cv.campaign_kpi_id = ck.id
@@ -387,6 +344,17 @@ export default class CampaignsController extends BaseRegistersController {
                     ${Utils.hasValue(params.entity_id) ? `and ce.entity_id = ${params.entity_id}` : ''}
             `;
             res.data = await DBConnectionManager.getDefaultDBConnection()?.query(query, {type:QueryTypes.SELECT});
+            if (Utils.hasValue(res.data)) {
+                let entitiesTypes = await Entities_TypesController._get_entities_type_data(res.data[0].entity_type_id);
+                if (Utils.hasValue(entitiesTypes)) {
+                    for(let k in res.data) {
+                        let entityType = entitiesTypes.find(el=>el.id == res.data[k].entity_id);
+                        if (Utils.hasValue(entityType)) {
+                            res.data[k].entity_name = entityType.name;
+                        }
+                    }
+                }
+            }
             res.sendResponse(200,true);
         } catch (e: any) {
             res.setException(e);
