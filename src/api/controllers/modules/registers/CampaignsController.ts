@@ -384,6 +384,7 @@ export default class CampaignsController extends BaseRegistersController {
                     )
                 where
                     c.id = ${params.id}
+                    ${Utils.hasValue(params.entity_id) ? `and ce.entity_id = ${params.entity_id}` : ''}
             `;
             res.data = await DBConnectionManager.getDefaultDBConnection()?.query(query, {type:QueryTypes.SELECT});
             res.sendResponse(200,true);
