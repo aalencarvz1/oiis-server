@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import Utils from "../utils/Utils.js";
 
 
@@ -26,6 +27,48 @@ export default class QueryBuilder {
                     } else {
                         values = values.map((el: any)=>Utils.hasValue(el)?el:'null');
                         result = `${field} in (${values.join(',')})`;
+                    }
+                }
+            }
+        } catch (e) {
+            Utils.logError(e);
+        }
+        return result;
+    }
+
+    static mountSequelizeInClause(field?:string,values?: any) : string | null {
+        let result : any = null;
+        try {
+            if (Utils.hasValue(field) && Utils.hasValue(values)) {
+                if (Utils.typeOf(values) != 'array') {
+                    result = {
+                        [field]: values
+                    }
+                } else {
+                    if (values.length > QueryBuilder.IN_CLAUSE_ELEMENTS_LIMIT) {
+                        result = [];
+                        let limitedsValues = [];
+                        for(let i = 0; i < values.length; i++) {
+                            limitedsValues.push(Utils.hasValue(values[i])?values[i]:'null');
+                            if (limitedsValues.length == QueryBuilder.IN_CLAUSE_ELEMENTS_LIMIT) {
+                                result.push({
+                                    [field]: {
+                                        [Op.in]: limitedsValues
+                                    }
+                                });
+                                limitedsValues = [];
+                            }
+                        }
+                        result = {
+                            [Op.or]: result
+                        }
+                    } else {
+                        values = values.map((el: any)=>Utils.hasValue(el)?el:'null');
+                        result = {
+                            [field]: {
+                                [Op.in]: values
+                            }
+                        }
                     }
                 }
             }

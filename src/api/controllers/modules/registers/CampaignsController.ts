@@ -200,7 +200,7 @@ export default class CampaignsController extends BaseRegistersController {
                     campaignEntities = Utils.hasValue(campaignEntities)? campaignEntities :  ([{entity_id: -1}] as any)
                     res.data = await Entities_TypesController._get_entities_type_data(
                         campaign.entity_type_id,
-                        (entityType?: any)=>QueryBuilder.mountInClause(entityType?.identifier_column,campaignEntities.map((el: any)=> el.entity_id))
+                        campaignEntities.map((el: any)=> el.entity_id)
                     );
 
                     res.sendResponse(200,true);
@@ -282,7 +282,7 @@ export default class CampaignsController extends BaseRegistersController {
                     let campaignEntities = Utils.hasValue(res.data[k].campaign_entities)? res.data[k].campaign_entities :  ([{entity_id: -1}] as any)
                     let newEntities = await Entities_TypesController._get_entities_type_data(
                         res.data[k].entity_type_id,
-                        (entityType?: any)=>QueryBuilder.mountInClause(entityType?.identifier_column,campaignEntities.map((el: any)=> el.entity_id))
+                        campaignEntities.map((el: any)=> el.entity_id)
                     );
 
                     res.data[k].campaign_entities = res.data[k].campaign_entities.map((el?:any)=>({...el,name:newEntities.find(entity=>entity.id == el.entity_id)?.name}))
@@ -314,8 +314,8 @@ export default class CampaignsController extends BaseRegistersController {
                     null as entity_name,
                     c.entity_type_id,                    
                     cv.name as result_name,
-                    c.init_date,
-                    c.end_date,                    
+                    coalesce(ce.init_date,c.init_date) as init_date,
+                    coalesce(ce.end_date,c.end_date) as end_date,
                     cev.value
                 from
                     ${Campaigns.tableName} c

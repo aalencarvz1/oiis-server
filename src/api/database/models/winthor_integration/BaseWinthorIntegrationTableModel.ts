@@ -99,7 +99,7 @@ export default class BaseWinthorIntegrationTableModel extends BaseTableModel {
                         plural:this.tableName
                     },
                     timestamps:false,
-                    hooks: this.getBaseTableModelInitHooks(),
+                    hooks: this.getTableModelHooks(),
                     //noPrimaryKey: Utils.firstValid([this.noPrimaryKey ,false]),
                     //removeAttr: Utils.firstValid([this.removeAttr ,'']),
                 });

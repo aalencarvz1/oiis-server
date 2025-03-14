@@ -7,6 +7,7 @@ import Schemas from "../../../database/models/Schemas.js";
 import DBConnectionManager from "../../../database/DBConnectionManager.js";
 import Connections from "../../../database/models/Connections.js";
 import Utils from "../../utils/Utils.js";
+import QueryBuilder from "../../database/QueryBuilder.js";
 
 
 export default class Entities_TypesController extends BaseRegistersController {
@@ -14,13 +15,12 @@ export default class Entities_TypesController extends BaseRegistersController {
         return Entities_Types;
     }
 
-    static async _get_entities_type_data(entitieTypesId: number, whereClause?: string | Function | null | undefined) : Promise<any[]> {
+    static async _get_entities_type_data(entityTypeId: number, entityIdentifiers? : any[], whereClause?: string | Function | null | undefined) : Promise<any[]> {
         let result : any = [];            
         let entityType = await Entities_Types.findOne({
             raw: true,
             where: {
-                id: entitieTypesId,
-
+                id: entityTypeId,
             },
             include: [
                 {
@@ -53,37 +53,48 @@ export default class Entities_TypesController extends BaseRegistersController {
             ]
         });
 
-        let where = [];
-        if (Utils.hasValue(entityType?.where_clause)) {
-            where.push(entityType.where_clause);
-        }
-        if (Utils.hasValue(whereClause)) {
-            if (typeof whereClause == 'function') {
-                where.push(whereClause(entityType));
-            } else {
-                where.push(whereClause);
+        if (Utils.hasValue(entityType)) {
+
+            let where = [];
+
+            if (Utils.hasValue(entityType?.where_clause)) {
+                where.push(entityType.where_clause);
             }
+
+            if (Utils.hasValue(entityIdentifiers)) {
+                where.push(QueryBuilder.mountInClause(entityType.identifier_column, entityIdentifiers));
+            }
+
+            if (Utils.hasValue(whereClause)) {
+                if (typeof whereClause == 'function') {
+                    where.push(whereClause(entityType));
+                } else {
+                    where.push(whereClause);
+                }
+            }
+           
+            let query = `
+            SELECT
+                ${entityType?.identifier_column} as "id",
+                ${entityType?.name_column} as "name"
+            FROM
+                ${(entityType as any)?.schema_name}.${(entityType as any)?.table_name}
+            ${Utils.hasValue(where) ? ` WHERE ${where.join(' and ')} ` : ''}
+            ${Utils.hasValue(entityType?.order_by) ? ` ORDER BY ${entityType.order_by} ` : ''}`;
+            console.log(query)
+            let connection = DBConnectionManager.getConnectionByConnectionName((entityType as any)?.connection_name) 
+            result = await connection?.query(query, {type:QueryTypes.SELECT});
+            return result;
+        } else {
+            throw new Error("no data found");
         }
-        
-        let query = `
-        SELECT
-            ${entityType?.identifier_column} as "id",
-            ${entityType?.name_column} as "name"
-        FROM
-            ${(entityType as any)?.schema_name}.${(entityType as any)?.table_name}
-        ${Utils.hasValue(where) ? ` WHERE ${where.join(' and ')} ` : ''}
-        ${Utils.hasValue(entityType?.order_by) ? ` ORDER BY ${entityType.order_by} ` : ''}`;
-        console.log(query)
-        let connection = DBConnectionManager.getConnectionByConnectionName((entityType as any)?.connection_name) 
-        result = await connection?.query(query, {type:QueryTypes.SELECT});
-        return result;
     }
 
     static async get_entities_type_data(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
-            const entitieTypesId = req.body.entitieTypesId
-            if(Utils.hasValue(entitieTypesId)){                                
-                res.data = await this._get_entities_type_data(entitieTypesId,req.body.whereClause);
+            const entityTypeId = req.body.entityTypeId
+            if(Utils.hasValue(entityTypeId)){                                
+                res.data = await this._get_entities_type_data(entityTypeId,req.body.entityIdentifiers,req.body.whereClause);
             } else {
                 throw new Error("missing data");
             }

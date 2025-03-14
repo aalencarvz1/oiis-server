@@ -231,16 +231,17 @@ export default class StructuredQueryUtils {
                 }
                 conditions = conditions.filter((el: any)=>((el.reportVision || el.vision || {}).id || el.reportVision || el.vision) == visionId);
                 if (Utils.hasValue(conditions)) {
-                    let or = [];
+                    let conditionsOfVision = [];
                     for(let k in conditions) {
                         if (Utils.hasValue(conditions[k].selecteds || conditions[k].values)) {
-                            or.push(`${field} ${conditions[k].operation.id || conditions[k].operation} (${(conditions[k].selecteds || conditions[k].values).map((el: any)=>Utils.firstValid([el?.id,el,'null'])).join(',')})`);
+                            conditionsOfVision.push(`${field} ${conditions[k].operation.id || conditions[k].operation} (${(conditions[k].selecteds || conditions[k].values).map((el: any)=>Utils.firstValid([el?.id,el,'null'])).join(',')})`);
                         }
                     }
-                    if (or.length > 1) {
-                        result = `(${or.join(' or ')})`;
+                    let joinEqualsConditionsWith = params.joinEqualsConditionsWith || 'or'
+                    if (conditionsOfVision.length > 1) {
+                        result = `(${conditionsOfVision.join(` ${joinEqualsConditionsWith} `)})`;
                     } else {
-                        result = or.join(' or ');
+                        result = conditionsOfVision.join(` ${joinEqualsConditionsWith} `);
                     }
                 }
             }
