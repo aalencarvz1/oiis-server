@@ -182,7 +182,7 @@ export default class BaseTableModel extends Model {
         return result;
     }
 
-    static getBaseTableModelInitHooks = () => {
+    static getTableModelHooks = () => {
         return {
             beforeCreate : (record: any, options: any) => {
                 record.dataValues.created_at = Sequelize.literal('current_timestamp');//new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');                
@@ -380,7 +380,7 @@ export default class BaseTableModel extends Model {
                         plural:this.tableName
                     },
                     timestamps:false,
-                    hooks: this.getBaseTableModelInitHooks()
+                    hooks: this.getTableModelHooks()
                 });
             }
             if (Utils.hasValue(this.removeAttr)) {

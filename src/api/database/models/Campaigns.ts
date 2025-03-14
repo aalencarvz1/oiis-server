@@ -47,6 +47,9 @@ export default class Campaigns extends BaseTableModel {
     },
     conditions:{
       type: DataTypes.TEXT,      
+    },
+    notes:{
+      type: DataTypes.TEXT,      
     }
   }};
 
