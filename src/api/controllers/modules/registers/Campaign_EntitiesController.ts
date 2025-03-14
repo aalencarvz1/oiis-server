@@ -8,6 +8,25 @@ export default class Campaign_EntitiesController extends BaseRegistersController
         return Campaign_Entities;
     }
 
+    static handleFieldsToSave(queryParams: any) : void {
+
+        if (Utils.hasValue(queryParams.id)) {
+            if (!Utils.hasValue(queryParams.entity_id)) {
+                queryParams.entity_id = queryParams.id;
+                queryParams.id = undefined;
+                delete queryParams.id;
+            }                        
+        }
+
+        if (queryParams?.conditions && typeof queryParams.conditions != 'string') {
+            if (Utils.hasValue(queryParams?.conditions)) {
+                queryParams.conditions = JSON.stringify(queryParams.conditions);
+            } else {
+                queryParams.conditions = null;
+            }
+        }
+    }
+
 
     /**
      * create all items of campaign, such as entities and kpis
@@ -16,14 +35,8 @@ export default class Campaign_EntitiesController extends BaseRegistersController
     static async createEntitiesFromCampaign(params : any) : Promise<void>{
         if (Utils.hasValue(params?.campaign?.campaign_entities)) {
             for(let k in params.campaign.campaign_entities) {
-                params.campaign.campaign_entities[k].campaign_id = params.campaign.id;
-                if (Utils.hasValue(params.campaign.campaign_entities[k].id)) {
-                    if (!Utils.hasValue(params.campaign.campaign_entities[k].entity_id)) {
-                        params.campaign.campaign_entities[k].entity_id = params.campaign.campaign_entities[k].id;
-                        params.campaign.campaign_entities[k].id = undefined;
-                        delete params.campaign.campaign_entities[k].id;
-                    }                        
-                }
+                params.campaign.campaign_entities[k].campaign_id = params.campaign.id;                
+                this.handleFieldsToSave(params.campaign.campaign_entities[k]);
                 await Campaign_Entities.create(params.campaign.campaign_entities[k],{transaction: params.transaction})
             }
         }
@@ -38,25 +51,25 @@ export default class Campaign_EntitiesController extends BaseRegistersController
         if (Utils.hasValue(params?.campaign?.campaign_entities)) {
             for(let k in params.campaign.campaign_entities) {
                 params.campaign.campaign_entities[k].campaign_id = params.campaign.id;
+                
+                let where : any = {};
                 if (Utils.hasValue(params.campaign.campaign_entities[k].id)) {
-                    if (!Utils.hasValue(params.campaign.campaign_entities[k].entity_id)) {
-                        params.campaign.campaign_entities[k].entity_id = params.campaign.campaign_entities[k].id;
-                        params.campaign.campaign_entities[k].id = undefined;
-                        delete params.campaign.campaign_entities[k].id;
-                    }                        
+                    where.id = params.campaign.campaign_entities[k].id;
+                } else {
+                    where.entity_id = params.campaign.campaign_entities[k].entity_id;
+                    where.alias = params.campaign.campaign_entities[k].alias || null;
                 }
-                await Campaign_Entities.saveOrCreate({
-                    where:{
-                        [Op.or]:[{
-                            id: params.campaign.campaign_entities[k].id || null
-                        },
-                        {
-                            entity_id: params.campaign.campaign_entities[k].entity_id
-                        }]
-                    },
+
+                this.handleFieldsToSave(params.campaign.campaign_entities[k]);
+
+                let result = await Campaign_Entities.saveOrCreate({
+                    where:where,
                     values:params.campaign.campaign_entities[k],
                     transaction: params.transaction
-                })
+                });
+                if (!result?.success) {
+                    result?.throw();
+                }
             }
         }
     }

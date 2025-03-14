@@ -153,119 +153,183 @@ export default class Campaign_Kpi_Value_GettersController extends BaseRegistersC
                             }
                         });
                         if (Utils.hasValue(entities)) {
-                            let reportParams : any = {};
-                            reportParams.user = params.user;
-                            reportParams.visions = [visionRelationship.record_2_id];
-                            reportParams.periods = [[kpiValueGetter.init_date,kpiValueGetter.end_date]];
-                            reportParams.considerNormalSales = Utils.toBool(kpiValueGetter.consider_normal_sales);
-                            reportParams.considerReturns = Utils.toBool(kpiValueGetter.consider_returns);
-                            reportParams.considerBonuses = Utils.toBool(kpiValueGetter.consider_bonuses);
 
-
-                            if ([Measurement_Units.DT].indexOf(kpiValueGetter.measurement_unit_id) > -1) {
-                                reportParams.visions.push(kpiValueGetter.report_vision_id);
-                            } else if ([Measurement_Units.WT,Measurement_Units.VL,Measurement_Units.UN].indexOf(kpiValueGetter.measurement_unit_id) == -1) {
-                                throw new Error(`not expecter unit ${kpiValueGetter.measurement_unit_id}`)
-                            }
-
-                            reportParams.viewAmount = [Measurement_Units.UN,Measurement_Units.DT].indexOf(kpiValueGetter.measurement_unit_id) > -1;
-                            reportParams.viewWeight = kpiValueGetter.measurement_unit_id == Measurement_Units.WT;
-                            reportParams.viewValue = kpiValueGetter.measurement_unit_id == Measurement_Units.VL;
-                            reportParams.conditions = [];
-                            reportParams.conditions.push({
-                                reportVision:{id:visionRelationship.record_2_id},
-                                operation:{id:'IN'},
-                                selecteds: entities.map(el=>({id:el.entity_id}))
-                            });
-
-                            if (Utils.hasValue(kpiValueGetter.campaign_entity_ids)) {
-                                reportParams.conditions[0].selecteds = (Utils.toArray(kpiValueGetter.campaign_entity_ids) as any).map((el:any)=>({id:el}))
-                            }
-
-                            if (Utils.hasValue(kpiValueGetter[Campaign_Kpis.tableName.toLowerCase()][Campaigns.tableName.toLowerCase()].conditions)) {
-                                if (JSON.parse(kpiValueGetter[Campaign_Kpis.tableName.toLowerCase()][Campaigns.tableName.toLowerCase()].conditions).filter((el:any)=>el.type != 'default condition').length) {
-                                    throw new Error("do implement complex conditions");
+                            //specifications to calc over kpi getter. the first calc considera lal entities, then, secondly, if has specs in entities, then run others calc to specificatiosn on entities
+                            let kpiGetterSpecs : any[] = [{
+                                id: kpiValueGetter.id,
+                                report_vision_id: kpiValueGetter.report_vision_id,
+                                init_date: kpiValueGetter.init_date,
+                                end_date: kpiValueGetter.end_date,
+                                consider_normal_sales: kpiValueGetter.consider_normal_sales,
+                                measurement_unit_id: kpiValueGetter.measurement_unit_id,
+                                consider_returns: kpiValueGetter.consider_returns,
+                                consider_bonuses: kpiValueGetter.consider_bonuses,
+                                campaign_entity_ids: kpiValueGetter.campaign_entity_ids,
+                                conditions: kpiValueGetter.conditions,
+                                [Campaign_Kpis.tableName.toLowerCase()]:{
+                                    conditions:kpiValueGetter[Campaign_Kpis.tableName.toLowerCase()].conditions,
+                                    [Campaigns.tableName.toLowerCase()]:{
+                                        conditions: kpiValueGetter[Campaign_Kpis.tableName.toLowerCase()][Campaigns.tableName.toLowerCase()].conditions
+                                    }
                                 }
-                                reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiValueGetter[Campaign_Kpis.tableName.toLowerCase()][Campaigns.tableName.toLowerCase()].conditions).filter((el:any)=>el.type == 'default condition').map((el:any)=>el.value)];
-                            }
-                            if (Utils.hasValue(kpiValueGetter[Campaign_Kpis.tableName.toLowerCase()].conditions)) {
-                                if (JSON.parse(kpiValueGetter[Campaign_Kpis.tableName.toLowerCase()].conditions).filter((el:any)=>el.type != 'default condition').length) {
-                                    throw new Error("do implement complex conditions");
-                                }
-                                reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiValueGetter[Campaign_Kpis.tableName.toLowerCase()].conditions).filter((el:any)=>el.type == 'default condition').map((el:any)=>el.value)];
-                            }
-                            if (Utils.hasValue(kpiValueGetter.conditions)) {
-                                if (JSON.parse(kpiValueGetter.conditions).filter((el:any)=>el.type != 'default condition').length) {
-                                    throw new Error("do implement complex conditions");
-                                }
-                                reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiValueGetter.conditions).filter((el:any)=>el.type == 'default condition').map((el:any)=>el.value)];
-                            }
-
-                            result.setDataSwap(await ReportsController.getCustomizedReportData(reportParams));
-                            if (result.success) {
-                                result.data = result.data[0].DATA || [];
-
-                                if (Utils.hasValue(result.data)) {
-                                    let keys = Object.keys(result.data[0]);
-
-                                    //distinct item (mix count)
-                                    if ([Measurement_Units.DT].indexOf(kpiValueGetter.measurement_unit_id) > -1) {
-                                        let newData : any = {};
-                                        for(let k in result.data) {
-                                            newData[result.data[k][keys[0]]] = newData[result.data[k][keys[0]]] || {[keys[0]]: result.data[k][keys[0]], [keys[keys.length - 1]]:0};
-                                            if ((Utils.toNumber(result.data[k][keys[keys.length - 1]]) || 0) > 0) {
-                                                newData[result.data[k][keys[0]]][keys[keys.length - 1]]++;
+                            }];
+                            for(let k in entities) {
+                                if (Utils.hasValue(entities[k].init_date) || Utils.hasValue(entities[k].init_date) || Utils.hasValue(entities[k].conditions)) {
+                                    kpiGetterSpecs.push({
+                                        id: kpiValueGetter.id,
+                                        campaign_entity_id: entities[k].id,
+                                        entity_id: entities[k].entity_id,
+                                        report_vision_id: kpiValueGetter.report_vision_id,
+                                        init_date: entities[k].init_date || kpiValueGetter.init_date,
+                                        end_date: entities[k].end_date || kpiValueGetter.end_date,                                        
+                                        measurement_unit_id: kpiValueGetter.measurement_unit_id,
+                                        consider_normal_sales: kpiValueGetter.consider_normal_sales,
+                                        consider_returns: kpiValueGetter.consider_returns,
+                                        consider_bonuses: kpiValueGetter.consider_bonuses,
+                                        campaign_entity_ids: kpiValueGetter.campaign_entity_ids,
+                                        conditions: [...kpiValueGetter.conditions||[], ...entities[k].conditions||[]],
+                                        [Campaign_Kpis.tableName.toLowerCase()]:{
+                                            conditions:kpiValueGetter[Campaign_Kpis.tableName.toLowerCase()].conditions,
+                                            [Campaigns.tableName.toLowerCase()]:{
+                                                conditions: kpiValueGetter[Campaign_Kpis.tableName.toLowerCase()][Campaigns.tableName.toLowerCase()].conditions
                                             }
-                                        }; 
-                                        result.data = Object.values(newData);  
-                                        keys = Object.keys(result.data[0]);                                    
-                                    }
-
-                                    for(let k in result.data) {                                    
-
-                                        //upsert kpi value getter value
-                                        await Campaign_Entities_Kpi_Value_Getters_Values.saveOrCreate({
-                                            where:{
-                                                campaign_entity_id: entities.find(el=>el.entity_id == result.data[k][keys[0]])?.id,
-                                                campaign_kpi_value_getter_id: kpiValueGetter.id
-                                            },
-                                            values:{
-                                                value: result.data[k][keys[keys.length - 1]],
-                                                calculated_at: params.currentDate
-                                            }                                        
-                                        });                                    
-                                    }
-
-                                    kpiValueGetter.calculated_at = params.currentDate;
-                                    await kpiValueGetter.save();
+                                        }
+                                    });
                                 }
                             }
+
+                            //get values from customized report according kpi value getter and entity specifications and save on kpi value getters results
+                            for(let k in kpiGetterSpecs) {
+
+                                let reportParams : any = {};
+                                reportParams.user = params.user;
+                                reportParams.visions = [visionRelationship.record_2_id];
+                                reportParams.periods = [[kpiGetterSpecs[k].init_date,kpiGetterSpecs[k].end_date]];
+                                reportParams.considerNormalSales = Utils.toBool(kpiGetterSpecs[k].consider_normal_sales);
+                                reportParams.considerReturns = Utils.toBool(kpiGetterSpecs[k].consider_returns);
+                                reportParams.considerBonuses = Utils.toBool(kpiGetterSpecs[k].consider_bonuses);
+
+
+                                if ([Measurement_Units.DT].indexOf(kpiGetterSpecs[k].measurement_unit_id) > -1) {
+                                    reportParams.visions.push(kpiGetterSpecs[k].report_vision_id);
+                                } else if ([Measurement_Units.WT,Measurement_Units.VL,Measurement_Units.UN].indexOf(kpiGetterSpecs[k].measurement_unit_id) == -1) {
+                                    throw new Error(`not expecter unit ${kpiGetterSpecs[k].measurement_unit_id}`)
+                                }
+
+                                reportParams.viewAmount = [Measurement_Units.UN,Measurement_Units.DT].indexOf(kpiGetterSpecs[k].measurement_unit_id) > -1;
+                                reportParams.viewWeight = kpiGetterSpecs[k].measurement_unit_id == Measurement_Units.WT;
+                                reportParams.viewValue = kpiGetterSpecs[k].measurement_unit_id == Measurement_Units.VL;
+                                reportParams.conditions = [];
+
+                                reportParams.conditions.push({
+                                    reportVision:{id:visionRelationship.record_2_id},
+                                    operation:{id:'IN'},
+                                    selecteds: entities.map(el=>({id:el.entity_id}))
+                                });
+
+                                if (Utils.hasValue(kpiGetterSpecs[k].campaign_entity_ids)) {
+                                    reportParams.conditions.push({
+                                        reportVision:{id:visionRelationship.record_2_id},
+                                        operation:{id:'IN'},
+                                        selecteds: (Utils.toArray(kpiGetterSpecs[k].campaign_entity_ids) as any).map((el:any)=>({id:el}))
+                                    });
+                                }
+
+                                if (Utils.hasValue(kpiGetterSpecs[k].campaign_entity_id)) {
+                                    reportParams.conditions.push({
+                                        reportVision:{id:visionRelationship.record_2_id},
+                                        operation:{id:'IN'},
+                                        selecteds: [{id:entities.find(el=>el.id == kpiGetterSpecs[k].campaign_entity_id)?.entity_id}]
+                                    });
+                                }
+
+                                if (Utils.hasValue(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()][Campaigns.tableName.toLowerCase()].conditions)) {
+                                    if (JSON.parse(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()][Campaigns.tableName.toLowerCase()].conditions).filter((el:any)=>el.type != 'default condition').length) {
+                                        throw new Error("do implement complex conditions");
+                                    }
+                                    reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()][Campaigns.tableName.toLowerCase()].conditions).filter((el:any)=>el.type == 'default condition').map((el:any)=>el.value)];
+                                }
+                                if (Utils.hasValue(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()].conditions)) {
+                                    if (JSON.parse(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()].conditions).filter((el:any)=>el.type != 'default condition').length) {
+                                        throw new Error("do implement complex conditions");
+                                    }
+                                    reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()].conditions).filter((el:any)=>el.type == 'default condition').map((el:any)=>el.value)];
+                                }
+                                if (Utils.hasValue(kpiGetterSpecs[k].conditions)) {
+                                    if (JSON.parse(kpiGetterSpecs[k].conditions).filter((el:any)=>el.type != 'default condition').length) {
+                                        throw new Error("do implement complex conditions");
+                                    }
+                                    reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiGetterSpecs[k].conditions).filter((el:any)=>el.type == 'default condition').map((el:any)=>el.value)];
+                                }
+
+                                reportParams.joinEqualsConditionsWith = 'and';
+                                let resultCustomizedReport = await ReportsController.getCustomizedReportData(reportParams);
+                                if (resultCustomizedReport.success) {
+                                    resultCustomizedReport.data = resultCustomizedReport.data[0].DATA || [];
+
+                                    if (Utils.hasValue(resultCustomizedReport.data)) {
+                                        let keys = Object.keys(resultCustomizedReport.data[0]);
+
+                                        //distinct item (mix count)
+                                        if ([Measurement_Units.DT].indexOf(kpiGetterSpecs[k].measurement_unit_id) > -1) {
+                                            let newData : any = {};
+                                            for(let k in resultCustomizedReport.data) {
+                                                newData[resultCustomizedReport.data[k][keys[0]]] = newData[resultCustomizedReport.data[k][keys[0]]] || {[keys[0]]: resultCustomizedReport.data[k][keys[0]], [keys[keys.length - 1]]:0};
+                                                if ((Utils.toNumber(resultCustomizedReport.data[k][keys[keys.length - 1]]) || 0) > 0) {
+                                                    newData[resultCustomizedReport.data[k][keys[0]]][keys[keys.length - 1]]++;
+                                                }
+                                            }; 
+                                            resultCustomizedReport.data = Object.values(newData);  
+                                            keys = Object.keys(resultCustomizedReport.data[0]);                                    
+                                        }
+
+                                        for(let j in resultCustomizedReport.data) {                                    
+
+                                            //upsert kpi value getter value
+                                            let resultEntityGetterValue = await Campaign_Entities_Kpi_Value_Getters_Values.saveOrCreate({
+                                                where:{
+                                                    campaign_entity_id: kpiGetterSpecs[k].campaign_entity_id || entities.find(el=>el.entity_id == resultCustomizedReport.data[j][keys[0]])?.id,
+                                                    campaign_kpi_value_getter_id: kpiGetterSpecs[k].id
+                                                },
+                                                values:{
+                                                    value: resultCustomizedReport.data[j][keys[keys.length - 1]],
+                                                    calculated_at: params.currentDate
+                                                }                                        
+                                            });                        
+                                            if (!resultEntityGetterValue?.success) {
+                                                resultEntityGetterValue?.throw();
+                                            }
+                                        }                                        
+                                    }
+                                }
+                            }
+                            kpiValueGetter.calculated_at = params.currentDate;
+                            await kpiValueGetter.save();
                         } else {
                             throw new Error('no has entities');
                         }
                     } else {
                         throw new Error('no has vision relationship to entity type');
                     }
-                } else {
-                    result.data = await Campaign_Entities_Kpi_Value_Getters_Values.findAll({
-                        raw:true,
-                        attributes:[
-                            'entity_id',
-                            'value',
-                            Sequelize.literal(`${Campaign_Entities.tableName}.entity_id as entity_id`) as any
-                        ],
-                        include:[{
-                            required: true,
-                            model: Campaign_Entities,
-                            attributes:[]
-                        }],
-                        where:{
-                            campaign_kpi_value_getter_id: kpiValueGetter.id
-                        }
-                    });
+                } 
+                result.data = await Campaign_Entities_Kpi_Value_Getters_Values.findAll({
+                    raw:true,
+                    attributes:[
+                        'campaign_entity_id',
+                        Sequelize.literal(`${Campaign_Entities.tableName}.entity_id as entity_id`) as any,
+                        'value',
+                    ],
+                    include:[{
+                        required: true,
+                        model: Campaign_Entities,
+                        attributes:[]
+                    }],
+                    where:{
+                        campaign_kpi_value_getter_id: kpiValueGetter.id
+                    }
+                });
 
-                    result.success = true;
-                }
+                result.success = true;                
             } else {
                 throw new Error('no data found');
             }

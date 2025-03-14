@@ -44,7 +44,7 @@ export default class ItemsIntegrationsController extends BaseRegistersIntegratio
                 case "consult":
                 case "consulta":
                     for(let k in req.body.data) {
-                        await Gtin_Produtos.saveOrCreate({
+                        let result = await Gtin_Produtos.saveOrCreate({
                             where:{
                                 CODPROD:req.body.data[k].server_id
                             },
@@ -52,7 +52,10 @@ export default class ItemsIntegrationsController extends BaseRegistersIntegratio
                                 UPDATED_GTIN_MASTER:req.body.data[k].updated_gtin_master,
                                 UPDATED_GTIN_UN:req.body.data[k].updated_gtin_un
                             }
-                        })
+                        });
+                        if (!result?.success) {
+                            result?.throw();
+                        }
                     }
                     res.sendResponse(200,true);
                     break; 

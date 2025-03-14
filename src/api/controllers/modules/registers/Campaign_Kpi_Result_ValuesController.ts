@@ -276,7 +276,7 @@ export default class Campaign_Kpi_Result_ValuesController extends BaseRegistersC
                             for(let k in kpiValueGetters) {
                                 if (Utils.hasValue(kpiValueGetters[k].calc_result)) {
                                     let keysTemp = Object.keys(kpiValueGetters[k].calc_result[0]);
-                                    let rowEntityDataResult = kpiValueGetters[k].calc_result.find((el:any)=>el[keysTemp[0]] == entities[j].entity_id);
+                                    let rowEntityDataResult = kpiValueGetters[k].calc_result.find((el:any)=>el[keysTemp[0]] == entities[j].id);
                                     if (Utils.hasValue(rowEntityDataResult)) {
                                         entities[j].expression = entities[j].expression.replaceAll(`\$\{${kpiValueGetters[k].var_name}\}`,rowEntityDataResult[keysTemp[keysTemp.length - 1]]);
                                     } else {
@@ -395,7 +395,7 @@ export default class Campaign_Kpi_Result_ValuesController extends BaseRegistersC
                                                     let keysTemp = Object.keys(resultValuesTemp[k].calc_result[0]);
                                                     console.log('xxxxx3',keysTemp);
                                                     console.log('xxxxx3.2',entities[j].entity_id,resultValuesTemp[k].calc_result);
-                                                    resultValuesTemp[k].calc_result = resultValuesTemp[k].calc_result.find((el: any)=>el[keysTemp[0]] == entities[j].entity_id);
+                                                    resultValuesTemp[k].calc_result = resultValuesTemp[k].calc_result.find((el: any)=>el[keysTemp[0]] == entities[j].id);
                                                     console.log('xxxxx4',resultValuesTemp[k].calc_result);
                                                     if (Utils.hasValue(resultValuesTemp[k].calc_result)) {
                                                         entities[j].expression = entities[j].expression.replaceAll(`\$\{${resultValuesTemp[k].var_name}\}`,resultValuesTemp[k].calc_result[keysTemp[keysTemp.length - 1]]||0);
@@ -460,28 +460,28 @@ export default class Campaign_Kpi_Result_ValuesController extends BaseRegistersC
 
                         result.success = true;
                     }
-                } else {
+                } 
 
-                    result.data = await Campaign_Entities_Kpi_Result_Values.findAll({
-                        raw:true,
-                        attributes:[
-                            [Sequelize.literal(`${Campaign_Entities.tableName}.entity_id`),'entity_id'],
-                            [Sequelize.literal(`${Campaign_Entities.tableName}.entity_id`),'id'],
-                            ['value','expression'],
-                            ['value','value']
-                        ],
-                        include:[{
-                            model: Campaign_Entities,
-                            attributes:[]
-                        }],
-                        where:{
-                            campaign_kpi_result_value_id: kpiResultValue.id,
-                            campaign_entity_id: entities.map((el:any)=>el.id)
-                        }
-                    });
+                result.data = await Campaign_Entities_Kpi_Result_Values.findAll({
+                    raw:true,
+                    attributes:[
+                        'campaign_entity_id',
+                        [Sequelize.literal(`${Campaign_Entities.tableName}.entity_id`),'entity_id'],
+                        [Sequelize.literal(`${Campaign_Entities.tableName}.entity_id`),'id'],
+                        ['value','expression'],
+                        ['value','value']
+                    ],
+                    include:[{
+                        model: Campaign_Entities,
+                        attributes:[]
+                    }],
+                    where:{
+                        campaign_kpi_result_value_id: kpiResultValue.id,
+                        campaign_entity_id: entities.map((el:any)=>el.id)
+                    }
+                });
 
-                    result.success = true;
-                }
+                result.success = true;
             } else {
                 throw new Error("no data found")
             }            
