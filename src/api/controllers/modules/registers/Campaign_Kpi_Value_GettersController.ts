@@ -23,19 +23,30 @@ export default class Campaign_Kpi_Value_GettersController extends BaseRegistersC
 
 
     static handleFieldsToSave(queryParams: any) : void {
-        if (queryParams?.conditions && typeof queryParams.conditions != 'string') {
-            if (Utils.hasValue(queryParams?.conditions)) {
+        let keys = Object.keys(queryParams);
+
+        if (Utils.hasValue(queryParams?.conditions)) {
+            if (typeof queryParams.conditions != 'string') {            
                 queryParams.conditions = JSON.stringify(queryParams.conditions);
-            } else {
-                queryParams.conditions = null;
-            }
+            } 
+        } else if (keys.indexOf('conditions') > -1) {
+            queryParams.conditions = null;
         }
+
         if (queryParams?.campaign_entity_ids && typeof queryParams.campaign_entity_ids != 'string') {
             if (Utils.hasValue(queryParams.campaign_entity_ids)) {
                 queryParams.campaign_entity_ids = queryParams.campaign_entity_ids.join(",");
             } else {
                 queryParams.campaign_entity_ids = null;
             }                                
+        }
+
+        if (!Utils.hasValue(queryParams?.init_date) && keys.indexOf("init_date") > -1) {
+            queryParams.init_date = null;
+        }
+
+        if (!Utils.hasValue(queryParams?.end_date) && keys.indexOf("end_date") > -1) {
+            queryParams.end_date = null;
         }
     }
 
