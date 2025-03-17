@@ -10,6 +10,7 @@ export default class Campaign_EntitiesController extends BaseRegistersController
 
     static handleFieldsToSave(queryParams: any) : void {
 
+        let keys = Object.keys(queryParams);
         if (Utils.hasValue(queryParams.id)) {
             if (!Utils.hasValue(queryParams.entity_id)) {
                 queryParams.entity_id = queryParams.id;
@@ -18,13 +19,22 @@ export default class Campaign_EntitiesController extends BaseRegistersController
             }                        
         }
 
-        if (queryParams?.conditions && typeof queryParams.conditions != 'string') {
-            if (Utils.hasValue(queryParams?.conditions)) {
+        if (Utils.hasValue(queryParams?.conditions)) {
+            if (queryParams?.conditions && typeof queryParams.conditions != 'string') {        
                 queryParams.conditions = JSON.stringify(queryParams.conditions);
-            } else {
-                queryParams.conditions = null;
-            }
+            } 
+        } else if (keys.indexOf("conditions") > -1) {
+            queryParams.conditions = null;
         }
+
+        if (!Utils.hasValue(queryParams?.init_date) && keys.indexOf("init_date") > -1) {
+            queryParams.init_date = null;
+        }
+
+        if (!Utils.hasValue(queryParams?.end_date) && keys.indexOf("end_date") > -1) {
+            queryParams.end_date = null;
+        }
+
     }
 
 

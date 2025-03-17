@@ -520,12 +520,16 @@ export default class Utils {
         );
     };
 
-    static addMonths(date: Date, months: number) : void {
+    static addFullMonths(date: Date, months: number) : void {
         let currentMonth = date.getUTCMonth();        
         date.setUTCMonth(date.getUTCMonth() + months);
         if (date.getUTCMonth() > currentMonth + months) {
             date.setUTCDate(0);
-        }    
+        } 
+        if (date.getUTCDate() != 1) {
+            let lastDate = new Date(date.getUTCFullYear(),date.getUTCMonth()+1,0);
+            date.setUTCDate(lastDate.getUTCDate());
+        }
     }
 
 }
