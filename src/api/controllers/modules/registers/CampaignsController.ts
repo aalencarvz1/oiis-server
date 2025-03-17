@@ -15,6 +15,7 @@ import Campaign_KpisController from "./Campaign_KpisController.js";
 import Campaign_Kpi_Result_Values from "../../../database/models/Campaign_Kpi_Result_Values.js";
 import Campaign_Kpi_Result_ValuesController from "./Campaign_Kpi_Result_ValuesController.js";
 import DataSwap from "../../data/DataSwap.js";
+import Campaign_Kpi_Value_Getters from "../../../database/models/Campaign_Kpi_Value_Getters.js";
 
 
 export default class CampaignsController extends BaseRegistersController {
@@ -308,10 +309,12 @@ export default class CampaignsController extends BaseRegistersController {
         try {
             let params = req.body || {};            
             let query = `
-                select
+                select  
+                    ce.id,                  
                     ce.entity_id,                    
                     ck.name as kpi_name,
                     null as entity_name,
+                    coalesce(ce.alias,ce.entity_id) as alias,
                     c.entity_type_id,                    
                     cv.name as result_name,
                     coalesce(ce.init_date,c.init_date) as init_date,
@@ -341,7 +344,7 @@ export default class CampaignsController extends BaseRegistersController {
                     )
                 where
                     c.id = ${params.id}
-                    ${Utils.hasValue(params.entity_id) ? `and ce.entity_id = ${params.entity_id}` : ''}
+                    ${Utils.hasValue(params.campaign_entity_id) ? `and ce.id = ${params.campaign_entity_id}` : ''}
             `;
             res.data = await DBConnectionManager.getDefaultDBConnection()?.query(query, {type:QueryTypes.SELECT});
             if (Utils.hasValue(res.data)) {
@@ -414,6 +417,221 @@ export default class CampaignsController extends BaseRegistersController {
 
 
     /**
+     * duplicate campaign
+     * @created 2025-03-17
+     * @version 1.0.0
+     */
+    static async _duplicate(params?: any) : Promise<DataSwap> {
+        let result = new DataSwap();
+        try {
+            params = params || {};            
+            let campaignIds = params.campaign_ids;
+            if (Utils.hasValue(campaignIds)) {
+                await DBConnectionManager.getDefaultDBConnection()?.transaction(async transaction=>{                    
+                    let campaigns = await Campaigns.findAll({
+                        raw:true,
+                        where:{
+                            id: campaignIds
+                        }
+                    })
+                    if (Utils.hasValue(campaigns)) {
+                        result.data = [];
+                        for(let k in campaigns) {
+                            let newCampaign : any = {...campaigns[k]};
+                            delete newCampaign.id;
+                            delete newCampaign.created_at;                            
+                            delete newCampaign.updater_user_id;
+                            delete newCampaign.updated_at;
+                            newCampaign.creator_user_id = params.user.id;
+
+                            if (params.rename) {
+                                if (Utils.hasValue(params.newName)) {
+                                    newCampaign.name = params.newName;
+                                } else {
+                                    newCampaign.name = null;
+                                }
+                            }
+
+                            let newInitDate = new Date(newCampaign.init_date);
+                            let newEndDate = new Date(newCampaign.end_date);
+                            if (params.incrementDatesBy == "same period") {                                
+                                let monthsDiff = Utils.getFullMonthsDiff(newInitDate,newEndDate);
+                                if (Utils.hasValue(monthsDiff)) {
+                                    Utils.addMonths(newInitDate,monthsDiff);
+                                    Utils.addMonths(newEndDate,monthsDiff);
+                                } else {
+                                    let diffDays = Utils.diffDays(newInitDate,newEndDate);
+                                    if (Utils.hasValue(diffDays)) {
+                                        newInitDate.setDate(newInitDate.getDate() + diffDays);
+                                        newEndDate.setDate(newEndDate.getDate() + diffDays);                               
+                                    }
+                                }                                
+                            } else if (params.incrementDatesBy == "customized") {
+                                switch(params.increaseType?.trim().toLowerCase()) {
+                                    case "month":
+                                        Utils.addMonths(newInitDate,params.increaseQuantity);
+                                        Utils.addMonths(newEndDate,params.increaseQuantity);
+                                    break;
+                                    case "day":
+                                        newInitDate.setDate(newInitDate.getDate() + params.increaseQuantity);
+                                        newEndDate.setDate(newEndDate.getDate() + params.increaseQuantity);
+                                    break;
+                                    case "month":
+                                        newInitDate.setFullYear(newInitDate.getFullYear() + params.increaseQuantity);
+                                        newEndDate.setFullYear(newEndDate.getFullYear() + params.increaseQuantity);
+                                    break;
+                                    default:
+                                        throw new Error(`not expected increaseType value: ${params.increaseType}`);
+                                }
+                            } else {
+                                throw new Error(`not expected incrementDatesBy value: ${params.incrementDatesBy}`);
+                            }
+                            newCampaign.init_date = newInitDate;
+                            newCampaign.end_date = newEndDate;
+                            newCampaign = await Campaigns.create(newCampaign,{transaction}); 
+                            newCampaign = newCampaign.dataValues;
+
+
+                            //duplicate campaign entities
+                            newCampaign.campaign_entities = await Campaign_Entities.findAll({
+                                raw:true,
+                                where:{
+                                    campaign_id: campaigns[k].id
+                                },
+                                transaction
+                            });
+
+                            if (Utils.hasValue(newCampaign.campaign_entities)) {
+                                for(let k2 in newCampaign.campaign_entities) {
+                                    delete newCampaign.campaign_entities[k2].id;
+                                    delete newCampaign.campaign_entities[k2].created_at;                            
+                                    delete newCampaign.campaign_entities[k2].updater_user_id;
+                                    delete newCampaign.campaign_entities[k2].updated_at;
+                                    newCampaign.campaign_entities[k2].creator_user_id = params.user.id;
+                                    newCampaign.campaign_entities[k2].campaign_id = newCampaign.id;
+
+                                    //replace date if is equal of campaign
+                                    if (Utils.hasValue(newCampaign.campaign_entities[k2].init_date)) {
+                                        if (Utils.getUTCFullDate(newCampaign.campaign_entities[k2].init_date) == Utils.getUTCFullDate(campaigns[k].init_date)) {
+                                            newCampaign.campaign_entities[k2].init_date = newInitDate;
+                                        }
+                                    }
+                                    if (Utils.hasValue(newCampaign.campaign_entities[k2].end_date)) {
+                                        if (Utils.getUTCFullDate(newCampaign.campaign_entities[k2].end_date) == Utils.getUTCFullDate(campaigns[k].end_date)) {
+                                            newCampaign.campaign_entities[k2].end_date = newEndDate;
+                                        }
+                                    }
+
+                                    newCampaign.campaign_entities[k2] = await Campaign_Entities.create(newCampaign.campaign_entities[k2],{transaction});
+                                    newCampaign.campaign_entities[k2] = newCampaign.campaign_entities[k2].dataValues;
+                                }
+                            }
+
+
+                            //duplicate campaign kpis
+                            newCampaign.campaign_kpis = await Campaign_Kpis.findAll({
+                                raw:true,
+                                where:{
+                                    campaign_id: campaigns[k].id
+                                },
+                                transaction
+                            });
+
+                            if (Utils.hasValue(newCampaign.campaign_kpis)) {
+                                for(let k2 in newCampaign.campaign_kpis) {
+                                    let newKpi = {...newCampaign.campaign_kpis[k2]};
+                                    delete newKpi.id;
+                                    delete newKpi.created_at;                            
+                                    delete newKpi.updater_user_id;
+                                    delete newKpi.updated_at;
+                                    newKpi.creator_user_id = params.user.id;
+                                    newKpi.campaign_id = newCampaign.id;
+                                    newKpi = await Campaign_Kpis.create(newKpi,{transaction});
+                                    newKpi = newKpi.dataValues;
+
+                                    //duplicate campaign kpis value getters
+                                    newKpi.campaign_kpi_value_getters = await Campaign_Kpi_Value_Getters.findAll({
+                                        raw:true,
+                                        where:{
+                                            campaign_kpi_id: newCampaign.campaign_kpis[k2].id
+                                        },
+                                        transaction
+                                    });
+
+                                    if (Utils.hasValue(newKpi.campaign_kpi_value_getters)) {
+                                        for(let k3 in newKpi.campaign_kpi_value_getters) {
+                                            delete newKpi.campaign_kpi_value_getters[k3].id;
+                                            delete newKpi.campaign_kpi_value_getters[k3].created_at;                            
+                                            delete newKpi.campaign_kpi_value_getters[k3].updater_user_id;
+                                            delete newKpi.campaign_kpi_value_getters[k3].updated_at;
+                                            delete newKpi.campaign_kpi_value_getters[k3].calculated_at;
+                                            newKpi.campaign_kpi_value_getters[k3].creator_user_id = params.user.id;
+                                            newKpi.campaign_kpi_value_getters[k3].campaign_kpi_id = newKpi.id;
+
+                                            //replace date if is equal of campaign
+                                            if (Utils.hasValue(newKpi.campaign_kpi_value_getters[k3].init_date)) {
+                                                if (Utils.getUTCFullDate(newKpi.campaign_kpi_value_getters[k3].init_date) == Utils.getUTCFullDate(campaigns[k].init_date)) {
+                                                    newKpi.campaign_kpi_value_getters[k3].init_date = newInitDate;
+                                                }
+                                            }
+                                            if (Utils.hasValue(newKpi.campaign_kpi_value_getters[k3].end_date)) {
+                                                if (Utils.getUTCFullDate(newKpi.campaign_kpi_value_getters[k3].end_date) == Utils.getUTCFullDate(campaigns[k].end_date)) {
+                                                    newKpi.campaign_kpi_value_getters[k3].end_date = newEndDate;
+                                                }
+                                            }
+
+                                            newKpi.campaign_kpi_value_getters[k3] = await Campaign_Kpi_Value_Getters.create(newKpi.campaign_kpi_value_getters[k3],{transaction});
+                                            newKpi.campaign_kpi_value_getters[k3] = newKpi.campaign_kpi_value_getters[k3].dataValues;                                            
+                                        }
+                                    }
+
+
+                                    //duplicate campaign kpis result values
+                                    newKpi.campaign_kpi_result_values = await Campaign_Kpi_Result_Values.findAll({
+                                        raw:true,
+                                        where:{
+                                            campaign_kpi_id: newCampaign.campaign_kpis[k2].id
+                                        },
+                                        transaction
+                                    });
+
+                                    if (Utils.hasValue(newKpi.campaign_kpi_result_values)) {
+                                        for(let k3 in newKpi.campaign_kpi_result_values) {
+                                            delete newKpi.campaign_kpi_result_values[k3].id;
+                                            delete newKpi.campaign_kpi_result_values[k3].created_at;                            
+                                            delete newKpi.campaign_kpi_result_values[k3].updater_user_id;
+                                            delete newKpi.campaign_kpi_result_values[k3].updated_at;
+                                            delete newKpi.campaign_kpi_result_values[k3].calculated_at;
+                                            newKpi.campaign_kpi_result_values[k3].creator_user_id = params.user.id;
+                                            newKpi.campaign_kpi_result_values[k3].campaign_kpi_id = newKpi.id;
+                                            newKpi.campaign_kpi_result_values[k3] = await Campaign_Kpi_Result_Values.create(newKpi.campaign_kpi_result_values[k3],{transaction});
+                                            newKpi.campaign_kpi_result_values[k3] = newKpi.campaign_kpi_result_values[k3].dataValues;                                            
+                                        }
+                                    }
+                                    newCampaign.campaign_kpis[k2] = newKpi;
+                                }
+                            }
+
+                            result.data.push(newCampaign);
+                        }
+                    } else {
+                        throw new Error("no data found");
+                    }  
+                    result.success = true;
+                    return true;
+                });                                             
+            } else {
+                throw new Error('missing data');
+            }            
+        } catch (e: any) {
+            result.setException(e);
+        }
+        return result;
+    }
+
+
+
+    /**
      * request handler to calculate campaign values
      * @requesthandler
      * @override
@@ -430,6 +648,25 @@ export default class CampaignsController extends BaseRegistersController {
         }
         res.sendResponse();
     }
+
+
+     /**
+     * request handler to duplicate campaign
+     * @requesthandler
+     * @override
+     * @created 2025-03-17
+     * @version 1.0.0
+     */
+     static async duplicate(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        try {
+            let params = req.body || {};            
+            params.user = req.user;
+            res.setDataSwap(await this._duplicate(params));
+        } catch (e: any) {
+            res.setException(e);            
+        }
+        res.sendResponse();
+    }
     
 
 
@@ -439,7 +676,8 @@ export default class CampaignsController extends BaseRegistersController {
             this.get_kpis_data,
             this.get_with_sub_datas,
             this.get_campaign_report_data,
-            this.calculate
+            this.calculate,
+            this.duplicate
         ]);
     }
 }

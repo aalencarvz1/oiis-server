@@ -15,17 +15,17 @@ export default class BaseTableModel extends Model {
 
 
     //table fields
-    declare id: number;
-    declare parent_id: number; //to "nested" registers or hierarquic representations
+    declare id: number | undefined;
+    declare parent_id?: number; //to "nested" registers or hierarquic representations
     declare status_reg_id: number;
-    declare creator_user_id: number;
-    declare created_at: Date;
-    declare updater_user_id: number;
-    declare updated_at: Date;
-    declare data_origin_id: number; //to indicate external origin of record
-    declare id_at_origin: string; //to indicate id on external origin
-    declare source_id: number; //to indicate source of record, ex.: a record duplicated from other
-    declare deleted_at: Date;
+    declare creator_user_id: number | undefined;
+    declare created_at: Date | undefined;
+    declare updater_user_id?: number;
+    declare updated_at?: Date;
+    declare data_origin_id?: number; //to indicate external origin of record
+    declare id_at_origin?: string; //to indicate id on external origin
+    declare source_id?: number; //to indicate source of record, ex.: a record duplicated from other
+    declare deleted_at?: Date;
     declare is_sys_rec: number;
 
 
@@ -421,10 +421,13 @@ export default class BaseTableModel extends Model {
         return reg;
     }
 
-    static async getOneByID(id: number | string) {
-        let result = await this.getData({queryParams:{where:{id:id}}});
-        if (result && result.length) {
-            result = result[0];
+    static async getOneByID(id?: number | string) : Promise<any> {
+        let result = null;
+        if (Utils.hasValue(id)) {
+            result = await this.getData({queryParams:{where:{id:id}}});
+            if (result && result.length) {
+                result = result[0];
+            }
         }
         return result;
     }
