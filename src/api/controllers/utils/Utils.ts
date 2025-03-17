@@ -313,6 +313,15 @@ export default class Utils {
         return result;
     }
 
+    static toISODate(pDate?: any) : any {
+        let result = null;
+        if (pDate) {
+            if (typeof pDate != 'object') pDate = new Date(pDate.substring(0,10).split("-"));
+            result = pDate.toISOString().substring(0,10);            
+        }
+        return result;
+    }
+
     static getPreviousYearDate(pDate : any) : Date {
         let previousDate = new Date(pDate || undefined);                        
         previousDate.setFullYear(previousDate.getFullYear()-1);
@@ -484,4 +493,39 @@ export default class Utils {
 
         return [...properties];
     }
+
+
+    static getUTCFullDate(date: Date) : string{
+        let result = `${date.getFullYear().toString().padStart(4,'0')}-${(date.getMonth()+1).toString().padStart(2,'0')}-${date.getDate().toString().padStart(2,'0')}`;
+        return result;
+    }
+
+
+    static getFullMonthsDiff(date1: Date, date2: Date) : number | null {
+        let tempDate1 = new Date(Date.UTC(date1.getUTCFullYear(), date1.getUTCMonth(), 1, 0, 0, 0, 0));
+        let tempDate2 = new Date(Date.UTC(date2.getUTCFullYear(), date2.getUTCMonth()+1, 0, 0, 0, 0, 0));
+      
+        if (date1.getUTCDate() !== tempDate1.getUTCDate() || date2.getUTCDate() !== tempDate2.getUTCDate()) {
+          return null;//"Não é um período completo";
+        }
+      
+        let diffMonths = (tempDate2.getUTCFullYear() - tempDate1.getUTCFullYear()) * 12 + (tempDate2.getUTCMonth() - tempDate1.getUTCMonth()) + 1;
+      
+        return diffMonths;
+    }
+
+    static diffDays(date1: Date, date2: Date) : number {
+        return Math.floor(
+            (Number(new Date(date2.toDateString())) - Number(new Date(date1.toDateString()))) / (1000 * 60 * 60 * 24)
+        );
+    };
+
+    static addMonths(date: Date, months: number) : void {
+        let currentMonth = date.getUTCMonth();        
+        date.setUTCMonth(date.getUTCMonth() + months);
+        if (date.getUTCMonth() > currentMonth + months) {
+            date.setUTCDate(0);
+        }    
+    }
+
 }
