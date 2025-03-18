@@ -82,7 +82,6 @@ export default class ReportsController extends BaseRegistersController {
                 ]
             });
         }
-        console.log('xxxxxxxxxxxxxxxxxx',queryParams.where);
         return await Report_Data_Founts.findOne(queryParams);
     }
 
