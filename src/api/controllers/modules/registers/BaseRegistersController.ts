@@ -47,7 +47,6 @@ export default abstract class BaseRegistersController {
                     queryParams.where = queryParams.where || {};
                     queryParams.where.creator_user_id = req.user?.id
                 }
-                console.log('xxxxxxxxxxn1',queryParams);
                 res.data = await this.getTableClassModel().findAll(queryParams);
             }
             res.sendResponse(200,true);
@@ -103,7 +102,6 @@ export default abstract class BaseRegistersController {
     static async delete(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let queryParams = req.body.queryParams || req.body;
-            console.log("okxx2",queryParams);
             res.data = await this.getTableClassModel().deleteData(queryParams);
             res.sendResponse(200,true);
         } catch (e: any) {
