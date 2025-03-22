@@ -16,7 +16,7 @@ export default class PcCob extends BaseWinthorTableModel {
   declare CARTAO: string;
 
 
-  static id = 30008;
+  static id = 30009;
   static tableName = this.name.toUpperCase();
   static model = null;
 

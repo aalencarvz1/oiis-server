@@ -20,7 +20,7 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
         let result = new DataSwap();
         try {
             let queryParams = params.queryParams || params || {};
-            let winthorData = await PcProdut.findOne({
+            let winthorData : any = await PcProdut.findOne({
                 raw:true,
                 where:{
                     CODPROD: queryParams.id_at_origin || queryParams.item_id || queryParams.id || queryParams.CODPROD

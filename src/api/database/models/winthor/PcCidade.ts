@@ -21,7 +21,7 @@ export default class PcCidade extends BaseWinthorTableModel {
 
 
 
-  static id = 30007;
+  static id = 30008;
   static tableName = this.name.toUpperCase();
   static model = null;
 

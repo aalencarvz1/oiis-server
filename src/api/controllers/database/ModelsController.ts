@@ -170,6 +170,7 @@ import PcNfsaid from '../../database/models/winthor/PcNfsaid.js';
 import PcPais from '../../database/models/winthor/PcPais.js';
 import PcPixCobrancaDados from '../../database/models/winthor/PcPixCobrancaDados.js';
 import PcPrest from '../../database/models/winthor/PcPrest.js';
+import PcSecao from '../../database/models/winthor/PcSecao.js';
 import PcProdut from '../../database/models/winthor/PcProdut.js';
 import PcRotaExp from '../../database/models/winthor/PcRotaExp.js';
 import PcSuperv from '../../database/models/winthor/PcSuperv.js';
@@ -227,6 +228,18 @@ import Packs_X_Packs_Origins from "../../database/models/Packs_X_Packs_Origins.j
 import PcEst from "../../database/models/winthor/PcEst.js";
 import Gtin_Produtos from "../../database/models/sjd/Gtin_Produtos.js";
 import SjdLogAnaliseEnt from "../../database/models/sjd/SjdLogAnaliseEnt.js";
+import PcDicionarioItem from "../../database/models/winthor/PcDicionarioItem.js";
+import PcDicionarioItemRot from "../../database/models/winthor/PcDicionarioItemRot.js";
+import PcDicionarioItemRotCust from "../../database/models/winthor/PcDicionarioItemRotCust.js";
+import All_Tab_Columns from "../../database/models/winthor/All_Tab_Columns.js";
+import PcRotulo from "../../database/models/winthor/PcRotulo.js";
+import PcRotuloItem from "../../database/models/winthor/PcRotuloItem.js";
+import PcMarca from "../../database/models/winthor/PcMarca.js";
+import PcCategoria from "../../database/models/winthor/PcCategoria.js";
+import PcLinhaProd from "../../database/models/winthor/PcLinhaProd.js";
+import PcUnidade from "../../database/models/winthor/PcUnidade.js";
+import PcPrazo from "../../database/models/winthor/PcPrazo.js";
+import PcDistrib from "../../database/models/winthor/PcDistrib.js";
 
 
 export default class ModelsController {
@@ -401,6 +414,13 @@ export default class ModelsController {
         }
         
         if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+            All_Tab_Columns.initModel();
+            PcConsum.initModel();
+            PcDicionarioItem.initModel();
+            PcDicionarioItemRot.initModel();
+            PcDicionarioItemRotCust.initModel();
+            PcRotulo.initModel();
+            PcRotuloItem.initModel();
             PcPais.initModel();            
             PcEstado.initModel();
             PcCidade.initModel();
@@ -412,9 +432,15 @@ export default class ModelsController {
             PcRotaExp.initModel();        
             PcClient.initModel();
             PcFornec.initModel();
-            PcNcm.initModel();
-            PcConsum.initModel();
+            PcDistrib.initModel();
+            PcPrazo.initModel();
+            PcUnidade.initModel();
+            PcLinhaProd.initModel();
+            PcNcm.initModel();            
             PcDepto.initModel();
+            PcSecao.initModel();            
+            PcMarca.initModel();
+            PcCategoria.initModel();            
             PcProdut.initModel();
             PcEst.initModel();
             PcDocEletronico.initModel();
@@ -647,6 +673,13 @@ export default class ModelsController {
         }
 
         if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {        
+            await All_Tab_Columns.initAssociations();
+            await PcConsum.initAssociations();
+            await PcDicionarioItem.initAssociations();
+            await PcDicionarioItemRot.initAssociations();
+            await PcDicionarioItemRotCust.initAssociations();
+            await PcRotulo.initAssociations();
+            await PcRotuloItem.initAssociations();
             await PcPais.initAssociations();            
             await PcEstado.initAssociations();
             await PcCidade.initAssociations();
@@ -658,9 +691,15 @@ export default class ModelsController {
             await PcRotaExp.initAssociations();        
             await PcClient.initAssociations();
             await PcFornec.initAssociations();
-            await PcNcm.initAssociations();
-            await PcConsum.initAssociations();
-            await PcDepto.initAssociations();
+            await PcDistrib.initAssociations();
+            await PcPrazo.initAssociations();
+            await PcUnidade.initAssociations();
+            await PcLinhaProd.initAssociations();
+            await PcNcm.initAssociations();            
+            await PcDepto.initAssociations();            
+            await PcSecao.initAssociations();            
+            await PcMarca.initAssociations();
+            await PcCategoria.initAssociations();
             await PcProdut.initAssociations();
             await PcEst.initAssociations();
             await PcDocEletronico.initAssociations();

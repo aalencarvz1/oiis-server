@@ -31,7 +31,7 @@ export default class PcClient extends BaseWinthorTableModel {
   declare DTEXCLUSAO: Date;
 
 
-  static id = 30009;
+  static id = 30010;
   static tableName = this.name.toUpperCase();
   static model = null;
 
