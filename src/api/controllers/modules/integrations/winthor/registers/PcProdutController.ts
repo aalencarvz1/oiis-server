@@ -10,11 +10,23 @@ import PcNcmController from "./PcNcmsController.js";
 import WinthorBaseRegistersIntegrationsController from "./WinthorBaseRegistersIntegrationsController.js";
 import DBConnectionManager from "../../../../../database/DBConnectionManager.js";
 import { QueryTypes } from "sequelize";
+import BaseRegistersController from "../../../registers/BaseRegistersController.js";
 
 export default class PcProdutController extends WinthorBaseRegistersIntegrationsController{
     static getTableClassModel() : any {
         return PcProdut;
     }  
+
+    /**
+     * Integration request methods handlers, by default, not can change origin information, only get     
+     * @requesthandler
+     * @override
+     * @created 2025-01-04
+     * @version 1.0.0
+     */
+    static async put(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        BaseRegistersController.put.bind(this)(req, res, next);
+    }
 
     static async integrate(params: any) : Promise<DataSwap> {
         let result = new DataSwap();

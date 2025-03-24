@@ -1,7 +1,7 @@
 'use strict';
 
 
-import { DataTypes } from 'sequelize';
+import { DataTypes, Sequelize } from 'sequelize';
 import  BaseWinthorTableModel  from './BaseWinthorTableModel.js';
 import PcDepto from './PcDepto.js';
 import PcSecao from './PcSecao.js';
@@ -2696,7 +2696,7 @@ export default class PcProdut extends BaseWinthorTableModel {
     },
     IDINTEGRACAOMYFROTA: {
       type: DataTypes.STRING(16),
-      defaultValue: 'SYS_GUID()'
+      defaultValue: Sequelize.literal('SYS_GUID()')
     },
     ANP: {
       type: DataTypes.STRING(22)		
