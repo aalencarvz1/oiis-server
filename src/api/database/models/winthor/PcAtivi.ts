@@ -14,7 +14,7 @@ export default class PcAtivi extends BaseWinthorTableModel {
   declare RAMO: string;
 
 
-  static id = 30011;
+  static id = 30012;
   static tableName = this.name.toUpperCase();
   static model = null;
 

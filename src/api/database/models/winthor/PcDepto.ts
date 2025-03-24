@@ -14,7 +14,7 @@ export default class PcDepto extends BaseWinthorTableModel {
   declare DESCRICAO: string;
 
 
-  static id = 30204;
+  static id = 30201;
   static tableName = this.name.toUpperCase();
   static model = null;
 
