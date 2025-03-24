@@ -8,6 +8,11 @@ public bulkInsert(
     options?: BulkCreateOptions,//QueryOptions,
     attributes?: Record<string, ModelAttributeColumnOptions>
 ): Promise<object | number>;
+update handleInsertQuery oracle method do support returning: false
+node_modules\sequelize\lib\dialects\oracle\query.js (line 501)
+if (this.instance && results.length > 0) {
+to 
+if (this.instance && results?.length > 0) {
 
 
 *TO INSTALL NODE: 
