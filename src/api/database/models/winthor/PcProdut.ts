@@ -10,6 +10,7 @@ import PcCategoria from './PcCategoria.js';
 import PcLinhaProd from './PcLinhaProd.js';
 import PcPrazo from './PcPrazo.js';
 import PcDistrib from './PcDistrib.js';
+import Utils from "../../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -3354,5 +3355,42 @@ export default class PcProdut extends BaseWinthorTableModel {
       field: 'CODDISTRIB'
     }
   }];  
+
+
+
+  static async getOneByID(id?: number | string, queryParams?: any) : Promise<any> {
+    let result = null;
+    if (Utils.hasValue(id)) {
+        result = await this.getData({
+          queryParams:{
+            ...queryParams || {},
+            where:{
+              CODPROD:id
+            }
+          }
+        });
+        if (result && result.length) {
+            result = result[0];
+        }
+    }
+    return result;
+  }
+
+  /**
+   * create data of model inherithed of this
+   * @override
+   * @static (pay attention to bindings)
+   * @async (pay attention to await)
+   * @created 2023-11-10
+   */
+  static async createData(params: any,returnRaw: boolean = true) {
+    let queryParams = params.queryParams?.values || params.values || params.queryParams || params || {};
+    let result = await this.create(queryParams,{returning:false}); //out of buffer
+    console.log('xxxxxxxx1',result);
+    result = await this.getOneByID(queryParams.CODPROD,{raw:returnRaw});
+    console.log('xxxxxxxx2',result);
+    return result;
+  }
+  static putData = this.createData;
   
 };
