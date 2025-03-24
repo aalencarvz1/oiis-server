@@ -18,6 +18,8 @@ export default class All_Tab_Columns extends BaseWinthorTableModel {
   declare DATA_LENGTH: number;
   declare DATA_PRECISION: number;
   declare DATA_SCALE: number;
+  declare NULLABLE: string;
+  declare DATA_DEFAULT: string;
 
 
 
@@ -53,6 +55,12 @@ export default class All_Tab_Columns extends BaseWinthorTableModel {
       },
       DATA_SCALE:{
         type: DataTypes.INTEGER
+      },
+      NULLABLE:{
+        type: DataTypes.STRING(1)
+      },
+      DATA_DEFAULT:{
+        type: DataTypes.TEXT
       }
   };
  
