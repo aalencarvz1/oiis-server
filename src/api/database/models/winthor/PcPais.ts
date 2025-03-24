@@ -14,7 +14,7 @@ export default class PcPais extends BaseWinthorTableModel {
   declare DESCRICAO: string;
 
 
-  static id = 30005;
+  static id = 30007;
   static tableName = this.name.toUpperCase();
   static model = null;
 

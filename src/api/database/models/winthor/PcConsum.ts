@@ -15,7 +15,7 @@ export default class PcConsum extends BaseWinthorTableModel {
   declare PROXNUMTRANS: number;
 
 
-  static id = 30000;
+  static id = 30001;
   static tableName = this.name.toUpperCase();
   static model = null;
 

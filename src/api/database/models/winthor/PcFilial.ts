@@ -21,7 +21,7 @@ export default class PcFilial extends BaseWinthorTableModel {
 
 
 
-  static id = 30010;
+  static id = 30011;
   static tableName = this.name.toUpperCase();
   static model = null;
 
