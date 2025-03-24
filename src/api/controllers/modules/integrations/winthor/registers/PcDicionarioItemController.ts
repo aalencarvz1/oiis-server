@@ -43,7 +43,7 @@ export default class PcDicionarioItemController extends WinthorBaseRegistersInte
                     model: PcDicionarioItemRotCust,
                     on:{
                         [Op.and]:[
-                            Sequelize.where(Sequelize.literal(`${PcDicionarioItemRotCust.tableName}.CODROTINA`),Sequelize.literal(`${PcDicionarioItemRot.tableName}.CODROTINA`)),
+                            Sequelize.where(Sequelize.literal(`${PcDicionarioItemRotCust.tableName}.CODROTINA`),Sequelize.fn('nvl',Sequelize.literal(`${PcDicionarioItemRot.tableName}.CODROTINA`),Sequelize.literal(`${PcDicionarioItemRotCust.tableName}.CODROTINA`))),
                             Sequelize.where(Sequelize.literal(`${PcDicionarioItemRotCust.tableName}.NOMEOBJETO`),Sequelize.literal(`${PcDicionarioItem.tableName}.NOMEOBJETO`)),
                             Sequelize.where(Sequelize.literal(`${PcDicionarioItemRotCust.tableName}.NOMECAMPO`),Sequelize.literal(`${PcDicionarioItem.tableName}.NOMECAMPO`)),
                         ]
