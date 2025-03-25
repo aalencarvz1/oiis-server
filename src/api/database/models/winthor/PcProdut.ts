@@ -3,6 +3,7 @@
 
 import { DataTypes, Sequelize } from 'sequelize';
 import  BaseWinthorTableModel  from './BaseWinthorTableModel.js';
+import PcFornec from './PcFornec.js';
 import PcDepto from './PcDepto.js';
 import PcSecao from './PcSecao.js';
 import PcMarca from './PcMarca.js';
@@ -3299,6 +3300,13 @@ export default class PcProdut extends BaseWinthorTableModel {
   };
 
   static foreignsKeys = [{
+    fields: ['CODFORNEC'],
+    type: 'foreign key',
+    references: { 
+      table: PcFornec,
+      field: 'CODFORNEC'
+    }
+  },{
     fields: ['CODEPTO'],
     type: 'foreign key',
     references: { 
@@ -3386,9 +3394,7 @@ export default class PcProdut extends BaseWinthorTableModel {
   static async createData(params: any,returnRaw: boolean = true) {
     let queryParams = params.queryParams?.values || params.values || params.queryParams || params || {};
     let result = await this.create(queryParams,{returning:false}); //out of buffer
-    console.log('xxxxxxxx1',result);
     result = await this.getOneByID(queryParams.CODPROD,{raw:returnRaw});
-    console.log('xxxxxxxx2',result);
     return result;
   }
   static putData = this.createData;
