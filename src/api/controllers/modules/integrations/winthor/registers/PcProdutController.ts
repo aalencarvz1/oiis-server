@@ -9,8 +9,12 @@ import Utils from "../../../../utils/Utils.js";
 import PcNcmController from "./PcNcmsController.js";
 import WinthorBaseRegistersIntegrationsController from "./WinthorBaseRegistersIntegrationsController.js";
 import DBConnectionManager from "../../../../../database/DBConnectionManager.js";
-import { QueryTypes } from "sequelize";
+import { Op, QueryTypes, Sequelize } from "sequelize";
 import BaseRegistersController from "../../../registers/BaseRegistersController.js";
+import PcEst from "../../../../../database/models/winthor/PcEst.js";
+import PcFornec from "../../../../../database/models/winthor/PcFornec.js";
+import PcDepto from "../../../../../database/models/winthor/PcDepto.js";
+import { at } from "lodash";
 
 export default class PcProdutController extends WinthorBaseRegistersIntegrationsController{
     static getTableClassModel() : any {
@@ -73,6 +77,12 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
         return result;
     }
 
+    /*
+    @version 1.0.0
+    @comments 
+        2025-03-25 - Alencar: Função comentada para efeito de manter o histórico de como foi criada, pois foi criada corretamente, conforme a logica do negócio, porém, dada a evolução do front, ela precisará de atualizações
+    */
+   /*
     static async get_product_data(req: Request, res: Response, next: NextFunction) : Promise<void> {
         
         type Filter = {
@@ -165,6 +175,120 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
             res.setException(e);
             res.sendResponse(517,false);
         }
+    }*/
+
+
+
+    /**
+     * get product data according request parameters
+     * @version 1.2.0
+     * @created 2025-03-25
+     */
+    static async get_product_data(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        try {
+            let queryParams = req.body.queryParams || {};
+            let searchTerm = req.body.searchTerm;
+            let searchDate = req.body.searchDate;
+            let searchStock = req.body.searchStock;
+            let searchActives = req.body.searchActives;
+            let searchInactives = req.body.searchInactives;
+            let filters = req.body.filters;
+
+            queryParams.raw = Utils.firstValid([queryParams.raw, true]);
+
+            //especified fiels on queryParams or default
+            queryParams.attributes = queryParams.attributes || [
+                'CODPROD',
+                'CODFAB',
+                'DESCRICAO',                
+                'CODEPTO',
+                'CODFORNEC',
+                'EMBALAGEM',
+                'UNIDADE',
+                'QTUNITCX',
+                'PESOLIQ',
+                'PESOBRUTO',                
+                'TEMREPOS',
+                'QTUNIT',
+                'DTCADASTRO',
+                'DTEXCLUSAO',
+                'DTULTALTER',
+                'PRAZOVAL',
+                'REVENDA',                
+                'IMPORTADO',
+                'CODAUXILIAR'
+            ];
+            queryParams.where = queryParams.where || {};
+
+            if (Utils.toBool(req.body.includeJoins)) {
+                queryParams.include = [{
+                    model: PcEst,
+                    attributes:[
+                        'CODFILIAL',
+                        'QTEST',
+                        'DTULTENT',
+                        'DTULTSAIDA',
+                    ]
+                },{
+                    model: PcFornec,
+                    attributes:[
+                        'FORNECEDOR',
+                        'CGC'
+                    ]
+                },{
+                    model: PcDepto,
+                    attributes:[
+                        'DESCRICAO'
+                    ]
+                }]
+                        
+            }
+
+
+            //handle search term
+            if (Utils.hasValue(searchTerm?.term)) {                
+
+                //allow multiple terms with comma(,) separator
+                searchTerm.term = searchTerm.term.trim().toUpperCase().split(',');
+
+                let orTerm = [];
+
+                //especied fields on searchTem
+                if (Utils.hasValue(searchTerm.fields)) {
+                    searchTerm.fields = Utils.toArray(searchTerm.fields);
+                    for(let i in searchTerm.fields) {
+                        for(let k in searchTerm.term) {
+                            orTerm.push(
+                                Sequelize.where(
+                                    Sequelize.fn('UPPER',Sequelize.col(searchTerm.fields[i])),
+                                    Op.like,
+                                    `%${searchTerm.term[k]}%`
+                                )
+                            )
+                        }
+                    }
+                } else {
+
+                    //not especied fields
+                    for(let k in searchTerm.term) {
+                        orTerm.push(
+                            Sequelize.where(
+                                Sequelize.fn('UPPER',Sequelize.col(`${PcProdut.tableName}.DESCRICAO`)),
+                                Op.like,
+                                `%${searchTerm.term[k]}%`
+                            )
+                        )
+                    }
+                }
+                queryParams.where[Op.and] = [...queryParams.where[Op.and] || [], ...orTerm];
+            } //end handle search term
+
+            res.data = await PcProdut.findAll(queryParams);
+            res.success = true;
+        } catch (e: any) {
+            res.setException(e);            
+        }
+        res.sendResponse();
     }
 
     
