@@ -15,6 +15,7 @@ import PcEst from "../../../../../database/models/winthor/PcEst.js";
 import PcFornec from "../../../../../database/models/winthor/PcFornec.js";
 import PcDepto from "../../../../../database/models/winthor/PcDepto.js";
 import { at } from "lodash";
+import QueryBuilder from "../../../../database/QueryBuilder.js";
 
 export default class PcProdutController extends WinthorBaseRegistersIntegrationsController{
     static getTableClassModel() : any {
@@ -187,12 +188,10 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
     static async get_product_data(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let queryParams = req.body.queryParams || {};
-            let searchTerm = req.body.searchTerm;
-            let searchDate = req.body.searchDate;
+            let search = req.body.search;
             let searchStock = req.body.searchStock;
-            let searchActives = req.body.searchActives;
-            let searchInactives = req.body.searchInactives;
             let filters = req.body.filters;
+            let groupFiliais = Utils.toBool(Utils.firstValid([req.body.groupFiliais, true]));
 
             queryParams.raw = Utils.firstValid([queryParams.raw, true]);
 
@@ -219,16 +218,23 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                 'CODAUXILIAR'
             ];
             queryParams.where = queryParams.where || {};
+            queryParams.where[Op.and] = queryParams.where[Op.and] || [];
 
             if (Utils.toBool(req.body.includeJoins)) {
                 queryParams.include = [{
                     model: PcEst,
-                    attributes:[
-                        'CODFILIAL',
-                        'QTEST',
-                        'DTULTENT',
-                        'DTULTSAIDA',
-                    ]
+                    attributes:groupFiliais 
+                        ? [
+                            [Sequelize.fn('SUM',Sequelize.col('QTEST')),'QTEST'],
+                            [Sequelize.fn('MAX',Sequelize.col('DTULTENT')),'DTULTENT'],
+                            [Sequelize.fn('MAX',Sequelize.col('DTULTSAIDA')),'DTULTSAIDA']
+                        ]
+                        : [
+                            'CODFILIAL',
+                            'QTEST',
+                            'DTULTENT',
+                            'DTULTSAIDA',
+                        ]
                 },{
                     model: PcFornec,
                     attributes:[
@@ -246,23 +252,23 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
 
 
             //handle search term
-            if (Utils.hasValue(searchTerm?.term)) {                
+            if (Utils.hasValue(search?.term?.value)) {                
 
                 //allow multiple terms with comma(,) separator
-                searchTerm.term = searchTerm.term.trim().toUpperCase().split(',');
+                search.term.value = search.term.value.trim().toUpperCase().split(',');
 
                 let orTerm = [];
 
                 //especied fields on searchTem
-                if (Utils.hasValue(searchTerm.fields)) {
-                    searchTerm.fields = Utils.toArray(searchTerm.fields);
-                    for(let i in searchTerm.fields) {
-                        for(let k in searchTerm.term) {
+                if (Utils.hasValue(search.term.fields)) {
+                    search.term.fields = Utils.toArray(search.term.fields);
+                    for(let i in search.term.fields) {
+                        for(let k in search.term.value) {
                             orTerm.push(
                                 Sequelize.where(
-                                    Sequelize.fn('UPPER',Sequelize.col(searchTerm.fields[i])),
+                                    Sequelize.fn('UPPER',Sequelize.col(search.term.fields[i])),
                                     Op.like,
-                                    `%${searchTerm.term[k]}%`
+                                    `%${search.term.value[k]}%`
                                 )
                             )
                         }
@@ -270,18 +276,126 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                 } else {
 
                     //not especied fields
-                    for(let k in searchTerm.term) {
+                    for(let k in search.term.value) {
                         orTerm.push(
                             Sequelize.where(
                                 Sequelize.fn('UPPER',Sequelize.col(`${PcProdut.tableName}.DESCRICAO`)),
                                 Op.like,
-                                `%${searchTerm.term[k]}%`
+                                `%${search.term.value[k]}%`
                             )
                         )
                     }
                 }
-                queryParams.where[Op.and] = [...queryParams.where[Op.and] || [], ...orTerm];
+                queryParams.where[Op.and].push({
+                    [Op.or]:orTerm
+                });
             } //end handle search term
+
+
+            //department filter
+            if (Utils.hasValue(search.departments)) {
+                queryParams.where[Op.and].push({
+                    CODEPTO: {
+                        [Op.in]:search.departments.map((el: any)=>el.id || el)
+                    }
+                });
+            }
+
+            //supplier filter
+            if (Utils.hasValue(search.suppliers)) {
+                queryParams.where[Op.and].push({
+                    CODFORNEC: {
+                        [Op.in]:search.suppliers.map((el: any)=>el.id || el)
+                    }
+                });
+            }
+
+            //active | inactive filter
+            if (Utils.hasValue(search.actives) && Utils.toBool(search.actives)
+                && !(Utils.hasValue(search.inactives) && Utils.toBool(search.inactives))) {
+                queryParams.where[Op.and].push({
+                    DTEXCLUSAO: {
+                        [Op.is]:null
+                    }
+                },{
+                    OBS2: {
+                        [Op.ne]: 'FL'
+                    }                    
+                })
+            } else if (Utils.hasValue(search.inactives) && Utils.toBool(search.inactives)
+                && !(Utils.hasValue(search.actives) && Utils.toBool(search.actives))
+            ) {
+                queryParams.where[Op.and].push({
+                    [Op.or]:[{
+                        DTEXCLUSAO: {
+                            [Op.not]:null
+                        }
+                    },{
+                        OBS2: 'FL'
+                    }]
+                })
+            }
+
+            //date filter
+            if (Utils.hasValue(search.date?.values)) {
+                if (search.date.comparator == 'between') {
+                    if (["DTULTENT","DTULTSAIDA"].indexOf(search.date.field.toUpperCase().trim()) > -1) {
+                        queryParams.where[Op.and].push(Sequelize.where(
+                            Sequelize.col(`${PcEst.tableName}.${search.date.field}`),
+                            Op.between,
+                            search.date.values.map((el: any)=>Sequelize.literal(`TO_DATE('${el}','yyyy-mm-dd')`))
+                        ));
+                    } else {
+                        queryParams.where[Op.and].push({
+                            [search.date.field]: {
+                                [Op.between]:search.date.values
+                            }
+                        })
+                    }
+                } else {
+                    if (["DTULTENT","DTULTSAIDA"].indexOf(search.date.field.toUpperCase().trim()) > -1) {
+                        queryParams.where[Op.and].push(Sequelize.where(
+                            Sequelize.col(`${PcEst.tableName}.${search.date.field}`),
+                            QueryBuilder.getSequelizeOperator(search.date.comparator),
+                            Sequelize.literal(`TO_DATE('${search.date.values[0]}','yyyy-mm-dd')`)
+                        ));
+                    } else {
+                        queryParams.where[Op.and].push({
+                            [search.date.field]: {
+                                [QueryBuilder.getSequelizeOperator(search.date.comparator)]:search.date.values[0]
+                            }
+                        })
+                    }
+                }
+            }
+
+
+            //stock filter
+            if (Utils.hasValue(search.stock?.values)) {
+                if (search.stock.comparator == 'between') {
+                    queryParams.where[Op.and].push(Sequelize.where(
+                        Sequelize.col(`${PcEst.tableName}.${search.stock.field}`),
+                        Op.between,
+                        search.stock.values.map((el: any)=>Utils.toNumber(el))
+                    ));
+                } else {
+                    queryParams.where[Op.and].push(Sequelize.where(
+                        Sequelize.col(`${PcEst.tableName}.${search.stock.field}`),
+                        QueryBuilder.getSequelizeOperator(search.stock.comparator),
+                        Utils.toNumber(search.stock.values[0])
+                    ));
+                }
+            }
+
+
+            //adjust group by clause, if necessary
+            if (groupFiliais) {
+                queryParams.group = queryParams.attributes.map((el: any)=>Sequelize.col(`${PcProdut.tableName}.${el}`));
+                if (Utils.toBool(req.body.includeJoins)) {
+                    queryParams.group = [...queryParams.group, ...queryParams.include[1].attributes.map((el: any)=>Sequelize.col(`${PcFornec.tableName}.${el}`))];
+                    queryParams.group = [...queryParams.group, ...queryParams.include[2].attributes.map((el: any)=>Sequelize.col(`${PcDepto.tableName}.${el}`))];
+                }
+            }
 
             res.data = await PcProdut.findAll(queryParams);
             res.success = true;
