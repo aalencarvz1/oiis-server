@@ -240,6 +240,8 @@ import PcLinhaProd from "../../database/models/winthor/PcLinhaProd.js";
 import PcUnidade from "../../database/models/winthor/PcUnidade.js";
 import PcPrazo from "../../database/models/winthor/PcPrazo.js";
 import PcDistrib from "../../database/models/winthor/PcDistrib.js";
+import PcProdFilial from "../../database/models/winthor/PcProdFilial.js";
+import PcEmbalagem from "../../database/models/winthor/PcEmbalagem.js";
 
 
 export default class ModelsController {
@@ -442,7 +444,9 @@ export default class ModelsController {
             PcMarca.initModel();
             PcCategoria.initModel();            
             PcProdut.initModel();
+            PcProdFilial.initModel();
             PcEst.initModel();
+            PcEmbalagem.initModel();
             PcDocEletronico.initModel();
             PcEmpr.initModel(); 
             PcNfsaid.initModel();           
@@ -701,7 +705,9 @@ export default class ModelsController {
             await PcMarca.initAssociations();
             await PcCategoria.initAssociations();
             await PcProdut.initAssociations();
+            await PcProdFilial.initAssociations();
             await PcEst.initAssociations();
+            await PcEmbalagem.initAssociations();
             await PcDocEletronico.initAssociations();
             await PcEmpr.initAssociations(); 
             await PcNfsaid.initAssociations();           

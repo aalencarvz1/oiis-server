@@ -3393,8 +3393,8 @@ export default class PcProdut extends BaseWinthorTableModel {
    */
   static async createData(params: any,returnRaw: boolean = true) {
     let queryParams = params.queryParams?.values || params.values || params.queryParams || params || {};
-    let result = await this.create(queryParams,{returning:false}); //out of buffer
-    result = await this.getOneByID(queryParams.CODPROD,{raw:returnRaw});
+    let result = await this.create(queryParams,{returning:false, transaction: params.transaction}); //out of buffer
+    result = await this.getOneByID(queryParams.CODPROD,{raw:returnRaw, transaction: params.transaction});
     return result;
   }
   static putData = this.createData;
