@@ -77,4 +77,35 @@ export default class QueryBuilder {
         }
         return result;
     }
+
+    static getSequelizeOperator(operator: string) : any {
+        let result = Op.eq;
+        switch (operator) {
+            case 'ne':
+            case '!=':
+            case '<>':
+                result = Op.ne;
+            break;
+            case 'gt':
+            case '>':
+                result = Op.gt;
+            break;
+            case 'gte':
+            case '>=':
+                result = Op.gte;
+            break;
+            case 'lt':
+            case '<':
+                result = Op.lt;
+            break;
+            case 'lte':
+            case '<=':
+                result = Op.lte;
+            break;
+            case 'like':
+                result = Op.like;
+            break;
+        }
+        return result;
+    }
 }
