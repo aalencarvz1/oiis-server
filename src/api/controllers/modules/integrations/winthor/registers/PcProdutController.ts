@@ -10,7 +10,6 @@ import PcNcmController from "./PcNcmsController.js";
 import WinthorBaseRegistersIntegrationsController from "./WinthorBaseRegistersIntegrationsController.js";
 import DBConnectionManager from "../../../../../database/DBConnectionManager.js";
 import { Op, QueryTypes, Sequelize } from "sequelize";
-import BaseRegistersController from "../../../registers/BaseRegistersController.js";
 import PcEst from "../../../../../database/models/winthor/PcEst.js";
 import PcFornec from "../../../../../database/models/winthor/PcFornec.js";
 import PcDepto from "../../../../../database/models/winthor/PcDepto.js";
@@ -19,6 +18,7 @@ import QueryBuilder from "../../../../database/QueryBuilder.js";
 import PcProdFilial from "../../../../../database/models/winthor/PcProdFilial.js";
 import PcEmbalagem from "../../../../../database/models/winthor/PcEmbalagem.js";
 import PcFilial from "../../../../../database/models/winthor/PcFilial.js";
+import Integration_Rules from "../../../../../database/models/Integration_Rules.js";
 
 export default class PcProdutController extends WinthorBaseRegistersIntegrationsController{
     static getTableClassModel() : any {
@@ -35,6 +35,50 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                 throw new Error(`missing CODAUXILIAR${field}`);
             }
         }
+    }
+
+    static async checkRules(params: any) : Promise<DataSwap> {
+        let result = new DataSwap();
+        try {
+            let rulesFails = [];
+            let where : any = {
+                data_origin_id: params.data_origin_id,
+                table_id: params.table_id,
+                check_at_back: 1
+            };
+            if (params.isInsert) where.check_on_insert = 1;
+            if (params.isUpdate) where.check_on_update = 1;
+            if (params.isDelete) where.check_on_delete = 1;
+
+            let rules = await Integration_Rules.findAll({
+                raw:true,
+                where: where
+            });
+
+            if (Utils.hasValue(rules)) {
+                for(let k in rules) {   
+                    if (Utils.hasValue(rules[k].rule)) {
+                        //console.log('eeeeeeeee',rules[k]);                        
+                        let result : any = await Utils.evalText(rules[k].rule,params);
+                        if (result !== true) {
+                            rulesFails.push({
+                                rule: rules[k],
+                                result: result                                
+                            });
+                        }
+                    }
+                }
+            }
+            if (Utils.hasValue(rulesFails)) {
+                result.data = rulesFails;
+                result.success = false;
+            } else {
+                result.success = true;
+            }
+        } catch (e) {
+            result.setException(e);
+        }
+        return result;
     }
 
     /**
@@ -73,6 +117,17 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
             queryParams.CONSIPISUSPENSOBASEICMS = queryParams.CONSIPISUSPENSOBASEICMS || 'S';
             queryParams.EXIBESEMESTOQUEECOMMERCE = queryParams.EXIBESEMESTOQUEECOMMERCE || 'N';
             queryParams.ESTOQUEPORDTVALIDADE = null;
+
+            let resultRules = await this.checkRules({
+                isInsert: 1,
+                data_origin_id: Data_Origins.WINTHOR, 
+                table_id: PcProdut.id,
+                data: queryParams
+            });
+
+            if (!resultRules?.success) {
+                throw new Error(`rules check fails: \n${resultRules.data.map((el: any)=>`${el.rule.name}(${el.rule.rule}): ${el.result}`).join('\n')}`);
+            }
 
             await DBConnectionManager.getWinthorDBConnection()?.transaction(async transaction=>{
 
