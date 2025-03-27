@@ -242,6 +242,8 @@ import PcPrazo from "../../database/models/winthor/PcPrazo.js";
 import PcDistrib from "../../database/models/winthor/PcDistrib.js";
 import PcProdFilial from "../../database/models/winthor/PcProdFilial.js";
 import PcEmbalagem from "../../database/models/winthor/PcEmbalagem.js";
+import Integration_Rules from "../../database/models/Integration_Rules.js";
+import Ncms_Categories from "../../database/models/Ncms_Categories.js";
 
 
 export default class ModelsController {
@@ -333,6 +335,7 @@ export default class ModelsController {
         Ncms.initModel();
         Item_Status.initModel();
         Items.initModel();
+        Ncms_Categories.initModel();
         Lots.initModel();
         Containers.initModel();
         Items_Lots_Containers.initModel();
@@ -402,6 +405,7 @@ export default class ModelsController {
         Packs_X_Packs_Origins.initModel();
         Meas_X_Meas_Origins.initModel();
         Midias.initModel();
+        Integration_Rules.initModel();
 
         if (Utils.toBool(process.env.HAS_DB_EXTERNAL_DATA) == true) {
             Businesses.initModel();
@@ -594,6 +598,7 @@ export default class ModelsController {
         await Ncms.initAssociations();
         await Item_Status.initAssociations();
         await Items.initAssociations();
+        await Ncms_Categories.initAssociations();
         await Lots.initAssociations();
         await Containers.initAssociations();
         await Items_Lots_Containers.initAssociations();
@@ -663,6 +668,7 @@ export default class ModelsController {
         await Packs_X_Packs_Origins.initAssociations();
         await Meas_X_Meas_Origins.initAssociations();
         await Midias.initAssociations();
+        Integration_Rules.initAssociations();
 
 
         if (Utils.toBool(process.env.HAS_DB_EXTERNAL_DATA) == true) {
