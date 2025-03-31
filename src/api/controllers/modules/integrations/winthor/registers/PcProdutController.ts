@@ -81,20 +81,22 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
         return result;
     }
 
+
     /**
-     * put
+     * put (create) a record of table model of this controller (PCPRODUT) and correlated records (PCPRODFILIAL, PCEST, PCEMBALAGEM)
+     * this method use transaction to commit statements if no has errors, otherrise, rollback 
      * @created 2025-03-26
      * @version 1.0.0
      */
     static async _put(params: any) : Promise<DataSwap> {
         let result = new DataSwap();
         try {
-            let queryParams = params.queryParams || params;
+            let queryParams = params.queryParams || params;            
 
+            //check commom fields
             this.checkGtin(queryParams,'');
             this.checkGtin(queryParams,'2');
             this.checkGtin(queryParams,'TRIB');
-
             queryParams.CODPRODPRINC = queryParams.CODPRODPRINC || queryParams.CODPROD;
             queryParams.CODPRODMASTER = queryParams.CODPRODMASTER || queryParams.CODPROD;
             queryParams.TIPOMERC = queryParams.TIPOMERC || 'L';
@@ -118,12 +120,15 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
             queryParams.EXIBESEMESTOQUEECOMMERCE = queryParams.EXIBESEMESTOQUEECOMMERCE || 'N';
             queryParams.ESTOQUEPORDTVALIDADE = null;
 
+
+            //check rules (Integration_Rules)
             let resultRules = await this.checkRules({
                 isInsert: 1,
                 data_origin_id: Data_Origins.WINTHOR, 
                 table_id: PcProdut.id,
                 data: queryParams
             });
+
 
             if (!resultRules?.success) {
                 throw new Error(`rules check fails: \n${resultRules.data.map((el: any)=>`${el.rule.name}(${el.rule.rule}): ${el.result}`).join('\n')}`);
@@ -133,10 +138,10 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
 
                 result.data = await this.getTableClassModel().createData({queryParams,transaction});
 
-                console.log('okx0',result.data);
                 if (Utils.hasValue(result.data)) {
 
-                    //generate prod x filial table for this product
+
+                    //create items x filial (PCPRODFILIAL)
                     let query = `
                         INSERT INTO PCPRODFILIAL    
                             (CODPROD,                  
@@ -219,9 +224,10 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                             )
                             AND PCPRODUT.CODPROD = '${queryParams.CODPROD}'
                     `;
-                    console.log('okx1');
                     await DBConnectionManager.getWinthorDBConnection()?.query(query, {type: QueryTypes.INSERT, transaction})
-                    console.log('okx2');
+
+
+                    //get items x filial records (PCPRODFILIAL)
                     let prodsFilial = await PcProdFilial.findAll({
                         raw:true,
                         include:[{
@@ -248,10 +254,10 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                         ],
                         transaction                    
                     });
-                    console.log('okx3');
                     
+
+                    //create stock records (PCEST)
                     for(let k in prodsFilial) {
-                        console.log('okx4');
                         await PcEst.create({
                             CODPROD: queryParams.CODPROD,
                             CODFILIAL: prodsFilial[k].CODFILIAL,
@@ -263,11 +269,10 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                             APTOCX: queryParams.APTOCX || queryParams.APTO,
                             TEMESTOQUEECOMMERCE: queryParams.ENVIAECOMMERCE
                         },{transaction});
-                        console.log('okx5',k);
                     }
-                    console.log('okx6'); 
                     
                     
+                    //get filiais
                     let filiais = await PcFilial.findAll({
                         raw:true,
                         where:{
@@ -284,9 +289,11 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                         transaction
                     });
                     if (Utils.hasValue(filiais)) {
+
+
+                        //create packages registers (PCEMBALAGEM)
                         for(let k in filiais) {
-                            if(Utils.hasValue(queryParams.CODAUXILIAR)) {
-                                //pk=codauxiliar,codfilial
+                            if(Utils.hasValue(queryParams.CODAUXILIAR) && Utils.hasValue(queryParams.EMBALAGEM) && Utils.hasValue(queryParams.UNIDADE) && Utils.hasValue(queryParams.QTUNIT)) {
                                 let resultTemp = await PcEmbalagem.saveOrCreate({
                                     where:{
                                         CODAUXILIAR: queryParams.CODAUXILIAR,
@@ -304,8 +311,7 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                                 });
                                 if (!resultTemp?.success) resultTemp.throw();
                             }
-                            if(Utils.hasValue(queryParams.CODAUXILIAR2)) {
-                                //pk=codauxiliar,codfilial
+                            if(Utils.hasValue(queryParams.CODAUXILIAR2) && Utils.hasValue(queryParams.EMBALAGEMMASTER) && Utils.hasValue(queryParams.UNIDADE) && Utils.hasValue(queryParams.QTUNITCX)) {
                                 let resultTemp = await PcEmbalagem.saveOrCreate({
                                     where:{
                                         CODAUXILIAR: queryParams.CODAUXILIAR2,
@@ -325,22 +331,16 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                             }
                         }
                     }
-
                     
-                    console.log('okx6.1');
                 } else {
                     throw new Error(`error on create product`);
                 }
                 result.success = true;
                 return true;
             });
-            console.log('okx7');                        
         } catch (e: any) {
-            console.log('okx10');
-            console.error(e);
             result.setException(e);
         }
-        console.log('okx11', result);
         return result;
     }
 
