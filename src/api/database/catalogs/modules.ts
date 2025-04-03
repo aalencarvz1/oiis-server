@@ -371,6 +371,13 @@ export default [
                 "numeric_order":29500
             }]
         },{
+            "id" : 296,
+            "routine_type_id" : 1,
+            "name" : "LISTS NAMES",
+            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M360-200v-80h480v80H360Zm0-240v-80h480v80H360Zm0-240v-80h480v80H360ZM200-160q-33 0-56.5-23.5T120-240q0-33 23.5-56.5T200-320q33 0 56.5 23.5T280-240q0 33-23.5 56.5T200-160Zm0-240q-33 0-56.5-23.5T120-480q0-33 23.5-56.5T200-560q33 0 56.5 23.5T280-480q0 33-23.5 56.5T200-400Zm0-240q-33 0-56.5-23.5T120-720q0-33 23.5-56.5T200-800q33 0 56.5 23.5T280-720q0 33-23.5 56.5T200-640Z\"/></svg>",
+            "view_path" :"/views/modules/registers/lists_names",
+            "numeric_order":296
+        },{
             "id" : 297,
             "routine_type_id" : 1,
             "name" : "CONDITIONS",
