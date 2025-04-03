@@ -244,6 +244,9 @@ import PcProdFilial from "../../database/models/winthor/PcProdFilial.js";
 import PcEmbalagem from "../../database/models/winthor/PcEmbalagem.js";
 import Integration_Rules from "../../database/models/Integration_Rules.js";
 import Ncms_Categories from "../../database/models/Ncms_Categories.js";
+import PcCategProdNcm from "../../database/models/winthor/PcCategProdNcm.js";
+import PcCategProdNcmXNcm from "../../database/models/winthor/PcCategProdNcmXNcm.js";
+import Lists_Names from "../../database/models/Lists_Names.js";
 
 
 export default class ModelsController {
@@ -285,6 +288,7 @@ export default class ModelsController {
         Relationships.initModel();
         Value_Names.initModel();
         Relationship_Values.initModel();
+        Lists_Names.initModel();
         Comparators.initModel();
         Contract_Types.initModel();
         Currencies.initModel();
@@ -461,6 +465,8 @@ export default class ModelsController {
             PcVeicul.initModel();
             PcCarreg.initModel();   
             PcEstcr.initModel(); 
+            PcCategProdNcm.initModel();
+            PcCategProdNcmXNcm.initModel(); 
             Produtos_Armazenados_Terceiros.initModel();
             Error_Logs.initModel();
             Integration_Columns.initModel();
@@ -546,8 +552,9 @@ export default class ModelsController {
         await Translates.initAssociations();
         await Relationship_Types.initAssociations();
         await Relationships.initAssociations();
-        await Value_Names.initAssociations();
+        await Value_Names.initAssociations();        
         await Relationship_Values.initAssociations();
+        await Lists_Names.initAssociations();
         await Comparators.initAssociations();
         await Contract_Types.initAssociations();
         await Currencies.initAssociations();
@@ -724,6 +731,8 @@ export default class ModelsController {
             await PcVeicul.initAssociations();
             await PcCarreg.initAssociations();   
             await PcEstcr.initAssociations(); 
+            await PcCategProdNcm.initAssociations(); 
+            await PcCategProdNcmXNcm.initAssociations();             
             await Produtos_Armazenados_Terceiros.initAssociations();
             await Error_Logs.initAssociations();
             await Integration_Columns.initAssociations();
