@@ -9,7 +9,7 @@ import DBConnectionManager from "../../../../database/DBConnectionManager.js";
 import { QueryTypes } from "sequelize";
 import EpProdutos from "../../../../database/models/ep/EpProdutos.js";
 import BaseRegistersIntegrationsController from "../BaseRegistersIntegrationsController.js";
-import PcNcmController from "../winthor/registers/PcNcmsController.js";
+import PcNcmController from "../winthor/registers/PcNcmController.js";
 
 
 export default class AuroraItemsIntegrationsController extends BaseRegistersIntegrationsController{
