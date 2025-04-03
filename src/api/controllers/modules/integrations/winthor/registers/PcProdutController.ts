@@ -6,7 +6,7 @@ import Ncms from "../../../../../database/models/Ncms.js";
 import PcProdut from "../../../../../database/models/winthor/PcProdut.js";
 import DataSwap from "../../../../data/DataSwap.js";
 import Utils from "../../../../utils/Utils.js";
-import PcNcmController from "./PcNcmsController.js";
+import PcNcmController from "./PcNcmController.js";
 import WinthorBaseRegistersIntegrationsController from "./WinthorBaseRegistersIntegrationsController.js";
 import DBConnectionManager from "../../../../../database/DBConnectionManager.js";
 import { Op, QueryTypes, Sequelize } from "sequelize";
