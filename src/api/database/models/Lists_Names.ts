@@ -16,6 +16,9 @@ export default class Lists_Names extends BaseTableModel {
   declare integer_value_1?: number;
   declare integer_value_2?: number;
   declare integer_value_3?: number;
+  declare bigint_value_1?: number;
+  declare bigint_value_2?: number;
+  declare bigint_value_3?: number;
   declare decimal_value_1?: number;
   declare decimal_value_2?: number;
   declare decimal_value_3?: number;
@@ -54,6 +57,15 @@ export default class Lists_Names extends BaseTableModel {
         type: DataTypes.INTEGER
       },
       integer_value_3: {
+        type: DataTypes.INTEGER
+      },
+      bigint_value_1: {
+        type: DataTypes.INTEGER
+      },
+      bigint_value_2: {
+        type: DataTypes.INTEGER
+      },
+      bigint_value_3: {
         type: DataTypes.INTEGER
       },
       decimal_value_1: {
