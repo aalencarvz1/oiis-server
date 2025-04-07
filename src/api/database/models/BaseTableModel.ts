@@ -595,7 +595,7 @@ export default class BaseTableModel extends Model {
             });
             if (regs && regs.length) {
                 await this.destroy({
-                    where:where
+                    where: where
                 });
                 return true;
             } else {

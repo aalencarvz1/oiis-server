@@ -40,6 +40,7 @@ export default class Lists_Names extends BaseTableModel {
   static id = 1004;
   static tableName = this.name.toLowerCase();
   
+  static CATEGORIES_ITEMS_NAMES_X_NCM = 1;
 
   static fields = {
     ...Lists_Names.getBaseTableModelFields(),...{           

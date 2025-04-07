@@ -7,6 +7,7 @@ import Relationships from "../../../database/models/Relationships.js";
 import Value_Names from "../../../database/models/Value_Names.js";
 import Utils from "../../utils/Utils.js";
 import Relationship_Types from "../../../database/models/Relationship_Types.js";
+import Ncms from "../../../database/models/Ncms.js";
 
 export default class Lists_NamesController extends BaseRegistersController {
     static getTableClassModel() : any {
@@ -26,37 +27,63 @@ export default class Lists_NamesController extends BaseRegistersController {
             queryParams = DatabaseUtils.prepareQueryParams(queryParams);
             queryParams.raw = true;
             if (!queryParams.query) {
-                let join : any = [];
+                let where : any = [];
                 if (Utils.hasValue(params.relationship_type_id)) {
-                    join.push(`${Relationships.tableName}.relationship_type_id = ${params.relationship_type_id}`);
+                    where.push(`r.relationship_type_id = ${params.relationship_type_id}`);
                 }
-                if (Utils.hasValue(params.table_1_id)) {
-                    join.push(`${Relationships.tableName}.table_1_id = ${params.table_1_id}`);
-                }
+                where.push(`r.table_1_id = ${Ncms.id}`);
                 if (Utils.hasValue(params.record_1_column)) {
-                    join.push(`${Relationships.tableName}.record_1_column = ${params.record_1_column}`);
+                    where.push(`r.record_1_column = ${params.record_1_column}`);
                 }
                 if (Utils.hasValue(params.record_1_id)) {
-                    join.push(`${Relationships.tableName}.record_1_id = ${params.record_1_id}`);
+                    where.push(`r.record_1_id = ${params.record_1_id}`);
                 }
-                join.push(`${Relationships.tableName}.table_2_id = ${Lists_Names.id}}`);
+                where.push(`r.table_2_id = ${Lists_Names.id}`);
                 if (Utils.hasValue(params.record_2_column)) {
-                    join.push(`${Relationships.tableName}.record_2_column = ${params.record_2_column}`);
+                    where.push(`r.record_2_column = ${params.record_2_column}`);
                 }
+                //where.push(`r.record_2_id = ${Lists_Names.tableName}.id`);
                 if (Utils.hasValue(params.record_2_id)) {
-                    join.push(`${Relationships.tableName}.record_2_id = ${params.record_2_id}`);
-                }
+                    where.push(`r.record_2_id = ${params.record_2_id}`);
+                }                
                 if (Utils.hasValue(params.parent_id)) {
-                    join.push(`${Relationships.tableName}.parent_id = ${params.parent_id}`);
+                    where.push(`r.parent_id = ${params.parent_id}`);
                 } else if (params.parent_id === null) {
-                    join.push(`${Relationships.tableName}.parent_id is null`);
+                    where.push(`r.parent_id is null`);
                 }
+
                 queryParams.query = `
-                    select
-                        ${Lists_Names.tableName}.*
-                    from
-                        ${Lists_Names}
-                        inner join ${Relationships.tableName} on (${join.join(',')})
+                    WITH RECURSIVE hierarchy_relationship AS (
+	
+                        /*initial record(s)*/
+                        select 
+                            * 
+                        from 
+                            relationships r
+                        where 
+                            ${where.join(' and ')}
+                        
+                        UNION ALL
+                        
+                        /*recursive part, find parents of previous initial values and recursively*/
+                        SELECT 
+                            r.*
+                        FROM 
+                            relationships r
+                            JOIN hierarchy_relationship hr ON r.record_1_id = hr.id
+                        where
+                            r.relationship_type_id = ${Relationship_Types.SUBORDINATED}
+                            and r.table_1_id in (${Relationships.id})                            
+                    )
+                    SELECT 
+                        hr.id,
+                        hr.table_1_id,
+                        hr.record_1_id,
+                        l.name
+                    FROM 
+                        hierarchy_relationship hr
+                        join ${Lists_Names.tableName} l on (hr.record_2_id = l.id)
+
                 `;
             } 
             res.data = await this.getTableClassModel().getConnection().query(
