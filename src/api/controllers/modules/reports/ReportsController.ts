@@ -117,7 +117,7 @@ export default class ReportsController extends BaseRegistersController {
                     while(p1 > -1 && p2 > -1 && p2 > p1 && loopLimit > 0) {
                         replaceText = query.substr(p1,(p2-p1)+2);
                         evalText = replaceText.substring(2,replaceText.length-2);
-                        //console.log('executing eval ', evalText);
+                       // console.log('executing eval ', evalText);
                         evaluetedValue = await eval(evalText);
                         //console.log('result',evaluetedValue);
                         query = query.replaceAll(replaceText,evaluetedValue);
