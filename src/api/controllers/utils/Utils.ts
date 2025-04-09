@@ -323,20 +323,19 @@ export default class Utils {
     }
 
     static getPreviousYearDate(pDate : any) : Date {
-        let previousDate : Date = Utils.toDate(pDate);                        
-        previousDate.setFullYear(previousDate.getFullYear()-1);
+        let previousDate : Date = Utils.toDate(pDate);                   
+        previousDate.setUTCFullYear(previousDate.getUTCFullYear()-1);
         return previousDate;
     }
 
-    static getPreviousYearLastMonthDate(pDate: any) : Date {
-        pDate = Utils.toDate(pDate);
-        let previousDate = Utils.toDate(Utils.toISODate(pDate));
-        previousDate.setDate(1);
-        previousDate.setFullYear(previousDate.getFullYear()-1);
-
-        let lastDayMonthDate1 = new Date(pDate.getFullYear(), pDate.getMonth()+1, 0);
+    static getPreviousYearLastMonthDate(pDate: any) : Date {        
+        pDate = Utils.toDate(pDate);        
+        let previousDate = new Date(pDate)//Utils.toDate(Utils.toISODate(pDate));        
+        previousDate.setDate(1);        
+        previousDate.setUTCFullYear(previousDate.getUTCFullYear()-1);        
+        let lastDayMonthDate1 = new Date(pDate.getUTCFullYear(), pDate.getUTCMonth()+1, 0);        
         if (lastDayMonthDate1.getDate() == pDate.getDate()) {
-            previousDate = new Date(previousDate.getFullYear(), previousDate.getMonth()+1, 0);
+            previousDate = new Date(previousDate.getUTCFullYear(), previousDate.getUTCMonth()+1, 0);            
         } else {
             let invalidDate = null;
             let dec = 0;
@@ -350,7 +349,7 @@ export default class Utils {
                     invalidDate = e;
                 }
             }
-        }
+        }        
         return previousDate;
     }
 
@@ -441,7 +440,7 @@ export default class Utils {
         let result : any = null;
         if (pValue && pValue != null) {
             if (typeof pValue == 'object') {
-                result = pValue;
+                result = new Date(pValue);
             } else {
                 if (pValue.indexOf("-") > -1) {
                     result = new Date(pValue.substring(0,10).split("-").map(Number));
