@@ -305,7 +305,7 @@ export default class Utils {
     static toBRDate(pDate: Date | string | null | undefined = null) : string | null{
         let result = null;
         if (pDate) {
-            if (typeof pDate != 'object') pDate = new Date(pDate);
+            if (typeof pDate != 'object') pDate = Utils.toDate(pDate);
             result = pDate.toISOString().substring(0,10);            
             result = result.split("-");
             result = `${result[2]}/${result[1]}/${result[0]}`;
@@ -316,21 +316,21 @@ export default class Utils {
     static toISODate(pDate?: any) : any {
         let result = null;
         if (pDate) {
-            if (typeof pDate != 'object') pDate = new Date(pDate.substring(0,10).split("-"));
+            if (typeof pDate != 'object') pDate = Utils.toDate(pDate);
             result = pDate.toISOString().substring(0,10);            
         }
         return result;
     }
 
     static getPreviousYearDate(pDate : any) : Date {
-        let previousDate = new Date(pDate || undefined);                        
+        let previousDate : Date = Utils.toDate(pDate);                        
         previousDate.setFullYear(previousDate.getFullYear()-1);
         return previousDate;
     }
 
     static getPreviousYearLastMonthDate(pDate: any) : Date {
-        pDate = new Date(pDate || undefined);
-        let previousDate = new Date(pDate);
+        pDate = Utils.toDate(pDate);
+        let previousDate = Utils.toDate(Utils.toISODate(pDate));
         previousDate.setDate(1);
         previousDate.setFullYear(previousDate.getFullYear()-1);
 
@@ -437,8 +437,8 @@ export default class Utils {
         return null;
     }
 
-    static toDate(pValue: any, pFormat: any ) : Date | null {
-        let result = null;
+    static toDate(pValue: any, pFormat?: any ) : Date {
+        let result : any = null;
         if (pValue && pValue != null) {
             if (typeof pValue == 'object') {
                 result = pValue;

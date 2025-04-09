@@ -1,6 +1,6 @@
 'use strict';
 
-import { DataTypes, Sequelize } from "sequelize";
+import { DataTypes, Op, Sequelize } from "sequelize";
 import BaseTableModel from "./BaseTableModel.js";
 import Relationship_Types from "./Relationship_Types.js";
 import Tables from "./Tables.js";
@@ -28,6 +28,29 @@ export default class Relationships extends BaseTableModel {
   declare numeric_order:number;
   declare start_at: Date;
   declare end_at: Date;
+  declare description?: string;
+  declare integer_value_1?: number;
+  declare integer_value_2?: number;
+  declare integer_value_3?: number;
+  declare bigint_value_1?: number;
+  declare bigint_value_2?: number;
+  declare bigint_value_3?: number;
+  declare decimal_value_1?: number;
+  declare decimal_value_2?: number;
+  declare decimal_value_3?: number;
+  declare string_value_1?: string;
+  declare string_value_2?: string;
+  declare string_value_3?: string;
+  declare text_value_1?: string;
+  declare text_value_2?: string;
+  declare text_value_3?: string;
+  declare boolean_value_1?: number;
+  declare boolean_value_2?: number;
+  declare boolean_value_3?: number;
+  declare date_value_1?: Date;
+  declare date_value_2?: Date;
+  declare date_value_3?: Date;
+  declare notes?: string;
 
 
 
@@ -80,7 +103,76 @@ export default class Relationships extends BaseTableModel {
       },
       end_at:{
         type: DataTypes.DATE
-      }
+      },
+      description: {
+        type: DataTypes.TEXT
+      }, 
+      integer_value_1: {
+        type: DataTypes.INTEGER
+      },
+      integer_value_2: {
+        type: DataTypes.INTEGER
+      },
+      integer_value_3: {
+        type: DataTypes.INTEGER
+      },
+      bigint_value_1: {
+        type: DataTypes.INTEGER
+      },
+      bigint_value_2: {
+        type: DataTypes.INTEGER
+      },
+      bigint_value_3: {
+        type: DataTypes.INTEGER
+      },
+      decimal_value_1: {
+        type: DataTypes.DECIMAL(38,12)
+      },
+      decimal_value_2: {
+        type: DataTypes.DECIMAL(38,12)
+      },
+      decimal_value_3: {
+        type: DataTypes.DECIMAL(38,12)
+      },
+      string_value_1: {
+        type: DataTypes.STRING(4000)
+      },
+      string_value_2: {
+        type: DataTypes.STRING(4000)
+      },
+      string_value_3: {
+        type: DataTypes.STRING(4000)
+      },      
+      text_value_1: {
+        type: DataTypes.TEXT
+      },
+      text_value_2: {
+        type: DataTypes.TEXT
+      },
+      text_value_3: {
+        type: DataTypes.TEXT
+      },      
+      boolean_value_1: {
+        type: DataTypes.INTEGER
+      },
+      boolean_value_2: {
+        type: DataTypes.INTEGER
+      },
+      boolean_value_3: {
+        type: DataTypes.INTEGER
+      },
+      date_value_1: {
+        type: DataTypes.DATE
+      },
+      date_value_2: {
+        type: DataTypes.DATE
+      },
+      date_value_3: {
+        type: DataTypes.DATE
+      },
+      notes: {
+        type: DataTypes.TEXT
+      }, 
     }
   };
   
@@ -103,7 +195,34 @@ export default class Relationships extends BaseTableModel {
       name: Relationships.tableName + '_u1',
       fields: [...Relationships.getBaseTableModelUniqueFields(),...Relationships.uniqueFields],
       type:"unique"
-    }
+    },{
+          name: Relationships.tableName + '_c_1',
+          fields:['boolean_value_1'],
+          type:"check",
+          where:{
+            boolean_value_1: {
+                  [Op.in]: [0,1]
+              }
+          }
+        },{
+          name: Relationships.tableName + '_c_2',
+          fields:['boolean_value_2'],
+          type:"check",
+          where:{
+            boolean_value_2: {
+                  [Op.in]: [0,1]
+              }
+          }
+        },{
+          name: Relationships.tableName + '_c_3',
+          fields:['boolean_value_3'],
+          type:"check",
+          where:{
+            boolean_value_3: {
+                  [Op.in]: [0,1]
+              }
+          }
+        }
   ]];
 
   static foreignsKeys = [...(this.getBaseTableModelForeignsKeys() || []),...[
