@@ -79,8 +79,8 @@ export default class NcmsController extends BaseRegistersController {
                                 )
                             )
                             where
-                                r.relationship_type_id = 1
-                                and r.table_1_id = 8008
+                                r.relationship_type_id = ${Relationship_Types.RELATIONSHIP}
+                                and r.table_1_id = ${Ncms.id}
                         
                         UNION ALL
                         

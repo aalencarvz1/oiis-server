@@ -28,6 +28,9 @@ export default class Lists_NamesController extends BaseRegistersController {
             queryParams.raw = true;
             if (!queryParams.query) {
                 let where : any = [];
+                if (Utils.hasValue(params.relationship_id)) {
+                    where.push(`r.id = ${params.relationship_id}`);
+                }
                 if (Utils.hasValue(params.relationship_type_id)) {
                     where.push(`r.relationship_type_id = ${params.relationship_type_id}`);
                 }
