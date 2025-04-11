@@ -16,27 +16,27 @@ export default class PcNcmController extends WinthorBaseRegistersIntegrationsCon
         let result = new DataSwap();
         try {
             let queryParams = params.queryParams || params || {};
-            let winthorData = await PcNcm.findOne({
-                where:{
-                    CODNCM: queryParams.ncm,
-                    CODEX: queryParams.exception||null
-                }
-            });
-            if (!winthorData && (
-                Utils.hasValue(queryParams.exception) && Utils.toBool(await Parameter_Values.get(Parameters.WINTHOR_INTEGRATION_NCM_CONSIDER_EXCEPTION_NULL_IF_NOT_EXISTS)) == true
-            )) { 
-                winthorData = await PcNcm.findOne({
+            if (Utils.hasValue(queryParams.ncm)) {
+                let winthorData = await PcNcm.findOne({
                     where:{
                         CODNCM: queryParams.ncm,
-                        CODEX: null
-                    },
-                    transaction:params.transaction
+                        CODEX: queryParams.exception||null
+                    }
                 });
-            }
-            if (winthorData) {
-                queryParams.data_origin_id = Data_Origins.WINTHOR;
-                queryParams.chapter = queryParams.chapter || winthorData.CAPITULO;
-                if (Utils.hasValue(queryParams.ncm)) {
+                if (!winthorData && (
+                    Utils.hasValue(queryParams.exception) && Utils.toBool(await Parameter_Values.get(Parameters.WINTHOR_INTEGRATION_NCM_CONSIDER_EXCEPTION_NULL_IF_NOT_EXISTS)) == true
+                )) { 
+                    winthorData = await PcNcm.findOne({
+                        where:{
+                            CODNCM: queryParams.ncm,
+                            CODEX: null
+                        },
+                        transaction:params.transaction
+                    });
+                }
+                if (winthorData) {
+                    queryParams.data_origin_id = Data_Origins.WINTHOR;
+                    queryParams.chapter = queryParams.chapter || winthorData.CAPITULO;
                     let ncmString = queryParams.ncm.toString().padStart(8,'0');
                     let codNcmArr : any = [
                         ncmString.slice(0,2),
@@ -46,20 +46,39 @@ export default class PcNcmController extends WinthorBaseRegistersIntegrationsCon
                         ncmString.slice(7,8)
                     ];
 
-                    queryParams.position = queryParams.position || codNcmArr[1] || null;
-                    queryParams.subposition = queryParams.subposition || codNcmArr[2] || null;
-                    queryParams.item = queryParams.item || codNcmArr[3] || null;
-                    queryParams.subitem = queryParams.subitem || codNcmArr[4] || null;
-                }
-                queryParams.exception = queryParams.exception||null;
-                queryParams.description = queryParams.description || winthorData.DESCRICAO;
-                result.data = await Ncms.create(queryParams,{transaction:params.transaction});
-                if (result.data) {
-                    result.data = result.data.dataValues;
-                    result.success = true;
+                    queryParams.position = Utils.hasValue(queryParams.position || codNcmArr[1]) ? (queryParams.position || codNcmArr[1])-0 : null;
+                    queryParams.subposition = Utils.hasValue(queryParams.subposition || codNcmArr[2]) ? (queryParams.subposition || codNcmArr[2])-0 : null;
+                    queryParams.item = Utils.hasValue(queryParams.item || codNcmArr[3]) ? (queryParams.item || codNcmArr[3])-0 : null;
+                    queryParams.subitem = Utils.hasValue(queryParams.subitem || codNcmArr[4]) ? (queryParams.subitem || codNcmArr[4])-0 : null;
+                    queryParams.exception = Utils.hasValue(queryParams.exception) ? queryParams.exception-0 : null;
+                    queryParams.description = queryParams.description || winthorData.DESCRICAO;
+                    queryParams.code = queryParams.code || winthorData.CODNCMEX;
+                    queryParams.ncm = queryParams.ncm || winthorData.CODNCM;
+                    result.data = await Ncms.getOrCreate({
+                        raw:true,
+                        where:{
+                            chapter: queryParams.chapter,
+                            position: queryParams.position,
+                            subposition: queryParams.subposition,
+                            item: queryParams.item,
+                            subitem: queryParams.subitem,
+                            exception: queryParams.exception
+                        },
+                        values:{
+                            ...queryParams
+                        },
+                        transaction:params.transaction
+                    })
+                    if (Utils.hasValue(result.data)) {                    
+                        result.success = true;
+                    } else {
+                        throw new Error(`winthor ncm ${queryParams.ncm}(ex:${queryParams.exception || 'null'}) not integrated`);
+                    }
+                } else {
+                    throw new Error(`winthor ncm ${queryParams.ncm}(ex:${queryParams.exception || 'null'}) not found`);
                 }
             } else {
-                throw new Error(`winthor ncm ${queryParams.ncm}(ex:${queryParams.exception || 'null'}) not found`);
+                throw new Error('missing ncm');
             }
         } catch (e) {
             result.setException(e);

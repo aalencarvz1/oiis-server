@@ -117,7 +117,103 @@ export default class NcmsController extends BaseRegistersController {
         }
     }
 
+
+    /**
+     * default RequestHandler method to import json download from official NCM site
+     * @requesthandler
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
+    static async import_from_json(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        try {
+            let json : any = req.body.data;
+            if (Utils.hasValue(json)) {
+                if (typeof json == 'string') {
+                    json = JSON.parse(json);
+                }
+                for(let k in json.Nomenclaturas) {
+                    let ncm : any = json.Nomenclaturas[k];
+                    let newNcm : any = {                        
+                        chapter: ncm.Codigo.substring(0,2)-0,
+                        position: null,
+                        subposition: null,
+                        item: null,
+                        subitem: null,
+                        code: ncm.Codigo,
+                        description: ncm.Descricao,
+                        start_at: ncm.Data_Inicio,
+                        end_at: ncm.Data_Fim,
+                        start_act_type: ncm.Tipo_Ato_Ini,
+                        start_act_number: ncm.Numero_Ato_Ini,
+                        start_act_year: ncm.Ano_Ato_Ini
+                    };
+                    if (ncm.Codigo.length > 2) {
+                        if (ncm.Codigo[2] == '.') {
+                            newNcm.position = ncm.Codigo.substring(3,5)-0;
+                        } else {
+                            newNcm.position = ncm.Codigo.substring(2,4)-0;
+                        }
+                        if (ncm.Codigo.length > 5) {
+                            ncm.Codigo = ncm.Codigo.split('.');
+                            newNcm.subposition = ncm.Codigo[1]-0;
+                            if (Utils.hasValue(ncm.Codigo[2])) {
+                                ncm.Codigo[2] = ncm.Codigo[2].split('');
+                                newNcm.item = ncm.Codigo[2][0]-0;
+                                if (Utils.hasValue(ncm.Codigo[2][1])) {
+                                    newNcm.subitem = ncm.Codigo[2][1]-0;
+                                    newNcm.ncm = newNcm.code.replaceAll('.','')-0;
+                                }
+                            }
+                        }                    
+                    }
+
+                    if (Utils.hasValue(newNcm.start_at)) {
+                        try {                        
+                            newNcm.start_at = Utils.toDate(newNcm.start_at); 
+                        } catch (ed) {
+                            newNcm.start_at = null;
+                        }
+                    }
+
+                    if (Utils.hasValue(newNcm.end_at)) {
+                        try {                        
+                            newNcm.end_at = Utils.toDate(newNcm.end_at); 
+                        } catch (ed) {
+                            newNcm.end_at = null;
+                        }
+                    }
+
+
+                    let result = await Ncms.saveOrCreate({
+                        where:{
+                            chapter: newNcm.chapter,
+                            position: newNcm.position,
+                            subposition: newNcm.subposition,
+                            item: newNcm.item,
+                            subitem: newNcm.subitem
+                        },
+                        values:{
+                            ...newNcm
+                        }
+                    });
+                    if (!result.success) {
+                        result.throw();
+                    }
+                }
+                res.success = true;
+            } else {
+                throw new Error("missing data");
+            }            
+        } catch (e: any) {
+            res.setException(e);            
+        }
+        res.sendResponse();
+    }
+
     static {
-        this.configureDefaultRequestHandlers([this.get_category_product_name_relationeds]);
+        this.configureDefaultRequestHandlers([
+            this.get_category_product_name_relationeds,
+            this.import_from_json
+        ]);
     }
 }
