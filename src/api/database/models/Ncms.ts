@@ -17,7 +17,14 @@ export default class Ncms extends BaseTableModel {
   declare subitem?: number;
   declare ncm?: number;      
   declare exception?: number;
+  declare code: string;
+  declare start_at?: Date;
+  declare end_at?: Date;
+  declare start_act_type?: string;
+  declare start_act_number?: string;
+  declare start_act_year?: number;
   declare description: string;
+  declare notes?: string;
 
 
   static id = 8008;
@@ -47,9 +54,31 @@ export default class Ncms extends BaseTableModel {
       exception:{
         type: DataTypes.TINYINT.UNSIGNED
       },      
+      code:{
+        type: DataTypes.STRING(20),
+        allowNull:false
+      },
       description:{
         type: DataTypes.TEXT,
         allowNull:false
+      },
+      start_at:{
+        type: DataTypes.DATE
+      },
+      end_at:{
+        type: DataTypes.DATE
+      },
+      start_act_type:{
+        type: DataTypes.STRING(500)
+      },
+      start_act_number:{
+        type: DataTypes.STRING(500)
+      },
+      start_act_year:{
+        type: DataTypes.SMALLINT.UNSIGNED
+      },
+      notes:{
+        type: DataTypes.TEXT
       }
     }
   };

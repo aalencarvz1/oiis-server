@@ -380,11 +380,10 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                 if (!Utils.hasValue(queryParams.ncm_id)) {
                     let ncm = await Ncms.getOrCreate({
                         raw:true,
-                        where:{
-                            data_origin_id: Data_Origins.WINTHOR,
+                        where:{                            
                             ncm: winthorData.NBM,
                             exception: Utils.hasValue(winthorData.CODNCMEX.split('.')[1]) ? winthorData.CODNCMEX.split('.')[1] : null
-                        },
+                        },                        
                         transaction:params.transaction,
                         createMethod: PcNcmController.integrate
                     });
