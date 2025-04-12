@@ -63,8 +63,12 @@ export default class AuroraItemsIntegrationsController extends BaseRegistersInte
                     let ncm = await Ncms.getOrCreate({
                         raw:true,
                         where:{
-                            data_origin_id: Data_Origins.WINTHOR,
-                            ncm: 1
+                            id: 1
+                        },
+                        values:{
+                            chapter:1,
+                            code: 1,
+                            description: '1'
                         },
                         transaction:params.transaction,
                         createMethod: PcNcmController.integrate

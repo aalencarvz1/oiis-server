@@ -241,6 +241,26 @@ export default [
                     "show_in_menu":0
                 }]                
             }]
+        },{ 
+            "id" :230,
+            "name" :"ITEMS",
+            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M440-183v-274L200-596v274l240 139Zm80 0 240-139v-274L520-457v274Zm-80 92L160-252q-19-11-29.5-29T120-321v-318q0-22 10.5-40t29.5-29l280-161q19-11 40-11t40 11l280 161q19 11 29.5 29t10.5 40v318q0 22-10.5 40T800-252L520-91q-19 11-40 11t-40-11Zm200-528 77-44-237-137-78 45 238 136Zm-160 93 78-45-237-137-78 45 237 137Z\"/></svg>",
+            "numeric_order":230,
+            "subs":[{
+                "id" : 23000,
+                "routine_type_id" : 1,
+                "name" : "ITEMS",
+                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M440-183v-274L200-596v274l240 139Zm80 0 240-139v-274L520-457v274Zm-80 92L160-252q-19-11-29.5-29T120-321v-318q0-22 10.5-40t29.5-29l280-161q19-11 40-11t40 11l280 161q19 11 29.5 29t10.5 40v318q0 22-10.5 40T800-252L520-91q-19 11-40 11t-40-11Zm200-528 77-44-237-137-78 45 238 136Zm-160 93 78-45-237-137-78 45 237 137Z\"/></svg>",
+                "view_path" : "/views/modules/registers/items/items",
+                "numeric_order":23000,
+            },{
+                "id" : 23001,
+                "routine_type_id" : 1,
+                "name" : "NCMS",
+                "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M280-600v-80h560v80H280Zm0 160v-80h560v80H280Zm0 160v-80h560v80H280ZM160-600q-17 0-28.5-11.5T120-640q0-17 11.5-28.5T160-680q17 0 28.5 11.5T200-640q0 17-11.5 28.5T160-600Zm0 160q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520q17 0 28.5 11.5T200-480q0 17-11.5 28.5T160-440Zm0 160q-17 0-28.5-11.5T120-320q0-17 11.5-28.5T160-360q17 0 28.5 11.5T200-320q0 17-11.5 28.5T160-280Z\"/></svg>",
+                "view_path" : "/views/modules/registers/items/ncms",
+                "numeric_order":23001,
+            }]
         },{
             "id" : 245,
             "routine_type_id" : 1,
