@@ -5,6 +5,7 @@ import { DataTypes } from "sequelize";
 import  BaseTableModel  from './BaseTableModel.js';
 import  Projects_Items_Types  from "./Projects_Items_Types.js";
 import Project_Item_Origin_Types from "./Project_Item_Origin_Types.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -66,24 +67,6 @@ export default class Projects_Items extends BaseTableModel {
     type:"unique"
   }]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-      fields: ['project_item_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Projects_Items_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },{
-      fields: ['project_item_origin_id'],
-      type: 'foreign key',
-      references: { 
-          table: Project_Item_Origin_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
  
 
   static foreignsKeys : any[] = [];
@@ -104,6 +87,24 @@ export default class Projects_Items extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['project_item_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Projects_Items_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['project_item_origin_id'],
+        type: 'foreign key',
+        references: { 
+            table: Project_Item_Origin_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

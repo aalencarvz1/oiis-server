@@ -3,6 +3,7 @@
 import { DataTypes, Op } from "sequelize";
 import BaseTableModel from "./BaseTableModel.js";
 import User_Profile_Timeworks from "./User_Profile_Timeworks.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -82,18 +83,6 @@ export default class User_Timeworks extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['user_profile_time_work_id'],
-      type: 'foreign key',
-      references: { 
-          table: User_Profile_Timeworks,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    }
-  ]];
 
   static foreignsKeys : any[] = [];
     
@@ -113,6 +102,16 @@ export default class User_Timeworks extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['user_profile_time_work_id'],
+        type: 'foreign key',
+        references: { 
+            table: User_Profile_Timeworks,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

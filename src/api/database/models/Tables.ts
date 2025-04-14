@@ -5,6 +5,7 @@ import { DataTypes } from "sequelize";
 import BaseTableModel from "./BaseTableModel.js";
 import Connections from "./Connections.js";
 import Schemas from "./Schemas.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 
@@ -59,26 +60,6 @@ export default class Tables extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys() || []),...[
-    {
-      fields: ['data_connection_id'],
-      type: 'foreign key',
-      references: { 
-          table: Connections,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },{
-      fields: ['schema_id'],
-      type: 'foreign key',
-      references: { 
-          table: Schemas,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];  
-
   static foreignsKeys : any[] = [];
     
 
@@ -97,6 +78,24 @@ export default class Tables extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['data_connection_id'],
+        type: 'foreign key',
+        references: { 
+            table: Connections,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['schema_id'],
+        type: 'foreign key',
+        references: { 
+            table: Schemas,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

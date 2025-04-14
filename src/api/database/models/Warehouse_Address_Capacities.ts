@@ -6,6 +6,7 @@ import  BaseTableModel  from './BaseTableModel.js';
 import  Warehouse_Addresses  from "./Warehouse_Addresses.js";
 import  Measurement_Units  from "./Measurement_Units.js";
 import  Identifier_Types  from "./Identifier_Types.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -62,35 +63,6 @@ export default class Warehouse_Address_Capacities extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['warehouse_address_id'],
-      type: 'foreign key',
-      references: { 
-          table: Warehouse_Addresses,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['capacity_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Identifier_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['measurement_unit_id'],
-      type: 'foreign key',
-      references: { 
-          table: Measurement_Units,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
 
   static foreignsKeys : any[] = [];
     
@@ -109,7 +81,34 @@ export default class Warehouse_Address_Capacities extends BaseTableModel {
       for(let i = 0; i < baseFks.length; i++) {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
-      }        
+      }       
+      result.push({
+        fields: ['warehouse_address_id'],
+        type: 'foreign key',
+        references: { 
+            table: Warehouse_Addresses,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['capacity_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Identifier_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['measurement_unit_id'],
+        type: 'foreign key',
+        references: { 
+            table: Measurement_Units,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

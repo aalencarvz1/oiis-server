@@ -6,6 +6,7 @@ import  BaseTableModel  from './BaseTableModel.js';
 import  Report_Data_Founts  from "./Report_Data_Founts.js";
 import  Sql_Object_Types  from "./Sql_Object_Types.js";
 import  Data_Types  from "./Data_Types.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -127,34 +128,7 @@ export default class Report_Data_Fount_Items extends BaseTableModel {
     }
   }]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['report_data_source_id'],
-    type: 'foreign key',
-    references: { 
-        table: Report_Data_Founts,
-        field: 'id'
-    },    
-    onUpdate: 'cascade',
-    onDelete: 'cascade'
-  },{
-    fields: ['sql_object_type_id'],
-    type: 'foreign key',
-    references: { 
-        table: Sql_Object_Types,
-        field: 'id'
-    },    
-    onUpdate: 'cascade'
-  },{
-    fields: ['data_type_id'],
-    type: 'foreign key',
-    references: { 
-        table: Data_Types,
-        field: 'id'
-    },    
-    onUpdate: 'cascade'
-  }]];
-
-
+  
   static foreignsKeys : any[] = [];
     
 
@@ -172,7 +146,35 @@ export default class Report_Data_Fount_Items extends BaseTableModel {
       for(let i = 0; i < baseFks.length; i++) {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
-      }        
+      }       
+      result.push({
+        fields: ['report_data_source_id'],
+        type: 'foreign key',
+        references: { 
+            table: Report_Data_Founts,
+            field: 'id'
+        },    
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['sql_object_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Sql_Object_Types,
+            field: 'id'
+        },    
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['data_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Data_Types,
+            field: 'id'
+        },    
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

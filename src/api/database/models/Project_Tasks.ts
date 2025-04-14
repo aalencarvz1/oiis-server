@@ -5,6 +5,7 @@ import { DataTypes } from "sequelize";
 import  BaseTableModel  from './BaseTableModel.js';
 import  Project_Task_Types  from "./Project_Task_Types.js";
 import  Projects_Items  from "./Projects_Items.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 
@@ -66,26 +67,6 @@ export default class Project_Tasks extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['project_item_id'],
-      type: 'foreign key',
-      references: { 
-          table: Projects_Items,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },{
-      fields: ['task_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Project_Task_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
 
   static foreignsKeys : any[] = [];
     
@@ -105,6 +86,25 @@ export default class Project_Tasks extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['project_item_id'],
+        type: 'foreign key',
+        references: { 
+            table: Projects_Items,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['task_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Project_Task_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

@@ -4,6 +4,7 @@ import { DataTypes, Op } from "sequelize";
 import BaseTableModel from "./BaseTableModel.js";
 import Routine_Types from "./Routine_Types.js";
 import Modules from "./Modules.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 
@@ -83,25 +84,6 @@ export default class Routines extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['routine_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Routine_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },{
-      fields: ['module_id'],
-      type: 'foreign key',
-      references: { 
-          table: Modules,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
 
   static foreignsKeys : any[] = [];
     
@@ -121,6 +103,24 @@ export default class Routines extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['routine_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Routine_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['module_id'],
+        type: 'foreign key',
+        references: { 
+            table: Modules,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

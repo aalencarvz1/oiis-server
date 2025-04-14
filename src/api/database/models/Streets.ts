@@ -5,6 +5,7 @@ import { DataTypes } from "sequelize";
 import  BaseTableModel  from './BaseTableModel.js';
 import  Cities  from "./Cities.js";
 import  Street_Types  from "./Street_Types.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -53,26 +54,6 @@ export default class Streets extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['street_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Street_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['city_id'],
-      type: 'foreign key',
-      references: { 
-          table: Cities,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
   
   static foreignsKeys : any[] = [];
     
@@ -91,7 +72,25 @@ export default class Streets extends BaseTableModel {
       for(let i = 0; i < baseFks.length; i++) {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
-      }        
+      }  
+      result.push({
+        fields: ['street_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Street_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['city_id'],
+        type: 'foreign key',
+        references: { 
+            table: Cities,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

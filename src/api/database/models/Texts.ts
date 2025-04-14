@@ -3,6 +3,7 @@
 import { DataTypes } from "sequelize";
 import BaseTableModel from "./BaseTableModel.js";
 import Languages from "./Languages.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -36,17 +37,6 @@ export default class Texts extends BaseTableModel {
 
   static constraints = [];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys() || []),...[
-    {
-      fields: ['language_id'],
-      type: 'foreign key',
-      references: { 
-          table: Languages,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
 
   static foreignsKeys : any[] = [];
     
@@ -66,6 +56,15 @@ export default class Texts extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['language_id'],
+        type: 'foreign key',
+        references: { 
+            table: Languages,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

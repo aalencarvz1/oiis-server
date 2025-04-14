@@ -112,45 +112,6 @@ export default class Warehouse_Addresses extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['warehouse_id'],
-      type: 'foreign key',
-      references: { 
-          table: Warehouses,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['warehouse_address_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Warehouse_Address_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['identifier_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Identifier_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['form_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Form_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
-  
 
   static foreignsKeys : any[] = [];
     
@@ -169,7 +130,43 @@ export default class Warehouse_Addresses extends BaseTableModel {
       for(let i = 0; i < baseFks.length; i++) {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
-      }        
+      }       
+      result.push({
+        fields: ['warehouse_id'],
+        type: 'foreign key',
+        references: { 
+            table: Warehouses,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['warehouse_address_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Warehouse_Address_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['identifier_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Identifier_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['form_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Form_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

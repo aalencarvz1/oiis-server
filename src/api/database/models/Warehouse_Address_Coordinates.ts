@@ -5,6 +5,7 @@ import { DataTypes } from "sequelize";
 import  BaseTableModel  from './BaseTableModel.js';
 import  Warehouse_Addresses  from "./Warehouse_Addresses.js";
 import  Warehouse_Address_Types  from "./Warehouse_Address_Types.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -51,27 +52,6 @@ export default class Warehouse_Address_Coordinates extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['warehouse_address_id'],
-      type: 'foreign key',
-      references: { 
-          table: Warehouse_Addresses,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['coordinate_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Warehouse_Address_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
-
   static foreignsKeys : any[] = [];
     
 
@@ -90,6 +70,24 @@ export default class Warehouse_Address_Coordinates extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['warehouse_address_id'],
+        type: 'foreign key',
+        references: { 
+            table: Warehouse_Addresses,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['coordinate_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Warehouse_Address_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

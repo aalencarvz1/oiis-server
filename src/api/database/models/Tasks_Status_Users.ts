@@ -6,6 +6,7 @@ import  BaseTableModel  from './BaseTableModel.js';
 import  Tasks  from "./Tasks.js";
 import  Users  from "./Users.js";
 import  Task_Status  from "./Task_Status.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -82,45 +83,7 @@ export default class Tasks_Status_Users extends BaseTableModel {
 
   static constraints = [...(Tasks_Status_Users.getBaseTableModelConstraints() || []),...[]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['task_id'],
-      type: 'foreign key',
-      references: { 
-          table: Tasks,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },{
-      fields: ['user_id'],
-      type: 'foreign key',
-      references: { 
-          table: Users,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },{
-      fields: ['status_id'],
-      type: 'foreign key',
-      references: { 
-          table: Task_Status,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },{
-      fields: ['triggering_task_id'],
-      type: 'foreign key',
-      references: { 
-          table: Tasks,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'set null'
-    }    
-  ]];
-
+  
   static foreignsKeys : any[] = [];
     
 
@@ -138,7 +101,46 @@ export default class Tasks_Status_Users extends BaseTableModel {
       for(let i = 0; i < baseFks.length; i++) {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
-      }        
+      }       
+      result.push({
+        fields: ['task_id'],
+        type: 'foreign key',
+        references: { 
+            table: Tasks,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['user_id'],
+        type: 'foreign key',
+        references: { 
+            table: Users,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['status_id'],
+        type: 'foreign key',
+        references: { 
+            table: Task_Status,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['triggering_task_id'],
+        type: 'foreign key',
+        references: { 
+            table: Tasks,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'set null'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

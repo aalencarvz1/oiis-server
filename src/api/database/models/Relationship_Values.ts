@@ -6,6 +6,7 @@ import Relationships from "./Relationships.js";
 import Contexts from "./Contexts.js";
 import Identifier_Types from "./Identifier_Types.js";
 import Data_Types from "./Data_Types.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -79,43 +80,6 @@ export default class Relationship_Values extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys() || []),...[
-    {
-      fields: ['data_relationship_id'],
-      type: 'foreign key',
-      references: { 
-          table: Relationships,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },{
-      fields: ['context_id'],
-      type: 'foreign key',
-      references: { 
-          table: Contexts,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },{
-      fields: ['identifier_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Identifier_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },{
-      fields: ['data_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Data_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-
-  ]];
-  
   static foreignsKeys : any[] = [];
     
 
@@ -133,7 +97,43 @@ export default class Relationship_Values extends BaseTableModel {
       for(let i = 0; i < baseFks.length; i++) {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
-      }        
+      }       
+      result.push({
+        fields: ['data_relationship_id'],
+        type: 'foreign key',
+        references: { 
+            table: Relationships,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['context_id'],
+        type: 'foreign key',
+        references: { 
+            table: Contexts,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['identifier_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Identifier_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['data_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Data_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

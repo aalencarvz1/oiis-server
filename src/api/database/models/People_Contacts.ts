@@ -6,6 +6,7 @@ import  BaseTableModel  from './BaseTableModel.js';
 import  People  from "./People.js";
 import  Contact_Types  from "./Contact_Types.js";
 import  Contacts  from "./Contacts.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -60,38 +61,6 @@ export default class People_Contacts extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['people_id'],
-      type: 'foreign key',
-      references: { 
-          table: People,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },
-    {
-      fields: ['contact_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Contact_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['contact_id'],
-      type: 'foreign key',
-      references: { 
-          table: Contacts,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    }
-  ]];
-
   static foreignsKeys : any[] = [];
     
 
@@ -109,7 +78,36 @@ export default class People_Contacts extends BaseTableModel {
       for(let i = 0; i < baseFks.length; i++) {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
-      }        
+      }       
+      result.push({
+        fields: ['people_id'],
+        type: 'foreign key',
+        references: { 
+            table: People,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['contact_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Contact_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['contact_id'],
+        type: 'foreign key',
+        references: { 
+            table: Contacts,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

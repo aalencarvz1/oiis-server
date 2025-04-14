@@ -4,6 +4,7 @@
 import { DataTypes } from "sequelize";
 import  BaseTableModel  from './BaseTableModel.js';
 import  Tasks_Status_Users  from "./Tasks_Status_Users.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -46,18 +47,6 @@ export default class Tasks_Status_Users_Logs extends BaseTableModel {
 
   static constraints = [...(Tasks_Status_Users_Logs.getBaseTableModelConstraints() || []),...[]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['task_status_user_id'],
-      type: 'foreign key',
-      references: { 
-          table: Tasks_Status_Users,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    }
-  ]];
 
   static foreignsKeys : any[] = [];
     
@@ -77,6 +66,16 @@ export default class Tasks_Status_Users_Logs extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['task_status_user_id'],
+        type: 'foreign key',
+        references: { 
+            table: Tasks_Status_Users,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

@@ -10,6 +10,7 @@ import  Warehouses  from "./Warehouses.js";
 import  Clients  from "./Clients.js";
 import  Users  from "./Users.js";
 import  Collaborators  from "./Collaborators.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -95,71 +96,6 @@ export default class Stock_Entities extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['company_id'],
-      type: 'foreign key',
-      references: { 
-          table: Companies,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['business_unit_id'],
-      type: 'foreign key',
-      references: { 
-          table: Business_Units,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['warehouse_id'],
-      type: 'foreign key',
-      references: { 
-          table: Warehouses,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['supplier_id'],
-      type: 'foreign key',
-      references: { 
-          table: Suppliers,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['client_id'],
-      type: 'foreign key',
-      references: { 
-          table: Clients,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['user_id'],
-      type: 'foreign key',
-      references: { 
-          table: Users,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['collaborator_id'],
-      type: 'foreign key',
-      references: { 
-          table: Collaborators,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
 
   static foreignsKeys : any[] = [];
     
@@ -178,7 +114,70 @@ export default class Stock_Entities extends BaseTableModel {
       for(let i = 0; i < baseFks.length; i++) {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
-      }        
+      }   
+      result.push({
+        fields: ['company_id'],
+        type: 'foreign key',
+        references: { 
+            table: Companies,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['business_unit_id'],
+        type: 'foreign key',
+        references: { 
+            table: Business_Units,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['warehouse_id'],
+        type: 'foreign key',
+        references: { 
+            table: Warehouses,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['supplier_id'],
+        type: 'foreign key',
+        references: { 
+            table: Suppliers,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['client_id'],
+        type: 'foreign key',
+        references: { 
+            table: Clients,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['user_id'],
+        type: 'foreign key',
+        references: { 
+            table: Users,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['collaborator_id'],
+        type: 'foreign key',
+        references: { 
+            table: Collaborators,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      }); 
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;
