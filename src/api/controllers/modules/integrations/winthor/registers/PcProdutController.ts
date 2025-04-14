@@ -85,6 +85,7 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
     /**
      * put (create) a record of table model of this controller (PCPRODUT) and correlated records (PCPRODFILIAL, PCEST, PCEMBALAGEM)
      * this method use transaction to commit statements if no has errors, otherrise, rollback 
+     * @override
      * @created 2025-03-26
      * @version 1.0.0
      */

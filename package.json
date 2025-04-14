@@ -7,7 +7,7 @@
   "type": "module",
   "main": "src/api/api.js",
   "scripts": {
-    "test": "cross-env NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" npx jest",
+    "test": "cross-env NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" npx jest --verbose",
     "dev": "node --loader ts-node/esm --trace-uncaught --trace-warnings src/api/api.ts",
     "build": "npx tsc",
     "start_old": "node dist/api/api.js",

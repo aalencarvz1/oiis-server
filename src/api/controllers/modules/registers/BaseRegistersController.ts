@@ -3,6 +3,7 @@ import DatabaseUtils from "../../database/DatabaseUtils.js";
 import EndPointsController from "../../endpoints/EndPointsController.js";
 import Utils from "../../utils/Utils.js";
 import { QueryTypes } from "sequelize";
+import DataSwap from "../../data/DataSwap.js";
 
 
 /**
@@ -47,7 +48,6 @@ export default abstract class BaseRegistersController {
                     queryParams.where = queryParams.where || {};
                     queryParams.where.creator_user_id = params?.user?.id || null
                 }
-                console.log('queryParams',queryParams);
                 result = await this.getTableClassModel().findAll(queryParams);
             }
         } catch (e) {
@@ -76,6 +76,24 @@ export default abstract class BaseRegistersController {
 
 
     /**
+     * @created 2025-04-14
+     * @version 1.0.0
+     */
+    static async _put(params: any) : Promise<DataSwap> {
+        let result = new DataSwap();
+        try {
+            let queryParams = params.queryParams || params;            
+            result.data = await this.getTableClassModel().createData(queryParams);
+            result.success = true;
+        } catch (e) {
+            result.setException(e);
+        }
+        return result;
+    }
+
+
+
+    /**
      * default RequestHandler method to put registers of table model controller
      * @requesthandler
      * @created 2024-12-31
@@ -83,15 +101,31 @@ export default abstract class BaseRegistersController {
      */
     static async put(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
-            let queryParams = req.body.queryParams || req.body;
-            res.data = await this.getTableClassModel().createData(queryParams);
-            res.sendResponse(200,true);
+            let params = req.body;
+            params.user = req.user;
+            res.setDataSwap(await this._put(params));
         } catch (e: any) {
             res.setException(e);
-            res.sendResponse(517,false);
         }
+        res.sendResponse();
     }
 
+
+    /**
+     * @created 2025-04-14
+     * @version 1.0.0
+     */
+    static async _patch(params: any) : Promise<DataSwap> {
+        let result = new DataSwap();
+        try {
+            let queryParams = params.queryParams || params;
+            result.data = await this.getTableClassModel().patchData(queryParams);
+            result.success = true;
+        } catch (e: any) {
+            result.setException(e);            
+        }
+        return result;
+    }
 
     /**
      * default RequestHandler method to patch registers of table model controller
@@ -101,13 +135,29 @@ export default abstract class BaseRegistersController {
      */
     static async patch(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
-            let queryParams = req.body.queryParams || req.body;
-            res.data = await this.getTableClassModel().patchData(queryParams);
-            res.sendResponse(200,true);
+            let params = req.body;
+            res.setDataSwap(await this._patch(params));
         } catch (e: any) {
             res.setException(e);
-            res.sendResponse(517,false);
         }
+        res.sendResponse();
+    }
+
+
+    /**
+     * @created 2025-04-14
+     * @version 1.0.0
+     */
+    static async _delete(params: any) : Promise<DataSwap> {
+        let result = new DataSwap();
+        try {
+            let queryParams = params.queryParams || params;
+            result.data = await this.getTableClassModel().deleteData(queryParams);
+            result.success = true;
+        } catch (e: any) {
+            result.setException(e);
+        }
+        return result;
     }
 
 
@@ -119,13 +169,12 @@ export default abstract class BaseRegistersController {
      */
     static async delete(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
-            let queryParams = req.body.queryParams || req.body;
-            res.data = await this.getTableClassModel().deleteData(queryParams);
-            res.sendResponse(200,true);
+            let params = req.body;
+            res.setDataSwap(await this._delete(params));
         } catch (e: any) {
             res.setException(e);
-            res.sendResponse(517,false);
         }
+        res.sendResponse();
     }
 
     /**

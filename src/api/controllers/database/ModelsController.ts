@@ -1,5 +1,5 @@
-console.log('INIT MODELSCONTROLLER FILE');
-console.log('INIT MODELSCONTROLLER IMPORTS');
+//console.log('INIT MODELSCONTROLLER FILE');
+//console.log('INIT MODELSCONTROLLER IMPORTS');
 
 /*
 * KEEP SAME ORDER IN THIS INPORTS OF MIGRATIONS FOLDER, MODELS CAN BE CONTAIN STATIC INITIALIZAR BLOCK WICH DEPPEND THIS ORDER TO INITIALIZE CORRECTLY
@@ -265,14 +265,11 @@ import Responsible_Person_Qualifications from '../../database/models/external_da
 import Utils from "../utils/Utils.js";
 
 
-
-
-
-console.log('END MODELSCONTROLLER IMPORTS');
+//console.log('END MODELSCONTROLLER IMPORTS');
 
 export default class ModelsController {
     static async initModels(){
-        Utils.logi(this.name,'initModels');
+        //Utils.logi(this.name,'initModels');
         await Errors.initModel();
         await Logs.initModel();
         await Tables.initModel();
@@ -533,11 +530,11 @@ export default class ModelsController {
         
 
         await this.initAssociations();
-        Utils.loge(this.name,'initModels');
+        //Utils.loge(this.name,'initModels');
     }
 
     static async initAssociations() {
-        Utils.logi(this.name,'initAssociations');
+        //Utils.logi(this.name,'initAssociations');
         await Errors.initAssociations();
         await Logs.initAssociations();
         await Tables.initAssociations();
@@ -794,7 +791,7 @@ export default class ModelsController {
             await EpTrabalhadores.initAssociations();
             await EpVendedores.initAssociations();
         }
-        Utils.loge(this.name,'initAssociations');
+        //Utils.loge(this.name,'initAssociations');
     }
 }
-console.log('END MODELSCONTROLLER FILE');
+//console.log('END MODELSCONTROLLER FILE');
