@@ -125,15 +125,6 @@ export default class Financial_Value_Mov_Types extends BaseTableModel {
           result.push(baseFks[i]);
           if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
         }    
-        result.push({
-          fields: ['table_id'],
-          type: 'foreign key',
-          references: { 
-              table: 'Tables',
-              field: 'id'
-          },
-          onUpdate: 'cascade'
-        });
         this.adjustedForeignKeys = newAdjustedForeignKeys;
       }
       return result;
