@@ -2,6 +2,7 @@
 
 import { DataTypes } from "sequelize";
 import BaseTableModel from "./BaseTableModel.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 
@@ -84,18 +85,6 @@ export default class Entities_Types extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['table_id'],
-      type: 'foreign key',
-      references: { 
-          table: 'Tables',
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
-
   static foreignsKeys : any[] = [];
     
 
@@ -113,7 +102,16 @@ export default class Entities_Types extends BaseTableModel {
       for(let i = 0; i < baseFks.length; i++) {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
-      }        
+      }    
+      result.push({
+        fields: ['table_id'],
+        type: 'foreign key',
+        references: { 
+            table: 'Tables',
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

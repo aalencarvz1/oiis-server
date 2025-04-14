@@ -6,6 +6,7 @@ import  BaseTableModel  from './BaseTableModel.js';
 import  Value_Names  from "./Value_Names.js";
 import  Item_Mov_Amounts  from "./Item_Mov_Amounts.js";
 import  Identifier_Types  from "./Identifier_Types.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -50,36 +51,6 @@ export default class Item_Mov_Amount_Restrictions extends BaseTableModel {
 
   static constraints = [...(Item_Mov_Amount_Restrictions.getBaseTableModelConstraints() || []),...[]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['item_mov_amt_id'],
-      type: 'foreign key',
-      references: { 
-          table: Item_Mov_Amounts,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },
-    {
-      fields: ['identifier_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Identifier_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['value_name_id'],
-      type: 'foreign key',
-      references: { 
-          table: Value_Names,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
   
   static foreignsKeys : any[] = [];
     
@@ -99,6 +70,34 @@ export default class Item_Mov_Amount_Restrictions extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['item_mov_amt_id'],
+        type: 'foreign key',
+        references: { 
+            table: Item_Mov_Amounts,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['identifier_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Identifier_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['value_name_id'],
+        type: 'foreign key',
+        references: { 
+            table: Value_Names,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;
