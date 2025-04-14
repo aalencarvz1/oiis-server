@@ -12,6 +12,7 @@ import  Logistic_Status  from "./Logistic_Status.js";
 import  Measurement_Units  from "./Measurement_Units.js";
 import  Movement_Types  from "./Movement_Types.js";
 import  Packagings  from "./Packagings.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -152,98 +153,6 @@ export default class Logistic_Orders_Items_Mov_Amt extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['mov_logistic_order_id'],
-      type: 'foreign key',
-      references: { 
-          table: Logistic_Orders_Movs,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },{
-      fields: ['item_mov_amt_id'],
-      type: 'foreign key',
-      references: { 
-          table: Item_Mov_Amounts,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },{
-      fields: ['logistic_mov_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Logistic_Mov_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['action_status_id'],
-      type: 'foreign key',
-      references: { 
-          table: Action_Status,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['type_mov_id'],
-      type: 'foreign key',
-      references: { 
-          table: Movement_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['measurement_unit_id'],
-      type: 'foreign key',
-      references: { 
-          table: Measurement_Units,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['logistic_status_id'],
-      type: 'foreign key',
-      references: { 
-          table: Logistic_Status,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['packaging_id'],
-      type: 'foreign key',
-      references: { 
-          table: Packagings,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['unmoved_reason_id'],
-      type: 'foreign key',
-      references: { 
-          table: Logistic_Reasons,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['collected_reason_id'],
-      type: 'foreign key',
-      references: { 
-          table: Logistic_Reasons,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
   
   static foreignsKeys : any[] = [];
     
@@ -262,7 +171,99 @@ export default class Logistic_Orders_Items_Mov_Amt extends BaseTableModel {
       for(let i = 0; i < baseFks.length; i++) {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
-      }        
+      }       
+      result.push({
+        fields: ['mov_logistic_order_id'],
+        type: 'foreign key',
+        references: { 
+            table: Logistic_Orders_Movs,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['item_mov_amt_id'],
+        type: 'foreign key',
+        references: { 
+            table: Item_Mov_Amounts,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['logistic_mov_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Logistic_Mov_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['action_status_id'],
+        type: 'foreign key',
+        references: { 
+            table: Action_Status,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['type_mov_id'],
+        type: 'foreign key',
+        references: { 
+            table: Movement_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['measurement_unit_id'],
+        type: 'foreign key',
+        references: { 
+            table: Measurement_Units,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['logistic_status_id'],
+        type: 'foreign key',
+        references: { 
+            table: Logistic_Status,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['packaging_id'],
+        type: 'foreign key',
+        references: { 
+            table: Packagings,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['unmoved_reason_id'],
+        type: 'foreign key',
+        references: { 
+            table: Logistic_Reasons,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['collected_reason_id'],
+        type: 'foreign key',
+        references: { 
+            table: Logistic_Reasons,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

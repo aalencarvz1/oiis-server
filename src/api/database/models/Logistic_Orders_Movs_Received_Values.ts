@@ -7,6 +7,7 @@ import  Logistic_Orders  from "./Logistic_Orders.js";
 import  Logistic_Orders_Items_Mov_Amt  from "./Logistic_Orders_Items_Mov_Amt.js";
 import  Financial_Value_Forms  from "./Financial_Value_Forms.js";
 import  Currencies  from "./Currencies.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -113,73 +114,6 @@ export default class Logistic_Orders_Movs_Received_Values extends BaseTableModel
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['logistic_order_movement_receipt_value_ref_id'],
-      type: 'foreign key',
-      references: { 
-          table: Logistic_Orders_Movs_Received_Values,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },{
-      fields: ['logistic_order_id'],
-      type: 'foreign key',
-      references: { 
-          table: Logistic_Orders,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },{
-      fields: ['mov_logistic_order_id'],
-      type: 'foreign key',
-      references: { 
-          table: Logistic_Orders_Movs,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },
-    {
-      fields: ['financial_value_form_id'],
-      type: 'foreign key',
-      references: { 
-          table: Financial_Value_Forms,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['logistic_mov_item_mov_id'],
-      type: 'foreign key',
-      references: { 
-          table: Logistic_Orders_Items_Mov_Amt,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },
-    {
-      fields: ['expected_currency_id'],
-      type: 'foreign key',
-      references: { 
-          table: Currencies,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['received_currency_id'],
-      type: 'foreign key',
-      references: { 
-          table: Currencies,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
 
   static foreignsKeys : any[] = [];
     
@@ -198,7 +132,74 @@ export default class Logistic_Orders_Movs_Received_Values extends BaseTableModel
       for(let i = 0; i < baseFks.length; i++) {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
-      }        
+      }  
+      result.push({
+        fields: ['logistic_order_movement_receipt_value_ref_id'],
+        type: 'foreign key',
+        references: { 
+            table: Logistic_Orders_Movs_Received_Values,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['logistic_order_id'],
+        type: 'foreign key',
+        references: { 
+            table: Logistic_Orders,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['mov_logistic_order_id'],
+        type: 'foreign key',
+        references: { 
+            table: Logistic_Orders_Movs,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['financial_value_form_id'],
+        type: 'foreign key',
+        references: { 
+            table: Financial_Value_Forms,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['logistic_mov_item_mov_id'],
+        type: 'foreign key',
+        references: { 
+            table: Logistic_Orders_Items_Mov_Amt,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['expected_currency_id'],
+        type: 'foreign key',
+        references: { 
+            table: Currencies,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['received_currency_id'],
+        type: 'foreign key',
+        references: { 
+            table: Currencies,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

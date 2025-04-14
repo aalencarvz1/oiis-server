@@ -8,6 +8,7 @@ import  Measurement_Units  from "./Measurement_Units.js";
 import  Item_Status  from "./Item_Status.js";
 import  Item_Stocks  from "./Item_Stocks.js";
 import  Identifier_Types  from "./Identifier_Types.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -98,62 +99,6 @@ export default class Item_Stock_Units extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['stock_item_id'],
-      type: 'foreign key',
-      references: { 
-          table: Item_Stocks,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['identifier_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Identifier_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['item_unit_status_id'],
-      type: 'foreign key',
-      references: { 
-          table: Item_Status,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['measurement_unit_id'],
-      type: 'foreign key',
-      references: { 
-          table: Measurement_Units,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['packaging_id'],
-      type: 'foreign key',
-      references: { 
-          table: Packagings,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['variable_unit_measure_id'],
-      type: 'foreign key',
-      references: { 
-          table: Measurement_Units,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
   
   static foreignsKeys : any[] = [];
     
@@ -173,6 +118,60 @@ export default class Item_Stock_Units extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['stock_item_id'],
+        type: 'foreign key',
+        references: { 
+            table: Item_Stocks,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['identifier_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Identifier_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['item_unit_status_id'],
+        type: 'foreign key',
+        references: { 
+            table: Item_Status,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['measurement_unit_id'],
+        type: 'foreign key',
+        references: { 
+            table: Measurement_Units,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['packaging_id'],
+        type: 'foreign key',
+        references: { 
+            table: Packagings,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['variable_unit_measure_id'],
+        type: 'foreign key',
+        references: { 
+            table: Measurement_Units,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

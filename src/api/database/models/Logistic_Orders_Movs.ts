@@ -9,6 +9,7 @@ import  Logistic_Status  from "./Logistic_Status.js";
 import  Action_Status  from "./Action_Status.js";
 import  Movements  from "./Movements.js";
 import  Logistic_Reasons  from "./Logistic_Reasons.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -87,64 +88,6 @@ export default class Logistic_Orders_Movs extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['logistic_order_id'],
-      type: 'foreign key',
-      references: { 
-          table: Logistic_Orders,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },
-    {
-      fields: ['mov_id'],
-      type: 'foreign key',
-      references: { 
-          table: Movements,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },
-    {
-      fields: ['action_status_id'],
-      type: 'foreign key',
-      references: { 
-          table: Action_Status,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['logistic_status_id'],
-      type: 'foreign key',
-      references: { 
-          table: Logistic_Status,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['unmoved_reason_id'],
-      type: 'foreign key',
-      references: { 
-          table: Logistic_Reasons,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['collected_reason_id'],
-      type: 'foreign key',
-      references: { 
-          table: Logistic_Reasons,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
   
   static foreignsKeys : any[] = [];
     
@@ -163,7 +106,63 @@ export default class Logistic_Orders_Movs extends BaseTableModel {
       for(let i = 0; i < baseFks.length; i++) {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
-      }        
+      }       
+      result.push({
+        fields: ['logistic_order_id'],
+        type: 'foreign key',
+        references: { 
+            table: Logistic_Orders,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['mov_id'],
+        type: 'foreign key',
+        references: { 
+            table: Movements,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['action_status_id'],
+        type: 'foreign key',
+        references: { 
+            table: Action_Status,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['logistic_status_id'],
+        type: 'foreign key',
+        references: { 
+            table: Logistic_Status,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['unmoved_reason_id'],
+        type: 'foreign key',
+        references: { 
+            table: Logistic_Reasons,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['collected_reason_id'],
+        type: 'foreign key',
+        references: { 
+            table: Logistic_Reasons,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

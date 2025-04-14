@@ -4,6 +4,7 @@ import  { DataTypes }   from "sequelize";
 import  BaseTableModel  from "./BaseTableModel.js";
 import  Identifier_Types  from "./Identifier_Types.js";
 import  Ncms  from "./Ncms.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 
@@ -67,26 +68,6 @@ export default class Items extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['identifier_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Identifier_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['ncm_id'],
-      type: 'foreign key',
-      references: { 
-          table: Ncms,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
   
   /**
    * create data of model this
@@ -127,6 +108,24 @@ export default class Items extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.spush({
+        fields: ['identifier_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Identifier_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['ncm_id'],
+        type: 'foreign key',
+        references: { 
+            table: Ncms,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

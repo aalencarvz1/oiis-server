@@ -5,6 +5,7 @@ import  BaseTableModel  from './BaseTableModel.js';
 import  Lots  from "./Lots.js";
 import  Items  from "./Items.js";
 import  Containers  from "./Containers.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -61,35 +62,6 @@ export default class Items_Lots_Containers extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['item_id'],
-      type: 'foreign key',
-      references: { 
-          table: Items,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['lot_id'],
-      type: 'foreign key',
-      references: { 
-          table: Lots,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['container_id'],
-      type: 'foreign key',
-      references: { 
-          table: Containers,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
   
   static foreignsKeys : any[] = [];
     
@@ -109,6 +81,33 @@ export default class Items_Lots_Containers extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['item_id'],
+        type: 'foreign key',
+        references: { 
+            table: Items,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['lot_id'],
+        type: 'foreign key',
+        references: { 
+            table: Lots,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['container_id'],
+        type: 'foreign key',
+        references: { 
+            table: Containers,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;
