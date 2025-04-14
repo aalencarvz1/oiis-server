@@ -99,6 +99,7 @@ export default class Movs_Items_Stocks extends BaseTableModel {
   static getForeignKeys(): any[] {
     let result : any = this.foreignsKeys;
     if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      result = [];
       let newAdjustedForeignKeys : boolean = true;
       let baseFks = this.getBaseTableModelForeignsKeys();
       for(let i = 0; i < baseFks.length; i++) {

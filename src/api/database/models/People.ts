@@ -72,17 +72,7 @@ export default class People extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['identifier_doc_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Identifier_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
+  static foreignsKeys : any[] = [];
   
   static include(queryParams: any,pClassModelParent: typeof BaseTableModel) : any {
     queryParams = queryParams || {};
@@ -178,7 +168,7 @@ export default class People extends BaseTableModel {
   }
   
 
-  static foreignsKeys : any[] = [];
+  
     
 
   /**
@@ -190,12 +180,22 @@ export default class People extends BaseTableModel {
   static getForeignKeys(): any[] {
     let result : any = this.foreignsKeys;
     if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      result = [];
       let newAdjustedForeignKeys : boolean = true;
       let baseFks = this.getBaseTableModelForeignsKeys();
       for(let i = 0; i < baseFks.length; i++) {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['identifier_doc_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Identifier_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;
