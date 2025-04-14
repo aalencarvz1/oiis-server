@@ -1,83 +1,93 @@
-import Access_Profiles from "../../database/models/Access_Profiles.js";
-import Action_Status from "../../database/models/Action_Status.js";
-import Address_Types from "../../database/models/Address_Types.js";
-import Addresses from "../../database/models/Addresses.js";
-import Business_Units from "../../database/models/Business_Units.js";
-import Cities from "../../database/models/Cities.js";
-import Clients from "../../database/models/Clients.js";
-import Collaborator_Contracts from "../../database/models/Collaborator_Contracts.js";
-import Collaborator_Functions from "../../database/models/Collaborator_Functions.js";
-import Collaborators from "../../database/models/Collaborators.js";
-import Collaborators_X_Functions from "../../database/models/Collaborators_X_Functions.js";
-import Companies from "../../database/models/Companies.js";
-import Comparators from "../../database/models/Comparators.js";
-import Condition_Items from "../../database/models/Condition_Items.js";
-import Conditions from "../../database/models/Conditions.js";
-import Connections from "../../database/models/Connections.js";
-import Contact_Types from "../../database/models/Contact_Types.js";
-import Contacts from "../../database/models/Contacts.js";
-import Contexts from "../../database/models/Contexts.js";
-import Continents from "../../database/models/Continents.js";
-import Contract_Types from "../../database/models/Contract_Types.js";
-import Countries from "../../database/models/Countries.js";
-import Currencies from "../../database/models/Currencies.js";
-import Data_Origins from "../../database/models/Data_Origins.js";
-import Data_Types from "../../database/models/Data_Types.js";
-import Entities_Types from "../../database/models/Entities_Types.js";
+console.log('INIT MODELSCONTROLLER FILE');
+console.log('INIT MODELSCONTROLLER IMPORTS');
+
+/*
+* KEEP SAME ORDER IN THIS INPORTS OF MIGRATIONS FOLDER, MODELS CAN BE CONTAIN STATIC INITIALIZAR BLOCK WICH DEPPEND THIS ORDER TO INITIALIZE CORRECTLY
+* if is necessary change order of migrations, then change the same order of import here
+*/
+
+/*DEFAULT TABLE MODELS*/
 import Errors from "../../database/models/Errors.js";
+import Logs from "../../database/models/Logs.js";
+import Tables from "../../database/models/Tables.js";
+import Connections from "../../database/models/Connections.js";
+import Schemas from "../../database/models/Schemas.js";
+import Contexts from "../../database/models/Contexts.js";
+import Entities_Types from "../../database/models/Entities_Types.js";
+import Data_Types from "../../database/models/Data_Types.js";
+import Action_Status from "../../database/models/Action_Status.js";
+import Parameters from "../../database/models/Parameters.js";
+import Parameter_Values from "../../database/models/Parameter_Values.js";
+import Data_Origins from "../../database/models/Data_Origins.js";
+import Record_Status from "../../database/models/Record_Status.js";
+import Sync_Status from "../../database/models/Sync_Status.js";
+import Run_Status from "../../database/models/Run_Status.js";
+import Identifier_Types from "../../database/models/Identifier_Types.js";
+import Greatnesses from "../../database/models/Greatnesses.js";
+import Measurement_Units from "../../database/models/Measurement_Units.js";
+import People from "../../database/models/People.js";
+import Collaborators from "../../database/models/Collaborators.js";
+import Access_Profiles from "../../database/models/Access_Profiles.js";
+import Users from "../../database/models/Users.js";
+import User_Tokens from "../../database/models/User_Tokens.js";
+import User_Profile_Timeworks from "../../database/models/User_Profile_Timeworks.js";
+import User_Timeworks from "../../database/models/User_Timeworks.js";
+import Processes from "../../database/models/Processes.js";
+import Routine_Types from "../../database/models/Routine_Types.js";
+import Modules from "../../database/models/Modules.js";
+import Routines from "../../database/models/Routines.js";
+import Routine_Contents from "../../database/models/Routine_Contents.js";
+import Languages from "../../database/models/Languages.js";
+import Texts from "../../database/models/Texts.js";
+import Translates from "../../database/models/Translates.js";
+import Relationship_Types from "../../database/models/Relationship_Types.js";
+import Relationships from "../../database/models/Relationships.js";
+import Value_Names from "../../database/models/Value_Names.js";
+import Relationship_Values from "../../database/models/Relationship_Values.js";
+import Lists_Names from "../../database/models/Lists_Names.js";
+import Comparators from "../../database/models/Comparators.js";
+import Contract_Types from "../../database/models/Contract_Types.js";
+import Currencies from "../../database/models/Currencies.js";
+import Form_Types from "../../database/models/Form_Types.js";
 import Financial_Value_Forms from "../../database/models/Financial_Value_Forms.js";
 import Financial_Value_Localization_Types from "../../database/models/Financial_Value_Localization_Types.js";
 import Financial_Value_Mov_Types from "../../database/models/Financial_Value_Mov_Types.js";
-import Form_Types from "../../database/models/Form_Types.js";
-import Greatnesses from "../../database/models/Greatnesses.js";
-import Groups from "../../database/models/Groups.js";
-import Groups_Items from "../../database/models/Groups_Items.js";
-import Identifier_Types from "../../database/models/Identifier_Types.js";
-import Languages from "../../database/models/Languages.js";
-import Logs from "../../database/models/Logs.js";
-import Measurement_Units from "../../database/models/Measurement_Units.js";
-import Modules from "../../database/models/Modules.js";
-import NeighborHoods from "../../database/models/NeighborHoods.js";
-import Packagings from "../../database/models/Packagings.js";
-import Parameter_Values from "../../database/models/Parameter_Values.js";
-import Parameters from "../../database/models/Parameters.js";
-import People from "../../database/models/People.js";
-import People_Addresses from "../../database/models/People_Addresses.js";
-import People_Contacts from "../../database/models/People_Contacts.js";
-import Permissions from "../../database/models/Permissions.js";
-import Postal_Codes from "../../database/models/Postal_Codes.js";
-import Postal_Codes_Paths from "../../database/models/Postal_Codes_Paths.js";
-import Postal_Codes_Streets from "../../database/models/Postal_Codes_Streets.js";
-import Power_Types from "../../database/models/Power_Types.js";
-import Processes from "../../database/models/Processes.js";
-import Record_Status from "../../database/models/Record_Status.js";
-import Relationship_Types from "../../database/models/Relationship_Types.js";
-import Relationship_Values from "../../database/models/Relationship_Values.js";
-import Relationships from "../../database/models/Relationships.js";
-import Routine_Contents from "../../database/models/Routine_Contents.js";
-import Routine_Types from "../../database/models/Routine_Types.js";
-import Routines from "../../database/models/Routines.js";
-import Run_Status from "../../database/models/Run_Status.js";
-import Schemas from "../../database/models/Schemas.js";
+import Continents from "../../database/models/Continents.js";
+import Countries from "../../database/models/Countries.js";
 import States from "../../database/models/States.js";
+import Cities from "../../database/models/Cities.js";
+import NeighborHoods from "../../database/models/NeighborHoods.js";
 import Street_Types from "../../database/models/Street_Types.js";
 import Streets from "../../database/models/Streets.js";
-import Suppliers from "../../database/models/Suppliers.js";
-import Sync_Status from "../../database/models/Sync_Status.js";
-import Tables from "../../database/models/Tables.js";
-import Texts from "../../database/models/Texts.js";
-import Translates from "../../database/models/Translates.js";
-import User_Profile_Timeworks from "../../database/models/User_Profile_Timeworks.js";
-import User_Timeworks from "../../database/models/User_Timeworks.js";
-import User_Tokens from "../../database/models/User_Tokens.js";
-import Users from "../../database/models/Users.js";
-import Value_Names from "../../database/models/Value_Names.js";
-import Warehouse_Address_Capacities from "../../database/models/Warehouse_Address_Capacities.js";
-import Warehouse_Address_Coordinates from "../../database/models/Warehouse_Address_Coordinates.js";
-import Warehouse_Address_Dimensions from "../../database/models/Warehouse_Address_Dimensions.js";
+import Address_Types from "../../database/models/Address_Types.js";
+import Postal_Codes from "../../database/models/Postal_Codes.js";
+import Postal_Codes_Streets from "../../database/models/Postal_Codes_Streets.js";
+import Postal_Codes_Paths from "../../database/models/Postal_Codes_Paths.js";
+import Addresses from "../../database/models/Addresses.js";
+import Contact_Types from "../../database/models/Contact_Types.js";
+import Contacts from "../../database/models/Contacts.js";
+import People_Addresses from "../../database/models/People_Addresses.js";
+import People_Contacts from "../../database/models/People_Contacts.js";
+import Companies from "../../database/models/Companies.js";
+import Business_Units from "../../database/models/Business_Units.js";
+import Warehouses from "../../database/models/Warehouses.js";
 import Warehouse_Address_Types from "../../database/models/Warehouse_Address_Types.js";
 import Warehouse_Addresses from "../../database/models/Warehouse_Addresses.js";
-import Warehouses from "../../database/models/Warehouses.js";
+import Warehouse_Address_Coordinates from "../../database/models/Warehouse_Address_Coordinates.js";
+import Warehouse_Address_Dimensions from "../../database/models/Warehouse_Address_Dimensions.js";
+import Warehouse_Address_Capacities from "../../database/models/Warehouse_Address_Capacities.js";
+import Clients from "../../database/models/Clients.js";
+import Suppliers from "../../database/models/Suppliers.js";
+import Collaborator_Functions from "../../database/models/Collaborator_Functions.js";
+import Collaborator_Contracts from "../../database/models/Collaborator_Contracts.js";
+import Collaborators_X_Functions from "../../database/models/Collaborators_X_Functions.js";
+import Power_Types from "../../database/models/Power_Types.js";
+import Permissions from "../../database/models/Permissions.js";
+import Conditions from "../../database/models/Conditions.js";
+import Condition_Items from "../../database/models/Condition_Items.js";
+import Groups from "../../database/models/Groups.js";
+import Groups_Items from "../../database/models/Groups_Items.js";
+import Packagings from "../../database/models/Packagings.js";
 import Container_Types from '../../database/models/Container_Types.js';
 import Container_Type_Dimensions from '../../database/models/Container_Type_Dimensions.js';
 import Container_Type_Capacities from '../../database/models/Container_Type_Capacities.js';
@@ -138,81 +148,112 @@ import Tasks_Status_Users from '../../database/models/Tasks_Status_Users.js';
 import Tasks_Status_Users_Logs from '../../database/models/Tasks_Status_Users_Logs.js';
 import Project_Tasks_Status_Users from '../../database/models/Project_Tasks_Status_Users.js';
 import Campaigns from '../../database/models/Campaigns.js';
+import Campaign_Entities from '../../database/models/Campaign_Entities.js';
 import Campaign_Kpis from '../../database/models/Campaign_Kpis.js';
 import Campaign_Kpi_Value_Getters from '../../database/models/Campaign_Kpi_Value_Getters.js';
 import Campaign_Kpi_Value_Details from '../../database/models/Campaign_Kpi_Value_Details.js';
-import Campaign_Entities from '../../database/models/Campaign_Entities.js';
 import Campaign_Kpi_Result_Values from '../../database/models/Campaign_Kpi_Result_Values.js';
 import Campaign_Kpi_Value_Detail_Entities from '../../database/models/Campaign_Kpi_Value_Detail_Entities.js';
-import Campaign_Entities_Kpi_Result_Values from '../../database/models/Campaign_Entities_Kpi_Result_Values.js';
 import Campaign_Entities_Kpi_Value_Getters_Values from '../../database/models/Campaign_Entities_Kpi_Value_Getters_Values.js';
+import Campaign_Entities_Kpi_Result_Values from '../../database/models/Campaign_Entities_Kpi_Result_Values.js';
 import Apis from '../../database/models/Apis.js';
 import Api_Requests from '../../database/models/Api_Requests.js';
 import Api_Request_Calls from '../../database/models/Api_Request_Calls.js';
 import Api_Responses from '../../database/models/Api_Responses.js';
 import Maps_Api_Responses from '../../database/models/Maps_Api_Responses.js';
-import PcAtivi from '../../database/models/winthor/PcAtivi.js';
-import PcBairro from '../../database/models/winthor/PcBairro.js';
-import PcCarreg from '../../database/models/winthor/PcCarreg.js';
-import PcCidade from '../../database/models/winthor/PcCidade.js';
-import PcClient from '../../database/models/winthor/PcClient.js';
-import PcCob from '../../database/models/winthor/PcCob.js';
+import Integration_Rules from "../../database/models/Integration_Rules.js";
+import Packs_X_Packs_Origins from "../../database/models/Packs_X_Packs_Origins.js";
+import Meas_X_Meas_Origins from "../../database/models/Meas_X_Meas_Origins.js";
+import Midias from "../../database/models/Midias.js";
+
+
+/*WINTHOR TABLE MODELS*/
+import All_Tab_Columns from "../../database/models/winthor/All_Tab_Columns.js";
 import PcConsum from '../../database/models/winthor/PcConsum.js';
-import PcDepto from '../../database/models/winthor/PcDepto.js';
-import PcDocEletronico from '../../database/models/winthor/PcDocEletronico.js';
-import PcEmpr from '../../database/models/winthor/PcEmpr.js';
-import PcEstado from '../../database/models/winthor/PcEstado.js';
-import PcEstcr from '../../database/models/winthor/PcEstcr.js';
-import PcFilial from '../../database/models/winthor/PcFilial.js';
-import PcFornec from '../../database/models/winthor/PcFornec.js';
-import PcNcm from '../../database/models/winthor/PcNcm.js';
-import PcNfsaid from '../../database/models/winthor/PcNfsaid.js';
+import PcDicionarioItem from "../../database/models/winthor/PcDicionarioItem.js";
+import PcDicionarioItemRot from "../../database/models/winthor/PcDicionarioItemRot.js";
+import PcDicionarioItemRotCust from "../../database/models/winthor/PcDicionarioItemRotCust.js";
+import PcRotulo from "../../database/models/winthor/PcRotulo.js";
+import PcRotuloItem from "../../database/models/winthor/PcRotuloItem.js";
 import PcPais from '../../database/models/winthor/PcPais.js';
-import PcPixCobrancaDados from '../../database/models/winthor/PcPixCobrancaDados.js';
-import PcPrest from '../../database/models/winthor/PcPrest.js';
-import PcSecao from '../../database/models/winthor/PcSecao.js';
-import PcProdut from '../../database/models/winthor/PcProdut.js';
+import PcCidade from '../../database/models/winthor/PcCidade.js';
+import PcCob from '../../database/models/winthor/PcCob.js';
+import PcBairro from '../../database/models/winthor/PcBairro.js';
+import PcFilial from '../../database/models/winthor/PcFilial.js';
+import PcAtivi from '../../database/models/winthor/PcAtivi.js';
 import PcRotaExp from '../../database/models/winthor/PcRotaExp.js';
-import PcSuperv from '../../database/models/winthor/PcSuperv.js';
+import PcFornec from '../../database/models/winthor/PcFornec.js';
+import PcClient from '../../database/models/winthor/PcClient.js';
 import PcTabDev from '../../database/models/winthor/PcTabDev.js';
-import PcUsuari from '../../database/models/winthor/PcUsuari.js';
 import PcVeicul from '../../database/models/winthor/PcVeicul.js';
+import PcCarreg from '../../database/models/winthor/PcCarreg.js';
+import PcSuperv from '../../database/models/winthor/PcSuperv.js';
+import PcEmpr from '../../database/models/winthor/PcEmpr.js';
+import PcUsuari from '../../database/models/winthor/PcUsuari.js';
+import PcEstado from '../../database/models/winthor/PcEstado.js';
+import PcDistrib from "../../database/models/winthor/PcDistrib.js";
+import PcPrazo from "../../database/models/winthor/PcPrazo.js";
+import PcUnidade from "../../database/models/winthor/PcUnidade.js";
+import PcLinhaProd from "../../database/models/winthor/PcLinhaProd.js";
+import PcNcm from '../../database/models/winthor/PcNcm.js';
+import PcDepto from '../../database/models/winthor/PcDepto.js';
+import PcSecao from '../../database/models/winthor/PcSecao.js';
+import PcMarca from "../../database/models/winthor/PcMarca.js";
+import PcCategoria from "../../database/models/winthor/PcCategoria.js";
+import PcProdut from '../../database/models/winthor/PcProdut.js';
+import PcProdFilial from "../../database/models/winthor/PcProdFilial.js";
+import PcEst from "../../database/models/winthor/PcEst.js";
+import PcEmbalagem from "../../database/models/winthor/PcEmbalagem.js";
+import PcNfsaid from '../../database/models/winthor/PcNfsaid.js';
+import PcPrest from '../../database/models/winthor/PcPrest.js';
+import PcEstcr from '../../database/models/winthor/PcEstcr.js';
+import PcDocEletronico from '../../database/models/winthor/PcDocEletronico.js';
+import PcPixCobrancaDados from '../../database/models/winthor/PcPixCobrancaDados.js';
 import Produtos_Armazenados_Terceiros from '../../database/models/winthor/Produtos_Armazenados_Terceiros.js';
+
+/*WINTHOR INTEGRATION TABLE MODELS (CONTROL INTEGRATION TABLES)*/
+import Error_Logs from '../../database/models/winthor_integration/Error_Logs.js'
+import Integration_Tables from '../../database/models/winthor_integration/Integration_Tables.js'
+import Integration_Columns from '../../database/models/winthor_integration/Integration_Columns.js'
+import Integration_Control from '../../database/models/winthor_integration/Integration_Control.js'
+import Integration_Parameters from '../../database/models/winthor_integration/Integration_Parameters.js'
+
+/*SJD TABLE MODELS*/
 import SjdOrigemDeDados from '../../database/models/sjd/SjdOrigemDeDados.js';
 import SjdProduto_Origem from '../../database/models/sjd/SjdProduto_Origem.js';
 import SjdEstoque_Origem from '../../database/models/sjd/SjdEstoque_Origem.js';
 import SjdHistEst_Origem from '../../database/models/sjd/SjdHistEst_Origem.js';
 import SjdTabpr_Origem from '../../database/models/sjd/SjdTabpr_Origem.js';
 import SjdTabpr_Origem_Log from '../../database/models/sjd/SjdTabpr_Origem_Log.js';
+import SjdLogAnaliseEnt from "../../database/models/sjd/SjdLogAnaliseEnt.js";
 import XMLBroker from '../../database/models/sjd/XMLBroker.js';
-import EpAtividadesClientes from '../../database/models/ep/EpAtividadesClientes.js';
-import EpCategoriasOrigem from '../../database/models/ep/EpCategoriasOrigem.js';
+import Gtin_Produtos from "../../database/models/sjd/Gtin_Produtos.js";
+
+/*EP TABLE MODELS*/
+import EpOrigensInfo from '../../database/models/ep/EpOrigensInfo.js';
+import EpTrabalhadores from '../../database/models/ep/EpTrabalhadores.js';
+import EpVendedores from '../../database/models/ep/EpVendedores.js';
 import EpCidades from '../../database/models/ep/EpCidades.js';
-import EpClientes from '../../database/models/ep/EpClientes.js';
-import EpDeparamentosProd from '../../database/models/ep/EpDeparamentosProd.js';
+import EpPessoas from '../../database/models/ep/EpPessoas.js';
 import EpEmpresas from '../../database/models/ep/EpEmpresas.js';
 import EpFiliais from '../../database/models/ep/EpFiliais.js';
 import EpFornecedores from '../../database/models/ep/EpFornecedores.js';
-import EpMovimentacoesEnt from '../../database/models/ep/EpMovimentacoesEnt.js';
-import EpMovimentacoesSaida from '../../database/models/ep/EpMovimentacoesSaida.js';
-import EpNegociosOrigem from '../../database/models/ep/EpNegociosOrigem.js';
-import EpNfsEnt from '../../database/models/ep/EpNfsEnt.js';
-import EpNfsSaida from '../../database/models/ep/EpNfsSaida.js';
-import EpOrigensInfo from '../../database/models/ep/EpOrigensInfo.js';
-import EpPessoas from '../../database/models/ep/EpPessoas.js';
-import EpPracasClientes from '../../database/models/ep/EpPracasClientes.js';
-import EpProdutos from '../../database/models/ep/EpProdutos.js';
-import EpRedesClientes from '../../database/models/ep/EpRedesClientes.js';
 import EpRotasClientes from '../../database/models/ep/EpRotasClientes.js';
-import EpTrabalhadores from '../../database/models/ep/EpTrabalhadores.js';
-import EpVendedores from '../../database/models/ep/EpVendedores.js';
+import EpPracasClientes from '../../database/models/ep/EpPracasClientes.js';
+import EpRedesClientes from '../../database/models/ep/EpRedesClientes.js';
+import EpAtividadesClientes from '../../database/models/ep/EpAtividadesClientes.js';
+import EpClientes from '../../database/models/ep/EpClientes.js';
+import EpNegociosOrigem from '../../database/models/ep/EpNegociosOrigem.js';
+import EpCategoriasOrigem from '../../database/models/ep/EpCategoriasOrigem.js';
+import EpDeparamentosProd from '../../database/models/ep/EpDeparamentosProd.js';
+import EpProdutos from '../../database/models/ep/EpProdutos.js';
+import EpNfsSaida from '../../database/models/ep/EpNfsSaida.js';
+import EpMovimentacoesSaida from '../../database/models/ep/EpMovimentacoesSaida.js';
+import EpNfsEnt from '../../database/models/ep/EpNfsEnt.js';
+import EpMovimentacoesEnt from '../../database/models/ep/EpMovimentacoesEnt.js';
 
 
-import Error_Logs from '../../database/models/winthor_integration/Error_Logs.js'
-import Integration_Columns from '../../database/models/winthor_integration/Integration_Columns.js'
-import Integration_Control from '../../database/models/winthor_integration/Integration_Control.js'
-import Integration_Parameters from '../../database/models/winthor_integration/Integration_Parameters.js'
-import Integration_Tables from '../../database/models/winthor_integration/Integration_Tables.js'
+/*EXTERNAL DATA TABLE MODELS (RFB)*/
 import Businesses from '../../database/models/external_data/Businesses.js'
 import ExternalDatasCities from '../../database/models/external_data/Cities.js'
 import Cnaes from '../../database/models/external_data/Cnaes.js'
@@ -222,32 +263,16 @@ import Legal_Natures from '../../database/models/external_data/Legal_Natures.js'
 import Reasons from '../../database/models/external_data/Reasons.js'
 import Responsible_Person_Qualifications from '../../database/models/external_data/Responsible_Person_Qualifications.js'
 import Utils from "../utils/Utils.js";
-import Midias from "../../database/models/Midias.js";
-import Meas_X_Meas_Origins from "../../database/models/Meas_X_Meas_Origins.js";
-import Packs_X_Packs_Origins from "../../database/models/Packs_X_Packs_Origins.js";
-import PcEst from "../../database/models/winthor/PcEst.js";
-import Gtin_Produtos from "../../database/models/sjd/Gtin_Produtos.js";
-import SjdLogAnaliseEnt from "../../database/models/sjd/SjdLogAnaliseEnt.js";
-import PcDicionarioItem from "../../database/models/winthor/PcDicionarioItem.js";
-import PcDicionarioItemRot from "../../database/models/winthor/PcDicionarioItemRot.js";
-import PcDicionarioItemRotCust from "../../database/models/winthor/PcDicionarioItemRotCust.js";
-import All_Tab_Columns from "../../database/models/winthor/All_Tab_Columns.js";
-import PcRotulo from "../../database/models/winthor/PcRotulo.js";
-import PcRotuloItem from "../../database/models/winthor/PcRotuloItem.js";
-import PcMarca from "../../database/models/winthor/PcMarca.js";
-import PcCategoria from "../../database/models/winthor/PcCategoria.js";
-import PcLinhaProd from "../../database/models/winthor/PcLinhaProd.js";
-import PcUnidade from "../../database/models/winthor/PcUnidade.js";
-import PcPrazo from "../../database/models/winthor/PcPrazo.js";
-import PcDistrib from "../../database/models/winthor/PcDistrib.js";
-import PcProdFilial from "../../database/models/winthor/PcProdFilial.js";
-import PcEmbalagem from "../../database/models/winthor/PcEmbalagem.js";
-import Integration_Rules from "../../database/models/Integration_Rules.js";
-import Lists_Names from "../../database/models/Lists_Names.js";
 
+
+
+
+
+console.log('END MODELSCONTROLLER IMPORTS');
 
 export default class ModelsController {
     static async initModels(){
+        Utils.logi(this.name,'initModels');
         await Errors.initModel();
         await Logs.initModel();
         await Tables.initModel();
@@ -508,9 +533,11 @@ export default class ModelsController {
         
 
         await this.initAssociations();
+        Utils.loge(this.name,'initModels');
     }
 
     static async initAssociations() {
+        Utils.logi(this.name,'initAssociations');
         await Errors.initAssociations();
         await Logs.initAssociations();
         await Tables.initAssociations();
@@ -767,5 +794,7 @@ export default class ModelsController {
             await EpTrabalhadores.initAssociations();
             await EpVendedores.initAssociations();
         }
+        Utils.loge(this.name,'initAssociations');
     }
 }
+console.log('END MODELSCONTROLLER FILE');

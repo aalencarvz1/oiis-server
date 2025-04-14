@@ -14,7 +14,7 @@ export default class PcRotaExp extends BaseWinthorTableModel {
   declare DESCRICAO: string;
 
 
-  static id = 30031;
+  static id = 30013;
   static tableName = this.name.toUpperCase();
   static model = null;
 

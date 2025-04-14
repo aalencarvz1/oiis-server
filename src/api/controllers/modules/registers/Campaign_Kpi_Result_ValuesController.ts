@@ -388,15 +388,10 @@ export default class Campaign_Kpi_Result_ValuesController extends BaseRegistersC
                                                 }
                                             });
                                             if (resultValuesTemp[k].calc_result?.success) {
-                                                console.log('xxxxx1');
                                                 resultValuesTemp[k].calc_result = resultValuesTemp[k].calc_result.data || [];
                                                 if (Utils.hasValue(resultValuesTemp[k].calc_result)) {
-                                                    console.log('xxxxx2');
                                                     let keysTemp = Object.keys(resultValuesTemp[k].calc_result[0]);
-                                                    console.log('xxxxx3',keysTemp);
-                                                    console.log('xxxxx3.2',entities[j].entity_id,resultValuesTemp[k].calc_result);
                                                     resultValuesTemp[k].calc_result = resultValuesTemp[k].calc_result.find((el: any)=>el[keysTemp[0]] == entities[j].id);
-                                                    console.log('xxxxx4',resultValuesTemp[k].calc_result);
                                                     if (Utils.hasValue(resultValuesTemp[k].calc_result)) {
                                                         entities[j].expression = entities[j].expression.replaceAll(`\$\{${resultValuesTemp[k].var_name}\}`,resultValuesTemp[k].calc_result[keysTemp[keysTemp.length - 1]]||0);
                                                     } else {
@@ -446,8 +441,7 @@ export default class Campaign_Kpi_Result_ValuesController extends BaseRegistersC
                     if (errorMessages.length) {
                         result.message = errorMessages.join("\n");
                         result.success = false;
-                    } else {
-                        console.log('xxxx',kpiResultValue.calculated_at?.getTime() == params.currentDate.getTime(),kpiResultValue.calculated_at, params.currentDate);
+                    } else {                        
                         kpiResultValue.calculated_at = params.currentDate;
                         await kpiResultValue.save();
 

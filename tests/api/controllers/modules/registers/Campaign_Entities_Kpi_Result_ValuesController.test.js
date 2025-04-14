@@ -1,7 +1,12 @@
 import Campaign_Entities_Kpi_Result_ValuesController from "../../../../../dist/api/controllers/modules/registers/Campaign_Entities_Kpi_Result_ValuesController";
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
+import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 
 describe(Campaign_Entities_Kpi_Result_ValuesController.name, () => {
+
+    /*beforeAll(async ()=>{
+        await ModelsController.initModels();
+    });*/
 
     test('table class model name', () => {
         let tableClassModel = Campaign_Entities_Kpi_Result_ValuesController.getTableClassModel();
@@ -15,9 +20,10 @@ describe(Campaign_Entities_Kpi_Result_ValuesController.name, () => {
 
     test('get', async () => {
         console.log('NODE ENV: ',process.env.NODE_ENV);
-        let tableClassModel = Campaign_Entities_Kpi_Result_ValuesController.getTableClassModel();
-        await tableClassModel.initModel();
-        await tableClassModel.initAssociations();
+        await ModelsController.initModels();
+        //let tableClassModel = Campaign_Entities_Kpi_Result_ValuesController.getTableClassModel();
+        //await tableClassModel.initModel();
+        //await tableClassModel.initAssociations();
         let result = await Campaign_Entities_Kpi_Result_ValuesController._get();
         expect(Utils.hasValue(result)).toBeTruthy();
     });

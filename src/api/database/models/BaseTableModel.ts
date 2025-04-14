@@ -138,7 +138,7 @@ export default class BaseTableModel extends Model {
         fields: ['status_reg_id'],
         type: 'foreign key',
         references: { 
-            table: 'Record_Status',
+            table: 'record_status',
             field: 'id'
         },
         onUpdate: 'cascade'
@@ -146,7 +146,7 @@ export default class BaseTableModel extends Model {
         fields: ['creator_user_id'],
         type: 'foreign key',
         references: { 
-            table: 'Users',
+            table: 'users',
             field: 'id'
         },
         onUpdate: 'cascade'
@@ -154,7 +154,7 @@ export default class BaseTableModel extends Model {
         fields: ['updater_user_id'],
         type: 'foreign key',
         references: { 
-            table: 'Users',
+            table: 'users',
             field: 'id'
         },
         onUpdate: 'cascade'
@@ -162,7 +162,7 @@ export default class BaseTableModel extends Model {
         fields: ['data_origin_id'],
         type: 'foreign key',
         references: { 
-            table: 'Data_Origins',
+            table: 'data_origins',
             field: 'id'
         },
         onUpdate: 'cascade'
@@ -182,16 +182,26 @@ export default class BaseTableModel extends Model {
         return result;
     }*/
     static getBaseTableModelForeignsKeys() : any[] {
+        //Utils.logi(`${this.name}(BaseTableModel)`,'getBaseTableModelForeignsKeys');
         let result :any[] = [];
         for(let i = 0; i < this.baseTableModelForeignsKeys.length; i++) {
             result.push(this.baseTableModelForeignsKeys[i]);
         }        
-        for(let i = 0; i < result.length; i++) {
-            if (typeof result[i].references.table == 'string' && result[i].references.table === this.tableName) {
-                if (i == 0 || i == result.length-1) result[i] = JSON.parse(JSON.stringify(result[i])); //clone object to avoid change the original
-                result[i].references.table = this; //adjusts corret reference to model class 
+        for(let i = 0; i < result.length; i++) { 
+            //console.log('NNNNNNNNNNN',i,typeof result[i].references.table,result[i].references.table, this.tableName)
+            if (typeof result[i].references.table == 'string' && (result[i].references.table === this.tableName || result[i].references.table === BaseTableModel.tableName)) {
+                //console.log('adjusting base fk',i,result[i]);
+                if (i == 0 || i == result.length-1) {
+                    result[i] = JSON.parse(JSON.stringify(result[i])); //clone object to avoid change the original
+                    result[i].references.table = this; //adjusts corret reference to model class 
+                } else {
+                    result[i].references.table = this; //adjusts corret reference to model class 
+                    //console.log('NNNNNNNNNNN ADJUSTED STATIC PROPERTY',this.tableName, this.name, result[i], this.baseTableModelForeignsKeys );
+                }                
+                //console.log('adjusted base fk',i,result[i]);
             }
         }
+        //Utils.logf(`${this.name}(BaseTableModel)`,'getBaseTableModelForeignsKeys');
         return result;
     }
 
@@ -333,13 +343,18 @@ export default class BaseTableModel extends Model {
      * @created 2023-11-10
      */
     static async associates() {
+        //Utils.logi(`${this.name}(BaseTableModel)`,'associates');
         let tableRefClassModel = null;
         try {
             let fks = this.getForeignKeys() || [];
+            //console.log('fks',fks);
             for(let i = 0; i < fks.length; i++) {
-
+                //console.log(`fk ${i}`,fks[i]);
                 tableRefClassModel = fks[i].references.table || this; //for re-declare if necessary
-                /*if (typeof tableRefClassModel == 'string') {
+                //console.log('tableRefClassModel',typeof tableRefClassModel, tableRefClassModel);
+                /*
+                @deprecated 2025-04-14 - not use this hard load file, changed models logic to adjust it
+                if (typeof tableRefClassModel == 'string') {
 
                     if (tableRefClassModel.trim().toLocaleLowerCase().indexOf('base') === 0 && tableRefClassModel.trim().toLocaleLowerCase().indexOf('model') > -1) {
                         tableRefClassModel = this.tableName;
@@ -370,13 +385,14 @@ export default class BaseTableModel extends Model {
                     sourceKey: fks[i].references.fields?.join(',') || fks[i].references.field,
                     foreignKey : columnForeign
                 };
+                //console.log(tableRefClassModel);
                 if (tableRefClassModel.tableName.trim() == this.tableName.trim().toLowerCase()) {
                     model = this;
                 } else {
                     model = tableRefClassModel;
                 }                
                 if (model) {
-                    console.log('hasMany params',this.tableName,model?.tableName, hasManyParams);
+                    //console.log('hasMany params',this.tableName,model?.tableName, hasManyParams);
                     let hasMany = model.hasMany(this,hasManyParams);
                     let belongsTo = this.belongsTo(model,belongsToParams);
                 }                
@@ -385,6 +401,7 @@ export default class BaseTableModel extends Model {
             Utils.logError(e);
             throw e;
         } 
+        //Utils.logf(`${this.name}(BaseTableModel)`,'associates');
     }
 
     /**
@@ -393,9 +410,11 @@ export default class BaseTableModel extends Model {
      * @created 2023-11-10
      */
     static async initModel(pSequelize?: any) : Promise<void> {
+        //Utils.logi(`${this.name}(BaseTableModel)`,'initModel');
         try {
             pSequelize = pSequelize || this.getConnection();  
             if (pSequelize) {
+                this.getForeignKeys(); //ajust foreign keys if necessary(string table name -> object table model)
                 this.init(this.fields,{
                     sequelize: pSequelize,
                     underscored:false,
@@ -417,10 +436,13 @@ export default class BaseTableModel extends Model {
         } catch (e) {
             Utils.logError(e);
         }
+        //Utils.logf(`${this.name}(BaseTableModel)`,'initModel');
     }    
       
     static async initAssociations() {
+        //Utils.logi(`${this.name}(BaseTableModel)`,'initAssociations');
         await this.associates();
+        //Utils.logf(`${this.name}(BaseTableModel)`,'initAssociations');
     }
 
     /**

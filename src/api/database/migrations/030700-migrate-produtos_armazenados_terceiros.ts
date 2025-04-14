@@ -3,18 +3,17 @@
 
 import { QueryInterface } from 'sequelize';
 import  Utils  from '../../controllers/utils/Utils.js';
-import  PcDicionarioItemRotCust  from '../models/winthor/PcDicionarioItemRotCust.js';
-
+import  Produtos_Armazenados_Terceiros  from '../models/winthor/Produtos_Armazenados_Terceiros.js';
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/
 export default {
   async up(queryInterface: QueryInterface, Sequelize: any) {
     if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
-      await PcDicionarioItemRotCust.runUpMigration(queryInterface);     
+      await Produtos_Armazenados_Terceiros.runUpMigration(queryInterface);     
     }
   },
   async down(queryInterface: QueryInterface, Sequelize: any) {
-    //await queryInterface.dropTable(PcDicionarioItemRotCust.tableName);
+    //await queryInterface.dropTable(Produtos_Armazenados_Terceiros.tableName);
   }
 };

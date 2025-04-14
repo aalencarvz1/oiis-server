@@ -14,7 +14,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import compression from 'compression';
 import multer from 'multer';
-import AuthController from "./controllers/auth/AuthController.js";
+
 import EndPointsController from './controllers/endpoints/EndPointsController.js';
 import ModelsController from './controllers/database/ModelsController.js';
 import MidiasController from './controllers/modules/registers/MidiasController.js';
@@ -55,28 +55,58 @@ api.use('/files', express.static(path.join(__dirname, '../../files')));
 
 api.use(cookieParser());
 
-//customize response properties
-api.use(EndPointsController.customize_response);
+ModelsController.initModels().then(async ()=>{
 
-//access check
-api.use(AuthController.check_token); //auth token check middleware
+  const AuthController = (await import("./controllers/auth/AuthController.js")).default;
+  
+  //customize response properties
+  api.use(EndPointsController.customize_response);
+
+  //access check
+  api.use(AuthController.check_token); //auth token check middleware
 
 
-//handle upload midias route
-api.post("/api/controllers/modules/registers/midiascontroller/upload_file",upload.array('files'),MidiasController.upload_file);
+  let requestHandlersRootDir = `${__dirname}/controllers`;
+  EndPointsController.loadDefaultEndPoints();
+
+  //base end point is /api/controllers
+  //auto load configure this app with router of all controlers that has methods with request handler signature as a endpoint.
+  await EndPointsController.autoLoadEndPoints(requestHandlersRootDir,"/api/controllers/");
+  api.use(EndPointsController.getRouter());
+
+  //falback (404)
+  api.use((req,res,next) => {
+    res.success = false;
+    res.message = "resource not found";
+    res.sendResponse(404,false);
+  })
+  Utils.log('endpoints',EndPointsController.getEndPoints(EndPointsController.getRouter()));
+
+
+  //handle upload midias route
+  api.post("/api/controllers/modules/registers/midiascontroller/upload_file",upload.array('files'),MidiasController.upload_file);
+
+  api.listen(process.env.API_PORT||3000,function(){
+    Utils.log('FL',`server api running on port ${process.env.API_PORT||3000} at ${new Date()}`)
+  });
+
+}).catch(error=>{
+  console.log(error);
+})
+
+
+
 
 
 //handle all methods and routes
-(async()=>{
+/*(async()=>{
 
   //only controllers can receive requests
   let requestHandlersRootDir = `${__dirname}/controllers`;
   EndPointsController.loadDefaultEndPoints();
 
-  /**
-   * base end point is /api/controllers
-   * auto load configure this app with router of all controlers that has methods with request handler signature as a endpoint.
-   */  
+   //base end point is /api/controllers
+   //auto load configure this app with router of all controlers that has methods with request handler signature as a endpoint.
   await EndPointsController.autoLoadEndPoints(requestHandlersRootDir,"/api/controllers/");
   api.use(EndPointsController.getRouter());
 
@@ -95,4 +125,4 @@ api.listen(process.env.API_PORT||3000,function(){
     Utils.log('FL',`server api running on port ${process.env.API_PORT||3000} at ${new Date()}`)
 });
 
-ModelsController.initModels();
+ModelsController.initModels();*/

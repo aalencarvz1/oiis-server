@@ -50,6 +50,7 @@ export default class Warehouses extends BasePeopleModel {
    * @version 1.0.0
    */
   static getForeignKeys(): any[] {
+    //Utils.logi(this.name,'getForeignKeys');
     let result : any = this.foreignsKeys;
     if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
       result = [];
@@ -70,6 +71,7 @@ export default class Warehouses extends BasePeopleModel {
       });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
+    //Utils.logf(this.name,'getForeignKeys');
     return result;
   }
 
@@ -78,7 +80,9 @@ export default class Warehouses extends BasePeopleModel {
    * static initializer block
    */
   static {
+    //Utils.logi(this.name,'STATIC');
     this.foreignsKeys = this.getForeignKeys();
+    //Utils.logf(this.name,'STATIC');
   }
      
 };

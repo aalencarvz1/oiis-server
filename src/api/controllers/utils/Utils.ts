@@ -26,9 +26,9 @@ export default class Utils {
     static logi(p_nome_classe: string | null,p_nome_funcao:string | null) : void {
         try {
             if (typeof p_nome_funcao !== "undefined") {
-                Utils.log('Inicio ',p_nome_classe + "." + p_nome_funcao);
+                Utils.log('START ',p_nome_classe + "." + p_nome_funcao);
             } else {
-                Utils.log('Inicio ',p_nome_classe);
+                Utils.log('START ',p_nome_classe);
             }
         }catch(e:any){
             Utils.log(e);					  
@@ -39,9 +39,9 @@ export default class Utils {
     static logf(p_nome_classe: string | null,p_nome_funcao:string | null) : void {
         try {
             if (typeof p_nome_funcao !== "undefined") {
-                Utils.log('Fim ',p_nome_classe + "." + p_nome_funcao);
+                Utils.log('END   ',p_nome_classe + "." + p_nome_funcao);
             } else {
-                Utils.log('Fim ',p_nome_classe);
+                Utils.log('END   ',p_nome_classe);
             }
         }catch(e: any){
             Utils.log(e);					  
