@@ -18,6 +18,7 @@ export default class Project_Task_Types extends BaseTableModel {
 
   static id = 15050;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
 
   static TASK = 1;
@@ -53,6 +54,6 @@ export default class Project_Task_Types extends BaseTableModel {
     type:"unique"
   }]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
   
 };

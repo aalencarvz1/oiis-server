@@ -19,6 +19,7 @@ export default class Financial_Value_Localization_Types extends BaseTableModel {
 
   static id = 1033;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
 
   static UNKNOWN = 1; //DESCONHECIDO
@@ -78,6 +79,6 @@ export default class Financial_Value_Localization_Types extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
   
 };

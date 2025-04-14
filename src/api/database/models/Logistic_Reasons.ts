@@ -17,6 +17,7 @@ export default class Logistic_Reasons extends BaseTableModel {
 
   static id = 12002;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
   static fields = {
     ...Logistic_Reasons.getBaseTableModelFields(),...{                 
@@ -34,6 +35,6 @@ export default class Logistic_Reasons extends BaseTableModel {
 
   static constraints = [...(Logistic_Reasons.getBaseTableModelConstraints() || []),...[]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
   
 };

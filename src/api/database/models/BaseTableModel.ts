@@ -1,4 +1,4 @@
-import { DataTypes, Model, Op, QueryInterface, QueryTypes, Sequelize } from "sequelize";
+import { Sequelize, DataTypes, Model, Op, QueryInterface, QueryTypes } from "sequelize";
 import DBConnectionManager from "../DBConnectionManager.js";
 import Utils from "../../controllers/utils/Utils.js";
 import { Request } from "express";
@@ -176,10 +176,33 @@ export default class BaseTableModel extends Model {
         onUpdate: 'cascade'
     }];
 
-    static getBaseTableModelForeignsKeys() : any[] {
+    /*static getBaseTableModelForeignsKeys() : any[] {
         let result :any[] = JSON.parse(JSON.stringify(this.baseTableModelForeignsKeys));
         result[0].references.table = this.tableName;
         return result;
+    }*/
+    static getBaseTableModelForeignsKeys() : any[] {
+        let result :any[] = [];
+        for(let i = 0; i < this.baseTableModelForeignsKeys.length; i++) {
+            result.push(this.baseTableModelForeignsKeys[i]);
+        }        
+        for(let i = 0; i < result.length; i++) {
+            if (typeof result[i].references.table == 'string' && result[i].references.table === this.tableName) {
+                if (i == 0 || i == result.length-1) result[i] = JSON.parse(JSON.stringify(result[i])); //clone object to avoid change the original
+                result[i].references.table = this; //adjusts corret reference to model class 
+            }
+        }
+        return result;
+    }
+
+    /**
+     * @static
+     * @abstract
+     * @created 2025-04-13
+     * @version 1.0.0
+     */
+    static getForeignKeys() : any[] {
+        throw new Error(`abstract method not implement on ${this.tableName}`);
     }
 
     static getTableModelHooks = () => {
@@ -233,24 +256,24 @@ export default class BaseTableModel extends Model {
      * @created 2023-11-10
      */
     static async migrateForeignKeyContraint(queryInterface: QueryInterface, pClassModelRef?: typeof BaseTableModel) {
-        for(let i in (this.foreignsKeys || [])) {
+        for(let i in (this.getForeignKeys() || [])) {
             let foreignKey : any = {};
-            if (typeof this.foreignsKeys[i] === 'object') {
-                for(let key in this.foreignsKeys[i]) {
+            if (typeof this.getForeignKeys()[i] === 'object') {
+                for(let key in this.getForeignKeys()[i]) {
                     if (key.trim().toLowerCase() != 'references') {
-                        foreignKey[key] = this.foreignsKeys[i][key];
+                        foreignKey[key] = this.getForeignKeys()[i][key];
                     } else {
                         foreignKey[key] = {};
-                        if (Utils.hasValue(this.foreignsKeys[i][key].fields)) {
-                            foreignKey[key].fields = this.foreignsKeys[i][key].fields;
+                        if (Utils.hasValue(this.getForeignKeys()[i][key].fields)) {
+                            foreignKey[key].fields = this.getForeignKeys()[i][key].fields;
                         } else {
-                            foreignKey[key].field = this.foreignsKeys[i][key].field;
+                            foreignKey[key].field = this.getForeignKeys()[i][key].field;
                         }
-                        if (Utils.hasValue(this.foreignsKeys[i][key].table)) {
-                            if (typeof this.foreignsKeys[i][key].table == 'string') {
-                                foreignKey[key].table = this.foreignsKeys[i][key].table.toLowerCase();
+                        if (Utils.hasValue(this.getForeignKeys()[i][key].table)) {
+                            if (typeof this.getForeignKeys()[i][key].table == 'string') {
+                                foreignKey[key].table = this.getForeignKeys()[i][key].table.toLowerCase();
                             } else {
-                                foreignKey[key].table = this.foreignsKeys[i][key].table.tableName;
+                                foreignKey[key].table = this.getForeignKeys()[i][key].table.tableName;
                             }
                         } else {
                             foreignKey[key].table = this.tableName;
@@ -271,7 +294,7 @@ export default class BaseTableModel extends Model {
                     await queryInterface.addConstraint(this.tableName, foreignKey);                
                 }
             } else {
-                await queryInterface.sequelize.query(this.foreignsKeys[i]);  
+                await queryInterface.sequelize.query(this.getForeignKeys()[i]);  
             }
         }        
     }
@@ -310,10 +333,10 @@ export default class BaseTableModel extends Model {
     static async associates() {
         let tableRefClassModel = null;
         try {
-            for(let i in (this.foreignsKeys || [])) {
+            for(let i in (this.getForeignKeys() || [])) {
 
-                tableRefClassModel = this.foreignsKeys[i].references.table || this; //for re-declare if necessary
-                if (typeof tableRefClassModel == 'string') {
+                tableRefClassModel = this.getForeignKeys()[i].references.table || this; //for re-declare if necessary
+                /*if (typeof tableRefClassModel == 'string') {
 
                     if (tableRefClassModel.trim().toLocaleLowerCase().indexOf('base') === 0 && tableRefClassModel.trim().toLocaleLowerCase().indexOf('model') > -1) {
                         tableRefClassModel = this.tableName;
@@ -333,15 +356,15 @@ export default class BaseTableModel extends Model {
                     } else {
                         tableRefClassModel = module;
                     }
-                }    
+                }*/    
                 let model = null;
-                let columnForeign = this.foreignsKeys[i].fields.join(',');
+                let columnForeign = this.getForeignKeys()[i].fields.join(',');
                 let belongsToParams  = {
                     foreignKey : columnForeign,
-                    targetKey : this.foreignsKeys[i].references.fields?.join(',') || this.foreignsKeys[i].references.field
+                    targetKey : this.getForeignKeys()[i].references.fields?.join(',') || this.getForeignKeys()[i].references.field
                 };
                 let hasManyParams = {
-                    sourceKey: this.foreignsKeys[i].references.fields?.join(',') || this.foreignsKeys[i].references.field,
+                    sourceKey: this.getForeignKeys()[i].references.fields?.join(',') || this.getForeignKeys()[i].references.field,
                     foreignKey : columnForeign
                 };
                 if (tableRefClassModel.tableName.trim() == this.tableName.trim().toLowerCase()) {
@@ -350,6 +373,7 @@ export default class BaseTableModel extends Model {
                     model = tableRefClassModel;
                 }                
                 if (model) {
+                    console.log('hasMany params',this.tableName,model?.tableName, hasManyParams);
                     let hasMany = model.hasMany(this,hasManyParams);
                     let belongsTo = this.belongsTo(model,belongsToParams);
                 }                
@@ -365,7 +389,7 @@ export default class BaseTableModel extends Model {
      * @static (pay attention to bindings)
      * @created 2023-11-10
      */
-    static initModel(pSequelize?: any) : void {
+    static async initModel(pSequelize?: any) : Promise<void> {
         try {
             pSequelize = pSequelize || this.getConnection();  
             if (pSequelize) {
@@ -386,8 +410,7 @@ export default class BaseTableModel extends Model {
             if (Utils.hasValue(this.removeAttr)) {
                 this.removeAttribute(this.removeAttr);
             } 
-            if (!Utils.hasValue(this.associations))
-                this.associates();           
+            //if (!Utils.hasValue(this.associations)) await this.associates();           
         } catch (e) {
             Utils.logError(e);
         }

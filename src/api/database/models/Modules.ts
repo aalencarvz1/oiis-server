@@ -24,6 +24,7 @@ export default class Modules extends BaseTableModel {
 
   static id = 230;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
 
   static WMS = modules.find((el) => el.name == "WMS")?.id;
@@ -76,7 +77,7 @@ export default class Modules extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
   
 };
 

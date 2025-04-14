@@ -19,6 +19,7 @@ export default class Requirements_Types extends BaseTableModel {
 
   static id = 15019;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
 
   static FUNCTIONAL = 1;
@@ -63,6 +64,6 @@ export default class Requirements_Types extends BaseTableModel {
     }
   }]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
   
 };

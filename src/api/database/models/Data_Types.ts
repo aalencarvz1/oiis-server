@@ -2,6 +2,7 @@
 
 import { DataTypes, Op } from "sequelize";
 import BaseTableModel from "./BaseTableModel.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 
@@ -30,6 +31,8 @@ export default class Data_Types extends BaseTableModel {
   static id = 50;
 
   static tableName = this.name.toLowerCase();
+
+  private static adjustedForeignKeys : boolean = false;
 
   static ANY = 1;
   static STRING = 2;
@@ -191,7 +194,37 @@ export default class Data_Types extends BaseTableModel {
     }
   }]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[])]
+  static foreignsKeys : any[] = [];
+    
+
+  /**
+   * get the foreign keys avoiding ciclyc imports on BaseTableModel
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getForeignKeys(): any[] {
+    let result : any = this.foreignsKeys;
+    if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      let newAdjustedForeignKeys : boolean = true;
+      let baseFks = this.getBaseTableModelForeignsKeys();
+      for(let i = 0; i < baseFks.length; i++) {
+        result.push(baseFks[i]);
+        if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
+      }        
+      this.adjustedForeignKeys = newAdjustedForeignKeys;
+    }
+    return result;
+  }
+
+
+  /**
+   * static initializer block
+   */
+  static {
+    this.foreignsKeys = this.getForeignKeys();
+  }
+   
   
 };
 

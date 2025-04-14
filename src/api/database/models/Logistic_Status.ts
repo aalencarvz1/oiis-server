@@ -22,6 +22,7 @@ export default class Logistic_Status extends BaseTableModel {
 
   static id = 12001;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
 
   static TO_DELIVERY = 1;
@@ -124,6 +125,6 @@ export default class Logistic_Status extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
   
 };

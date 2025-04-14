@@ -16,6 +16,7 @@ export default class Contact_Types extends BaseTableModel {
 
   static id = 2012;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
   static fields = {
     ...Contact_Types.getBaseTableModelFields(),...{           
@@ -38,6 +39,6 @@ export default class Contact_Types extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
   
 };

@@ -22,6 +22,7 @@ export default class Stock_Entity_Relationship_Types extends BaseTableModel {
 
   static id = 8026;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
   static OWNER = 1;
   static fields = {
@@ -104,6 +105,6 @@ export default class Stock_Entity_Relationship_Types extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
   
 };

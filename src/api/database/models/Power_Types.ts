@@ -16,6 +16,7 @@ export default class Power_Types extends BaseTableModel {
 
   static id = 7002;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
 
   static SYSTEM = 1;
@@ -45,6 +46,6 @@ export default class Power_Types extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
   
 };

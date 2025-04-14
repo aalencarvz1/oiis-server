@@ -20,6 +20,7 @@ export default class Report_Visions extends BaseTableModel {
 
   static id = 10002;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
 
   static VALUES = 1;
@@ -81,7 +82,7 @@ export default class Report_Visions extends BaseTableModel {
     }
   }]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
 
   
 };

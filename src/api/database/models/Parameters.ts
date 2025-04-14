@@ -22,6 +22,8 @@ export default class Parameters extends BaseTableModel {
 
   static tableName = this.name.toLowerCase();
 
+  private static adjustedForeignKeys : boolean = false;
+
   static HAS_WINTHOR_INTEGRATION = 1;
   static LOGISTIC_INTEGRATE_AUTOMATIC_CLOSE_BOX_DRIVER = 2;
   static WMS_OUTPUT_INTEGRATION_CHECK_RCA = 3;
@@ -80,4 +82,36 @@ export default class Parameters extends BaseTableModel {
     }
   ]];
   
+
+  static foreignsKeys : any[] = [];
+    
+
+  /**
+   * get the foreign keys avoiding ciclyc imports on BaseTableModel
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getForeignKeys(): any[] {
+    let result : any = this.foreignsKeys;
+    if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      let newAdjustedForeignKeys : boolean = true;
+      let baseFks = this.getBaseTableModelForeignsKeys();
+      for(let i = 0; i < baseFks.length; i++) {
+        result.push(baseFks[i]);
+        if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
+      }        
+      this.adjustedForeignKeys = newAdjustedForeignKeys;
+    }
+    return result;
+  }
+
+
+  /**
+   * static initializer block
+   */
+  static {
+    this.foreignsKeys = this.getForeignKeys();
+  }
+     
 };

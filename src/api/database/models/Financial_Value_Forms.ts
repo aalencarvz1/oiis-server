@@ -23,6 +23,7 @@ export default class Financial_Value_Forms extends BaseTableModel {
 
   static id = 1032;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
 
   static NONE = 1;
@@ -142,7 +143,7 @@ export default class Financial_Value_Forms extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
 
   static getIdByIntegrationId(idOnOrigin: string) {
     let result = Financial_Value_Forms.MONEY;

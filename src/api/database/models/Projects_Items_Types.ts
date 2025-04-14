@@ -18,6 +18,7 @@ export default class Projects_Items_Types extends BaseTableModel {
 
   static id = 15001;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
   
   static PROJECTS = 1;
@@ -74,6 +75,6 @@ export default class Projects_Items_Types extends BaseTableModel {
     type:"unique"
   }]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
   
 };

@@ -18,6 +18,7 @@ export default class Collaborator_Functions extends BaseTableModel {
 
   static id = 6001;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
   static fields = {
     ...Collaborator_Functions.getBaseTableModelFields(),...{           
@@ -68,6 +69,6 @@ export default class Collaborator_Functions extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
   
 };

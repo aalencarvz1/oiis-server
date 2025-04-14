@@ -21,6 +21,7 @@ export default class Movement_Types extends BaseTableModel {
 
   static id = 9000;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
 
   static INPUT = 1;
@@ -108,6 +109,6 @@ export default class Movement_Types extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
   
 };

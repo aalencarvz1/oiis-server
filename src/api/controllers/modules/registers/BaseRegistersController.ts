@@ -25,18 +25,18 @@ export default abstract class BaseRegistersController {
     }
 
     /**
-     * default RequestHandler method to get registers of table model controller
-     * @requesthandler
-     * @created 2024-12-31
+     * default get
+     * @created 2025-04-12
      * @version 1.0.0
      */
-    static async get(req: Request, res: Response, next: NextFunction) : Promise<void> {
+    static async _get(params?: any) : Promise<any> {        
+        let result = null;
         try {
-            let queryParams = req.body.queryParams || req.body;
+            let queryParams = params?.queryParams || params || {};
             queryParams = DatabaseUtils.prepareQueryParams(queryParams);
             queryParams.raw = true;
             if (queryParams.query) {
-                res.data = await this.getTableClassModel().getConnection().query(
+                result = await this.getTableClassModel().getConnection().query(
                     queryParams.query,{
                         raw:queryParams.raw,
                         type:QueryTypes.SELECT
@@ -45,10 +45,28 @@ export default abstract class BaseRegistersController {
             } else {
                 if (((this.getTableClassModel() as any).accessLevel || 1) == 2 ) {
                     queryParams.where = queryParams.where || {};
-                    queryParams.where.creator_user_id = req.user?.id
+                    queryParams.where.creator_user_id = params?.user?.id || null
                 }
-                res.data = await this.getTableClassModel().findAll(queryParams);
+                console.log('queryParams',queryParams);
+                result = await this.getTableClassModel().findAll(queryParams);
             }
+        } catch (e) {
+            console.log(e);
+        }
+        return result;
+    }
+
+    /**
+     * default RequestHandler method to get registers of table model controller
+     * @requesthandler
+     * @created 2024-12-31
+     * @version 1.0.0
+     */
+    static async get(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        try {
+            let params = req.body;
+            params.user = req.user;
+            res.data = await this._get(params);
             res.sendResponse(200,true);
         } catch (e: any) {
             res.setException(e);

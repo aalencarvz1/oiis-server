@@ -18,6 +18,7 @@ export default class Financial_Value_Mov_Types extends BaseTableModel {
 
   static id = 1034;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
 
   static TRANSFERENCE = 1; 
@@ -77,7 +78,7 @@ export default class Financial_Value_Mov_Types extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
 
 
   static getIdByIntegrationId(idOnOrigin: string) {

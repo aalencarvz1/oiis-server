@@ -23,6 +23,7 @@ export default class Maps_Api_Responses extends BaseTableModel {
 
   static id = 20010;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
 
   static fields = {
@@ -58,6 +59,6 @@ export default class Maps_Api_Responses extends BaseTableModel {
 
   static constraints = [...(Maps_Api_Responses.getBaseTableModelConstraints() || []),...[]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
   
 };

@@ -21,6 +21,8 @@ export default class Errors extends BaseTableModel {
     declare data: string;
 
     static tableName = this.name.toLowerCase();
+
+    private static adjustedForeignKeys : boolean = false;
     
     static fields = {
         id: {

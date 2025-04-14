@@ -19,6 +19,7 @@ export default class Logistic_Mov_Types extends BaseTableModel {
 
   static id = 12000;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
 
   static DELIVERY = 1;
@@ -77,6 +78,6 @@ export default class Logistic_Mov_Types extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
   
 };

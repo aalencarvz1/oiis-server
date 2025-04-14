@@ -19,6 +19,7 @@ export default class Warehouse_Address_Types extends BaseTableModel {
 
   static id = 3003;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
   static fields = {
     ...Warehouse_Address_Types.getBaseTableModelFields(),...{           
@@ -69,6 +70,6 @@ export default class Warehouse_Address_Types extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
   
 };

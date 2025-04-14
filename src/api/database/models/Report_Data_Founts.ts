@@ -26,6 +26,7 @@ export default class Report_Data_Founts extends BaseTableModel {
 
   static id = 10005;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
   static fields = {
     ...Report_Data_Founts.getBaseTableModelFields(),...{                 
@@ -70,6 +71,6 @@ export default class Report_Data_Founts extends BaseTableModel {
 
   static constraints = [...(Report_Data_Founts.getBaseTableModelConstraints() || []),...[]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
 
 };

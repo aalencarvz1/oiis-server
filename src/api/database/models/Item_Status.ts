@@ -20,6 +20,7 @@ export default class Item_Status extends BaseTableModel {
 
   static id = 8009;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
 
   static NORMAL = 1;
@@ -82,6 +83,6 @@ export default class Item_Status extends BaseTableModel {
 
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
    
 };

@@ -29,6 +29,7 @@ export default class Ncms extends BaseTableModel {
 
   static id = 8008;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
   static fields = {
     ...Ncms.getBaseTableModelFields(),...{           
@@ -158,6 +159,6 @@ export default class Ncms extends BaseTableModel {
     }
   }]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
   
 };

@@ -17,6 +17,7 @@ export default class Responsible_Person_Qualifications extends BaseExternalDataT
 
   static id = 60010;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   static model = null;
 
   static fields = {

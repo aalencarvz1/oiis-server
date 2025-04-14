@@ -56,7 +56,7 @@ api.use('/files', express.static(path.join(__dirname, '../../files')));
 api.use(cookieParser());
 
 //customize response properties
-api.use(EndPointsController.custom_response);
+api.use(EndPointsController.customize_response);
 
 //access check
 api.use(AuthController.check_token); //auth token check middleware

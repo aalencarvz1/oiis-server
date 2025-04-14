@@ -19,6 +19,7 @@ export default class Project_Item_Origin_Types extends BaseTableModel {
 
   static id = 15005;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
 
   static USER = 1;
@@ -63,6 +64,6 @@ export default class Project_Item_Origin_Types extends BaseTableModel {
     }
   }]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[]];
+  static foreignsKeys : any[] = [];
   
 };
