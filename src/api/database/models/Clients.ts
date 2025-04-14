@@ -27,8 +27,8 @@ export default class Clients extends BasePeopleModel {
       type:"unique"
     }
   ]];
-
-  static foreignsKeys = [...(this.defaultPeopleForeignsKeys || [])];
+  
+  static foreignsKeys : any[] = [];
 
   static async getClientsByIdentifiersDocs(identifiersDocs?: any[] ,options?: any) {    
     let result = null;
@@ -85,7 +85,7 @@ export default class Clients extends BasePeopleModel {
     return result;
   }
 
-  static foreignsKeys : any[] = [];
+  
     
 
   /**

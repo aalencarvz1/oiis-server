@@ -1,6 +1,7 @@
 'use strict';
 
 
+import Utils from "../../controllers/utils/Utils.js";
 import BasePeopleModel from "./BasePeopleModel.js";
 
 
@@ -30,7 +31,6 @@ export default class Collaborators extends BasePeopleModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.defaultPeopleForeignsKeys || [])];
   
 
   static foreignsKeys : any[] = [];

@@ -6,6 +6,7 @@ import BasePeopleModel from "./BasePeopleModel.js";
 import bcrypt from "bcrypt";
 import Access_Profiles from "./Access_Profiles.js";
 import Collaborators from "./Collaborators.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -72,27 +73,7 @@ export default class Users extends BasePeopleModel {
     }
   ]];  
 
-  static foreignsKeys = [...(this.defaultPeopleForeignsKeys||[]),...[    
-    {
-      fields: ['collaborator_id'],
-      type: 'foreign key',
-      references: { 
-          table: Collaborators,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['access_profile_id'],
-      type: 'foreign key',
-      references: { 
-          table: Access_Profiles,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-    
-  ]];
+  static foreignsKeys : any[] = [];
 
   static async createData(params: any) {
     params = params || {};  
@@ -112,7 +93,7 @@ export default class Users extends BasePeopleModel {
   }  
   static patchData = this.updateData;
 
-  static foreignsKeys : any[] = [];
+  
     
 
   /**
@@ -130,6 +111,24 @@ export default class Users extends BasePeopleModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['collaborator_id'],
+        type: 'foreign key',
+        references: { 
+            table: Collaborators,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['access_profile_id'],
+        type: 'foreign key',
+        references: { 
+            table: Access_Profiles,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

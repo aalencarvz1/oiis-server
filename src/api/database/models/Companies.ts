@@ -3,6 +3,7 @@
 
 import  Record_Status  from "./Record_Status.js";
 import  BasePeopleModel  from "./BasePeopleModel.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -28,9 +29,9 @@ export default class Companies extends BasePeopleModel {
       type:"unique"
     }
   ]];
-
-  static foreignsKeys = [...(this.defaultPeopleForeignsKeys || [])];
   
+  static foreignsKeys : any[] = [];
+
   static async getDefaultCompany() {
     if (Companies.#defaultCompany == null) {
       Companies.#defaultCompany = await Companies.findOne({
@@ -43,7 +44,7 @@ export default class Companies extends BasePeopleModel {
   }
 
 
-  static foreignsKeys : any[] = [];
+  
     
 
   /**
