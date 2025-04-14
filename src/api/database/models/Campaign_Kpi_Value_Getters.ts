@@ -7,6 +7,7 @@ import   Campaign_Kpis  from "./Campaign_Kpis.js";
 import Report_Visions from "./Report_Visions.js";
 import Measurement_Units from "./Measurement_Units.js";
 import Campaign_Entities from "./Campaign_Entities.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -145,33 +146,7 @@ export default class Campaign_Kpi_Value_Getters extends BaseTableModel {
     }
   }]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['campaign_kpi_id'],
-    type: 'foreign key',
-    references: { 
-      table: Campaign_Kpis,
-      field: 'id'
-    },
-    onUpdate: 'cascade',
-    onDelete: 'cascade',
-  },{
-    fields: ['report_vision_id'],
-    type: 'foreign key',
-    references: { 
-      table: Report_Visions,
-      field: 'id'
-    },
-    onUpdate: 'cascade'
-  },{
-    fields: ['measurement_unit_id'],
-    type: 'foreign key',
-    references: { 
-      table: Measurement_Units,
-      field: 'id'
-    },
-    onUpdate: 'cascade'
-  }]];
- 
+
   static foreignsKeys : any[] = [];
     
 
@@ -190,6 +165,34 @@ export default class Campaign_Kpi_Value_Getters extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['campaign_kpi_id'],
+        type: 'foreign key',
+        references: { 
+          table: Campaign_Kpis,
+          field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade',
+      });
+      result.push({
+        fields: ['report_vision_id'],
+        type: 'foreign key',
+        references: { 
+          table: Report_Visions,
+          field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['measurement_unit_id'],
+        type: 'foreign key',
+        references: { 
+          table: Measurement_Units,
+          field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

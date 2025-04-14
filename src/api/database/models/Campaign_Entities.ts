@@ -5,6 +5,7 @@ import { DataTypes, Sequelize } from "sequelize";
 import  BaseTableModel  from './BaseTableModel.js';
 
 import  Campaigns  from "./Campaigns.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -66,18 +67,7 @@ export default class Campaign_Entities extends BaseTableModel {
     type:"unique"
   }]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['campaign_id'],
-      type: 'foreign key',
-      references: { 
-          table: Campaigns,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    }
-  ]];
+  static foreignsKeys : any[] = [];
 
 
   /**
@@ -95,9 +85,7 @@ export default class Campaign_Entities extends BaseTableModel {
         }
     };
   }
-
-  static foreignsKeys : any[] = [];
-    
+      
 
   /**
    * get the foreign keys avoiding ciclyc imports on BaseTableModel
@@ -114,6 +102,16 @@ export default class Campaign_Entities extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['campaign_id'],
+        type: 'foreign key',
+        references: { 
+            table: Campaigns,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

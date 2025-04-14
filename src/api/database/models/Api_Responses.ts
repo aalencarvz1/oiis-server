@@ -4,6 +4,7 @@
 import { DataTypes } from "sequelize";
 import  BaseTableModel  from './BaseTableModel.js';
 import  Api_Request_Calls  from "./Api_Request_Calls.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -42,18 +43,6 @@ export default class Api_Responses extends BaseTableModel {
 
   static constraints = [...(Api_Responses.getBaseTableModelConstraints() || []),...[]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['api_request_call_id'],
-    type: 'foreign key',
-    references: { 
-        table: Api_Request_Calls,
-        field: 'id'
-    },    
-    onUpdate: 'cascade',
-    onDelete: 'cascade'
-  }]];
-
-
   static foreignsKeys : any[] = [];
     
 
@@ -72,6 +61,16 @@ export default class Api_Responses extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['api_request_call_id'],
+        type: 'foreign key',
+        references: { 
+            table: Api_Request_Calls,
+            field: 'id'
+        },    
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

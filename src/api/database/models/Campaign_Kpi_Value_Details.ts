@@ -5,6 +5,7 @@ import { DataTypes, Op } from "sequelize";
 import  BaseTableModel  from './BaseTableModel.js';
 import  Campaign_Kpi_Value_Getters  from "./Campaign_Kpi_Value_Getters.js";
 import  Entities_Types  from "./Entities_Types.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -65,24 +66,6 @@ export default class Campaign_Kpi_Value_Details extends BaseTableModel {
     }
   }]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['campaign_kpi_value_getters_id'],
-    type: 'foreign key',
-    references: { 
-        table: Campaign_Kpi_Value_Getters,
-        field: 'id'
-    },
-    onUpdate: 'cascade',
-    onDelete: 'cascade'
-  },{
-    fields: ['entity_type_id'],
-    type: 'foreign key',
-    references: { 
-        table: Entities_Types,
-        field: 'id'
-    },
-    onUpdate: 'cascade'
-  }]];
  
   static foreignsKeys : any[] = [];
     
@@ -102,6 +85,25 @@ export default class Campaign_Kpi_Value_Details extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['campaign_kpi_value_getters_id'],
+        type: 'foreign key',
+        references: { 
+            table: Campaign_Kpi_Value_Getters,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['entity_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Entities_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

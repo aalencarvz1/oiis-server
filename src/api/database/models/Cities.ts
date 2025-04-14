@@ -4,6 +4,7 @@
 import { DataTypes } from "sequelize";
 import  BaseTableModel  from './BaseTableModel.js';
 import  States  from "./States.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -62,17 +63,6 @@ export default class Cities extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['state_id'],
-      type: 'foreign key',
-      references: { 
-          table: States,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
 
   static foreignsKeys : any[] = [];
     
@@ -92,6 +82,15 @@ export default class Cities extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['state_id'],
+        type: 'foreign key',
+        references: { 
+            table: States,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

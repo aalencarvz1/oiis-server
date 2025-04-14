@@ -5,6 +5,7 @@ import { DataTypes, Op, Sequelize } from "sequelize";
 import  BaseTableModel  from './BaseTableModel.js';
 import  Campaign_Kpis  from "./Campaign_Kpis.js";
 import Campaign_Entities from "./Campaign_Entities.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 
@@ -102,18 +103,6 @@ export default class Campaign_Kpi_Result_Values extends BaseTableModel {
     }
   }]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['campaign_kpi_id'],
-      type: 'foreign key',
-      references: { 
-        table: Campaign_Kpis,
-        field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    }
-  ]];
 
   static foreignsKeys : any[] = [];
     
@@ -133,6 +122,16 @@ export default class Campaign_Kpi_Result_Values extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['campaign_kpi_id'],
+        type: 'foreign key',
+        references: { 
+          table: Campaign_Kpis,
+          field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

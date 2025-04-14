@@ -5,6 +5,7 @@ import { Sequelize, DataTypes, Op } from "sequelize";
 import  BaseTableModel  from './BaseTableModel.js';
 import  Collaborator_Functions  from "./Collaborator_Functions.js";
 import  Collaborator_Contracts  from "./Collaborator_Contracts.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -76,26 +77,6 @@ export default class Collaborators_X_Functions extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['contrract_id'],
-      type: 'foreign key',
-      references: { 
-          table: Collaborator_Contracts,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['function_id'],
-      type: 'foreign key',
-      references: { 
-          table: Collaborator_Functions,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
 
   static foreignsKeys : any[] = [];
     
@@ -114,7 +95,25 @@ export default class Collaborators_X_Functions extends BaseTableModel {
       for(let i = 0; i < baseFks.length; i++) {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
-      }        
+      }      
+      result.push({
+        fields: ['contrract_id'],
+        type: 'foreign key',
+        references: { 
+            table: Collaborator_Contracts,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['function_id'],
+        type: 'foreign key',
+        references: { 
+            table: Collaborator_Functions,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

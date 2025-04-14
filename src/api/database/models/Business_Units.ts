@@ -4,6 +4,7 @@
 import { DataTypes } from "sequelize";
 import  Companies  from "./Companies.js";
 import  BasePeopleModel  from "./BasePeopleModel.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -39,17 +40,6 @@ export default class Business_Units extends BasePeopleModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.defaultPeopleForeignsKeys || []),...[
-    {
-      fields: ['company_id'],
-      type: 'foreign key',
-      references: { 
-          table: Companies,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
 
   static foreignsKeys : any[] = [];
     
@@ -69,6 +59,15 @@ export default class Business_Units extends BasePeopleModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['company_id'],
+        type: 'foreign key',
+        references: { 
+            table: Companies,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

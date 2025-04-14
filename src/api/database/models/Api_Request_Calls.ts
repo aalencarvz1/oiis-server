@@ -5,6 +5,7 @@ import { DataTypes } from "sequelize";
 import  BaseTableModel  from './BaseTableModel.js';
 import  Run_Status  from "./Run_Status.js";
 import  Api_Requests  from "./Api_Requests.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -44,26 +45,6 @@ export default class Api_Request_Calls extends BaseTableModel {
 
   static constraints = [...(Api_Request_Calls.getBaseTableModelConstraints() || []),...[]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['api_request_id'],
-    type: 'foreign key',
-    references: { 
-        table: Api_Requests,
-        field: 'id'
-    },    
-    onUpdate: 'cascade',
-    onDelete: 'cascade'
-  },{
-    fields: ['run_status_id'],
-    type: 'foreign key',
-    references: { 
-        table: Run_Status,
-        field: 'id'
-    },    
-    onUpdate: 'cascade'
-  }]];
-
-
   static foreignsKeys : any[] = [];
       
   
@@ -82,6 +63,25 @@ export default class Api_Request_Calls extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['api_request_id'],
+        type: 'foreign key',
+        references: { 
+            table: Api_Requests,
+            field: 'id'
+        },    
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['run_status_id'],
+        type: 'foreign key',
+        references: { 
+            table: Run_Status,
+            field: 'id'
+        },    
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

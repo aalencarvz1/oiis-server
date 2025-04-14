@@ -5,6 +5,7 @@ import { Sequelize, DataTypes, Op } from "sequelize";
 import  BaseTableModel  from './BaseTableModel.js';
 import  Collaborators  from "./Collaborators.js";
 import  Contract_Types  from "./Contract_Types.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -76,27 +77,6 @@ export default class Collaborator_Contracts extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['collaborator_id'],
-      type: 'foreign key',
-      references: { 
-          table: Collaborators,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['contract_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Contract_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
-
   static foreignsKeys : any[] = [];
     
 
@@ -115,6 +95,24 @@ export default class Collaborator_Contracts extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['collaborator_id'],
+        type: 'foreign key',
+        references: { 
+            table: Collaborators,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['contract_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Contract_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;
