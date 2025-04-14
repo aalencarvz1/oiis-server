@@ -6,6 +6,7 @@ import  BaseTableModel  from './BaseTableModel.js';
 import  Movements  from "./Movements.js";
 import  Stock_Entities  from "./Stock_Entities.js";
 import  Movement_Entity_Relationship_Types  from "./Movement_Entity_Relationship_Types.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -69,36 +70,6 @@ export default class Movements_Entities extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['mov_id'],
-      type: 'foreign key',
-      references: { 
-          table: Movements,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },
-    {
-      fields: ['movement_relationship_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Movement_Entity_Relationship_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['stock_entity_id'],
-      type: 'foreign key',
-      references: { 
-          table: Stock_Entities,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
   
   static foreignsKeys : any[] = [];
     
@@ -117,7 +88,35 @@ export default class Movements_Entities extends BaseTableModel {
       for(let i = 0; i < baseFks.length; i++) {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
-      }        
+      }     
+      result.push({
+        fields: ['mov_id'],
+        type: 'foreign key',
+        references: { 
+            table: Movements,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['movement_relationship_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Movement_Entity_Relationship_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['stock_entity_id'],
+        type: 'foreign key',
+        references: { 
+            table: Stock_Entities,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

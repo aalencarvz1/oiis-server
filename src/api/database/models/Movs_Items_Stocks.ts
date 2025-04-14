@@ -7,6 +7,7 @@ import  Movements  from "./Movements.js";
 import  Item_Stocks  from "./Item_Stocks.js";
 import  Movement_Status  from "./Movement_Status.js";
 import  Movement_Types  from "./Movement_Types.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -85,45 +86,6 @@ export default class Movs_Items_Stocks extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['mov_id'],
-      type: 'foreign key',
-      references: { 
-          table: Movements,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },
-    {
-      fields: ['type_mov_id'],
-      type: 'foreign key',
-      references: { 
-          table: Movement_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['stock_item_id'],
-      type: 'foreign key',
-      references: { 
-          table: Item_Stocks,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['status_mov_id'],
-      type: 'foreign key',
-      references: { 
-          table: Movement_Status,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
   
   static foreignsKeys : any[] = [];
     
@@ -142,7 +104,44 @@ export default class Movs_Items_Stocks extends BaseTableModel {
       for(let i = 0; i < baseFks.length; i++) {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
-      }        
+      }       
+      result.push({
+        fields: ['mov_id'],
+        type: 'foreign key',
+        references: { 
+            table: Movements,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['type_mov_id'],
+        type: 'foreign key',
+        references: { 
+            table: Movement_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['stock_item_id'],
+        type: 'foreign key',
+        references: { 
+            table: Item_Stocks,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['status_mov_id'],
+        type: 'foreign key',
+        references: { 
+            table: Movement_Status,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

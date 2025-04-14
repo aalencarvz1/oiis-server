@@ -5,6 +5,7 @@ import { DataTypes } from "sequelize";
 import  BaseTableModel  from './BaseTableModel.js';
 import  Movement_Groups  from "./Movement_Groups.js";
 import  Movements  from "./Movements.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -62,26 +63,6 @@ export default class Movements_Groups extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['movement_group_id'],
-      type: 'foreign key',
-      references: { 
-          table: Movement_Groups,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['mov_id'],
-      type: 'foreign key',
-      references: { 
-          table: Movements,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
   
   static foreignsKeys : any[] = [];
     
@@ -101,6 +82,24 @@ export default class Movements_Groups extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['movement_group_id'],
+        type: 'foreign key',
+        references: { 
+            table: Movement_Groups,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['mov_id'],
+        type: 'foreign key',
+        references: { 
+            table: Movements,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

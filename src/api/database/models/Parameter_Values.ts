@@ -4,6 +4,7 @@ import { DataTypes, Sequelize } from "sequelize";
 import BaseTableModel from "./BaseTableModel.js";
 import Parameters from "./Parameters.js";
 import Tables from "./Tables.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 
@@ -62,24 +63,7 @@ export default class Parameter_Values extends BaseTableModel {
 
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['parameter_id'],
-    type: 'foreign key',
-    references: { 
-        table: Parameters,
-        field: 'id'
-    },
-    onUpdate: 'cascade',
-    onDelete: 'cascade'
-  },{
-    fields: ['table_id'],
-    type: 'foreign key',
-    references: { 
-        table: Tables,
-        field: 'id'
-    },
-    onUpdate: 'cascade'
-  }]];
+  static foreignsKeys : any[] = [];
 
   static async get(pIdParameter: number) {
     let result : any = null;
@@ -97,8 +81,7 @@ export default class Parameter_Values extends BaseTableModel {
     }
     return result;
   }
-
-  static foreignsKeys : any[] = [];
+  
     
 
   /**
@@ -116,6 +99,25 @@ export default class Parameter_Values extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['parameter_id'],
+        type: 'foreign key',
+        references: { 
+            table: Parameters,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['table_id'],
+        type: 'foreign key',
+        references: { 
+            table: Tables,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

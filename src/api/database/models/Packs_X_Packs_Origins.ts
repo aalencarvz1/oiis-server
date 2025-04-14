@@ -5,6 +5,7 @@ import { Sequelize, DataTypes } from "sequelize";
 import  BaseTableModel  from './BaseTableModel.js';
 import  Packagings  from "./Packagings.js";
 import  Suppliers  from "./Suppliers.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -54,35 +55,6 @@ export default class Packs_X_Packs_Origins extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    /*{
-      fields: ['data_origin_id'],
-      type: 'foreign key',
-      references: { 
-          table: Data_Origins,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },*/
-    {
-      fields: ['supplier_id'],
-      type: 'foreign key',
-      references: { 
-          table: Suppliers,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },{
-      fields: ['packaging_id'],
-      type: 'foreign key',
-      references: { 
-          table: Packagings,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
-  
 
   static foreignsKeys : any[] = [];
     
@@ -102,6 +74,24 @@ export default class Packs_X_Packs_Origins extends BaseTableModel {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
       }        
+      result.push({
+        fields: ['supplier_id'],
+        type: 'foreign key',
+        references: { 
+            table: Suppliers,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['packaging_id'],
+        type: 'foreign key',
+        references: { 
+            table: Packagings,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;

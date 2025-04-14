@@ -18,6 +18,7 @@ import  Companies  from "./Companies.js";
 import  Suppliers  from "./Suppliers.js";
 import  Collaborators  from "./Collaborators.js";
 import  Financial_Value_Forms  from "./Financial_Value_Forms.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -111,107 +112,7 @@ export default class Movements extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['type_mov_id'],
-      type: 'foreign key',
-      references: { 
-          table: Movement_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['identifier_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Identifier_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['status_mov_id'],
-      type: 'foreign key',
-      references: { 
-          table: Action_Status,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['conference_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Conference_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['company_id'],
-      type: 'foreign key',
-      references: { 
-          table: Companies,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['warehouse_id'],
-      type: 'foreign key',
-      references: { 
-          table: Warehouses,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['business_unit_id'],
-      type: 'foreign key',
-      references: { 
-          table: Business_Units,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['supplier_id'],
-      type: 'foreign key',
-      references: { 
-          table: Suppliers,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['client_id'],
-      type: 'foreign key',
-      references: { 
-          table: Clients,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['seller_id'],
-      type: 'foreign key',
-      references: { 
-          table: Collaborators,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['financial_value_form_id'],
-      type: 'foreign key',
-      references: { 
-          table: Financial_Value_Forms,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }    
-  ]];
+  static foreignsKeys : any[] = [];
   
   static async createIfNotExists(queryParams: any, newValues: any, businessUnit?: any, warehouse?: any, client?: any){
     let reg = await BaseTableModel.createIfNotExists.bind(Movements)(queryParams,newValues);
@@ -351,7 +252,7 @@ export default class Movements extends BaseTableModel {
   } 
 
 
-  static foreignsKeys : any[] = [];
+  
     
 
   /**
@@ -368,7 +269,106 @@ export default class Movements extends BaseTableModel {
       for(let i = 0; i < baseFks.length; i++) {
         result.push(baseFks[i]);
         if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
-      }        
+      }       
+      result.push({
+        fields: ['type_mov_id'],
+        type: 'foreign key',
+        references: { 
+            table: Movement_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['identifier_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Identifier_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['status_mov_id'],
+        type: 'foreign key',
+        references: { 
+            table: Action_Status,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['conference_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Conference_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['company_id'],
+        type: 'foreign key',
+        references: { 
+            table: Companies,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['warehouse_id'],
+        type: 'foreign key',
+        references: { 
+            table: Warehouses,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['business_unit_id'],
+        type: 'foreign key',
+        references: { 
+            table: Business_Units,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['supplier_id'],
+        type: 'foreign key',
+        references: { 
+            table: Suppliers,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['client_id'],
+        type: 'foreign key',
+        references: { 
+            table: Clients,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['seller_id'],
+        type: 'foreign key',
+        references: { 
+            table: Collaborators,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['financial_value_form_id'],
+        type: 'foreign key',
+        references: { 
+            table: Financial_Value_Forms,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
       this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     return result;
