@@ -9,6 +9,7 @@ import  Warehouse_Addresses  from "./Warehouse_Addresses.js";
 import  Stock_Entity_Relationship_Types  from "./Stock_Entity_Relationship_Types.js";
 import  Stock_Entities  from "./Stock_Entities.js";
 import  Items_Lots_Containers  from "./Items_Lots_Containers.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 
@@ -38,6 +39,7 @@ export default class Item_Stocks extends BaseTableModel{
 
   static id = 8030;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
   static fields = {
     ...Item_Stocks.getBaseTableModelFields(),...{           
@@ -121,69 +123,104 @@ export default class Item_Stocks extends BaseTableModel{
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['item_lot_container_id'],
-      type: 'foreign key',
-      references: { 
-          table: Items_Lots_Containers,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['stock_relationship_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Stock_Entity_Relationship_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['stock_entity_id'],
-      type: 'foreign key',
-      references: { 
-          table: Stock_Entities,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['warehouse_address_id'],
-      type: 'foreign key',
-      references: { 
-          table: Warehouse_Addresses,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['item_stock_status_id'],
-      type: 'foreign key',
-      references: { 
-          table: Item_Status,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['measurement_unit_id'],
-      type: 'foreign key',
-      references: { 
-          table: Measurement_Units,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['packaging_id'],
-      type: 'foreign key',
-      references: { 
-          table: Packagings,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
+
+  static foreignsKeys : any[] = [];
+    
+
+  /**
+   * get the foreign keys avoiding ciclyc imports on BaseTableModel
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getForeignKeys(): any[] {
+    //Utils.logi(this.name,'getForeignKeys');
+    let result : any = this.foreignsKeys;
+    if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      result = [];
+      let newAdjustedForeignKeys : boolean = true;
+      let baseFks = this.getBaseTableModelForeignsKeys();
+      for(let i = 0; i < baseFks.length; i++) {
+        result.push(baseFks[i]);
+        if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
+      }        
+      result.push({
+        fields: ['item_lot_container_id'],
+        type: 'foreign key',
+        references: { 
+            table: Items_Lots_Containers,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['stock_relationship_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Stock_Entity_Relationship_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['stock_entity_id'],
+        type: 'foreign key',
+        references: { 
+            table: Stock_Entities,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['warehouse_address_id'],
+        type: 'foreign key',
+        references: { 
+            table: Warehouse_Addresses,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['item_stock_status_id'],
+        type: 'foreign key',
+        references: { 
+            table: Item_Status,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['measurement_unit_id'],
+        type: 'foreign key',
+        references: { 
+            table: Measurement_Units,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['packaging_id'],
+        type: 'foreign key',
+        references: { 
+            table: Packagings,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
-  ]];  
+    //Utils.logf(this.name,'getForeignKeys');
+    return result;
+  }
+
+
+  /**
+   * static initializer block
+   */
+  static {
+    //Utils.logi(this.name,'STATIC');
+    this.foreignsKeys = this.getForeignKeys();
+    //Utils.logf(this.name,'STATIC');
+  }
+     
 };

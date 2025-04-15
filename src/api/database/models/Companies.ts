@@ -3,6 +3,7 @@
 
 import  Record_Status  from "./Record_Status.js";
 import  BasePeopleModel  from "./BasePeopleModel.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -10,6 +11,7 @@ import  BasePeopleModel  from "./BasePeopleModel.js";
 export default class Companies extends BasePeopleModel {
   static id = 3000;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
 
   static #defaultCompany : any = null;
@@ -27,9 +29,9 @@ export default class Companies extends BasePeopleModel {
       type:"unique"
     }
   ]];
-
-  static foreignsKeys = [...(this.defaultPeopleForeignsKeys || [])];
   
+  static foreignsKeys : any[] = [];
+
   static async getDefaultCompany() {
     if (Companies.#defaultCompany == null) {
       Companies.#defaultCompany = await Companies.findOne({
@@ -41,4 +43,41 @@ export default class Companies extends BasePeopleModel {
     return Companies.#defaultCompany;
   }
 
+
+  
+    
+
+  /**
+   * get the foreign keys avoiding ciclyc imports on BaseTableModel
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getForeignKeys(): any[] {
+    //Utils.logi(this.name,'getForeignKeys');
+    let result : any = this.foreignsKeys;
+    if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      result = [];
+      let newAdjustedForeignKeys : boolean = true;
+      let baseFks = this.getBaseTableModelForeignsKeys();
+      for(let i = 0; i < baseFks.length; i++) {
+        result.push(baseFks[i]);
+        if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
+      }        
+      this.adjustedForeignKeys = newAdjustedForeignKeys;
+    }
+    //Utils.logf(this.name,'getForeignKeys');
+    return result;
+  }
+
+
+  /**
+   * static initializer block
+   */
+  static {
+    //Utils.logi(this.name,'STATIC');
+    this.foreignsKeys = this.getForeignKeys();
+    //Utils.logf(this.name,'STATIC');
+  }
+   
 };

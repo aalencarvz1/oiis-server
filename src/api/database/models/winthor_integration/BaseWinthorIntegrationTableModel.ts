@@ -84,7 +84,7 @@ export default class BaseWinthorIntegrationTableModel extends BaseTableModel {
      * @static (pay attention to bindings)
      * @created 2023-11-10
      */
-    static initModel(pSequelize?: any) {
+    static async initModel(pSequelize?: any) : Promise<void> {
         try {
             pSequelize = pSequelize || this.getConnection();  
             if (pSequelize) {
@@ -110,6 +110,5 @@ export default class BaseWinthorIntegrationTableModel extends BaseTableModel {
         } catch (e) {
             Utils.logError(e);
         }
-        return this;
     }
 };

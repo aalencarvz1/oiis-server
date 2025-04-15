@@ -8,6 +8,7 @@ import  Packagings  from "./Packagings.js";
 import  Movement_Status  from "./Movement_Status.js";
 import  Movement_Types  from "./Movement_Types.js";
 import  Movs_Items_Stocks  from "./Movs_Items_Stocks.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -35,6 +36,7 @@ export default class Item_Mov_Amounts extends BaseTableModel {
 
   static id = 9035;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
   static fields = {
     ...Item_Mov_Amounts.getBaseTableModelFields(),...{                 
@@ -111,53 +113,87 @@ export default class Item_Mov_Amounts extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['mov_item_stock_id'],
-      type: 'foreign key',
-      references: { 
-          table: Movs_Items_Stocks,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },
-    {
-      fields: ['type_mov_id'],
-      type: 'foreign key',
-      references: { 
-          table: Movement_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['measurement_unit_id'],
-      type: 'foreign key',
-      references: { 
-          table: Measurement_Units,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['packaging_id'],
-      type: 'foreign key',
-      references: { 
-          table: Packagings,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['status_mov_id'],
-      type: 'foreign key',
-      references: { 
-          table: Movement_Status,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
   
+  static foreignsKeys : any[] = [];
+    
+
+  /**
+   * get the foreign keys avoiding ciclyc imports on BaseTableModel
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getForeignKeys(): any[] {
+    //Utils.logi(this.name,'getForeignKeys');
+    let result : any = this.foreignsKeys;
+    if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      result = [];
+      let newAdjustedForeignKeys : boolean = true;
+      let baseFks = this.getBaseTableModelForeignsKeys();
+      for(let i = 0; i < baseFks.length; i++) {
+        result.push(baseFks[i]);
+        if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
+      }        
+      result.push({
+        fields: ['mov_item_stock_id'],
+        type: 'foreign key',
+        references: { 
+            table: Movs_Items_Stocks,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['type_mov_id'],
+        type: 'foreign key',
+        references: { 
+            table: Movement_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['measurement_unit_id'],
+        type: 'foreign key',
+        references: { 
+            table: Measurement_Units,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['packaging_id'],
+        type: 'foreign key',
+        references: { 
+            table: Packagings,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['status_mov_id'],
+        type: 'foreign key',
+        references: { 
+            table: Movement_Status,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      this.adjustedForeignKeys = newAdjustedForeignKeys;
+    }
+    //Utils.logf(this.name,'getForeignKeys');
+    return result;
+  }
+
+
+  /**
+   * static initializer block
+   */
+  static {
+    //Utils.logi(this.name,'STATIC');
+    this.foreignsKeys = this.getForeignKeys();
+    //Utils.logf(this.name,'STATIC');
+  }
+     
 };

@@ -5,6 +5,7 @@ import  BaseTableModel  from './BaseTableModel.js';
 import  Lots  from "./Lots.js";
 import  Items  from "./Items.js";
 import  Containers  from "./Containers.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -22,6 +23,7 @@ export default class Items_Lots_Containers extends BaseTableModel {
 
   static id = 8020;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
 
   static WITHOUT_CONTEINER = 1;
@@ -60,37 +62,69 @@ export default class Items_Lots_Containers extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['item_id'],
-      type: 'foreign key',
-      references: { 
-          table: Items,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['lot_id'],
-      type: 'foreign key',
-      references: { 
-          table: Lots,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['container_id'],
-      type: 'foreign key',
-      references: { 
-          table: Containers,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
   
+  static foreignsKeys : any[] = [];
+    
 
-  
+  /**
+   * get the foreign keys avoiding ciclyc imports on BaseTableModel
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getForeignKeys(): any[] {
+    //Utils.logi(this.name,'getForeignKeys');
+    let result : any = this.foreignsKeys;
+    if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      result = [];
+      let newAdjustedForeignKeys : boolean = true;
+      let baseFks = this.getBaseTableModelForeignsKeys();
+      for(let i = 0; i < baseFks.length; i++) {
+        result.push(baseFks[i]);
+        if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
+      }        
+      result.push({
+        fields: ['item_id'],
+        type: 'foreign key',
+        references: { 
+            table: Items,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['lot_id'],
+        type: 'foreign key',
+        references: { 
+            table: Lots,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['container_id'],
+        type: 'foreign key',
+        references: { 
+            table: Containers,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      this.adjustedForeignKeys = newAdjustedForeignKeys;
+    }
+    //Utils.logf(this.name,'getForeignKeys');
+    return result;
+  }
+
+
+  /**
+   * static initializer block
+   */
+  static {
+    //Utils.logi(this.name,'STATIC');
+    this.foreignsKeys = this.getForeignKeys();
+    //Utils.logf(this.name,'STATIC');
+  }
+    
 
 };

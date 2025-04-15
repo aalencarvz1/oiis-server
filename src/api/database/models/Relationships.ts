@@ -56,6 +56,7 @@ export default class Relationships extends BaseTableModel {
 
   static id = 1001;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
   static fields = {
     ...Relationships.getBaseTableModelFields(),...{     
@@ -196,70 +197,36 @@ export default class Relationships extends BaseTableModel {
       fields: [...Relationships.getBaseTableModelUniqueFields(),...Relationships.uniqueFields],
       type:"unique"
     },{
-          name: Relationships.tableName + '_c_1',
-          fields:['boolean_value_1'],
-          type:"check",
-          where:{
-            boolean_value_1: {
-                  [Op.in]: [0,1]
-              }
+      name: Relationships.tableName + '_c_1',
+      fields:['boolean_value_1'],
+      type:"check",
+      where:{
+        boolean_value_1: {
+              [Op.in]: [0,1]
           }
-        },{
-          name: Relationships.tableName + '_c_2',
-          fields:['boolean_value_2'],
-          type:"check",
-          where:{
-            boolean_value_2: {
-                  [Op.in]: [0,1]
-              }
+      }
+    },{
+      name: Relationships.tableName + '_c_2',
+      fields:['boolean_value_2'],
+      type:"check",
+      where:{
+        boolean_value_2: {
+              [Op.in]: [0,1]
           }
-        },{
-          name: Relationships.tableName + '_c_3',
-          fields:['boolean_value_3'],
-          type:"check",
-          where:{
-            boolean_value_3: {
-                  [Op.in]: [0,1]
-              }
+      }
+    },{
+      name: Relationships.tableName + '_c_3',
+      fields:['boolean_value_3'],
+      type:"check",
+      where:{
+        boolean_value_3: {
+              [Op.in]: [0,1]
           }
-        }
-  ]];
-
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys() || []),...[
-    {
-      fields: ['relationship_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Relationship_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },{
-      fields: ['table_1_id'],
-      type: 'foreign key',
-      references: { 
-          table: Tables,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },{
-      fields: ['table_2_id'],
-      type: 'foreign key',
-      references: { 
-          table: Tables,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },{
-      fields: ['context_id'],
-      type: 'foreign key',
-      references: { 
-          table: Contexts,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
+      }
     }
   ]];
+
+  static foreignsKeys : any[] = [];
 
   static async createIfNotExistsAndRelationed(queryParams: any, newValues: any, queryParamsRelationshipCheck: any){
     let reg : any = await Relationships.findOne(queryParams);
@@ -279,9 +246,77 @@ export default class Relationships extends BaseTableModel {
       reg = await Relationships.create(values,options);
     }
     return reg;
+  }  
+    
+
+  /**
+   * get the foreign keys avoiding ciclyc imports on BaseTableModel
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getForeignKeys(): any[] {
+    //Utils.logi(this.name,'getForeignKeys');
+    let result : any = this.foreignsKeys;
+    if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      result = [];
+      let newAdjustedForeignKeys : boolean = true;
+      let baseFks = this.getBaseTableModelForeignsKeys();
+      for(let i = 0; i < baseFks.length; i++) {
+        result.push(baseFks[i]);
+        if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
+      }       
+      result.push({
+        fields: ['relationship_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Relationship_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['table_1_id'],
+        type: 'foreign key',
+        references: { 
+            table: Tables,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['table_2_id'],
+        type: 'foreign key',
+        references: { 
+            table: Tables,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['context_id'],
+        type: 'foreign key',
+        references: { 
+            table: Contexts,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      this.adjustedForeignKeys = newAdjustedForeignKeys;
+    }
+    //Utils.logf(this.name,'getForeignKeys');
+    return result;
   }
 
 
-  
+  /**
+   * static initializer block
+   */
+  static {
+    //Utils.logi(this.name,'STATIC');
+    this.foreignsKeys = this.getForeignKeys();
+    //Utils.logf(this.name,'STATIC');
+  }
+     
   
 };

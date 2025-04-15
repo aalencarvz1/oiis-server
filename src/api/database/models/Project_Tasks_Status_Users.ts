@@ -6,6 +6,7 @@ import  BaseTableModel  from './BaseTableModel.js';
 import  Users  from "./Users.js";
 import  Task_Status  from "./Task_Status.js";
 import  Project_Tasks  from "./Project_Tasks.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -29,6 +30,7 @@ export default class Project_Tasks_Status_Users extends BaseTableModel {
 
   static id = 15152;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
 
   static fields = {
@@ -84,43 +86,81 @@ export default class Project_Tasks_Status_Users extends BaseTableModel {
     type:"unique"
   }]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['task_id'],
-      type: 'foreign key',
-      references: { 
-          table: Project_Tasks,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },{
-      fields: ['user_id'],
-      type: 'foreign key',
-      references: { 
-          table: Users,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
-    },{
-      fields: ['status_id'],
-      type: 'foreign key',
-      references: { 
-          table: Task_Status,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },{
-      fields: ['triggering_id'],
-      type: 'foreign key',
-      references: { 
-          table: Project_Tasks_Status_Users,
-          field: 'id'
-      },
-      onUpdate: 'cascade',
-      onDelete: 'set null'
-    }    
-  ]];
+
+  static foreignsKeys : any[] = [];
+    
+
+  /**
+   * get the foreign keys avoiding ciclyc imports on BaseTableModel
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getForeignKeys(): any[] {
+    //Utils.logi(this.name,'getForeignKeys');
+    let result : any = this.foreignsKeys;
+    if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      result = [];
+      let newAdjustedForeignKeys : boolean = true;
+      let baseFks = this.getBaseTableModelForeignsKeys();
+      for(let i = 0; i < baseFks.length; i++) {
+        result.push(baseFks[i]);
+        if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
+      }       
+      result.push({
+        fields: ['task_id'],
+        type: 'foreign key',
+        references: { 
+            table: Project_Tasks,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['user_id'],
+        type: 'foreign key',
+        references: { 
+            table: Users,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+      result.push({
+        fields: ['status_id'],
+        type: 'foreign key',
+        references: { 
+            table: Task_Status,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['triggering_id'],
+        type: 'foreign key',
+        references: { 
+            table: Project_Tasks_Status_Users,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'set null'
+      });
+      this.adjustedForeignKeys = newAdjustedForeignKeys;
+    }
+    //Utils.logf(this.name,'getForeignKeys');
+    return result;
+  }
+
+
+  /**
+   * static initializer block
+   */
+  static {
+    //Utils.logi(this.name,'STATIC');
+    this.foreignsKeys = this.getForeignKeys();
+    //Utils.logf(this.name,'STATIC');
+  }
+     
   
 };
