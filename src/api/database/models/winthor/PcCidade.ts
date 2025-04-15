@@ -4,6 +4,7 @@
 import { DataTypes } from "sequelize";
 import  BaseWinthorTableModel  from './BaseWinthorTableModel.js';
 import PcEstado from "./PcEstado.js";
+import Utils from "../../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -23,6 +24,7 @@ export default class PcCidade extends BaseWinthorTableModel {
 
   static id = 30008;
   static tableName = this.name.toUpperCase();
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
 
@@ -51,13 +53,31 @@ export default class PcCidade extends BaseWinthorTableModel {
       }
   };
 
-  static foreignsKeys = [{
-    fields: ['UF'],
-    type: 'foreign key',
-    references: { 
-        table: PcEstado,
-        field: 'UF'
+
+  static foreignsKeys : any[] = [];
+      
+      
+  /**
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getForeignKeys(): any[] {
+    //Utils.logi(this.name,'getForeignKeys');
+    let result : any = this.foreignsKeys;
+    if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      result = super.getForeignKeys();
+      result.push({
+        fields: ['UF'],
+        type: 'foreign key',
+        references: { 
+            table: PcEstado,
+            field: 'UF'
+        }
+      });
     }
-  }];
+    //Utils.logf(this.name,'getForeignKeys');
+    return result;
+  }
  
 };

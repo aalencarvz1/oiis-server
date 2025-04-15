@@ -5,6 +5,7 @@ import { DataTypes } from 'sequelize';
 import  BaseWinthorTableModel  from './BaseWinthorTableModel.js';
 import PcProdut from './PcProdut.js';
 import PcFilial from './PcFilial.js';
+import Utils from '../../../controllers/utils/Utils.js';
 
 /**
  * class model
@@ -206,6 +207,7 @@ export default class PcEst extends BaseWinthorTableModel {
 
   static id = 30207;
   static tableName = this.name.toUpperCase();
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
 
@@ -831,20 +833,37 @@ export default class PcEst extends BaseWinthorTableModel {
     },
   };
 
-  static foreignsKeys = [{
-    fields: ['CODPROD'],
-    type: 'foreign key',
-    references: { 
-        table: PcProdut,
-        field: 'CODPROD'
+  static foreignsKeys : any[] = [];
+
+  /**
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getForeignKeys(): any[] {
+    //Utils.logi(this.name,'getForeignKeys');
+    let result : any = this.foreignsKeys;
+    if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      result = super.getForeignKeys();
+      result.push({
+        fields: ['CODPROD'],
+        type: 'foreign key',
+        references: { 
+            table: PcProdut,
+            field: 'CODPROD'
+        }
+      });
+      result.push({
+        fields: ['CODFILIAL'],
+        type: 'foreign key',
+        references: { 
+            table: PcFilial,
+            field: 'CODIGO'
+        }
+      });
     }
-  },{
-    fields: ['CODFILIAL'],
-    type: 'foreign key',
-    references: { 
-        table: PcFilial,
-        field: 'CODIGO'
-    }
-  }];
+    //Utils.logf(this.name,'getForeignKeys');
+    return result;
+  }    
  
 };

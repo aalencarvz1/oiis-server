@@ -4,6 +4,7 @@
 import { DataTypes } from "sequelize";
 import  BaseWinthorIntegrationTableModel  from "./BaseWinthorIntegrationTableModel.js";
 import  Integration_Tables  from "./Integration_Tables.js";
+import Utils from "../../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -26,7 +27,7 @@ export default class Integration_Control extends BaseWinthorIntegrationTableMode
 
   static id = 35005;
   static tableName = this.name.toLowerCase();
-  private static adjustedForeignKeys : boolean = false;
+  static adjustedForeignKeys : boolean = false;
   static model = null;
   static fields = {
     creator_user_id: {
@@ -79,15 +80,32 @@ export default class Integration_Control extends BaseWinthorIntegrationTableMode
     type:"unique"
   }];
 
-  static foreignsKeys = [{
-    fields: ['integration_table_id'],
-    type: 'foreign key',
-    references: { 
-        table: Integration_Tables,
-        field: 'id'
-    },
-    onUpdate: 'cascade',
-    onDelete: 'cascade'
-  }];
+
+  static foreignsKeys : any[] = [];
+
+  /**
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getForeignKeys(): any[] {
+    //Utils.logi(this.name,'getForeignKeys');
+    let result : any = this.foreignsKeys;
+    if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      result = super.getForeignKeys();
+      result.push({
+        fields: ['integration_table_id'],
+        type: 'foreign key',
+        references: { 
+            table: Integration_Tables,
+            field: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      });
+    }
+    //Utils.logf(this.name,'getForeignKeys');
+    return result;
+  }    
   
 };

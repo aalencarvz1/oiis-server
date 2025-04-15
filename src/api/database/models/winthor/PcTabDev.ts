@@ -18,6 +18,7 @@ export default class PcTabDev extends BaseWinthorTableModel {
 
   static id = 30030;
   static tableName = this.name.toUpperCase();
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
 
@@ -34,6 +35,6 @@ export default class PcTabDev extends BaseWinthorTableModel {
       }
   };
 
-  static foreignsKeys = [];
+  static foreignsKeys : any[] = [];
  
 };

@@ -3,6 +3,7 @@
 
 import { Sequelize, DataTypes } from "sequelize";
 import  BaseExternalDataTableModel  from './BaseExternalDataTableModel.js';
+import Utils from "../../../controllers/utils/Utils.js";
 
 
 /**
@@ -17,7 +18,7 @@ export default class Legal_Natures extends BaseExternalDataTableModel {
   
   static id = 60011;
   static tableName = this.name.toLowerCase();
-  private static adjustedForeignKeys : boolean = false;
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
   static fields = {
@@ -42,7 +43,7 @@ export default class Legal_Natures extends BaseExternalDataTableModel {
     type:"unique"
   }];
 
-  static foreignsKeys = [];  
-  
+  static foreignsKeys : any[] = [];
+    
 };
 

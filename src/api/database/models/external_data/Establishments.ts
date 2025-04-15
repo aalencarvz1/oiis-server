@@ -8,6 +8,7 @@ import  Reasons  from "./Reasons.js";
 import  Countries  from "./Countries.js";
 import  Cnaes  from "./Cnaes.js";
 import  Cities  from "./Cities.js";
+import Utils from "../../../controllers/utils/Utils.js";
 
 
 /**
@@ -50,7 +51,7 @@ export default class Establishments extends BaseExternalDataTableModel {
 
   static id = 60013;
   static tableName = this.name.toLowerCase();
-  private static adjustedForeignKeys : boolean = false;
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
   static fields = {
@@ -164,60 +165,79 @@ export default class Establishments extends BaseExternalDataTableModel {
     type:"unique"
   }];
 
-  static foreignsKeys = [{
-    fields: ['base_cnpj'],
-    type: 'foreign key',
-    references: { 
-        table: Businesses,
-        field: 'base_cnpj'
-    },    
-    onUpdate: 'cascade',
-    onDelete: 'restrict'
-  },{
-    fields: ['register_status_reason_id'],
-    type: 'foreign key',
-    references: { 
-        table: Reasons,
-        field: 'id'
-    },    
-    onUpdate: 'cascade',
-    onDelete: 'restrict'
-  },{
-    fields: ['country_id'],
-    type: 'foreign key',
-    references: { 
-        table: Countries,
-        field: 'id'
-    },    
-    onUpdate: 'cascade',
-    onDelete: 'restrict'
-  },{
-    fields: ['primary_cnae_id'],
-    type: 'foreign key',
-    references: { 
-        table: Cnaes,
-        field: 'id'
-    },    
-    onUpdate: 'cascade',
-    onDelete: 'restrict'
-  },{
-    fields: ['secondary_cnae_id'],
-    type: 'foreign key',
-    references: { 
-        table: Cnaes,
-        field: 'id'
-    },    
-    onUpdate: 'cascade',
-    onDelete: 'restrict'
-  },{
-    fields: ['city_id'],
-    type: 'foreign key',
-    references: { 
-        table: Cities,
-        field: 'id'
-    },    
-    onUpdate: 'cascade',
-    onDelete: 'restrict'
-  }];    
+  static foreignsKeys : any[] = [];  
+  
+  
+  static getForeignKeys(): any[] {
+    //Utils.logi(this.name,'getForeignKeys');
+    let result : any = this.foreignsKeys;
+    if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      result = super.getForeignKeys();   
+      result.push({
+        fields: ['base_cnpj'],
+        type: 'foreign key',
+        references: { 
+            table: Businesses,
+            field: 'base_cnpj'
+        },    
+        onUpdate: 'cascade',
+        onDelete: 'restrict'
+      });
+      result.push({
+        fields: ['register_status_reason_id'],
+        type: 'foreign key',
+        references: { 
+            table: Reasons,
+            field: 'id'
+        },    
+        onUpdate: 'cascade',
+        onDelete: 'restrict'
+      });
+      result.push({
+        fields: ['country_id'],
+        type: 'foreign key',
+        references: { 
+            table: Countries,
+            field: 'id'
+        },    
+        onUpdate: 'cascade',
+        onDelete: 'restrict'
+      });
+      result.push({
+        fields: ['primary_cnae_id'],
+        type: 'foreign key',
+        references: { 
+            table: Cnaes,
+            field: 'id'
+        },    
+        onUpdate: 'cascade',
+        onDelete: 'restrict'
+      });
+      result.push({
+        fields: ['secondary_cnae_id'],
+        type: 'foreign key',
+        references: { 
+            table: Cnaes,
+            field: 'id'
+        },    
+        onUpdate: 'cascade',
+        onDelete: 'restrict'
+      });
+      result.push({
+        fields: ['city_id'],
+        type: 'foreign key',
+        references: { 
+            table: Cities,
+            field: 'id'
+        },    
+        onUpdate: 'cascade',
+        onDelete: 'restrict'
+      });
+    }
+    //Utils.logf(this.name,'getForeignKeys');
+    return result;
+  }
+
+
 };
 

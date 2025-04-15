@@ -16,6 +16,7 @@ export default class PcPrazo extends BaseWinthorTableModel {
 
   static id = 30197;
   static tableName = this.name.toUpperCase();
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
 
@@ -33,5 +34,7 @@ export default class PcPrazo extends BaseWinthorTableModel {
     },
   };
  
+
+  static foreignsKeys : any[] = [];
 
 };

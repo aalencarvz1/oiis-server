@@ -5,6 +5,7 @@ import { DataTypes } from "sequelize";
 import  BaseExternalDataTableModel  from './BaseExternalDataTableModel.js';
 import  Legal_Natures  from "./Legal_Natures.js";
 import  Responsible_Person_Qualifications  from "./Responsible_Person_Qualifications.js";
+import Utils from "../../../controllers/utils/Utils.js";
 
 
 
@@ -25,7 +26,7 @@ export default class Businesses extends BaseExternalDataTableModel {
 
   static id = 60012;
   static tableName = this.name.toLowerCase();
-  private static adjustedForeignKeys : boolean = false;
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
   static fields = {
@@ -64,25 +65,37 @@ export default class Businesses extends BaseExternalDataTableModel {
     type:"unique"
   }];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[{
-    fields: ['legal_nature_id'],
-    type: 'foreign key',
-    references: { 
-        table: Legal_Natures,
-        field: 'id'
-    },    
-    onUpdate: 'cascade',
-    onDelete: 'restrict'
-  },{
-    fields: ['responsible_person_qualification_id'],
-    type: 'foreign key',
-    references: { 
-        table: Responsible_Person_Qualifications,
-        field: 'id'
-    },    
-    onUpdate: 'cascade',
-    onDelete: 'restrict'
-  }]];  
-  
+  static foreignsKeys : any[] = [];
+    
+  static getForeignKeys(): any[] {
+    //Utils.logi(this.name,'getForeignKeys');
+    let result : any = this.foreignsKeys;
+    if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      result = super.getForeignKeys();     
+      result.push({
+        fields: ['legal_nature_id'],
+        type: 'foreign key',
+        references: { 
+            table: Legal_Natures,
+            field: 'id'
+        },    
+        onUpdate: 'cascade',
+        onDelete: 'restrict'
+      });
+      result.push({
+        fields: ['responsible_person_qualification_id'],
+        type: 'foreign key',
+        references: { 
+            table: Responsible_Person_Qualifications,
+            field: 'id'
+        },    
+        onUpdate: 'cascade',
+        onDelete: 'restrict'
+      });
+    }
+    //Utils.logf(this.name,'getForeignKeys');
+    return result;
+  }
+
 };
 

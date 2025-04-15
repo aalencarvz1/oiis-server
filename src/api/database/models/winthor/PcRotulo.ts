@@ -19,6 +19,7 @@ export default class PcRotulo extends BaseWinthorTableModel {
 
   static id = 30005;
   static tableName = this.name.toUpperCase();
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
 
@@ -40,5 +41,7 @@ export default class PcRotulo extends BaseWinthorTableModel {
       defaultValue: 'N'	
     },
   };
+
+  static foreignsKeys : any[] = [];
  
 };

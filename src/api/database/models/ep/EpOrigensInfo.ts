@@ -33,5 +33,5 @@ export default class EpOrigensInfo extends BaseEpTableModel {
 		},
 	};
 
-	static foreignsKeys = []; 
+	static foreignsKeys : any[] = [];
 };

@@ -10,6 +10,7 @@ import  EpVendedores  from "./EpVendedores.js";
 import  EpAtividadesClientes  from "./EpAtividadesClientes.js";
 import  EpRedesClientes  from "./EpRedesClientes.js";
 import  EpPracasClientes  from "./EpPracasClientes.js";
+import Utils from "../../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -84,62 +85,87 @@ export default class EpClientes extends BaseEpTableModel {
 		}
   };
 
-  static foreignsKeys = [{
-    fields: ['CODORIGEMINFO'],
-    type: 'foreign key',
-    references: { 
-        table: EpOrigensInfo,
-        field: 'COD'
+
+  static foreignsKeys : any[] = [];
+
+  /**
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getForeignKeys(): any[] {
+    //Utils.logi(this.name,'getForeignKeys');
+    let result : any = this.foreignsKeys;
+    if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      result = super.getForeignKeys();
+      result.push({
+        fields: ['CODORIGEMINFO'],
+        type: 'foreign key',
+        references: { 
+            table: EpOrigensInfo,
+            field: 'COD'
+        }
+      });
+      result.push({
+        fields: ['CODPESSOA'],
+        type: 'foreign key',
+        references: { 
+            table: EpPessoas,
+            field: 'COD'
+        }
+      });
+      result.push({
+        fields: ['CODFILIAL'],
+        type: 'foreign key',
+        references: { 
+            table: EpFiliais,
+            field: 'COD'
+        }
+      });
+      result.push({
+        fields: ['CODATIV'],
+        type: 'foreign key',
+        references: { 
+            table: EpAtividadesClientes,
+            field: 'COD'
+        }
+      });
+      result.push({
+        fields: ['CODREDE'],
+        type: 'foreign key',
+        references: { 
+            table: EpRedesClientes,
+            field: 'COD'
+        }
+      });
+      result.push({
+        fields: ['CODPRACA'],
+        type: 'foreign key',
+        references: { 
+            table: EpPracasClientes,
+            field: 'COD'
+        }
+      });
+      result.push({
+        fields: ['CODVENDEDOR1'],
+        type: 'foreign key',
+        references: { 
+            table: EpVendedores,
+            field: 'COD'
+        }
+      });
+      result.push({
+        fields: ['CODVENDEDOR2'],
+        type: 'foreign key',
+        references: { 
+            table: EpVendedores,
+            field: 'COD'
+        }
+      });
     }
-  },{
-    fields: ['CODPESSOA'],
-    type: 'foreign key',
-    references: { 
-        table: EpPessoas,
-        field: 'COD'
-    }
-  },{
-    fields: ['CODFILIAL'],
-    type: 'foreign key',
-    references: { 
-        table: EpFiliais,
-        field: 'COD'
-    }
-  },{
-    fields: ['CODATIV'],
-    type: 'foreign key',
-    references: { 
-        table: EpAtividadesClientes,
-        field: 'COD'
-    }
-  },{
-    fields: ['CODREDE'],
-    type: 'foreign key',
-    references: { 
-        table: EpRedesClientes,
-        field: 'COD'
-    }
-  },{
-    fields: ['CODPRACA'],
-    type: 'foreign key',
-    references: { 
-        table: EpPracasClientes,
-        field: 'COD'
-    }
-  },{
-    fields: ['CODVENDEDOR1'],
-    type: 'foreign key',
-    references: { 
-        table: EpVendedores,
-        field: 'COD'
-    }
-  },{
-    fields: ['CODVENDEDOR2'],
-    type: 'foreign key',
-    references: { 
-        table: EpVendedores,
-        field: 'COD'
-    }
-  }];
+    //Utils.logf(this.name,'getForeignKeys');
+    return result;
+  }
+
  
 };

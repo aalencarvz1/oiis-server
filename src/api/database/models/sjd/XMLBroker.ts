@@ -64,6 +64,6 @@ export default class XMLBroker extends BaseSjdTableModel {
 			type: DataTypes.TEXT
 		}
 	}    
-	static foreignsKeys = [];
+	static foreignsKeys : any[] = [];
  
 };

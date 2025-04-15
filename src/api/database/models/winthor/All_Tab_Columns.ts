@@ -25,6 +25,7 @@ export default class All_Tab_Columns extends BaseWinthorTableModel {
 
   static id = 30000;
   static tableName = this.name.toUpperCase();
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
 
@@ -63,5 +64,7 @@ export default class All_Tab_Columns extends BaseWinthorTableModel {
         type: DataTypes.TEXT
       }
   };
+
+  static foreignsKeys : any[] = [];
  
 };

@@ -816,6 +816,7 @@ export default class PcProdut extends BaseWinthorTableModel {
 
   static id = 30205;
   static tableName = this.name.toUpperCase();
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
 
@@ -3299,72 +3300,97 @@ export default class PcProdut extends BaseWinthorTableModel {
     },
   };
 
-  static foreignsKeys = [{
-    fields: ['CODFORNEC'],
-    type: 'foreign key',
-    references: { 
-      table: PcFornec,
-      field: 'CODFORNEC'
-    }
-  },{
-    fields: ['CODEPTO'],
-    type: 'foreign key',
-    references: { 
-      table: PcDepto,
-      field: 'CODEPTO'
-    }
-  },{
-    fields: ['CODSEC'],
-    type: 'foreign key',
-    references: { 
-      table: PcSecao,
-      field: 'CODSEC'
-    }
-  },{
-    fields: ['CODMARCA'],
-    type: 'foreign key',
-    references: { 
-      table: PcMarca,
-      field: 'CODMARCA'
-    }
-  },{
-    fields: ['CODCATEGORIA'],
-    type: 'foreign key',
-    references: { 
-      table: PcCategoria,
-      field: 'CODCATEGORIA'
-    }
-  },{
-    fields: ['CODCATEGORIA'],
-    type: 'foreign key',
-    references: { 
-      table: PcCategoria,
-      field: 'CODCATEGORIA'
-    }
-  },{
-    fields: ['CODLINHAPROD'],
-    type: 'foreign key',
-    references: { 
-      table: PcLinhaProd,
-      field: 'CODLINHAPROD'
-    }
-  },{
-    fields: ['CODPRAZOENT'],
-    type: 'foreign key',
-    references: { 
-      table: PcPrazo,
-      field: 'CODPRAZOENT'
-    }
-  },{
-    fields: ['CODDISTRIB'],
-    type: 'foreign key',
-    references: { 
-      table: PcDistrib,
-      field: 'CODDISTRIB'
-    }
-  }];  
+
+  static foreignsKeys : any[] = [];
 
 
+
+  /**
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getForeignKeys(): any[] {
+    //Utils.logi(this.name,'getForeignKeys');
+    let result : any = this.foreignsKeys;
+    if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      result = super.getForeignKeys();
+      result.push({
+        fields: ['CODFORNEC'],
+        type: 'foreign key',
+        references: { 
+          table: PcFornec,
+          field: 'CODFORNEC'
+        }
+      });
+      result.push({
+        fields: ['CODEPTO'],
+        type: 'foreign key',
+        references: { 
+          table: PcDepto,
+          field: 'CODEPTO'
+        }
+      });
+      result.push({
+        fields: ['CODSEC'],
+        type: 'foreign key',
+        references: { 
+          table: PcSecao,
+          field: 'CODSEC'
+        }
+      });
+      result.push({
+        fields: ['CODMARCA'],
+        type: 'foreign key',
+        references: { 
+          table: PcMarca,
+          field: 'CODMARCA'
+        }
+      });
+      result.push({
+        fields: ['CODCATEGORIA'],
+        type: 'foreign key',
+        references: { 
+          table: PcCategoria,
+          field: 'CODCATEGORIA'
+        }
+      });
+      result.push({
+        fields: ['CODCATEGORIA'],
+        type: 'foreign key',
+        references: { 
+          table: PcCategoria,
+          field: 'CODCATEGORIA'
+        }
+      });
+      result.push({
+        fields: ['CODLINHAPROD'],
+        type: 'foreign key',
+        references: { 
+          table: PcLinhaProd,
+          field: 'CODLINHAPROD'
+        }
+      });
+      result.push({
+        fields: ['CODPRAZOENT'],
+        type: 'foreign key',
+        references: { 
+          table: PcPrazo,
+          field: 'CODPRAZOENT'
+        }
+      });
+      result.push({
+        fields: ['CODDISTRIB'],
+        type: 'foreign key',
+        references: { 
+          table: PcDistrib,
+          field: 'CODDISTRIB'
+        }
+      });
+    }
+    //Utils.logf(this.name,'getForeignKeys');
+    return result;
+  }    
 
   static async getOneByID(id?: number | string, queryParams?: any) : Promise<any> {
     let result = null;

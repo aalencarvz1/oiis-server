@@ -30,6 +30,6 @@ export default class SjdOrigemDeDados extends BaseSjdTableModel {
             allowNull:false
         }
     }    
-    static foreignsKeys = [];
+    static foreignsKeys : any[] = [];
     
 };
