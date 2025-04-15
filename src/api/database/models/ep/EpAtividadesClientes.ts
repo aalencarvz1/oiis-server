@@ -46,5 +46,7 @@ export default class EpAtividadesClientes extends BaseEpTableModel {
         field: 'COD'
     }
   }];
+
+  
  
 };

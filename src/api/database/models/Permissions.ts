@@ -9,6 +9,7 @@ import Contexts from "./Contexts.js";
 import Tables from "./Tables.js";
 import Modules from "./Modules.js";
 import Routines from "./Routines.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 /**
@@ -38,6 +39,7 @@ export default class Permissions extends BaseTableModel {
 
   static id = 7003;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   
 
   static SYSTEM = 1;
@@ -181,71 +183,106 @@ export default class Permissions extends BaseTableModel {
     }
   ]];
 
-  static foreignsKeys = [...(this.getBaseTableModelForeignsKeys()||[]),...[
-    {
-      fields: ['power_type_id'],
-      type: 'foreign key',
-      references: { 
-          table: Power_Types,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['access_profile_id'],
-      type: 'foreign key',
-      references: { 
-          table: Access_Profiles,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['user_id'],
-      type: 'foreign key',
-      references: { 
-          table: Users,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['context_id'],
-      type: 'foreign key',
-      references: { 
-          table: Contexts,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['table_id'],
-      type: 'foreign key',
-      references: { 
-          table: Tables,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['module_id'],
-      type: 'foreign key',
-      references: { 
-          table: Modules,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    },
-    {
-      fields: ['routine_id'],
-      type: 'foreign key',
-      references: { 
-          table: Routines,
-          field: 'id'
-      },
-      onUpdate: 'cascade'
-    }
-  ]];
   
+
+  static foreignsKeys : any[] = [];
+    
+
+  /**
+   * get the foreign keys avoiding ciclyc imports on BaseTableModel
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getForeignKeys(): any[] {
+    //Utils.logi(this.name,'getForeignKeys');
+    let result : any = this.foreignsKeys;
+    if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      result = [];
+      let newAdjustedForeignKeys : boolean = true;
+      let baseFks = this.getBaseTableModelForeignsKeys();
+      for(let i = 0; i < baseFks.length; i++) {
+        result.push(baseFks[i]);
+        if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
+      }       
+      result.push({
+        fields: ['power_type_id'],
+        type: 'foreign key',
+        references: { 
+            table: Power_Types,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['access_profile_id'],
+        type: 'foreign key',
+        references: { 
+            table: Access_Profiles,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['user_id'],
+        type: 'foreign key',
+        references: { 
+            table: Users,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['context_id'],
+        type: 'foreign key',
+        references: { 
+            table: Contexts,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['table_id'],
+        type: 'foreign key',
+        references: { 
+            table: Tables,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['module_id'],
+        type: 'foreign key',
+        references: { 
+            table: Modules,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      result.push({
+        fields: ['routine_id'],
+        type: 'foreign key',
+        references: { 
+            table: Routines,
+            field: 'id'
+        },
+        onUpdate: 'cascade'
+      });
+      this.adjustedForeignKeys = newAdjustedForeignKeys;
+    }
+    //Utils.logf(this.name,'getForeignKeys');
+    return result;
+  }
+
+
+  /**
+   * static initializer block
+   */
+  static {
+    //Utils.logi(this.name,'STATIC');
+    this.foreignsKeys = this.getForeignKeys();
+    //Utils.logf(this.name,'STATIC');
+  }
+     
 };
 

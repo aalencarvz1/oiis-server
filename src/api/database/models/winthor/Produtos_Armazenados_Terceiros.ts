@@ -19,7 +19,7 @@ export default class Produtos_Armazenados_Terceiros extends BaseWinthorTableMode
   declare SOMAR_WINT: number;
 
 
-  static id = 30014;
+  static id = 30700;
   static tableName = this.name.toUpperCase();
   static model = null;
   static primaryKeysFieldsNames = [];

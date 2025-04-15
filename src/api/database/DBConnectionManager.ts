@@ -37,7 +37,7 @@ export default class DBConnectionManager {
         try {
             if (DBConnectionManager.#defaultDBConnection == null) {
                 let connectionConfig = (config as any)[`${process.env.NODE_ENV||'development'}`];
-                Utils.log('starting sequelize ', connectionConfig);
+                //Utils.log('starting sequelize ', connectionConfig);
                 DBConnectionManager.#defaultDBConnection = new Sequelize(connectionConfig);                
             }
             return DBConnectionManager.#defaultDBConnection;
@@ -62,7 +62,7 @@ export default class DBConnectionManager {
                         OracleDB.initOracleClient();
                     }
 
-                    Utils.log('starting sequelize ', connectionConfig);
+                    //Utils.log('starting sequelize ', connectionConfig);
                     DBConnectionManager.#winthorDBConnection = new Sequelize(connectionConfig);                
                 }
             }
@@ -88,7 +88,7 @@ export default class DBConnectionManager {
                         OracleDB.initOracleClient();
                     }
 
-                    Utils.log('starting sequelize ', connectionConfig);
+                    //Utils.log('starting sequelize ', connectionConfig);
                     DBConnectionManager.#consultDBConnection = new Sequelize(connectionConfig);                
                 }
             }
@@ -113,7 +113,7 @@ export default class DBConnectionManager {
                         OracleDB.initOracleClient();
                     }
 
-                    Utils.log('starting sequelize ', connectionConfig);
+                    //Utils.log('starting sequelize ', connectionConfig);
                     DBConnectionManager.#epDBConnection = new Sequelize(connectionConfig);                
                 }
             }
@@ -138,7 +138,7 @@ export default class DBConnectionManager {
                         OracleDB.initOracleClient();
                     }
 
-                    Utils.log('starting sequelize ', connectionConfig);                    
+                    //Utils.log('starting sequelize ', connectionConfig);                    
                     DBConnectionManager.#oldDBConnection = new Sequelize(connectionConfig);                
                 }
             }
@@ -163,7 +163,7 @@ export default class DBConnectionManager {
                         OracleDB.initOracleClient();
                     }
 
-                    Utils.log('starting sequelize ', connectionConfig);
+                    //Utils.log('starting sequelize ', connectionConfig);
                     DBConnectionManager.#winthorIntegrationConnection = new Sequelize(connectionConfig);                
                 }
             }
@@ -189,7 +189,7 @@ export default class DBConnectionManager {
                         OracleDB.initOracleClient();
                     }
 
-                    Utils.log('starting sequelize ', connectionConfig);                    
+                    //Utils.log('starting sequelize ', connectionConfig);                    
                     DBConnectionManager.#externalDataConnection = new Sequelize(connectionConfig);                
                 }
             }

@@ -7,7 +7,7 @@
   "type": "module",
   "main": "src/api/api.js",
   "scripts": {
-    "test": "jest",
+    "test": "cross-env NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" npx jest --verbose",
     "dev": "node --loader ts-node/esm --trace-uncaught --trace-warnings src/api/api.ts",
     "build": "npx tsc",
     "start_old": "node dist/api/api.js",
@@ -19,6 +19,7 @@
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.2",
     "jest": "^29.7.0",
+    "ts-jest": "^29.3.1",
     "tsx": "^4.19.2",
     "typedoc": "^0.28.2",
     "typescript": "^5.7.2"

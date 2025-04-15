@@ -2,6 +2,7 @@
 
 import { DataTypes } from "sequelize";
 import BaseTableModel from "./BaseTableModel.js";
+import Utils from "../../controllers/utils/Utils.js";
 
 
 
@@ -17,6 +18,9 @@ export default class Logs extends BaseTableModel {
 
 
   static tableName = this.name.toLowerCase();
+
+
+  private static adjustedForeignKeys : boolean = false;
     
   static fields = {
     id: {
@@ -34,4 +38,14 @@ export default class Logs extends BaseTableModel {
   };
   static constraints = [];
 
+  /**
+   * get the foreign keys avoiding ciclyc imports on BaseTableModel
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getForeignKeys(): any[] {
+      //Utils.logi(this.name,'getForeignKeys');
+      return [];
+  }  
 };

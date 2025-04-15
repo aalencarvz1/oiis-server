@@ -52,8 +52,19 @@ export default class BasePeopleModel extends BaseTableModel {
       ];
   };
 
-  static defaultPeopleForeignsKeys = [
-    ...(this.getBaseTableModelForeignsKeys() || []),{
+
+  /**
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getBaseTableModelForeignsKeys() : any[] {
+    let result :any[] = [];
+    let superResult = super.getBaseTableModelForeignsKeys();
+    for(let i = 0; i < superResult.length; i++) {
+        result.push(superResult[i]);
+    }        
+    result.push({
       fields: ['people_id'],
       type: 'foreign key',
       references: { 
@@ -62,8 +73,9 @@ export default class BasePeopleModel extends BaseTableModel {
       },
       onUpdate: 'cascade',
       onDelete: 'cascade'
-    }
-  ];
+    })
+    return result;
+  }
 
   
   

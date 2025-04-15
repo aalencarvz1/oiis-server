@@ -26,6 +26,7 @@ export default class Integration_Control extends BaseWinthorIntegrationTableMode
 
   static id = 35005;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   static model = null;
   static fields = {
     creator_user_id: {

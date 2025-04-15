@@ -17,7 +17,7 @@ export default class PcFornec extends BaseWinthorTableModel {
 
 
 
-  static id = 30013;
+  static id = 30014;
   static tableName = this.name.toUpperCase();
   static model = null;
 

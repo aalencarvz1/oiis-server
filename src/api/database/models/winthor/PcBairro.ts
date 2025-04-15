@@ -18,7 +18,7 @@ export default class PcBairro extends BaseWinthorTableModel {
   declare DESCRICAO: string;
 
 
-  static id = 30012;
+  static id = 30010;
   static tableName = this.name.toUpperCase();
   static model = null;
 

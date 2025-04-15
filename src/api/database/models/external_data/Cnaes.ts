@@ -17,6 +17,7 @@ export default class Cnaes extends BaseExternalDataTableModel {
 
   static id = 60009;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   static model = null;
 
   static fields = {

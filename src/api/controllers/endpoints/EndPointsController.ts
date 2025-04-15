@@ -41,7 +41,7 @@ export default class EndPointsController{
      * @param res 
      * @param next 
      */
-    static custom_response : RequestHandler = function(req: Request, res: Response, next: NextFunction) : void {
+    static customize_response : RequestHandler = function(req: Request, res: Response, next: NextFunction) : void {
         res.success = false;
         res.data = null;
         res.message = null;

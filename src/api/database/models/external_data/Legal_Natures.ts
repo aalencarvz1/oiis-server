@@ -17,6 +17,7 @@ export default class Legal_Natures extends BaseExternalDataTableModel {
   
   static id = 60011;
   static tableName = this.name.toLowerCase();
+  private static adjustedForeignKeys : boolean = false;
   static model = null;
 
   static fields = {
