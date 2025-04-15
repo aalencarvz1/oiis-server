@@ -24,6 +24,7 @@ export default class PcMarca extends BaseWinthorTableModel {
 
   static id = 30203;
   static tableName = this.name.toUpperCase();
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
 
@@ -65,4 +66,6 @@ export default class PcMarca extends BaseWinthorTableModel {
       type: DataTypes.STRING(11)		
     } 
   }
+
+  static foreignsKeys : any[] = [];
 };

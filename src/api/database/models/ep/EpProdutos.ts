@@ -6,6 +6,7 @@ import  BaseEpTableModel  from './BaseEpTableModel.js';
 import  EpOrigensInfo  from "./EpOrigensInfo.js";
 import  EpFornecedores  from "./EpFornecedores.js";
 import  EpDepartamentosProd  from "./EpDeparamentosProd.js";
+import Utils from "../../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -80,26 +81,46 @@ export default class EpProdutos extends BaseEpTableModel {
 		},
 	};
 
-	static foreignsKeys = [{
-		fields: ['CODORIGEMINFO'],
-		type: 'foreign key',
-		references: { 
-			table: EpOrigensInfo,
-			field: 'COD'
-		}
-	},{
-		fields: ['CODFORNEC'],
-		type: 'foreign key',
-		references: { 
-			table: EpFornecedores,
-			field: 'COD'
-		}
-	},{
-		fields: ['CODEPTO'],
-		type: 'foreign key',
-		references: { 
-			table: EpDepartamentosProd,
-			field: 'COD'
-		}
-	}]; 
+	static foreignsKeys : any[] = [];
+
+  /**
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getForeignKeys(): any[] {
+	//Utils.logi(this.name,'getForeignKeys');
+	let result : any = this.foreignsKeys;
+	if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+	  	result = super.getForeignKeys();
+		result.push({
+			fields: ['CODORIGEMINFO'],
+			type: 'foreign key',
+			references: { 
+				table: EpOrigensInfo,
+				field: 'COD'
+			}
+		});
+		result.push({
+			fields: ['CODFORNEC'],
+			type: 'foreign key',
+			references: { 
+				table: EpFornecedores,
+				field: 'COD'
+			}
+		});
+		result.push({
+			fields: ['CODEPTO'],
+			type: 'foreign key',
+			references: { 
+				table: EpDepartamentosProd,
+				field: 'COD'
+			}
+		});
+	}
+	//Utils.logf(this.name,'getForeignKeys');
+	return result;
+  }
+
+
 };

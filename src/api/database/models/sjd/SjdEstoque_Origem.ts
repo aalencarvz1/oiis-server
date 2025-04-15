@@ -200,6 +200,6 @@ export default class SjdEstoque_Origem extends BaseSjdTableModel {
             defaultValue: 1
         }
     }    
-    static foreignsKeys = [];
+    static foreignsKeys : any[] = [];
  
 };

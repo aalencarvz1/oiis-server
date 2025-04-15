@@ -19,6 +19,7 @@ export default class PcNcm extends BaseWinthorTableModel {
 
   static id = 30200;
   static tableName = this.name.toUpperCase();
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
 
@@ -41,6 +42,6 @@ export default class PcNcm extends BaseWinthorTableModel {
       }
   };
 
-  static foreignsKeys = [];
+  static foreignsKeys : any[] = [];
  
 };

@@ -4,6 +4,7 @@
 import { DataTypes } from 'sequelize';
 import  BaseWinthorTableModel  from './BaseWinthorTableModel.js';
 import PcRotulo from './PcRotulo.js';
+import Utils from '../../../controllers/utils/Utils.js';
 
 /**
  * class model
@@ -20,6 +21,7 @@ export default class PcRotuloItem extends BaseWinthorTableModel {
 
   static id = 30006;
   static tableName = this.name.toUpperCase();
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
 
@@ -46,14 +48,30 @@ export default class PcRotuloItem extends BaseWinthorTableModel {
       defaultValue: 'N'	
     },
   };
-
-  static foreignsKeys = [{
-      fields: ['ID'],
-      type: 'foreign key',
-      references: { 
-          table: PcRotulo,
-          field: 'ID'
-      }
-  }];
  
+  static foreignsKeys : any[] = [];
+
+  /**
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getForeignKeys(): any[] {
+    //Utils.logi(this.name,'getForeignKeys');
+    let result : any = this.foreignsKeys;
+    if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      result = super.getForeignKeys();
+      result.push({
+        fields: ['ID'],
+        type: 'foreign key',
+        references: { 
+            table: PcRotulo,
+            field: 'ID'
+        }
+    });
+    }
+    //Utils.logf(this.name,'getForeignKeys');
+    return result;
+  }    
+
 };

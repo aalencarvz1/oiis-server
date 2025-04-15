@@ -5,6 +5,7 @@ import { DataTypes } from 'sequelize';
 import  BaseWinthorTableModel  from './BaseWinthorTableModel.js';
 import PcFilial from './PcFilial.js';
 import PcProdut from './PcProdut.js';
+import Utils from '../../../controllers/utils/Utils.js';
 
 /**
  * class model
@@ -164,6 +165,7 @@ export default class PcEmbalagem extends BaseWinthorTableModel {
   
   static id = 30208;
   static tableName = this.name.toUpperCase();
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
 
@@ -655,20 +657,37 @@ export default class PcEmbalagem extends BaseWinthorTableModel {
   };
  
 
-  static foreignsKeys = [{
+  static foreignsKeys : any[] = [];
+
+  /**
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getForeignKeys(): any[] {
+    //Utils.logi(this.name,'getForeignKeys');
+    let result : any = this.foreignsKeys;
+    if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      result = super.getForeignKeys();
+      result.push({
         fields: ['CODFILIAL'],
         type: 'foreign key',
         references: { 
           table: PcFilial,
           field: 'CODIGO'
         }
-    },{
+      });
+      result.push({
         fields: ['CODPROD'],
         type: 'foreign key',
         references: { 
           table: PcProdut,
           field: 'CODPROD'
         }
-    }]
+      });
+    }
+    //Utils.logf(this.name,'getForeignKeys');
+    return result;
+  }    
 
 };

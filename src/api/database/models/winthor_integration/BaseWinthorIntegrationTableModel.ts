@@ -11,6 +11,7 @@ import DBConnectionManager from "../../DBConnectionManager.js";
  */
 export default class BaseWinthorIntegrationTableModel extends BaseTableModel {    
     static schema = (config as any)[`${process.env.NODE_ENV||'development'}_winthor_integration`].dialectOptions.schema;  
+
     static getConnection = DBConnectionManager.getWinthorIntegrationDBConnection;
 
     static getBaseTableModelUniqueFields = () => {
@@ -110,5 +111,16 @@ export default class BaseWinthorIntegrationTableModel extends BaseTableModel {
         } catch (e) {
             Utils.logError(e);
         }
+    }
+
+    /**
+     * @static
+     * @override
+     * @created 2025-04-13
+     * @version 1.0.0
+     */
+    static getForeignKeys(): any[] {   
+        if (!this.adjustedForeignKeys) this.adjustedForeignKeys = true;     
+        return [];
     }
 };

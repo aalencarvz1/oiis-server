@@ -11,6 +11,7 @@ import { QueryInterface } from "sequelize";
  */
 export default class BaseEpTableModel extends BaseTableModel {    
     static schema = (config as any)[`${process.env.NODE_ENV||'development'}_ep`].dialectOptions.schema;  
+
     static getConnection = DBConnectionManager.getEpDBConnection;
 
     //not has base foreign keys
@@ -66,5 +67,16 @@ export default class BaseEpTableModel extends BaseTableModel {
         } catch (e) {
             Utils.logError(e);
         }
-      }
+    }
+
+    /**
+     * @static
+     * @override
+     * @created 2025-04-13
+     * @version 1.0.0
+     */
+    static getForeignKeys(): any[] {   
+        if (!this.adjustedForeignKeys) this.adjustedForeignKeys = true;     
+        return [];
+    }    
 };

@@ -33,6 +33,7 @@ export default class BaseTableModel extends Model {
     static schema = this.configDB?.database;  
     static id : number;
     static tableName : string = this.name.toLowerCase();
+    static adjustedForeignKeys : boolean = false;
     static model : Model | null; 
     static fields : any;
     static constraints : any[];
@@ -207,12 +208,24 @@ export default class BaseTableModel extends Model {
 
     /**
      * @static
-     * @abstract
      * @created 2025-04-13
      * @version 1.0.0
      */
-    static getForeignKeys() : any[] {
-        throw new Error(`abstract method not implement on ${this.tableName}`);
+    static getForeignKeys(): any[] {
+        //Utils.logi(this.name,'getForeignKeys');
+        let result : any = this.foreignsKeys;
+        if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+          result = [];
+          let newAdjustedForeignKeys : boolean = true;
+          let baseFks = this.getBaseTableModelForeignsKeys();
+          for(let i = 0; i < baseFks.length; i++) {
+            result.push(baseFks[i]);
+            if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
+          }               
+          this.adjustedForeignKeys = newAdjustedForeignKeys;
+        }
+        //Utils.logf(this.name,'getForeignKeys');
+        return result;
     }
 
     static getTableModelHooks = () => {
@@ -814,6 +827,12 @@ export default class BaseTableModel extends Model {
 
     static getQueryFields(){
         return Object.keys(this.fields).map(el=>Sequelize.col(el));
+    }
+
+    static {
+        //Utils.logi(this.name,'STATIC');
+        this.foreignsKeys = this.getForeignKeys();
+        //Utils.logf(this.name,'STATIC');
     }
 
 };

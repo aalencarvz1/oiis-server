@@ -59,6 +59,6 @@ export default class SjdHistEst_Origem extends BaseSjdTableModel {
             allowNull: false
         }
     }    
-    static foreignsKeys = [];
+    static foreignsKeys : any[] = [];
  
 };

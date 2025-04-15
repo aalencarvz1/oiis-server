@@ -16,6 +16,7 @@ export default class PcDepto extends BaseWinthorTableModel {
 
   static id = 30201;
   static tableName = this.name.toUpperCase();
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
 
@@ -28,5 +29,7 @@ export default class PcDepto extends BaseWinthorTableModel {
         type: DataTypes.STRING(2000)
       }
   };
+
+  static foreignsKeys : any[] = [];
  
 };

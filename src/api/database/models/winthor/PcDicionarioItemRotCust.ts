@@ -4,6 +4,7 @@
 import { DataTypes } from 'sequelize';
 import  BaseWinthorTableModel  from './BaseWinthorTableModel.js';
 import PcDicionarioItem from './PcDicionarioItem.js';
+import Utils from '../../../controllers/utils/Utils.js';
 
 /**
  * class model
@@ -45,6 +46,7 @@ export default class PcDicionarioItemRotCust extends BaseWinthorTableModel {
 
   static id = 30004;
   static tableName = this.name.toUpperCase();
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
 
@@ -162,19 +164,37 @@ export default class PcDicionarioItemRotCust extends BaseWinthorTableModel {
       type: DataTypes.STRING(500)		
     },
   }
-  static foreignsKeys = [{
-    fields: ['NOMEOBJETO'],
-    type: 'foreign key',
-    references: { 
-        table: PcDicionarioItem,
-        field: 'NOMEOBJETO'
+
+  static foreignsKeys : any[] = [];
+
+  /**
+   * @override
+   * @created 2025-04-14
+   * @version 1.0.0
+   */
+  static getForeignKeys(): any[] {
+    //Utils.logi(this.name,'getForeignKeys');
+    let result : any = this.foreignsKeys;
+    if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
+      result = super.getForeignKeys();
+      result.push({
+        fields: ['NOMEOBJETO'],
+        type: 'foreign key',
+        references: { 
+            table: PcDicionarioItem,
+            field: 'NOMEOBJETO'
+        }
+      });
+      result.push({
+        fields: ['NOMECAMPO'],
+        type: 'foreign key',
+        references: { 
+            table: PcDicionarioItem,
+            field: 'NOMECAMPO'
+        }
+      });
     }
-  },{
-      fields: ['NOMECAMPO'],
-      type: 'foreign key',
-      references: { 
-          table: PcDicionarioItem,
-          field: 'NOMECAMPO'
-      }
-    }]; 
+    //Utils.logf(this.name,'getForeignKeys');
+    return result;
+  }    
 };

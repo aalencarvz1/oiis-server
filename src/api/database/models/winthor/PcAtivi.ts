@@ -16,6 +16,7 @@ export default class PcAtivi extends BaseWinthorTableModel {
 
   static id = 30012;
   static tableName = this.name.toUpperCase();
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
 
@@ -29,6 +30,6 @@ export default class PcAtivi extends BaseWinthorTableModel {
       }
   };
 
-  static foreignsKeys = [];
+  static foreignsKeys : any[] = [];
  
 };

@@ -3,6 +3,7 @@
 
 import { DataTypes } from "sequelize";
 import  BaseWinthorIntegrationTableModel  from "./BaseWinthorIntegrationTableModel.js";
+import Utils from "../../../controllers/utils/Utils.js";
 
 /**
  * class model
@@ -17,7 +18,7 @@ export default class Integration_Parameters extends BaseWinthorIntegrationTableM
 
   static id = 35006;
   static tableName = this.name.toLowerCase();
-  private static adjustedForeignKeys : boolean = false;
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
   static API_LOCAL_NETWORK_IP_ID = 1;
@@ -45,7 +46,7 @@ export default class Integration_Parameters extends BaseWinthorIntegrationTableM
     fields: [...Integration_Parameters.getBaseTableModelUniqueFields(),...Integration_Parameters.uniqueFields],
     type:"unique"
   }]];
-
-  static foreignsKeys = [...(Integration_Parameters.getBaseTableModelForeignsKeys()||[]),...[]];
   
+  static foreignsKeys : any[] = [];
+
 };

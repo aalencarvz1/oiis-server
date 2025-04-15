@@ -14,8 +14,6 @@ export default class BasePeopleModel extends BaseTableModel {
   declare observations: string;
   
   
-  static tableName : string = this.name.toLowerCase();
-  
   /**
    * @static
    * @override

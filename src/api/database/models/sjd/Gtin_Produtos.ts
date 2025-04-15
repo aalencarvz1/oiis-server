@@ -37,6 +37,6 @@ export default class Gtin_Produtos extends BaseSjdTableModel {
             type: DataTypes.DATE
         }
     }    
-    static foreignsKeys = [];
+    static foreignsKeys : any[] = [];
     
 };
