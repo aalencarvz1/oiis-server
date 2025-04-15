@@ -5,14 +5,14 @@ const stringTest = 'TEST';
 describe(Utils.name, () => {
 
     test('typeOf', () => {
-        expect(Utils.typeOf('')).toBe('string');
-        /*expect(Utils.typeOf(1)).toBe('number');
+        expect( Utils.typeOf('') ).toBe('string');
+        expect(Utils.typeOf(1)).toBe('number');
         expect(Utils.typeOf(true)).toBe('boolean');
         expect(Utils.typeOf({})).toBe('object');
-        expect(Utils.typeOf([])).toBe('array');*/
+        expect(Utils.typeOf([])).toBe('array');
     });
 
-    /*test('hasValue', () => {
+    test('hasValue', () => {
         expect(Utils.hasValue(null)).toBe(false);
         expect(Utils.hasValue(undefined)).toBe(false);
         expect(Utils.hasValue([])).toBe(false);
@@ -31,6 +31,6 @@ describe(Utils.name, () => {
         expect(Utils.firstValid([null,undefined,false])).toBe(false);
         expect(Utils.firstValid([null,undefined,true])).toBe(true);
         expect(Utils.firstValid([null,undefined,''])).toBe('');
-    });*/
+    })
     
 });
