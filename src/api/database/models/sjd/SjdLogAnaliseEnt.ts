@@ -311,6 +311,6 @@ export default class SjdLogAnaliseEnt extends BaseSjdTableModel {
             type: DataTypes.DECIMAL(18,6)
         }
     }    
-    static foreignsKeys = [];
+    static foreignsKeys : any[] = [];
     
 };

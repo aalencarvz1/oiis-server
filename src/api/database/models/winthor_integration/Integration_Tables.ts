@@ -29,7 +29,7 @@ export default class Integration_Tables extends BaseWinthorIntegrationTableModel
 
   static id = 35002;
   static tableName = this.name.toLowerCase();
-  private static adjustedForeignKeys : boolean = false;
+  static adjustedForeignKeys : boolean = false;
   static model = null;
   static fields = {
     id: {
@@ -145,6 +145,6 @@ export default class Integration_Tables extends BaseWinthorIntegrationTableModel
     }
   }];
 
-  static foreignsKeys = [];
+  static foreignsKeys : any[] = [];
   
 };

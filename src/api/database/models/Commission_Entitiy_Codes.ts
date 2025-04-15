@@ -19,13 +19,9 @@ export default class Commission_Entitiy_Codes extends BaseTableModel {
   declare description: string;
   declare minimal_value: number;
 
-
-
-
-
   static id = 9050;
   static tableName = this.name.toLowerCase();
-  private static adjustedForeignKeys : boolean = false;
+  static adjustedForeignKeys : boolean = false;
   
   static fields = {
     ...Commission_Entitiy_Codes.getBaseTableModelFields(),...{                 
@@ -72,13 +68,7 @@ export default class Commission_Entitiy_Codes extends BaseTableModel {
     //Utils.logi(this.name,'getForeignKeys');
     let result : any = this.foreignsKeys;
     if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
-      result = [];
-      let newAdjustedForeignKeys : boolean = true;
-      let baseFks = this.getBaseTableModelForeignsKeys();
-      for(let i = 0; i < baseFks.length; i++) {
-        result.push(baseFks[i]);
-        if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
-      }        
+      result = super.getForeignKeys();   
       result.push({
         fields: ['table_entity_id'],
         type: 'foreign key',
@@ -88,21 +78,8 @@ export default class Commission_Entitiy_Codes extends BaseTableModel {
         },
         onUpdate: 'cascade'
       });
-      this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     //Utils.logf(this.name,'getForeignKeys');
     return result;
   }
-
-
-  /**
-   * static initializer block
-   */
-  static {
-    //Utils.logi(this.name,'STATIC');
-    this.foreignsKeys = this.getForeignKeys();
-    //Utils.logf(this.name,'STATIC');
-  }
-   
-
 };

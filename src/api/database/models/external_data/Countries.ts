@@ -3,6 +3,7 @@
 
 import { DataTypes } from "sequelize";
 import  BaseExternalDataTableModel  from './BaseExternalDataTableModel.js';
+import Utils from "../../../controllers/utils/Utils.js";
 
 
 /**
@@ -18,7 +19,7 @@ export default class Countries extends BaseExternalDataTableModel {
 
   static id = 60006;
   static tableName = this.name.toLowerCase();
-  private static adjustedForeignKeys : boolean = false;
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
   static fields = {
@@ -43,7 +44,7 @@ export default class Countries extends BaseExternalDataTableModel {
     type:"unique"
   }];
 
-  static foreignsKeys = [];  
+  static foreignsKeys : any[] = [];
   
 };
 

@@ -10,6 +10,7 @@ import Utils from "../../../controllers/utils/Utils.js";
  */
 export default class BaseWinthorTableModel extends BaseTableModel {    
     static schema = (config as any)[`${process.env.NODE_ENV||'development'}_winthor`].dialectOptions.schema;  
+
     static getConnection = DBConnectionManager.getWinthorDBConnection;
 
     //not has base foreign keys
@@ -66,5 +67,16 @@ export default class BaseWinthorTableModel extends BaseTableModel {
         } catch(e) {
             Utils.logError(e);
         }
+    }
+
+    /**
+     * @static
+     * @override
+     * @created 2025-04-13
+     * @version 1.0.0
+     */
+    static getForeignKeys(): any[] {   
+        if (!this.adjustedForeignKeys) this.adjustedForeignKeys = true;     
+        return [];
     }
 };

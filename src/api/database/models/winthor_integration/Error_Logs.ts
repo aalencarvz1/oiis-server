@@ -21,7 +21,7 @@ export default class Error_Logs extends BaseWinthorIntegrationTableModel {
 
   static id = 35000;
   static tableName = this.name.toLowerCase();
-  private static adjustedForeignKeys : boolean = false;
+  static adjustedForeignKeys : boolean = false;
   static model = null;
   static fields = {
     created_at : {
@@ -53,6 +53,6 @@ export default class Error_Logs extends BaseWinthorIntegrationTableModel {
 
   static constraints = [];
 
-  static foreignsKeys = [];
+  static foreignsKeys : any[] = [];
   
 };

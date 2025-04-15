@@ -11,6 +11,7 @@ import DBConnectionManager from "../../DBConnectionManager.js";
  */
 export default class BaseExternalDataTableModel extends BaseTableModel {    
     static schema = (config as any)[`${process.env.NODE_ENV||'development'}_external_data`].database;  
+
     static getConnection = DBConnectionManager.getExternalDataDBConnection;
 
     //not has base foreign keys
@@ -66,5 +67,16 @@ export default class BaseExternalDataTableModel extends BaseTableModel {
         } catch (e) {
             Utils.logError(e);
         }
-    }      
+    } 
+    
+    /**
+     * @static
+     * @override
+     * @created 2025-04-13
+     * @version 1.0.0
+     */
+    static getForeignKeys(): any[] {   
+        if (!this.adjustedForeignKeys) this.adjustedForeignKeys = true;     
+        return [];
+    }    
 };

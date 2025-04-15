@@ -19,6 +19,7 @@ export default class PcFornec extends BaseWinthorTableModel {
 
   static id = 30014;
   static tableName = this.name.toUpperCase();
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
 
@@ -37,5 +38,7 @@ export default class PcFornec extends BaseWinthorTableModel {
         type: DataTypes.STRING(2000)
       }
   };
+
+  static foreignsKeys : any[] = [];
  
 };

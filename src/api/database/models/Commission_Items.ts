@@ -18,10 +18,9 @@ export default class Commission_Items extends BaseTableModel {
   declare description: string;
 
 
-
   static id = 9051;
   static tableName = this.name.toLowerCase();
-  private static adjustedForeignKeys : boolean = false;
+  static adjustedForeignKeys : boolean = false;
   
 
   static fields = {
@@ -66,13 +65,7 @@ export default class Commission_Items extends BaseTableModel {
     //Utils.logi(this.name,'getForeignKeys');
     let result : any = this.foreignsKeys;
     if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
-      result = [];
-      let newAdjustedForeignKeys : boolean = true;
-      let baseFks = this.getBaseTableModelForeignsKeys();
-      for(let i = 0; i < baseFks.length; i++) {
-        result.push(baseFks[i]);
-        if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
-      }        
+      result = super.getForeignKeys();    
       result.push({
         fields: ['commission_entity_code_id'],
         type: 'foreign key',
@@ -83,21 +76,9 @@ export default class Commission_Items extends BaseTableModel {
         onUpdate: 'cascade',
         onDelete: 'cascade'
       });
-      this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     //Utils.logf(this.name,'getForeignKeys');
     return result;
   }
 
-
-  /**
-   * static initializer block
-   */
-  static {
-    //Utils.logi(this.name,'STATIC');
-    this.foreignsKeys = this.getForeignKeys();
-    //Utils.logf(this.name,'STATIC');
-  }
-   
-  
 };

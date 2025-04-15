@@ -28,6 +28,7 @@ export default class PcNfsaid extends BaseWinthorTableModel {
 
   static id = 30210;
   static tableName = this.name.toUpperCase();
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
 
@@ -76,5 +77,7 @@ export default class PcNfsaid extends BaseWinthorTableModel {
         type: DataTypes.DATE
       }
   };
+
+  static foreignsKeys : any[] = [];
  
 };

@@ -14,6 +14,7 @@ import config from "../../config/config.js";
  */
 export default class BaseSjdTableModel extends BaseTableModel {    
     static schema = (config as any)[`${process.env.NODE_ENV||'development'}_consult`].dialectOptions.schema;  
+
     static getConnection = DBConnectionManager.getConsultDBConnection;
 
     //not has base foreign keys
@@ -71,4 +72,15 @@ export default class BaseSjdTableModel extends BaseTableModel {
             Utils.logError(e);
         }
     }
+
+    /**
+     * @static
+     * @override
+     * @created 2025-04-13
+     * @version 1.0.0
+     */
+    static getForeignKeys(): any[] {   
+        if (!this.adjustedForeignKeys) this.adjustedForeignKeys = true;     
+        return [];
+    }    
 };

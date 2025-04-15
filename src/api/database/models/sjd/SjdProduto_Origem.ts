@@ -89,6 +89,6 @@ export default class SjdProduto_Origem extends BaseSjdTableModel {
             type: DataTypes.INTEGER
         }
     }    
-    static foreignsKeys = [];
+    static foreignsKeys : any[] = [];
  
 };

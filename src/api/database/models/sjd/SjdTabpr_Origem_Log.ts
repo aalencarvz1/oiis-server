@@ -302,6 +302,6 @@ export default class SjdTabpr_Origem_Log extends BaseSjdTableModel {
             type: DataTypes.INTEGER
         },
     }    
-    static foreignsKeys = [];
+    static foreignsKeys : any[] = [];
  
 };

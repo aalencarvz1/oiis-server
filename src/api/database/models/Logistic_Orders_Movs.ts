@@ -32,7 +32,7 @@ export default class Logistic_Orders_Movs extends BaseTableModel {
 
   static id = 12004;
   static tableName = this.name.toLowerCase();
-  private static adjustedForeignKeys : boolean = false;
+  static adjustedForeignKeys : boolean = false;
   
   static fields = {
     ...Logistic_Orders_Movs.getBaseTableModelFields(),...{           
@@ -102,13 +102,7 @@ export default class Logistic_Orders_Movs extends BaseTableModel {
     //Utils.logi(this.name,'getForeignKeys');
     let result : any = this.foreignsKeys;
     if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
-      result = [];
-      let newAdjustedForeignKeys : boolean = true;
-      let baseFks = this.getBaseTableModelForeignsKeys();
-      for(let i = 0; i < baseFks.length; i++) {
-        result.push(baseFks[i]);
-        if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
-      }       
+      result = super.getForeignKeys();
       result.push({
         fields: ['logistic_order_id'],
         type: 'foreign key',
@@ -165,20 +159,9 @@ export default class Logistic_Orders_Movs extends BaseTableModel {
         },
         onUpdate: 'cascade'
       });
-      this.adjustedForeignKeys = newAdjustedForeignKeys;
     }
     //Utils.logf(this.name,'getForeignKeys');
     return result;
   }
-
-
-  /**
-   * static initializer block
-   */
-  static {
-    //Utils.logi(this.name,'STATIC');
-    this.foreignsKeys = this.getForeignKeys();
-    //Utils.logf(this.name,'STATIC');
-  }
-     
+  
 };

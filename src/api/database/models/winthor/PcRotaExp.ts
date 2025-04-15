@@ -16,6 +16,7 @@ export default class PcRotaExp extends BaseWinthorTableModel {
 
   static id = 30013;
   static tableName = this.name.toUpperCase();
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
 
@@ -29,6 +30,6 @@ export default class PcRotaExp extends BaseWinthorTableModel {
       }
   };
 
-  static foreignsKeys = [];
+  static foreignsKeys : any[] = [];
  
 };

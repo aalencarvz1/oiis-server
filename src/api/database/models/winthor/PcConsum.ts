@@ -17,6 +17,7 @@ export default class PcConsum extends BaseWinthorTableModel {
 
   static id = 30001;
   static tableName = this.name.toUpperCase();
+  static adjustedForeignKeys : boolean = false;
   static model = null;
 
 
@@ -33,5 +34,7 @@ export default class PcConsum extends BaseWinthorTableModel {
         type: DataTypes.BIGINT
       }
   };
+
+  static foreignsKeys : any[] = [];
  
 };
