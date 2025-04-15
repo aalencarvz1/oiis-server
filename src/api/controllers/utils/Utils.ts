@@ -539,35 +539,25 @@ export default class Utils {
      */
     static async evalText(text?: string,params?: any) : Promise<any> {
         let result : any = text;
-        //console.log('executing eval 0a1',result);
         if (Utils.hasValue(result)) {
-            //console.log('executing eval 0a2',result);
             let p1 = result.indexOf("${");
             let p2 = result.indexOf("}$");
-            //console.log('executing eval 0a3',p1,p2);
             let replaceText = null;
             let evalText = null;
             let evaluetedValue = null;
             let lastResult = result;
             while(p1 > -1 && p2 > -1 && p2 > p1) {
-                //console.log('executing eval 0',result);
                 replaceText = result.substring(p1,p2+2);
-                //console.log('executing eval 1',replaceText);
                 evalText = replaceText.substring(2,replaceText.length-2);
-                //console.log('executing eval 2',evalText);
                 evaluetedValue = await eval(evalText);
-                //console.log('executing eval 3',evaluetedValue);
                 result = result.replaceAll(replaceText,evaluetedValue);
-                //console.log('executing eval 4',result);
                 if (lastResult == result) break;
                 p1 = result.indexOf("${");
                 p2 = result.indexOf("}$");
                 lastResult = result;                    
             }     
         }
-        //console.log('executing eval 5',result);
         result = await eval(result);
-        //console.log('executing eval 6',result);
         return result;
     }
 
