@@ -91,25 +91,7 @@ export default class StructuredQueryUtils {
             result = `${fieldPeriods.join(' OR ')}`
         }
         return result;
-    }
-
-    /*
-    @deprecated 2025-04-17
-    static mountAmountOutputField(params: any,aliasTable: string) : string {
-        let result = null;
-        let considerNormalSales = Utils.toBool(params.considerNormalSales);
-        let considerReturns = Utils.toBool(params.considerReturns||false);
-        let considerBonuses = Utils.toBool(params.considerBonuses||false);
-        if (considerNormalSales || considerBonuses) {
-            result = `nvl(${aliasTable}.qtsaida,0)`;
-        } else {
-            result = `0`;
-        }
-        //if (considerReturns) {
-            //result += `-nvl(${aliasTable}.qtdevolvida,0)`
-        //}
-        return result;
-    }*/
+    }   
 
     static getOutputCodopers(params: any) : string {
         let result : any = [];
@@ -144,22 +126,7 @@ export default class StructuredQueryUtils {
         }
         return result;
     }
-
-    
-
-    /*
-    @deprecated 2025-04-17
-    static mountAmountReturnsField(params: any,aliasTable?: string) : string {
-        let result = null;
-        let considerReturns = Utils.toBool(params.considerReturns );
-        if (considerReturns) {
-            result = `CASE WHEN nvl(${aliasTable}.qtdevolvida,0)>0 THEN ${aliasTable}.qtdevolvida ELSE nvl(${aliasTable}.qtent,0) END * -1`;
-        } else {
-            result = `0`;
-        }
-        return result;
-    }*/
-    
+      
     static mountPivotFields(params: any) : string | string[] {
         let result : any = [];
         if (Utils.toBool(params.viewAmount || false)) {
@@ -172,7 +139,15 @@ export default class StructuredQueryUtils {
             result.push('SUM(NVL(VALOR,0)) AS VALOR');
         }
         if (Utils.toBool(params.viewReturns || false)) {
-            result.push('SUM(NVL(QT_DEVOL,0)) AS QT_DEVOL');
+            if (Utils.toBool(params.viewAmount || false)) {
+                result.push('SUM(NVL(QT_DEVOL,0)) AS QT_DEVOL');
+            }
+            if (Utils.toBool(params.viewWeight || false)) {
+                result.push('SUM(NVL(PESO_DEVOL,0)) AS PESO_DEVOL');
+            }
+            if (Utils.toBool(params.viewValue || false)) {
+                result.push('SUM(NVL(VALOR_DEVOL,0)) AS VALOR_DEVOL');
+            }
         }
         if (result && result.length) {
             result = result.join(',');
