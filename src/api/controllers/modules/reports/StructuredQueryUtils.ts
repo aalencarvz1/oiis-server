@@ -91,23 +91,7 @@ export default class StructuredQueryUtils {
             result = `${fieldPeriods.join(' OR ')}`
         }
         return result;
-    }
-
-    static mountAmountOutputField(params: any,aliasTable: string) : string {
-        let result = null;
-        let considerNormalSales = Utils.toBool(params.considerNormalSales);
-        let considerReturns = Utils.toBool(params.considerReturns||false);
-        let considerBonuses = Utils.toBool(params.considerBonuses||false);
-        if (considerNormalSales || considerBonuses) {
-            result = `nvl(${aliasTable}.qtsaida,0)`;
-        } else {
-            result = `0`;
-        }
-        /*if (considerReturns) {
-            result += `-nvl(${aliasTable}.qtdevolvida,0)`
-        }*/
-        return result;
-    }
+    }   
 
     static getOutputCodopers(params: any) : string {
         let result : any = [];
@@ -142,20 +126,7 @@ export default class StructuredQueryUtils {
         }
         return result;
     }
-
-    
-
-    static mountAmountReturnsField(params: any,aliasTable?: string) : string {
-        let result = null;
-        let considerReturns = Utils.toBool(params.considerReturns );
-        if (considerReturns) {
-            result = `CASE WHEN nvl(${aliasTable}.qtdevolvida,0)>0 THEN ${aliasTable}.qtdevolvida ELSE nvl(${aliasTable}.qtent,0) END * -1`;
-        } else {
-            result = `0`;
-        }
-        return result;
-    }
-    
+      
     static mountPivotFields(params: any) : string | string[] {
         let result : any = [];
         if (Utils.toBool(params.viewAmount || false)) {
@@ -166,6 +137,17 @@ export default class StructuredQueryUtils {
         }
         if (Utils.toBool(params.viewValue || false)) {
             result.push('SUM(NVL(VALOR,0)) AS VALOR');
+        }
+        if (Utils.toBool(params.viewReturns || false)) {
+            if (Utils.toBool(params.viewAmount || false)) {
+                result.push('SUM(NVL(QT_DEVOL,0)) AS QT_DEVOL');
+            }
+            if (Utils.toBool(params.viewWeight || false)) {
+                result.push('SUM(NVL(PESO_DEVOL,0)) AS PESO_DEVOL');
+            }
+            if (Utils.toBool(params.viewValue || false)) {
+                result.push('SUM(NVL(VALOR_DEVOL,0)) AS VALOR_DEVOL');
+            }
         }
         if (result && result.length) {
             result = result.join(',');
@@ -284,8 +266,9 @@ export default class StructuredQueryUtils {
                 while(p1 > -1 && p2 > -1 && p2 > p1 && loopLimit > 0) {
                     replaceText = result.substr(p1,(p2-p1)+2);
                     evalText = replaceText.substring(2,replaceText.length-2);
-                    //console.log('executing eval',evalText);
+                    console.log('executing eval',evalText);
                     evaluetedValue = await eval(evalText);
+                    console.log('result eval',evaluetedValue);
                     result = result.replaceAll(replaceText,evaluetedValue);
                     p1 = result.indexOf("${");
                     p2 = result.indexOf("}$");
@@ -346,12 +329,23 @@ export default class StructuredQueryUtils {
                         preexistent = false;
                         text1 = await this.getMountedSqlText(currentItems[k],params);                        
                         text1 = text1 || '';                        
+                        console.log(k,currentItems[k].id, text1);
                         //find preexistent and unique in groupment
                         for(let j in currentStructure) {
 
                             text2 = await this.getMountedSqlText(currentStructure[j],params);
                             text2 = text2 || '';
                             isEqual = text1.trim().replace(/\s/g,' ').toLowerCase() == text2.trim().replace(/\s/g,' ').toLowerCase();
+                            if (Utils.hasValue(currentItems[k].sql_alias)) {
+                                if (Utils.hasValue(currentStructure[j].sql_alias)) {
+                                    isEqual = isEqual &&  currentItems[k].sql_alias.trim().toLowerCase() == currentStructure[j].sql_alias.trim().toLowerCase();
+                                } else {
+                                    isEqual = false;
+                                }
+                            } else if (Utils.hasValue(currentStructure[j].sql_alias)) {
+                                isEqual = false;
+                            }
+
 
                             if (currentItems[k].sql_object_type_id == Sql_Object_Types.JOIN && currentStructure[j].sql_object_type_id == Sql_Object_Types.JOIN) {
                                 if (Utils.hasValue(currentItems[k].subs) && Utils.hasValue(currentStructure[j].subs)) {
@@ -364,6 +358,7 @@ export default class StructuredQueryUtils {
                                         && Utils.toBool(currentItems[k].subs[0].is_unique_in_groupment||false) && Utils.toBool(currentStructure[j].subs[0].is_unique_in_groupment||false)
                                     ) {
                                         preexistent = true;
+                                        console.log('xxxxxxx-0');
                                         await this.unifyStructuredQueryItems(currentStructure[j].subs, currentItems[k].subs, params);
                                         break;
                                     }
@@ -371,6 +366,7 @@ export default class StructuredQueryUtils {
                             } else if (isEqual) {
                                 if (Utils.toBool(currentItems[k].is_unique_in_groupment||false) && Utils.toBool(currentStructure[j].is_unique_in_groupment||false)) {
                                     preexistent = true;
+                                    console.log('xxxxxxx-1', text1, text2, text1.trim().replace(/\s/g,' ').toLowerCase(), text2.trim().replace(/\s/g,' ').toLowerCase(), isEqual);
                                     if (Utils.hasValue(currentItems[k].subs)) {
                                         currentStructure[j].subs =  currentStructure[j].subs || [];
                                         await this.unifyStructuredQueryItems(currentStructure[j].subs, currentItems[k].subs, params);
@@ -380,7 +376,8 @@ export default class StructuredQueryUtils {
                             }
                         }
 
-                        if (!preexistent) {
+                        console.log('xxxxxx0 before pushing',preexistent,k,currentItems[k].id,text1);
+                        if (!preexistent) {                            
                             currentStructure.push(currentItems[k]);
                         }
                     }
@@ -527,6 +524,7 @@ export default class StructuredQueryUtils {
      */
     static async unifyStructuredQuery(structuredQuery?: any[],reportDataFount?: any,params?: any) : Promise<any> {        
         let arrStructuredReportsDataItems = await this.getStructuredReportDataItems(reportDataFount,params);
+        //console.log('xxxx-3',JSON.stringify(arrStructuredReportsDataItems)); //ok
         if (arrStructuredReportsDataItems && arrStructuredReportsDataItems.length) {
             structuredQuery = structuredQuery || [];            
             if (!structuredQuery.length) {
@@ -535,6 +533,7 @@ export default class StructuredQueryUtils {
                 await this.unifyStructuredQueryItems(structuredQuery,arrStructuredReportsDataItems,params);
             }
         } 
+        //console.log('xxxx-4',JSON.stringify(structuredQuery)); // fail
         return structuredQuery;
     };
 
@@ -635,6 +634,7 @@ export default class StructuredQueryUtils {
             `;
 
             let reportsDatasFounts : any = await DBConnectionManager.getDefaultDBConnection()?.query(query,{raw:true,type: QueryTypes.SELECT});
+            //console.log('xxxxx-2',JSON.stringify(reportsDatasFounts));
             if (reportsDatasFounts && reportsDatasFounts.length) {                
                 for(let k in reportsDatasFounts) {
                     if (reportsDatasFounts[k].type_get_value_from.trim().toUpperCase() == 'STRUCTURED QUERY') {
@@ -872,8 +872,11 @@ export default class StructuredQueryUtils {
         for(let i = 0; i < visionsIds.length; i++) {
             visionsSort[visionsIds[i]] = i;
         }
+        console.log('xxxxxx0',JSON.stringify(structuredQuery));
         let orderedStructuredQuery = this.orderStructuredQueryItems(structuredQuery,visionsSort);
+        //console.log('xxxxxx1',JSON.stringify(orderedStructuredQuery));
         await this.processAccessCriteriesStructuredQueryItems(params,orderedStructuredQuery);
+        //console.log('xxxxxx2',JSON.stringify(orderedStructuredQuery));
         let result = await this.mountQueryItems(orderedStructuredQuery,params);
         if (Utils.typeOf(result) == 'array') {
             result = result.join(' ');

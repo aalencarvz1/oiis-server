@@ -24,7 +24,13 @@ describe(SchemasController.name, () => {
         expect(tableModelClassName.trim().toLowerCase()).toEqual(tableName.trim().toLowerCase());
     });
 
-
+     test('put without data', async () => {
+            let result = await SchemasController._put({}) 
+            expect(Utils.hasValue(result)).toBeTruthy();
+            expect(result.success).toBeFalsy();
+            expect(result.message).toMatch(/^[a-z0-9._]+\s+cannot\s+be\s+null$/i);
+        });
+    
 
     //test put (insert)
     test('put', async () => {
@@ -44,7 +50,14 @@ describe(SchemasController.name, () => {
         expect(result[0].name).toBe(stringTest);
     });
 
-
+    test('put Duplicate', async () => {
+        let result = await SchemasController._put({
+            name:stringTest,
+        })
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeFalsy();
+        expect(result.message).toMatch(/^[a-z0-9._]+\s+must\s+be\s+unique$/);
+    });
 
     //test get (select) inserted register
     test('get', async () => {
@@ -94,6 +107,30 @@ describe(SchemasController.name, () => {
 
         //test persistency of updated register
         expect(result[0].name).toBe(`${stringTest}_UPDATED`);
+
+
+        //update REVERT register
+        result = await SchemasController._patch({
+            where: {
+                id: id
+            },
+            values:{
+                name: stringTest,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
+
+        //get register REVERT updated to confirm if has uupdated
+        result = await SchemasController._get({
+            where:{
+                id:id
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+
+        //test persistency of updated register
+        expect(result[0].name).toBe(stringTest);
     });
 
 
@@ -105,7 +142,7 @@ describe(SchemasController.name, () => {
         //get register to delete, previous inserted by put test
         let result = await SchemasController._get({
             where:{
-                name: `${stringTest}_UPDATED`,
+                name: stringTest,
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();

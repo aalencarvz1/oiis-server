@@ -153,6 +153,7 @@ export default class ReportsController extends BaseRegistersController {
             if (structuredQueryData) {
 
                 //mount unified query
+                console.log('xxxxxxxx-1',JSON.stringify(structuredQueryData));
                 let query = await StructuredQueryUtils.mountQuery(structuredQueryData.structuredQuery,params);
                 let connection = await DBConnectionManager.getConnectionBySchemaName(structuredQueryData.origin);
                 if (!connection) {

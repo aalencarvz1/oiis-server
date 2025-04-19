@@ -526,6 +526,12 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
     }
 
 
+    /**
+     * @version 1.0.1
+     * @created 2024-06-01
+     * @updateds 
+     *      2025-04-17: removed transaction reference, causing duplicated key error when concurrent tansactions call this method
+     */
     static async integrate(params: any) : Promise<DataSwap> {           
         let result = new DataSwap();
         try {    
@@ -552,7 +558,7 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                     }
                 });
 
-                if (!pcClient) {
+                if (!Utils.hasValue(pcClient)) {
                     pcClient = await PcClient.findOne({
                         raw:true,
                         //attributes:Object.keys(PcClient.fields).map(el=>Sequelize.col(`${PcClient.tableName}.${el}`)),
@@ -572,13 +578,13 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                     });
                 }
 
-                if (!pcClient) throw new Error(`cgcent not found in PCCLIENT: ${params.winthorClientCNPJ} ${params.winthorClientId}`);           
+                if (!Utils.hasValue(pcClient)) throw new Error(`cgcent not found in PCCLIENT: ${params.winthorClientCNPJ} ${params.winthorClientId}`);           
 
                 let people : any = await this.integratePeople([{
                     TIPOFJ: pcClient.TIPOFJ,
                     CGCENT: params.winthorClientCNPJ || pcClient.CGCENT
                 }]);
-                if (!people) throw new Error("people is null as return of people integration");
+                if (!Utils.hasValue(people)) throw new Error("people is null as return of people integration");
                 if (!people.success) {
                     if (people.exception) throw people.exception
                     else throw new Error(people.message);
@@ -586,26 +592,26 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                 people = people?.data[0];
 
                 let queryParams : any = {};
-                if (params.transaction) queryParams.transaction = params.transaction;
+                //if (params.transaction) queryParams.transaction = params.transaction;
                 queryParams.where = {
                     people_id: people.id
                 }
 
                 let client : any = await Clients.findOne(queryParams);
-                if (!client && queryParams.transaction) {
+                /*if (!client && queryParams.transaction) {
                     let transactionTemp = queryParams.transaction;
                     queryParams.transaction = undefined;
                     delete queryParams.transaction;
                     client = await Clients.findOne(queryParams);
                     queryParams.transaction = transactionTemp;
-                }
+                }*/
 
 
                 let options : any = {};
-                if (params.transaction) options.transaction = params.transaction;
+                //if (params.transaction) options.transaction = params.transaction;
 
                 //preserve winthor code, if violate primary key or unique, raise here
-                if (client) {
+                if (Utils.hasValue(client)) {
                     if (client.id != pcClient.CODCLI) client.id = pcClient.CODCLI;
                     if (client.people_id != people.id) client.people_id = people.id;
                     await client.save(options);
