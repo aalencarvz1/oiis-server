@@ -36,9 +36,7 @@ export default class CampaignsController extends BaseRegistersController {
     static async _get(params?: any) : Promise<any[]> {
         let result : any[] = [];
         let queryParams = params?.queryParams || params || {};
-        console.log('iiiiiiiii0',queryParams);
         queryParams = DatabaseUtils.prepareQueryParams(queryParams);
-        console.log('iiiiiiiii1',queryParams);
         queryParams.raw = true;
         if (queryParams.query) {
             result = await this.getTableClassModel().getConnection().query(
@@ -73,9 +71,7 @@ export default class CampaignsController extends BaseRegistersController {
                     queryParams.where[Op.and] = queryParams.where[Op.and] || [];
                     queryParams.where[Op.and].push(Sequelize.fn('exists', Sequelize.literal(`select 1 from ${Campaign_Entities.tableName} ce where ce.entity_id in (${relationedEntitiesIds.join(',')})`)));
                 }
-            }
-
-            console.log('jjjjjjjjjjjj',queryParams);
+            }            
 
             result = await this.getTableClassModel().findAll(queryParams);
         }

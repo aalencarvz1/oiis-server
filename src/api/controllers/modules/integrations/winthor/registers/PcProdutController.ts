@@ -58,7 +58,6 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
             if (Utils.hasValue(rules)) {
                 for(let k in rules) {   
                     if (Utils.hasValue(rules[k].rule)) {
-                        //console.log('eeeeeeeee',rules[k]);                        
                         let result : any = await Utils.evalText(rules[k].rule,params);
                         if (result !== true) {
                             rulesFails.push({
