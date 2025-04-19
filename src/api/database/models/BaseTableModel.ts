@@ -177,11 +177,7 @@ export default class BaseTableModel extends Model {
         onUpdate: 'cascade'
     }];
 
-    /*static getBaseTableModelForeignsKeys() : any[] {
-        let result :any[] = JSON.parse(JSON.stringify(this.baseTableModelForeignsKeys));
-        result[0].references.table = this.tableName;
-        return result;
-    }*/
+
     static getBaseTableModelForeignsKeys() : any[] {
         //Utils.logi(`${this.name}(BaseTableModel)`,'getBaseTableModelForeignsKeys');
         let result :any[] = [];
@@ -189,17 +185,13 @@ export default class BaseTableModel extends Model {
             result.push(this.baseTableModelForeignsKeys[i]);
         }        
         for(let i = 0; i < result.length; i++) { 
-            //console.log('NNNNNNNNNNN',i,typeof result[i].references.table,result[i].references.table, this.tableName)
             if (typeof result[i].references.table == 'string' && (result[i].references.table === this.tableName || result[i].references.table === BaseTableModel.tableName)) {
-                //console.log('adjusting base fk',i,result[i]);
                 if (i == 0 || i == result.length-1) {
                     result[i] = JSON.parse(JSON.stringify(result[i])); //clone object to avoid change the original
                     result[i].references.table = this; //adjusts corret reference to model class 
                 } else {
                     result[i].references.table = this; //adjusts corret reference to model class 
-                    //console.log('NNNNNNNNNNN ADJUSTED STATIC PROPERTY',this.tableName, this.name, result[i], this.baseTableModelForeignsKeys );
                 }                
-                //console.log('adjusted base fk',i,result[i]);
             }
         }
         //Utils.logf(`${this.name}(BaseTableModel)`,'getBaseTableModelForeignsKeys');
