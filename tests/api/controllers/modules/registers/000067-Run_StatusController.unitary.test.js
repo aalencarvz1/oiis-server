@@ -1,11 +1,10 @@
-
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
-import Action_StatusController from "../../../../../dist/api/controllers/modules/registers/Action_StatusController";
+import RunStatusController from "../../../../../dist/api/controllers/modules/registers/Run_StatusController";
 
 const stringTest = 'TEST';
 
-describe(Action_StatusController.name, () => {
+describe(RunStatusController.name, () => {
    
    
     beforeAll(async ()=>{
@@ -14,7 +13,7 @@ describe(Action_StatusController.name, () => {
 
     //test class model name is correctly seted to table model name
     test('table class model name', () => {
-        let tableClassModel = Action_StatusController.getTableClassModel();
+        let tableClassModel = RunStatusController.getTableClassModel();
         expect(Utils.hasValue(tableClassModel)).toBeTruthy();
         let tableModelClassName = tableClassModel?.name;
         expect(Utils.hasValue(tableModelClassName)).toBeTruthy();
@@ -24,7 +23,7 @@ describe(Action_StatusController.name, () => {
     });
 
     test('put without data', async () => {
-        let result = await Action_StatusController._put({}) 
+        let result = await RunStatusController._put({}) 
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeFalsy();
         expect(result.message).toMatch(/^[a-z0-9._]+\s+cannot\s+be\s+null$/i);
@@ -33,13 +32,13 @@ describe(Action_StatusController.name, () => {
 
     test('put', async () => {
 
-        let result = await Action_StatusController._put({
+        let result = await RunStatusController._put({
             name: stringTest
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
     
-        result = await Action_StatusController._get({
+        result = await RunStatusController._get({
             where:{
                 name: stringTest,
             }
@@ -49,7 +48,7 @@ describe(Action_StatusController.name, () => {
     })
 
     test('put Duplicate', async () => {
-        let result = await Action_StatusController._put({
+        let result = await RunStatusController._put({
             name:stringTest,
         })
         expect(Utils.hasValue(result)).toBeTruthy();
@@ -58,7 +57,7 @@ describe(Action_StatusController.name, () => {
     });
 
     test('get', async () => {
-        let result = await Action_StatusController._get({
+        let result = await RunStatusController._get({
             where: { 
                 name : stringTest 
             }
@@ -70,7 +69,7 @@ describe(Action_StatusController.name, () => {
     test('patch', async () => {
         let id = null;
 
-        let result = await Action_StatusController._get({
+        let result = await RunStatusController._get({
             where: { 
                 name : stringTest 
             }
@@ -78,7 +77,7 @@ describe(Action_StatusController.name, () => {
         expect(Utils.hasValue(result)).toBeTruthy();
         id = result[0].id;
 
-        result = await Action_StatusController._patch({
+        result = await RunStatusController._patch({
             where: {
                 id: id
             },
@@ -89,7 +88,7 @@ describe(Action_StatusController.name, () => {
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
 
-        result = await Action_StatusController._get({
+        result = await RunStatusController._get({
             where:{
                 id:id
             }
@@ -101,7 +100,7 @@ describe(Action_StatusController.name, () => {
 
         //REVERT UPDATE
 
-        result = await Action_StatusController._patch({
+        result = await RunStatusController._patch({
             where: {
                 id: id
             },
@@ -112,7 +111,7 @@ describe(Action_StatusController.name, () => {
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
         //get register REVERTED updated to confirm if has uupdated
-        result = await Action_StatusController._get({
+        result = await RunStatusController._get({
             where:{
                 id:id
             }
@@ -126,7 +125,7 @@ describe(Action_StatusController.name, () => {
     test('delete', async () => {
         let id = null;
 
-        let result = await Action_StatusController._get({
+        let result = await RunStatusController._get({
             where:{
                 name: stringTest,
             }
@@ -135,7 +134,7 @@ describe(Action_StatusController.name, () => {
         id = result[0].id;
         
         
-        result = await Action_StatusController._delete({
+        result = await RunStatusController._delete({
             where:{
                 id:id,
             }
@@ -143,7 +142,7 @@ describe(Action_StatusController.name, () => {
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
 
-        result = await Action_StatusController._get({
+        result = await RunStatusController._get({
             where:{
                 id: id
             }
