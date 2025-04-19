@@ -358,7 +358,6 @@ export default class StructuredQueryUtils {
                                         && Utils.toBool(currentItems[k].subs[0].is_unique_in_groupment||false) && Utils.toBool(currentStructure[j].subs[0].is_unique_in_groupment||false)
                                     ) {
                                         preexistent = true;
-                                        console.log('xxxxxxx-0');
                                         await this.unifyStructuredQueryItems(currentStructure[j].subs, currentItems[k].subs, params);
                                         break;
                                     }
@@ -366,7 +365,6 @@ export default class StructuredQueryUtils {
                             } else if (isEqual) {
                                 if (Utils.toBool(currentItems[k].is_unique_in_groupment||false) && Utils.toBool(currentStructure[j].is_unique_in_groupment||false)) {
                                     preexistent = true;
-                                    console.log('xxxxxxx-1', text1, text2, text1.trim().replace(/\s/g,' ').toLowerCase(), text2.trim().replace(/\s/g,' ').toLowerCase(), isEqual);
                                     if (Utils.hasValue(currentItems[k].subs)) {
                                         currentStructure[j].subs =  currentStructure[j].subs || [];
                                         await this.unifyStructuredQueryItems(currentStructure[j].subs, currentItems[k].subs, params);
@@ -376,7 +374,6 @@ export default class StructuredQueryUtils {
                             }
                         }
 
-                        console.log('xxxxxx0 before pushing',preexistent,k,currentItems[k].id,text1);
                         if (!preexistent) {                            
                             currentStructure.push(currentItems[k]);
                         }
@@ -524,7 +521,6 @@ export default class StructuredQueryUtils {
      */
     static async unifyStructuredQuery(structuredQuery?: any[],reportDataFount?: any,params?: any) : Promise<any> {        
         let arrStructuredReportsDataItems = await this.getStructuredReportDataItems(reportDataFount,params);
-        //console.log('xxxx-3',JSON.stringify(arrStructuredReportsDataItems)); //ok
         if (arrStructuredReportsDataItems && arrStructuredReportsDataItems.length) {
             structuredQuery = structuredQuery || [];            
             if (!structuredQuery.length) {
@@ -533,7 +529,6 @@ export default class StructuredQueryUtils {
                 await this.unifyStructuredQueryItems(structuredQuery,arrStructuredReportsDataItems,params);
             }
         } 
-        //console.log('xxxx-4',JSON.stringify(structuredQuery)); // fail
         return structuredQuery;
     };
 
@@ -634,7 +629,6 @@ export default class StructuredQueryUtils {
             `;
 
             let reportsDatasFounts : any = await DBConnectionManager.getDefaultDBConnection()?.query(query,{raw:true,type: QueryTypes.SELECT});
-            //console.log('xxxxx-2',JSON.stringify(reportsDatasFounts));
             if (reportsDatasFounts && reportsDatasFounts.length) {                
                 for(let k in reportsDatasFounts) {
                     if (reportsDatasFounts[k].type_get_value_from.trim().toUpperCase() == 'STRUCTURED QUERY') {
@@ -872,11 +866,8 @@ export default class StructuredQueryUtils {
         for(let i = 0; i < visionsIds.length; i++) {
             visionsSort[visionsIds[i]] = i;
         }
-        console.log('xxxxxx0',JSON.stringify(structuredQuery));
         let orderedStructuredQuery = this.orderStructuredQueryItems(structuredQuery,visionsSort);
-        //console.log('xxxxxx1',JSON.stringify(orderedStructuredQuery));
         await this.processAccessCriteriesStructuredQueryItems(params,orderedStructuredQuery);
-        //console.log('xxxxxx2',JSON.stringify(orderedStructuredQuery));
         let result = await this.mountQueryItems(orderedStructuredQuery,params);
         if (Utils.typeOf(result) == 'array') {
             result = result.join(' ');
