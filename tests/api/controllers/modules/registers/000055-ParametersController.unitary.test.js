@@ -1,12 +1,12 @@
 
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
-import Parameters from "../../../../../dist/api/controllers/modules/registers/ParametersController";
-import HelperTestController from "../../HelperTestContoller";
+import ParametersController from "../../../../../dist/api/controllers/modules/registers/ParametersController";
+import HelperTestController from "../../HelperTestController";
 
-const stringTest = 'TEST';
+const stringTest = 'TEST1';
 
-describe(Parameters.name, () => {
+describe(ParametersController.name, () => {
    
    
     beforeAll(async ()=>{
@@ -15,7 +15,7 @@ describe(Parameters.name, () => {
 
     //test class model name is correctly seted to table model name
     test('table class model name', () => {
-        let tableClassModel = Parameters.getTableClassModel();
+        let tableClassModel = ParametersController.getTableClassModel();
         expect(Utils.hasValue(tableClassModel)).toBeTruthy();
         let tableModelClassName = tableClassModel?.name;
         expect(Utils.hasValue(tableModelClassName)).toBeTruthy();
@@ -24,30 +24,26 @@ describe(Parameters.name, () => {
         expect(tableModelClassName.trim().toLowerCase()).toEqual(tableName.trim().toLowerCase());
     });
 
+     test('put without data', async () => {
+                let result = await HelperTestController.ParametersInsert({}) 
+                expect(Utils.hasValue(result)).toBeTruthy();
+                expect(result.success).toBeFalsy();
+                expect(result.message).toMatch(/^[a-z0-9._]+\s+cannot\s+be\s+null$/i);
+            });
 
-    test('put', async () => {
+
+     test('put', async () => {
         //Create parent register(Data_Types)
-        let resultDataType = await HelperTestController.Data_TypesInsert(`${stringTest}_parent`)
-        expect(Utils.hasValue(resultDataType)).toBeTruthy()
-        expect(resultDataType.success).toBeTruthy()
-        
-        //create table register
-        let result = await Parameters._put({
-            name: stringTest,
-            data_type_id: resultDataType.data.id
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result.success).toBeTruthy();
-    
-        result = await Parameters._get({
-            where:{
-                name: stringTest,
-                data_type_id: resultDataType.data.id
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy()
-        expect(result[0].name).toBe(stringTest);
+        await HelperTestController.ParameterCompletInsert(stringTest)
     })
+    test('put Duplicate', async () => {
+        let result = await ParametersController._put({
+            name:stringTest,
+        })
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeFalsy();
+        expect(result.message).toMatch(/^[a-z0-9._]+\s+cannot\s+be\s+null$/i);
+    });
 
 
 
@@ -57,10 +53,10 @@ describe(Parameters.name, () => {
         expect(Utils.hasValue(resultDataType)).toBeTruthy()
         
         //search table register
-        let result = await Parameters._get({
+        let result = await ParametersController._get({
             where: { 
                 name : stringTest,
-                data_type_id: resultDataType[0].id
+                data_type_id: resultDataType[0].id,
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
@@ -75,7 +71,7 @@ describe(Parameters.name, () => {
        
         //search table register
         let id = null;
-        let result = await Parameters._get({
+        let result = await ParametersController._get({
             where: { 
                 name : stringTest,
                 data_type_id: resultDataType[0].id 
@@ -86,7 +82,7 @@ describe(Parameters.name, () => {
 
 
         //update table register
-        result = await Parameters._patch({
+        result = await ParametersController._patch({
             where: {
                 id: id,
             },
@@ -98,50 +94,40 @@ describe(Parameters.name, () => {
         expect(result.success).toBeTruthy();
 
         //search table register
-        result = await Parameters._get({
+        result = await ParametersController._get({
             where:{
                 id:id
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result[0].name).toBe(`${stringTest}_UPDATED`);
-    });
 
-    //delete table register
-    test('delete', async () => {
-        
-        let id = null;
-        let resultDataType = await HelperTestController.Data_TypesGet(`${stringTest}_parent`)
-        expect(Utils.hasValue(resultDataType)).toBeTruthy()
-        
-
-        let result = await Parameters._get({
-            where:{
-                name: `${stringTest}_UPDATED`,
-                data_type_id: resultDataType[0].id
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        id = result[0].id;
-        
-        
-        result = await Parameters._delete({
-            where:{
-                id:id,
+        //             //                   //
+        //REVERT update table register
+        result = await ParametersController._patch({
+            where: {
+                id: id,
+            },
+            values:{
+                name: stringTest,
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
 
-        result = await Parameters._get({
+         //get register REVERTED updated to confirm if has uupdated
+        result = await ParametersController._get({
             where:{
-                id: id
+                id:id
             }
         });
-        expect(Utils.hasValue(result)).toBeFalsy();
+        expect(Utils.hasValue(result)).toBeTruthy();
+        //test persistency of updated register
+        expect(result[0].name).toBe(stringTest);
+    });
 
-        //delete table register (Data_Type)
-        await HelperTestController.Data_TypesDelete(resultDataType[0].id)
-    
+    //delete table register
+    test('delete', async () => {
+        await HelperTestController.ParameterCompletDelete(stringTest);
     });
 })

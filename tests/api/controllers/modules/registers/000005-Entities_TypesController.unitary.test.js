@@ -24,6 +24,13 @@ describe(Entities_TypesController.name, () => {
         expect(tableModelClassName.trim().toLowerCase()).toEqual(tableName.trim().toLowerCase());
     });
 
+     test('put without data', async () => {
+            let result = await Entities_TypesController._put({}) 
+            expect(Utils.hasValue(result)).toBeTruthy();
+            expect(result.success).toBeFalsy();
+            expect(result.message).toMatch(/^[a-z0-9._]+\s+cannot\s+be\s+null$/i);
+        });
+    
 
 
     //test put (insert)
@@ -46,7 +53,14 @@ describe(Entities_TypesController.name, () => {
         expect(result[0].name).toBe(stringTest);
     });
 
-
+    test('put Duplicate', async () => {
+        let result = await Entities_TypesController._put({
+            name:stringTest,
+        })
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeFalsy();
+        expect(result.message).toMatch(/^[a-z0-9._]+\s+cannot\s+be\s+null$/i);
+    });
 
     //test get (select) inserted register
     test('get', async () => {
@@ -96,6 +110,29 @@ describe(Entities_TypesController.name, () => {
 
         //test persistency of updated register
         expect(result[0].name).toBe(`${stringTest}_UPDATED`);
+
+        //update REVERT register
+        result = await Entities_TypesController._patch({
+            where: {
+                id: id
+            },
+            values:{
+                name: stringTest,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
+
+        //get register REVERTED updated to confirm if has uupdated
+        result = await Entities_TypesController._get({
+            where:{
+                id:id
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+
+        //test persistency of updated register
+        expect(result[0].name).toBe(stringTest);
     });
 
 
@@ -107,7 +144,7 @@ describe(Entities_TypesController.name, () => {
         //get register to delete, previous inserted by put test
         let result = await Entities_TypesController._get({
             where:{
-                name: `${stringTest}_UPDATED`,
+                name: stringTest,
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
