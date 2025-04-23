@@ -58,17 +58,25 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
             if (Utils.hasValue(rules)) {
                 for(let k in rules) {   
                     if (Utils.hasValue(rules[k].rule)) {
-                        let result : any = await Utils.evalText(rules[k].rule,params);
-                        if (result !== true) {
-                            rulesFails.push({
-                                rule: rules[k],
-                                result: result                                
-                            });
+                        let check = true;
+                        if (Utils.hasValue(rules[k].condition_to_check)) {                            
+                            check = Utils.toBool(await Utils.evalText(rules[k].condition_to_check,params));
+                        }
+                        if (check) {
+                            let result : any = Utils.toBool(await Utils.evalText(rules[k].rule,params));
+                            console.log('checking rule ', rules[k].rule, params,result);
+                            if (result !== true) {
+                                rulesFails.push({
+                                    rule: {...rules[k],rule: await Utils.evalReplaceVarsText(rules[k].rule,params)},
+                                    result: result                                
+                                });
+                            }
                         }
                     }
                 }
             }
             if (Utils.hasValue(rulesFails)) {
+                result.message = 'rules check failed';
                 result.data = rulesFails;
                 result.success = false;
             } else {
@@ -131,12 +139,14 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
 
 
             if (!resultRules?.success) {
-                throw new Error(`rules check fails: \n${resultRules.data.map((el: any)=>`${el.rule.name}(${el.rule.rule}): ${el.result}`).join('\n')}`);
+                result.setDataSwap(resultRules);
+                throw new Error(`rules check failed`);
             }
 
             await DBConnectionManager.getWinthorDBConnection()?.transaction(async transaction=>{
 
                 result.data = await this.getTableClassModel().createData({queryParams,transaction});
+                //result.data = await PcProdut.create(queryParams,{isNewRecord: true, transaction});
 
                 if (Utils.hasValue(result.data)) {
 

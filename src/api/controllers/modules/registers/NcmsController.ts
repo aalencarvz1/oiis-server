@@ -49,29 +49,35 @@ export default class NcmsController extends BaseRegistersController {
                                 r.record_1_id = n.id
                                 and n.chapter = ${codNcmArr[0]}
                                 and (
-                                    (                                    
-                                        n.position = ${codNcmArr[1]}
-                                        and n.subposition = ${codNcmArr[2]}
-                                        and n.item = ${codNcmArr[3]}
-                                        and n.subitem = ${codNcmArr[4]}
-                                        and ${Utils.hasValue(queryParams.CODNCMEX[1]) ? ` n.exception = ${Utils.toNumber(queryParams.CODNCMEX[1])} ` : ' n.exception is null '}
-                                    ) xor (
-                                        (                                            
-                                            n.position = ${codNcmArr[1]}
-                                            and n.subposition = ${codNcmArr[2]}
-                                            and n.item = ${codNcmArr[3]}
-                                            and ${Utils.hasValue(queryParams.CODNCMEX[1]) ? ` n.subitem = ${codNcmArr[4]} and n.exception is null ` : ' n.subitem is null '}
-                                        ) xor (
-                                            (
-                                                n.position = ${codNcmArr[1]}
+                                    n.position is null
+                                    xor (                                    
+                                        n.position is not null
+                                        and n.position = ${codNcmArr[1]}
+                                        and (
+                                            n.subposition is null
+                                            xor (
+                                                n.subposition is not null
                                                 and n.subposition = ${codNcmArr[2]}
-                                                and ${Utils.hasValue(queryParams.CODNCMEX[1]) ? ` n.item = ${codNcmArr[3]} and n.subitem is null ` : ' n.item is null '}
-                                            ) xor (
-                                                (
-                                                    n.position = ${codNcmArr[1]}
-                                                    and ${Utils.hasValue(queryParams.CODNCMEX[1]) ? ` n.subposition = ${codNcmArr[2]} and n.item is null ` : ' n.subposition is null '}
-                                                ) xor (
-                                                    ${Utils.hasValue(queryParams.CODNCMEX[1]) ? ` n.position = ${codNcmArr[1]} and n.subposition is null ` : ' n.position is null '}
+                                                and (
+                                                    n.item is null
+                                                    xor (
+                                                        n.item is not null
+                                                        and n.item = ${codNcmArr[3]}            
+                                                        and (
+                                                            n.subitem is not null                                                            
+                                                            and n.subitem = ${codNcmArr[4]}
+                                                            and (
+                                                                n.exception is null
+                                                                ${Utils.hasValue(queryParams.CODNCMEX[1]) 
+                                                                    ? ` xor (
+                                                                        n.exception is not null
+                                                                        and n.exception = ${queryParams.CODNCMEX[1]}
+                                                                    ) ` 
+                                                                    : ''
+                                                                }
+                                                            )
+                                                        )
+                                                    )
                                                 )
                                             )
                                         )
