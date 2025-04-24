@@ -537,7 +537,7 @@ export default class Utils {
      * @created 2025-03-27
      * @version 1.0.0
      */
-    static async evalText(text?: string,params?: any) : Promise<any> {
+    static async evalReplaceVarsText(text?: string,params?: any) : Promise<any> {
         let result : any = text;
         if (Utils.hasValue(result)) {
             let p1 = result.indexOf("${");
@@ -556,6 +556,20 @@ export default class Utils {
                 p2 = result.indexOf("}$");
                 lastResult = result;                    
             }     
+        }
+        return result;
+    }
+
+
+    /**
+     * method to eval a text in expressions of params items
+     * @created 2025-03-27
+     * @version 1.0.0
+     */
+    static async evalText(text?: string,params?: any) : Promise<any> {
+        let result : any = text;
+        if (Utils.hasValue(result)) {
+            result = await this.evalReplaceVarsText(result,params);       
         }
         result = await eval(result);
         return result;

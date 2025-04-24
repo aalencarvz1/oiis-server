@@ -266,9 +266,7 @@ export default class StructuredQueryUtils {
                 while(p1 > -1 && p2 > -1 && p2 > p1 && loopLimit > 0) {
                     replaceText = result.substr(p1,(p2-p1)+2);
                     evalText = replaceText.substring(2,replaceText.length-2);
-                    console.log('executing eval',evalText);
                     evaluetedValue = await eval(evalText);
-                    console.log('result eval',evaluetedValue);
                     result = result.replaceAll(replaceText,evaluetedValue);
                     p1 = result.indexOf("${");
                     p2 = result.indexOf("}$");
@@ -329,7 +327,7 @@ export default class StructuredQueryUtils {
                         preexistent = false;
                         text1 = await this.getMountedSqlText(currentItems[k],params);                        
                         text1 = text1 || '';                        
-                        console.log(k,currentItems[k].id, text1);
+
                         //find preexistent and unique in groupment
                         for(let j in currentStructure) {
 
@@ -543,7 +541,6 @@ export default class StructuredQueryUtils {
         let result = null;
         let structuredQueryOrigin = null;
         params = params || {};
-        console.log(params);
         let visionsIds = params.visions || [];
         let periods = params.periods || [];
         let conditions = params.conditions || [];
