@@ -1,12 +1,11 @@
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
-import Measurement_UnitsController from "../../../../../dist/api/controllers/modules/registers/Measurement_UnitsController";
+import IdentifierTypes from "../../../../../dist/api/controllers/modules/registers/Identifier_TypesController";
+import HelperTestController from "../../HelperTestController";
 
 const stringTest = 'TEST';
-const sigla = 'TST';
 
-describe(Measurement_UnitsController
-.name, () => {
+describe(IdentifierTypes.name, () => {
    
    
     beforeAll(async ()=>{
@@ -15,7 +14,7 @@ describe(Measurement_UnitsController
 
     //test class model name is correctly seted to table model name
     test('table class model name', () => {
-        let tableClassModel = Measurement_UnitsController.getTableClassModel();
+        let tableClassModel = IdentifierTypes.getTableClassModel();
         expect(Utils.hasValue(tableClassModel)).toBeTruthy();
         let tableModelClassName = tableClassModel?.name;
         expect(Utils.hasValue(tableModelClassName)).toBeTruthy();
@@ -25,7 +24,7 @@ describe(Measurement_UnitsController
     });
 
     test('put without data', async () => {
-        let result = await Measurement_UnitsController._put({}) 
+        let result = await IdentifierTypes._put({}) 
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeFalsy();
         expect(result.message).toMatch(/^[a-z0-9._]+\s+cannot\s+be\s+null$/i);
@@ -33,28 +32,12 @@ describe(Measurement_UnitsController
 
 
     test('put', async () => {
-
-        let result = await Measurement_UnitsController._put({
-            name: stringTest,
-            sigla: sigla
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result.success).toBeTruthy();
-    
-        result = await Measurement_UnitsController._get({
-            where:{
-                name: stringTest,
-                sigla: sigla
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy()
-        expect(result[0].name).toBe(stringTest);
+        await HelperTestController.Identifier_TypesInsert(stringTest);
     })
 
     test('put Duplicate', async () => {
-        let result = await Measurement_UnitsController._put({
+        let result = await IdentifierTypes._put({
             name:stringTest,
-            sigla: sigla
         })
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeFalsy();
@@ -62,29 +45,21 @@ describe(Measurement_UnitsController
     });
 
     test('get', async () => {
-        let result = await Measurement_UnitsController._get({
-            where: { 
-                name : stringTest,
-                sigla: sigla
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result[0].name).toBe(stringTest);
+        await HelperTestController.Identifier_TypesGet(stringTest);
     })
 
     test('patch', async () => {
         let id = null;
 
-        let result = await Measurement_UnitsController._get({
+        let result = await IdentifierTypes._get({
             where: { 
-                name : stringTest,
-                sigla: sigla
+                name : stringTest 
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         id = result[0].id;
 
-        result = await Measurement_UnitsController._patch({
+        result = await IdentifierTypes._patch({
             where: {
                 id: id
             },
@@ -95,7 +70,7 @@ describe(Measurement_UnitsController
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
 
-        result = await Measurement_UnitsController._get({
+        result = await IdentifierTypes._get({
             where:{
                 id:id
             }
@@ -107,19 +82,18 @@ describe(Measurement_UnitsController
 
         //REVERT UPDATE
 
-        result = await Measurement_UnitsController._patch({
+        result = await IdentifierTypes._patch({
             where: {
                 id: id
             },
             values:{
                 name:stringTest,
-                sigla: sigla
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
         //get register REVERTED updated to confirm if has uupdated
-        result = await Measurement_UnitsController._get({
+        result = await IdentifierTypes._get({
             where:{
                 id:id
             }
@@ -129,35 +103,8 @@ describe(Measurement_UnitsController
         expect(result[0].name).toBe(stringTest);
     });
 
-
     test('delete', async () => {
-        let id = null;
-
-        let result = await Measurement_UnitsController._get({
-            where:{
-                name: stringTest,
-                sigla: sigla
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        id = result[0].id;
-        
-        
-        result = await Measurement_UnitsController._delete({
-            where:{
-                id:id,
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result.success).toBeTruthy();
-
-        result = await Measurement_UnitsController
-    ._get({
-            where:{
-                id: id
-            }
-        });
-        expect(Utils.hasValue(result)).toBeFalsy();
+       await HelperTestController.Identifier_TypesDelete(stringTest);
     });
 
 })

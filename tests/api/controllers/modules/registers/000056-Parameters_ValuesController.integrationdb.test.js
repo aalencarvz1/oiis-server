@@ -32,25 +32,8 @@ describe(Parameters_ValueController.name, () => {
         });
     
     test('put', async () => {
-    
-        let resultParameter = await HelperTestController.ParameterCompletInsert(`${stringTest}_PARENT`)
-
-        //create table register
-        let result = await Parameters_ValueController._put({
-            parameter_id: resultParameter.data.id,
-            
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result.success).toBeTruthy();
-    
-        result = await Parameters_ValueController._get({
-            where:{
-                parameter_id: resultParameter.data.id,
-                
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result[0].parameter_id).toBe(resultParameter.data.id);
+        await HelperTestController.Parameters_ValuesControllerInsert(stringTest);
+       
     })
 
     test('put Duplicate', async () => {
@@ -65,20 +48,7 @@ describe(Parameters_ValueController.name, () => {
 
 
     test('get', async () => {
-        
-        let resultGetParameter = await HelperTestController.ParametersGet(`${stringTest}_PARENT`)
-        expect(Utils.hasValue(resultGetParameter)).toBeTruthy();
-
-
-        //search table register
-        let result = await Parameters_ValueController._get({
-            where: { 
-                parameter_id : resultGetParameter[0].id,
-                
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result[0].parameter_id).toBe(resultGetParameter[0].id);
+        await HelperTestController.Parameters_ValuesControllerGet(stringTest);
     })
         //update table register
     test('patch', async () => {
@@ -148,35 +118,7 @@ describe(Parameters_ValueController.name, () => {
     //delete table register
     test('delete', async () => {
         
-        let id = null;
-
-        let result = await Parameters_ValueController._get({
-            where:{
-                value: stringTest,
-
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        id = result[0].id;
-        
-        
-        result = await Parameters_ValueController._delete({
-            where:{
-                id:id,
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result.success).toBeTruthy();
-
-        result = await Parameters_ValueController._get({
-            where:{
-                id: id
-            }
-        });
-        expect(Utils.hasValue(result)).toBeFalsy();
-
-        //delete table register (Data_Type)
-        await HelperTestController.ParameterCompletDelete(`${stringTest}_PARENT`)
+     await HelperTestController.Parameters_ValuesControllerDelete(stringTest);
 
     });
 
