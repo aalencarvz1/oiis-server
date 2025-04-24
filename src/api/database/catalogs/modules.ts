@@ -436,13 +436,6 @@ export default [
                         "view_path" :"/views/modules/registers/integrations/winthor/products/management/:product_id",
                         "numeric_order":298001500,
                         "show_in_menu":0
-                    },{
-                        "id" : 298001501,
-                        "routine_type_id" : 1,
-                        "name" : "NAMES RULES",
-                        "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"m576-160-56-56 104-104-104-104 56-56 104 104 104-104 56 56-104 104 104 104-56 56-104-104-104 104Zm79-360L513-662l56-56 85 85 170-170 56 57-225 226ZM80-280v-80h360v80H80Zm0-320v-80h360v80H80Z\"/></svg>",
-                        "view_path" :"/views/modules/registers/integrations/winthor/products/names_rules",
-                        "numeric_order":298001501,
                     }]
                 }]
             }]
