@@ -1,10 +1,11 @@
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
-import IdentifierTypes from "../../../../../dist/api/controllers/modules/registers/Identifier_TypesController";
+import GreatnessesController from "../../../../../dist/api/controllers/modules/registers/GreatnessesController";
+import HelperTestController from "../../HelperTestController";
 
 const stringTest = 'TEST';
-
-describe(IdentifierTypes.name, () => {
+const sigla = 'TST';
+describe(GreatnessesController.name, () => {
    
    
     beforeAll(async ()=>{
@@ -13,7 +14,7 @@ describe(IdentifierTypes.name, () => {
 
     //test class model name is correctly seted to table model name
     test('table class model name', () => {
-        let tableClassModel = IdentifierTypes.getTableClassModel();
+        let tableClassModel = GreatnessesController.getTableClassModel();
         expect(Utils.hasValue(tableClassModel)).toBeTruthy();
         let tableModelClassName = tableClassModel?.name;
         expect(Utils.hasValue(tableModelClassName)).toBeTruthy();
@@ -23,33 +24,21 @@ describe(IdentifierTypes.name, () => {
     });
 
     test('put without data', async () => {
-        let result = await IdentifierTypes._put({}) 
+        let result = await GreatnessesController._put({}) 
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeFalsy();
         expect(result.message).toMatch(/^[a-z0-9._]+\s+cannot\s+be\s+null$/i);
     });
 
-
+    //Insert data in table
     test('put', async () => {
-
-        let result = await IdentifierTypes._put({
-            name: stringTest
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result.success).toBeTruthy();
-    
-        result = await IdentifierTypes._get({
-            where:{
-                name: stringTest,
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy()
-        expect(result[0].name).toBe(stringTest);
+        await HelperTestController.GreatnessesControllerInsert(stringTest,sigla)
     })
 
     test('put Duplicate', async () => {
-        let result = await IdentifierTypes._put({
+        let result = await GreatnessesController._put({
             name:stringTest,
+            sigla: sigla
         })
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeFalsy();
@@ -57,27 +46,22 @@ describe(IdentifierTypes.name, () => {
     });
 
     test('get', async () => {
-        let result = await IdentifierTypes._get({
-            where: { 
-                name : stringTest 
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result[0].name).toBe(stringTest);
+        await HelperTestController.GreatnessesControllerGet(stringTest,sigla)
     })
 
     test('patch', async () => {
         let id = null;
 
-        let result = await IdentifierTypes._get({
+        let result = await GreatnessesController._get({
             where: { 
-                name : stringTest 
+                name : stringTest,
+                sigla: sigla
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         id = result[0].id;
 
-        result = await IdentifierTypes._patch({
+        result = await GreatnessesController._patch({
             where: {
                 id: id
             },
@@ -88,7 +72,7 @@ describe(IdentifierTypes.name, () => {
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
 
-        result = await IdentifierTypes._get({
+        result = await GreatnessesController._get({
             where:{
                 id:id
             }
@@ -100,18 +84,19 @@ describe(IdentifierTypes.name, () => {
 
         //REVERT UPDATE
 
-        result = await IdentifierTypes._patch({
+        result = await GreatnessesController._patch({
             where: {
                 id: id
             },
             values:{
                 name:stringTest,
+                sigla: sigla
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
         //get register REVERTED updated to confirm if has uupdated
-        result = await IdentifierTypes._get({
+        result = await GreatnessesController._get({
             where:{
                 id:id
             }
@@ -123,31 +108,7 @@ describe(IdentifierTypes.name, () => {
 
 
     test('delete', async () => {
-        let id = null;
-
-        let result = await IdentifierTypes._get({
-            where:{
-                name: stringTest,
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        id = result[0].id;
-        
-        
-        result = await IdentifierTypes._delete({
-            where:{
-                id:id,
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result.success).toBeTruthy();
-
-        result = await IdentifierTypes._get({
-            where:{
-                id: id
-            }
-        });
-        expect(Utils.hasValue(result)).toBeFalsy();
+        await HelperTestController.GreatnessesControllerDelete(stringTest,sigla)
     });
 
 })
