@@ -17,6 +17,7 @@ export default class Integration_Rules extends BaseTableModel {
   declare description?: string;
   declare table_id: number;
   declare field_name?: string;
+  declare condition_to_check?: string;
   declare rule: string;
   declare check_at_front: number;
   declare check_at_back: number;
@@ -47,6 +48,9 @@ export default class Integration_Rules extends BaseTableModel {
       },
       field_name: {
         type: DataTypes.STRING(255)
+      },
+      condition_to_check: {
+        type: DataTypes.TEXT
       },
       rule: {
         type: DataTypes.TEXT,
