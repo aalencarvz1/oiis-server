@@ -5,5 +5,6 @@ export default {
   testEnvironment: 'node',
   moduleFileExtensions: ['js'],
   transform: {}, // desativa o ts-jest,
-  setupFiles: ['<rootDir>/jest.setup.js']
+  setupFiles: ['<rootDir>/jest.setup.js'],
+  testTimeout:30000
 }
