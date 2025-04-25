@@ -32,23 +32,13 @@ describe(Data_TypesController.name, () => {
     
 
     test('put', async () => {
-        let result = await HelperTestController.Data_TypesInsert(stringTest)
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result.success).toBeTruthy();
+        let result = await HelperTestController.Data_TypesInsert(stringTest,true)
     
-        result = await Data_TypesController._get({
-            where:{
-                name: stringTest,
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy()
-        expect(result[0].name).toBe(stringTest);
     });
     
     test('put Duplicate', async () => {
-        let result = await Data_TypesController._put({
-            name:stringTest,
-        })
+        let result = await HelperTestController.Data_TypesInsert(stringTest);
+        
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeFalsy();
         expect(result.message).toMatch(/^[a-z0-9._]+\s+must\s+be\s+unique$/);
