@@ -56,6 +56,7 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
             });
 
             if (Utils.hasValue(rules)) {
+                params.GRAMATURA = params.GRAMATURA || "[0-9]*,*[0-9]*X*[0-9]*,*[0-9]+(KG|UN|GR|LT|ML)";
                 for(let k in rules) {   
                     if (Utils.hasValue(rules[k].rule)) {
                         let check = true;
