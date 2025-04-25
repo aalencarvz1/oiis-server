@@ -417,108 +417,7 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
         return result;
     }
 
-    /*
-    @version 1.0.0
-    @comments 
-        2025-03-25 - Alencar: Função comentada para efeito de manter o histórico de como foi criada, pois foi criada corretamente, conforme a logica do negócio, porém, dada a evolução do front, ela precisará de atualizações
-    */
-   /*
-    static async get_product_data(req: Request, res: Response, next: NextFunction) : Promise<void> {
-        
-        type Filter = {
-            campo: String | null;
-            operador: any | null;
-            valor: String | number | null;
-        }
-        let campos = ['pp.codprod',
-            'pp.codfab',
-            'pp.descricao',
-            'pe.codfilial',
-            'pe.qtest',
-            'pe.dtultent',
-            'pe.dtultsaida',
-            'pp.embalagem',
-            'pp.unidade',
-            'pp.pesoliq',
-            'pp.pesobruto',
-            'pp.codepto',
-            'pp.temrepos',
-            'pp.qtunit',
-            'pp.dtcadastro',
-            'pp.dtexclusao',
-            'pp.dtultaltcom',
-            'pp.prazoval',
-            'pp.revenda',
-            'pp.qtunitcx',
-            'pp.importado',
-            'pp.codauxiliar']
-
-        let camposTerm = [
-            'pp.codprod',
-            'pp.codfab',
-            'pe.codfilial',
-            ]
-
-        let whereAvanced : Filter[] = req.body.filters || null
-        let whereTerm = req.body.termo || null
-        console.log(whereAvanced,"Pesquisa avançada")
-        console.log(whereTerm,"Pesquisa por termo")
-        try {
-            let result: any;
-            let query: any;
-            query =`
-            SELECT
-                ${campos}
-            FROM
-                pcprodut pp 
-                join pcest pe on(
-                    pp.codprod = pe.codprod
-                )
-            WHERE 
-     
-            `
-            if(Utils.hasValue(whereAvanced[0].campo) && Utils.hasValue(whereAvanced[0].operador) && Utils.hasValue(whereAvanced[0].valor)){
-        
-                    const conditions = whereAvanced.map(f => {
-                        const { campo, operador, valor } = f;
-                        if (valor === null || valor === undefined) {
-                            return `(${campo} IS NULL)`;
-                        }
-                        if (campo === 'DTCADASTRO' || campo === 'DTEXCLUSAO' || campo === 'DTULTALTCOM') {
-                            return `${campo} = TO_DATE('${valor}', 'dd/mm/yyyy')`; // Para datas
-                        }
-                        if (typeof valor === 'number') {
-                            return `(${campo} ${operador || '='} ${valor})`;
-                        }
-                        if (typeof valor === 'string') {
-                            return `(${campo} ${operador || 'LIKE'} '${valor}')`;
-                        }
-                        return `(${campo} ${operador || '='} '${valor}')`;
-                    });
-                    query += conditions.join(' AND ');
-                    console.log("Where1")
-                }else{  
-                    
-                    
-                        const conditions = camposTerm.map( c => `${ c } = '${ whereTerm }'` );
-                        query += conditions.join(' or ');
-                    
-                }
-            result = await DBConnectionManager.getWinthorDBConnection()?.query(query, {type: QueryTypes.SELECT})
-       
-            if(result){
-                res.status(200).json(result)
-            }else{
-                res.status(404).json({message: 'Nenhum registro encontrado.'})
-            }
-        } catch (e: any) {
-            res.setException(e);
-            res.sendResponse(517,false);
-        }
-    }*/
-
-
-
+    
     /**
      * get product data according request parameters
      * @version 1.2.0
@@ -599,17 +498,19 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                 let orTerm = [];
 
                 //especied fields on searchTem
-                if (Utils.hasValue(search.term.fields)) {
-                    search.term.fields = Utils.toArray(search.term.fields);
-                    for(let i in search.term.fields) {
-                        for(let k in search.term.value) {
-                            orTerm.push(
-                                Sequelize.where(
-                                    Sequelize.fn('UPPER',Sequelize.col(search.term.fields[i])),
-                                    Op.like,
-                                    `%${search.term.value[k]}%`
+                if (Utils.hasValue(search.fields)) {
+                    //search.fields = Utils.toArray(search.fields);
+                    for(let field in search.fields) {
+                        if (Utils.toBool(search.fields[field])) {
+                            for(let k in search.term.value) {
+                                orTerm.push(
+                                    Sequelize.where(
+                                        Sequelize.fn('UPPER',Sequelize.col(`${PcProdut.tableName}.${field}`)),
+                                        Op.like,
+                                        `%${search.term.value[k]}%`
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
                 } else {
