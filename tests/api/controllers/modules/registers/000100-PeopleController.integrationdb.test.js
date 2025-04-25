@@ -4,12 +4,14 @@ import People from "../../../../../dist/api/controllers/modules/registers/People
 import HelperTestController from "../../HelperTestController";
 
 const stringTest = 'TEST';
-
+const stringDoc = '14.524.123-5';
 describe(People.name, () => {
    
    
     beforeAll(async ()=>{
         await ModelsController.initModels();
+
+        await HelperTestController.Identifier_TypesInsert(stringTest);
     });
 
     //test class model name is correctly seted to table model name
@@ -32,12 +34,13 @@ describe(People.name, () => {
 
 
     test('put', async () => {
-        InsertParent = await HelperTestController.Identifier_TypesInsert(stringTest);
-        
+       
+        let InsertParent = await HelperTestController.Identifier_TypesGet(stringTest);
+
         let result = await People._put({
             name: stringTest,
             identifier_doc_type_id:InsertParent[0].id,
-            identifier_doc:
+            identifier_doc: stringDoc
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
@@ -52,8 +55,12 @@ describe(People.name, () => {
     })
 
     test('put Duplicate', async () => {
+        let InsertParent = await HelperTestController.Identifier_TypesGet(stringTest);
+
         let result = await People._put({
             name:stringTest,
+            identifier_doc_type_id:InsertParent[0].id,
+            identifier_doc: stringDoc
         })
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeFalsy();
@@ -63,7 +70,8 @@ describe(People.name, () => {
     test('get', async () => {
         let result = await People._get({
             where: { 
-                name : stringTest 
+                name: stringTest,
+                identifier_doc: stringDoc
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
@@ -75,8 +83,8 @@ describe(People.name, () => {
 
         let result = await People._get({
             where: { 
-                name : stringTest 
-            }
+                name: stringTest,
+                identifier_doc: stringDoc            }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         id = result[0].id;
@@ -87,6 +95,7 @@ describe(People.name, () => {
             },
             values:{
                 name: `${stringTest}_UPDATED`,
+                identifier_doc: `${stringDoc}_UPDATED`
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
@@ -98,9 +107,9 @@ describe(People.name, () => {
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
-
+       
         expect(result[0].name).toBe(`${stringTest}_UPDATED`);
-    
+        expect(result[0].identifier_doc).toBe(`${stringDoc}_UPDATED`)
 
         //REVERT UPDATE
 
@@ -110,6 +119,7 @@ describe(People.name, () => {
             },
             values:{
                 name:stringTest,
+                identifier_doc:stringDoc
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
@@ -132,6 +142,7 @@ describe(People.name, () => {
         let result = await People._get({
             where:{
                 name: stringTest,
+                identifier_doc: stringDoc
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
@@ -153,5 +164,9 @@ describe(People.name, () => {
         });
         expect(Utils.hasValue(result)).toBeFalsy();
     });
+
+    afterAll(async() => {
+        await HelperTestController.Identifier_TypesDelete(stringTest);
+    })
 
 })
