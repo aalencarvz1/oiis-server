@@ -6,12 +6,34 @@ import HelperTestController from "../../HelperTestController";
 
 const stringTest = 'TEST';
 
+async function insert(stringTest){
+    let resultParameter = await HelperTestController.ParameterCompletInsert(`${stringTest}_PARENT`);
+    
+
+        
+    //create table register
+let result = await Parameters_ValueController._put({
+    parameter_id: resultParameter.data.id,
+});
+expect(Utils.hasValue(result)).toBeTruthy();
+expect(result.success).toBeTruthy();
+
+
+return result;
+}
+
+
 describe(Parameters_ValueController.name, () => {
    
    
     beforeAll(async ()=>{
-        await ModelsController.initModels();
+        await ModelsController.initModels();   
+
+       
     });
+
+
+    
 
     //test class model name is correctly seted to table model name
     test('table class model name', () => {
@@ -29,16 +51,34 @@ describe(Parameters_ValueController.name, () => {
             expect(Utils.hasValue(result)).toBeTruthy();
             expect(result.success).toBeFalsy();
             expect(result.message).toMatch(/^[a-z0-9._]+\s+cannot\s+be\s+null$/i);
-        });
+    });
     
     test('put', async () => {
-        await HelperTestController.Parameters_ValuesControllerInsert(stringTest);
+        await insert(stringTest);
+        
+        let resultGetParameter = await HelperTestController.ParametersGet(`${stringTest}_PARENT`)
+        expect(Utils.hasValue(resultGetParameter)).toBeTruthy();
+        
+        
+      
        
+        let result = await Parameters_ValueController._get({
+            where:{
+                parameter_id: resultGetParameter[0].id,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result[0].parameter_id).toBe(resultGetParameter[0].id);
     })
 
     test('put Duplicate', async () => {
+        let resultGetParameter = await HelperTestController.ParametersGet(`${stringTest}_PARENT`)
+        expect(Utils.hasValue(resultGetParameter)).toBeTruthy();
+
         let result = await Parameters_ValueController._put({
-            name:stringTest,
+            where:{
+                parameter_id: resultGetParameter[0].id
+            }
         })
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeFalsy();
@@ -118,8 +158,9 @@ describe(Parameters_ValueController.name, () => {
     //delete table register
     test('delete', async () => {
         
-     await HelperTestController.Parameters_ValuesControllerDelete(stringTest);
-
+        await HelperTestController.Parameters_ValuesControllerDelete(stringTest);
+        
     });
+    
 
 })
