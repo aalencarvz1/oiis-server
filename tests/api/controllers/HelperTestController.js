@@ -15,10 +15,23 @@ export default class HelperTestController {
         })
     }
     //Insert Data_types
-    static async Data_TypesInsert(name) {
-        return await Data_TypesController._put({
+    static async Data_TypesInsert(name,checkResult) {
+        let result = await Data_TypesController._put({
                     name: name
-                });
+        });
+        if(checkResult){
+            expect(Utils.hasValue(result)).toBeTruthy();
+            expect(result.success).toBeTruthy();
+        
+            result = await Data_TypesController._get({
+                where:{
+                    name: name,
+                }
+            });
+            expect(Utils.hasValue(result)).toBeTruthy()
+            expect(result[0].name).toBe(name);
+        }
+        return result;
     }
     //Delete Data_types
     static async Data_TypesDelete(id) {
@@ -56,7 +69,6 @@ export default class HelperTestController {
         expect(Utils.hasValue(resultDataType)).toBeTruthy()
         expect(resultDataType.success).toBeTruthy()
         
-        
         //create table register
         let result = await ParametersController._put({
             name: name,
@@ -71,7 +83,7 @@ export default class HelperTestController {
                 data_type_id: resultDataType.data.id
             }
         });
-        expect(Utils.hasValue(resultGet)).toBeTruthy()
+        expect(Utils.hasValue(resultGet)).toBeTruthy();
         expect(resultGet[0].name).toBe(name);
 
         return result;
@@ -176,26 +188,7 @@ export default class HelperTestController {
         expect(Utils.hasValue(result)).toBeFalsy();
     }
     //Insert Parameters_ValuesController
-    static async Parameters_ValuesControllerInsert(stringTest){
-         let resultParameter = await HelperTestController.ParameterCompletInsert(`${stringTest}_PARENT`)
-        
-         //create table register
-        let result = await Parameters_ValueController._put({
-            parameter_id: resultParameter.data.id,
-            
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result.success).toBeTruthy();
     
-        result = await Parameters_ValueController._get({
-            where:{
-                parameter_id: resultParameter.data.id,    
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result[0].parameter_id).toBe(resultParameter.data.id);
-        return result;
-    }
     //Get Parameters_ValuesController
     static async Parameters_ValuesControllerGet(stringTest){
         let resultGetParameter = await HelperTestController.ParametersGet(`${stringTest}_PARENT`)
@@ -219,7 +212,6 @@ export default class HelperTestController {
         let result = await Parameters_ValueController._get({
             where:{
                 value: stringTest,
-
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
@@ -262,6 +254,7 @@ export default class HelperTestController {
         expect(result[0].name).toBe(stringTest);
         return result;
     }
+
     //Get Identifier_Types
     static async Identifier_TypesGet(stringTest){
           let result = await Identifier_TypesController._get({
