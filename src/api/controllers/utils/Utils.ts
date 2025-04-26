@@ -575,4 +575,38 @@ export default class Utils {
         return result;
     }
 
+
+    // Função genérica para calcular o dígito verificador de GTIN-8, 13 e 14
+    static calculateGtinDigit(code: string) : number {
+        let sum = 0;
+        let multiplier = 3;
+    
+        // Percorre os dígitos de trás para frente (exceto o último, que é o check digit)
+        for (let i = code.length - 2; i >= 0; i--) {
+            let num = parseInt(code[i]);
+            sum += num * multiplier;
+            multiplier = multiplier === 3 ? 1 : 3; // Alterna entre 3 e 1
+        }
+    
+        let digit = (10 - (sum % 10)) % 10; // Se for 10, vira 0
+        return digit;
+    };
+    
+    // Função para validar GTIN-8, 13 ou 14
+    static getGtinType(code?: string) : any {
+        let result : any = {
+            isGtin : false
+        };
+        const numbers = code?.replace(/\D/g, "") || ""; // Remove caracteres não numéricos        
+        if (![8, 13, 14].includes(numbers.length)) return result;
+    
+        const calculatedDigit = Utils.calculateGtinDigit(numbers);
+        const informatedDigit = parseInt(numbers[numbers.length - 1]);
+        result.isGtin = calculatedDigit === informatedDigit;
+        if (result.isGtin) {
+            result.type = numbers.length;
+        }
+        return result;
+    };
+
 }
