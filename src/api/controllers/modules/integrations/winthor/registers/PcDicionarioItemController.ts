@@ -27,6 +27,7 @@ export default class PcDicionarioItemController extends WinthorBaseRegistersInte
             queryParams = DatabaseUtils.prepareQueryParams(queryParams);
             queryParams.raw = true;
             queryParams.where = queryParams.where || {};
+            queryParams.order = queryParams.order || [];
 
             if (bodyParams.includeJoins) {
                 queryParams.include = queryParams.include || [];
@@ -58,7 +59,8 @@ export default class PcDicionarioItemController extends WinthorBaseRegistersInte
                             Sequelize.where(Sequelize.literal(`${All_Tab_Columns.tableName}.COLUMN_NAME`),Sequelize.literal(`${PcDicionarioItem.tableName}.NOMECAMPO`)),
                         ]
                     }
-                })
+                });
+                queryParams.order.push([Sequelize.literal(`${All_Tab_Columns.tableName}.COLUMN_ID`),'ASC']);
             }
             console.log(queryParams);
             res.data = await this.getTableClassModel().findAll(queryParams);
