@@ -1,22 +1,20 @@
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
-import People from "../../../../../dist/api/controllers/modules/registers/PeopleController";
+import PeopleController from "../../../../../dist/api/controllers/modules/registers/PeopleController";
 import HelperTestController from "../../HelperTestController";
 
 const stringTest = 'TEST';
 const stringDoc = '14.524.123-5';
-describe(People.name, () => {
+describe(PeopleController.name, () => {
    
    
     beforeAll(async ()=>{
         await ModelsController.initModels();
-
-        await HelperTestController.Identifier_TypesInsert(stringTest);
     });
 
     //test class model name is correctly seted to table model name
     test('table class model name', () => {
-        let tableClassModel = People.getTableClassModel();
+        let tableClassModel = PeopleController.getTableClassModel();
         expect(Utils.hasValue(tableClassModel)).toBeTruthy();
         let tableModelClassName = tableClassModel?.name;
         expect(Utils.hasValue(tableModelClassName)).toBeTruthy();
@@ -26,7 +24,7 @@ describe(People.name, () => {
     });
 
     test('put without data', async () => {
-        let result = await People._put({}) 
+        let result = await PeopleController._put({}) 
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeFalsy();
         expect(result.message).toMatch(/^[a-z0-9._]+\s+cannot\s+be\s+null$/i);
@@ -35,29 +33,13 @@ describe(People.name, () => {
 
     test('put', async () => {
        
-        let InsertParent = await HelperTestController.Identifier_TypesGet(stringTest);
-
-        let result = await People._put({
-            name: stringTest,
-            identifier_doc_type_id:InsertParent[0].id,
-            identifier_doc: stringDoc
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result.success).toBeTruthy();
-    
-        result = await People._get({
-            where:{
-                name: stringTest,
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy()
-        expect(result[0].name).toBe(stringTest);
+       await HelperTestController.PeopleControllerInsert(stringTest,stringDoc);
     })
 
     test('put Duplicate', async () => {
-        let InsertParent = await HelperTestController.Identifier_TypesGet(stringTest);
+        let InsertParent = await HelperTestController.Identifier_TypesGet(`${stringTest}_PEOPLE_INSERT`);
 
-        let result = await People._put({
+        let result = await PeopleController._put({
             name:stringTest,
             identifier_doc_type_id:InsertParent[0].id,
             identifier_doc: stringDoc
@@ -68,28 +50,23 @@ describe(People.name, () => {
     });
 
     test('get', async () => {
-        let result = await People._get({
-            where: { 
-                name: stringTest,
-                identifier_doc: stringDoc
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result[0].name).toBe(stringTest);
+      await HelperTestController.PeopleControllerGet(stringTest,stringDoc)
     })
 
     test('patch', async () => {
+        let InsertParent = await HelperTestController.Identifier_TypesGet(`${stringTest}_PEOPLE_INSERT`);
         let id = null;
 
-        let result = await People._get({
+        let result = await PeopleController._get({
             where: { 
                 name: stringTest,
+                identifier_doc_type_id:InsertParent[0].id,
                 identifier_doc: stringDoc            }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         id = result[0].id;
 
-        result = await People._patch({
+        result = await PeopleController._patch({
             where: {
                 id: id
             },
@@ -101,7 +78,7 @@ describe(People.name, () => {
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
 
-        result = await People._get({
+        result = await PeopleController._get({
             where:{
                 id:id
             }
@@ -113,7 +90,7 @@ describe(People.name, () => {
 
         //REVERT UPDATE
 
-        result = await People._patch({
+        result = await PeopleController._patch({
             where: {
                 id: id
             },
@@ -125,7 +102,7 @@ describe(People.name, () => {
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
         //get register REVERTED updated to confirm if has uupdated
-        result = await People._get({
+        result = await PeopleController._get({
             where:{
                 id:id
             }
@@ -137,36 +114,7 @@ describe(People.name, () => {
 
 
     test('delete', async () => {
-        let id = null;
-
-        let result = await People._get({
-            where:{
-                name: stringTest,
-                identifier_doc: stringDoc
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        id = result[0].id;
-        
-        
-        result = await People._delete({
-            where:{
-                id:id,
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result.success).toBeTruthy();
-
-        result = await People._get({
-            where:{
-                id: id
-            }
-        });
-        expect(Utils.hasValue(result)).toBeFalsy();
+        await HelperTestController.PeopleControllerDelete(stringTest,stringDoc);
     });
-
-    afterAll(async() => {
-        await HelperTestController.Identifier_TypesDelete(stringTest);
-    })
 
 })

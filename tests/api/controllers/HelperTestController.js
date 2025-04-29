@@ -4,6 +4,7 @@ import ParametersController from "../../../dist/api/controllers/modules/register
 import Parameters_ValueController from "../../../dist/api/controllers/modules/registers/Parameter_ValuesController";
 import Utils from "../../../dist/api/controllers/utils/Utils";
 import Identifier_TypesController from "../../../dist/api/controllers/modules/registers/Identifier_TypesController";
+import PeopleController from "../../../dist/api/controllers/modules/registers/PeopleController";
 
 export default class HelperTestController {
     //Get Data_types
@@ -293,5 +294,74 @@ export default class HelperTestController {
             }
         });
         expect(Utils.hasValue(result)).toBeFalsy();
+    }
+    static async PeopleControllerInsert(stringTest,stringDoc){
+        let InsertParent = await HelperTestController.Identifier_TypesInsert(`${stringTest}_PEOPLE_INSERT`);
+
+        let result = await PeopleController._put({
+            name: stringTest,
+            identifier_doc_type_id:InsertParent[0].id,
+            identifier_doc: stringDoc
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
+    
+        let resultGet = await PeopleController._get({
+            where:{
+                name: stringTest,
+            }
+        });
+        expect(Utils.hasValue(resultGet)).toBeTruthy()
+        expect(resultGet[0].name).toBe(stringTest);
+
+        return result;
+    }
+
+    static async PeopleControllerGet(stringTest,stringDoc){
+            let InsertParent = await HelperTestController.Identifier_TypesGet(`${stringTest}_PEOPLE_INSERT`);
+           let result = await PeopleController._get({
+                where: { 
+                    name: stringTest,
+                    identifier_doc_type_id:InsertParent[0].id,
+                    identifier_doc: stringDoc
+                }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result[0].name).toBe(stringTest);
+        return result;
+    };
+
+    static async PeopleControllerDelete(stringTest,stringDoc){
+        let InsertParent = await HelperTestController.Identifier_TypesGet(`${stringTest}_PEOPLE_INSERT`);
+        let id = null;
+
+        let result = await PeopleController._get({
+            where:{
+                name: stringTest,
+                identifier_doc_type_id:InsertParent[0].id,
+                identifier_doc: stringDoc
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        id = result[0].id;
+        
+        
+        result = await PeopleController._delete({
+            where:{
+                id:id,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
+
+        result = await PeopleController._get({
+            where:{
+                id: id
+            }
+        });
+        expect(Utils.hasValue(result)).toBeFalsy();
+
+
+        await HelperTestController.Identifier_TypesDelete(`${stringTest}_PEOPLE_INSERT`)
     }
 }
