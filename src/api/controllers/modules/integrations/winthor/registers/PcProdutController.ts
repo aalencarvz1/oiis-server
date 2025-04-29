@@ -493,30 +493,37 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
             if (Utils.hasValue(search?.term?.value)) {                
 
                 //allow multiple terms with comma(,) separator
+                console.log('xxxxxxxxx',search);
                 search.term.value = search.term.value.trim().toUpperCase().split(',');
 
                 let orTerm = [];
 
                 //especied fields on searchTem
-                if (Utils.hasValue(search.fields)) {
-                    //search.fields = Utils.toArray(search.fields);
-                    for(let field in search.fields) {
-                        if (Utils.toBool(search.fields[field])) {
-                            for(let k in search.term.value) {
-                                orTerm.push(
-                                    Sequelize.where(
-                                        Sequelize.fn('UPPER',Sequelize.col(`${PcProdut.tableName}.${field}`)),
-                                        Op.like,
-                                        `%${search.term.value[k]}%`
-                                    )
+                if (Utils.hasValue(search.term.fields)) {
+                    console.log('xxxxxxxxx1',search.term.fields);
+                    //search.term.fields = Utils.toArray(search.term.fields);
+                    for(let j in search.term.fields) {
+                        for(let k in search.term.value) {
+                            orTerm.push(
+                                Sequelize.where(
+                                    Sequelize.fn('UPPER',Sequelize.col(`${PcProdut.tableName}.${search.term.fields[j]}`)),
+                                    Op.like,
+                                    `%${search.term.value[k]}%`
                                 )
-                            }
+                            )
                         }
                     }
                 } else {
-
+                    console.log('xxxxxxxxx2',search.term.fields);
                     //not especied fields
                     for(let k in search.term.value) {
+                        orTerm.push(
+                            Sequelize.where(
+                                Sequelize.col(`${PcProdut.tableName}.CODPROD`),
+                                Op.like,
+                                `%${search.term.value[k]}%`
+                            )
+                        )
                         orTerm.push(
                             Sequelize.where(
                                 Sequelize.fn('UPPER',Sequelize.col(`${PcProdut.tableName}.DESCRICAO`)),
