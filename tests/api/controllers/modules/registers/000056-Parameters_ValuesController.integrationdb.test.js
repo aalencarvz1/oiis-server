@@ -3,6 +3,7 @@ import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import Parameters_ValueController from "../../../../../dist/api/controllers/modules/registers/Parameter_ValuesController";
 import HelperTestController from "../../HelperTestController";
+import Parameter_Values from "../../../../../dist/api/database/models/Parameter_Values";
 
 const stringTest = 'TEST';
 
@@ -27,9 +28,9 @@ describe(Parameters_ValueController.name, () => {
    
    
     beforeAll(async ()=>{
-        await ModelsController.initModels();   
-
-       
+        //await ModelsController.initModels();   
+        await HelperTestController.initBasicModels();
+        await Parameter_Values.initModel();
     });
 
 

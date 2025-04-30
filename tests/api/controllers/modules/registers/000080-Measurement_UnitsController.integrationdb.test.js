@@ -2,6 +2,7 @@ import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import Measurement_UnitsController from "../../../../../dist/api/controllers/modules/registers/Measurement_UnitsController";
 import HelperTestController from "../../HelperTestController";
+import Measurement_Units from "../../../../../dist/api/database/models/Measurement_Units";
 
 const stringTest = 'TEST';
 const sigla = 'TST';
@@ -11,8 +12,10 @@ describe(Measurement_UnitsController
    
    
     beforeAll(async ()=> {
-        await ModelsController.initModels();
-        
+        //await ModelsController.initModels();
+        await HelperTestController.initBasicModels();
+        await Measurement_Units.initModel();
+
         await HelperTestController.GreatnessesControllerInsert(`${stringTest}_PARENT`,sigla);
     });
 
