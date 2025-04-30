@@ -2,6 +2,8 @@
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import Action_StatusController from "../../../../../dist/api/controllers/modules/registers/Action_StatusController";
+import Action_Status from "../../../../../dist/api/database/models/Action_Status";
+import HelperTestController from "../../HelperTestController";
 
 const stringTest = 'TEST';
 
@@ -9,7 +11,9 @@ describe(Action_StatusController.name, () => {
    
    
     beforeAll(async ()=>{
-        await ModelsController.initModels();
+        //await ModelsController.initModels();
+        await HelperTestController.initBasicModels();
+        await Action_Status.initModel();
     });
 
     //test class model name is correctly seted to table model name

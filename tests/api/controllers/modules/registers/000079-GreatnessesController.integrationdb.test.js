@@ -2,6 +2,7 @@ import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import GreatnessesController from "../../../../../dist/api/controllers/modules/registers/GreatnessesController";
 import HelperTestController from "../../HelperTestController";
+import Greatnesses from "../../../../../dist/api/database/models/Greatnesses";
 
 const stringTest = 'TEST';
 const sigla = 'TST';
@@ -9,7 +10,9 @@ describe(GreatnessesController.name, () => {
    
    
     beforeAll(async ()=>{
-        await ModelsController.initModels();
+        //await ModelsController.initModels();
+        await HelperTestController.initBasicModels();
+        await Greatnesses.initModel();
     });
 
     //test class model name is correctly seted to table model name

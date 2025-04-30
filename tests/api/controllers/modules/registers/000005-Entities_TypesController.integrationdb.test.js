@@ -1,6 +1,8 @@
 import Entities_TypesController from "../../../../../dist/api/controllers/modules/registers/Entities_TypesController";
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
+import Entities_Types from "../../../../../dist/api/database/models/Entities_Types";
+import HelperTestController from "../../HelperTestController";
 
 const stringTest = 'TEST';
 
@@ -8,7 +10,9 @@ describe(Entities_TypesController.name, () => {
 
     //initialize models, necessary to user controllers of models
     beforeAll(async ()=>{
-        await ModelsController.initModels();
+        //await ModelsController.initModels();
+        await HelperTestController.initBasicModels();
+        await Entities_Types.initModel();
     });
 
 

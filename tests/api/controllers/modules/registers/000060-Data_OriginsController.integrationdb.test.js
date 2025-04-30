@@ -1,6 +1,8 @@
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import Data_OriginsController from "../../../../../dist/api/controllers/modules/registers/Data_OriginsController";
+import Data_Origins from "../../../../../dist/api/database/models/Data_Origins";
+import HelperTestController from "../../HelperTestController";
 
 const stringTest = 'TEST';
 
@@ -8,7 +10,9 @@ describe(Data_OriginsController.name, () => {
    
    
     beforeAll(async ()=>{
-        await ModelsController.initModels();
+       //await ModelsController.initModels();
+       await HelperTestController.initBasicModels();
+        await Data_Origins.initModel();
     });
 
     //test class model name is correctly seted to table model name

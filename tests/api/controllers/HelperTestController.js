@@ -5,8 +5,23 @@ import Parameters_ValueController from "../../../dist/api/controllers/modules/re
 import Utils from "../../../dist/api/controllers/utils/Utils";
 import Identifier_TypesController from "../../../dist/api/controllers/modules/registers/Identifier_TypesController";
 import PeopleController from "../../../dist/api/controllers/modules/registers/PeopleController";
+import Data_Types from "../../../dist/api/database/models/Data_Types";
+import Parameters from "../../../dist/api/database/models/Parameters";
+import Greatnesses from "../../../dist/api/database/models/Greatnesses";
+import Identifier_Types from "../../../dist/api/database/models/Identifier_Types";
+import People from "../../../dist/api/database/models/People";
+import Record_Status from "../../../dist/api/database/models/Record_Status";
+import Users from "../../../dist/api/database/models/Users";
+import Data_Origins from "../../../dist/api/database/models/Data_Origins";
 
 export default class HelperTestController {
+
+    static async initBasicModels(){
+        await Record_Status.initModel();
+        await Users.initModel();
+        await Data_Origins.initModel();
+    }
+
     //Get Data_types
     static async Data_TypesGet(name) {
         return await Data_TypesController._get({
@@ -17,6 +32,8 @@ export default class HelperTestController {
     }
     //Insert Data_types
     static async Data_TypesInsert(name,checkResult) {
+        await Data_Types.initModel();
+
         let result = await Data_TypesController._put({
                     name: name
         });
@@ -52,6 +69,8 @@ export default class HelperTestController {
     }
     //Insert Parameters
     static async ParametersInsert(parameter_id) {
+        await Parameters.initModel();
+
         return await ParametersController._put({
                     parameter_id: parameter_id
                 });
@@ -66,6 +85,8 @@ export default class HelperTestController {
     }
     //Insert Parameters_ValuesController
     static async ParameterCompletInsert(name) {
+        await Parameters.initModel();
+
         let resultDataType = await HelperTestController.Data_TypesInsert(`${name}_parent`)
         expect(Utils.hasValue(resultDataType)).toBeTruthy()
         expect(resultDataType.success).toBeTruthy()
@@ -126,6 +147,8 @@ export default class HelperTestController {
     }
     //Insert Greatnesses
     static async GreatnessesControllerInsert(stringTest,sigla){
+        await Greatnesses.initModel();
+
         let result = await GreatnessesController._put({
             name: stringTest,
             sigla: sigla
@@ -240,6 +263,8 @@ export default class HelperTestController {
 
     //Insert Identifier_Types
     static async Identifier_TypesInsert(stringTest){
+        await Identifier_Types.initModel();
+
          let result = await Identifier_TypesController._put({
             name: stringTest
         });
@@ -296,6 +321,8 @@ export default class HelperTestController {
         expect(Utils.hasValue(result)).toBeFalsy();
     }
     static async PeopleControllerInsert(stringTest,stringDoc){
+        await People.initModel();
+
         let InsertParent = await HelperTestController.Identifier_TypesInsert(`${stringTest}_PEOPLE_INSERT`);
 
         let result = await PeopleController._put({

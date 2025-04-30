@@ -1,23 +1,23 @@
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
-import IdentifierTypes from "../../../../../dist/api/controllers/modules/registers/Identifier_TypesController";
+import Acess_Profiles from "../../../../../dist/api/controllers/modules/registers/Access_ProfilesController";
+import Access_Profiles from "../../../../../dist/api/database/models/Access_Profiles";
 import HelperTestController from "../../HelperTestController";
-import Identifier_Types from "../../../../../dist/api/database/models/Identifier_Types";
 
 const stringTest = 'TEST';
 
-describe(IdentifierTypes.name, () => {
+describe(Acess_Profiles.name, () => {
    
    
     beforeAll(async ()=>{
         //await ModelsController.initModels();
         await HelperTestController.initBasicModels();
-        await Identifier_Types.initModel();
+        await Access_Profiles.initModel();
     });
 
     //test class model name is correctly seted to table model name
     test('table class model name', () => {
-        let tableClassModel = IdentifierTypes.getTableClassModel();
+        let tableClassModel = Acess_Profiles.getTableClassModel();
         expect(Utils.hasValue(tableClassModel)).toBeTruthy();
         let tableModelClassName = tableClassModel?.name;
         expect(Utils.hasValue(tableModelClassName)).toBeTruthy();
@@ -27,7 +27,7 @@ describe(IdentifierTypes.name, () => {
     });
 
     test('put without data', async () => {
-        let result = await IdentifierTypes._put({}) 
+        let result = await Acess_Profiles._put({}) 
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeFalsy();
         expect(result.message).toMatch(/^[a-z0-9._]+\s+cannot\s+be\s+null$/i);
@@ -35,11 +35,24 @@ describe(IdentifierTypes.name, () => {
 
 
     test('put', async () => {
-        await HelperTestController.Identifier_TypesInsert(stringTest);
+
+        let result = await Acess_Profiles._put({
+            name: stringTest
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
+    
+        result = await Acess_Profiles._get({
+            where:{
+                name: stringTest,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy()
+        expect(result[0].name).toBe(stringTest);
     })
 
     test('put Duplicate', async () => {
-        let result = await IdentifierTypes._put({
+        let result = await Acess_Profiles._put({
             name:stringTest,
         })
         expect(Utils.hasValue(result)).toBeTruthy();
@@ -48,13 +61,19 @@ describe(IdentifierTypes.name, () => {
     });
 
     test('get', async () => {
-        await HelperTestController.Identifier_TypesGet(stringTest);
+        let result = await Acess_Profiles._get({
+            where: { 
+                name : stringTest 
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result[0].name).toBe(stringTest);
     })
 
     test('patch', async () => {
         let id = null;
 
-        let result = await IdentifierTypes._get({
+        let result = await Acess_Profiles._get({
             where: { 
                 name : stringTest 
             }
@@ -62,7 +81,7 @@ describe(IdentifierTypes.name, () => {
         expect(Utils.hasValue(result)).toBeTruthy();
         id = result[0].id;
 
-        result = await IdentifierTypes._patch({
+        result = await Acess_Profiles._patch({
             where: {
                 id: id
             },
@@ -73,7 +92,7 @@ describe(IdentifierTypes.name, () => {
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
 
-        result = await IdentifierTypes._get({
+        result = await Acess_Profiles._get({
             where:{
                 id:id
             }
@@ -85,7 +104,7 @@ describe(IdentifierTypes.name, () => {
 
         //REVERT UPDATE
 
-        result = await IdentifierTypes._patch({
+        result = await Acess_Profiles._patch({
             where: {
                 id: id
             },
@@ -96,7 +115,7 @@ describe(IdentifierTypes.name, () => {
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
         //get register REVERTED updated to confirm if has uupdated
-        result = await IdentifierTypes._get({
+        result = await Acess_Profiles._get({
             where:{
                 id:id
             }
@@ -106,8 +125,33 @@ describe(IdentifierTypes.name, () => {
         expect(result[0].name).toBe(stringTest);
     });
 
+
     test('delete', async () => {
-       await HelperTestController.Identifier_TypesDelete(stringTest);
+        let id = null;
+
+        let result = await Acess_Profiles._get({
+            where:{
+                name: stringTest,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        id = result[0].id;
+        
+        
+        result = await Acess_Profiles._delete({
+            where:{
+                id:id,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
+
+        result = await Acess_Profiles._get({
+            where:{
+                id: id
+            }
+        });
+        expect(Utils.hasValue(result)).toBeFalsy();
     });
 
 })
