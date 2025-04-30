@@ -2,6 +2,7 @@ import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import PeopleController from "../../../../../dist/api/controllers/modules/registers/PeopleController";
 import HelperTestController from "../../HelperTestController";
+import People from "../../../../../dist/api/database/models/People";
 
 const stringTest = 'TEST';
 const stringDoc = '14.524.123-5';
@@ -9,7 +10,9 @@ describe(PeopleController.name, () => {
    
    
     beforeAll(async ()=>{
-        await ModelsController.initModels();
+        //await ModelsController.initModels();
+        await HelperTestController.initBasicModels();
+        await People.initModel();
     });
 
     //test class model name is correctly seted to table model name
