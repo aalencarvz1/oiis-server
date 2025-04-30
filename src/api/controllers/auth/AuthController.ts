@@ -183,38 +183,48 @@ export default class AuthController {
      * @returns object with token
      */
     static register : RequestHandler = async function(req: Request,res: Response,next: NextFunction) {
-        let body = req.body || {};
-        if (!body.email || !body.password) return res.sendResponse(401,false,'missing data');
-        if (body.password.trim().length < 8) return res.sendResponse(401,false,'password < 8');
-        let user : Users | null = await Users.findOne({
-            raw:true,
-            where:{
-                email:(body.email||'').trim().toLowerCase()
+        try{
+            let body = req.body || {};
+            if (!body.email || !body.password) return res.sendResponse(401,false,'missing data');
+            if (body.password.trim().length < 8) return res.sendResponse(401,false,'password < 8');
+            let user : Users | null = await Users.findOne({
+                raw:true,
+                where:{
+                    email:(body.email||'').trim().toLowerCase()
+                }
+            });
+            if (user) return res.sendResponse(401,false,'user already register'); 
+            user = await Users.createData({
+                creator_user_id : Users.SYSTEM,
+                access_profile_id : Access_Profiles.DEFAULT,
+                email:(req.body.email||'').trim().toLowerCase(),
+                password: bcrypt.hashSync(req.body.password,((process as any).env.API_USER_PASSWORD_CRIPTSALT||10)-0)
+            },false , false);
+            console.log('wqeqwdsa',user);
+            if(Utils.hasValue(user)){
+                
+                let token = jwt.sign({id: user.id,access_profile_id:user.access_profile_id},(process as any).env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION} as any);
+                let refreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, (process as any).env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION} as any); 
+
+                user.last_token = token;
+                user.last_timezone_offset = req.body?.currentTimeZoneOffset || 0;
+                await user.save();
+
+                await User_Tokens.create({
+                    user_id: user.id,
+                    token: token,
+                    timezone_offset: user.last_timezone_offset
+                });
+
+                res.cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict', maxAge: 24 * 60 * 60 * 1000 })
+                    .header('Authorization', token) //web applications use header, but others applications like mobile or direct request from database triggers, use only body
+                    .sendResponse(200,true,'logged',{token:token,user:user});
+            } else {
+                res.sendResponse(501,false,'User not created')
             }
-        });
-        if (user) return res.sendResponse(401,false,'user already register'); 
-        user = await Users.create({
-            creator_user_id : Users.SYSTEM,
-            access_profile_id : Access_Profiles.DEFAULT,
-            email:(req.body.email||'').trim().toLowerCase(),
-            password: bcrypt.hashSync(req.body.password,((process as any).env.API_USER_PASSWORD_CRIPTSALT||10)-0)
-        });
-        let token = jwt.sign({id: user.id,access_profile_id:user.access_profile_id},(process as any).env.API_SECRET, {expiresIn:process.env.API_TOKEN_EXPIRATION} as any);
-        let refreshToken = jwt.sign({id: user.id,access_profile_id:user.access_profile_id}, (process as any).env.API_REFRESH_SECRET, {expiresIn:process.env.API_REFRESH_TOKEN_EXPIRATION} as any); 
-
-        user.last_token = token;
-        user.last_timezone_offset = req.body?.currentTimeZoneOffset || 0;
-        await user.save();
-
-        await User_Tokens.create({
-            user_id: user.id,
-            token: token,
-            timezone_offset: user.last_timezone_offset
-        });
-
-        res.cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict', maxAge: 24 * 60 * 60 * 1000 })
-            .header('Authorization', token) //web applications use header, but others applications like mobile or direct request from database triggers, use only body
-            .sendResponse(200,true,'logged',{token:token,user:user});       
+        } catch(e){
+            res.sendResponse(501,false,e.message)
+        }       
     }
 
     /**
