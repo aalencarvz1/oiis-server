@@ -114,12 +114,12 @@ export default class BasePeopleModel extends BaseTableModel {
    * @override
    * @created 2023-11-09
    */
-  static async createData(params: any) {
+  static async createData(params: any,returnRaw: boolean = true,checkPeopleId: boolean = true) {
     let queryParams = params.queryParams || params || {};
-    if (!queryParams.people_id) {
+    if (checkPeopleId && !Utils.hasValue(queryParams.people_id)) {
       await this.addIdPeopleToReqQueryParams(params);
     }
-    return await BaseTableModel.createData.bind(this)(params);
+    return await BaseTableModel.createData.bind(this)(params,returnRaw);
   }
   static putData = this.createData;
 

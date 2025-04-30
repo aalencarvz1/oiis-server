@@ -68,19 +68,19 @@ export default class Users extends BasePeopleModel {
   static constraints = [...(Users.getBaseTableModelConstraints() || []),...[
     {
       name: Users.tableName + '_u1',
-      fields: [...Users.getBaseTableModelUniqueFields(),...Users.uniqueFields],
+      fields: [...Users.uniqueFields],
       type:"unique"
     }
   ]];  
 
   static foreignsKeys : any[] = [];
 
-  static async createData(params: any) {
+  static async createData(params: any,returnRaw: boolean = true, checkPeopleId: boolean = false) {
     params = params || {};  
     if (params.password) {
       params.password = bcrypt.hashSync(params.password,((process as any).env.API_USER_PASSWORD_CRIPTSALT||10)-0)
     }                  
-    return await BasePeopleModel.createData.bind(Users)(params);
+    return await BasePeopleModel.createData.bind(Users)(params,returnRaw,checkPeopleId);
   }  
   static putData = this.createData;
 

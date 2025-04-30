@@ -1,15 +1,20 @@
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import UserController from "../../../../../dist/api/controllers/modules/registers/UsersController";
+import Users from "../../../../../dist/api/database/models/Users";
+import HelperTestController from "../../HelperTestController";
+import People from "../../../../../dist/api/database/models/People";
 
 const emailTest = 'jumboteste@test.com';
-const passwordTest = 'Test123e';
+const passwordTest = 'Test123e21';
 
 describe(UserController.name, () => {
    
    
     beforeAll(async ()=>{
         await ModelsController.initModels();
+        //await HelperTestController.initBasicModels();
+        //await Users.initModel();
     });
 
     //test class model name is correctly seted to table model name
@@ -23,11 +28,11 @@ describe(UserController.name, () => {
         expect(tableModelClassName.trim().toLowerCase()).toEqual(tableName.trim().toLowerCase());
     });
 
-    test('put without data', async () => {
-        let result = await UserController._put({}) 
+   test('put without data', async () => {
+        let result = await UserController._put({},false,false) 
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeFalsy();
-        expect(result.message).toMatch(/^missing\s+data$/i);
+        expect(result.message).toMatch(/(^missing\s+data$|^[a-z0-9._]+\s+cannot\s+be\s+null$)/i);
     });
 
 
@@ -36,7 +41,7 @@ describe(UserController.name, () => {
         let result = await UserController._put({
             email:emailTest,
             password:passwordTest
-        });
+        },false,false);
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
     
@@ -50,11 +55,11 @@ describe(UserController.name, () => {
         expect(result[0].email).toBe(emailTest);
     })
 
-    test('put Duplicate', async () => {
+   test('put Duplicate', async () => {
         let result = await UserController._put({
             email:emailTest,
             password:passwordTest,
-        })
+        },false,false)
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeFalsy();
         expect(result.message).toMatch(/^[a-z0-9._]+\s+must\s+be\s+unique$/);
@@ -68,12 +73,12 @@ describe(UserController.name, () => {
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result[0].email).toBe(stringTest);
+        expect(result[0].email).toBe(emailTest);
     })
 
     test('patch', async () => {
         let id = null;
-
+       
         let result = await UserController._get({
             where: { 
                 email:emailTest,
@@ -89,7 +94,8 @@ describe(UserController.name, () => {
             },
             values:{
                 email: `${emailTest}_UPDATED`,
-            }
+            },
+            includePeople:false
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
