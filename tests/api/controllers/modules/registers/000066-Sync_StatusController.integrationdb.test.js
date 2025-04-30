@@ -1,6 +1,8 @@
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import SyncStatusController from "../../../../../dist/api/controllers/modules/registers/Sync_StatusController";
+import Sync_Status from "../../../../../dist/api/database/models/Sync_Status";
+import HelperTestController from "../../HelperTestController";
 
 const stringTest = 'TEST';
 
@@ -8,7 +10,9 @@ describe(SyncStatusController.name, () => {
    
    
     beforeAll(async ()=>{
-        await ModelsController.initModels();
+        //await ModelsController.initModels();
+        await HelperTestController.initBasicModels();
+        await Sync_Status.initModel();
     });
 
     //test class model name is correctly seted to table model name

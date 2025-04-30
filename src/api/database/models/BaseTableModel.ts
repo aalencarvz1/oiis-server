@@ -417,27 +417,29 @@ export default class BaseTableModel extends Model {
     static async initModel(pSequelize?: any) : Promise<void> {
         //Utils.logi(`${this.name}(BaseTableModel)`,'initModel');
         try {
-            pSequelize = pSequelize || this.getConnection();  
-            if (pSequelize) {
-                this.getForeignKeys(); //ajust foreign keys if necessary(string table name -> object table model)
-                this.init(this.fields,{
-                    sequelize: pSequelize,
-                    underscored:false,
-                    freezeTableName:true,
-                    modelName:this.tableName,
-                    tableName:this.tableName,
-                    name:{
-                        singular:this.tableName,
-                        plural:this.tableName
-                    },
-                    timestamps:false,
-                    hooks: this.getTableModelHooks()
-                });
-            }
-            if (Utils.hasValue(this.removeAttr)) {
-                this.removeAttribute(this.removeAttr);
-            } 
-            //if (!Utils.hasValue(this.associations)) await this.associates();           
+            if(!Object.keys(this).includes('sequelize')){
+                pSequelize = pSequelize || this.getConnection();  
+                if (pSequelize) {
+                    this.getForeignKeys(); //ajust foreign keys if necessary(string table name -> object table model)
+                    this.init(this.fields,{
+                        sequelize: pSequelize,
+                        underscored:false,
+                        freezeTableName:true,
+                        modelName:this.tableName,
+                        tableName:this.tableName,
+                        name:{
+                            singular:this.tableName,
+                            plural:this.tableName
+                        },
+                        timestamps:false,
+                        hooks: this.getTableModelHooks()
+                    });
+                }
+                if (Utils.hasValue(this.removeAttr)) {
+                    this.removeAttribute(this.removeAttr);
+                } 
+                //if (!Utils.hasValue(this.associations)) await this.associates();           
+            }        
         } catch (e) {
             Utils.logError(e);
         }

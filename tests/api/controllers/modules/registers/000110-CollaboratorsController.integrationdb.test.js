@@ -2,6 +2,8 @@ import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import CollaboratorsController from "../../../../../dist/api/controllers/modules/registers/CollaboratorsController";
 import HelperTestController from "../../HelperTestController";
+import Collaborators from "../../../../../dist/api/database/models/Collaborators";
+import People from "../../../../../dist/api/database/models/People";
 
 const stringTest = 'TEST';
 const stringDoc = '14.524.123-5';
@@ -9,8 +11,10 @@ describe(CollaboratorsController.name, () => {
    
    
     beforeAll(async ()=>{
-        await ModelsController.initModels();
-    
+        //await ModelsController.initModels();
+        await HelperTestController.initBasicModels();
+        await Collaborators.initModel();
+        
     });
 
     //test class model name is correctly seted to table model name
@@ -35,9 +39,9 @@ describe(CollaboratorsController.name, () => {
     test('put', async () => {
        
         let resultPeople =  await HelperTestController.PeopleControllerInsert(`${stringTest}_COLABORATOR_INSERT`,stringDoc);
-
         let id = resultPeople.data.id
-        
+        await People.initAssociations.bind(People)();
+        await Collaborators.initAssociations.bind(Collaborators)();
 
         let result = await CollaboratorsController._put({
                 people_id:id,
@@ -49,6 +53,7 @@ describe(CollaboratorsController.name, () => {
 
     test('put Duplicate', async () => {
         let resultPeople = await HelperTestController.PeopleControllerGet(`${stringTest}_COLABORATOR_INSERT`,stringDoc);
+        
 
         let result = await CollaboratorsController._put({
                 people_id:resultPeople[0].id,

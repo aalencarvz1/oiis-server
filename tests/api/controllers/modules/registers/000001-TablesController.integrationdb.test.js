@@ -2,6 +2,8 @@ import TablesController from "../../../../../dist/api/controllers/modules/regist
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import config from "../../../../../dist/api/database/config/config";
+import Tables from "../../../../../dist/api/database/models/Tables";
+import HelperTestController from "../../HelperTestController";
 
 const stringTest = 'TEST';
 
@@ -9,7 +11,9 @@ describe(TablesController.name, () => {
 
     //initialize models, necessary to user controllers of models
     beforeAll(async ()=>{
-        await ModelsController.initModels();
+        //await ModelsController.initModels();
+        await HelperTestController.initBasicModels();
+        await Tables.initModel();
     });
 
 

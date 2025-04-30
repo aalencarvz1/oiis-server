@@ -3,6 +3,7 @@ import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import ParametersController from "../../../../../dist/api/controllers/modules/registers/ParametersController";
 import HelperTestController from "../../HelperTestController";
+import Parameters from "../../../../../dist/api/database/models/Parameters";
 
 const stringTest = 'TEST1';
 
@@ -10,7 +11,9 @@ describe(ParametersController.name, () => {
    
    
     beforeAll(async ()=>{
-        await ModelsController.initModels();
+        //await ModelsController.initModels();
+        await HelperTestController.initBasicModels();
+        await Parameters.initModel();
     });
 
     //test class model name is correctly seted to table model name

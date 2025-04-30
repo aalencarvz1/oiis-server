@@ -1,6 +1,8 @@
 import ContextsController from "../../../../../dist/api/controllers/modules/registers/ContextsController";
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
+import Contexts from "../../../../../dist/api/database/models/Contexts";
+import HelperTestController from "../../HelperTestController";
 
 const stringTest = 'TEST';
 
@@ -8,7 +10,9 @@ describe(ContextsController.name, () => {
 
     //initialize models, necessary to user controllers of models
     beforeAll(async ()=>{
-        await ModelsController.initModels();
+        //await ModelsController.initModels();
+        await HelperTestController.initBasicModels();
+        await Contexts.initModel();
     });
 
 
