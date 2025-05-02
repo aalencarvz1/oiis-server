@@ -600,7 +600,7 @@ export default class Utils {
         if (Utils.hasValue(code)) {
             if (typeof code != 'string') code = code.toString();
             const numbers = code?.replace(/\D/g, "") || ""; // Remove caracteres não numéricos        
-            if (![8, 13, 14].includes(numbers.length)) return result;
+            if (![8, 12, 13, 14].includes(numbers.length)) return result;
         
             const calculatedDigit = Utils.calculateGtinDigit(numbers);
             const informatedDigit = parseInt(numbers[numbers.length - 1]);
