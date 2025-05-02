@@ -19,6 +19,7 @@ import PcProdFilial from "../../../../../database/models/winthor/PcProdFilial.js
 import PcEmbalagem from "../../../../../database/models/winthor/PcEmbalagem.js";
 import PcFilial from "../../../../../database/models/winthor/PcFilial.js";
 import Integration_Rules from "../../../../../database/models/Integration_Rules.js";
+import PcCodFabrica from "../../../../../database/models/winthor/PcCodFabrica.js";
 
 export default class PcProdutController extends WinthorBaseRegistersIntegrationsController{
     static getTableClassModel() : any {
@@ -281,6 +282,15 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                             TEMESTOQUEECOMMERCE: queryParams.ENVIAECOMMERCE
                         },{transaction});
                     }
+
+                    //create pccodfabrica
+                    await PcCodFabrica.create({
+                        CODPROD: queryParams.CODPROD,
+                        CODFORNEC: queryParams.CODFORNEC,
+                        CODFAB: queryParams.CODFAB,
+                        TIPOFATOR: 'M',
+                        FATOR: queryParams.QTUNITCX,
+                    })
                     
                     
                     //get filiais
