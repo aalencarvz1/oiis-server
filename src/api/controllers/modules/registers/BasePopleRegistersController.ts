@@ -4,6 +4,7 @@ import DatabaseUtils from "../../database/DatabaseUtils.js";
 import Utils from "../../utils/Utils.js";
 import BaseRegistersController from "./BaseRegistersController.js";
 import { NextFunction, Request, Response } from "express";
+import DataSwap from "../../data/DataSwap.js";
 
 export default class BasePeopleRegistersController extends BaseRegistersController {
 
@@ -33,6 +34,23 @@ export default class BasePeopleRegistersController extends BaseRegistersControll
         }
         
         return await this.getTableClassModel().findAll(queryParams);
+    }
+
+    /**
+     * @created 2025-04-30
+     * @override
+     * @version 1.0.0
+     */
+    static async _put(params: any,returnRaw: boolean = true, checkPeopleId: boolean = true) : Promise<DataSwap> {
+        let result = new DataSwap();
+        try {
+            let queryParams = params.queryParams || params;            
+            result.data = await this.getTableClassModel().createData(queryParams,returnRaw,checkPeopleId);
+            result.success = true;
+        } catch (e) {
+            result.setException(e);
+        }
+        return result;
     }
 
 
