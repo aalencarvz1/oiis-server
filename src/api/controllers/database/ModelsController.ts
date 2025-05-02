@@ -263,6 +263,7 @@ import Legal_Natures from '../../database/models/external_data/Legal_Natures.js'
 import Reasons from '../../database/models/external_data/Reasons.js'
 import Responsible_Person_Qualifications from '../../database/models/external_data/Responsible_Person_Qualifications.js'
 import Utils from "../utils/Utils.js";
+import PcCodFabrica from "../../database/models/winthor/PcCodFabrica.js";
 
 
 //console.log('END MODELSCONTROLLER IMPORTS');
@@ -473,6 +474,7 @@ export default class ModelsController {
             await PcProdFilial.initModel();
             await PcEst.initModel();
             await PcEmbalagem.initModel();
+            await PcCodFabrica.initModel();
             await PcDocEletronico.initModel();
             await PcEmpr.initModel(); 
             await PcNfsaid.initModel();           
@@ -738,6 +740,7 @@ export default class ModelsController {
             await PcProdFilial.initAssociations();
             await PcEst.initAssociations();
             await PcEmbalagem.initAssociations();
+            await PcCodFabrica.initAssociations();
             await PcDocEletronico.initAssociations();
             await PcEmpr.initAssociations(); 
             await PcNfsaid.initAssociations();           
