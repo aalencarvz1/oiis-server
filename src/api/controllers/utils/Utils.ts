@@ -593,18 +593,21 @@ export default class Utils {
     };
     
     // Função para validar GTIN-8, 13 ou 14
-    static getGtinType(code?: string) : any {
+    static getGtinType(code?: any) : any {
         let result : any = {
             isGtin : false
         };
-        const numbers = code?.replace(/\D/g, "") || ""; // Remove caracteres não numéricos        
-        if (![8, 13, 14].includes(numbers.length)) return result;
-    
-        const calculatedDigit = Utils.calculateGtinDigit(numbers);
-        const informatedDigit = parseInt(numbers[numbers.length - 1]);
-        result.isGtin = calculatedDigit === informatedDigit;
-        if (result.isGtin) {
-            result.type = numbers.length;
+        if (Utils.hasValue(code)) {
+            if (typeof code != 'string') code = code.toString();
+            const numbers = code?.replace(/\D/g, "") || ""; // Remove caracteres não numéricos        
+            if (![8, 13, 14].includes(numbers.length)) return result;
+        
+            const calculatedDigit = Utils.calculateGtinDigit(numbers);
+            const informatedDigit = parseInt(numbers[numbers.length - 1]);
+            result.isGtin = calculatedDigit === informatedDigit;
+            if (result.isGtin) {
+                result.type = numbers.length;
+            }
         }
         return result;
     };
