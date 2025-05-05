@@ -264,6 +264,8 @@ import Reasons from '../../database/models/external_data/Reasons.js'
 import Responsible_Person_Qualifications from '../../database/models/external_data/Responsible_Person_Qualifications.js'
 import Utils from "../utils/Utils.js";
 import PcCodFabrica from "../../database/models/winthor/PcCodFabrica.js";
+import PcRegiao from "../../database/models/winthor/PcRegiao.js";
+import PcTabPr from "../../database/models/winthor/PcTabPr.js";
 
 
 //console.log('END MODELSCONTROLLER IMPORTS');
@@ -459,6 +461,7 @@ export default class ModelsController {
             await PcAtivi.initModel();            
             await PcCob.initModel();
             await PcRotaExp.initModel();        
+            await PcRegiao.initModel();
             await PcClient.initModel();
             await PcFornec.initModel();
             await PcDistrib.initModel();
@@ -477,6 +480,7 @@ export default class ModelsController {
             await PcCodFabrica.initModel();
             await PcDocEletronico.initModel();
             await PcEmpr.initModel(); 
+            await PcTabPr.initModel();
             await PcNfsaid.initModel();           
             await PcPixCobrancaDados.initModel();
             await PcPrest.initModel();                       
@@ -724,7 +728,8 @@ export default class ModelsController {
             await PcUsuari.initAssociations();
             await PcAtivi.initAssociations();            
             await PcCob.initAssociations();
-            await PcRotaExp.initAssociations();        
+            await PcRotaExp.initAssociations();     
+            await PcRegiao.initAssociations();   
             await PcClient.initAssociations();
             await PcFornec.initAssociations();
             await PcDistrib.initAssociations();
@@ -743,6 +748,7 @@ export default class ModelsController {
             await PcCodFabrica.initAssociations();
             await PcDocEletronico.initAssociations();
             await PcEmpr.initAssociations(); 
+            await PcTabPr.initAssociations();
             await PcNfsaid.initAssociations();           
             await PcPixCobrancaDados.initAssociations();
             await PcPrest.initAssociations();                       
