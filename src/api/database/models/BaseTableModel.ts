@@ -476,10 +476,10 @@ export default class BaseTableModel extends Model {
         return reg;
     }
 
-    static async getOneByID(id?: number | string) : Promise<any> {
+    static async getOneByID(id?: number | string, options?: any) : Promise<any> {
         let result = null;
         if (Utils.hasValue(id)) {
-            result = await this.getData({queryParams:{where:{id:id}}});
+            result = await this.getData({queryParams:{where:{id:id}},...options});
             if (result && result.length) {
                 result = result[0];
             }
@@ -495,8 +495,9 @@ export default class BaseTableModel extends Model {
      */
     static async createData(params: any,returnRaw: boolean = true) {
         let queryParams = params.queryParams?.values || params.values || params.queryParams || params || {};
-        let result = await this.create(queryParams);
-        if (typeof this.getData === 'function' && returnRaw !== false && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(result.id) || result
+        let transaction = params.transaction;
+        let result = await this.create(queryParams,{transaction});
+        if (typeof this.getData === 'function' && returnRaw !== false && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(result.id,{transaction}) || result
         else return result;
     }
     static putData = this.createData;
@@ -510,14 +511,16 @@ export default class BaseTableModel extends Model {
      */
     static async getData(params: any, req?: Request) {
         let queryParams = await DatabaseUtils.prepareQueryParams(params.queryParams || params || {});
+        queryParams.raw = queryParams.raw || params.raw;
         if (queryParams.raw !== false) queryParams.raw = true; 
         if (queryParams.query) {
-            return await this.getConnection().query(queryParams.query,{raw:queryParams.raw,type:QueryTypes.SELECT});
+            return await this.getConnection().query(queryParams.query,{raw:queryParams.raw,type:QueryTypes.SELECT, transaction: params.transaction});
         } else {
             if (((this as any).accessLevel || 1) == 2 && Utils.hasValue(params.req || req)) {
                 queryParams.where = queryParams.where || {};
                 queryParams.where.creator_user_id = (params.req || req).user?.id
             }
+            queryParams.transaction = queryParams.transaction || params.transaction;
             return await this.findAll(queryParams);
         }        
     }    
@@ -598,7 +601,7 @@ export default class BaseTableModel extends Model {
                 Utils.log(updateSQL);
                 let resultUpdate = await this.getConnection().query(updateSQL,{type:QueryTypes.UPDATE,transaction:params.transaction});                
                 if (Utils.hasValue(resultUpdate) && resultUpdate[0]?.rowsAffected >= 1) {
-                    if (typeof this.getData === 'function' && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(reg.id) || reg.dataValues
+                    if (typeof this.getData === 'function' && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(reg.id,{transaction: params.transaction}) || reg.dataValues
                     else return values;
                 } else {
                     throw new Error(`error on update data with query: ${updateSQL}`);
@@ -610,7 +613,7 @@ export default class BaseTableModel extends Model {
                     await reg.save();
                 }
             }
-            if (typeof this.getData === 'function' && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(reg.id) || reg.dataValues
+            if (typeof this.getData === 'function' && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(reg.id,{transaction: params.transction}) || reg.dataValues
             else return reg.dataValues;
         } else {
             throw new Error('no data found');

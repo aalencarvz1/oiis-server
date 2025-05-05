@@ -20,6 +20,8 @@ import PcEmbalagem from "../../../../../database/models/winthor/PcEmbalagem.js";
 import PcFilial from "../../../../../database/models/winthor/PcFilial.js";
 import Integration_Rules from "../../../../../database/models/Integration_Rules.js";
 import PcCodFabrica from "../../../../../database/models/winthor/PcCodFabrica.js";
+import PcRegiao from "../../../../../database/models/winthor/PcRegiao.js";
+import PcTabPr from "../../../../../database/models/winthor/PcTabPr.js";
 
 export default class PcProdutController extends WinthorBaseRegistersIntegrationsController{
     static getTableClassModel() : any {
@@ -290,7 +292,7 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                         CODFAB: queryParams.CODFAB,
                         TIPOFATOR: 'M',
                         FATOR: queryParams.QTUNITCX,
-                    })
+                    },{transaction})
                     
                     
                     //get filiais
@@ -306,14 +308,15 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                             CODIGO:{
                                 [Op.ne]: '99'
                             }
-                        },
-                        transaction
+                        }
                     });
                     if (Utils.hasValue(filiais)) {
 
 
-                        //create packages registers (PCEMBALAGEM)
+                        //create packages registers (PCEMBALAGEM) and price (PCTABPR)
                         for(let k in filiais) {
+
+                            //PCEMBALAGEM
                             if(Utils.hasValue(queryParams.CODAUXILIAR) && Utils.hasValue(queryParams.EMBALAGEM) && Utils.hasValue(queryParams.UNIDADE) && Utils.hasValue(queryParams.QTUNIT)) {
                                 let resultTemp = await PcEmbalagem.saveOrCreate({
                                     where:{
@@ -349,6 +352,22 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                                     transaction
                                 });
                                 if (!resultTemp?.success) resultTemp.throw();
+                            }
+
+                            //PCTAPBR
+                            let regions = await PcRegiao.findAll({
+                                where:{
+                                    CODFILIAL: filiais[k].CODIGO,
+                                    STATUS: 'A'
+                                }
+                            });
+                            if (Utils.hasValue(regions)) {
+                                for(let r in regions) {
+                                    await PcTabPr.create({
+                                        NUMREGIAO: regions[r].NUMREGIAO,
+                                        CODPROD: queryParams.CODPROD
+                                    },{transaction})
+                                }
                             }
                         }
                     }
