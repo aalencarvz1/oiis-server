@@ -26,7 +26,7 @@ export default class PcNfsaid extends BaseWinthorTableModel {
   declare DTCANCEL: Date;
 
 
-  static id = 30210;
+  static id = 30211;
   static tableName = this.name.toUpperCase();
   static adjustedForeignKeys : boolean = false;
   static model = null;
