@@ -275,13 +275,15 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                         await PcEst.create({
                             CODPROD: queryParams.CODPROD,
                             CODFILIAL: prodsFilial[k].CODFILIAL,
-                            MODULO: queryParams.MODULO,
-                            RUA: queryParams.RUA,
-                            APTO: queryParams.APTO,
-                            MODULOCX: queryParams.MODULOCX || queryParams.MODULO,
-                            RUACX: queryParams.RUACX || queryParams.RUA,
-                            APTOCX: queryParams.APTOCX || queryParams.APTO,
-                            TEMESTOQUEECOMMERCE: queryParams.ENVIAECOMMERCE
+                            MODULO: queryParams.MODULO || 1,
+                            RUA: queryParams.RUA || 1,
+                            NUMERO: queryParams.NUMERO || 1,
+                            APTO: queryParams.APTO || 1,
+                            MODULOCX: queryParams.MODULOCX || queryParams.MODULO || 1,
+                            RUACX: queryParams.RUACX || queryParams.RUA || 1,
+                            APTOCX: queryParams.APTOCX || queryParams.APTO || 1,
+                            NUMEROCX: queryParams.NUMEROCX || queryParams.NUMERO || 1,
+                            TEMESTOQUEECOMMERCE: queryParams.ENVIAECOMMERCE 
                         },{transaction});
                     }
 
