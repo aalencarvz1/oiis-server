@@ -9,7 +9,7 @@ import { fileURLToPath, pathToFileURL } from "url";
 import path from "path";
 
 /**
- * class model
+ * Base class for table model of sequelize, implements common methods and properties to use in inherited classes from this
  */
 export default class BaseTableModel extends Model { 
 
@@ -46,7 +46,7 @@ export default class BaseTableModel extends Model {
     
     
     
-    static getBaseTableModelFields = () => {
+    static getBaseTableModelFields = () : any => {
         return {
             id: {
                 type : DataTypes.BIGINT.UNSIGNED,                
@@ -104,7 +104,7 @@ export default class BaseTableModel extends Model {
         }; 
     }
     
-    static getBaseTableModelConstraints = () => {
+    static getBaseTableModelConstraints = () : any[] => {
         return [
             {
                 fields:['is_sys_rec'],
@@ -118,7 +118,7 @@ export default class BaseTableModel extends Model {
         ];
     };
 
-    static getBaseTableModelUniqueFields = () => {
+    static getBaseTableModelUniqueFields = () : any[] => {
         return [
             Sequelize.literal(`(COALESCE(parent_id,0))`),
             'status_reg_id',
@@ -126,7 +126,7 @@ export default class BaseTableModel extends Model {
         ];
     };   
     
-    static baseTableModelForeignsKeys = [{
+    static baseTableModelForeignsKeys : any[] = [{
         fields: ['parent_id'],
         type: 'foreign key',
         references: { 
@@ -220,7 +220,7 @@ export default class BaseTableModel extends Model {
         return result;
     }
 
-    static getTableModelHooks = () => {
+    static getTableModelHooks = () : any => {
         return {
             beforeCreate : (record: any, options: any) => {
                 record.dataValues.created_at = Sequelize.literal('current_timestamp');//new Date().toISOString().replace(/T/, ' ').replace(/\..+/g, '');                
@@ -231,7 +231,7 @@ export default class BaseTableModel extends Model {
         };
     }
 
-    static getPrimaryKeysFieldsNames() : any{
+    static getPrimaryKeysFieldsNames() : any {
         if (!Utils.hasValue(this.primaryKeysFieldsNames)) {
             this.primaryKeysFieldsNames = this.primaryKeysFieldsNames || [];
             for(let k in this.fields) {
@@ -249,7 +249,7 @@ export default class BaseTableModel extends Model {
      * @async (pay attention to await)
      * @created 2023-11-10
      */
-    static async migrateConstraints(queryInterface: QueryInterface) {
+    static async migrateConstraints(queryInterface: QueryInterface) : Promise<void> {
         if (this.constraints && (this.constraints||[]).length > 0) {
             for(let i in this.constraints) {
                 if (typeof this.constraints[i] === 'object') {
@@ -270,9 +270,8 @@ export default class BaseTableModel extends Model {
      * @async (pay attention to await)
      * @created 2023-11-10
      */
-    static async migrateForeignKeyContraint(queryInterface: QueryInterface, pClassModelRef?: typeof BaseTableModel) {
+    static async migrateForeignKeyContraint(queryInterface: QueryInterface, pClassModelRef?: typeof BaseTableModel) : Promise<void> {
         let fks = this.getForeignKeys() || [];
-        //console.log('fks',fks);
         for(let i = 0; i < fks.length; i++) {
             let foreignKey : any = {};
             if (typeof fks[i] === 'object') {
@@ -323,7 +322,7 @@ export default class BaseTableModel extends Model {
      * @async (pay attention to await)
      * @created 2023-11-10
      */
-    static async runUpMigration(queryInterface: QueryInterface, options?: any) {
+    static async runUpMigration(queryInterface: QueryInterface, options?: any) : Promise<void> {
         options = options || {};
         await queryInterface.createTable(this.tableName, this.fields);
         await this.migrateConstraints(queryInterface);    
@@ -347,39 +346,13 @@ export default class BaseTableModel extends Model {
      * @static (pay attention to bindings)
      * @created 2023-11-10
      */
-    static async associates() {
+    static async associates() : Promise<void> {
         //Utils.logi(`${this.name}(BaseTableModel)`,'associates');
         let tableRefClassModel = null;
         try {
             let fks = this.getForeignKeys() || [];
-            //console.log('fks',fks);
             for(let i = 0; i < fks.length; i++) {
-                //console.log(`fk ${i}`,fks[i]);
                 tableRefClassModel = fks[i].references.table || this; //for re-declare if necessary
-                //console.log('tableRefClassModel',typeof tableRefClassModel, tableRefClassModel);
-                /*
-                @deprecated 2025-04-14 - not use this hard load file, changed models logic to adjust it
-                if (typeof tableRefClassModel == 'string') {
-
-                    if (tableRefClassModel.trim().toLocaleLowerCase().indexOf('base') === 0 && tableRefClassModel.trim().toLocaleLowerCase().indexOf('model') > -1) {
-                        tableRefClassModel = this.tableName;
-                    }
-
-                    //require.cache is case sensitive, avoid reload cached model
-                    let fullPath = path.join(this.__dirname,(tableRefClassModel.toLowerCase().indexOf('pc') === 0 ? 'winthor/':'') + tableRefClassModel + ".js");
-                    const fileUrl = pathToFileURL(fullPath);
-                    const module = await import(fileUrl.href);
-
-                
-                    let realKey = Utils.getKey(module,tableRefClassModel);
-                    if (Utils.hasValue(realKey)) {
-                        tableRefClassModel = module[realKey];
-                    } else if (Utils.hasValue(module.default)) {
-                        tableRefClassModel = module.default;
-                    } else {
-                        tableRefClassModel = module;
-                    }
-                }*/    
                 let model = null;
                 let columnForeign = fks[i].fields.join(',');
                 let belongsToParams  = {
@@ -390,14 +363,12 @@ export default class BaseTableModel extends Model {
                     sourceKey: fks[i].references.fields?.join(',') || fks[i].references.field,
                     foreignKey : columnForeign
                 };
-                //console.log(tableRefClassModel);
                 if (tableRefClassModel.tableName.trim() == this.tableName.trim().toLowerCase()) {
                     model = this;
                 } else {
                     model = tableRefClassModel;
                 }                
                 if (model) {
-                    //console.log('hasMany params',this.tableName,model?.tableName, hasManyParams);
                     let hasMany = model.hasMany(this,hasManyParams);
                     let belongsTo = this.belongsTo(model,belongsToParams);
                 }                
@@ -438,7 +409,6 @@ export default class BaseTableModel extends Model {
                 if (Utils.hasValue(this.removeAttr)) {
                     this.removeAttribute(this.removeAttr);
                 } 
-                //if (!Utils.hasValue(this.associations)) await this.associates();           
             }        
         } catch (e) {
             Utils.logError(e);
@@ -446,7 +416,7 @@ export default class BaseTableModel extends Model {
         //Utils.logf(`${this.name}(BaseTableModel)`,'initModel');
     }    
       
-    static async initAssociations() {
+    static async initAssociations() : Promise<void>{
         //Utils.logi(`${this.name}(BaseTableModel)`,'initAssociations');
         await this.associates();
         //Utils.logf(`${this.name}(BaseTableModel)`,'initAssociations');
@@ -458,7 +428,7 @@ export default class BaseTableModel extends Model {
      * @async (pay attention to await)
      * @created 2023-11-10
      */
-    static async createIfNotExists(queryParams: any , newValues?: any) {
+    static async createIfNotExists(queryParams: any , newValues?: any) : Promise<any> {
         let reg : any = await this.findOne(queryParams);
         if(!reg && queryParams.transaction) {
             let transactionTemp = queryParams.transaction;
@@ -493,7 +463,7 @@ export default class BaseTableModel extends Model {
      * @async (pay attention to await)
      * @created 2023-11-10
      */
-    static async createData(params: any,returnRaw: boolean = true) {
+    static async createData(params: any,returnRaw: boolean = true) : Promise<any> {
         let queryParams = params.queryParams?.values || params.values || params.queryParams || params || {};
         let transaction = params.transaction;
         let result = await this.create(queryParams,{transaction});
@@ -509,7 +479,7 @@ export default class BaseTableModel extends Model {
      * @async (pay attention to await)
      * @created 2023-11-10
      */
-    static async getData(params: any, req?: Request) {
+    static async getData(params: any, req?: Request) : Promise<any> {
         let queryParams = await DatabaseUtils.prepareQueryParams(params.queryParams || params || {});
         queryParams.raw = queryParams.raw || params.raw;
         if (queryParams.raw !== false) queryParams.raw = true; 
@@ -532,7 +502,7 @@ export default class BaseTableModel extends Model {
      * @async (pay attention to await)
      * @created 2023-11-10
      */
-    static async updateData(params: any) {
+    static async updateData(params: any) : Promise<void> {
         let reg : any = null;
         let values = params.values || params.queryParams?.values || params.queryParams || params ;                
         params.where = params.where || params.queryParams?.where || null;
@@ -574,9 +544,7 @@ export default class BaseTableModel extends Model {
                         
                         /*sequelize nao atualiza estes campos se forem chaves primarias, 
                         verificar apos o save se houve alteracao de campos chaves primarias e fazer update via query e nao via 
-                        save nestes casos
-
-                        testar dica do chatgpt sequelize.queryGenerator.updateQuery, que gera a query sem executala*/
+                        save nestes casos*/
 
                         if (Utils.hasValue(primaryKeysFieldsNames) && !hasPrimaryKeyOnUpdate) {
                             for(let ks in primaryKeysFieldsNames) {
@@ -629,7 +597,7 @@ export default class BaseTableModel extends Model {
      * @created 2023-11-10
      * @version 1.1.0
      */
-    static async deleteData(params: any){
+    static async deleteData(params: any) : Promise<any> {
         let queryParams = await DatabaseUtils.prepareQueryParams(params.queryParams || params || {});
         if (Utils.hasValue(queryParams.where) || Utils.hasValue(queryParams.id) || Utils.hasValue(queryParams.identifiers)) {
             let where = {};
@@ -777,7 +745,7 @@ export default class BaseTableModel extends Model {
      * @created 2024-02-01
      * @version 1.1.0
      */
-    static async saveOrCreate(params: any) {
+    static async saveOrCreate(params: any) : Promise<any> {
         let result = new DataSwap();
         try {
             let queryParams = params.queryParams || params || {};
@@ -822,7 +790,7 @@ export default class BaseTableModel extends Model {
         return result;
     }
 
-    static getQueryFields(){
+    static getQueryFields() : any[] {
         return Object.keys(this.fields).map(el=>Sequelize.col(el));
     }
 

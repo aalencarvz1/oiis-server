@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentação Técnica - Utils</title>
+  <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+<body>
+  <main>
+    <h1>Utils</h1>
+    <p>
+      A <code>Utils</code> fornece métodos utilitários estáticos para manipulação de dados, logging, conversão de tipos, validações e outras funcionalidades, usados por classes como <a href="BaseTableModel.html">BaseTableModel</a>, <a href="DatabaseUtils.html">DatabaseUtils</a>, e outras.
+    </p>
+    <section id="utils-properties">
+      <h2>Propriedades</h2>
+      <p>
+        A classe <code>Utils</code> não possui propriedades explícitas definidas. Todos os membros são métodos estáticos.
+      </p>
+    </section>
+    <section id="utils-methods">
+      <h2>Métodos</h2>
+      <section id="utils-getmomento">
+        <h3>getMomento</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna a data e hora atual no formato <code>DD/MM/YYYY HH:MM:SS.MMM</code>.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.getMomento(); // "06/05/2025 12:34:56.789"
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-log">
+        <h3>log</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>values: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Valores a serem logados (múltiplos).</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Registra logs com timestamp, condicional ao ambiente (<code>NODE_ENV</code> e <code>LOG_LEVEL</code>).
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.log("Mensagem de teste"); // "06/05/2025 12:34:56.789 Mensagem de teste"
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-logi">
+        <h3>logi</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>p_nome_classe: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code> - Nome da classe.</li>
+            <li>p_nome_funcao: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code> - Nome da função.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Registra o início de uma função ou classe com o prefixo <code>START</code>.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.logi("MinhaClasse", "minhaFuncao"); // "START MinhaClasse.minhaFuncao"
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-logf">
+        <h3>logf</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>p_nome_classe: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code> - Nome da classe.</li>
+            <li>p_nome_funcao: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code> - Nome da função.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Registra o fim de uma função ou classe com o prefixo <code>END</code>.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.logf("MinhaClasse", "minhaFuncao"); // "END MinhaClasse.minhaFuncao"
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-loge">
+        <h3>loge</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>values: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Valores a serem logados como erro (múltiplos).</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Registra erros com timestamp, condicional ao ambiente.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.loge(new Error("Erro de teste")); // "06/05/2025 12:34:56.789 [Error: Erro de teste]"
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-logerror">
+        <h3>logError</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>error: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Objeto de erro.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Registra um erro diretamente no console.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.logError(new Error("Erro grave")); // [Error: Erro grave]
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-typeof">
+        <h3>typeOf</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>value: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Valor a ser analisado.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna o tipo do valor, tratando <code>array</code> como um tipo específico.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.typeOf([1, 2, 3]); // "array"
+  Utils.typeOf("teste"); // "string"
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-isarray">
+        <h3>isArray</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>obj: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Valor a ser verificado.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Boolean" target="_blank">boolean</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Verifica se o valor é um array.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.isArray([1, 2, 3]); // true
+  Utils.isArray("teste"); // false
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-hasvalue">
+        <h3>hasValue</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>pValue: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Valor a ser verificado.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Boolean" target="_blank">boolean</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Verifica se um valor é válido (não nulo, não vazio).
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.hasValue("teste"); // true
+  Utils.hasValue(""); // false
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-isnotnull">
+        <h3>isNotNull</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>obj: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Valor a ser verificado.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Boolean" target="_blank">boolean</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Verifica se o valor não é nulo ou indefinido.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.isNotNull("teste"); // true
+  Utils.isNotNull(null); // false
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-firstvalid">
+        <h3>firstValid</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>arr_valores: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Array</a><<a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a>></code> - Array de valores.</li>
+            <li>check_null?: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Boolean" target="_blank">boolean</a></code> - Verifica nulos (padrão: <code>true</code>).</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna o primeiro valor válido do array.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.firstValid([null, "teste", 123]); // "teste"
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-tobool">
+        <h3>toBool</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>pValue: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Valor a ser convertido.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Boolean" target="_blank">boolean</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Converte um valor em booleano.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.toBool("true"); // true
+  Utils.toBool("0"); // false
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-getdeepproperty">
+        <h3>getDeepProperty</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>obj: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Objeto a ser acessado.</li>
+            <li>arrayOfDeepProps: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Array</a><<a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a>></code> - Array de chaves.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Acessa uma propriedade profundamente aninhada em um objeto.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const obj = { a: { b: 123 } };
+  Utils.getDeepProperty(obj, ["a", "b"]); // 123
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-getkey">
+        <h3>getKey</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>obj: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Object" target="_blank">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined" target="_blank">undefined</a></code> - Objeto a ser analisado.</li>
+            <li>key: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Chave a ser buscada.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Busca uma chave em um objeto, ignorando maiúsculas/minúsculas.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const obj = { Nome: "teste" };
+  Utils.getKey(obj, "nome"); // "Nome"
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-tonumber">
+        <h3>toNumber</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>v: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Valor a ser convertido.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Converte um valor em número, tratando strings com formatos variados.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.toNumber("1,234.56"); // 1234.56
+  Utils.toNumber("1234,56"); // 1234.56
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-deletenotexistsproperty">
+        <h3>deleteNotExistsProperty</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>object: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Objeto a ser modificado.</li>
+            <li>properties: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Lista de propriedades válidas.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Remove propriedades do objeto que não estão na lista fornecida.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const obj = { a: 1, b: 2, c: 3 };
+  Utils.deleteNotExistsProperty(obj, ["a", "b"]); // obj = { a: 1, b: 2 }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-arraytoobject">
+        <h3>arrayToObject</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>array: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Array a ser convertido.</li>
+            <li>key?: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Chave ou array de chaves.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Converte um array em um objeto usando uma ou mais chaves.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const arr = [{ id: 1, name: "A" }, { id: 2, name: "B" }];
+  Utils.arrayToObject(arr, "id"); // { 1: [{ id: 1, name: "A" }], 2: [{ id: 2, name: "B" }] }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-tobrdate">
+        <h3>toBRDate</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>pDate?: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank">Date</a> | <a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined" target="_blank">undefined</a></code> - Data a ser convertida.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Converte uma data para o formato brasileiro <code>DD/MM/YYYY</code>.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.toBRDate(new Date("2025-05-06")); // "06/05/2025"
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-toisodate">
+        <h3>toISODate</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>pDate?: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Data a ser convertida.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Converte uma data para o formato ISO <code>YYYY-MM-DD</code>.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.toISODate(new Date("2025-05-06")); // "2025-05-06"
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-getpreviousyeardate">
+        <h3>getPreviousYearDate</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>pDate: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Data base.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank">Date</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna a data do ano anterior.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.getPreviousYearDate(new Date("2025-05-06")); // 2024-05-06
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-getpreviousyearlastmonthdate">
+        <h3>getPreviousYearLastMonthDate</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>pDate: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Data base.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank">Date</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna a data correspondente ao último dia do mesmo mês no ano anterior.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.getPreviousYearLastMonthDate(new Date("2025-05-31")); // 2024-05-31
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-toarray">
+        <h3>toArray</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>value?: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Valor a ser convertido.</li>
+            <li>delimiter?: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Delimitador (padrão: <code>,</code>).</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Array</a><<a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a>> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined" target="_blank">undefined</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Converte um valor em array.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.toArray("a,b,c"); // ["a", "b", "c"]
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-singlearrayto2levelarray">
+        <h3>singleArrayTo2LevelArray</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>array: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Array</a><<a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a>></code> - Array a ser convertido.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Array</a><<a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a>></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Converte um array simples em um array de dois níveis.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.singleArrayTo2LevelArray([1, 2, 3, 4]); // [[1, 2], [3, 4]]
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-getsingleurlpath">
+        <h3>getSingleUrlPath</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>urlPath: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Caminho da URL.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Normaliza um caminho de URL, removendo query strings e barras finais.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.getSingleUrlPath("/path/to/?query=1"); // "/path/to"
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-getmethodname">
+        <h3>getMethodName</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>obj: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Objeto a ser analisado.</li>
+            <li>methodName: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Nome do método.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Busca o nome real de um método em um objeto, ignorando maiúsculas/minúsculas.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  class Test { myMethod() {} }
+  Utils.getMethodName(Test.prototype, "mymethod"); // "myMethod"
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-todate">
+        <h3>toDate</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>pValue: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Valor a ser convertido.</li>
+            <li>pFormat?: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Formato da data (ex.: <code>yyyymmdd</code>).</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank">Date</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Converte um valor em objeto <code>Date</code>.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.toDate("2025-05-06"); // Date object for 2025-05-06
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-isclass">
+        <h3>isClass</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>func: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Função ou objeto a ser verificado.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Boolean" target="_blank">boolean</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Verifica se o valor é uma classe.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  class Test {}
+  Utils.isClass(Test); // true
+  Utils.isClass(() => {}); // false
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-getallproperties">
+        <h3>getAllProperties</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>obj: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Objeto a ser analisado.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Array</a><<a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a>></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna todas as propriedades e métodos de um objeto, incluindo herdados.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  class Test { prop = 1; method() {} }
+  Utils.getAllProperties(Test.prototype); // ["constructor", "prop", "method"]
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-getutcfulldate">
+        <h3>getUTCFullDate</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>date: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank">Date</a></code> - Data a ser formatada.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna a data no formato UTC <code>YYYY-MM-DD</code>.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.getUTCFullDate(new Date("2025-05-06")); // "2025-05-06"
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-getfullmonthsdiff">
+        <h3>getFullMonthsDiff</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>date1: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank">Date</a></code> - Primeira data.</li>
+            <li>date2: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank">Date</a></code> - Segunda data.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Calcula a diferença em meses completos entre duas datas.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const d1 = new Date("2025-05-01");
+  const d2 = new Date("2025-06-30");
+  Utils.getFullMonthsDiff(d1, d2); // 2
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-diffdays">
+        <h3>diffDays</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>date1: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank">Date</a></code> - Primeira data.</li>
+            <li>date2: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank">Date</a></code> - Segunda data.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Calcula a diferença em dias entre duas datas.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const d1 = new Date("2025-05-01");
+  const d2 = new Date("2025-05-06");
+  Utils.diffDays(d1, d2); // 5
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-addfullmonths">
+        <h3>addFullMonths</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>date: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank">Date</a></code> - Data a ser modificada.</li>
+            <li>months: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a></code> - Número de meses a adicionar.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Adiciona meses completos a uma data, ajustando o dia se necessário.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const date = new Date("2025-05-31");
+  Utils.addFullMonths(date, 1); // date = 2025-06-30
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-evalreplacevarstext">
+        <h3>evalReplaceVarsText</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>text?: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Texto com variáveis.</li>
+            <li>params?: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Parâmetros para substituição.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a><<a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a>></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Avalia e substitui variáveis em um texto (ex.: <code>${params.id}</code>).
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  await Utils.evalReplaceVarsText("ID: ${params.id}", { id: 1 }); // "ID: 1"
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-evaltext">
+        <h3>evalText</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>text?: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Texto a ser avaliado.</li>
+            <li>params?: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Parâmetros para substituição.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a><<a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a>></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Avalia um texto como expressão JavaScript após substituir variáveis.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  await Utils.evalText("2 + 2"); // 4
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-calculategtindigit">
+        <h3>calculateGtinDigit</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>code: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Código GTIN.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Calcula o dígito verificador para GTIN-8, 13 ou 14.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.calculateGtinDigit("12345678"); // Calcula o dígito verificador
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="utils-getgtintype">
+        <h3>getGtinType</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>code?: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Código GTIN a ser validado.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Valida e identifica o tipo de GTIN (8, 13 ou 14).
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  Utils.getGtinType("1234567890128"); // { isGtin: true, type: 13 }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

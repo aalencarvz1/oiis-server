@@ -75,7 +75,7 @@ export default class DatabaseUtils {
         return queryParams;
     }
 
-    static getSequelizeOperation(name: string) {
+    static getSequelizeOperation(name: string) : any {
         let result = name;
         if (typeof result == 'string') {
             name = name || '';

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mídias - MidiasController</title>
+  <link rel="stylesheet" href="../../../../css/styles.css">
+</head>
+<body>
+  <main>
+    <h1>Mídias - MidiasController</h1>
+    <p>
+      O <code>MidiasController</code> gerencia o upload de arquivos, salvando-os no diretório <code>Uploads/</code> e registrando metadados na tabela <code>Midias</code>. Estende <code>BaseRegistersController</code> para manipulação de registros.
+    </p>
+
+    <section id="midiascontroller-upload_file">
+      <h2>upload_file (RequestHandler)</h2>
+      <p>
+        Faz upload de múltiplos arquivos, salvando-os em <code>Uploads/</code> e registrando metadados na tabela <code>Midias</code>.
+      </p>
+      <h3>Detalhes do Endpoint</h3>
+      <ul>
+        <li><strong>Método</strong>: POST</li>
+        <li><strong>URL</strong>: <code>/api/controllers/modules/registers/midiascontroller/upload_file</code></li>
+      </ul>
+      <h3>Parâmetros</h3>
+      <ul>
+        <li><code>files</code> (obrigatório, form-data): Arquivos a serem enviados.</li>
+        <li><code>registers</code> (obrigatório, form-data ou body): Array de objetos com:
+          <ul>
+            <li><code>id</code>: Identificador do cliente.</li>
+            <li><code>name</code>: Nome do arquivo.</li>
+            <li><code>table_name</code>: Nome da tabela de referência.</li>
+            <li><code>record_ref_id</code>: ID do registro associado.</li>
+            <li><code>type</code> (opcional): Tipo MIME do arquivo.</li>
+            <li><code>numeric_order</code> (opcional): Ordem numérica.</li>
+            <li><code>server_id</code> (opcional): ID do registro existente em <code>Midias</code>.</li>
+          </ul>
+        </li>
+      </ul>
+      <h3>Exemplo de Requisição</h3>
+      <pre><code>
+POST /api/controllers/modules/registers/midiascontroller/upload_file
+Content-Type: multipart/form-data
+
+--form 'files=@/path/to/file.jpg'
+--form 'registers=[{"id": "client_id_1", "name": "file.jpg", "table_name": "products", "record_ref_id": 123, "type": "image/jpeg", "numeric_order": 1}]'
+      </code></pre>
+      <h3>Resposta</h3>
+      <p><strong>Status</strong>: 200</p>
+      <pre><code>
+{
+  "success": true,
+  "message": null,
+  "data": [
+    {
+      "id": "client_id_1",
+      "server_id": 1
+    }
+  ],
+  "exception": null
+}
+      </code></pre>
+      <p><strong>Status</strong>: 517 (erro)</p>
+      <pre><code>
+{
+  "success": false,
+  "message": "no file(s) uploaded(s) or missing data",
+  "data": null,
+  "exception": "Error details"
+}
+      </code></pre>
+      <a href="#top" class="button">Voltar ao topo</a>
+    </section>
+  </main>
+</body>
+</html>

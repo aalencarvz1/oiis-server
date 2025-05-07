@@ -17,8 +17,8 @@ export default class AuthController {
 
 
     static #cryptSalt : number = 10;    
-    static userEmail = process.env.API_EMAIL || "jumbo.ti@jumboalimentos.com.br";
-    static userEmailPassword = process.env.API_EMAIL_PASSWORD || "1#__Racnela07__XY##Z";
+    static userEmail : string = process.env.API_EMAIL || "jumbo.ti@jumboalimentos.com.br";
+    static userEmailPassword : string = process.env.API_EMAIL_PASSWORD || "1#__Racnela07__XY##Z";
     static #mailTransport : any = null;
 
     /**

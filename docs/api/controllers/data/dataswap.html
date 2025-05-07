@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentação Técnica - DataSwap</title>
+  <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+<body>
+  <main>
+    <h1>DataSwap</h1>
+    <p>
+      A <code>DataSwap</code> é uma classe utilitária para encapsular resultados de operações, incluindo status de sucesso, dados, mensagens e exceções. É usada em contextos como respostas de APIs ou operações de banco de dados, frequentemente em conjunto com <a href="../utils/utils.html">Utils</a>.
+    </p>
+    <section id="dataswap-properties">
+      <h2>Propriedades</h2>
+      <section id="dataswap-success">
+        <h3>success</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Boolean" target="_blank">boolean</a></code></p>
+        <p>Indica se a operação foi bem-sucedida. Inicializado como <code>false</code>.</p>
+      </section>
+      <section id="dataswap-status">
+        <h3>status</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a></code></p>
+        <p>Código de status da operação. Inicializado como <code>-1</code>.</p>
+      </section>
+      <section id="dataswap-data">
+        <h3>data</h3>
+        <p>Tipo: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Armazena os dados retornados pela operação. Inicializado como <code>null</code>.</p>
+      </section>
+      <section id="dataswap-message">
+        <h3>message</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Mensagem descritiva da operação (ex.: erro ou sucesso). Inicializado como <code>null</code>.</p>
+      </section>
+      <section id="dataswap-exception">
+        <h3>exception</h3>
+        <p>Tipo: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Objeto de exceção associado à operação. Inicializado como <code>null</code>.</p>
+      </section>
+    </section>
+    <section id="dataswap-methods">
+      <h2>Métodos</h2>
+      <section id="dataswap-setdataswap">
+        <h3>setDataSwap</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>newDataSwap: <code><a href="#dataswap">DataSwap</a></code> - Outro objeto <code>DataSwap</code> para copiar propriedades.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a></code></p>
+        <p>
+          Atualiza as propriedades <a href="#dataswap-success">success</a>, <a href="#dataswap-data">data</a>, <a href="#dataswap-message">message</a>, e <a href="#dataswap-exception">exception</a> com base em outro objeto <code>DataSwap</code>.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const ds1 = new DataSwap();
+  const ds2 = new DataSwap();
+  ds2.success = true;
+  ds2.data = { id: 1 };
+  ds1.setDataSwap(ds2);
+  console.log(ds1.success); // true
+  console.log(ds1.data); // { id: 1 }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="dataswap-setexception">
+        <h3>setException</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>exception: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Objeto de exceção a ser definido.</li>
+            <li>notConsole?: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Boolean" target="_blank">boolean</a></code> - Se <code>true</code>, não exibe o erro no console (padrão: <code>false</code>).</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a></code></p>
+        <p>
+          Define uma exceção, atualizando <a href="#dataswap-success">success</a> para <code>false</code>, <a href="#dataswap-message">message</a> com base na exceção, e <a href="#dataswap-exception">exception</a> com o objeto fornecido.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const ds = new DataSwap();
+  ds.setException(new Error("Falha na operação"));
+  console.log(ds.success); // false
+  console.log(ds.message); // "Falha na operação"
+  console.log(ds.exception); // Error: Falha na operação
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="dataswap-throw">
+        <h3>throw</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/throw" target="_blank">never</a></code></p>
+        <p>
+          Lança a exceção armazenada em <a href="#dataswap-exception">exception</a> ou uma nova <code>Error</code> com base em <a href="#dataswap-message">message</a>.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const ds = new DataSwap();
+  ds.setException(new Error("Erro crítico"));
+  try {
+    ds.throw();
+  } catch (e) {
+    console.log(e.message); // "Erro crítico"
+  }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+    </section>
+  </main>
+</body>
+</html>
