@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Models - ModelsController</title>
+  <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+<body>
+  <main>
+    <h1>ModelsController</h1>
+    <p>
+      O <code>ModelsController</code> gerencia a inicialização de modelos de banco de dados, configurando tabelas e suas associações em uma ordem específica para garantir dependências corretas. Usa métodos assíncronos com <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a> e depende da classe <a href="../utils/utils.html">Utils</a> para verificações condicionais.
+    </p>
+    <section id="modelscontroller-properties">
+      <h2>Propriedades</h2>
+      <p>
+        O <code>ModelsController</code> não define propriedades estáticas ou privadas. Todas as funcionalidades são implementadas via métodos.
+      </p>
+    </section>
+    <section id="modelscontroller-methods">
+      <h2>Métodos</h2>
+      <section id="modelscontroller-initModels">
+        <h3>initModels</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a><<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a>></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Inicializa todos os modelos de banco de dados chamando <code>initModel()</code> na ordem definida pelas importações. Inclui modelos como <code>Users</code> (relacionado a <a href="../auth/authcontroller.html">AuthController</a>) e <code>Integration_Tables</code> (relacionado a <a href="../endpoints/endpointscontroller.html">EndpointsController</a>). Alguns modelos são condicionados por variáveis de ambiente, como <code>process.env.HAS_WINTHOR_INTEGRATION</code>.
+        </p>
+        <h4>Modelos Inicializados (Parcial)</h4>
+        <ul>
+          <li><code>Errors</code> - Tabela de erros.</li>
+          <li><code>Users</code> - Usuários do sistema (<a href="../auth/authcontroller.html#authcontroller-login">login</a>).</li>
+          <li><code>Logistic_Orders</code> - Pedidos logísticos.</li>
+          <li><code>PcProdut</code> - Produtos Winthor (condicional).</li>
+          <li><code>Businesses</code> - Dados externos RFB (condicional).</li>
+        </ul>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  await ModelsController.initModels();
+  // Inicializa modelos como Errors, Users, Logistic_Orders, etc.
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="modelscontroller-initAssociations">
+        <h3>initAssociations</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a><<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a>></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Configura associações entre modelos chamando <code>initAssociations()</code> na mesma ordem de <code><a href="#modelscontroller-initModels">initModels</a></code>. Garante que relacionamentos, como entre <code>Users</code> e <code>User_Tokens</code>, sejam corretamente estabelecidos.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  await ModelsController.initAssociations();
+  // Configura associações, e.g., Users -> User_Tokens
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+    </section>
+    <section id="modelscontroller-static">
+      <h2>Inicialização Estática</h2>
+      <p>
+        O <code>ModelsController</code> depende da ordem de importação dos modelos para garantir a correta inicialização estática. Modelos como <code>Errors</code>, <code>Users</code>, e <code>Logistic_Orders</code> podem conter blocos de inicialização estática que dependem dessa ordem. Os métodos <code><a href="#modelscontroller-initModels">initModels</a></code> e <code><a href="#modelscontroller-initAssociations">initAssociations</a></code> são chamados sequencialmente para inicializar modelos e suas associações.
+      </p>
+    </section>
+  </main>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93bb19e24f0a081a',t:'MTc0NjU2MjAxNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>

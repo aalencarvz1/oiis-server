@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentação Técnica - BaseTableModel</title>
+  <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+<body>
+  <main>
+    <h1>BaseTableModel</h1>
+    <p>
+      A <code>BaseTableModel</code> é uma classe base que estende <code>Sequelize.Model</code> para definir modelos de tabelas com campos e métodos comuns. É usada como base para modelos Sequelize, implementando funcionalidades como migrações, associações e operações CRUD. Depende de <a href="../dbconnectionmanager.html">DBConnectionManager</a>, <a href="../../controllers/utils/utils.html">Utils</a>, <a href="../../controllers/data/dataswap.html">DataSwap</a>, e <a href="../../controllers/database/databaseutils.html">DatabaseUtils</a>.
+    </p>
+    <section id="basetablemodel-field-properties">
+        <h2>Propriedades Field (campos de tabela)</h2>
+        <p>Estas propriedades são declaradas com a palavra reservada <code>declare</code> no TypeScript, indicando que correspondem diretamente aos campos da tabela no Sequelize quando o modelo é instanciado.</p>
+        <section id="basetablemodel-id">
+            <h3>id</h3>
+            <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined" target="_blank">undefined</a></code></p>
+            <p>Chave primária do registro, auto-incrementada.</p>
+        </section>
+        <section id="basetablemodel-parent_id">
+            <h3>parent_id</h3>
+            <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined" target="_blank">undefined</a></code></p>
+            <p>ID do registro pai, para registros hierárquicos.</p>
+        </section>
+        <section id="basetablemodel-status_reg_id">
+            <h3>status_reg_id</h3>
+            <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a></code></p>
+            <p>ID do status do registro.</p>
+        </section>
+        <section id="basetablemodel-creator_user_id">
+            <h3>creator_user_id</h3>
+            <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined" target="_blank">undefined</a></code></p>
+            <p>ID do usuário que criou o registro.</p>
+        </section>
+        <section id="basetablemodel-created_at">
+            <h3>created_at</h3>
+            <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank">Date</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined" target="_blank">undefined</a></code></p>
+            <p>Data de criação do registro.</p>
+        </section>
+        <section id="basetablemodel-updater_user_id">
+            <h3>updater_user_id</h3>
+            <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined" target="_blank">undefined</a></code></p>
+            <p>ID do usuário que atualizou o registro.</p>
+        </section>
+        <section id="basetablemodel-updated_at">
+            <h3>updated_at</h3>
+            <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank">Date</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined" target="_blank">undefined</a></code></p>
+            <p>Data de atualização do registro.</p>
+        </section>
+        <section id="basetablemodel-data_origin_id">
+            <h3>data_origin_id</h3>
+            <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined" target="_blank">undefined</a></code></p>
+            <p>ID da origem externa do registro.</p>
+        </section>
+        <section id="basetablemodel-id_at_origin">
+            <h3>id_at_origin</h3>
+            <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined" target="_blank">undefined</a></code></p>
+            <p>ID do registro na origem externa.</p>
+        </section>
+        <section id="basetablemodel-source_id">
+            <h3>source_id</h3>
+            <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined" target="_blank">undefined</a></code></p>
+            <p>ID da fonte do registro (ex.: registro duplicado).</p>
+        </section>
+        <section id="basetablemodel-deleted_at">
+            <h3>deleted_at</h3>
+            <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank">Date</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined" target="_blank">undefined</a></code></p>
+            <p>Data de exclusão lógica do registro.</p>
+        </section>
+        <section id="basetablemodel-is_sys_rec">
+            <h3>is_sys_rec</h3>
+            <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a></code></p>
+            <p>Indica se o registro é do sistema (0 ou 1).</p>
+        </section>
+        </section>
+        <section id="basetablemodel-properties">
+        <h2>Propriedades</h2>
+        <section id="basetablemodel-configdb">
+            <h3>configDB</h3>
+            <p>Tipo: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+            <p>Qualificadores
+            <ul>
+                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            </ul>
+            </p>
+            <p>Configuração do banco de dados do ambiente atual.</p>
+        </section>
+        <section id="basetablemodel-schema">
+            <h3>schema</h3>
+            <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code></p>
+            <p>Qualificadores
+            <ul>
+                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            </ul>
+            </p>
+            <p>Esquema do banco de dados, derivado de <code>configDB.database</code>.</p>
+        </section>
+        <section id="basetablemodel-id_static">
+            <h3>id</h3>
+            <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a></code></p>
+            <p>Qualificadores
+            <ul>
+                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            </ul>
+            </p>
+            <p>ID da tabela, usado em migrações.</p>
+        </section>
+        <section id="basetablemodel-tablename">
+            <h3>tableName</h3>
+            <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code></p>
+            <p>Qualificadores
+            <ul>
+                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            </ul>
+            </p>
+            <p>Nome da tabela, derivado do nome da classe em minúsculas.</p>
+        </section>
+        <section id="basetablemodel-adjustedforeignkeys">
+            <h3>adjustedForeignKeys</h3>
+            <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Boolean" target="_blank">boolean</a></code></p>
+            <p>Qualificadores
+            <ul>
+                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            </ul>
+            </p>
+            <p>Indica se as chaves estrangeiras foram ajustadas, inicializado como <code>false</code>.</p>
+        </section>
+        <section id="basetablemodel-model">
+            <h3>model</h3>
+            <p>Tipo: <code><a href="https://sequelize.org/api/v6/class/src/model.js~Model.html" target="_blank">Model</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+            <p>Qualificadores
+            <ul>
+                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            </ul>
+            </p>
+            <p>Referência ao modelo Sequelize.</p>
+        </section>
+        <section id="basetablemodel-fields">
+            <h3>fields</h3>
+            <p>Tipo: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+            <p>Qualificadores
+            <ul>
+                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            </ul>
+            </p>
+            <p>Campos da tabela, definidos pelo modelo.</p>
+        </section>
+        <section id="basetablemodel-constraints">
+            <h3>constraints</h3>
+            <p>Tipo: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a>[]</code></p>
+            <p>Qualificadores
+            <ul>
+                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            </ul>
+            </p>
+            <p>Restrições da tabela, como <code>CHECK</code> ou chaves únicas.</p>
+        </section>
+        <section id="basetablemodel-foreignskeys">
+            <h3>foreignsKeys</h3>
+            <p>Tipo: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a>[]</code></p>
+            <p>Qualificadores
+            <ul>
+                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            </ul>
+            </p>
+            <p>Chaves estrangeiras da tabela, inicializadas no bloco estático.</p>
+        </section>
+        <section id="basetablemodel-getconnection">
+            <h3>getConnection</h3>
+            <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a></code></p>
+            <p>Qualificadores
+            <ul>
+                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            </ul>
+            </p>
+            <p>Função para obter a conexão padrão, apontando para <code>DBConnectionManager.getDefaultDBConnection</code>.</p>
+        </section>
+        <section id="basetablemodel-primarykeysfieldsnames">
+            <h3>primaryKeysFieldsNames</h3>
+            <p>Tipo: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+            <p>Qualificadores
+            <ul>
+                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            </ul>
+            </p>
+            <p>Nomes dos campos de chave primária.</p>
+        </section>
+        <section id="basetablemodel-removeattr">
+            <h3>removeAttr</h3>
+            <p>Tipo: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+            <p>Qualificadores
+            <ul>
+                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            </ul>
+            </p>
+            <p>Atributos a serem removidos do modelo.</p>
+        </section>
+        <section id="basetablemodel-__dirname">
+            <h3>__dirname</h3>
+            <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code></p>
+            <p>Qualificadores
+            <ul>
+                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            </ul>
+            </p>
+            <p>Diretório do módulo, derivado de <code>import.meta.url</code>.</p>
+        </section>
+        <section id="basetablemodel-basetablemodelforeignskeys">
+            <h3>baseTableModelForeignsKeys</h3>
+            <p>Tipo: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a>[]</code></p>
+            <p>Qualificadores
+            <ul>
+                <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            </ul>
+            </p>
+            <p>Chaves estrangeiras padrão da tabela, usadas como base para <code>getBaseTableModelForeignsKeys</code>.</p>
+        </section>
+        </section>
+    <section id="basetablemodel-methods">
+      <h2>Métodos</h2>
+      <section id="basetablemodel-getbasetablemodelfields">
+        <h3>getBaseTableModelFields</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna os campos padrão da tabela, como <code>id</code>, <code>created_at</code>, e <code>is_sys_rec</code>.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const fields = BaseTableModel.getBaseTableModelFields();
+  console.log(fields.id); // { type: DataTypes.BIGINT.UNSIGNED, autoIncrement: true, ... }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-getbasetablemodelconstraints">
+        <h3>getBaseTableModelConstraints</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a>[]</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna as restrições padrão da tabela, como <code>CHECK</code> para <code>is_sys_rec</code>.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const constraints = BaseTableModel.getBaseTableModelConstraints();
+  console.log(constraints[0]); // { fields: ['is_sys_rec'], type: 'check', ... }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-getbasetablemodeluniquefields">
+        <h3>getBaseTableModelUniqueFields</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a>[]</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna os campos únicos da tabela, como <code>parent_id</code>, <code>status_reg_id</code>.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const uniqueFields = BaseTableModel.getBaseTableModelUniqueFields();
+  console.log(uniqueFields); // [Sequelize.literal('(COALESCE(parent_id,0))'), 'status_reg_id', 'data_origin_id']
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-getbasetablemodelforeignskeys">
+        <h3>getBaseTableModelForeignsKeys</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a>[]</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna as chaves estrangeiras padrão, ajustando referências à própria tabela.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const fks = BaseTableModel.getBaseTableModelForeignsKeys();
+  console.log(fks[0]); // { fields: ['parent_id'], type: 'foreign key', ... }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-getforeignkeys">
+        <h3>getForeignKeys</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a>[]</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna as chaves estrangeiras do modelo, ajustando-as se necessário.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const fks = BaseTableModel.getForeignKeys();
+  console.log(fks); // Array de chaves estrangeiras
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-gettablemodelhooks">
+        <h3>getTableModelHooks</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna hooks para <code>beforeCreate</code> e <code>beforeUpdate</code>, definindo timestamps.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const hooks = BaseTableModel.getTableModelHooks();
+  console.log(hooks.beforeCreate); // Função que define created_at
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-getprimarykeysfieldsnames">
+        <h3>getPrimaryKeysFieldsNames</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna os nomes dos campos de chave primária do modelo.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const pkFields = BaseTableModel.getPrimaryKeysFieldsNames();
+  console.log(pkFields); // ['id']
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-migrateconstraints">
+        <h3>migrateConstraints</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>queryInterface: <code><a href="https://sequelize.org/api/v6/class/src/dialects/abstract/query-interface.js~QueryInterface.html" target="_blank">QueryInterface</a></code> - Interface de consulta Sequelize.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a>&gt;</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Executa migrações de restrições para o modelo, como <code>CHECK</code>.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  await BaseTableModel.migrateConstraints(queryInterface);
+  console.log("Restrições migradas.");
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-migrateforeignkeycontraint">
+        <h3>migrateForeignKeyContraint</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>queryInterface: <code><a href="https://sequelize.org/api/v6/class/src/dialects/abstract/query-interface.js~QueryInterface.html" target="_blank">QueryInterface</a></code> - Interface de consulta Sequelize.</li>
+            <li>pClassModelRef?: <code>typeof <a href="#basetablemodel">BaseTableModel</a></code> - Modelo de referência (opcional).</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a>&gt;</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Executa migrações de chaves estrangeiras para o modelo.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  await BaseTableModel.migrateForeignKeyContraint(queryInterface);
+  console.log("Chaves estrangeiras migradas.");
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-rununmigration">
+        <h3>runUpMigration</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>queryInterface: <code><a href="https://sequelize.org/api/v6/class/src/dialects/abstract/query-interface.js~QueryInterface.html" target="_blank">QueryInterface</a></code> - Interface de consulta Sequelize.</li>
+            <li>options?: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Opções de migração (opcional).</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a>&gt;</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Executa migrações completas, criando a tabela e aplicando restrições.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  await BaseTableModel.runUpMigration(queryInterface);
+  console.log("Migração completa executada.");
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-associates">
+        <h3>associates</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a>&gt;</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Inicializa associações com outros modelos Sequelize (ex.: <code>belongsTo</code>, <code>hasMany</code>).
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  await BaseTableModel.associates();
+  console.log("Associações inicializadas.");
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-initmodel">
+        <h3>initModel</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>pSequelize?: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Instância Sequelize (opcional).</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a>&gt;</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Inicializa o modelo Sequelize com campos, hooks e configurações.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  await BaseTableModel.initModel();
+  console.log("Modelo inicializado.");
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-initassociations">
+        <h3>initAssociations</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a>&gt;</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Inicializa associações chamando <a href="#basetablemodel-associates">associates</a>.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  await BaseTableModel.initAssociations();
+  console.log("Associações inicializadas.");
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-createifnotexists">
+        <h3>createIfNotExists</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>queryParams: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Parâmetros de consulta.</li>
+            <li>newValues?: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Valores para criação (opcional).</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Cria um registro se ele não existir com base nos parâmetros de consulta.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const record = await BaseTableModel.createIfNotExists({ where: { id: 1 } }, { name: "Test" });
+  console.log(record); // Registro criado ou existente
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-getonebyid">
+        <h3>getOneByID</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>id?: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - ID do registro (opcional).</li>
+            <li>options?: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Opções de consulta (opcional).</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Obtém um registro por ID.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const record = await BaseTableModel.getOneByID(1);
+  console.log(record); // { id: 1, name: "Test", ... }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-createdata">
+        <h3>createData</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>params: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Parâmetros de criação.</li>
+            <li>returnRaw: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Boolean" target="_blank">boolean</a></code> - Retorna dados brutos (padrão: <code>true</code>).</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Cria um novo registro no modelo.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const record = await BaseTableModel.createData({ values: { name: "Test" } });
+  console.log(record); // { id: 1, name: "Test", ... }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-putdata">
+        <h3>putData</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>params: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Parâmetros de criação.</li>
+            <li>returnRaw: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Boolean" target="_blank">boolean</a></code> - Retorna dados brutos (padrão: <code>true</code>).</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Alias para <a href="#basetablemodel-createdata">createData</a>, cria um novo registro.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const record = await BaseTableModel.putData({ values: { name: "Test" } });
+  console.log(record); // { id: 1, name: "Test", ... }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-getdata">
+        <h3>getData</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>params: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Parâmetros de consulta.</li>
+            <li>req?: <code><a href="https://expressjs.com/en/api.html#req" target="_blank">Request</a></code> - Objeto de requisição Express (opcional).</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Obtém dados do modelo com base em parâmetros de consulta ou consulta SQL.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const records = await BaseTableModel.getData({ queryParams: { where: { status_reg_id: 1 } } });
+  console.log(records); // Array de registros
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-updatedata">
+        <h3>updateData</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>params: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Parâmetros de atualização.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a>&gt;</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Atualiza um registro no modelo com base em condições ou ID.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  await BaseTableModel.updateData({ values: { name: "Updated" }, where: { id: 1 } });
+  console.log("Registro atualizado.");
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-patchdata">
+        <h3>patchData</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>params: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Parâmetros de atualização.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a>&gt;</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Alias para <a href="#basetablemodel-updatedata">updateData</a>, atualiza um registro.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  await BaseTableModel.patchData({ values: { name: "Updated" }, where: { id: 1 } });
+  console.log("Registro atualizado.");
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-deletedata">
+        <h3>deleteData</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>params: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Parâmetros de exclusão.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Exclui registros do modelo com base em condições ou IDs.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const result = await BaseTableModel.deleteData({ id: 1 });
+  console.log(result); // true
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-findonewithtransactionornot">
+        <h3>findOneWithTransactionOrNot</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>params: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Parâmetros de consulta.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Busca um registro com ou sem transação, verificando fora da transação se necessário.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const record = await BaseTableModel.findOneWithTransactionOrNot({ where: { id: 1 } });
+  console.log(record); // { id: 1, name: "Test", ... }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-getorcreate">
+        <h3>getOrCreate</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>params: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Parâmetros de consulta e criação.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Obtém um registro ou cria um novo se ele não existir, com suporte a verificação de restrições únicas.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const record = await BaseTableModel.getOrCreate({ queryParams: { where: { name: "Test" }, values: { name: "Test" } } });
+  console.log(record); // { id: 1, name: "Test", ... }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-saveorcreate">
+        <h3>saveOrCreate</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>params: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Parâmetros de consulta e criação/atualização.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Salva um registro existente ou cria um novo se ele não existir.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const result = await BaseTableModel.saveOrCreate({ queryParams: { where: { name: "Test" }, values: { name: "Test" } } });
+  console.log(result.data); // { id: 1, name: "Test", ... }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="basetablemodel-getqueryfields">
+        <h3>getQueryFields</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a>[]</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna os campos da tabela como colunas Sequelize para consultas.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const fields = BaseTableModel.getQueryFields();
+  console.log(fields); // [Sequelize.col('id'), Sequelize.col('name'), ...]
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+    </section>
+    <section id="basetablemodel-static">
+      <h2>Inicialização Estática</h2>
+      <p>
+        O bloco estático inicializa a propriedade <a href="#basetablemodel-foreignskeys">foreignsKeys</a> chamando <a href="#basetablemodel-getforeignkeys">getForeignKeys</a>. Isso garante que as chaves estrangeiras do modelo sejam configuradas no momento da definição da classe.
+      </p>
+      <h4>Exemplo de Efeito</h4>
+      <pre><code>
+  console.log(BaseTableModel.foreignsKeys); // Array de chaves estrangeiras configuradas
+        </code></pre>
+      <a href="#top" class="button">Voltar ao topo</a>
+    </section>
+  </main>
+</body>
+</html>
