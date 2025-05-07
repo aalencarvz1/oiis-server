@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Endpoints - EndpointsController</title>
+  <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+<body>
+  <main>
+    <h1>EndpointsController</h1>
+    <p>
+      O <code>EndpointsController</code> gerencia os endpoints da API, configurando rotas via <a href="https://expressjs.com/en/api.html#router" target="_blank">Router</a> do Express. Suporta carregamento automático de <a href="https://expressjs.com/en/guide/routing.html#route-handlers" target="_blank">request handlers</a>, listagem de endpoints e personalização de respostas.
+    </p>
+    <section id="endpointscontroller-properties">
+      <h2>Propriedades</h2>
+      <section id="endpointscontroller-router">
+        <h3>router</h3>
+        <p>Tipo: <code><a href="https://expressjs.com/en/api.html#router" target="_blank">Router</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties" target="_blank">private</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Instância do roteador Express para gerenciar rotas da API.
+        </p>
+      </section>
+      <section id="endpointscontroller-namedEndpoints">
+        <h3>namedEndpoints</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Array</a><<a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a>></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties" target="_blank">private</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Lista de nomes de endpoints predefinidos, como <code><a href="../auth/authcontroller.html#authcontroller-login">login</a></code> e <code><a href="../auth/authcontroller.html#authcontroller-register">register</a></code>.
+        </p>
+      </section>
+      <section id="endpointscontroller-endPoints">
+        <h3>endPoints</h3>
+        <p>Tipo: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a>[]</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties" target="_blank">private</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Armazena os endpoints carregados dinamicamente pela API.
+        </p>
+      </section>
+    </section>
+    <section id="endpointscontroller-methods">
+      <h2>Métodos</h2>
+      <section id="endpointscontroller-customize_response">
+        <h3>customize_response</h3>
+        <p>Tipo: <code><a href="https://expressjs.com/en/guide/using-middleware.html" target="_blank">middleware</a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>req: <a href="https://expressjs.com/en/api.html#req" target="_blank"><code>Request</code></a></li>
+            <li>res: <a href="https://expressjs.com/en/api.html#res" target="_blank"><code>Response</code></a></li>
+            <li>next: <a href="https://expressjs.com/en/guide/routing.html" target="_blank"><code>NextFunction</code></a></li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Middleware que adiciona propriedades e métodos personalizados ao objeto <code>Response</code>, como <code>res.success</code>, <code>res.sendResponse</code>, e <code>res.setException</code>.
+        </p>
+        <h4>Propriedades Adicionadas</h4>
+        <ul>
+          <li>success: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Boolean" target="_blank">boolean</a></code> - Indica o sucesso da requisição.</li>
+          <li>data: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Dados da resposta.</li>
+          <li>message: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a> | null</code> - Mensagem da resposta.</li>
+          <li>exception: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a> | null</code> - Exceção capturada.</li>
+        </ul>
+        <h4>Métodos Adicionados</h4>
+        <ul>
+          <li>getJson: Retorna o objeto JSON da resposta.</li>
+          <li>setDataSwap: Define propriedades a partir de um <code>DataSwap</code>.</li>
+          <li>setException: Define uma exceção e mensagem de erro.</li>
+          <li>sendResponse: Envia a resposta JSON com status e dados.</li>
+        </ul>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  GET /api/controllers/endpoints/get_endpoints
+  Content-Type: application/json
+
+  // Middleware customize_response adiciona res.sendResponse
+  res.sendResponse(200, true, "endpoints retrieved", endpoints);
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="endpointscontroller-markAsRequestHandler">
+        <h3>markAsRequestHandler</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>func: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Marca uma função como <a href="https://expressjs.com/en/guide/routing.html#route-handlers" target="_blank">RequestHandler</a> adicionando a propriedade <code>__isRequestHandler</code>.
+        </p>
+        <p><strong>Nota</strong>: Usado internamente, não é um endpoint HTTP.</p>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="endpointscontroller-isRequestHandler">
+        <h3>isRequestHandler</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>func: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates" target="_blank">func is RequestHandler</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Verifica se uma função tem a assinatura de um <a href="https://expressjs.com/en/guide/routing.html#route-handlers" target="_blank">RequestHandler</a> do Express.
+        </p>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="endpointscontroller-loadDefaultEndPoints">
+        <h3>loadDefaultEndPoints</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Configura endpoints padrão, como <code>/api/online</code> e <code>/api/endpoints</code>, no <code><a href="#endpointscontroller-router">router</a></code>.
+        </p>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="endpointscontroller-autoLoadEndPoints">
+        <h3>autoLoadEndPoints</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>dir: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code></li>
+            <li>basePath: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> (padrão: <code>/</code>)</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a><<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a>></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Carrega automaticamente endpoints a partir de arquivos <code>.js</code> em um diretório, registrando-os no <code><a href="#endpointscontroller-router">router</a></code>.
+        </p>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="endpointscontroller-getRouter">
+        <h3>getRouter</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://expressjs.com/en/api.html#router" target="_blank">Router</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna a instância do <code><a href="#endpointscontroller-router">router</a></code> usado para gerenciar rotas.
+        </p>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="endpointscontroller-getEndPoints">
+        <h3>getEndPoints</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>router: <code><a href="https://expressjs.com/en/api.html#router" target="_blank">Router</a></code></li>
+            <li>params?: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Lista todas as rotas carregadas no <code><a href="#endpointscontroller-router">router</a></code>, armazenadas em <code><a href="#endpointscontroller-endPoints">endPoints</a></code>.
+        </p>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>      
+      <section id="endpointscontroller-get_endpoints">
+        <h3>get_endpoints</h3>
+        <p>Tipo: <code><a href="https://expressjs.com/en/guide/routing.html#route-handlers" target="_blank">request handler</a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>req: <a href="https://expressjs.com/en/api.html#req" target="_blank"><code>Request</code></a></li>
+            <li>res: <a href="https://expressjs.com/en/api.html#res" target="_blank"><code>Response</code></a></li>
+            <li>next: <a href="https://expressjs.com/en/guide/routing.html" target="_blank"><code>NextFunction</code></a></li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna a lista de endpoints disponíveis na API, usando <code><a href="#endpointscontroller-getEndPoints">getEndPoints</a></code>.
+        </p>
+        <h4>Detalhes do Endpoint</h4>
+        <ul>
+          <li><strong>Método</strong>: <code class="endpoint-method"><a href="https://www.rfc-editor.org/rfc/rfc7231#section-4.3.1" target="_blank">GET</a></code></li>
+          <li><strong>URL</strong>: <code><a href="http://jumbo.brctec.com:3004/api/controllers/endpoints/get_endpoints" target="_blank">/api/controllers/endpoints/get_endpoints</a></code></li>
+        </ul>
+        <h4>Propriedades esperadas em req.body</h4>
+        <ul>
+          <li>params?.key?: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Chave opcional para filtrar endpoints.</li>
+        </ul>
+        <h4>Exemplo de Requisição</h4>
+        <pre><code>
+  GET /api/controllers/endpoints/get_endpoints
+  Content-Type: application/json
+
+  {
+    "params": {
+      "key": "login"
+    }
+  }
+        </code></pre>
+        <h4>Exemplos de respostas</h4>
+        <p><strong>Status</strong>: 200</p>
+        <pre><code>
+  {
+    "success": true,
+    "message": "endpoints retrieved",
+    "data": {
+      "login": {
+        "path": "/api/controllers/auth/authcontroller/login",
+        "methods": { "post": "POST" }
+      }
+    },
+    "exception": null
+  }
+        </code></pre>
+        <p><strong>Status</strong>: 517 (erro)</p>
+        <pre><code>
+  {
+    "success": false,
+    "message": "error retrieving endpoints",
+    "data": null,
+    "exception": "Error: Failed to load routes"
+  }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+    </section>
+    <section id="endpointscontroller-static">
+      <h2>Inicialização Estática</h2>
+      <p>
+        O método <code><a href="#endpointscontroller-loadDefaultEndPoints">loadDefaultEndPoints</a></code> configura os seguintes endpoints padrão no <code><a href="#endpointscontroller-router">router</a></code>:
+        <ul>
+          <li><code>/api/online</code>: Responde com status 200 para verificar se a API está online.</li>
+          <li><code>/api/endpoints</code>: Usa <code><a href="#endpointscontroller-get_endpoints">get_endpoints</a></code> para listar endpoints.</li>
+        </ul>
+      </p>
+    </section>
+  </main>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93bb19e24f0a081a',t:'MTc0NjU2MjAxNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>

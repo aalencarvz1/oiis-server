@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autenticação - AuthController</title>
+  <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+<body>
+  <main>
+    <h1>AuthController</h1>
+    <p>
+      O <code>AuthController</code> gerencia autenticação de usuários via JWT (JSON Web Tokens) e autenticação básica. Inclui endpoints para login, registro, renovação de tokens, recuperação de senha, e middlewares para verificação de tokens.
+    </p>
+    <section id="authcontroller-properties">
+      <h2>Propriedades</h2>
+      <section id="authcontroller-crypt_salt">
+        <h3>cript_salt</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a></code></p>
+        <p>Qualificadores
+          <ul>            
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties" target="_blank">private</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Guarda o cryp salt value para uso na criptografia das senhas
+        </p>
+      </section>
+      <section id="authcontroller-userEmail">
+        <h3>userEmail</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Guarda email do usuário usado para enviar emails pela api
+        </p>
+      </section>
+      <section id="authcontroller-userEmailPassword">
+        <h3>userEmailPassword</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Guarda a senha do usuário do email usado para enviar emails pela api
+        </p>
+      </section>
+      <section id="authcontroller-mailTransport">
+        <h3>mailTransport</h3>
+        <p>Tipo: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties" target="_blank">private</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Usado para armazenar o objeto que controlra o envio de emails
+        </p>
+      </section>
+    </section>
+    <section id="authcontroller-methods">
+      <h2>Métodos</h2>
+
+      <section id="authcontroller-getCriptSalt">
+        <h3>getCriptSalt</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>                
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Obtem a propriedade privada <code><a href="#authcontroller-crypt_salt">cript_salt</a></code>
+        </p>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+
+
+      <section id="authcontroller-login">
+        <h3>login</h3>
+        <p>Tipo: <code><a href="https://expressjs.com/en/guide/routing.html#route-handlers" target="_blank">request handler</a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>        
+        <p>Parâmetros
+          <ul>
+            <li>req: <a href="https://expressjs.com/en/api.html#req" target="_blank"><code>Request</code></a></li>
+            <li>res: <a href="https://expressjs.com/en/api.html#res" target="_blank"><code>Response</code></a></li>
+            <li>next?: <a href="https://expressjs.com/en/guide/routing.html" target="_blank"><code>NextFunction</code></a></li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a>&gt;</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Autentica um usuário e retorna um token de acesso e um refresh token.
+        </p>
+        <h4>Detalhes do Endpoint</h4>
+        <ul>
+          <li><strong>Método</strong>: <code class="endpoint-method"><a href="https://www.rfc-editor.org/rfc/rfc7231#section-4.3.3" target="_blank">POST</a></code></li>
+          <li><strong>URL</strong>: <code><a href="http://jumbo.brctec.com:3004/api/controllers/auth/authcontroller/login" target="_blank">/api/controllers/auth/authcontroller/login</a></code></li>
+        </ul>
+        <h4>Propriedades esperadas em req.body</h4>
+        <ul>
+          <li>email: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Email do usuário.</li>
+          <li>password: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Senha do usuário.</li>
+          <li>currentTimeZoneOffset?: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a></code> - Offset do fuso horário.</li>
+        </ul>
+        <h4>Exemplo de Requisição</h4>
+        <pre><code>
+  POST /api/controllers/auth/authcontroller/login
+  Content-Type: application/json
+
+  {
+    "email": "user@example.com",
+    "password": "senha123",
+    "currentTimeZoneOffset": 0
+  }
+        </code></pre>
+        <h4>Exemplos de respostas</h4>
+        <p><strong>Status</strong>: 200</p>
+        <pre><code>
+  {
+    "success": true,
+    "message": "logged",
+    "data": {
+      "token": "jwt_token",
+      "refreshToken": "refresh_token",
+      "user": {
+        "id": 1,
+        "email": "user@example.com",
+        "access_profile_id": 1,
+        "last_token": "jwt_token",
+        "last_timezone_offset": 0
+      }
+    },
+    "exception": null
+  }
+        </code></pre>
+        <p><strong>Status</strong>: 401 (erro)</p>
+        <pre><code>
+  {
+    "success": false,
+    "message": "user not found",
+    "data": null,
+    "exception": null
+  }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+
+      <section id="authcontroller-register">
+        <h3>register</h3>
+        <p>Tipo: <code><a href="https://expressjs.com/en/guide/routing.html#route-handlers" target="_blank">request handler</a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>req: <a href="https://expressjs.com/en/api.html#req" target="_blank"><code>Request</code></a></li>
+            <li>res: <a href="https://expressjs.com/en/api.html#res" target="_blank"><code>Response</code></a></li>
+            <li>next?: <a href="https://expressjs.com/en/guide/routing.html" target="_blank"><code>NextFunction</code></a></li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a>&gt;</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Registra um novo usuário.
+        </p>
+        <h4>Detalhes do Endpoint</h4>
+        <ul>
+          <li><strong>Método</strong>: <code class="endpoint-method"><a href="https://www.rfc-editor.org/rfc/rfc7231#section-4.3.3" target="_blank">POST</a></code></li>
+          <li><strong>URL</strong>: <code><a href="http://jumbo.brctec.com:3004/api/controllers/auth/authcontroller/register" target="_blank">/api/controllers/auth/authcontroller/register</a></code></li>
+        </ul>
+        <h4>Propriedades esperadas em req.body</h4>
+        <ul>
+          <li>email: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Email do usuário.</li>
+          <li>password: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Senha (mínimo 8 caracteres).</li>
+          <li>currentTimeZoneOffset?: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a></code> - Offset do fuso horário.</li>
+        </ul>
+        <h4>Exemplo de Requisição</h4>
+        <pre><code>
+  POST /api/controllers/auth/authcontroller/register
+  Content-Type: application/json
+
+  {
+    "email": "newuser@example.com",
+    "password": "senha12345",
+    "currentTimeZoneOffset": 0
+  }
+        </code></pre>
+        <h4>Exemplos de respostas</h4>
+        <p><strong>Status</strong>: 200</p>
+        <pre><code>
+  {
+    "success": true,
+    "message": "logged",
+    "data": {
+      "token": "jwt_token",
+      "user": {
+        "id": 2,
+        "email": "newuser@example.com",
+        "access_profile_id": 1,
+        "last_token": "jwt_token",
+        "last_timezone_offset": 0
+      }
+    },
+    "exception": null
+  }
+        </code></pre>
+        <p><strong>Status</strong>: 401 (erro)</p>
+        <pre><code>
+  {
+    "success": false,
+    "message": "user already register",
+    "data": null,
+    "exception": null
+  }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+
+      <section id="authcontroller-refresh_token">
+        <h3>refresh_token</h3>
+        <p>Tipo: <code><a href="https://expressjs.com/en/guide/routing.html#route-handlers" target="_blank">request handler</a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>req: <a href="https://expressjs.com/en/api.html#req" target="_blank"><code>Request</code></a></li>
+            <li>res: <a href="https://expressjs.com/en/api.html#res" target="_blank"><code>Response</code></a></li>
+            <li>next?: <a href="https://expressjs.com/en/guide/routing.html" target="_blank"><code>NextFunction</code></a></li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a>&gt;</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Renova o token de acesso usando o refresh token.
+        </p>
+        <h4>Detalhes do Endpoint</h4>
+        <ul>
+          <li><strong>Método</strong>: <code class="endpoint-method"><a href="https://www.rfc-editor.org/rfc/rfc7231#section-4.3.3" target="_blank">POST</a></code></li>
+          <li><strong>URL</strong>: <code><a href="http://jumbo.brctec.com:3004/api/controllers/auth/authcontroller/refresh_token" target="_blank">/api/controllers/auth/authcontroller/refresh_token</a></code></li>
+        </ul>
+        <h4>Propriedades esperadas em req.body</h4>
+        <ul>
+          <li>refreshToken: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Refresh token.</li>
+          <li>currentTimeZoneOffset?: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/Number" target="_blank">number</a></code> - Offset do fuso horário.</li>
+        </ul>
+        <h4>Exemplo de Requisição</h4>
+        <pre><code>
+  POST /api/controllers/auth/authcontroller/refresh_token
+  Content-Type: application/json
+
+  {
+    "refreshToken": "refresh_token",
+    "currentTimeZoneOffset": 0
+  }
+        </code></pre>
+        <h4>Exemplos de respostas</h4>
+        <p><strong>Status</strong>: 200</p>
+        <pre><code>
+  {
+    "success": true,
+    "message": "logged",
+    "data": {
+      "token": "new_jwt_token",
+      "refreshToken": "new_refresh_token",
+      "user": {
+        "id": 1,
+        "email": "user@example.com",
+        "access_profile_id": 1,
+        "last_token": "new_jwt_token",
+        "last_timezone_offset": 0
+      }
+    },
+    "exception": null
+  }
+        </code></pre>
+        <p><strong>Status</strong>: 401 (erro)</p>
+        <pre><code>
+  {
+    "success": false,
+    "message": "no refresh token",
+    "data": null,
+    "exception": null
+  }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+
+      <section id="authcontroller-send_email_recover_password">
+        <h3>send_email_recover_password</h3>
+        <p>Tipo: <code><a href="https://expressjs.com/en/guide/routing.html#route-handlers" target="_blank">request handler</a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>req: <a href="https://expressjs.com/en/api.html#req" target="_blank"><code>Request</code></a></li>
+            <li>res: <a href="https://expressjs.com/en/api.html#res" target="_blank"><code>Response</code></a></li>
+            <li>next?: <a href="https://expressjs.com/en/guide/routing.html" target="_blank"><code>NextFunction</code></a></li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a>&gt;</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Envia um email com link para recuperação de senha.
+        </p>
+        <h4>Detalhes do Endpoint</h4>
+        <ul>
+          <li><strong>Método</strong>: <code class="endpoint-method"><a href="https://www.rfc-editor.org/rfc/rfc7231#section-4.3.3" target="_blank">POST</a></code></li>
+          <li><strong>URL</strong>: <code><a href="http://jumbo.brctec.com:3004/api/controllers/auth/authcontroller/send_email_recover_password" target="_blank">/api/controllers/auth/authcontroller/send_email_recover_password</a></code></li>
+        </ul>
+        <h4>Propriedades esperadas em req.body</h4>
+        <ul>
+          <li>email: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Email do usuário.</li>
+          <li>path: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - URL base para o link de recuperação.</li>
+        </ul>
+        <h4>Exemplo de Requisição</h4>
+        <pre><code>
+  POST /api/controllers/auth/authcontroller/send_email_recover_password
+  Content-Type: application/json
+
+  {
+    "email": "user@example.com",
+    "path": "http://frontend.com/reset-password"
+  }
+        </code></pre>
+        <h4>Exemplos de respostas</h4>
+        <p><strong>Status</strong>: 200</p>
+        <pre><code>
+  {
+    "success": true,
+    "message": null,
+    "data": null,
+    "exception": null
+  }
+        </code></pre>
+        <p><strong>Status</strong>: 517 (erro)</p>
+        <pre><code>
+  {
+    "success": false,
+    "message": "email not found",
+    "data": null,
+    "exception": null
+  }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+
+      <section id="authcontroller-password_change">
+        <h3>password_change</h3>
+        <p>Tipo: <code><a href="https://expressjs.com/en/guide/routing.html#route-handlers" target="_blank">request handler</a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>req: <a href="https://expressjs.com/en/api.html#req" target="_blank"><code>Request</code></a></li>
+            <li>res: <a href="https://expressjs.com/en/api.html#res" target="_blank"><code>Response</code></a></li>
+            <li>next?: <a href="https://expressjs.com/en/guide/routing.html" target="_blank"><code>NextFunction</code></a></li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a>&gt;</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Altera a senha do usuário usando o token de recuperação.
+        </p>
+        <h4>Detalhes do Endpoint</h4>
+        <ul>
+          <li><strong>Método</strong>: <code class="endpoint-method"><a href="https://www.rfc-editor.org/rfc/rfc7231#section-4.3.3" target="_blank">POST</a></code></li>
+          <li><strong>URL</strong>: <code><a href="http://jumbo.brctec.com:3004/api/controllers/auth/authcontroller/password_change" target="_blank">/api/controllers/auth/authcontroller/password_change</a></code></li>
+        </ul>
+        <h4>Propriedades esperadas em req.body</h4>
+        <ul>
+          <li>token: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Token de recuperação.</li>
+          <li>password: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Nova senha (mínimo 8 caracteres).</li>
+        </ul>
+        <h4>Exemplo de Requisição</h4>
+        <pre><code>
+  POST /api/controllers/auth/authcontroller/password_change
+  Content-Type: application/json
+
+  {
+    "token": "recover_token",
+    "password": "nova_senha123"
+  }
+        </code></pre>
+        <h4>Exemplos de respostas</h4>
+        <p><strong>Status</strong>: 200</p>
+        <pre><code>
+  {
+    "success": true,
+    "message": null,
+    "data": null,
+    "exception": null
+  }
+        </code></pre>
+        <p><strong>Status</strong>: 401 (erro)</p>
+        <pre><code>
+  {
+    "success": false,
+    "message": "user not found",
+    "data": null,
+    "exception": null
+  }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+
+      <section id="authcontroller-check_token">
+        <h3>check_token</h3>
+        <p>Tipo: <code><a href="https://expressjs.com/en/guide/using-middleware.html" target="_blank">middleware</a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>req: <a href="https://expressjs.com/en/api.html#req" target="_blank"><code>Request</code></a></li>
+            <li>res: <a href="https://expressjs.com/en/api.html#res" target="_blank"><code>Response</code></a></li>
+            <li>next: <a href="https://expressjs.com/en/guide/routing.html" target="_blank"><code>NextFunction</code></a></li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a>&gt;</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Middleware que verifica a validade do token JWT em rotas protegidas. Anexa o usuário autenticado ao <code>req.user</code>.
+        </p>
+        <h4>Detalhes do Endpoint</h4>
+        <ul>
+          <li><strong>Método</strong>: <code class="endpoint-method"><a href="https://www.rfc-editor.org/rfc/rfc7231#section-4.3.1" target="_blank">GET</a></code></li>
+          <li><strong>Header</strong>: <code>x-access-token: jwt_token</code></li>
+          <li><strong>Rotas Não Seguras</strong>: Ignora verificação para <code>/api/online</code>, <code>/api/endpoints</code>, endpoints de autenticação, e <code>/api/controllers/modules/registers/midiascontroller/upload_file</code>.</li>
+        </ul>
+        <h4>Propriedades esperadas</h4>
+        <ul>
+          <li>x-access-token: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Token JWT.</li>
+        </ul>
+        <h4>Exemplo de Requisição</h4>
+        <pre><code>
+  GET /api/protected-route
+  x-access-token: jwt_token
+        </code></pre>
+        <h4>Exemplos de respostas</h4>
+        <p><strong>Status</strong>: 401 (erro)</p>
+        <pre><code>
+  {
+    "success": false,
+    "message": "token not provided",
+    "data": null,
+    "exception": null
+  }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+
+      <section id="authcontroller-basic_auth">
+        <h3>basic_auth</h3>
+        <p>Tipo: <code><a href="https://expressjs.com/en/guide/using-middleware.html" target="_blank">middleware</a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>req: <a href="https://expressjs.com/en/api.html#req" target="_blank"><code>Request</code></a></li>
+            <li>res: <a href="https://expressjs.com/en/api.html#res" target="_blank"><code>Response</code></a></li>
+            <li>next: <a href="https://expressjs.com/en/guide/routing.html" target="_blank"><code>NextFunction</code></a></li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a>&gt;</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank">async</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Middleware que suporta autenticação básica (usuário/senha codificados em Base64 no header <code>Authorization</code>).
+        </p>
+        <h4>Detalhes do Endpoint</h4>
+        <ul>
+          <li><strong>Método</strong>: <code class="endpoint-method"><a href="https://www.rfc-editor.org/rfc/rfc7231#section-4.3.3" target="_blank">POST</a></code></li>
+          <li><strong>Header</strong>: <code>Authorization: Basic <base64(email:senha)></code></li>
+        </ul>
+        <h4>Propriedades esperadas</h4>
+        <ul>
+          <li>Authorization: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Credenciais em Base64 (email:senha).</li>
+        </ul>
+        <h4>Exemplo de Requisição</h4>
+        <pre><code>
+  POST /api/protected-route
+  Authorization: Basic dXNlckBleGFtcGxlLmNvbTpzZW5oYTEyMw==
+        </code></pre>
+        <h4>Exemplos de respostas</h4>
+        <p><strong>Status</strong>: 401 (erro)</p>
+        <pre><code>
+  {
+    "success": false,
+    "message": "user not found",
+    "data": null,
+    "exception": null
+  }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+    </section>
+    <section id="authcontroller-static">
+      <h2>Inicialização Estática</h2>
+      <p>
+        Configura os seguintes métodos como request handler atravéz do métido <code><a href="../endpoints/endpointscontroller.html#endpointscontroller-markAsRequestHandler">EndPointsController.markAsRequestHandler</a></code>, que possibilita que recebam diretamente requisições:
+        <ul>
+            <li><code><a href="#authcontroller-login">login</a></code></li>
+            <li><code><a href="#authcontroller-basic_auth">basic_auth</a></code></li>
+            <li><code><a href="#authcontroller-refresh_token">refresh_token</a></code></li>
+            <li><code><a href="#authcontroller-register">register</a></code></li>
+            <li><code><a href="#authcontroller-check_token">check_token</a></code></li>
+            <li><code><a href="#authcontroller-send_email_recover_password">send_email_recover_password</a></code></li>
+            <li><code><a href="#authcontroller-password_change">password_change</a></code></li>
+        </ul>
+      </p>
+    </section>
+  </main>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93baec900bb66757',t:'MTc0NjU2MDE2MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
