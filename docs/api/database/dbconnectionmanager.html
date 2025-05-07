@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentação Técnica - DBConnectionManager</title>
+  <link rel="stylesheet" href="../../css/styles.css">
+</head>
+<body>
+  <main>
+    <h1>DBConnectionManager</h1>
+    <p>
+      A <code>DBConnectionManager</code> é uma classe utilitária para gerenciar conexões de banco de dados com Sequelize, usando o padrão Singleton para diferentes esquemas de conexão. Suporta bancos Oracle e outros dialetos, com configurações definidas em <code>config.js</code>. Depende de <a href="../controllers/utils/utils.html">Utils</a>.
+    </p>
+    <section id="dbconnectionmanager-properties">
+      <h2>Propriedades</h2>
+      <section id="dbconnectionmanager-defaultdbconnection">
+        <h3>defaultDBConnection</h3>
+        <p>Tipo: <code><a href="https://sequelize.org/api/v6/class/src/sequelize.js~Sequelize.html" target="_blank">Sequelize</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties" target="_blank">private</a></code></li>
+          </ul>
+        </p>
+        <p>Armazena a conexão padrão Singleton, inicializada como <code>null</code>.</p>
+      </section>
+      <section id="dbconnectionmanager-olddbconnection">
+        <h3>oldDBConnection</h3>
+        <p>Tipo: <code><a href="https://sequelize.org/api/v6/class/src/sequelize.js~Sequelize.html" target="_blank">Sequelize</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties" target="_blank">private</a></code></li>
+          </ul>
+        </p>
+        <p>Armazena a conexão antiga Singleton, inicializada como <code>null</code>.</p>
+      </section>
+      <section id="dbconnectionmanager-winthordbconnection">
+        <h3>winthorDBConnection</h3>
+        <p>Tipo: <code><a href="https://sequelize.org/api/v6/class/src/sequelize.js~Sequelize.html" target="_blank">Sequelize</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties" target="_blank">private</a></code></li>
+          </ul>
+        </p>
+        <p>Armazena a conexão Winthor Singleton, inicializada como <code>null</code>.</p>
+      </section>
+      <section id="dbconnectionmanager-consultdbconnection">
+        <h3>consultDBConnection</h3>
+        <p>Tipo: <code><a href="https://sequelize.org/api/v6/class/src/sequelize.js~Sequelize.html" target="_blank">Sequelize</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties" target="_blank">private</a></code></li>
+          </ul>
+        </p>
+        <p>Armazena a conexão Consult Singleton, inicializada como <code>null</code>.</p>
+      </section>
+      <section id="dbconnectionmanager-epdbconnection">
+        <h3>epDBConnection</h3>
+        <p>Tipo: <code><a href="https://sequelize.org/api/v6/class/src/sequelize.js~Sequelize.html" target="_blank">Sequelize</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties" target="_blank">private</a></code></li>
+          </ul>
+        </p>
+        <p>Armazena a conexão EP Singleton, inicializada como <code>null</code>.</p>
+      </section>
+      <section id="dbconnectionmanager-winthorintegrationconnection">
+        <h3>winthorIntegrationConnection</h3>
+        <p>Tipo: <code><a href="https://sequelize.org/api/v6/class/src/sequelize.js~Sequelize.html" target="_blank">Sequelize</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties" target="_blank">private</a></code></li>
+          </ul>
+        </p>
+        <p>Armazena a conexão de integração Winthor Singleton, inicializada como <code>null</code>.</p>
+      </section>
+      <section id="dbconnectionmanager-externaldataconnection">
+        <h3>externalDataConnection</h3>
+        <p>Tipo: <code><a href="https://sequelize.org/api/v6/class/src/sequelize.js~Sequelize.html" target="_blank">Sequelize</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_properties" target="_blank">private</a></code></li>
+          </ul>
+        </p>
+        <p>Armazena a conexão de dados externos Singleton, inicializada como <code>null</code>.</p>
+      </section>
+    </section>
+    <section id="dbconnectionmanager-methods">
+      <h2>Métodos</h2>
+      <section id="dbconnectionmanager-getdefaultdbconnection">
+        <h3>getDefaultDBConnection</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://sequelize.org/api/v6/class/src/sequelize.js~Sequelize.html" target="_blank">Sequelize</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna ou inicializa a conexão padrão Singleton com base na configuração do ambiente.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const conn = DBConnectionManager.getDefaultDBConnection();
+  if (conn) {
+    console.log("Conexão padrão inicializada.");
+  }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="dbconnectionmanager-getwinthordbconnection">
+        <h3>getWinthorDBConnection</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://sequelize.org/api/v6/class/src/sequelize.js~Sequelize.html" target="_blank">Sequelize</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna ou inicializa a conexão Winthor Singleton, suportando dialeto Oracle.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const conn = DBConnectionManager.getWinthorDBConnection();
+  if (conn) {
+    console.log("Conexão Winthor inicializada.");
+  }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="dbconnectionmanager-getconsultdbconnection">
+        <h3>getConsultDBConnection</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://sequelize.org/api/v6/class/src/sequelize.js~Sequelize.html" target="_blank">Sequelize</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna ou inicializa a conexão Consult Singleton, suportando dialeto Oracle.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const conn = DBConnectionManager.getConsultDBConnection();
+  if (conn) {
+    console.log("Conexão Consult inicializada.");
+  }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="dbconnectionmanager-getepdbconnection">
+        <h3>getEpDBConnection</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://sequelize.org/api/v6/class/src/sequelize.js~Sequelize.html" target="_blank">Sequelize</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna ou inicializa a conexão EP Singleton, suportando dialeto Oracle.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const conn = DBConnectionManager.getEpDBConnection();
+  if (conn) {
+    console.log("Conexão EP inicializada.");
+  }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="dbconnectionmanager-getolddbconnection">
+        <h3>getOldDBConnection</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://sequelize.org/api/v6/class/src/sequelize.js~Sequelize.html" target="_blank">Sequelize</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna ou inicializa a conexão antiga Singleton, suportando dialeto Oracle.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const conn = DBConnectionManager.getOldDBConnection();
+  if (conn) {
+    console.log("Conexão antiga inicializada.");
+  }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="dbconnectionmanager-getwinthorintegrationdbconnection">
+        <h3>getWinthorIntegrationDBConnection</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://sequelize.org/api/v6/class/src/sequelize.js~Sequelize.html" target="_blank">Sequelize</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna ou inicializa a conexão de integração Winthor Singleton, suportando dialeto Oracle.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const conn = DBConnectionManager.getWinthorIntegrationDBConnection();
+  if (conn) {
+    console.log("Conexão de integração Winthor inicializada.");
+  }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="dbconnectionmanager-getexternaldatadbconnection">
+        <h3>getExternalDataDBConnection</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Tipo retorno: <code><a href="https://sequelize.org/api/v6/class/src/sequelize.js~Sequelize.html" target="_blank">Sequelize</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna ou inicializa a conexão de dados externos Singleton, suportando dialeto Oracle.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const conn = DBConnectionManager.getExternalDataDBConnection();
+  if (conn) {
+    console.log("Conexão de dados externos inicializada.");
+  }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="dbconnectionmanager-getconnectionbyschemaname">
+        <h3>getConnectionBySchemaName</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>schemaName: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Nome do esquema (ex.: "ep", "winthor").</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://sequelize.org/api/v6/class/src/sequelize.js~Sequelize.html" target="_blank">Sequelize</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna uma conexão Sequelize com base no nome do esquema fornecido.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const conn = DBConnectionManager.getConnectionBySchemaName("winthor");
+  if (conn) {
+    console.log("Conexão Winthor obtida por esquema.");
+  }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="dbconnectionmanager-getconnectionbyconnectionname">
+        <h3>getConnectionByConnectionName</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>connectionName: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Nome da conexão (ex.: "ep", "consult").</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://sequelize.org/api/v6/class/src/sequelize.js~Sequelize.html" target="_blank">Sequelize</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null" target="_blank">null</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Retorna uma conexão Sequelize com base no nome da conexão fornecido.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const conn = DBConnectionManager.getConnectionByConnectionName("consult");
+  if (conn) {
+    console.log("Conexão Consult obtida por nome.");
+  }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

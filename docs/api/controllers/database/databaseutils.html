@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentação Técnica - DatabaseUtils</title>
+  <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+<body>
+  <main>
+    <h1>DatabaseUtils</h1>
+    <p>
+      A <code>DatabaseUtils</code> é uma classe utilitária com métodos estáticos para manipulação de consultas Sequelize, incluindo ordenação personalizada, preparação de parâmetros e conversão de condições para strings SQL. Depende de <a href="../utils/utils.html">Utils</a> e <a href="../../database/models/basetablemodel.html">BaseTableModel</a>.
+    </p>
+    <section id="databaseutils-methods">
+      <h2>Métodos</h2>
+      <section id="databaseutils-customorder">
+        <h3>customOrder</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>column: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Nome da coluna para ordenação.</li>
+            <li>values: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a>[]</code> - Array de valores para ordenação personalizada.</li>
+            <li>direction: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Direção da ordenação (ex.: "ASC", "DESC").</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a>[]</code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Gera uma cláusula <code>CASE</code> para ordenação personalizada em consultas Sequelize, retornando um array com a cláusula e a direção.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const order = DatabaseUtils.customOrder("status", ["active", "inactive"], "ASC");
+  // Retorna: [Sequelize.literal("CASE WHEN status = 'active' THEN '0' WHEN status = 'inactive' THEN '1' ELSE status END"), "ASC"]
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="databaseutils-preparelogicalqueryparams">
+        <h3>prepareLogicalQueryParams</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>queryParamsProp: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Parâmetros de consulta a serem processados.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Prepara parâmetros de consulta lógica, convertendo chaves para operadores Sequelize (ex.: <code>Op.and</code>, <code>Op.or</code>).
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const params = { and: { name: "John", age: 30 } };
+  const result = DatabaseUtils.prepareLogicalQueryParams(params);
+  // Retorna: { [Op.and]: { name: "John", age: 30 } }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="databaseutils-preparequeryparams">
+        <h3>prepareQueryParams</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>queryParams?: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Objeto de parâmetros de consulta (opcional).</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Prepara parâmetros de consulta, processando <code>where</code>, <code>attributes</code>, e <code>order</code> para uso com Sequelize.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const params = { where: { name: "John" }, attributes: ["COUNT(*)"] };
+  const result = DatabaseUtils.prepareQueryParams(params);
+  // Retorna: { where: { name: "John" }, attributes: [Sequelize.literal("COUNT(*)")] }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="databaseutils-getsequelizeoperation">
+        <h3>getSequelizeOperation</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>name: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Nome da operação (ex.: "not in").</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Mapeia nomes de operações para operadores Sequelize (ex.: "not in" para <code>Op.notIn</code>).
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const op = DatabaseUtils.getSequelizeOperation("not in");
+  // Retorna: Op.notIn
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="databaseutils-mountcondition">
+        <h3>mountCondition</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>whereClause: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Objeto de condições <code>where</code>.</li>
+            <li>field: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Campo ou expressão Sequelize.</li>
+            <li>values: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Valores para a condição.</li>
+            <li>compare?: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Operador de comparação (ex.: <code>Op.in</code>).</li>
+            <li>valuesFunc?: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Função Sequelize opcional.</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void" target="_blank">void</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Monta condições de consulta (<code>where</code>) para Sequelize, suportando operadores como <code>Op.in</code> e <code>Op.like</code>.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const whereClause = {};
+  DatabaseUtils.mountCondition(whereClause, "status", ["active", "inactive"], Op.in);
+  // whereClause: { status: { [Op.in]: ["active", "inactive"] } }
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+      <section id="databaseutils-wheretostring">
+        <h3>whereToString</h3>
+        <p>Tipo: <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions" target="_blank">method</a></code></p>
+        <p>Parâmetros
+          <ul>
+            <li>where: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code> - Condições <code>where</code> a serem convertidas.</li>
+            <li>tableClassModel?: <code>typeof <a href="../../database/models/basetablemodel.html">BaseTableModel</a></code> - Modelo de tabela Sequelize (opcional).</li>
+            <li>delimiter?: <code><a href="https://developer.mozilla.org/en-US/docs/Glossary/String" target="_blank">string</a></code> - Delimitador para junção (padrão: " and ").</li>
+          </ul>
+        </p>
+        <p>Tipo retorno: <code><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a></code></p>
+        <p>Qualificadores
+          <ul>
+            <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static" target="_blank">static</a></code></li>
+          </ul>
+        </p>
+        <p>
+          Converte condições <code>where</code> em uma string SQL legível, com suporte a modelos de tabela.
+        </p>
+        <h4>Exemplo de Uso</h4>
+        <pre><code>
+  const where = { name: "John", age: { [Op.gte]: 30 } };
+  const result = DatabaseUtils.whereToString(where);
+  // Retorna: "name=John and age>=30"
+        </code></pre>
+        <a href="#top" class="button">Voltar ao topo</a>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

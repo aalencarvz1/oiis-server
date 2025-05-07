@@ -1,5 +1,3 @@
-import Utils from "../utils/Utils.js";
-
 export default class DataSwap{
     success : boolean = false;
     status : number = -1;
