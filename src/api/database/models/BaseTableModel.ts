@@ -467,7 +467,8 @@ export default class BaseTableModel extends Model {
         let queryParams = params.queryParams?.values || params.values || params.queryParams || params || {};
         let transaction = params.transaction;
         let result = await this.create(queryParams,{transaction});
-        if (typeof this.getData === 'function' && returnRaw !== false && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(result.id,{transaction}) || result
+        if (typeof this.getOneByID === 'function' && returnRaw !== false && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(result.id,{transaction}) || result
+        else if (returnRaw === true) return result.dataValues || result
         else return result;
     }
     static putData = this.createData;
@@ -535,7 +536,7 @@ export default class BaseTableModel extends Model {
         }
         let hasPrimaryKeyOnUpdate = false;
         let valuesToUpdate : any = {};
-        if (reg) {
+        if (Utils.hasValue(reg)) {
             for(let key in values) {
                 if (key != 'id' && key != 'where') {
                     if (reg[key] != values[key]) {
@@ -566,22 +567,30 @@ export default class BaseTableModel extends Model {
                     params.where,
                     this
                 );
-                Utils.log(updateSQL);
+                //Utils.log('updateSql',updateSQL);
                 let resultUpdate = await this.getConnection().query(updateSQL,{type:QueryTypes.UPDATE,transaction:params.transaction});                
                 if (Utils.hasValue(resultUpdate) && resultUpdate[0]?.rowsAffected >= 1) {
-                    if (typeof this.getData === 'function' && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(reg.id,{transaction: params.transaction}) || reg.dataValues
+                    if (typeof this.getOneByID === 'function' && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(reg.id,{transaction: params.transaction}) || reg.dataValues
                     else return values;
                 } else {
                     throw new Error(`error on update data with query: ${updateSQL}`);
                 }
-            } else {
+            } else if (Utils.hasValue(reg.changed()) && reg.changed() !== false){ //if no has changed fields, is unecessary save and id can cause error (empty update string)
+                /*
+                @todebug
+                console.log('xxxxxxxx2',reg.changed());
+                for (const field of reg.changed()) {
+                    const oldValue = reg.previous(field);
+                    const newValue = reg.get(field);                
+                    console.log(`Campo '${field}' alterado: '${oldValue}' => '${newValue}'`);
+                }*/
                 if (params.transaction) { 
                     await reg.save({transaction:params.transaction});
                 } else {
                     await reg.save();
                 }
             }
-            if (typeof this.getData === 'function' && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(reg.id,{transaction: params.transction}) || reg.dataValues
+            if (typeof this.getOneByID === 'function' && Object.keys(this.fields).indexOf('id') > -1) return await this.getOneByID(reg.id,{transaction: params.transction}) || reg.dataValues
             else return reg.dataValues;
         } else {
             throw new Error('no data found');

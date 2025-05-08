@@ -31,8 +31,8 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
     static checkGtin(data: any, field: string) : void {
         if (Utils.hasValue(data[`GTINCODAUXILIAR${field}`])) {
             if (Utils.hasValue(data[`CODAUXILIAR${field}`])) {
-                if (Utils.toNumber(data[`GTINCODAUXILIAR${field}`]) != data[`CODAUXILIAR${field}`]?.length) {
-                    throw new Error(`wrong CODAUXILIAR${field} length (${Utils.toNumber(data[`GTINCODAUXILIAR${field}`])} <> ${data[`CODAUXILIAR${field}`]?.length})`);
+                if (Utils.toNumber(data[`GTINCODAUXILIAR${field}`]) != data[`CODAUXILIAR${field}`]?.toString().length) {
+                    throw new Error(`wrong CODAUXILIAR${field} length (${Utils.toNumber(data[`GTINCODAUXILIAR${field}`])} <> ${data[`CODAUXILIAR${field}`]?.toString().length})`);
                 }
             } else {
                 throw new Error(`missing CODAUXILIAR${field}`);
@@ -150,95 +150,98 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
             await DBConnectionManager.getWinthorDBConnection()?.transaction(async transaction=>{
 
                 result.data = await this.getTableClassModel().createData({queryParams,transaction});
-                //result.data = await PcProdut.create(queryParams,{isNewRecord: true, transaction});
 
                 if (Utils.hasValue(result.data)) {
 
-
                     //create items x filial (PCPRODFILIAL)
-                    let query = `
-                        INSERT INTO PCPRODFILIAL    
-                            (CODPROD,                  
-                            CODFILIAL,                
-                            CODCOMPRADOR,             
-                            PROIBIDAVENDA,            
-                            FORALINHA,                
-                            REVENDA,                  
-                            ESTOQUEIDEAL,             
-                            MULTIPLO,                 
-                            CHECARMULTIPLOVENDABNF,   
-                            ACEITAVENDAFRACAO,        
-                            QTMINAUTOSERV,            
-                            QTMINIMAATACADO,          
-                            QTMINIMAATACADOF,         
-                            ATIVO,                    
-                            PISCOFINSRETIDO,          
-                            PERPIS,                   
-                            PERCOFINS,                
-                            CLASSE,                   
-                            CLASSEVENDA,              
-                            CLASSEESTOQUE,            
-                            CODDISPESTRUTURA,         
-                            PCOMREP1,                 
-                            PCOMINT1,                 
-                            PCOMEXT1,                 
-                            ESTOQUEPORSERIE,
-                            ENVIAPRODUTOECOMMERCE,
-                            UTILIZAQTDESUPMULTIPLA,
-                            TIPOARREDUNIDMASTER,
-                            REGIMEESPECIAL,
-                            ICMSDIFERIDO,
-                            SUJDESONERACAO,
-                            PERMITECREDITOPRESUMIDO
-                        )          
-                        SELECT PCPRODUT.CODPROD,   
-                            PCFILIAL.CODIGO,    
-                            NULL,               
-                            DECODE(PCPRODUT.OBS, 'PV', 'S', 'N') PROIBIDAVENDA,           
-                            DECODE(PCPRODUT.OBS2, 'FL', 'S', 'N') FORADELINHA,            
-                            PCPRODUT.REVENDA,                                                   
-                            0,                                                                  
-                            PCPRODUT.MULTIPLO,                                                  
-                            NVL(PCPRODUT.CHECARMULTIPLOVENDABNF, 'N') CHECARMULTIPLOVENDABNF, 
-                            NVL(PCPRODUT.ACEITAVENDAFRACAO, 'N') ACEITAVENDAFRACAO,           
-                            0,                                                                  
-                            0,                                                                  
-                            0,                                                                  
-                            'S',                                                              
-                            NVL(PCPRODUT.PISCOFINSRETIDO, 'N') PISCOFINSRETIDO,               
-                            NULL,                                                               
-                            NULL,                                                               
-                            PCPRODUT.CLASSE,                                                    
-                            PCPRODUT.CLASSEVENDA,                                               
-                            PCPRODUT.CLASSEESTOQUE,                                             
-                            0,                                                                  
-                            PCPRODUT.PCOMREP1,                                                  
-                            PCPRODUT.PCOMINT1,                                                  
-                            PCPRODUT.PCOMEXT1,                                                  
-                            'N',
-                            PCPRODUT.ENVIAECOMMERCE,
-                            'N',
-                            'N',
-                            'N',
-                            'N',
-                            'N',
-                            'N'
-                        FROM PCPRODUT, PCFILIAL                                                  
-                        WHERE PCFILIAL.CODIGO <> '99'                                           
-                            AND PCFILIAL.CODIGO IS NOT NULL                                         
-                            and PCFILIAL.DTEXCLUSAO is null
-                            and PCFILIAL.DTFIMATIVIDADE IS NULL
-                            and PCFILIAL.CODIGO NOT IN ('99')
-                            AND PCPRODUT.CODPROD IS NOT NULL                                        
-                            AND NOT EXISTS(
-                                SELECT PCPRODFILIAL.CODPROD                                              
-                                FROM PCPRODFILIAL                                                
-                                WHERE PCPRODFILIAL.CODPROD = PCPRODUT.CODPROD                     
-                                    AND PCPRODFILIAL.CODFILIAL = PCFILIAL.CODIGO
-                            )
-                            AND PCPRODUT.CODPROD = '${queryParams.CODPROD}'
-                    `;
-                    await DBConnectionManager.getWinthorDBConnection()?.query(query, {type: QueryTypes.INSERT, transaction})
+                    if (Utils.toBool(params.upsert_pcprodfilial)) {
+                        let query = `
+                            INSERT INTO PCPRODFILIAL    
+                                (CODPROD,                  
+                                CODFILIAL,                
+                                CODCOMPRADOR,             
+                                PROIBIDAVENDA,            
+                                FORALINHA,                
+                                REVENDA,                  
+                                ESTOQUEIDEAL,             
+                                MULTIPLO,                 
+                                CHECARMULTIPLOVENDABNF,   
+                                ACEITAVENDAFRACAO,        
+                                QTMINAUTOSERV,            
+                                QTMINIMAATACADO,          
+                                QTMINIMAATACADOF,         
+                                ATIVO,                    
+                                PISCOFINSRETIDO,          
+                                PERPIS,                   
+                                PERCOFINS,                
+                                CLASSE,                   
+                                CLASSEVENDA,              
+                                CLASSEESTOQUE,            
+                                CODDISPESTRUTURA,         
+                                PCOMREP1,                 
+                                PCOMINT1,                 
+                                PCOMEXT1,                 
+                                ESTOQUEPORSERIE,
+                                ENVIAPRODUTOECOMMERCE,
+                                UTILIZAQTDESUPMULTIPLA,
+                                TIPOARREDUNIDMASTER,
+                                REGIMEESPECIAL,
+                                ICMSDIFERIDO,
+                                SUJDESONERACAO,
+                                PERMITECREDITOPRESUMIDO
+                            )          
+                            SELECT
+                                pcprodut.codprod,
+                                pcfilial.codigo AS codfilial,
+                                NULL AS codcomprador,
+                                DECODE(pcprodut.obs, 'PV', 'S', 'N') AS proibidavenda,
+                                DECODE(pcprodut.obs2, 'FL', 'S', 'N') AS foralinha,
+                                pcprodut.revenda,
+                                0 AS estoqueideal,
+                                pcprodut.multiplo,
+                                NVL(pcprodut.checarmultiplovendabnf, 'N') AS checarmultiplovendabnf,
+                                NVL(pcprodut.aceitavendafracao, 'N') AS aceitavendafracao,
+                                0 AS qtminautoserv,
+                                NVL(pcprodut.qtminimaatacado, 0) AS qtminimaatacado,
+                                NVL(pcprodut.qtminimaatacadof, 0) AS qtminimaatacadof,
+                                CASE WHEN pcprodut.obs2 = 'FL' OR pcprodut.dtexclusao is not null then 'N' else 'S' end  AS ativo,
+                                NVL(pcprodut.piscofinsretido, 'N') AS piscofinsretido,
+                                pcprodut.perpis AS perpis,
+                                pcprodut.percofins AS percofins,
+                                pcprodut.classe,
+                                pcprodut.classevenda,
+                                pcprodut.classeestoque,
+                                0 AS coddispestrutura,
+                                pcprodut.pcomrep1,
+                                pcprodut.pcomint1,
+                                pcprodut.pcomext1,
+                                'N' AS estoqueporserie,
+                                pcprodut.enviaecommerce AS enviaprodutoecommerce,
+                                'N' AS utilizaqtdesupmultipla,
+                                'N' AS tipoarredunidmaster,
+                                'N' AS regimeespecial,
+                                DECODE(NVL(pcprodut.PERCICMSDIFERIDO, 0),0,'N','S') AS icmsdiferido,
+                                CASE WHEN NVL(pcprodut.PERCICMSDESONERACAO, 0) != 0 OR NVL(pcprodut.USAICMSDESONERACAO,'N') = 'S' THEN 'S' ELSE 'N' END AS sujdesoneracao,
+                                DECODE(NVL(pcprodut.PERCCREDICMPRESUMIDO, 0),0,'N','S') AS permitecreditopresumido
+                            FROM
+                                pcprodut,
+                                pcfilial
+                            WHERE
+                                pcfilial.codigo <> '99'
+                                AND pcfilial.codigo IS NOT NULL
+                                AND pcfilial.dtexclusao IS NULL
+                                AND pcfilial.dtfimatividade IS NULL
+                                AND pcprodut.codprod IS NOT NULL
+                                AND NOT EXISTS(
+                                    SELECT PCPRODFILIAL.CODPROD                                              
+                                    FROM PCPRODFILIAL                                                
+                                    WHERE PCPRODFILIAL.CODPROD = PCPRODUT.CODPROD                     
+                                        AND PCPRODFILIAL.CODFILIAL = PCFILIAL.CODIGO
+                                )
+                                AND pcprodut.codprod = ${queryParams.CODPROD}                        
+                        `;
+                        await DBConnectionManager.getWinthorDBConnection()?.query(query, {type: QueryTypes.INSERT, transaction})
+                    }
 
 
                     //get items x filial records (PCPRODFILIAL)
@@ -271,30 +274,34 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                     
 
                     //create stock records (PCEST)
-                    for(let k in prodsFilial) {
-                        await PcEst.create({
-                            CODPROD: queryParams.CODPROD,
-                            CODFILIAL: prodsFilial[k].CODFILIAL,
-                            MODULO: queryParams.MODULO || 1,
-                            RUA: queryParams.RUA || 1,
-                            NUMERO: queryParams.NUMERO || 1,
-                            APTO: queryParams.APTO || 1,
-                            MODULOCX: queryParams.MODULOCX || queryParams.MODULO || 1,
-                            RUACX: queryParams.RUACX || queryParams.RUA || 1,
-                            APTOCX: queryParams.APTOCX || queryParams.APTO || 1,
-                            NUMEROCX: queryParams.NUMEROCX || queryParams.NUMERO || 1,
-                            TEMESTOQUEECOMMERCE: queryParams.ENVIAECOMMERCE 
-                        },{transaction});
+                    if (Utils.toBool(params.upsert_pcest)) {                        
+                        for(let k in prodsFilial) {
+                            await PcEst.create({
+                                CODPROD: queryParams.CODPROD,
+                                CODFILIAL: prodsFilial[k].CODFILIAL,
+                                MODULO: queryParams.MODULO || 1,
+                                RUA: queryParams.RUA || 1,
+                                NUMERO: queryParams.NUMERO || 1,
+                                APTO: queryParams.APTO || 1,
+                                MODULOCX: queryParams.MODULOCX || queryParams.MODULO || 1,
+                                RUACX: queryParams.RUACX || queryParams.RUA || 1,
+                                APTOCX: queryParams.APTOCX || queryParams.APTO || 1,
+                                NUMEROCX: queryParams.NUMEROCX || queryParams.NUMERO || 1,
+                                TEMESTOQUEECOMMERCE: queryParams.ENVIAECOMMERCE 
+                            },{transaction});
+                        }
                     }
 
                     //create pccodfabrica
-                    await PcCodFabrica.create({
-                        CODPROD: queryParams.CODPROD,
-                        CODFORNEC: queryParams.CODFORNEC,
-                        CODFAB: queryParams.CODFAB,
-                        TIPOFATOR: 'M',
-                        FATOR: queryParams.QTUNITCX,
-                    },{transaction})
+                    if (Utils.toBool(params.upsert_pccodfabrica)) {
+                        await PcCodFabrica.create({
+                            CODPROD: queryParams.CODPROD,
+                            CODFORNEC: queryParams.CODFORNEC,
+                            CODFAB: queryParams.CODFAB,
+                            TIPOFATOR: 'M',
+                            FATOR: queryParams.QTUNITCX,
+                        },{transaction})
+                    }
                     
                     
                     //get filiais
@@ -319,56 +326,451 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                         for(let k in filiais) {
 
                             //PCEMBALAGEM
-                            if(Utils.hasValue(queryParams.CODAUXILIAR) && Utils.hasValue(queryParams.EMBALAGEM) && Utils.hasValue(queryParams.UNIDADE) && Utils.hasValue(queryParams.QTUNIT)) {
-                                let resultTemp = await PcEmbalagem.saveOrCreate({
-                                    where:{
-                                        CODAUXILIAR: queryParams.CODAUXILIAR,
-                                        CODFILIAL: filiais[k].CODIGO,
-                                        CODPROD: queryParams.CODPROD
-                                    },values:{
-                                        EMBALAGEM: queryParams.EMBALAGEM,
-                                        UNIDADE: queryParams.UNIDADE,
-                                        QTUNIT: queryParams.QTUNIT,
-                                        ENVIAFV: queryParams.ENVIAFV,
-                                        ENVIAECOMMERCE: queryParams.ENVIAECOMMERCE,
-                                        ATIVOECOMMERCE: queryParams.ENVIAECOMMERCE
-                                    },
-                                    transaction
-                                });
-                                if (!resultTemp?.success) resultTemp.throw();
-                            }
-                            if(Utils.hasValue(queryParams.CODAUXILIAR2) && Utils.hasValue(queryParams.EMBALAGEMMASTER) && Utils.hasValue(queryParams.UNIDADE) && Utils.hasValue(queryParams.QTUNITCX)) {
-                                let resultTemp = await PcEmbalagem.saveOrCreate({
-                                    where:{
-                                        CODAUXILIAR: queryParams.CODAUXILIAR2,
-                                        CODFILIAL: filiais[k].CODIGO,
-                                        CODPROD: queryParams.CODPROD
-                                    },values:{
-                                        EMBALAGEM: queryParams.EMBALAGEMMASTER,
-                                        UNIDADE: queryParams.UNIDADE,
-                                        QTUNIT: queryParams.QTUNITCX,
-                                        ENVIAFV: queryParams.ENVIAFV,
-                                        ENVIAECOMMERCE: queryParams.ENVIAECOMMERCE,
-                                        ATIVOECOMMERCE: queryParams.ENVIAECOMMERCE
-                                    },
-                                    transaction
-                                });
-                                if (!resultTemp?.success) resultTemp.throw();
+                            if (Utils.toBool(params.upsert_pcembalagem)) {
+                                if(Utils.hasValue(queryParams.CODAUXILIAR) && Utils.hasValue(queryParams.EMBALAGEM) && Utils.hasValue(queryParams.UNIDADE) && Utils.hasValue(queryParams.QTUNIT)) {
+                                    let resultTemp = await PcEmbalagem.saveOrCreate({
+                                        where:{
+                                            CODAUXILIAR: queryParams.CODAUXILIAR,
+                                            CODFILIAL: filiais[k].CODIGO,
+                                            CODPROD: queryParams.CODPROD
+                                        },values:{
+                                            EMBALAGEM: queryParams.EMBALAGEM,
+                                            UNIDADE: queryParams.UNIDADE,
+                                            QTUNIT: queryParams.QTUNIT,
+                                            ENVIAFV: queryParams.ENVIARFORCAVENDAS,
+                                            ENVIAECOMMERCE: queryParams.ENVIAECOMMERCE,
+                                            ATIVOECOMMERCE: queryParams.ENVIAECOMMERCE
+                                        },
+                                        transaction
+                                    });
+                                    if (!resultTemp?.success) resultTemp.throw();
+                                }
+                                if(Utils.hasValue(queryParams.CODAUXILIAR2) && Utils.hasValue(queryParams.EMBALAGEMMASTER) && Utils.hasValue(queryParams.UNIDADE) && Utils.hasValue(queryParams.QTUNITCX)) {
+                                    let resultTemp = await PcEmbalagem.saveOrCreate({
+                                        where:{
+                                            CODAUXILIAR: queryParams.CODAUXILIAR2,
+                                            CODFILIAL: filiais[k].CODIGO,
+                                            CODPROD: queryParams.CODPROD
+                                        },values:{
+                                            EMBALAGEM: queryParams.EMBALAGEMMASTER,
+                                            UNIDADE: queryParams.UNIDADE,
+                                            QTUNIT: queryParams.QTUNITCX,
+                                            ENVIAFV: queryParams.ENVIARFORCAVENDAS,
+                                            ENVIAECOMMERCE: queryParams.ENVIAECOMMERCE,
+                                            ATIVOECOMMERCE: queryParams.ENVIAECOMMERCE
+                                        },
+                                        transaction
+                                    });
+                                    if (!resultTemp?.success) resultTemp.throw();
+                                }
                             }
 
                             //PCTAPBR
-                            let regions = await PcRegiao.findAll({
-                                where:{
-                                    CODFILIAL: filiais[k].CODIGO,
-                                    STATUS: 'A'
+                            if (Utils.toBool(params.upsert_pctabpr)) {
+                                let regions = await PcRegiao.findAll({
+                                    where:{
+                                        CODFILIAL: filiais[k].CODIGO,
+                                        STATUS: 'A'
+                                    }
+                                });
+                                if (Utils.hasValue(regions)) {
+                                    for(let r in regions) {
+                                        await PcTabPr.create({
+                                            NUMREGIAO: regions[r].NUMREGIAO,
+                                            CODPROD: queryParams.CODPROD
+                                        },{transaction})
+                                    }
                                 }
+                            }
+                        }
+                    }
+                    
+                } else {
+                    throw new Error(`error on create product`);
+                }
+                result.success = true;
+                return true;
+            });
+        } catch (e: any) {
+            result.setException(e);
+        }
+        return result;
+    }
+
+
+     /**
+     * patch (update) a record of table model of this controller (PCPRODUT) and correlated records (PCPRODFILIAL, PCEST, PCEMBALAGEM)
+     * this method use transaction to commit statements if no has errors, otherrise, rollback 
+     * @override
+     * @created 2025-03-26
+     * @version 1.0.0
+     */
+     static async _patch(params: any) : Promise<DataSwap> {
+        let result = new DataSwap();
+        try {
+            let queryParams = params.queryParams || params;            
+
+            //check commom fields
+            this.checkGtin(queryParams,'');
+            this.checkGtin(queryParams,'2');
+            this.checkGtin(queryParams,'TRIB');
+            queryParams.CODPRODPRINC = queryParams.CODPRODPRINC || queryParams.CODPROD;
+            queryParams.CODPRODMASTER = queryParams.CODPRODMASTER || queryParams.CODPROD;
+            queryParams.TIPOMERC = queryParams.TIPOMERC || 'L';
+            queryParams.OBS2 = queryParams.OBS2 || '  ';
+            queryParams.DTCADASTRO = queryParams.DTCADASTRO || new Date();
+            queryParams.NBM = queryParams.NBM || queryParams.CODNCMEX?.replaceAll(/[^0-9]/).substring(0,8);            
+            queryParams.CODFUNCCADASTRO = queryParams.CODFUNCCADASTRO || 142;
+            queryParams.REVENDA = queryParams.REVENDA || 'S';
+            queryParams.MODULO = queryParams.MODULO || 1;
+            queryParams.RUA = queryParams.RUA || 1;
+            queryParams.APTO = queryParams.APTO || 1;
+            queryParams.ENVIAECOMMERCE = queryParams.ENVIAECOMMERCE || 'S';
+            queryParams.ACEITAVENDAFRACAO = queryParams.ACEITAVENDAFRACAO || 'N';
+            queryParams.APROVEITACREDICMS = queryParams.APROVEITACREDICMS || 'S';            
+            queryParams.APROVEITACREDPISCOFINS = queryParams.APROVEITACREDPISCOFINS || 'S';
+            queryParams.APROVEITACREDICMSCONT = queryParams.APROVEITACREDICMSCONT || 'S';
+            queryParams.CHECARMULTIPLOVENDABNF = queryParams.CHECARMULTIPLOVENDABNF || 'S';
+            queryParams.CHECARMULTIPLOVENDABNF = queryParams.CHECARMULTIPLOVENDABNF || 'S';
+            queryParams.CONSIISUSPENSOBASEICMS = queryParams.CONSIISUSPENSOBASEICMS || 'S';
+            queryParams.CONSIPISUSPENSOBASEICMS = queryParams.CONSIPISUSPENSOBASEICMS || 'S';
+            queryParams.EXIBESEMESTOQUEECOMMERCE = queryParams.EXIBESEMESTOQUEECOMMERCE || 'N';
+            queryParams.ESTOQUEPORDTVALIDADE = null;
+
+
+            //check rules (Integration_Rules)
+            let resultRules = await this.checkRules({
+                isUpdate: 1,
+                data_origin_id: Data_Origins.WINTHOR, 
+                table_id: PcProdut.id,
+                data: queryParams
+            });
+
+
+            if (!resultRules?.success) {
+                result.setDataSwap(resultRules);
+                throw new Error(`rules check failed`);
+            }
+
+            await DBConnectionManager.getWinthorDBConnection()?.transaction(async transaction=>{
+
+                result.data = await this.getTableClassModel().updateData({queryParams,transaction});
+
+                if (Utils.hasValue(result.data)) {
+                    
+                    //UPSERT items x filial (PCPRODFILIAL)
+                    if (Utils.toBool(params.upsert_pcprodfilial)) {                        
+                        let query = `
+                            MERGE INTO pcprodfilial tgt
+                            USING (
+                                SELECT
+                                    pcprodut.codprod,
+                                    pcfilial.codigo AS codfilial,
+                                    NULL AS codcomprador,
+                                    DECODE(pcprodut.obs, 'PV', 'S', 'N') AS proibidavenda,
+                                    DECODE(pcprodut.obs2, 'FL', 'S', 'N') AS foralinha,
+                                    pcprodut.revenda,
+                                    0 AS estoqueideal,
+                                    pcprodut.multiplo,
+                                    NVL(pcprodut.checarmultiplovendabnf, 'N') AS checarmultiplovendabnf,
+                                    NVL(pcprodut.aceitavendafracao, 'N') AS aceitavendafracao,
+                                    0 AS qtminautoserv,
+                                    NVL(pcprodut.qtminimaatacado, 0) AS qtminimaatacado,
+                                    NVL(pcprodut.qtminimaatacadof, 0) AS qtminimaatacadof,
+                                    CASE WHEN pcprodut.obs2 = 'FL' OR pcprodut.dtexclusao is not null then 'N' else 'S' end  AS ativo,
+                                    NVL(pcprodut.piscofinsretido, 'N') AS piscofinsretido,
+                                    pcprodut.perpis AS perpis,
+                                    pcprodut.percofins AS percofins,
+                                    pcprodut.classe,
+                                    pcprodut.classevenda,
+                                    pcprodut.classeestoque,
+                                    0 AS coddispestrutura,
+                                    pcprodut.pcomrep1,
+                                    pcprodut.pcomint1,
+                                    pcprodut.pcomext1,
+                                    'N' AS estoqueporserie,
+                                    pcprodut.enviaecommerce AS enviaprodutoecommerce,
+                                    'N' AS utilizaqtdesupmultipla,
+                                    'N' AS tipoarredunidmaster,
+                                    'N' AS regimeespecial,
+                                    DECODE(NVL(pcprodut.PERCICMSDIFERIDO, 0),0,'N','S') AS icmsdiferido,
+                                    CASE WHEN NVL(pcprodut.PERCICMSDESONERACAO, 0) != 0 OR NVL(pcprodut.USAICMSDESONERACAO,'N') = 'S' THEN 'S' ELSE 'N' END AS sujdesoneracao,
+                                    DECODE(NVL(pcprodut.PERCCREDICMPRESUMIDO, 0),0,'N','S') AS permitecreditopresumido
+                                FROM
+                                    pcprodut,
+                                    pcfilial
+                                WHERE
+                                    pcfilial.codigo <> '99'
+                                    AND pcfilial.codigo IS NOT NULL
+                                    AND pcfilial.dtexclusao IS NULL
+                                    AND pcfilial.dtfimatividade IS NULL
+                                    AND pcprodut.codprod IS NOT NULL
+                                    AND pcprodut.codprod = ${queryParams.CODPROD}
+                            ) src
+                            ON (
+                                tgt.codprod = src.codprod AND
+                                tgt.codfilial = src.codfilial
+                            )
+                            WHEN MATCHED THEN
+                                UPDATE SET
+                                    tgt.codcomprador = src.codcomprador,
+                                    tgt.proibidavenda = src.proibidavenda,
+                                    tgt.foralinha = src.foralinha,
+                                    tgt.revenda = src.revenda,
+                                    tgt.estoqueideal = src.estoqueideal,
+                                    tgt.multiplo = src.multiplo,
+                                    tgt.checarmultiplovendabnf = src.checarmultiplovendabnf,
+                                    tgt.aceitavendafracao = src.aceitavendafracao,
+                                    tgt.qtminautoserv = src.qtminautoserv,
+                                    tgt.qtminimaatacado = src.qtminimaatacado,
+                                    tgt.qtminimaatacadof = src.qtminimaatacadof,
+                                    tgt.ativo = src.ativo,
+                                    tgt.piscofinsretido = src.piscofinsretido,
+                                    tgt.perpis = src.perpis,
+                                    tgt.percofins = src.percofins,
+                                    tgt.classe = src.classe,
+                                    tgt.classevenda = src.classevenda,
+                                    tgt.classeestoque = src.classeestoque,
+                                    tgt.coddispestrutura = src.coddispestrutura,
+                                    tgt.pcomrep1 = src.pcomrep1,
+                                    tgt.pcomint1 = src.pcomint1,
+                                    tgt.pcomext1 = src.pcomext1,
+                                    tgt.estoqueporserie = src.estoqueporserie,
+                                    tgt.enviaprodutoecommerce = src.enviaprodutoecommerce,
+                                    tgt.utilizaqtdesupmultipla = src.utilizaqtdesupmultipla,
+                                    tgt.tipoarredunidmaster = src.tipoarredunidmaster,
+                                    tgt.regimeespecial = src.regimeespecial,
+                                    tgt.icmsdiferido = src.icmsdiferido,
+                                    tgt.sujdesoneracao = src.sujdesoneracao,
+                                    tgt.permitecreditopresumido = src.permitecreditopresumido
+                            WHEN NOT MATCHED THEN
+                                INSERT (
+                                    codprod,
+                                    codfilial,
+                                    codcomprador,
+                                    proibidavenda,
+                                    foralinha,
+                                    revenda,
+                                    estoqueideal,
+                                    multiplo,
+                                    checarmultiplovendabnf,
+                                    aceitavendafracao,
+                                    qtminautoserv,
+                                    qtminimaatacado,
+                                    qtminimaatacadof,
+                                    ativo,
+                                    piscofinsretido,
+                                    perpis,
+                                    percofins,
+                                    classe,
+                                    classevenda,
+                                    classeestoque,
+                                    coddispestrutura,
+                                    pcomrep1,
+                                    pcomint1,
+                                    pcomext1,
+                                    estoqueporserie,
+                                    enviaprodutoecommerce,
+                                    utilizaqtdesupmultipla,
+                                    tipoarredunidmaster,
+                                    regimeespecial,
+                                    icmsdiferido,
+                                    sujdesoneracao,
+                                    permitecreditopresumido
+                                )
+                                VALUES (
+                                    src.codprod,
+                                    src.codfilial,
+                                    src.codcomprador,
+                                    src.proibidavenda,
+                                    src.foralinha,
+                                    src.revenda,
+                                    src.estoqueideal,
+                                    src.multiplo,
+                                    src.checarmultiplovendabnf,
+                                    src.aceitavendafracao,
+                                    src.qtminautoserv,
+                                    src.qtminimaatacado,
+                                    src.qtminimaatacadof,
+                                    src.ativo,
+                                    src.piscofinsretido,
+                                    src.perpis,
+                                    src.percofins,
+                                    src.classe,
+                                    src.classevenda,
+                                    src.classeestoque,
+                                    src.coddispestrutura,
+                                    src.pcomrep1,
+                                    src.pcomint1,
+                                    src.pcomext1,
+                                    src.estoqueporserie,
+                                    src.enviaprodutoecommerce,
+                                    src.utilizaqtdesupmultipla,
+                                    src.tipoarredunidmaster,
+                                    src.regimeespecial,
+                                    src.icmsdiferido,
+                                    src.sujdesoneracao,
+                                    src.permitecreditopresumido
+                                )
+                        `;
+                        await DBConnectionManager.getWinthorDBConnection()?.query(query, {type: QueryTypes.INSERT, transaction})
+                    }
+
+                    
+                    //get items x filial records (PCPRODFILIAL)
+                    let prodsFilial = await PcProdFilial.findAll({
+                        raw:true,
+                        include:[{
+                            model: PcFilial,
+                            attributes:[],
+                            where:{
+                                DTEXCLUSAO: {
+                                    [Op.is]: null
+                                },
+                                DTFIMATIVIDADE: {
+                                    [Op.is]: null
+                                },
+                                CODIGO:{
+                                    [Op.ne]: '99'
+                                }
+                            }
+                        }],
+                        where:[
+                            {
+                                CODPROD: queryParams.CODPROD
+                            }
+                        ],
+                        transaction                    
+                    });
+                    
+
+                    //upsert stock records (PCEST)
+                    if (Utils.toBool(params.upsert_pcest)) {                        
+                        for(let k in prodsFilial) {
+                            let resultPcEst = await PcEst.saveOrCreate({
+                                where:{
+                                    CODFILIAL: prodsFilial[k].CODFILIAL,
+                                    CODPROD: queryParams.CODPROD,
+                                }, 
+                                values: {                                                            
+                                    MODULO: queryParams.MODULO || 1,
+                                    RUA: queryParams.RUA || 1,
+                                    NUMERO: queryParams.NUMERO || 1,
+                                    APTO: queryParams.APTO || 1,
+                                    MODULOCX: queryParams.MODULOCX || queryParams.MODULO || 1,
+                                    RUACX: queryParams.RUACX || queryParams.RUA || 1,
+                                    APTOCX: queryParams.APTOCX || queryParams.APTO || 1,
+                                    NUMEROCX: queryParams.NUMEROCX || queryParams.NUMERO || 1,
+                                    TEMESTOQUEECOMMERCE: queryParams.ENVIAECOMMERCE
+                                },
+                                transaction
                             });
-                            if (Utils.hasValue(regions)) {
-                                for(let r in regions) {
-                                    await PcTabPr.create({
-                                        NUMREGIAO: regions[r].NUMREGIAO,
-                                        CODPROD: queryParams.CODPROD
-                                    },{transaction})
+                            if (!resultPcEst?.success) {
+                                resultPcEst.throw();
+                            }
+                        }
+                    }
+
+                    //upsert pccodfabrica
+                    if (Utils.toBool(params.upsert_pccodfabrica)) {
+                        let resultPcCodFabrica = await PcCodFabrica.saveOrCreate({
+                            where:{
+                                CODPROD: queryParams.CODPROD,
+                                CODFORNEC: queryParams.CODFORNEC,
+                            },
+                            values:{
+                                CODFAB: queryParams.CODFAB,
+                                TIPOFATOR: 'M',
+                                FATOR: queryParams.QTUNITCX
+                            },
+                            transaction
+                        });
+                        if (!resultPcCodFabrica?.success) {
+                            resultPcCodFabrica.throw();
+                        }
+                    }
+                    
+                    
+                    //get filiais
+                    let filiais = await PcFilial.findAll({
+                        raw:true,
+                        where:{
+                            DTEXCLUSAO: {
+                                [Op.is]:null
+                            },
+                            DTFIMATIVIDADE: {
+                                [Op.is]:null
+                            },
+                            CODIGO:{
+                                [Op.ne]: '99'
+                            }
+                        }
+                    });
+                    if (Utils.hasValue(filiais)) {
+
+
+                        //upsert packages registers (PCEMBALAGEM) and price (PCTABPR)
+                        for(let k in filiais) {
+
+
+                            //PCEMBALAGEM
+                            if (Utils.toBool(params.upsert_pcembalagem)) {
+                                if(Utils.hasValue(queryParams.CODAUXILIAR) && Utils.hasValue(queryParams.EMBALAGEM) && Utils.hasValue(queryParams.UNIDADE) && Utils.hasValue(queryParams.QTUNIT)) {
+                                    let resultTemp = await PcEmbalagem.saveOrCreate({
+                                        where:{
+                                            CODAUXILIAR: queryParams.CODAUXILIAR,
+                                            CODFILIAL: filiais[k].CODIGO,
+                                            CODPROD: queryParams.CODPROD
+                                        },values:{
+                                            EMBALAGEM: queryParams.EMBALAGEM,
+                                            UNIDADE: queryParams.UNIDADE,
+                                            QTUNIT: queryParams.QTUNIT,
+                                            ENVIAFV: queryParams.ENVIARFORCAVENDAS,
+                                            ENVIAECOMMERCE: queryParams.ENVIAECOMMERCE,
+                                            ATIVOECOMMERCE: queryParams.ENVIAECOMMERCE
+                                        },
+                                        transaction
+                                    });
+                                    if (!resultTemp?.success) resultTemp.throw();
+                                }
+                                if(Utils.hasValue(queryParams.CODAUXILIAR2) && Utils.hasValue(queryParams.EMBALAGEMMASTER) && Utils.hasValue(queryParams.UNIDADE) && Utils.hasValue(queryParams.QTUNITCX) && queryParams.CODAUXILIAR2 != queryParams.CODAUXILIAR) {
+                                    let resultTemp = await PcEmbalagem.saveOrCreate({
+                                        where:{
+                                            CODAUXILIAR: queryParams.CODAUXILIAR2,
+                                            CODFILIAL: filiais[k].CODIGO,
+                                            CODPROD: queryParams.CODPROD
+                                        },values:{
+                                            EMBALAGEM: queryParams.EMBALAGEMMASTER,
+                                            UNIDADE: queryParams.UNIDADE,
+                                            QTUNIT: queryParams.QTUNITCX,
+                                            ENVIAFV: queryParams.ENVIARFORCAVENDAS,
+                                            ENVIAECOMMERCE: queryParams.ENVIAECOMMERCE,
+                                            ATIVOECOMMERCE: queryParams.ENVIAECOMMERCE
+                                        },
+                                        transaction
+                                    });
+                                    if (!resultTemp?.success) resultTemp.throw();
+                                }
+                            }
+
+                            //PCTAPBR
+                            if (Utils.toBool(params.upsert_pctabpr)) {
+                                let regions = await PcRegiao.findAll({
+                                    where:{
+                                        CODFILIAL: filiais[k].CODIGO,
+                                        STATUS: 'A'
+                                    }
+                                });
+                                if (Utils.hasValue(regions)) {
+                                    for(let r in regions) {
+                                        await PcTabPr.createIfNotExists({
+                                            where:{
+                                                NUMREGIAO: regions[r].NUMREGIAO,
+                                                CODPROD: queryParams.CODPROD
+                                            },
+                                            transaction
+                                        })
+                                    }
                                 }
                             }
                         }
@@ -387,7 +789,6 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
     }
 
     /**
-     * Integration request methods handlers, by default, not can change origin information, only get     
      * @requesthandler
      * @override
      * @created 2025-01-04
@@ -398,6 +799,24 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
             let params = req.body;
             params.user = req.user;
             res.setDataSwap(await this._put(params));
+        } catch (e: any) {
+            res.setException(e);
+        }
+        res.sendResponse();
+    }
+
+
+    /**
+     * @requesthandler
+     * @override
+     * @created 2025-05-07
+     * @version 1.0.0
+     */
+    static async patch(req: Request, res: Response, next: NextFunction) : Promise<void> {
+        try {
+            let params = req.body;
+            params.user = req.user;
+            res.setDataSwap(await this._patch(params));
         } catch (e: any) {
             res.setException(e);
         }
@@ -524,14 +943,12 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
             if (Utils.hasValue(search?.term?.value)) {                
 
                 //allow multiple terms with comma(,) separator
-                console.log('xxxxxxxxx',search);
                 search.term.value = search.term.value.trim().toUpperCase().split(',');
 
                 let orTerm = [];
 
                 //especied fields on searchTem
                 if (Utils.hasValue(search.term.fields)) {
-                    console.log('xxxxxxxxx1',search.term.fields);
                     //search.term.fields = Utils.toArray(search.term.fields);
                     for(let j in search.term.fields) {
                         for(let k in search.term.value) {
@@ -545,7 +962,6 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
                         }
                     }
                 } else {
-                    console.log('xxxxxxxxx2',search.term.fields);
                     //not especied fields
                     for(let k in search.term.value) {
                         orTerm.push(
