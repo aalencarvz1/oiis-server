@@ -32,7 +32,7 @@ export default class BaseRegistersIntegrationsController extends BaseRegistersCo
      * @created 2025-01-04
      * @version 1.0.0
      */
-    static async path(req: Request, res: Response, next: NextFunction) : Promise<void> {
+    static async patch(req: Request, res: Response, next: NextFunction) : Promise<void> {
         res.sendResponse(517,false,"no change integration")
     }
 
