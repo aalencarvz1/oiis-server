@@ -8,9 +8,7 @@ import PcDepto from './PcDepto.js';
 import PcSecao from './PcSecao.js';
 import PcMarca from './PcMarca.js';
 import PcCategoria from './PcCategoria.js';
-import PcLinhaProd from './PcLinhaProd.js';
 import PcPrazo from './PcPrazo.js';
-import PcDistrib from './PcDistrib.js';
 import Utils from '../../../controllers/utils/Utils.js';
 
 /**
@@ -1459,20 +1457,5 @@ export default class PcProdut extends BaseWinthorTableModel {
     return result;
   }
 
-  /**
-   * create data of model inherithed of this
-   * @override
-   * @static (pay attention to bindings)
-   * @async (pay attention to await)
-   * @created 2023-11-10
-   */
-  /*static async createData(params: any,returnRaw: boolean = true) {
-    let queryParams = params.queryParams?.values || params.values || params.queryParams || params || {};
-    let result = await this.create(queryParams,{returning:false, isNewRecord: true, transaction: params.transaction}); //out of buffer
-    //let result = await this.build(queryParams,{isNewRecord: true}).save({returning: false, transaction: params.transaction}); //out of buffer
-    result = await this.getOneByID(queryParams.CODPROD,{raw:returnRaw, transaction: params.transaction});
-    return result;
-  }
-  static putData = this.createData;*/
   
 };
