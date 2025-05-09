@@ -11,9 +11,29 @@ import DBConnectionManager from '../DBConnectionManager.js';
 
 /** @type {import('sequelize-cli').Migration} */
 
-
-let oldTables : any = {           
-  
+/*configures old objects names from old database mappeds to new objects names in new database. all options are optionally
+ex:
+{
+  allTables:(oldColumn)=>transforma_all_old_columns_to(oldColumn)
+  old_table_name:{
+    tableName: new_table_name,
+    columns: {
+      old_column_name: new_column_name
+    }
+  }
+}
+*/
+let oldTables : any = {    
+  'campaign_kpis':{
+    'columns':{
+      'order_num':'numeric_order'
+    }
+  },
+  'campaign_kpi_result_values':{
+    'columns':{
+      'order_num':'numeric_order'
+    }
+  }
 }
 
 export default {
