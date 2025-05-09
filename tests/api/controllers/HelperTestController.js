@@ -13,6 +13,20 @@ import People from "../../../dist/api/database/models/People";
 import Record_Status from "../../../dist/api/database/models/Record_Status";
 import Users from "../../../dist/api/database/models/Users";
 import Data_Origins from "../../../dist/api/database/models/Data_Origins";
+import User_TokensController from "../../../dist/api/controllers/modules/registers/User_TokensController";
+import UsersController from "../../../dist/api/controllers/modules/registers/UsersController";
+import User_Profile_TimeworksController from "../../../dist/api/controllers/modules/registers/User_Profile_TimeworksController";
+import Routine_TypesController from "../../../dist/api/controllers/modules/registers/Routine_TypesController";
+import ModulesController from "../../../dist/api/controllers/modules/registers/ModulesController";
+import RoutineController from "../../../dist/api/controllers/modules/registers/RoutinesController";
+import Routine_Types from "../../../dist/api/database/models/Routine_Types";
+import modules from "../../../dist/api/database/catalogs/modules";
+import Modules from "../../../dist/api/database/models/Modules";
+import Routines from "../../../dist/api/database/models/Routines";
+import LanguagesController from "../../../dist/api/controllers/modules/registers/LanguagesController";
+import Languages from "../../../dist/api/database/models/Languages";
+import TextsController from "../../../dist/api/controllers/modules/registers/TextsController";
+import Texts from "../../../dist/api/database/models/Texts";
 
 export default class HelperTestController {
 
@@ -390,5 +404,453 @@ export default class HelperTestController {
 
 
         await HelperTestController.Identifier_TypesDelete(`${stringTest}_PEOPLE_INSERT`)
+    }
+
+
+    //Insert User
+    static async UserInsert(emailTest,passwordTest){
+        
+    let result = await UsersController._put({
+        email:emailTest,
+        password:passwordTest
+    },false,false);
+    expect(Utils.hasValue(result)).toBeTruthy();
+    expect(result.success).toBeTruthy();
+
+    result = await UsersController._get({
+        where:{
+            email:emailTest,
+            
+        }
+    });
+    expect(Utils.hasValue(result)).toBeTruthy()
+    expect(result[0].email).toBe(emailTest);
+    return result;
+    }
+
+///UserGet
+    static async UserGet(emailTest){
+        let result = await UsersController._get({
+            where: { 
+                email:emailTest,
+                
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result[0].email).toBe(emailTest);
+        return result;
+    }
+    
+    static async UserDelete(emailTest){
+        let id = null;
+///UserDelete
+        let result = await UsersController._get({
+            where:{
+                email:emailTest,
+               
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        id = result[0].id;
+        
+        
+        result = await UsersController._delete({
+            where:{
+                id:id,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
+
+        result = await UsersController._get({
+            where:{
+                id: id
+            }
+        });
+        expect(Utils.hasValue(result)).toBeFalsy();
+    }
+    static async User_Profiles_TimeworksInsert(emailTest,nameTest,passwordTest){
+       
+        let UserGet = await HelperTestController.UserInsert(emailTest,passwordTest);
+
+        let result = await User_Profile_TimeworksController._put({
+            user_id:UserGet[0].id,
+            name:nameTest
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
+    
+        result = await User_Profile_TimeworksController._get({
+            where:{
+                user_id:UserGet[0].id,
+                
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy()
+        expect(result[0].user_id).toBe(UserGet[0].id);
+        return result;
+    }
+    static async User_Profiles_TimeworksDelete(emailTest){
+        
+        let id = null;
+        let UserGet = await HelperTestController.UserGet(emailTest);
+
+        let result = await User_Profile_TimeworksController._get({
+            where:{
+                user_id:UserGet[0].id,
+               
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        id = result[0].id;
+        
+        
+        result = await User_Profile_TimeworksController._delete({
+            where:{
+                id:id,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
+
+        result = await User_Profile_TimeworksController._get({
+            where:{
+                id: id
+            }
+        });
+        expect(Utils.hasValue(result)).toBeFalsy();
+
+        await HelperTestController.UserDelete(emailTest)
+    }
+
+    static async User_Profiles_TimeworksGet(emailTest){
+        let UserGet = await HelperTestController.UserGet(emailTest);
+        let result = await User_Profile_TimeworksController._get({
+            where: { 
+                user_id:UserGet[0].id,
+                
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result[0].user_id).toBe(UserGet[0].id);
+        return result;
+    }
+
+
+    static async Rountine_TypeInsert(stringTest) {
+            await Routine_Types.initModel();
+
+        let result = await Routine_TypesController._put({
+            name: stringTest,
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
+
+        //get inserted register to confirm persistency
+        result = await Routine_TypesController._get({
+            where:{
+                name: stringTest,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result[0].name).toBe(stringTest);
+        return result;
+    }
+
+    static async RoutineTypeDelete(stringTest){
+        let id = null;
+
+        //get register to delete, previous inserted by put test
+        let result = await Routine_TypesController._get({
+            where:{
+                name: stringTest,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        id = result[0].id;
+
+        //update register
+        result = await Routine_TypesController._delete({
+            where: {
+                id: id
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
+
+        //get register updated to confirm if has uupdated
+        result = await Routine_TypesController._get({
+            where:{
+                id:id
+            }
+        });
+
+        //test persistensy of delete
+        expect(Utils.hasValue(result)).toBeFalsy();
+    }
+
+
+    static async ModulesInsert(stringTest){
+        await Modules.initModel();
+
+         let result = await ModulesController._put({
+            name: stringTest,
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
+
+        //get inserted register to confirm persistency
+        result = await ModulesController._get({
+            where:{
+                name: stringTest,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result[0].name).toBe(stringTest);
+        return result;
+    }
+    
+    static async ModulesDelete(stringTest){
+        await Modules.initModel();
+        let id = null;
+
+        //get register to delete, previous inserted by put test
+        let result = await ModulesController._get({
+            where:{
+                name: stringTest,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        id = result[0].id;
+
+        //update register
+        result = await ModulesController._delete({
+            where: {
+                id: id
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
+
+        //get register updated to confirm if has uupdated
+        result = await ModulesController._get({
+            where:{
+                id:id
+            }
+        });
+
+        //test persistensy of delete
+        expect(Utils.hasValue(result)).toBeFalsy();
+    }
+
+    static async RoutinesCompletInsert(stringTest){
+        await Routines.initModel();
+
+        let resultRoutine = await this.Rountine_TypeInsert(`${stringTest}_ROUTINE`);
+        let resultModules = await this.ModulesInsert(`${stringTest}_ROUTINE`);
+    
+        let result = await RoutineController._put({
+            routine_type_id:resultRoutine[0].id,
+            module_id:resultModules[0].id,
+            name:stringTest
+        })
+        expect(result).toBeTruthy();
+        expect(result.success).toBeTruthy();
+
+        result = await RoutineController._get({
+            where:{
+                name: stringTest,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result[0].name).toBe(stringTest);
+        return result;
+    }
+
+    static async RoutineCompletDelete(stringTest){
+        await Routines.initModel();
+
+        let id = null;
+
+        //get register to delete, previous inserted by put test
+        let result = await RoutineController._get({
+            where:{
+                name: stringTest,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        id = result[0].id;
+
+        //update register
+        result = await RoutineController._delete({
+            where: {
+                id: id
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
+
+        //get register updated to confirm if has uupdated
+        result = await RoutineController._get({
+            where:{
+                id:id
+            }
+        });
+
+        //test persistensy of delete
+        expect(Utils.hasValue(result)).toBeFalsy();
+        
+        await this.ModulesDelete(`${stringTest}_ROUTINE`);
+        await this.RoutineTypeDelete(`${stringTest}_ROUTINE`)
+    }
+
+    static async RoutineGet(stringTest){
+        let result = await RoutineController._get({
+            where:{
+                name: stringTest,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result[0].name).toBe(stringTest);
+        return result;
+    }
+
+    static async LanguagensInsert(stringTest){
+        await Languages.initModel();
+
+    let result = await LanguagesController._put({
+            name: stringTest,
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
+
+        //get inserted register to confirm persistency
+        result = await LanguagesController._get({
+            where:{
+                name: stringTest,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result[0].name).toBe(stringTest);
+        return result;
+    }
+
+    static async LanguagensGet(stringTest){
+        await Languages.initModel();
+
+        let result = await LanguagesController._get({
+            where:{
+                name: stringTest,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result[0].name).toBe(stringTest);
+        return result;
+    }
+
+    static async LanguagensDelete(stringTest){
+        await Languages.initModel();
+        let id = null;
+
+        //get register to delete, previous inserted by put test
+        let result = await LanguagesController._get({
+            where:{
+                name: stringTest,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        id = result[0].id;
+
+        //update register
+        result = await LanguagesController._delete({
+            where: {
+                id: id
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
+
+        //get register updated to confirm if has uupdated
+        result = await LanguagesController._get({
+            where:{
+                id:id
+            }
+        });
+
+        //test persistensy of delete
+        expect(Utils.hasValue(result)).toBeFalsy();
+    }
+
+
+    static async TextInsert(stringTest){
+        await Texts.initModel();
+    let resultLanguagens = await this.LanguagensInsert(stringTest);
+
+    let result = await TextsController._put({
+            language_id:resultLanguagens[0].id,
+            text: stringTest,
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
+
+        //get inserted register to confirm persistency
+        result = await TextsController._get({
+            where:{
+                language_id:resultLanguagens[0].id,
+                text: stringTest,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result[0].text).toBe(stringTest);
+        return result;
+    }
+
+    static async TextGet(stringTest){
+        await Texts.initModel();
+        let resultLanguagens = await this.LanguagensGet(stringTest);
+        
+        let result = await TextsController._get({
+            where:{
+                language_id:resultLanguagens[0].id,
+                text: stringTest,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result[0].text).toBe(stringTest);
+        return result;
+    }
+
+
+    static async TextDelete(stringTest){
+        let id = null;
+        
+
+        //get register to delete, previous inserted by put test
+        let result = await TextsController._get({
+            where:{
+                text: stringTest,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        id = result[0].id;
+
+        //update register
+        result = await TextsController._delete({
+            where: {
+                id: id
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
+
+        //get register updated to confirm if has uupdated
+        result = await TextsController._get({
+            where:{
+                id:id
+            }
+        });
+
+        //test persistensy of delete
+        expect(Utils.hasValue(result)).toBeFalsy();
     }
 }
