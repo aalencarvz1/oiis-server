@@ -27,15 +27,24 @@ export default class Texts extends BaseTableModel {
         allowNull: false
       },
       text: {
-        type: DataTypes.STRING(2000),
+        type: DataTypes.STRING(500),
         allowNull:false
       }
     }
   };
   
-  static uniqueFields = [];
+  static uniqueFields = [
+    'language_id',
+    'text'
+  ];
 
-  static constraints = [];
+  static constraints = [...(Texts.getBaseTableModelConstraints() || []),...[
+    {
+      name: Texts.tableName + '_u1',
+      fields: [...Texts.getBaseTableModelUniqueFields(),...Texts.uniqueFields],
+      type:"unique"
+    }
+  ]];
 
 
   static foreignsKeys : any[] = [];

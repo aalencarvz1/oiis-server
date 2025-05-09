@@ -1,25 +1,26 @@
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
-import UserController from "../../../../../dist/api/controllers/modules/registers/UsersController";
-import Users from "../../../../../dist/api/database/models/Users";
+import User_Profile_TimeworksController from "../../../../../dist/api/controllers/modules/registers/User_Profile_TimeworksController";
 import HelperTestController from "../../HelperTestController";
-import People from "../../../../../dist/api/database/models/People";
 
-const emailTest = 'jumboteste@test.com';
-const passwordTest = 'Test123e21';
 
-describe(UserController.name, () => {
+const emailTest = 'jumbotesteProfile@test.com';
+const passwordTest = 'Test123e21Profile';
+const nameTest = 'testeProfile';
+
+describe(User_Profile_TimeworksController.name, () => {
    
    
     beforeAll(async ()=>{
         await ModelsController.initModels();
+        
         //await HelperTestController.initBasicModels();
         //await Users.initModel();
     });
 
     //test class model name is correctly seted to table model name
     test('table class model name', () => {
-        let tableClassModel = UserController.getTableClassModel();
+        let tableClassModel = User_Profile_TimeworksController.getTableClassModel();
         expect(Utils.hasValue(tableClassModel)).toBeTruthy();
         let tableModelClassName = tableClassModel?.name;
         expect(Utils.hasValue(tableModelClassName)).toBeTruthy();
@@ -29,7 +30,7 @@ describe(UserController.name, () => {
     });
 
    test('put without data', async () => {
-        let result = await UserController._put({},false,false) 
+        let result = await User_Profile_TimeworksController._put({}) 
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeFalsy();
         expect(result.message).toMatch(/(^missing\s+data$|^[a-z0-9._]+\s+cannot\s+be\s+null$)/i);
@@ -37,83 +38,88 @@ describe(UserController.name, () => {
 
 
     test('put', async () => {
-        await HelperTestController.UserInsert(emailTest,passwordTest);
+        
+        await HelperTestController.User_Profiles_TimeworksInsert(emailTest,nameTest,passwordTest);
     })
 
-   test('put Duplicate', async () => {
-        let result = await UserController._put({
-            email:emailTest,
-            password:passwordTest,
-        },false,false)
+    test('put Duplicate', async () => {
+        let UserGet = await HelperTestController.UserGet(emailTest);
+    
+        let result = await User_Profile_TimeworksController._put({
+            user_id:UserGet[0].id,
+            name:nameTest
+        })
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeFalsy();
         expect(result.message).toMatch(/^[a-z0-9._]+\s+must\s+be\s+unique$/);
     });
 
     test('get', async () => {
-        await HelperTestController.UserGet(emailTest)
+       await HelperTestController.User_Profiles_TimeworksGet(emailTest);
     })
 
     test('patch', async () => {
+        let UserGet = await HelperTestController.UserGet(emailTest);
         let id = null;
        
-        let result = await UserController._get({
+        let result = await User_Profile_TimeworksController._get({
             where: { 
-                email:emailTest,
+                user_id:UserGet[0].id,
                 
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         id = result[0].id;
 
-        result = await UserController._patch({
+        result = await User_Profile_TimeworksController._patch({
             where: {
                 id: id
             },
             values:{
-                email: `${emailTest}_UPDATED`,
+                name:`${nameTest}_UPDATED`,
             },
             includePeople:false
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
 
-        result = await UserController._get({
+        result = await User_Profile_TimeworksController._get({
             where:{
                 id:id
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
 
-        expect(result[0].email).toBe(`${emailTest}_UPDATED`);
+        expect(result[0].name).toBe(`${nameTest}_UPDATED`);
     
 
         //REVERT UPDATE
 
-        result = await UserController._patch({
+        result = await User_Profile_TimeworksController._patch({
             where: {
                 id: id
             },
             values:{
-                email:emailTest,
+                name:nameTest,
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
         //get register REVERTED updated to confirm if has uupdated
-        result = await UserController._get({
+        result = await User_Profile_TimeworksController._get({
             where:{
                 id:id
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         //test persistency of updated register
-        expect(result[0].email).toBe(emailTest);
+        expect(result[0].name).toBe(nameTest);
     });
 
 
     test('delete', async () => {
-       await HelperTestController.UserDelete(emailTest);
-    });
 
+        await HelperTestController.User_Profiles_TimeworksDelete(emailTest);
+
+    });
 })
