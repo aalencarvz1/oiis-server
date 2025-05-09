@@ -51,7 +51,7 @@ export default class RoutinesController extends BaseRegistersController {
                 routines.name AS routine_name,
                 routines.icon AS routine_icon,
                 routines.view_path AS routine_view_path,
-                routines.numeric_order AS routine_order_num,
+                routines.numeric_order AS routine_numeric_order,
                 routines.show_in_menu AS routine_show_in_menu,
                 routines.description AS routine_description
             FROM
@@ -127,7 +127,7 @@ export default class RoutinesController extends BaseRegistersController {
                         name: result[i].routine_name,
                         icon: result[i].routine_icon,
                         view_path: result[i].routine_view_path,
-                        numeric_order: result[i].routine_order_num,
+                        numeric_order: result[i].routine_numeric_order,
                         show_in_menu: result[i].routine_show_in_menu,
                         description: result[i].routine_description
                     };
