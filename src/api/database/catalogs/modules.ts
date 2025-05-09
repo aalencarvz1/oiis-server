@@ -405,41 +405,6 @@ export default [
             "view_path" :"/views/modules/registers/conditions",
             "numeric_order":297
         },{
-            "id" : 298,
-            "name" : "INTEGRATIONS",
-            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M560-160v-80h104L537-367l57-57 126 126v-102h80v240H560Zm-344 0-56-56 504-504H560v-80h240v240h-80v-104L216-160Zm151-377L160-744l56-56 207 207-56 56Z\"/></svg>",            
-            "numeric_order":298,
-            "subs":[{
-                "id" : 29800,
-                "name" : "WINTHOR",
-                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 0 512 512\"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d=\"M403.8 34.4c12-5 25.7-2.2 34.9 6.9l64 64c6 6 9.4 14.1 9.4 22.6s-3.4 16.6-9.4 22.6l-64 64c-9.2 9.2-22.9 11.9-34.9 6.9s-19.8-16.6-19.8-29.6l0-32-32 0c-10.1 0-19.6 4.7-25.6 12.8L284 229.3 244 176l31.2-41.6C293.3 110.2 321.8 96 352 96l32 0 0-32c0-12.9 7.8-24.6 19.8-29.6zM164 282.7L204 336l-31.2 41.6C154.7 401.8 126.2 416 96 416l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0c10.1 0 19.6-4.7 25.6-12.8L164 282.7zm274.6 188c-9.2 9.2-22.9 11.9-34.9 6.9s-19.8-16.6-19.8-29.6l0-32-32 0c-30.2 0-58.7-14.2-76.8-38.4L121.6 172.8c-6-8.1-15.5-12.8-25.6-12.8l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0c30.2 0 58.7 14.2 76.8 38.4L326.4 339.2c6 8.1 15.5 12.8 25.6 12.8l32 0 0-32c0-12.9 7.8-24.6 19.8-29.6s25.7-2.2 34.9 6.9l64 64c6 6 9.4 14.1 9.4 22.6s-3.4 16.6-9.4 22.6l-64 64z\"/></svg>",
-                "numeric_order":29800,
-                "subs":[{
-                    "id" : 2980000,
-                    "routine_type_id" : 1,
-                    "name" : "RULES",
-                    "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"m576-160-56-56 104-104-104-104 56-56 104 104 104-104 56 56-104 104 104 104-56 56-104-104-104 104Zm79-360L513-662l56-56 85 85 170-170 56 57-225 226ZM80-280v-80h360v80H80Zm0-320v-80h360v80H80Z\"/></svg>",
-                    "view_path" :"/views/modules/registers/integrations/winthor/rules",
-                    "numeric_order":2980000                    
-                },{
-                    "id" : 2980015,
-                    "routine_type_id" : 1,
-                    "name" : "PRODUCTS",
-                    "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M440-183v-274L200-596v274l240 139Zm80 0 240-139v-274L520-457v274Zm-80 92L160-252q-19-11-29.5-29T120-321v-318q0-22 10.5-40t29.5-29l280-161q19-11 40-11t40 11l280 161q19 11 29.5 29t10.5 40v318q0 22-10.5 40T800-252L520-91q-19 11-40 11t-40-11Zm200-528 77-44-237-137-78 45 238 136Zm-160 93 78-45-237-137-78 45 237 137Z\"/></svg>",
-                    "view_path" :"/views/modules/registers/integrations/winthor/products",
-                    "numeric_order":2980015,
-                    "subs":[{
-                        "id" : 298001500,
-                        "routine_type_id" : 1,
-                        "name" : "PRODUCT MANAGEMENT",
-                        "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M440-183v-274L200-596v274l240 139Zm80 0 240-139v-274L520-457v274Zm-80 92L160-252q-19-11-29.5-29T120-321v-318q0-22 10.5-40t29.5-29l280-161q19-11 40-11t40 11l280 161q19 11 29.5 29t10.5 40v318q0 22-10.5 40T800-252L520-91q-19 11-40 11t-40-11Zm200-528 77-44-237-137-78 45 238 136Zm-160 93 78-45-237-137-78 45 237 137Z\"/></svg>",
-                        "view_path" :"/views/modules/registers/integrations/winthor/products/management/:product_id",
-                        "numeric_order":298001500,
-                        "show_in_menu":0
-                    }]
-                }]
-            }]
-        },{
             "id" : 299,
             "routine_type_id" : 1,
             "name" : "DATAS RELATIONSHIPS",
@@ -447,77 +412,93 @@ export default [
             "view_path" :"/views/modules/registers/relationships",
             "numeric_order":299
         }]
-    },{      
-        "id" : 9,
-        "name" :"STOCK",
-        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M120-520v-320h320v320H120Zm0 400v-320h320v320H120Zm400-400v-320h320v320H520Zm0 400v-320h320v320H520ZM200-600h160v-160H200v160Zm400 0h160v-160H600v160Zm0 400h160v-160H600v160Zm-400 0h160v-160H200v160Zm400-400Zm0 240Zm-240 0Zm0-240Z\"/></svg>",
-        "numeric_order":9,
+    },{              
+        "id" : 3,
+        "name" :"WINTHOR",
+        "icon" :"<?xml version=\"1.0\" standalone=\"yes\"?><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 48 48\" width=\"2em\" height=\"2em\"><path style=\"fill:#e4791a; stroke:none;\" d=\"M17 1C17.8945 11.2457 23.7579 26.6524 33 32C29.1177 22.6602 27 15.17 27 5C30.394 5.81591 33.2844 6.9114 35.9846 9.22454C39.6713 12.3828 42.9536 17.032 43.4506 22C45.1217 38.7025 24.4877 49.2245 12.0401 38.6597C8.89025 35.9863 6.75212 32.6823 5 29C12.5717 32.1482 19.7904 35.7921 28 37C19.1639 29.2951 10.0629 24.6413 4 14L2 14C-0.24245 21.9798 -0.547966 29.6954 4.13349 36.9961C11.7528 48.8784 30.8303 50.7993 40.8148 40.8148C50.5797 31.05 49.1392 12.6738 37.9961 4.63812C31.6247 0.0434265 24.4378 -0.38084 17 1z\"/><path style=\"fill:#f8e8da; stroke:none;\" d=\"M29.6667 0.333332C29.2222 0.77779 30.2778 0.722214 30.3333 0.666668C30.7778 0.222229 29.7222 0.277771 29.6667 0.333332z\"/><path style=\"fill:#17316e; stroke:none;\" d=\"M32 35C23.917 23.5235 15.6253 14.6722 11 1C2.60459 4.5971 4.47235 9.63804 9.15586 16C14.968 23.895 22.6539 31.5731 32 35z\"/><path style=\"fill:#7783a2; stroke:none;\" d=\"M3.33333 6.66667C3.27778 6.72222 3.22222 7.77777 3.66667 7.33333C3.72223 7.27777 3.77778 6.22222 3.33333 6.66667z\"/><path style=\"fill:#fcf2eb; stroke:none;\" d=\"M18.3333 9.66667C18.2778 9.72221 18.2222 10.7778 18.6667 10.3333C18.7222 10.2778 18.7778 9.22223 18.3333 9.66667z\"/><path style=\"fill:#fbf5f1; stroke:none;\" d=\"M2.66667 12.3333C2.22222 12.7778 3.27778 12.7222 3.33333 12.6667C3.77778 12.2222 2.72223 12.2778 2.66667 12.3333z\"/><path style=\"fill:#fffcfa; stroke:none;\" d=\"M19.3333 12.6667C19.2778 12.7222 19.2222 13.7778 19.6667 13.3333C19.7222 13.2778 19.7778 12.2222 19.3333 12.6667z\"/><path style=\"fill:#e8bc95; stroke:none;\" d=\"M2.66667 13.3333C2.22221 13.7778 3.27778 13.7222 3.33333 13.6667C3.77778 13.2222 2.72223 13.2778 2.66667 13.3333z\"/><path style=\"fill:#e38f46; stroke:none;\" d=\"M27.3333 16.6667C27.2778 16.7222 27.2222 17.7778 27.6667 17.3333C27.7222 17.2778 27.7778 16.2222 27.3333 16.6667z\"/><path style=\"fill:#fffffe; stroke:none;\" d=\"M21.3333 17.6667C21.2778 17.7222 21.2222 18.7778 21.6667 18.3333C21.7222 18.2778 21.7778 17.2222 21.3333 17.6667z\"/><path style=\"fill:#f6ddc7; stroke:none;\" d=\"M47.3333 17.6667C47.2778 17.7222 47.2222 18.7778 47.6667 18.3333C47.7222 18.2778 47.7778 17.2222 47.3333 17.6667z\"/><path style=\"fill:#f5dbc5; stroke:none;\" d=\"M42.3333 18.6667C42.2778 18.7222 42.2222 19.7778 42.6667 19.3333C42.7222 19.2778 42.7778 18.2222 42.3333 18.6667z\"/><path style=\"fill:#f0c59f; stroke:none;\" d=\"M28.3333 19.6667C28.2778 19.7222 28.2222 20.7778 28.6667 20.3333C28.7222 20.2778 28.7778 19.2222 28.3333 19.6667z\"/><path style=\"fill:#fcf7f2; stroke:none;\" d=\"M47.3333 29.6667C47.2778 29.7222 47.2222 30.7778 47.6667 30.3333C47.7222 30.2778 47.7778 29.2222 47.3333 29.6667z\"/><path style=\"fill:#f2d5bd; stroke:none;\" d=\"M18.6667 42.3333C18.2222 42.7778 19.2778 42.7222 19.3333 42.6667C19.7778 42.2222 18.7222 42.2778 18.6667 42.3333z\"/></svg>",
+        "numeric_order":2,
         "subs":[{
-            "id" : 900,
+            "id" : 301,
             "routine_type_id" : 1,
-            "name" :"THIRD PARTY STOCK",
-            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M760-400v-260L560-800 360-660v60h-80v-100l280-200 280 200v300h-80ZM560-800Zm20 160h40v-40h-40v40Zm-80 0h40v-40h-40v40Zm80 80h40v-40h-40v40Zm-80 0h40v-40h-40v40ZM280-220l278 76 238-74q-5-9-14.5-15.5T760-240H558q-27 0-43-2t-33-8l-93-31 22-78 81 27q17 5 40 8t68 4q0-11-6.5-21T578-354l-234-86h-64v220ZM40-80v-440h304q7 0 14 1.5t13 3.5l235 87q33 12 53.5 42t20.5 66h80q50 0 85 33t35 87v40L560-60l-280-78v58H40Zm80-80h80v-280h-80v280Z\"/></svg>",
-            "view_path" :"/views/modules/stock/third_party_stock",
-            "numeric_order":900
-        }]
-    },{      
-        "id" : 10,
-        "name" :"WMS",
-        "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M160-200h80v-320h480v320h80v-426L480-754 160-626v426Zm-80 80v-560l400-160 400 160v560H640v-320H320v320H80Zm280 0v-80h80v80h-80Zm80-120v-80h80v80h-80Zm80 120v-80h80v80h-80ZM240-520h480-480Z\"/></svg>",
-        "numeric_order":10,
-        "subs":[{      
-            "id" :1001,
-            "name" :"OUTPUTS",
-            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M160-160q-33 0-56.5-23.5T80-240v-280h80v280h640v-480H440v-80h360q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm523-140 57-57-124-123h104v-80H480v240h80v-103l123 123ZM80-600v-200h280v200H80Zm400 120Z\"/></svg>",
-            "numeric_order":1001,
-            "subs" : [{
-                "id" : 100100,
+            "name" : "RULES",
+            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"m576-160-56-56 104-104-104-104 56-56 104 104 104-104 56 56-104 104 104 104-56 56-104-104-104 104Zm79-360L513-662l56-56 85 85 170-170 56 57-225 226ZM80-280v-80h360v80H80Zm0-320v-80h360v80H80Z\"/></svg>",
+            "view_path" :"/views/modules/integrations/winthor/rules",
+            "numeric_order":301                    
+        },{
+            "id" : 330,
+            "routine_type_id" : 1,
+            "name" : "PRODUCTS",
+            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M440-183v-274L200-596v274l240 139Zm80 0 240-139v-274L520-457v274Zm-80 92L160-252q-19-11-29.5-29T120-321v-318q0-22 10.5-40t29.5-29l280-161q19-11 40-11t40 11l280 161q19 11 29.5 29t10.5 40v318q0 22-10.5 40T800-252L520-91q-19 11-40 11t-40-11Zm200-528 77-44-237-137-78 45 238 136Zm-160 93 78-45-237-137-78 45 237 137Z\"/></svg>",
+            "view_path" :"/views/modules/integrations/winthor/products",
+            "numeric_order":330,
+            "subs":[{
+                "id" : 33000,
                 "routine_type_id" : 1,
-                "name" :"SEPARATION MAP EMIT",
-                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M360-240h440v-107H360v107ZM160-613h120v-107H160v107Zm0 187h120v-107H160v107Zm0 186h120v-107H160v107Zm200-186h440v-107H360v107Zm0-187h440v-107H360v107ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Z\"/></svg>",
-                "view_path" :"/views/modules/wms/outputs/integrations/winthor/separation_map_emit",
-                "numeric_order":100100
-            },{
-                "id" : 100101,
-                "routine_type_id" : 1,
-                "name" :"VARIABLE WEIGHT SEPARATION MAP EMIT",
-                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M80-320v-80h80v80H80Zm0-160v-80h80v80H80Zm0-160v-80h80v80H80Zm160 320v-80h160v80H240Zm0-160v-80h520v80H240Zm0-160v-80h520v80H240Zm398 480L468-330l57-57 113 113 226-226 56 58-282 282Z\"/></svg>",
-                "view_path" :"/views/modules/wms/outputs/integrations/winthor/variable_weight_separation_map_emit",
-                "numeric_order":100101
+                "name" : "PRODUCT MANAGEMENT",
+                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M440-183v-274L200-596v274l240 139Zm80 0 240-139v-274L520-457v274Zm-80 92L160-252q-19-11-29.5-29T120-321v-318q0-22 10.5-40t29.5-29l280-161q19-11 40-11t40 11l280 161q19 11 29.5 29t10.5 40v318q0 22-10.5 40T800-252L520-91q-19 11-40 11t-40-11Zm200-528 77-44-237-137-78 45 238 136Zm-160 93 78-45-237-137-78 45 237 137Z\"/></svg>",
+                "view_path" :"/views/modules/integrations/winthor/products/management/:product_id",
+                "numeric_order":33000,
+                "show_in_menu":0
             }]
-        }]
-    },{      
-        "id" : 11,
-        "name" : "MOVIMENTATIONS",
-        "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M280-120 80-320l200-200 57 56-104 104h607v80H233l104 104-57 56Zm400-320-57-56 104-104H120v-80h607L623-784l57-56 200 200-200 200Z\"/></svg>",
-        "numeric_order":11,
-        "subs":[{    
-            "id" :1100,
-            "name" : "INPUTS",            
-            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M80-520v-80h144L52-772l56-56 172 172v-144h80v280H80Zm80 360q-33 0-56.5-23.5T80-240v-200h80v200h320v80H160Zm640-280v-280H440v-80h360q33 0 56.5 23.5T880-720v280h-80ZM560-160v-200h320v200H560Z\"/></svg>",
-            "numeric_order":1100,
+        },{      
+            "id" : 331,
+            "name" :"STOCK",
+            "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M120-520v-320h320v320H120Zm0 400v-320h320v320H120Zm400-400v-320h320v320H520Zm0 400v-320h320v320H520ZM200-600h160v-160H200v160Zm400 0h160v-160H600v160Zm0 400h160v-160H600v160Zm-400 0h160v-160H200v160Zm400-400Zm0 240Zm-240 0Zm0-240Z\"/></svg>",
+            "numeric_order":331,
+            "subs":[{
+                "id" : 33105,
+                "routine_type_id" : 1,
+                "name" :"THIRD PARTY STOCK",
+                "icon" :"<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M760-400v-260L560-800 360-660v60h-80v-100l280-200 280 200v300h-80ZM560-800Zm20 160h40v-40h-40v40Zm-80 0h40v-40h-40v40Zm80 80h40v-40h-40v40Zm-80 0h40v-40h-40v40ZM280-220l278 76 238-74q-5-9-14.5-15.5T760-240H558q-27 0-43-2t-33-8l-93-31 22-78 81 27q17 5 40 8t68 4q0-11-6.5-21T578-354l-234-86h-64v220ZM40-80v-440h304q7 0 14 1.5t13 3.5l235 87q33 12 53.5 42t20.5 66h80q50 0 85 33t35 87v40L560-60l-280-78v58H40Zm80-80h80v-280h-80v280Z\"/></svg>",
+                "view_path" :"/views/modules/integrations/winthor/stock/third_party_stock",
+                "numeric_order":33105
+            }]
+        },{      
+            "id" : 370,
+            "name" : "MOVIMENTATIONS",
+            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M280-120 80-320l200-200 57 56-104 104h607v80H233l104 104-57 56Zm400-320-57-56 104-104H120v-80h607L623-784l57-56 200 200-200 200Z\"/></svg>",
+            "numeric_order":370,
             "subs":[{    
-                "id" :110010,
-                "routine_type_id" : 1,
-                "name" : "PURCHASE SUGGESTION",            
-                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"m40-240 20-80h220l-20 80H40Zm80-160 20-80h260l-20 80H120Zm623 240 20-160 29-240 10-79-59 479ZM240-80q-33 0-56.5-23.5T160-160h583l59-479H692l-11 85q-2 17-15 26.5t-30 7.5q-17-2-26.5-14.5T602-564l9-75H452l-11 84q-2 17-15 27t-30 8q-17-2-27-15t-8-30l9-74H220q4-34 26-57.5t54-23.5h80q8-75 51.5-117.5T550-880q64 0 106.5 47.5T698-720h102q36 1 60 28t19 63l-60 480q-4 30-26.5 49.5T740-80H240Zm220-640h159q1-33-22.5-56.5T540-800q-35 0-55.5 21.5T460-720Z\"/></svg>",
-                "view_path" :"/views/modules/movimentations/inputs/purchase_suggestion",
-                "numeric_order":110010
+                "id" :37000,
+                "name" : "INPUTS",            
+                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M80-520v-80h144L52-772l56-56 172 172v-144h80v280H80Zm80 360q-33 0-56.5-23.5T80-240v-200h80v200h320v80H160Zm640-280v-280H440v-80h360q33 0 56.5 23.5T880-720v280h-80ZM560-160v-200h320v200H560Z\"/></svg>",
+                "numeric_order":37000,
+                "subs":[{    
+                    "id" :3700010,
+                    "routine_type_id" : 1,
+                    "name" : "PURCHASE SUGGESTION",            
+                    "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"m40-240 20-80h220l-20 80H40Zm80-160 20-80h260l-20 80H120Zm623 240 20-160 29-240 10-79-59 479ZM240-80q-33 0-56.5-23.5T160-160h583l59-479H692l-11 85q-2 17-15 26.5t-30 7.5q-17-2-26.5-14.5T602-564l9-75H452l-11 84q-2 17-15 27t-30 8q-17-2-27-15t-8-30l9-74H220q4-34 26-57.5t54-23.5h80q8-75 51.5-117.5T550-880q64 0 106.5 47.5T698-720h102q36 1 60 28t19 63l-60 480q-4 30-26.5 49.5T740-80H240Zm220-640h159q1-33-22.5-56.5T540-800q-35 0-55.5 21.5T460-720Z\"/></svg>",
+                    "view_path" :"/views/modules/integrations/winthor/movimentations/inputs/purchase_suggestion",
+                    "numeric_order":3700010
+                },{    
+                    "id" :3700020,
+                    "routine_type_id" : 1,
+                    "name" : "INPUT ANALISES",            
+                    "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"m576-160-56-56 104-104-104-104 56-56 104 104 104-104 56 56-104 104 104 104-56 56-104-104-104 104Zm79-360L513-662l56-56 85 85 170-170 56 57-225 226ZM80-280v-80h360v80H80Zm0-320v-80h360v80H80Z\"/></svg>",
+                    "view_path" :"/views/modules/integrations/winthor/movimentations/inputs/analises",
+                    "numeric_order":3700020
+                }]
             },{    
-                "id" :110020,
-                "routine_type_id" : 1,
-                "name" : "INPUT ANALISES",            
-                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"m576-160-56-56 104-104-104-104 56-56 104 104 104-104 56 56-104 104 104 104-56 56-104-104-104 104Zm79-360L513-662l56-56 85 85 170-170 56 57-225 226ZM80-280v-80h360v80H80Zm0-320v-80h360v80H80Z\"/></svg>",
-                "view_path" :"/views/modules/movimentations/inputs/analises",
-                "numeric_order":110020
+                "id" :37050,
+                "name" : "OUTPUTS",            
+                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M160-160q-33 0-56.5-23.5T80-240v-280h80v280h640v-480H440v-80h360q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm523-140 57-57-124-123h104v-80H480v240h80v-103l123 123ZM80-600v-200h280v200H80Zm400 120Z\"/></svg>",
+                "numeric_order":37050,
+                "subs" : [{
+                    "id" : 3705000,
+                    "routine_type_id" : 1,
+                    "name" :"SEPARATION MAP EMIT",
+                    "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M360-240h440v-107H360v107ZM160-613h120v-107H160v107Zm0 187h120v-107H160v107Zm0 186h120v-107H160v107Zm200-186h440v-107H360v107Zm0-187h440v-107H360v107ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Z\"/></svg>",
+                    "view_path" :"/views/modules/integrations/winthor/movimentations/outputs/separation_map_emit",
+                    "numeric_order":3705000
+                },{
+                    "id" : 3705001,
+                    "routine_type_id" : 1,
+                    "name" :"VARIABLE WEIGHT SEPARATION MAP EMIT",
+                    "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M80-320v-80h80v80H80Zm0-160v-80h80v80H80Zm0-160v-80h80v80H80Zm160 320v-80h160v80H240Zm0-160v-80h520v80H240Zm0-160v-80h520v80H240Zm398 480L468-330l57-57 113 113 226-226 56 58-282 282Z\"/></svg>",
+                    "view_path" :"/views/modules/integrations/winthor/movimentations/outputs/variable_weight_separation_map_emit",
+                    "numeric_order":3705001
+                }]
             }]
-        },{    
-            "id" :1150,
-            "routine_type_id" : 1,
-            "name" : "OUTPUTS",            
-            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M160-160q-33 0-56.5-23.5T80-240v-280h80v280h640v-480H440v-80h360q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm523-140 57-57-124-123h104v-80H480v240h80v-103l123 123ZM80-600v-200h280v200H80Zm400 120Z\"/></svg>",
-            "view_path" :"/views/modules/movimentations/outputs",
-            "numeric_order":1150
         }]
     },{      
         "id" : 12,

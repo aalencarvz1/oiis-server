@@ -18,7 +18,7 @@ export default class Campaign_Kpis extends BaseTableModel {
   declare description: string;    
   declare conditions:string;
   declare is_visible: number;
-  declare order_num: number;
+  declare numeric_order: number;
   declare notes:string;
 
 
@@ -50,7 +50,7 @@ export default class Campaign_Kpis extends BaseTableModel {
       allowNull: false,
       defaultValue:1
     },
-    order_num:{
+    numeric_order:{
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue:1

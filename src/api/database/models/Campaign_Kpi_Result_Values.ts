@@ -21,7 +21,7 @@ export default class Campaign_Kpi_Result_Values extends BaseTableModel {
   declare expression:string;
   declare is_participation_criterion:number;
   declare is_visible: number;
-  declare order_num: number;
+  declare numeric_order: number;
   declare calculated_at: Date;
   declare notes:string;  
   
@@ -60,7 +60,7 @@ export default class Campaign_Kpi_Result_Values extends BaseTableModel {
       allowNull: false,
       defaultValue:1
     },
-    order_num:{
+    numeric_order:{
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue:1
