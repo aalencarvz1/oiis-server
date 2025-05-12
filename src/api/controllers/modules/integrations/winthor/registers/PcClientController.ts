@@ -493,6 +493,8 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                             });
                         }
             
+                        /*
+                        @deprecated 2025-05-12
                         await Relationships.createIfNotExists({
                             where: {
                                 status_reg_id: Record_Status.ACTIVE,
@@ -513,7 +515,7 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                                 table_2_id : Modules.id,
                                 record_2_id: Modules.LOGISTIC
                             }
-                        });
+                        });*/
                     }
                 }
             } else {
@@ -737,6 +739,8 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                             transaction: transaction
                         });
 
+                        /*
+                        @deprecated 2025-05-12
                         rel = await Relationships.createIfNotExists({
                             where: {
                                 status_reg_id: Record_Status.ACTIVE,
@@ -747,7 +751,7 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                                 record_2_id: Modules.WMS
                             },
                             transaction: transaction
-                        });
+                        });*/
                                             
                         result.data.push(client.dataValues);
                     });

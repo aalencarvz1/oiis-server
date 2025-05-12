@@ -169,6 +169,8 @@ export default class PcFilialController extends WinthorBaseRegistersIntegrations
                     transaction
                 });
 
+                /*
+                @deprecated 2025-05-12
                 rel = await Relationships.createIfNotExists({
                     where:{
                         status_reg_id: Record_Status.ACTIVE,
@@ -215,7 +217,7 @@ export default class PcFilialController extends WinthorBaseRegistersIntegrations
                         record_2_id: Modules.WMS
                     },
                     transaction
-                });
+                });*/
                 if (!alreadTransaction) {
                     await transaction?.commit();
                 }            
@@ -498,6 +500,8 @@ export default class PcFilialController extends WinthorBaseRegistersIntegrations
                     transaction
                 });
 
+                /*
+                @deprecated 2025-05-12
                 rel = await Relationships.createIfNotExists({
                     where:{
                         status_reg_id: Record_Status.ACTIVE,
@@ -533,6 +537,7 @@ export default class PcFilialController extends WinthorBaseRegistersIntegrations
                     },
                     transaction
                 });
+                */
                 if (!alreadTransaction) {
                     await transaction?.commit();
                 }
