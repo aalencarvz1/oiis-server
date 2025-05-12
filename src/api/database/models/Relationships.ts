@@ -230,16 +230,18 @@ export default class Relationships extends BaseTableModel {
 
   static async createIfNotExistsAndRelationed(queryParams: any, newValues: any, queryParamsRelationshipCheck: any){
     let reg : any = await Relationships.findOne(queryParams);
-    if (!reg) {
-      if (Utils.typeOf(queryParamsRelationshipCheck) !== 'array') {
-        queryParamsRelationshipCheck = [queryParamsRelationshipCheck];
-      }
-      for(let key in queryParamsRelationshipCheck) {
-        let relationed = await Relationships.findOne(queryParamsRelationshipCheck[key]);
-        if (!relationed) {
-          throw new Error(`not has relationship with ${JSON.stringify(queryParamsRelationshipCheck[key])}`);
+    if (!Utils.hasValue(reg)) {
+      if (Utils.hasValue(queryParamsRelationshipCheck)) {
+        if (Utils.typeOf(queryParamsRelationshipCheck) !== 'array') {
+          queryParamsRelationshipCheck = [queryParamsRelationshipCheck];
         }
-      }       
+        for(let key in queryParamsRelationshipCheck) {
+          let relationed = await Relationships.findOne(queryParamsRelationshipCheck[key]);
+          if (!relationed) {
+            throw new Error(`not has relationship with ${JSON.stringify(queryParamsRelationshipCheck[key])}`);
+          }
+        }       
+      }
       let options : any = {};
       if (queryParams.transaction) options.transaction = queryParams.transaction;
       let values = newValues || queryParams.where;

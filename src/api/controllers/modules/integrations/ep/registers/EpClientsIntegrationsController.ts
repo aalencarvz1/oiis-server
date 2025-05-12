@@ -155,6 +155,8 @@ export default class EpClientsIntegrationsController extends BaseRegistersIntegr
                     result = await this.defaultIntegrate(interateRegsParams);
 
                     //relationships
+                    /*
+                    @deprecated 2025-05-12
                     if (result.success) {
                         let originalPeople = await this.getClientsByIdentifierDocToIntegrate(params.registersIdentifiersDocs);
                         for(let k in originalPeople) {
@@ -180,7 +182,7 @@ export default class EpClientsIntegrationsController extends BaseRegistersIntegr
                                 }
                             });
                         }
-                    }
+                    }*/
                 } else {
                     throw new Error('missing parameter property (params.registersIdentifiersDocs)');
                 } 
