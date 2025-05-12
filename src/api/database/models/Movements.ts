@@ -128,6 +128,8 @@ export default class Movements extends BaseTableModel {
             record_2_id: businessUnit.id
           }
         };
+        /*
+        @deprecated 2025-05-12
         let relationshipQueryCheckParams : any = {
           where:{
             status_reg_id: Record_Status.ACTIVE,
@@ -137,12 +139,12 @@ export default class Movements extends BaseTableModel {
             table_2_id: Modules.id,
             record_2_id: Modules.WMS
           }
-        };
+        };*/
         if (queryParams.transaction) {
           relationshipQueryParams.transaction = queryParams.transaction;
-          relationshipQueryCheckParams.transaction = queryParams.transaction;
+          //relationshipQueryCheckParams.transaction = queryParams.transaction;
         }
-        let relationship = await Relationships.createIfNotExistsAndRelationed(relationshipQueryParams,null,relationshipQueryCheckParams);
+        let relationship = await Relationships.createIfNotExistsAndRelationed(relationshipQueryParams,null,null);
         if (!relationship) throw new Error("relationship not created");
       }
 
@@ -157,7 +159,9 @@ export default class Movements extends BaseTableModel {
             record_2_id: warehouse.id
           }
         };
-        let relationshipQueryCheckParams = [{
+        let relationshipQueryCheckParams = [/*
+          @deprecated 2025-05-12
+          {
           where:{
             status_reg_id: Record_Status.ACTIVE,
             relationship_type_id: Relationship_Types.RELATIONSHIP,
@@ -166,7 +170,7 @@ export default class Movements extends BaseTableModel {
             table_2_id: Modules.id,
             record_2_id: Modules.WMS
           }
-        }];
+        }*/];
 
         if (businessUnit) {
           relationshipQueryCheckParams.push({
@@ -201,7 +205,9 @@ export default class Movements extends BaseTableModel {
             record_2_id: client.id
           }
         };
-        let relationshipQueryCheckParams = [{
+        let relationshipQueryCheckParams = [/*
+          @deprecated 2025-05-12
+          {
           where:{
             status_reg_id: Record_Status.ACTIVE,
             relationship_type_id: Relationship_Types.RELATIONSHIP,
@@ -210,7 +216,7 @@ export default class Movements extends BaseTableModel {
             table_2_id: Modules.id,
             record_2_id: Modules.WMS
           }
-        }];
+        }*/];
 
         if (businessUnit) {
           relationshipQueryCheckParams.push({
