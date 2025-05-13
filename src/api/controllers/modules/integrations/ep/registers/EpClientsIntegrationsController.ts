@@ -26,7 +26,7 @@ export default class EpClientsIntegrationsController extends BaseRegistersIntegr
         let result = null;
         try {
             if (identifiersDocs) {
-                if (Utils.typeOf(identifiersDocs) != 'array') identifiersDocs = identifiersDocs.toString().split(',');
+                if (Utils.typeOf(identifiersDocs) !== 'array') identifiersDocs = identifiersDocs.toString().split(',');
                 let whereIdentifiersDocs = identifiersDocs.map((el: any)=>{
                     let r : any = {};
                     let and = [];
@@ -107,15 +107,15 @@ export default class EpClientsIntegrationsController extends BaseRegistersIntegr
         let result = new DataSwap();
         try {    
             params = params || {};
-            if (typeof params != 'object') {
+            if (typeof params !== 'object') {
                 params = {
                     registersIdentifiersDocs: params
                 }
             }
             params.registersIdentifiersDocs = params.registersIdentifiersDocs || params;
-            if (Utils.typeOf(params.registersIdentifiersDocs) != 'array') params.registersIdentifiersDocs = params.registersIdentifiersDocs.toString().split(',');
+            if (Utils.typeOf(params.registersIdentifiersDocs) !== 'array') params.registersIdentifiersDocs = params.registersIdentifiersDocs.toString().split(',');
             for (let k in params.registersIdentifiersDocs) {
-                if (typeof params.registersIdentifiersDocs[k] != 'object') {
+                if (typeof params.registersIdentifiersDocs[k] !== 'object') {
                     params.registersIdentifiersDocs[k] = {
                         CODDOCIDENTIFICADOR : params.registersIdentifiersDocs[k]
                     }

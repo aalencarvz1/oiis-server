@@ -1247,7 +1247,7 @@ export default class PcCarregController extends WinthorBaseRegistersIntegrations
         let result : any = null;
         let query = null;
         let idsItemsOnOriginData = params.IDITEMONORIGINDATA || [];
-        if (idsItemsOnOriginData && Utils.typeOf(idsItemsOnOriginData) != 'array') {
+        if (idsItemsOnOriginData && Utils.typeOf(idsItemsOnOriginData) !== 'array') {
             idsItemsOnOriginData = idsItemsOnOriginData.toString().split(",");
             idsItemsOnOriginData = idsItemsOnOriginData.map((el: any)=>Utils.hasValue(el)?el:'null');
         }

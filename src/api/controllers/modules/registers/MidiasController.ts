@@ -23,7 +23,7 @@ export default class MidiasController extends BaseRegistersController {
                 let rMidias = [];
                 let registers = req.body.registers || {};
 
-                if (registers && typeof registers != 'object') registers = JSON.parse(registers);
+                if (registers && typeof registers !== 'object') registers = JSON.parse(registers);
                 let tablesRefs : any = {};
                 let midia : any = null;
 

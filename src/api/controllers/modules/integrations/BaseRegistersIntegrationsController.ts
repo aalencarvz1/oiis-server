@@ -57,7 +57,7 @@ export default class BaseRegistersIntegrationsController extends BaseRegistersCo
         let result = new DataSwap();
         try {
             if (params.registersIds) {
-                if (Utils.typeOf(params.registersIds) != 'array') params.registersIds = params.registersIds.toString().split(',');
+                if (Utils.typeOf(params.registersIds) !== 'array') params.registersIds = params.registersIds.toString().split(',');
                 if (typeof params.getIntegratedsByOriginIds === 'function') {
                     result.data = await params.getIntegratedsByOriginIds(params.registersIds,{raw:params.getDataToUpdate?false:true});
                     if (result.data && result.data.length > 0) {
@@ -70,7 +70,7 @@ export default class BaseRegistersIntegrationsController extends BaseRegistersCo
                                 if (dataToUpdate && dataToUpdate.length > 0) {
                                     let hasUpdate = false;
                                     for(let k2 in dataToUpdate[0]) {
-                                        if (k2 != 'id' && result.data[k][k2] != dataToUpdate[0][k2]) {
+                                        if (k2 !== 'id' && result.data[k][k2] != dataToUpdate[0][k2]) {
                                             result.data[k][k2] = dataToUpdate[0][k2];
                                             hasUpdate = true;
                                         }

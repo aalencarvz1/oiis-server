@@ -229,7 +229,7 @@ export default class Campaign_Kpi_Result_ValuesController extends BaseRegistersC
                 });
 
 
-                if (kpiResultValue.calculated_at?.getTime() != params.currentDate.getTime()) {
+                if (kpiResultValue.calculated_at?.getTime() !== params.currentDate.getTime()) {
 
                     //get kpi value getters
                     let kpiValueGetters : any = await this.getKpiValueGettersFromKpiResultValue(kpiResultValue);

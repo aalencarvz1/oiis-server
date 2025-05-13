@@ -103,7 +103,7 @@ export default class CampaignsController extends BaseRegistersController {
 
         let keys = Object.keys(queryParams);
         if (queryParams?.conditions) {
-            if (typeof queryParams.conditions != 'string') {            
+            if (typeof queryParams.conditions !== 'string') {            
                 queryParams.conditions = JSON.stringify(queryParams.conditions);
             } 
         } else if (keys.indexOf('conditions') > -1) {

@@ -276,7 +276,7 @@ export default class BaseTableModel extends Model {
             let foreignKey : any = {};
             if (typeof fks[i] === 'object') {
                 for(let key in fks[i]) {
-                    if (key.trim().toLowerCase() != 'references') {
+                    if (key.trim().toLowerCase() !== 'references') {
                         foreignKey[key] = fks[i][key];
                     } else {
                         foreignKey[key] = {};
@@ -538,7 +538,7 @@ export default class BaseTableModel extends Model {
         let valuesToUpdate : any = {};
         if (Utils.hasValue(reg)) {
             for(let key in values) {
-                if (key != 'id' && key != 'where') {
+                if (key !== 'id' && key !== 'where') {
                     if (reg[key] != values[key]) {
                         reg[key] = values[key];
                         valuesToUpdate[key] = values[key];

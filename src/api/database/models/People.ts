@@ -111,13 +111,13 @@ export default class People extends BaseTableModel {
       let ind = null;
       for(let key in queryParams) {
         ind = fieldsLower.indexOf(key.trim().toLowerCase());
-        if (ind > -1 && key != 'id') {
+        if (ind > -1 && key !== 'id') {
           newParams[originalFieldsNames[ind]] = queryParams[key];
         }
       }
       if (people) {
         for(let key in newParams) {
-          if (key != 'id') people[key] = newParams[key];
+          if (key !== 'id') people[key] = newParams[key];
         }
         await people.save();
         return people;

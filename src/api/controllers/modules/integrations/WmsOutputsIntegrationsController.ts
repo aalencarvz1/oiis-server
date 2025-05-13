@@ -136,7 +136,7 @@ export default class WmsOutputsIntegrationsController extends BaseRegistersInteg
     static async unify_loadings(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let identifiers = req.body.identifiers || []; 
-            if (Utils.typeOf(identifiers) != 'array') {
+            if (Utils.typeOf(identifiers) !== 'array') {
                 identifiers = identifiers.split(',');
             }
             identifiers = identifiers.map((el: any)=>Utils.hasValue(el) ? el : 'null');           
@@ -242,7 +242,7 @@ export default class WmsOutputsIntegrationsController extends BaseRegistersInteg
     static async get_loadings_items_for_print(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let identifiers = req.body.identifiers || [];
-            if (Utils.typeOf(identifiers) != 'array') {
+            if (Utils.typeOf(identifiers) !== 'array') {
                 identifiers = identifiers.split(',');
             }
             identifiers = identifiers.map((el: any)=>Utils.hasValue(el) ? el : 'null');           

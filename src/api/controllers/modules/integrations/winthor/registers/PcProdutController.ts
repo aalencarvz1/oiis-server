@@ -31,7 +31,7 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
     static checkGtin(data: any, field: string) : void {
         if (Utils.hasValue(data[`GTINCODAUXILIAR${field}`])) {
             if (Utils.hasValue(data[`CODAUXILIAR${field}`])) {
-                if (Utils.toNumber(data[`GTINCODAUXILIAR${field}`]) != data[`CODAUXILIAR${field}`]?.toString().length) {
+                if (Utils.toNumber(data[`GTINCODAUXILIAR${field}`]) !== data[`CODAUXILIAR${field}`]?.toString().length) {
                     throw new Error(`wrong CODAUXILIAR${field} length (${Utils.toNumber(data[`GTINCODAUXILIAR${field}`])} <> ${data[`CODAUXILIAR${field}`]?.toString().length})`);
                 }
             } else {

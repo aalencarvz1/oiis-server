@@ -106,7 +106,7 @@ export default {
                 if (typeof oldTables.allTables.allColumns === 'function') {
                   for(let oldColumn in newRegs[index]) {
                     let newCol = oldTables.allTables.allColumns(oldColumn);
-                    if (newCol != oldColumn) {
+                    if (newCol !== oldColumn) {
                       newRegs[index][newCol] = newRegs[index][oldColumn];
                       delete newRegs[index][oldColumn];
                     }

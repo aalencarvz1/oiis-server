@@ -37,7 +37,7 @@ export default class ReportsController extends BaseRegistersController {
             where:{}
         };
         let dates = params.dates || [];
-        if (Utils.typeOf(dates) != 'array') {
+        if (Utils.typeOf(dates) !== 'array') {
             dates = dates.split(',');
         }
         let id = params.id || params.REPORTID || params.REPORTDATAFOUNTID;
@@ -92,7 +92,7 @@ export default class ReportsController extends BaseRegistersController {
             let report = params?.pReport || await this.getReportDataFount(params);
             if (report) {
                 if (Utils.hasValue(params?.dates)) {
-                    if (Utils.typeOf(params.dates) != 'array') {
+                    if (Utils.typeOf(params.dates) !== 'array') {
                         params.dates = params.dates.split(',');
                     }
                 }
@@ -187,7 +187,7 @@ export default class ReportsController extends BaseRegistersController {
             if (Utils.typeOf(params) === 'array') {
                 for(let i = 0; i < params.length; i++) {
                     if (parentTypeId == Sql_Object_Types.SELECT && params[i].IDVISION == visionId && params[i].sql_object_type_id == Sql_Object_Types.FIELD
-                        && params[i].numeric_order < 900000 && params[i].sql_text != '*'
+                        && params[i].numeric_order < 900000 && params[i].sql_text !== '*'
                     ) {
                         result.push(params[i]);
                     } else if (Utils.hasValue(params[i].subs)){
@@ -196,7 +196,7 @@ export default class ReportsController extends BaseRegistersController {
                 } 
             } else {
                 if (parentTypeId == Sql_Object_Types.SELECT && params.IDVISION == visionId && params.sql_object_type_id == Sql_Object_Types.FIELD
-                    && params.numeric_order < 900000 && params.sql_text != '*'
+                    && params.numeric_order < 900000 && params.sql_text !== '*'
                 ) {
                     result.push(params);
                 } else if (Utils.hasValue(params.subs)){
@@ -331,7 +331,7 @@ export default class ReportsController extends BaseRegistersController {
                 structuredQueryParams.considerNormalSales = true;
                 structuredQueryParams.considerReturns = true;
                 structuredQueryParams.user = params?.user;
-                if (Utils.typeOf(structuredQueryParams.periods) != "array") {
+                if (Utils.typeOf(structuredQueryParams.periods) !== "array") {
                     structuredQueryParams.periods = Utils.toArray(structuredQueryParams.periods,",");
                 }
                 structuredQueryParams.periods = structuredQueryParams.periods.map((el: any)=>Utils.hasValue(el)?el:'null');

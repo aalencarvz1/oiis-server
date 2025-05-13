@@ -26,14 +26,14 @@ export default class Campaign_Kpi_Value_GettersController extends BaseRegistersC
         let keys = Object.keys(queryParams);
 
         if (Utils.hasValue(queryParams?.conditions)) {
-            if (typeof queryParams.conditions != 'string') {            
+            if (typeof queryParams.conditions !== 'string') {            
                 queryParams.conditions = JSON.stringify(queryParams.conditions);
             } 
         } else if (keys.indexOf('conditions') > -1) {
             queryParams.conditions = null;
         }
 
-        if (queryParams?.campaign_entity_ids && typeof queryParams.campaign_entity_ids != 'string') {
+        if (queryParams?.campaign_entity_ids && typeof queryParams.campaign_entity_ids !== 'string') {
             if (Utils.hasValue(queryParams.campaign_entity_ids)) {
                 queryParams.campaign_entity_ids = queryParams.campaign_entity_ids.join(",");
             } else {
@@ -148,7 +148,7 @@ export default class Campaign_Kpi_Value_GettersController extends BaseRegistersC
 
             if (Utils.hasValue(kpiValueGetter)) {
                 params.currentDate = params.currentDate || new Date();
-                if (kpiValueGetter.calculated_at?.getTime() != params.currentDate.getTime()) {
+                if (kpiValueGetter.calculated_at?.getTime() !== params.currentDate.getTime()) {
                     let visionRelationship = await Relationships.findOne({
                         where:{
                             relationship_type_id: Relationship_Types.RELATIONSHIP,
@@ -255,19 +255,19 @@ export default class Campaign_Kpi_Value_GettersController extends BaseRegistersC
                                 }
 
                                 if (Utils.hasValue(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()][Campaigns.tableName.toLowerCase()].conditions)) {
-                                    if (JSON.parse(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()][Campaigns.tableName.toLowerCase()].conditions).filter((el:any)=>el.type != 'default condition').length) {
+                                    if (JSON.parse(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()][Campaigns.tableName.toLowerCase()].conditions).filter((el:any)=>el.type !== 'default condition').length) {
                                         throw new Error("do implement complex conditions");
                                     }
                                     reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()][Campaigns.tableName.toLowerCase()].conditions).filter((el:any)=>el.type === 'default condition').map((el:any)=>el.value)];
                                 }
                                 if (Utils.hasValue(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()].conditions)) {
-                                    if (JSON.parse(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()].conditions).filter((el:any)=>el.type != 'default condition').length) {
+                                    if (JSON.parse(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()].conditions).filter((el:any)=>el.type !== 'default condition').length) {
                                         throw new Error("do implement complex conditions");
                                     }
                                     reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()].conditions).filter((el:any)=>el.type === 'default condition').map((el:any)=>el.value)];
                                 }
                                 if (Utils.hasValue(kpiGetterSpecs[k].conditions)) {
-                                    if (JSON.parse(kpiGetterSpecs[k].conditions).filter((el:any)=>el.type != 'default condition').length) {
+                                    if (JSON.parse(kpiGetterSpecs[k].conditions).filter((el:any)=>el.type !== 'default condition').length) {
                                         throw new Error("do implement complex conditions");
                                     }
                                     reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiGetterSpecs[k].conditions).filter((el:any)=>el.type === 'default condition').map((el:any)=>el.value)];

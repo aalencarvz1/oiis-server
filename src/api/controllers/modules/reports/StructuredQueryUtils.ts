@@ -35,7 +35,7 @@ export default class StructuredQueryUtils {
         let newPeriods : any = [];
 
         
-        if (Utils.typeOf(periods) != "array") {
+        if (Utils.typeOf(periods) !== "array") {
             periods = Utils.toArray(periods,",");
         }
 
@@ -44,7 +44,7 @@ export default class StructuredQueryUtils {
         for (let p in periods) {
             newPeriods[p] = [];
             for (let d in periods[p]) {
-                if (typeof periods[p][d] != 'object') {
+                if (typeof periods[p][d] !== 'object') {
                     newPeriods[p][d] = Utils.toBRDate(new Date(periods[p][d]));
                 } else {
                     newPeriods[p][d] = Utils.toBRDate(periods[p][d]);
@@ -67,7 +67,7 @@ export default class StructuredQueryUtils {
         let fieldPeriods = [];
         let newPeriods: any = [];
 
-        if (Utils.typeOf(periods) != "array") {
+        if (Utils.typeOf(periods) !== "array") {
             periods = Utils.toArray(periods,",");
         }
 
@@ -76,7 +76,7 @@ export default class StructuredQueryUtils {
         for (let p in periods) {
             newPeriods[p] = [];
             for (let d in periods[p]) {
-                if (typeof periods[p][d] != 'object') {
+                if (typeof periods[p][d] !== 'object') {
                     newPeriods[p][d] = Utils.toBRDate(new Date(periods[p][d]));
                 } else {
                     newPeriods[p][d] = Utils.toBRDate(periods[p][d]);
@@ -161,7 +161,7 @@ export default class StructuredQueryUtils {
         let fieldPeriods = [];
         let newPeriods : any = [];
 
-        if (Utils.typeOf(periods) != "array") {
+        if (Utils.typeOf(periods) !== "array") {
             periods = Utils.toArray(periods,",");
         }
         periods = Utils.singleArrayTo2LevelArray(periods);
@@ -169,7 +169,7 @@ export default class StructuredQueryUtils {
         for (let p in periods) {
             newPeriods[p] = [];
             for (let d in periods[p]) {
-                if (typeof periods[p][d] != 'object') {
+                if (typeof periods[p][d] !== 'object') {
                     newPeriods[p][d] = Utils.toBRDate(new Date(periods[p][d]));
                 } else {
                     newPeriods[p][d] = Utils.toBRDate(periods[p][d]);
@@ -545,11 +545,11 @@ export default class StructuredQueryUtils {
         let periods = params.periods || [];
         let conditions = params.conditions || [];
         if (visionsIds.length && periods.length) {            
-            if (Utils.typeOf(visionsIds) != "array") {
+            if (Utils.typeOf(visionsIds) !== "array") {
                 visionsIds = Utils.toArray(visionsIds,",");
             }
             visionsIds = visionsIds.map((el: any)=>Utils.hasValue(el)?el:'null');
-            if (Utils.typeOf(periods) != "array") {
+            if (Utils.typeOf(periods) !== "array") {
                 periods = Utils.toArray(periods,",");
             }
             periods = periods.map((el: any)=>Utils.hasValue(el)?el:'null');
@@ -564,7 +564,7 @@ export default class StructuredQueryUtils {
             let maxPeriod = null;
             for (let p in periods) {
                 for (let d in periods[p]) {
-                    if (typeof periods[p][d] != 'object') {
+                    if (typeof periods[p][d] !== 'object') {
                         periods[p][d] = new Date(periods[p][d]);
                     }
                     if (!minPeriod || minPeriod > periods[p][d]) {
@@ -632,7 +632,7 @@ export default class StructuredQueryUtils {
 
                         //unify all structured report data fount in one
                         structuredQueryOrigin = structuredQueryOrigin || reportsDatasFounts[k].origin_get_value_from;
-                        if (structuredQueryOrigin != reportsDatasFounts[k].origin_get_value_from) {
+                        if (structuredQueryOrigin !== reportsDatasFounts[k].origin_get_value_from) {
                             throw new Error(`unsuported different origins in same structured report: ${structuredQueryOrigin},${reportsDatasFounts[k].origin_get_value_from}`);
                         }
                         result = result || [];

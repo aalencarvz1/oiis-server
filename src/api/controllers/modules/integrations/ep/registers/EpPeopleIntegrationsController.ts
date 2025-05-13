@@ -22,7 +22,7 @@ export default class EpPeopleIntegrationsController extends BaseRegistersIntegra
     static async getPeopleByIdentifiersDocs(identifiersDocs?: any, options?: any) : Promise<any> {
         let result : any = null;
         if (identifiersDocs) {
-            if (Utils.typeOf(identifiersDocs) != 'array') identifiersDocs = identifiersDocs.toString().split(',');
+            if (Utils.typeOf(identifiersDocs) !== 'array') identifiersDocs = identifiersDocs.toString().split(',');
             let whereIdentifiersDocs = identifiersDocs.map((el: any)=>{
                 let r : any = {};
                 let and = [];

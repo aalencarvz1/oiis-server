@@ -429,7 +429,7 @@ export default class SicrediPixIntegrationsController{
             let responseJson : any = await SicrediPixIntegrationsController.createPix(pixParams);                      
             if (!responseJson) throw new Error("responseJson is null");
             result.data = responseJson?.data || responseJson;
-            if (result.data?.status != 'ATIVA' && result.data?.status > 400 && result.data?.status < 499) {
+            if (result.data?.status !== 'ATIVA' && result.data?.status > 400 && result.data?.status < 499) {
                 console.error(result.data);
                 throw new Error((result.data?.title || '')+':' + (result.data?.detail || '') + '('+result.data?.violacoes?.reduce((prev?: any,current?: any)=>prev += current?.razao + '['+current?.propriedade+']')+')');
             }
@@ -499,7 +499,7 @@ export default class SicrediPixIntegrationsController{
             result.data = [];
 
 
-            if (Utils.typeOf(txIdentifiers) != 'array') {
+            if (Utils.typeOf(txIdentifiers) !== 'array') {
                 txIdentifiers = txIdentifiers.split(',');
             }
 

@@ -19,7 +19,7 @@ export default class Maps_Api_ResponsesController extends BaseRegistersControlle
             let bodyParams = req.body || req.query ;
             if (bodyParams.library === 'geocoding') {
                 let apiParams = bodyParams.parameters;
-                if (typeof apiParams != 'string') {
+                if (typeof apiParams !== 'string') {
                     apiParams = JSON.stringify(apiParams);
                 }
                 let apiRes : any = await Maps_Api_Responses.findOne({

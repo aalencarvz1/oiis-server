@@ -128,7 +128,7 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
         let result = null;
         try {
             if (identifiersDocs) {
-                if (Utils.typeOf(identifiersDocs) != 'array') identifiersDocs = identifiersDocs.toString().split(',');
+                if (Utils.typeOf(identifiersDocs) !== 'array') identifiersDocs = identifiersDocs.toString().split(',');
                 let whereIdentifiersDocs = identifiersDocs.map((el: any)=>{
                     let r : any = {};
                     let and = [];
@@ -205,7 +205,7 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
             params = params || {};
             params.identifiers = params.identifiers || params;
             if (params.identifiers) {
-                if (Utils.typeOf(params.identifiers) != 'array') params.identifiers = params.identifiers.toString().split(',');
+                if (Utils.typeOf(params.identifiers) !== 'array') params.identifiers = params.identifiers.toString().split(',');
                 let where : any = {
                     [Op.or] : []
                 };
@@ -641,7 +641,7 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
         let result = new DataSwap();
         try {
             let identifiers = params.identifiers || []; 
-            if (Utils.typeOf(identifiers) != 'array') identifiers = identifiers.split(',');                    
+            if (Utils.typeOf(identifiers) !== 'array') identifiers = identifiers.split(',');                    
             if (identifiers.length > 0) {
                 identifiers = identifiers.map((el: any)=>Utils.hasValue(el)?el:'null');
                 result.data = [];

@@ -10,7 +10,7 @@ export default class QueryBuilder {
         let result : any = null;
         try {
             if (Utils.hasValue(field) && Utils.hasValue(values)) {
-                if (Utils.typeOf(values) != 'array') {
+                if (Utils.typeOf(values) !== 'array') {
                     result = `${field} in (${values})`;
                 } else {
                     if (values.length > QueryBuilder.IN_CLAUSE_ELEMENTS_LIMIT) {
@@ -40,7 +40,7 @@ export default class QueryBuilder {
         let result : any = null;
         try {
             if (Utils.hasValue(field) && Utils.hasValue(values)) {
-                if (Utils.typeOf(values) != 'array') {
+                if (Utils.typeOf(values) !== 'array') {
                     result = {
                         [field]: values
                     }

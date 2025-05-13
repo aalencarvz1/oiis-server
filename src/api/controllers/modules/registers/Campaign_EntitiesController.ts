@@ -20,7 +20,7 @@ export default class Campaign_EntitiesController extends BaseRegistersController
         }
 
         if (Utils.hasValue(queryParams?.conditions)) {
-            if (queryParams?.conditions && typeof queryParams.conditions != 'string') {        
+            if (queryParams?.conditions && typeof queryParams.conditions !== 'string') {        
                 queryParams.conditions = JSON.stringify(queryParams.conditions);
             } 
         } else if (keys.indexOf("conditions") > -1) {

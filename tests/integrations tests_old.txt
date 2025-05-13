@@ -36,7 +36,7 @@ let tablesNamesIgnoresFKErrors = [
 //helper functions
 function _typeOf(value) {
     let r = typeof value;
-    if (typeof NodeList != 'undefined') {
+    if (typeof NodeList !== 'undefined') {
         if (Array.isArray(value) || value instanceof NodeList || value instanceof Array) {
             r = "array";
         }

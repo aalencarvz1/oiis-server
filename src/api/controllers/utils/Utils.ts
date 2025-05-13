@@ -72,7 +72,7 @@ export default class Utils {
 
     static typeOf(value : any) : string {
         let r : string = typeof value;
-        if (typeof NodeList != 'undefined') {
+        if (typeof NodeList !== 'undefined') {
             if (Array.isArray(value) || value instanceof NodeList || value instanceof Array) {
                 r = "array";
             }
@@ -305,7 +305,7 @@ export default class Utils {
     static toBRDate(pDate: Date | string | null | undefined = null) : string | null{
         let result = null;
         if (pDate) {
-            if (typeof pDate != 'object') pDate = Utils.toDate(pDate);
+            if (typeof pDate !== 'object') pDate = Utils.toDate(pDate);
             result = pDate.toISOString().substring(0,10);            
             result = result.split("-");
             result = `${result[2]}/${result[1]}/${result[0]}`;
@@ -316,7 +316,7 @@ export default class Utils {
     static toISODate(pDate?: any) : any {
         let result = null;
         if (pDate) {
-            if (typeof pDate != 'object') pDate = Utils.toDate(pDate);
+            if (typeof pDate !== 'object') pDate = Utils.toDate(pDate);
             result = pDate.toISOString().substring(0,10);            
         }
         return result;
@@ -359,7 +359,7 @@ export default class Utils {
             if (typeof value === 'string') {
                 delimiter = delimiter || ',';
                 result = value.split(delimiter || ',');
-            } else if (Utils.typeOf(value) != 'array') {
+            } else if (Utils.typeOf(value) !== 'array') {
                 result = [value];
             }
         }
@@ -371,7 +371,7 @@ export default class Utils {
         let newArray = [];
         let current2Level = [];
         for(let k in array) {
-            if (Utils.typeOf(array[k]) != 'array') {
+            if (Utils.typeOf(array[k]) !== 'array') {
                 current2Level.push(array[k]);
                 if (current2Level.length === 2 ) {
                     newArray.push(current2Level);
@@ -598,7 +598,7 @@ export default class Utils {
             isGtin : false
         };
         if (Utils.hasValue(code)) {
-            if (typeof code != 'string') code = code.toString();
+            if (typeof code !== 'string') code = code.toString();
             const numbers = code?.replace(/\D/g, "") || ""; // Remove caracteres não numéricos        
             if (![8, 12, 13, 14].includes(numbers.length)) return result;
         

@@ -101,7 +101,7 @@ export default class DatabaseUtils {
                     for(let i = 0; i < values.length; i++) {
                         inValues.push(valuesFunc ? Sequelize.fn(valuesFunc,values[i].id || values[i].id || values[i].name || values[i].name || values[i].label || values[i]) : values[i].id || values[i].id || values[i].name || values[i].name || values[i].label || values[i]);
                     }
-                    if (typeof field != 'string') {
+                    if (typeof field !== 'string') {
                         whereClause[Op.and] = whereClause[Op.and] || [];
                         if ((compare === Op.in || (typeof compare === 'string' && compare.trim().toLowerCase() === 'in'))
                             || (compare === Op.notIn || (typeof compare === 'string' && compare.trim().toLowerCase() === 'not in'))
@@ -142,7 +142,7 @@ export default class DatabaseUtils {
                 }
             } else {
                 if (compare) {
-                    if (typeof field != 'string') {
+                    if (typeof field !== 'string') {
                         whereClause[Op.and] = whereClause[Op.and] || [];
                         whereClause[Op.and].push(Sequelize.where(field,DatabaseUtils.getSequelizeOperation(compare), valuesFunc ? Sequelize.fn(valuesFunc,values.id || values.id || values.name || values.name || values.label || values) : values.id || values.id || values.name || values.name || values.label || values));
                     } else {
@@ -151,7 +151,7 @@ export default class DatabaseUtils {
                         }
                     }
                 } else {
-                    if (typeof field != 'string') {
+                    if (typeof field !== 'string') {
                         whereClause[Op.and] = whereClause[Op.and] || [];
                         whereClause[Op.and].push(Sequelize.where(field,valuesFunc ? Sequelize.fn(valuesFunc,values.id || values.id || values.name || values.name || values.label || values) : values.id || values.id || values.name || values.name || values.label || values));
                     } else {

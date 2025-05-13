@@ -120,7 +120,7 @@ export default class TasksController extends BaseRegistersController {
             let taskParams : any = {};
             let taskXParams : any = {};
             for(let key in bodyParams) {                
-                if (key != 'status_id') taskParams[key] = bodyParams[key]
+                if (key !== 'status_id') taskParams[key] = bodyParams[key]
                 else taskXParams[key] = bodyParams[key] || Task_Status.NOT_STARTED;
             }
             taskParams.creator_user_id = req.user.id;

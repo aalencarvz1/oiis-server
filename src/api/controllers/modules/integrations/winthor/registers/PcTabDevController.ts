@@ -39,8 +39,8 @@ export default class PcTabDevController extends WinthorBaseRegistersIntegrations
 
                 //preserve winthor code, if violate primary key or unique, raise here
                 if (logisticReason) {
-                    if (logisticReason.name != pcTabDev.MOTIVO) logisticReason.name = pcTabDev.MOTIVO;
-                    if (logisticReason.mov_type_sigla != pcTabDev.TIPO) logisticReason.mov_type_sigla = pcTabDev.TIPO;            
+                    if (logisticReason.name !== pcTabDev.MOTIVO) logisticReason.name = pcTabDev.MOTIVO;
+                    if (logisticReason.mov_type_sigla !== pcTabDev.TIPO) logisticReason.mov_type_sigla = pcTabDev.TIPO;            
                     await logisticReason.save(options);
                 } else {
                     logisticReason = await Logistic_Reasons.create({
@@ -67,7 +67,7 @@ export default class PcTabDevController extends WinthorBaseRegistersIntegrations
         let result = new DataSwap();
         try {
             let identifiers = params.identifiers || []; 
-            if (Utils.typeOf(identifiers) != 'array') identifiers = identifiers.split(',');                    
+            if (Utils.typeOf(identifiers) !== 'array') identifiers = identifiers.split(',');                    
             if (identifiers.length > 0) {
                 identifiers = identifiers.map((el: any)=>Utils.hasValue(el)?el:'null');
                 result.data = [];
