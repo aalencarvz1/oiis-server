@@ -56,7 +56,7 @@ export default class DBConnectionManager {
 
                 if (connectionConfig) {
 
-                    if ((connectionConfig?.dialect || '').toLowerCase().trim() == 'oracle' ) {
+                    if ((connectionConfig?.dialect || '').toLowerCase().trim() === 'oracle' ) {
                         
                         //https://github.com/oracle/node-oracledb/blob/b2b784218a53e0adfb8b3b8eeb91532abed946f5/doc/src/user_guide/appendix_a.rst#id87                
                         OracleDB.initOracleClient({libDir: process.env.DB_ORA_LIB_DIR});
@@ -82,7 +82,7 @@ export default class DBConnectionManager {
 
                 if (connectionConfig) {
 
-                    if ((connectionConfig?.dialect || '').toLowerCase().trim() == 'oracle' ) {
+                    if ((connectionConfig?.dialect || '').toLowerCase().trim() === 'oracle' ) {
                         
                         //https://github.com/oracle/node-oracledb/blob/b2b784218a53e0adfb8b3b8eeb91532abed946f5/doc/src/user_guide/appendix_a.rst#id87                
                         OracleDB.initOracleClient({libDir: process.env.DB_ORA_LIB_DIR});
@@ -107,7 +107,7 @@ export default class DBConnectionManager {
 
                 if (connectionConfig) {
 
-                    if ((connectionConfig?.dialect || '').toLowerCase().trim() == 'oracle' ) {
+                    if ((connectionConfig?.dialect || '').toLowerCase().trim() === 'oracle' ) {
                         
                         //https://github.com/oracle/node-oracledb/blob/b2b784218a53e0adfb8b3b8eeb91532abed946f5/doc/src/user_guide/appendix_a.rst#id87                
                         OracleDB.initOracleClient({libDir: process.env.DB_ORA_LIB_DIR});
@@ -132,7 +132,7 @@ export default class DBConnectionManager {
 
                 if (connectionConfig) {
 
-                    if ((connectionConfig?.dialect || '').toLowerCase().trim() == 'oracle' ) {
+                    if ((connectionConfig?.dialect || '').toLowerCase().trim() === 'oracle' ) {
                         
                         //https://github.com/oracle/node-oracledb/blob/b2b784218a53e0adfb8b3b8eeb91532abed946f5/doc/src/user_guide/appendix_a.rst#id87                
                         OracleDB.initOracleClient({libDir: process.env.DB_ORA_LIB_DIR});
@@ -157,7 +157,7 @@ export default class DBConnectionManager {
 
                 if (connectionConfig) {
 
-                    if ((connectionConfig?.dialect || '').toLowerCase().trim() == 'oracle' ) {
+                    if ((connectionConfig?.dialect || '').toLowerCase().trim() === 'oracle' ) {
                         
                         //https://github.com/oracle/node-oracledb/blob/b2b784218a53e0adfb8b3b8eeb91532abed946f5/doc/src/user_guide/appendix_a.rst#id87                
                         OracleDB.initOracleClient({libDir: process.env.DB_ORA_LIB_DIR});
@@ -183,7 +183,7 @@ export default class DBConnectionManager {
 
                 if (connectionConfig) {
 
-                    if ((connectionConfig?.dialect || '').toLowerCase().trim() == 'oracle' ) {
+                    if ((connectionConfig?.dialect || '').toLowerCase().trim() === 'oracle' ) {
                         
                         //https://github.com/oracle/node-oracledb/blob/b2b784218a53e0adfb8b3b8eeb91532abed946f5/doc/src/user_guide/appendix_a.rst#id87                
                         OracleDB.initOracleClient({libDir: process.env.DB_ORA_LIB_DIR});

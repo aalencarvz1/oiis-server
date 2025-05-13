@@ -10,7 +10,7 @@ import SjdTabpr_Origem_Log from '../models/sjd/SjdTabpr_Origem_Log.js';
 /*migration*/
 export default {
   async up(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_EP_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_EP_INTEGRATION) === true) {
       await SjdTabpr_Origem_Log.runUpMigration(queryInterface);     
     }
   },

@@ -18,7 +18,7 @@ export default class QueryBuilder {
                         let limitedsValues = [];
                         for(let i = 0; i < values.length; i++) {
                             limitedsValues.push(Utils.hasValue(values[i])?values[i]:'null');
-                            if (limitedsValues.length == QueryBuilder.IN_CLAUSE_ELEMENTS_LIMIT) {
+                            if (limitedsValues.length === QueryBuilder.IN_CLAUSE_ELEMENTS_LIMIT) {
                                 result.push(`${field} in (${limitedsValues.join(',')})`);
                                 limitedsValues = [];
                             }
@@ -50,7 +50,7 @@ export default class QueryBuilder {
                         let limitedsValues = [];
                         for(let i = 0; i < values.length; i++) {
                             limitedsValues.push(Utils.hasValue(values[i])?values[i]:'null');
-                            if (limitedsValues.length == QueryBuilder.IN_CLAUSE_ELEMENTS_LIMIT) {
+                            if (limitedsValues.length === QueryBuilder.IN_CLAUSE_ELEMENTS_LIMIT) {
                                 result.push({
                                     [field]: {
                                         [Op.in]: limitedsValues

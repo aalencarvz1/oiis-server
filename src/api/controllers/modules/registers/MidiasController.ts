@@ -28,7 +28,7 @@ export default class MidiasController extends BaseRegistersController {
                 let midia : any = null;
 
                 for(let key in registers) {
-                    let file = files.filter((el: any)=>el.originalname.trim().toLowerCase() == registers[key].name.trim().toLowerCase())[0];
+                    let file = files.filter((el: any)=>el.originalname.trim().toLowerCase() === registers[key].name.trim().toLowerCase())[0];
                     if (Utils.hasValue(file)) {
                         tablesRefs[registers[key].table_name] = tablesRefs[registers[key].table_name] || await Tables.findOne({
                             raw:true,

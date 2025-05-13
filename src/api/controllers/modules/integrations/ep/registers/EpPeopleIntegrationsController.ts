@@ -26,7 +26,7 @@ export default class EpPeopleIntegrationsController extends BaseRegistersIntegra
             let whereIdentifiersDocs = identifiersDocs.map((el: any)=>{
                 let r : any = {};
                 let and = [];
-                if (typeof el == 'object') {
+                if (typeof el === 'object') {
                     if (el.CODTIPODOCIDENTIFICADOR) {
                         and.push(Sequelize.where(
                             Sequelize.col(`CODTIPODOCIDENTIFICADOR`),

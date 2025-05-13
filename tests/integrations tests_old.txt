@@ -52,19 +52,19 @@ function hasValue(pValue) {
     let result = false;
     let tpof = _typeOf(pValue);
     if (tpof !== "undefined" && pValue != null) {
-        if (tpof == "object") {
+        if (tpof === "object") {
             if (Object.keys(pValue).length > 0
                 || Object.getOwnPropertySymbols(pValue).length > 0
                 || ['DATE'].indexOf(pValue?.constructor?.name?.toUpperCase()) > -1) {
                 result = true;
             }
         }
-        else if (tpof == "array") {
+        else if (tpof === "array") {
             if (pValue.length > 0) {
                 result = true;
             }
         }
-        else if (tpof == "string") {
+        else if (tpof === "string") {
             if (pValue.trim().length > 0) {
                 result = true;
             }
@@ -78,15 +78,15 @@ function hasValue(pValue) {
 function toBool(pValue) {
     let result = false;
     if (typeof pValue !== "undefined" && pValue != null) {
-        if (typeof pValue == "boolean") {
+        if (typeof pValue === "boolean") {
             result = pValue;
         }
-        else if (typeof pValue == "string") {
-            if (["0", "false", "not", "no", "n", "não", " ", "", "null"].indexOf(pValue.trim().toLowerCase()) == -1) {
+        else if (typeof pValue === "string") {
+            if (["0", "false", "not", "no", "n", "não", " ", "", "null"].indexOf(pValue.trim().toLowerCase()) === -1) {
                 result = true;
             }
         }
-        else if (typeof pValue == "number") {
+        else if (typeof pValue === "number") {
             if (pValue != 0) {
                 return true;
             }
@@ -229,7 +229,7 @@ async function createData(tableName, valuesToCreate) {
     let jsonDataCreate = await callApi(`${endPoint}`, options);
     expect(hasValue(jsonDataCreate.data.id)).toBeTruthy();
     //delete
-    let crudToDelete = crudsToDelete.find((el) => el.tableName == tableName);
+    let crudToDelete = crudsToDelete.find((el) => el.tableName === tableName);
     if (crudToDelete) {
         crudToDelete.id.in.push(jsonDataCreate.data.id);
     }
@@ -253,7 +253,7 @@ async function updateData(tableName, valuesToCreate) {
     let endPoint = `${baseApiEndPoint}${endPoints[`${tableName}controller`].path || tableName}`;
     let options = { ...defaultLoggedOptions };
     options.method = 'PATCH';
-    let dataToUpdate = crudsToDelete.find((el) => el.tableName == tableName)?.data;
+    let dataToUpdate = crudsToDelete.find((el) => el.tableName === tableName)?.data;
     expect(hasValue(dataToUpdate)).toBeTruthy();
     //console.log(dataToUpdate);
     let previousValue = null;
@@ -279,10 +279,10 @@ async function updateData(tableName, valuesToCreate) {
 ;
 async function integrateDataFromWinthorTable(params) {
     let options = { ...defaultLoggedOptions, method: 'POST' };
-    let origin = datas['data_origins'].find((el) => el.name.toLowerCase() == params.origin.toLowerCase());
+    let origin = datas['data_origins'].find((el) => el.name.toLowerCase() === params.origin.toLowerCase());
     let valuesToCreate = null;
     let data = await getDataFromWinthorTable(params);
-    if (typeof params.identifierWinthorField == 'function') {
+    if (typeof params.identifierWinthorField === 'function') {
         valuesToCreate = params.identifierWinthorField(origin, data);
     }
     else {
@@ -347,7 +347,7 @@ describe('Running api call tests', () => {
     fileList = fileList.filter(el => el.trim().toLowerCase().indexOf('create-table') > -1);
     fileList = fileList.map(el => el.replace(/\d|\-create\-table\-|\.js/g, '').trim().toLowerCase());
     fileList.sort(function (a, b) {
-        if (b == 'tables' && ['connections', 'schemas'].indexOf(a) > -1)
+        if (b === 'tables' && ['connections', 'schemas'].indexOf(a) > -1)
             return -1;
         else
             return 0;
@@ -386,9 +386,9 @@ describe('Running api call tests', () => {
                 case 'tables':
                     getParamsToCreate = () => {
                         let parentTableName = 'connections';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'schemas';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             name: testString,
                             data_connection_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -410,7 +410,7 @@ describe('Running api call tests', () => {
                 case 'parameters':
                     getParamsToCreate = () => {
                         let parentTableName = 'data_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             data_type_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -421,7 +421,7 @@ describe('Running api call tests', () => {
                 case 'parameter_values':
                     getParamsToCreate = () => {
                         let parentTableName = 'parameters';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             value: testString,
                             parameter_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -432,13 +432,13 @@ describe('Running api call tests', () => {
                 case 'countries':
                     getParamsToCreate = () => {
                         let parentTableName = 'continents';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             continent_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
                         };
                     };
-                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
                         getParamsToIntegrate = () => {
                             return {
                                 origin: 'WINTHOR',
@@ -456,13 +456,13 @@ describe('Running api call tests', () => {
                 case 'states':
                     getParamsToCreate = () => {
                         let parentTableName = 'countries';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             country_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
                         };
                     };
-                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
                         getParamsToIntegrate = () => {
                             return {
                                 origin: 'WINTHOR',
@@ -485,13 +485,13 @@ describe('Running api call tests', () => {
                 case 'cities':
                     getParamsToCreate = () => {
                         let parentTableName = 'states';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             state_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
                         };
                     };
-                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
                         getParamsToIntegrate = () => {
                             return {
                                 origin: 'WINTHOR',
@@ -514,7 +514,7 @@ describe('Running api call tests', () => {
                 case 'streets':
                     getParamsToCreate = () => {
                         let parentTableName = 'cities';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             city_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -525,14 +525,14 @@ describe('Running api call tests', () => {
                 case 'people':
                     getParamsToCreate = () => {
                         let parentTableName = 'identifier_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             identifier_doc_type_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
                             identifier_doc: testString
                         };
                     };
-                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
                         getParamsToIntegrate = () => {
                             return {
                                 origin: 'WINTHOR',
@@ -567,16 +567,16 @@ describe('Running api call tests', () => {
                 case 'business_units':
                     getParamsToCreate = () => {
                         let parentTableName = 'people';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'companies';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             alias: testString,
                             people_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
                             company_id: parent2?.id.in[0] || ((datas[parentTableName2] || [])[(datas[parentTableName2] || []).length - 1] || {}).id || undefined,
                         };
                     };
-                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
                         getParamsToIntegrate = () => {
                             return {
                                 origin: 'WINTHOR',
@@ -602,9 +602,9 @@ describe('Running api call tests', () => {
                 case 'users':
                     getParamsToCreate = () => {
                         let parentTableName = 'people';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'access_profiles';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             alias: testString,
                             people_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -618,11 +618,11 @@ describe('Running api call tests', () => {
                 case 'permissions':
                     getParamsToCreate = () => {
                         let parentTableName = 'users';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'access_profiles';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         let parentTableName3 = 'power_types';
-                        let parent3 = crudsToDelete.find((el) => el.tableName == parentTableName3);
+                        let parent3 = crudsToDelete.find((el) => el.tableName === parentTableName3);
                         return {
                             observations: testString,
                             user_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -638,14 +638,14 @@ describe('Running api call tests', () => {
                 case 'collaborators':
                     getParamsToCreate = () => {
                         let parentTableName = 'people';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             alias: testString,
                             people_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
                         };
                     };
-                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
-                        if (modelName == 'clients') {
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
+                        if (modelName === 'clients') {
                             getParamsToIntegrate = () => {
                                 return {
                                     origin: 'WINTHOR',
@@ -658,7 +658,7 @@ describe('Running api call tests', () => {
                                 };
                             };
                         }
-                        else if (modelName == 'companies') {
+                        else if (modelName === 'companies') {
                             getParamsToIntegrate = () => {
                                 return {
                                     origin: 'WINTHOR',
@@ -693,7 +693,7 @@ describe('Running api call tests', () => {
                     getParamsToUpdate = getParamsToCreate;
                     break;
                 case 'logistic_reasons':
-                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+                    if (toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
                         getParamsToIntegrate = () => {
                             return {
                                 origin: 'WINTHOR',
@@ -715,9 +715,9 @@ describe('Running api call tests', () => {
                 case 'report_data_fount_items':
                     getParamsToCreate = () => {
                         let parentTableName = 'report_data_founts';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'sql_object_types';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             sql_text: testString,
                             report_data_source_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -729,7 +729,7 @@ describe('Running api call tests', () => {
                 case 'api_requests':
                     getParamsToCreate = () => {
                         let parentTableName = 'apis';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             api_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -740,7 +740,7 @@ describe('Running api call tests', () => {
                 case 'api_request_calls':
                     getParamsToCreate = () => {
                         let parentTableName = 'api_requests';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             on_receive_response: testString,
                             api_request_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -751,7 +751,7 @@ describe('Running api call tests', () => {
                 case 'api_responses':
                     getParamsToCreate = () => {
                         let parentTableName = 'api_request_calls';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             response: testString,
                             api_request_call_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -770,7 +770,7 @@ describe('Running api call tests', () => {
                 case 'sql_processes':
                     getParamsToCreate = () => {
                         let parentTableName = 'sql_object_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             sql_object_type_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -781,9 +781,9 @@ describe('Running api call tests', () => {
                 case 'relationships':
                     getParamsToCreate = () => {
                         let parentTableName = 'relationship_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'tables';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             value: testString,
                             relationship_type_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -816,7 +816,7 @@ describe('Running api call tests', () => {
                 case 'measurement_units':
                     getParamsToCreate = () => {
                         let parentTableName = 'greatnesses';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             greatness_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -828,7 +828,7 @@ describe('Running api call tests', () => {
                 case 'user_tokens':
                     getParamsToCreate = () => {
                         let parentTableName = 'users';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             token: testString,
                             user_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -839,7 +839,7 @@ describe('Running api call tests', () => {
                 case 'user_profile_timeworks':
                     getParamsToCreate = () => {
                         let parentTableName = 'users';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             user_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -850,7 +850,7 @@ describe('Running api call tests', () => {
                 case 'user_timeworks':
                     getParamsToCreate = () => {
                         let parentTableName = 'user_profile_timeworks';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             observations: testString,
                             start_at: testString,
@@ -864,9 +864,9 @@ describe('Running api call tests', () => {
                 case 'routines':
                     getParamsToCreate = () => {
                         let parentTableName = 'routine_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'modules';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             name: testString,
                             routine_type_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -878,7 +878,7 @@ describe('Running api call tests', () => {
                 case 'routine_contents':
                     getParamsToCreate = () => {
                         let parentTableName = 'routines';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             routine_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -889,7 +889,7 @@ describe('Running api call tests', () => {
                 case 'texts':
                     getParamsToCreate = () => {
                         let parentTableName = 'languages';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             text: testString,
                             language_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -900,9 +900,9 @@ describe('Running api call tests', () => {
                 case 'translates':
                     getParamsToCreate = () => {
                         let parentTableName = 'languages';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'texts';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             translated: testString,
                             language_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -914,11 +914,11 @@ describe('Running api call tests', () => {
                 case 'relationship_values':
                     getParamsToCreate = () => {
                         let parentTableName = 'relationships';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'identifier_types';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         let parentTableName3 = 'data_types';
-                        let parent3 = crudsToDelete.find((el) => el.tableName == parentTableName3);
+                        let parent3 = crudsToDelete.find((el) => el.tableName === parentTableName3);
                         return {
                             value: testString,
                             data_relationship_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -931,9 +931,9 @@ describe('Running api call tests', () => {
                 case 'datasvalues':
                     getParamsToCreate = () => {
                         let parentTableName = 'tables';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'value_names';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             value: testString,
                             table_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -946,9 +946,9 @@ describe('Running api call tests', () => {
                 case 'postal_codes':
                     getParamsToCreate = () => {
                         let parentTableName = 'address_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'cities';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             postal_code: testString,
                             address_type_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -960,11 +960,11 @@ describe('Running api call tests', () => {
                 case 'postal_codes_streets':
                     getParamsToCreate = () => {
                         let parentTableName = 'postal_codes';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'neighborhoods';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         let parentTableName3 = 'streets';
-                        let parent3 = crudsToDelete.find((el) => el.tableName == parentTableName3);
+                        let parent3 = crudsToDelete.find((el) => el.tableName === parentTableName3);
                         return {
                             observations: testString,
                             postal_code_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -977,7 +977,7 @@ describe('Running api call tests', () => {
                 case 'postal_codes_paths':
                     getParamsToCreate = () => {
                         let parentTableName = 'postal_codes';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             start_number: testString,
                             postal_code_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -988,7 +988,7 @@ describe('Running api call tests', () => {
                 case 'addresses':
                     getParamsToCreate = () => {
                         let parentTableName = 'address_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             number: testString,
                             address_type_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -999,7 +999,7 @@ describe('Running api call tests', () => {
                 case 'contacts':
                     getParamsToCreate = () => {
                         let parentTableName = 'contact_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             contact_type_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -1010,9 +1010,9 @@ describe('Running api call tests', () => {
                 case 'people_addresses':
                     getParamsToCreate = () => {
                         let parentTableName = 'people';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'addresses';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             observations: testString,
                             people_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1024,9 +1024,9 @@ describe('Running api call tests', () => {
                 case 'people_contacts':
                     getParamsToCreate = () => {
                         let parentTableName = 'people';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'contacts';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             observations: testString,
                             people_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1038,11 +1038,11 @@ describe('Running api call tests', () => {
                 case 'warehouse_addresses':
                     getParamsToCreate = () => {
                         let parentTableName = 'warehouses';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'warehouse_address_types';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         let parentTableName3 = 'identifier_types';
-                        let parent3 = crudsToDelete.find((el) => el.tableName == parentTableName3);
+                        let parent3 = crudsToDelete.find((el) => el.tableName === parentTableName3);
                         return {
                             identifier: testString,
                             warehouse_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1055,9 +1055,9 @@ describe('Running api call tests', () => {
                 case 'warehouse_address_coordinates':
                     getParamsToCreate = () => {
                         let parentTableName = 'warehouse_addresses';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'warehouse_address_types';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             value: testString,
                             warehouse_address_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1069,11 +1069,11 @@ describe('Running api call tests', () => {
                 case 'warehouse_address_dimensions':
                     getParamsToCreate = () => {
                         let parentTableName = 'warehouse_addresses';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'identifier_types';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         let parentTableName3 = 'measurement_units';
-                        let parent3 = crudsToDelete.find((el) => el.tableName == parentTableName3);
+                        let parent3 = crudsToDelete.find((el) => el.tableName === parentTableName3);
                         return {
                             observations: testString,
                             warehouse_address_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1086,11 +1086,11 @@ describe('Running api call tests', () => {
                 case 'warehouse_address_capacities':
                     getParamsToCreate = () => {
                         let parentTableName = 'warehouse_addresses';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'identifier_types';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         let parentTableName3 = 'measurement_units';
-                        let parent3 = crudsToDelete.find((el) => el.tableName == parentTableName3);
+                        let parent3 = crudsToDelete.find((el) => el.tableName === parentTableName3);
                         return {
                             observations: testString,
                             warehouse_address_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1103,7 +1103,7 @@ describe('Running api call tests', () => {
                 case 'suppliers':
                     getParamsToCreate = () => {
                         let parentTableName = 'people';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             alias: testString,
                             people_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -1114,9 +1114,9 @@ describe('Running api call tests', () => {
                 case 'collaborator_contracts':
                     getParamsToCreate = () => {
                         let parentTableName = 'collaborators';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'contract_types';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             observations: testString,
                             collaborator_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1128,9 +1128,9 @@ describe('Running api call tests', () => {
                 case 'collaborators_x_functions':
                     getParamsToCreate = () => {
                         let parentTableName = 'collaborator_contracts';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'collaborator_functions';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             observations: testString,
                             contrract_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1142,7 +1142,7 @@ describe('Running api call tests', () => {
                 case 'conditions':
                     getParamsToCreate = () => {
                         let parentTableName = 'entities_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             observations: testString,
                             entity_type_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1154,7 +1154,7 @@ describe('Running api call tests', () => {
                 case 'condition_items':
                     getParamsToCreate = () => {
                         let parentTableName = 'conditions';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             value: testString,
                             condition_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -1165,11 +1165,11 @@ describe('Running api call tests', () => {
                 case 'container_type_dimensions':
                     getParamsToCreate = () => {
                         let parentTableName = 'container_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'identifier_types';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         let parentTableName3 = 'measurement_units';
-                        let parent3 = crudsToDelete.find((el) => el.tableName == parentTableName3);
+                        let parent3 = crudsToDelete.find((el) => el.tableName === parentTableName3);
                         return {
                             observations: testString,
                             container_type_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1183,11 +1183,11 @@ describe('Running api call tests', () => {
                     getParamsToCreate = () => {
                         let tableName = 'container_type_capacities';
                         let parentTableName = 'container_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'identifier_types';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         let parentTableName3 = 'measurement_units';
-                        let parent3 = crudsToDelete.find((el) => el.tableName == parentTableName3);
+                        let parent3 = crudsToDelete.find((el) => el.tableName === parentTableName3);
                         return {
                             observations: testString,
                             container_type_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1200,9 +1200,9 @@ describe('Running api call tests', () => {
                 case 'items':
                     getParamsToCreate = () => {
                         let parentTableName = 'identifier_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'ncms';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             identifier: testString,
                             identifier_type_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1215,7 +1215,7 @@ describe('Running api call tests', () => {
                 case 'lots':
                     getParamsToCreate = () => {
                         let parentTableName = 'identifier_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             identifier: testString,
                             identifier_type_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1227,9 +1227,9 @@ describe('Running api call tests', () => {
                 case 'containers':
                     getParamsToCreate = () => {
                         let parentTableName = 'container_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'identifier_types';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             identifier: testString,
                             container_type_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1242,11 +1242,11 @@ describe('Running api call tests', () => {
                     getParamsToCreate = () => {
                         let tableName = 'items_lots_containers';
                         let parentTableName = 'items';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'lots';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         let parentTableName3 = 'containers';
-                        let parent3 = crudsToDelete.find((el) => el.tableName == parentTableName3);
+                        let parent3 = crudsToDelete.find((el) => el.tableName === parentTableName3);
                         return {
                             observations: testString,
                             item_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1259,7 +1259,7 @@ describe('Running api call tests', () => {
                 case 'stock_entities':
                     getParamsToCreate = () => {
                         let parentTableName = 'companies';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             observations: testString,
                             company_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -1270,13 +1270,13 @@ describe('Running api call tests', () => {
                 case 'item_stocks':
                     getParamsToCreate = () => {
                         let parentTableName = 'items_lots_containers';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'stock_entities';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         let parentTableName3 = 'measurement_units';
-                        let parent3 = crudsToDelete.find((el) => el.tableName == parentTableName3);
+                        let parent3 = crudsToDelete.find((el) => el.tableName === parentTableName3);
                         let parentTableName4 = 'packagings';
-                        let parent4 = crudsToDelete.find((el) => el.tableName == parentTableName4);
+                        let parent4 = crudsToDelete.find((el) => el.tableName === parentTableName4);
                         return {
                             observations: testString,
                             item_lot_container_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1290,7 +1290,7 @@ describe('Running api call tests', () => {
                 case 'item_stock_units':
                     getParamsToCreate = () => {
                         let parentTableName = 'item_stocks';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             identifier: testString,
                             stock_item_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -1301,9 +1301,9 @@ describe('Running api call tests', () => {
                 case 'item_meas_pack_identif':
                     getParamsToCreate = () => {
                         let parentTableName = 'items';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'packagings';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             identifier: testString,
                             item_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1315,7 +1315,7 @@ describe('Running api call tests', () => {
                 case 'groups':
                     getParamsToCreate = () => {
                         let parentTableName = 'entities_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             sigla: testString,
@@ -1327,7 +1327,7 @@ describe('Running api call tests', () => {
                 case 'groups_items':
                     getParamsToCreate = () => {
                         let parentTableName = 'groups';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             observations: testString,
                             item_id: 1,
@@ -1339,7 +1339,7 @@ describe('Running api call tests', () => {
                 case 'movements':
                     getParamsToCreate = () => {
                         let parentTableName = 'movement_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             identifier: testString,
                             type_mov_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -1358,9 +1358,9 @@ describe('Running api call tests', () => {
                 case 'movements_groups':
                     getParamsToCreate = () => {
                         let parentTableName = 'movement_groups';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'movements';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             observations: testString,
                             movement_group_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1372,11 +1372,11 @@ describe('Running api call tests', () => {
                 case 'movements_entities':
                     getParamsToCreate = () => {
                         let parentTableName = 'movements';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'movement_entity_relationship_types';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         let parentTableName3 = 'stock_entities';
-                        let parent3 = crudsToDelete.find((el) => el.tableName == parentTableName3);
+                        let parent3 = crudsToDelete.find((el) => el.tableName === parentTableName3);
                         return {
                             observations: testString,
                             mov_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1389,11 +1389,11 @@ describe('Running api call tests', () => {
                 case 'movs_items_stocks':
                     getParamsToCreate = () => {
                         let parentTableName = 'movements';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'movement_types';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         let parentTableName3 = 'item_stocks';
-                        let parent3 = crudsToDelete.find((el) => el.tableName == parentTableName3);
+                        let parent3 = crudsToDelete.find((el) => el.tableName === parentTableName3);
                         return {
                             observations: testString,
                             mov_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1406,13 +1406,13 @@ describe('Running api call tests', () => {
                 case 'item_mov_amounts':
                     getParamsToCreate = () => {
                         let parentTableName = 'movs_items_stocks';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'movement_types';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         let parentTableName3 = 'measurement_units';
-                        let parent3 = crudsToDelete.find((el) => el.tableName == parentTableName3);
+                        let parent3 = crudsToDelete.find((el) => el.tableName === parentTableName3);
                         let parentTableName4 = 'packagings';
-                        let parent4 = crudsToDelete.find((el) => el.tableName == parentTableName4);
+                        let parent4 = crudsToDelete.find((el) => el.tableName === parentTableName4);
                         return {
                             observations: testString,
                             mov_item_stock_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1426,7 +1426,7 @@ describe('Running api call tests', () => {
                 case 'item_mov_units':
                     getParamsToCreate = () => {
                         let parentTableName = 'item_mov_amounts';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             observations: testString,
                             item_mov_amt_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -1437,7 +1437,7 @@ describe('Running api call tests', () => {
                 case 'item_mov_amount_restrictions':
                     getParamsToCreate = () => {
                         let parentTableName = 'item_mov_amounts';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             value: testString,
                             item_mov_amt_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -1448,13 +1448,13 @@ describe('Running api call tests', () => {
                 case 'item_mov_xml_import_id_conversions':
                     getParamsToCreate = () => {
                         let parentTableName = 'clients';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'items';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         let parentTableName3 = 'measurement_units';
-                        let parent3 = crudsToDelete.find((el) => el.tableName == parentTableName3);
+                        let parent3 = crudsToDelete.find((el) => el.tableName === parentTableName3);
                         let parentTableName4 = 'packagings';
-                        let parent4 = crudsToDelete.find((el) => el.tableName == parentTableName4);
+                        let parent4 = crudsToDelete.find((el) => el.tableName === parentTableName4);
                         return {
                             emitent_doc: testString,
                             owner_client_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1470,7 +1470,7 @@ describe('Running api call tests', () => {
                 case 'sql_objects':
                     getParamsToCreate = () => {
                         let parentTableName = 'sql_object_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             sql_object_type_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -1481,7 +1481,7 @@ describe('Running api call tests', () => {
                 case 'logistic_orders':
                     getParamsToCreate = () => {
                         let parentTableName = 'logistic_mov_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             identifier: testString,
                             logistic_mov_type_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -1492,9 +1492,9 @@ describe('Running api call tests', () => {
                 case 'logistic_orders_movs':
                     getParamsToCreate = () => {
                         let parentTableName = 'logistic_orders';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'movements';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             unmoved_qty_notes: testString,
                             logistic_order_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1506,9 +1506,9 @@ describe('Running api call tests', () => {
                 case 'logistic_orders_items_mov_amt':
                     getParamsToCreate = () => {
                         let parentTableName = 'logistic_orders_movs';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'item_mov_amounts';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             unmoved_qty_notes: testString,
                             mov_logistic_order_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1520,11 +1520,11 @@ describe('Running api call tests', () => {
                 case 'logistic_orders_movs_received_values':
                     getParamsToCreate = () => {
                         let parentTableName = 'logistic_orders';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'financial_value_forms';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         let parentTableName3 = 'currencies';
-                        let parent3 = crudsToDelete.find((el) => el.tableName == parentTableName3);
+                        let parent3 = crudsToDelete.find((el) => el.tableName === parentTableName3);
                         return {
                             proofs: testString,
                             logistic_order_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1537,11 +1537,11 @@ describe('Running api call tests', () => {
                 case 'logistic_orders_dest_values':
                     getParamsToCreate = () => {
                         let parentTableName = 'logistic_orders';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'financial_value_forms';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         let parentTableName3 = 'financial_value_mov_types';
-                        let parent3 = crudsToDelete.find((el) => el.tableName == parentTableName3);
+                        let parent3 = crudsToDelete.find((el) => el.tableName === parentTableName3);
                         return {
                             observations: testString,
                             logistic_order_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1554,7 +1554,7 @@ describe('Running api call tests', () => {
                 case 'logistic_logs':
                     getParamsToCreate = () => {
                         let parentTableName = 'tables';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             json_object: testString,
                             table_ref_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1566,9 +1566,9 @@ describe('Running api call tests', () => {
                 case 'tasks_status_users':
                     getParamsToCreate = () => {
                         let parentTableName = 'tasks';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'users';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             observations: testString,
                             task_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1581,7 +1581,7 @@ describe('Running api call tests', () => {
                     getParamsToCreate = () => {
                         let tableName = 'tasks_status_users_logs';
                         let parentTableName = 'tasks_status_users';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             operation: testString,
                             task_status_user_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -1593,7 +1593,7 @@ describe('Running api call tests', () => {
                     getParamsToCreate = () => {
                         let tableName = 'commission_entitiy_codes';
                         let parentTableName = 'tables';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             table_entity_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1605,7 +1605,7 @@ describe('Running api call tests', () => {
                 case 'commission_items':
                     getParamsToCreate = () => {
                         let parentTableName = 'commission_entitiy_codes';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             commission_entity_code_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -1617,7 +1617,7 @@ describe('Running api call tests', () => {
                     getParamsToCreate = () => {
                         let tableName = 'commission_values';
                         let parentTableName = 'commission_items';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             commission_item_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -1629,7 +1629,7 @@ describe('Running api call tests', () => {
                     getParamsToCreate = () => {
                         let tableName = 'projects_items';
                         let parentTableName = 'projects_items_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             identifier: testString,
                             name: testString,
@@ -1642,9 +1642,9 @@ describe('Running api call tests', () => {
                     getParamsToCreate = ()=>{
                         let tableName = 'project_tasks';
                         let parentTableName = 'project_task_types';
-                        let parent = crudsToDelete.find((el)=>el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el)=>el.tableName === parentTableName);
                         let parentTableName2 = 'projects_items';
-                        let parent2 = crudsToDelete.find((el)=>el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el)=>el.tableName === parentTableName2);
                         return {
                             identifier:testString,
                             name: testString,
@@ -1658,9 +1658,9 @@ describe('Running api call tests', () => {
                     getParamsToCreate = ()=>{
                         let tableName = 'requirements';
                         let parentTableName = 'requirements_types';
-                        let parent = crudsToDelete.find((el)=>el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el)=>el.tableName === parentTableName);
                         let parentTableName2 = 'projects_items';
-                        let parent2 = crudsToDelete.find((el)=>el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el)=>el.tableName === parentTableName2);
 
                         return {
                             identifier:testString,
@@ -1676,7 +1676,7 @@ describe('Running api call tests', () => {
                     getParamsToCreate = () => {
                         let tableName = 'campaigns';
                         let parentTableName = 'entities_types';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             entity_type_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1690,7 +1690,7 @@ describe('Running api call tests', () => {
                     getParamsToCreate = () => {
                         let tableName = 'campaign_kpis';
                         let parentTableName = 'campaigns';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             campaign_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -1702,7 +1702,7 @@ describe('Running api call tests', () => {
                     getParamsToCreate = () => {
                         let tableName = 'campaign_kpi_value_getters';
                         let parentTableName = 'campaign_kpis';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             periods_agregation_expression: testString,
                             campaign_kpi_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined
@@ -1714,9 +1714,9 @@ describe('Running api call tests', () => {
                     getParamsToCreate = () => {
                         let tableName = 'campaign_kpi_value_details';
                         let parentTableName = 'campaign_kpi_value_getters';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'entities_types';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             notes: testString,
                             campaign_kpi_value_getters_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1729,7 +1729,7 @@ describe('Running api call tests', () => {
                     getParamsToCreate = () => {
                         let tableName = 'campaign_kpi_value_detail_entities';
                         let parentTableName = 'campaign_kpi_value_details';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             expression: testString,
                             entity_id: 1,
@@ -1742,7 +1742,7 @@ describe('Running api call tests', () => {
                     getParamsToCreate = () => {
                         let tableName = 'campaign_kpi_result_values';
                         let parentTableName = 'campaign_kpis';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             name: testString,
                             expression: testString,
@@ -1755,7 +1755,7 @@ describe('Running api call tests', () => {
                     getParamsToCreate = () => {
                         let tableName = 'campaign_entities';
                         let parentTableName = 'campaigns';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         return {
                             notes: testString,
                             entity_id: 1,
@@ -1768,9 +1768,9 @@ describe('Running api call tests', () => {
                     getParamsToCreate = () => {
                         let tableName = 'campaign_entities_kpi_result_values';
                         let parentTableName = 'campaign_entities';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'campaign_kpi_result_values';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             notes: testString,
                             campaign_entity_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1783,9 +1783,9 @@ describe('Running api call tests', () => {
                     getParamsToCreate = () => {
                         let tableName = 'project_tasks_status_users';
                         let parentTableName = 'project_tasks';
-                        let parent = crudsToDelete.find((el) => el.tableName == parentTableName);
+                        let parent = crudsToDelete.find((el) => el.tableName === parentTableName);
                         let parentTableName2 = 'users';
-                        let parent2 = crudsToDelete.find((el) => el.tableName == parentTableName2);
+                        let parent2 = crudsToDelete.find((el) => el.tableName === parentTableName2);
                         return {
                             notes: testString,
                             task_id: parent?.id.in[0] || ((datas[parentTableName] || [])[(datas[parentTableName] || []).length - 1] || {}).id || undefined,
@@ -1795,7 +1795,7 @@ describe('Running api call tests', () => {
                     getParamsToUpdate = getParamsToCreate;
                     break;
             }
-            if (typeof getParamsToCreate == 'function') {
+            if (typeof getParamsToCreate === 'function') {
                 test(`create`, async () => {
                     //console.log(modelName,getParamsToCreate());
                     await createData(modelName, getParamsToCreate());
@@ -1804,7 +1804,7 @@ describe('Running api call tests', () => {
             test(`read`, async () => {
                 await getDataFromTable(modelName, true);
             }, longTimeRun);
-            if (typeof getParamsToUpdate == 'function') {
+            if (typeof getParamsToUpdate === 'function') {
                 test(`update`, async () => {
                     await updateData(modelName, getParamsToUpdate());
                 });
@@ -1812,7 +1812,7 @@ describe('Running api call tests', () => {
             /*test('delete (forward)', () => {
                 expect(true).toBeTruthy();
             });*/
-            if (typeof getParamsToIntegrate == 'function') {
+            if (typeof getParamsToIntegrate === 'function') {
                 describe('integration', () => {
                     test('read', async () => {
                         await getDataFromWinthorTable(getParamsToIntegrate());
@@ -1825,11 +1825,11 @@ describe('Running api call tests', () => {
         });
         //console.log(i);
         //break;
-        //if (modelName == 'data_origins') break;
-        //if (modelName == 'people') break;
-        //if (modelName == 'people_contacts') break;
-        //if (modelName == 'companies') break;
-        //if (modelName == 'clients') break;
+        //if (modelName === 'data_origins') break;
+        //if (modelName === 'people') break;
+        //if (modelName === 'people_contacts') break;
+        //if (modelName === 'companies') break;
+        //if (modelName === 'clients') break;
         //if (i >= 200) break;
     }
     

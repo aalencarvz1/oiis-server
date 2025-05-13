@@ -191,7 +191,7 @@ export default class StructuredQueryUtils {
         try {
             let conditions = params.conditions || params.condictions || [];
             if (Utils.hasValue(conditions)) {
-                if (typeof conditions == 'string') {
+                if (typeof conditions === 'string') {
                     conditions = JSON.parse(conditions);
                 }
                 result = conditions.filter((el: any)=>((el.reportVision || el.vision || {}).id || el.reportVision || el.vision) == visionId).length > 0;
@@ -208,7 +208,7 @@ export default class StructuredQueryUtils {
         try {
             let conditions = params.conditions || params.condictions|| [];
             if (Utils.hasValue(conditions)) {
-                if (typeof conditions == 'string') {
+                if (typeof conditions === 'string') {
                     conditions = JSON.parse(conditions);
                 }
                 conditions = conditions.filter((el: any)=>((el.reportVision || el.vision || {}).id || el.reportVision || el.vision) == visionId);
@@ -289,7 +289,7 @@ export default class StructuredQueryUtils {
         let result = null;
         try {
             if (item) {
-                if (typeof item == 'object') {
+                if (typeof item === 'object') {
                     if (item.assembled_sql_text) {
                         result = item.assembled_sql_text;
                     } else {
@@ -317,8 +317,8 @@ export default class StructuredQueryUtils {
      */
     static async unifyStructuredQueryItems(currentStructure?: any,currentItems?: any,params?: any) : Promise<any> {
         if (Utils.hasValue(currentItems)) {
-            if (Utils.typeOf(currentItems) == 'array') {
-                if (Utils.typeOf(currentStructure) == 'array') {
+            if (Utils.typeOf(currentItems) === 'array') {
+                if (Utils.typeOf(currentStructure) === 'array') {
                     let preexistent = false;
                     let isEqual = false;
                     let text1;
@@ -333,10 +333,10 @@ export default class StructuredQueryUtils {
 
                             text2 = await this.getMountedSqlText(currentStructure[j],params);
                             text2 = text2 || '';
-                            isEqual = text1.trim().replace(/\s/g,' ').toLowerCase() == text2.trim().replace(/\s/g,' ').toLowerCase();
+                            isEqual = text1.trim().replace(/\s/g,' ').toLowerCase() === text2.trim().replace(/\s/g,' ').toLowerCase();
                             if (Utils.hasValue(currentItems[k].sql_alias)) {
                                 if (Utils.hasValue(currentStructure[j].sql_alias)) {
-                                    isEqual = isEqual &&  currentItems[k].sql_alias.trim().toLowerCase() == currentStructure[j].sql_alias.trim().toLowerCase();
+                                    isEqual = isEqual &&  currentItems[k].sql_alias.trim().toLowerCase() === currentStructure[j].sql_alias.trim().toLowerCase();
                                 } else {
                                     isEqual = false;
                                 }
@@ -348,8 +348,8 @@ export default class StructuredQueryUtils {
                             if (currentItems[k].sql_object_type_id == Sql_Object_Types.JOIN && currentStructure[j].sql_object_type_id == Sql_Object_Types.JOIN) {
                                 if (Utils.hasValue(currentItems[k].subs) && Utils.hasValue(currentStructure[j].subs)) {
 
-                                    if ((currentItems[k].subs[0].sql_text||'').trim().replace(/\s/g,'').toLowerCase() == (currentStructure[j].subs[0].sql_text||'').trim().replace(/\s/g,'').toLowerCase()
-                                        && (currentItems[k].subs[0].sql_alias||'').trim().replace(/\s/g,'').toLowerCase() == (currentStructure[j].subs[0].sql_alias||'').trim().replace(/\s/g,'').toLowerCase()
+                                    if ((currentItems[k].subs[0].sql_text||'').trim().replace(/\s/g,'').toLowerCase() === (currentStructure[j].subs[0].sql_text||'').trim().replace(/\s/g,'').toLowerCase()
+                                        && (currentItems[k].subs[0].sql_alias||'').trim().replace(/\s/g,'').toLowerCase() === (currentStructure[j].subs[0].sql_alias||'').trim().replace(/\s/g,'').toLowerCase()
 
                                         //mostrar isso e ver porque o alias não está sendo computado (diferente no registro e está passando por aqui como igual visao filia + empresa)
 
@@ -393,14 +393,14 @@ export default class StructuredQueryUtils {
      */
     static sortNestedReportDataFoutItems(currentItems?: any) : any {        
         if (currentItems) {
-            if (Utils.typeOf(currentItems) == 'array') {
+            if (Utils.typeOf(currentItems) === 'array') {
                 currentItems = currentItems.sort(function(a: any,b: any){return ((a.numeric_order||a.id)-0) - ((b.numeric_order||b.id)-0)});
                 for(let k in currentItems) {
                     if (currentItems[k].subs && currentItems[k].subs.length) {
                         currentItems[k].subs = this.sortNestedReportDataFoutItems(currentItems[k].subs);
                     }
                 }
-            } else if (Utils.typeOf(currentItems) == 'object') { 
+            } else if (Utils.typeOf(currentItems) === 'object') { 
                 if (currentItems.subs && currentItems.subs.length) {
                     currentItems.subs = this.sortNestedReportDataFoutItems(currentItems.subs);
                 }
@@ -557,7 +557,7 @@ export default class StructuredQueryUtils {
             //wraper perios in array o 2 elements [[init,end],..]
             periods = Utils.singleArrayTo2LevelArray(periods);
             visionsIds = [...new Set(visionsIds)]; //unique
-            if (Utils.hasValue(conditions) && typeof conditions == 'string') {
+            if (Utils.hasValue(conditions) && typeof conditions === 'string') {
                 conditions = JSON.parse(conditions);
             }
             let minPeriod = null;
@@ -628,7 +628,7 @@ export default class StructuredQueryUtils {
             let reportsDatasFounts : any = await DBConnectionManager.getDefaultDBConnection()?.query(query,{raw:true,type: QueryTypes.SELECT});
             if (reportsDatasFounts && reportsDatasFounts.length) {                
                 for(let k in reportsDatasFounts) {
-                    if (reportsDatasFounts[k].type_get_value_from.trim().toUpperCase() == 'STRUCTURED QUERY') {
+                    if (reportsDatasFounts[k].type_get_value_from.trim().toUpperCase() === 'STRUCTURED QUERY') {
 
                         //unify all structured report data fount in one
                         structuredQueryOrigin = structuredQueryOrigin || reportsDatasFounts[k].origin_get_value_from;
@@ -664,7 +664,7 @@ export default class StructuredQueryUtils {
      */
     static async mountQueryItems(queryItems?: any,params?: any) : Promise<any> {
         let result = null;        
-        if (Utils.typeOf(queryItems) == 'array') {
+        if (Utils.typeOf(queryItems) === 'array') {
             result = [];
             for(let k in queryItems) {
                 result.push(await this.mountQueryItems(queryItems[k],params));
@@ -672,7 +672,7 @@ export default class StructuredQueryUtils {
         } else {
             if (queryItems) {
                 result = await this.getMountedSqlText(queryItems, params) || '';
-                if (typeof queryItems == 'object') {                    
+                if (typeof queryItems === 'object') {                    
                     if (Utils.hasValue(queryItems.subs)) {
                         let resultSubs = await this.mountQueryItems(queryItems.subs,params);
                         if (Utils.hasValue(resultSubs)) {
@@ -734,7 +734,7 @@ export default class StructuredQueryUtils {
                             } else if (queryItems.sql_object_type_id == Sql_Object_Types.PIVOT) {
                                 result += ` (${resultSubs.join(delimiter)})`;
                             } else {
-                                if (Utils.typeOf(resultSubs) == 'array') {
+                                if (Utils.typeOf(resultSubs) === 'array') {
                                     if (resultSubs.length > 0) {
                                         resultSubs = resultSubs.filter((el: any)=>el.trim().replace(/\s/g,'').length > 0);
                                         if (resultSubs.join('').trim().replace(/\s/g,'').length > 0) {
@@ -866,7 +866,7 @@ export default class StructuredQueryUtils {
         let orderedStructuredQuery = this.orderStructuredQueryItems(structuredQuery,visionsSort);
         await this.processAccessCriteriesStructuredQueryItems(params,orderedStructuredQuery);
         let result = await this.mountQueryItems(orderedStructuredQuery,params);
-        if (Utils.typeOf(result) == 'array') {
+        if (Utils.typeOf(result) === 'array') {
             result = result.join(' ');
         }
         return result;

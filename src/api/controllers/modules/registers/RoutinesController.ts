@@ -155,12 +155,12 @@ export default class RoutinesController extends BaseRegistersController {
 
             for(let key in nestedModules) {
                 for(let kr in nestedModules[key].routines || []) {
-                    if ((nestedModules[key].routines[kr].moved || false) == true) {
+                    if ((nestedModules[key].routines[kr].moved || false) === true) {
                         nestedModules[key].routines[kr] = null;
                         delete nestedModules[key].routines[kr];
                     }
                 }
-                if ((nestedModules[key].moved || false) == true) {
+                if ((nestedModules[key].moved || false) === true) {
                     nestedModules[key] = null;
                     delete nestedModules[key];
                 }

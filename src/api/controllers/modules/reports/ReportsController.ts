@@ -96,11 +96,11 @@ export default class ReportsController extends BaseRegistersController {
                         params.dates = params.dates.split(',');
                     }
                 }
-                if ((report.type_get_value_from||'').trim().toLowerCase() == 'query') {
+                if ((report.type_get_value_from||'').trim().toLowerCase() === 'query') {
                     let connectiton = DBConnectionManager.getDefaultDBConnection();
-                    if ((report.origin_get_value_from||'').trim().toLowerCase() == 'ep') {
+                    if ((report.origin_get_value_from||'').trim().toLowerCase() === 'ep') {
                         connectiton = DBConnectionManager.getEpDBConnection();
-                    } else if ((report.origin_get_value_from||'').trim().toLowerCase() == 'winthor') {
+                    } else if ((report.origin_get_value_from||'').trim().toLowerCase() === 'winthor') {
                         connectiton = DBConnectionManager.getWinthorDBConnection();
                     } else {
                         throw new Error(`not expected type_get_value_from: ${report.origin_get_value_from}`)    
@@ -184,7 +184,7 @@ export default class ReportsController extends BaseRegistersController {
     static findVisionFields(params : any, visionId: number, parentTypeId?: number) : any[] {
         let result : any[] = [];
         if (Utils.hasValue(params)) {
-            if (Utils.typeOf(params) == 'array') {
+            if (Utils.typeOf(params) === 'array') {
                 for(let i = 0; i < params.length; i++) {
                     if (parentTypeId == Sql_Object_Types.SELECT && params[i].IDVISION == visionId && params[i].sql_object_type_id == Sql_Object_Types.FIELD
                         && params[i].numeric_order < 900000 && params[i].sql_text != '*'

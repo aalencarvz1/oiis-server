@@ -132,7 +132,7 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                 let whereIdentifiersDocs = identifiersDocs.map((el: any)=>{
                     let r : any = {};
                     let and = [];
-                    if (typeof el == 'object') {
+                    if (typeof el === 'object') {
                         if (el.TIPOFJ) {
                             and.push({
                                 TIPOFJ : el.TIPOFJ
@@ -212,9 +212,9 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                 let whereIds = [];
                 let whereDocs = [];
                 for(let k in params.identifiers) {
-                    if (Utils.typeOf(params.identifiers[k]) == 'object') {
+                    if (Utils.typeOf(params.identifiers[k]) === 'object') {
                         let doc = params.identifiers[k].identifier_doc || params.identifiers[k].CNPJ || params.identifiers[k].CGC || params.identifiers[k].CGCENT || params.identifiers[k].CPF;
-                        let idTpDoc = params.identifiers[k].identifier_doc_type_id || (params.identifiers[k].TIPOFJ == 'F' ? Identifier_Types.CPF : Identifier_Types.CNPJ);
+                        let idTpDoc = params.identifiers[k].identifier_doc_type_id || (params.identifiers[k].TIPOFJ === 'F' ? Identifier_Types.CPF : Identifier_Types.CNPJ);
                         whereDocs.push({
                             identifier_doc: doc.toString().replace(/[^\d]/,'')-0,
                             identifier_doc_type_id: idTpDoc
@@ -408,7 +408,7 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                     getIntegratedsByOriginIds: async (registersIdentifiersDocs: any,options?: any) => {
                         let peopleRegsIdentifiers = registersIdentifiersDocs.map((el: any)=>{
                             return {
-                                identifier_doc_type_id: el?.TIPOFJ == 'F' ? Identifier_Types.CPF : Identifier_Types.CNPJ,
+                                identifier_doc_type_id: el?.TIPOFJ === 'F' ? Identifier_Types.CPF : Identifier_Types.CNPJ,
                                 identifier_doc: el?.CGCENT || el
                             }
                         });

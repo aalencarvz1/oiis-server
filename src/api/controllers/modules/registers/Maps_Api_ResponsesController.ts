@@ -17,7 +17,7 @@ export default class Maps_Api_ResponsesController extends BaseRegistersControlle
     static async get(req: Request,res: Response,next: NextFunction): Promise<void> {
         try {            
             let bodyParams = req.body || req.query ;
-            if (bodyParams.library == 'geocoding') {
+            if (bodyParams.library === 'geocoding') {
                 let apiParams = bodyParams.parameters;
                 if (typeof apiParams != 'string') {
                     apiParams = JSON.stringify(apiParams);
@@ -52,7 +52,7 @@ export default class Maps_Api_ResponsesController extends BaseRegistersControlle
                     if (!this.#client) {                    
                         this.#client = new Client({});
                     }
-                    if (typeof apiParams == 'string') {
+                    if (typeof apiParams === 'string') {
                         apiParams = JSON.parse(apiParams);
                     }
                     apiParams.key = process.env.GOOGLE_MAPS_API_KEY;

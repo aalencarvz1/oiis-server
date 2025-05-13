@@ -77,13 +77,13 @@ export default class DatabaseUtils {
 
     static getSequelizeOperation(name: string) : any {
         let result = name;
-        if (typeof result == 'string') {
+        if (typeof result === 'string') {
             name = name || '';
             name = name.trim().toLowerCase();
-            if (name == 'not in' || name == 'notin') {
+            if (name === 'not in' || name === 'notin') {
                 name = 'notIn';
             }
-            if (name == 'not like' || name == 'notlike') {
+            if (name === 'not like' || name === 'notlike') {
                 name = 'notLike';
             }
             result = (Op as any)[name] || name;
@@ -94,7 +94,7 @@ export default class DatabaseUtils {
 
     static mountCondition(whereClause: any,field: any,values:any,compare?:any,valuesFunc?:any) : void {
         if (values && values != null) {
-            if (Utils.typeOf(values) == 'array') {
+            if (Utils.typeOf(values) === 'array') {
                 if (values.length > 0) {
                     let inValues = [];
                     compare = compare || Op.in;
@@ -103,22 +103,22 @@ export default class DatabaseUtils {
                     }
                     if (typeof field != 'string') {
                         whereClause[Op.and] = whereClause[Op.and] || [];
-                        if ((compare == Op.in || (typeof compare == 'string' && compare.trim().toLowerCase() == 'in'))
-                            || (compare == Op.notIn || (typeof compare == 'string' && compare.trim().toLowerCase() == 'not in'))
+                        if ((compare === Op.in || (typeof compare === 'string' && compare.trim().toLowerCase() === 'in'))
+                            || (compare === Op.notIn || (typeof compare === 'string' && compare.trim().toLowerCase() === 'not in'))
                         ) {
                             whereClause[Op.and].push(Sequelize.where(field,compare,inValues));
                         } else {
-                            if (compare == Op.notLike || (typeof compare == 'string' && compare.trim().toLowerCase() == 'not like')) {
+                            if (compare === Op.notLike || (typeof compare === 'string' && compare.trim().toLowerCase() === 'not like')) {
                                 inValues.map(el=>{
                                     whereClause[Op.and].push({
                                         [Op.notLike]: el
                                     });
                                 })                                
-                            } else if (compare == Op.like || (typeof compare == 'string' && compare.trim().toLowerCase() == 'like')) {
+                            } else if (compare === Op.like || (typeof compare === 'string' && compare.trim().toLowerCase() === 'like')) {
                                 whereClause[Op.and].push({
                                     [Op.or]: inValues.map(el=>{
                                         let res = null;
-                                        if (typeof field == 'string') {
+                                        if (typeof field === 'string') {
                                             res = {
                                                 [field]:{
                                                     [Op.like] : el        
@@ -165,13 +165,13 @@ export default class DatabaseUtils {
     static whereToString(where: any,tableClassModel?: typeof BaseTableModel,delimiter?: string) : any {
         let result = null;
         if (Utils.hasValue(where)) {
-            if (Utils.typeOf(where) == 'array') {
+            if (Utils.typeOf(where) === 'array') {
                 let wheres = [];
                 for(let i = 0; i < where.length; i++) {
                     wheres.push(this.whereToString(where[i],tableClassModel,delimiter));
                 }
                 result = wheres.join(delimiter || ' and ');
-            } else if (Utils.typeOf(where) == 'object') {
+            } else if (Utils.typeOf(where) === 'object') {
                 let fieldsNames = Object.keys(tableClassModel?.fields||{});
                 fieldsNames = fieldsNames.map(el=>el.trim().toLowerCase());
                 let wheres = [];
@@ -186,20 +186,20 @@ export default class DatabaseUtils {
                         default:
                             let fieldWhere = key;
                             if (fieldsNames.indexOf(key.trim().toLowerCase()) > -1) {
-                                if (tableClassModel && fieldWhere.indexOf('.') == -1 && fieldWhere.indexOf(' ') == -1 && fieldWhere.indexOf('(') == -1) {
+                                if (tableClassModel && fieldWhere.indexOf('.') === -1 && fieldWhere.indexOf(' ') === -1 && fieldWhere.indexOf('(') === -1) {
                                     fieldWhere = `${tableClassModel.name}.${fieldWhere}`;
                                 }
                             }
-                            if (Utils.typeOf(where[key]) == 'object') {
+                            if (Utils.typeOf(where[key]) === 'object') {
                                 let keys = Object.keys(where[key]);
                                 if (keys.length > 1) throw new Error(`where clause field ${key} has more than 1 object key`);
                                 let fieldKey = keys[0].trim().toLowerCase();
-                                if (fieldKey == 'in' || fieldKey == 'not in') {
-                                    wheres.push(`${fieldWhere} ${fieldKey} (${Utils.typeOf(where[key][keys[0]]) == 'array' ? where[key][keys[0]].join(',') : where[key][keys[0]]})`);
-                                } else /*if (fieldKey == 'like' || fieldKey == 'not like')*/ {
+                                if (fieldKey === 'in' || fieldKey === 'not in') {
+                                    wheres.push(`${fieldWhere} ${fieldKey} (${Utils.typeOf(where[key][keys[0]]) === 'array' ? where[key][keys[0]].join(',') : where[key][keys[0]]})`);
+                                } else /*if (fieldKey === 'like' || fieldKey === 'not like')*/ {
                                     wheres.push(`${fieldWhere} ${fieldKey} ${where[key][keys[0]]}`);
                                 }
-                            } else if (Utils.typeOf(where[key]) == 'array') {
+                            } else if (Utils.typeOf(where[key]) === 'array') {
                                 wheres.push(`${fieldWhere} in (${where[key].join(',')})`);
                             } else {
                                 wheres.push(`${fieldWhere}=${where[key]}`)

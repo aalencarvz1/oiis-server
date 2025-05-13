@@ -258,19 +258,19 @@ export default class Campaign_Kpi_Value_GettersController extends BaseRegistersC
                                     if (JSON.parse(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()][Campaigns.tableName.toLowerCase()].conditions).filter((el:any)=>el.type != 'default condition').length) {
                                         throw new Error("do implement complex conditions");
                                     }
-                                    reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()][Campaigns.tableName.toLowerCase()].conditions).filter((el:any)=>el.type == 'default condition').map((el:any)=>el.value)];
+                                    reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()][Campaigns.tableName.toLowerCase()].conditions).filter((el:any)=>el.type === 'default condition').map((el:any)=>el.value)];
                                 }
                                 if (Utils.hasValue(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()].conditions)) {
                                     if (JSON.parse(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()].conditions).filter((el:any)=>el.type != 'default condition').length) {
                                         throw new Error("do implement complex conditions");
                                     }
-                                    reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()].conditions).filter((el:any)=>el.type == 'default condition').map((el:any)=>el.value)];
+                                    reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiGetterSpecs[k][Campaign_Kpis.tableName.toLowerCase()].conditions).filter((el:any)=>el.type === 'default condition').map((el:any)=>el.value)];
                                 }
                                 if (Utils.hasValue(kpiGetterSpecs[k].conditions)) {
                                     if (JSON.parse(kpiGetterSpecs[k].conditions).filter((el:any)=>el.type != 'default condition').length) {
                                         throw new Error("do implement complex conditions");
                                     }
-                                    reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiGetterSpecs[k].conditions).filter((el:any)=>el.type == 'default condition').map((el:any)=>el.value)];
+                                    reportParams.conditions = [...reportParams.conditions, ...JSON.parse(kpiGetterSpecs[k].conditions).filter((el:any)=>el.type === 'default condition').map((el:any)=>el.value)];
                                 }
 
                                 reportParams.joinEqualsConditionsWith = 'and';

@@ -185,8 +185,8 @@ export default class BaseTableModel extends Model {
             result.push(this.baseTableModelForeignsKeys[i]);
         }        
         for(let i = 0; i < result.length; i++) { 
-            if (typeof result[i].references.table == 'string' && (result[i].references.table === this.tableName || result[i].references.table === BaseTableModel.tableName)) {
-                if (i == 0 || i == result.length-1) {
+            if (typeof result[i].references.table === 'string' && (result[i].references.table === this.tableName || result[i].references.table === BaseTableModel.tableName)) {
+                if (i === 0 || i === result.length-1) {
                     result[i] = JSON.parse(JSON.stringify(result[i])); //clone object to avoid change the original
                     result[i].references.table = this; //adjusts corret reference to model class 
                 } else {
@@ -212,7 +212,7 @@ export default class BaseTableModel extends Model {
           let baseFks = this.getBaseTableModelForeignsKeys();
           for(let i = 0; i < baseFks.length; i++) {
             result.push(baseFks[i]);
-            if (newAdjustedForeignKeys && typeof baseFks[i].references.table == 'string') newAdjustedForeignKeys = false;
+            if (newAdjustedForeignKeys && typeof baseFks[i].references.table === 'string') newAdjustedForeignKeys = false;
           }               
           this.adjustedForeignKeys = newAdjustedForeignKeys;
         }
@@ -286,7 +286,7 @@ export default class BaseTableModel extends Model {
                             foreignKey[key].field = fks[i][key].field;
                         }
                         if (Utils.hasValue(fks[i][key].table)) {
-                            if (typeof fks[i][key].table == 'string') {
+                            if (typeof fks[i][key].table === 'string') {
                                 foreignKey[key].table = fks[i][key].table.toLowerCase();
                             } else {
                                 foreignKey[key].table = fks[i][key].table.tableName;
@@ -303,7 +303,7 @@ export default class BaseTableModel extends Model {
                 }
 
                 //migrate all foreign keys or only specific model ref parameter
-                if (!pClassModelRef || (foreignKey.references.table.trim().toLowerCase() == (pClassModelRef as any).tableName.trim())) {
+                if (!pClassModelRef || (foreignKey.references.table.trim().toLowerCase() === (pClassModelRef as any).tableName.trim())) {
                     if (!foreignKey.name) {
                         foreignKey.name = this.tableName + '_fk' + i;
                     }
@@ -334,7 +334,7 @@ export default class BaseTableModel extends Model {
             schema_id : this.configDB?.id,
             name : this.tableName
         }]);
-        if (Object.keys(options).indexOf('migrateForeignKeyContraint') == -1) options.migrateForeignKeyContraint = true;
+        if (Object.keys(options).indexOf('migrateForeignKeyContraint') === -1) options.migrateForeignKeyContraint = true;
         if (options.migrateForeignKeyContraint == true) {
             await this.migrateForeignKeyContraint(queryInterface);              
         }
@@ -363,7 +363,7 @@ export default class BaseTableModel extends Model {
                     sourceKey: fks[i].references.fields?.join(',') || fks[i].references.field,
                     foreignKey : columnForeign
                 };
-                if (tableRefClassModel.tableName.trim() == this.tableName.trim().toLowerCase()) {
+                if (tableRefClassModel.tableName.trim().toLowerCase() === this.tableName.trim().toLowerCase()) {
                     model = this;
                 } else {
                     model = tableRefClassModel;
@@ -549,7 +549,7 @@ export default class BaseTableModel extends Model {
 
                         if (Utils.hasValue(primaryKeysFieldsNames) && !hasPrimaryKeyOnUpdate) {
                             for(let ks in primaryKeysFieldsNames) {
-                                if (primaryKeysFieldsNames[ks].trim().toLowerCase() == key.trim().toLowerCase()) {
+                                if (primaryKeysFieldsNames[ks].trim().toLowerCase() === key.trim().toLowerCase()) {
                                     if (reg[key] != values[key]) {
                                         hasPrimaryKeyOnUpdate = true;
                                         break;

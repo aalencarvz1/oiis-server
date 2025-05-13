@@ -20,7 +20,7 @@ export default {
 
     function seedRoutine(routine: any,idModuleSup?:number,idRoutineSup?:number) : void {
       try {
-        if (Utils.typeOf(routine) == 'array') {          
+        if (Utils.typeOf(routine) === 'array') {          
           for(let i = 0; i < routine.length; i++) {
             seedRoutine(routine[i],idModuleSup);
           }

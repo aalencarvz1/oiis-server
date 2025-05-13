@@ -7,14 +7,14 @@ export default class Utils {
     };
 
     static log(...values:any) : void {
-        if ((process.env.NODE_ENV || 'development') == 'production' && (process.env.LOG_LEVEL || 'debug') == 'production') {
+        if ((process.env.NODE_ENV || 'development') === 'production' && (process.env.LOG_LEVEL || 'debug') === 'production') {
             if (values[0]) {
                 let tp = typeof values[0];
                 if ((values instanceof Error                     
-                    || (tp == 'object' && values[0].message)
-                    || (tp == 'string' && (
-                        values[0] == 'FL' //FORCE LOG                        
-                    ))) && !(tp == 'object' && values[0].success)) {
+                    || (tp === 'object' && values[0].message)
+                    || (tp === 'string' && (
+                        values[0] === 'FL' //FORCE LOG                        
+                    ))) && !(tp === 'object' && values[0].success)) {
                     console.log(Utils.getMomento(),values);   
                 }
             }
@@ -49,14 +49,14 @@ export default class Utils {
     };
 
     static loge(...values : any) : void {
-        if ((process.env.NODE_ENV || 'development') == 'production' && (process.env.LOG_LEVEL || 'debug') == 'production') {
+        if ((process.env.NODE_ENV || 'development') === 'production' && (process.env.LOG_LEVEL || 'debug') === 'production') {
             if (values[0]) {
                 let tp = typeof values[0];
                 if ((values instanceof Error                     
-                    || (tp == 'object' && values[0].message)
-                    || (tp == 'string' && (
-                        values[0] == 'FL' //FORCE LOG                        
-                    ))) && !(tp == 'object' && values[0].success)) {
+                    || (tp === 'object' && values[0].message)
+                    || (tp === 'string' && (
+                        values[0] === 'FL' //FORCE LOG                        
+                    ))) && !(tp === 'object' && values[0].success)) {
                     console.error(Utils.getMomento(),values);   
                 }
             }
@@ -85,7 +85,7 @@ export default class Utils {
     }
 
     static isArray(obj : any) : boolean{
-        return Utils.typeOf(obj) == "array";
+        return Utils.typeOf(obj) === "array";
     }
 
     /**
@@ -97,18 +97,18 @@ export default class Utils {
         let result = false;
         let tpof = Utils.typeOf(pValue);
         if (tpof !== "undefined" && pValue != null) {
-            if (tpof == "object") {
+            if (tpof === "object") {
                 if (Object.keys(pValue).length > 0
                     || Object.getOwnPropertySymbols(pValue).length > 0
                     || ['DATE'].indexOf(pValue?.constructor?.name?.toUpperCase()) > - 1
                 ) {
                     result = true;
                 } 
-            } else if (tpof == "array") {
+            } else if (tpof === "array") {
                 if ((pValue as any[]).length > 0) {
                     result = true;
                 }
-            } else if (tpof == "string") {
+            } else if (tpof === "string") {
                 if ((pValue as string).trim().length > 0) {
                     result = true;
                 }
@@ -164,13 +164,13 @@ export default class Utils {
     static toBool(pValue : any) : boolean{
         let result : boolean = false;
         if (typeof pValue !== "undefined" && pValue != null) {
-            if (typeof pValue == "boolean") {
+            if (typeof pValue === "boolean") {
                 result = pValue;
-            } else if (typeof pValue == "string") {
-                if (["0","false","not","no","n","não"," ","","null"].indexOf(pValue.trim().toLowerCase()) == -1) {
+            } else if (typeof pValue === "string") {
+                if (["0","false","not","no","n","não"," ","","null"].indexOf(pValue.trim().toLowerCase()) === -1) {
                     result = true;
                 }
-            } else if (typeof pValue == "number") {
+            } else if (typeof pValue === "number") {
                 if (pValue != 0) {
                     return true;
                 }
@@ -202,13 +202,13 @@ export default class Utils {
         try {
             let tObj = typeof obj;
             if (tObj !== "undefined" && obj != null) {
-                if (tObj == "object" || tObj == "function") {
+                if (tObj === "object" || tObj === "function") {
                     if (typeof key !== "undefined" && key != null) {
                         //let objKeys = Object.keys(obj);
                         let objKeys = Object.getOwnPropertyNames(obj);
                         let keyTemp = key.trim().toLowerCase();
                         for(let i = 0; i < objKeys.length; i++) {
-                            if (objKeys[i].trim().toLowerCase() == keyTemp) {
+                            if (objKeys[i].trim().toLowerCase() === keyTemp) {
                                 result = objKeys[i];
                                 break;
                             }
@@ -227,12 +227,12 @@ export default class Utils {
         let r = null;
         try {
             let t = typeof v;
-            if (t == 'number') {
+            if (t === 'number') {
                 r = v;
             } else {
-                if (t == 'boolean') {
+                if (t === 'boolean') {
                     r = Number(v);  
-                } else if (t == 'string') {
+                } else if (t === 'string') {
                     r = Number(v);
                     if (isNaN(r)) {
                         v = v.replace(/[^\d|\,|\.|\-|\+]+/ig,'');
@@ -267,7 +267,7 @@ export default class Utils {
         properties = Utils.toArray(properties || []);
         properties = properties.join(',').toLowerCase().split(',');
         for(let k2 in object) {
-            if (properties.indexOf(k2.toLowerCase().trim()) == -1) {
+            if (properties.indexOf(k2.toLowerCase().trim()) === -1) {
               delete object[k2];
             }
         }
@@ -277,14 +277,14 @@ export default class Utils {
     static arrayToObject(array: any,key: any = null) : any {
         let result : any = {};
         if (array && key) {
-            if (Utils.typeOf(key) == 'array') {                
+            if (Utils.typeOf(key) === 'array') {                
                 let currentPath = null;
                 for(let i in array) {                    
                     result[array[i][key[0]]] = result[array[i][key[0]]] || {};
                     currentPath = result[array[i][key[0]]];
                     for(let j = 1; j < key.length; j++) {
                         currentPath[array[i][key[j]]] = currentPath[array[i][key[j]]] || {};                        
-                        if (j == key.length -1) {
+                        if (j === key.length -1) {
                             if (Utils.typeOf(currentPath[array[i][key[j]]]) !== 'array') currentPath[array[i][key[j]]] = []; 
                             currentPath[array[i][key[j]]].push(array[i]);
                         }
@@ -334,7 +334,7 @@ export default class Utils {
         previousDate.setDate(1);        
         previousDate.setUTCFullYear(previousDate.getUTCFullYear()-1);        
         let lastDayMonthDate1 = new Date(pDate.getUTCFullYear(), pDate.getUTCMonth()+1, 0);        
-        if (lastDayMonthDate1.getDate() == pDate.getDate()) {
+        if (lastDayMonthDate1.getDate() === pDate.getDate()) {
             previousDate = new Date(previousDate.getUTCFullYear(), previousDate.getUTCMonth()+1, 0);            
         } else {
             let invalidDate = null;
@@ -356,7 +356,7 @@ export default class Utils {
     static toArray(value?: any,delimiter?: string ) : any[] | null | undefined {
         let result = value;
         if (value) {
-            if (typeof value == 'string') {
+            if (typeof value === 'string') {
                 delimiter = delimiter || ',';
                 result = value.split(delimiter || ',');
             } else if (Utils.typeOf(value) != 'array') {
@@ -373,7 +373,7 @@ export default class Utils {
         for(let k in array) {
             if (Utils.typeOf(array[k]) != 'array') {
                 current2Level.push(array[k]);
-                if (current2Level.length == 2 ) {
+                if (current2Level.length === 2 ) {
                     newArray.push(current2Level);
                     current2Level = [];
                 }
@@ -394,7 +394,7 @@ export default class Utils {
             result = result.substring(0,p1);
         }            
         result = result.toLowerCase().trim();
-        if (result.lastIndexOf("/") == result.length-1) {
+        if (result.lastIndexOf("/") === result.length-1) {
             result = result.substring(0,result.length-1);
         }
         return result;
@@ -420,7 +420,7 @@ export default class Utils {
                     if (keys && typeof keys !== 'undefined' && keys.length > 0) {
                         for (let k in keys) {
                             try {
-                                if (typeof keys[k] == 'string' && [ 'caller', 'callee', 'arguments'].indexOf(keys[k]) == -1 && typeof (obj2||{})[keys[k]]  == 'function') obj[ownPropName][keys[k].toLowerCase()] = keys[k];
+                                if (typeof keys[k] === 'string' && [ 'caller', 'callee', 'arguments'].indexOf(keys[k]) === -1 && typeof (obj2||{})[keys[k]]  === 'function') obj[ownPropName][keys[k].toLowerCase()] = keys[k];
                             } catch (e) {
                                 obj[ownPropName][keys[k].toLowerCase()] = keys[k];
                             }
@@ -439,7 +439,7 @@ export default class Utils {
     static toDate(pValue: any, pFormat?: any ) : Date {
         let result : any = null;
         if (pValue && pValue != null) {
-            if (typeof pValue == 'object') {
+            if (typeof pValue === 'object') {
                 result = new Date(pValue);
             } else {
                 if (pValue.indexOf("-") > -1) {

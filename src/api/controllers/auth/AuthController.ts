@@ -159,7 +159,7 @@ export default class AuthController {
                             timezone_offset: user.last_timezone_offset
                         });
                     } catch (ex: any) {
-                        if (ex.name.trim().toLowerCase().indexOf('unique') == -1) {
+                        if (ex.name.trim().toLowerCase().indexOf('unique') === -1) {
                             throw ex;
                         } //else async other request already inserted new user token at same time
                     }

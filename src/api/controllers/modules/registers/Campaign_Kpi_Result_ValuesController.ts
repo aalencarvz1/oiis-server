@@ -57,7 +57,7 @@ export default class Campaign_Kpi_Result_ValuesController extends BaseRegistersC
                             break;
                         break;
                         case 2: //getter_name.[value | objective] or results.resultname
-                            if (elArr[0].toLowerCase().trim() == 'results') {  
+                            if (elArr[0].toLowerCase().trim() === 'results') {  
                                 //throw new Error('do implement use results in expression');
                                 break;
                             } else {
@@ -66,10 +66,10 @@ export default class Campaign_Kpi_Result_ValuesController extends BaseRegistersC
                             }
                         break;
                         case 3:
-                            if (elArr[1].toLowerCase().trim() == 'kpis') {  
+                            if (elArr[1].toLowerCase().trim() === 'kpis') {  
                                 resultWhere = `(ck.name = ${elArr[0]}
                                     and lower(ckg.name) = lower('${elArr[2]}'))`;                                
-                            } else if (elArr[1].toLowerCase().trim() == 'results') {  
+                            } else if (elArr[1].toLowerCase().trim() === 'results') {  
                                 //throw new Error('do implement use results in expression');
                                 break;
                             } else {
@@ -265,7 +265,7 @@ export default class Campaign_Kpi_Result_ValuesController extends BaseRegistersC
                                 }                                        
                             });
 
-                            if (Utils.hasValue(campaignEntitieKpiResultValue) && campaignEntitieKpiResultValue.calculated_at?.getTime() == params.currentDate.getTime()) {
+                            if (Utils.hasValue(campaignEntitieKpiResultValue) && campaignEntitieKpiResultValue.calculated_at?.getTime() === params.currentDate.getTime()) {
                                 continue;
                             }
 
@@ -305,7 +305,7 @@ export default class Campaign_Kpi_Result_ValuesController extends BaseRegistersC
                                                 break;
                                             break;
                                             case 2: //getter_name.[value | objective] or results.resultname
-                                                if (elArr[0].toLowerCase().trim() == 'results') {  
+                                                if (elArr[0].toLowerCase().trim() === 'results') {  
                                                     resultWhere = `(
                                                         cv.campaign_kpi_id = ${kpiResultValue[Campaign_Kpis.tableName].id}
                                                         and cv.name = '${elArr[1]}'
@@ -314,7 +314,7 @@ export default class Campaign_Kpi_Result_ValuesController extends BaseRegistersC
                                                 } 
                                             break;
                                             case 3:
-                                                if (elArr[1].toLowerCase().trim() == 'results') {  
+                                                if (elArr[1].toLowerCase().trim() === 'results') {  
                                                     resultWhere = `(
                                                         k.campaign_id = ${kpiResultValue[Campaign_Kpis.tableName].campaign_id}
                                                         and k.name = '${elArr[0]}'
@@ -415,7 +415,7 @@ export default class Campaign_Kpi_Result_ValuesController extends BaseRegistersC
                                 }
                             }
 
-                            if (entities[j].expression.indexOf("${") == -1) {
+                            if (entities[j].expression.indexOf("${") === -1) {
                                 
                                 entities[j].expression = eval(entities[j].expression);
                                 console.log('expression after',entities[j].expression);
