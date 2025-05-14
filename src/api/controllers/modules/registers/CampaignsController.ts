@@ -103,7 +103,7 @@ export default class CampaignsController extends BaseRegistersController {
 
         let keys = Object.keys(queryParams);
         if (queryParams?.conditions) {
-            if (typeof queryParams.conditions != 'string') {            
+            if (typeof queryParams.conditions !== 'string') {            
                 queryParams.conditions = JSON.stringify(queryParams.conditions);
             } 
         } else if (keys.indexOf('conditions') > -1) {
@@ -514,7 +514,7 @@ export default class CampaignsController extends BaseRegistersController {
 
                                 let newInitDate = new Date(newCampaign.init_date);
                                 let newEndDate = new Date(newCampaign.end_date);
-                                if (params.incrementDatesBy == "same period") {                                
+                                if (params.incrementDatesBy === "same period") {                                
                                     let monthsDiff = Utils.getFullMonthsDiff(newInitDate,newEndDate);
                                     if (Utils.hasValue(monthsDiff)) {
                                         Utils.addFullMonths(newInitDate,monthsDiff);
@@ -526,7 +526,7 @@ export default class CampaignsController extends BaseRegistersController {
                                             newEndDate.setDate(newEndDate.getDate() + diffDays);                               
                                         }
                                     }                                
-                                } else if (params.incrementDatesBy == "customized") {
+                                } else if (params.incrementDatesBy === "customized") {
                                     switch(params.increaseType?.trim().toLowerCase()) {
                                         case "month":
                                             Utils.addFullMonths(newInitDate,(params.increaseQuantity-0));
@@ -572,9 +572,9 @@ export default class CampaignsController extends BaseRegistersController {
 
                                         //replace date if is equal of campaign
                                         if (Utils.hasValue(newCampaign.campaign_entities[k2].init_date)) {
-                                            if (Utils.getUTCFullDate(newCampaign.campaign_entities[k2].init_date) == Utils.getUTCFullDate(campaigns[k].init_date)) {
+                                            if (Utils.getUTCFullDate(newCampaign.campaign_entities[k2].init_date) === Utils.getUTCFullDate(campaigns[k].init_date)) {
                                                 if (Utils.hasValue(newCampaign.campaign_entities[k2].end_date)) {
-                                                    if (Utils.getUTCFullDate(newCampaign.campaign_entities[k2].end_date) == Utils.getUTCFullDate(campaigns[k].end_date)) {
+                                                    if (Utils.getUTCFullDate(newCampaign.campaign_entities[k2].end_date) === Utils.getUTCFullDate(campaigns[k].end_date)) {
                                                         newCampaign.campaign_entities[k2].init_date = newInitDate;
                                                         newCampaign.campaign_entities[k2].end_date = newEndDate;                                                    
                                                     }
@@ -583,7 +583,7 @@ export default class CampaignsController extends BaseRegistersController {
                                                 }
                                             }
                                         } else if (Utils.hasValue(newCampaign.campaign_entities[k2].end_date)) {
-                                            if (Utils.getUTCFullDate(newCampaign.campaign_entities[k2].end_date) == Utils.getUTCFullDate(campaigns[k].end_date)) {
+                                            if (Utils.getUTCFullDate(newCampaign.campaign_entities[k2].end_date) === Utils.getUTCFullDate(campaigns[k].end_date)) {
                                                 newCampaign.campaign_entities[k2].end_date = newEndDate;                                                    
                                             }
                                         } 
@@ -636,9 +636,9 @@ export default class CampaignsController extends BaseRegistersController {
 
                                                 //replace date if is equal of campaign
                                                 if (Utils.hasValue(newKpi.campaign_kpi_value_getters[k3].init_date)) {
-                                                    if (Utils.getUTCFullDate(newKpi.campaign_kpi_value_getters[k3].init_date) == Utils.getUTCFullDate(campaigns[k].init_date)) {
+                                                    if (Utils.getUTCFullDate(newKpi.campaign_kpi_value_getters[k3].init_date) === Utils.getUTCFullDate(campaigns[k].init_date)) {
                                                         if (Utils.hasValue(newKpi.campaign_kpi_value_getters[k3].end_date)) {
-                                                            if (Utils.getUTCFullDate(newKpi.campaign_kpi_value_getters[k3].end_date) == Utils.getUTCFullDate(campaigns[k].end_date)) {
+                                                            if (Utils.getUTCFullDate(newKpi.campaign_kpi_value_getters[k3].end_date) === Utils.getUTCFullDate(campaigns[k].end_date)) {
                                                                 newKpi.campaign_kpi_value_getters[k3].init_date = newInitDate;
                                                                 newKpi.campaign_kpi_value_getters[k3].end_date = newEndDate;
                                                             }
@@ -647,7 +647,7 @@ export default class CampaignsController extends BaseRegistersController {
                                                         }
                                                     }
                                                 } else if (Utils.hasValue(newKpi.campaign_kpi_value_getters[k3].end_date)) {
-                                                    if (Utils.getUTCFullDate(newKpi.campaign_kpi_value_getters[k3].end_date) == Utils.getUTCFullDate(campaigns[k].end_date)) {
+                                                    if (Utils.getUTCFullDate(newKpi.campaign_kpi_value_getters[k3].end_date) === Utils.getUTCFullDate(campaigns[k].end_date)) {
                                                         newKpi.campaign_kpi_value_getters[k3].end_date = newEndDate;
                                                     }
                                                 } 

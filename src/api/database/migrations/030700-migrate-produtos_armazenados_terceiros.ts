@@ -9,7 +9,7 @@ import  Produtos_Armazenados_Terceiros  from '../models/winthor/Produtos_Armazen
 /*migration*/
 export default {
   async up(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
       await Produtos_Armazenados_Terceiros.runUpMigration(queryInterface);     
     }
   },

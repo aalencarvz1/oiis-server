@@ -16,7 +16,7 @@ api.use(cors());
 ModelsController.initModels();
 
 //job to query complete pixs
-if (process.env.NODE_ENV == 'production') {
+if (process.env.NODE_ENV === 'production') {
     const scheduler = new ToadScheduler();
 
     //API PIX SICREDI INTEGRATION CHECKER

@@ -120,7 +120,7 @@ export default class TasksController extends BaseRegistersController {
             let taskParams : any = {};
             let taskXParams : any = {};
             for(let key in bodyParams) {                
-                if (key != 'status_id') taskParams[key] = bodyParams[key]
+                if (key !== 'status_id') taskParams[key] = bodyParams[key]
                 else taskXParams[key] = bodyParams[key] || Task_Status.NOT_STARTED;
             }
             taskParams.creator_user_id = req.user.id;
@@ -139,7 +139,7 @@ export default class TasksController extends BaseRegistersController {
 
             for(let key in taskParams) {                
                 if (key.indexOf('MOMENT') > -1) {
-                    if (Utils.hasValue(taskParams[key]) && typeof taskParams[key] == "string") {
+                    if (Utils.hasValue(taskParams[key]) && typeof taskParams[key] === "string") {
                         taskParams[key] = taskParams[key];
                     }
                     taskXParams[key] = taskParams[key];
@@ -389,13 +389,13 @@ export default class TasksController extends BaseRegistersController {
                     operation: 'UPDATE'
                 };
                 for(let key in queryParams.values || queryParams) {
-                    if (['id','creator_user_id','created_at','where'].indexOf(key) == -1) {                        
+                    if (['id','creator_user_id','created_at','where'].indexOf(key) === -1) {                        
                         if (typeof task[key] !== "undefined") {
                             if (task[key] != (queryParams.values || queryParams)[key]
                                 && (task[key] != null || (task[key] == null && Utils.hasValue((queryParams.values || queryParams)[key])))
                             ) {                                                                                     
                                 task[key] = (queryParams.values || queryParams)[key]; 
-                                if (key.indexOf("MOMENT") > -1 && Utils.hasValue(task[key]) && typeof task[key] == 'string') {
+                                if (key.indexOf("MOMENT") > -1 && Utils.hasValue(task[key]) && typeof task[key] === 'string') {
                                     task[key] = Sequelize.fn('str_to_date',task[key],'%Y-%m-%d %H:%i:%s')//new Date(task[key]);
                                 }                                
                             }
@@ -403,14 +403,14 @@ export default class TasksController extends BaseRegistersController {
 
                         if (typeof taskX[key] !== "undefined") {
                             if (taskX[key] != (queryParams.values || queryParams)[key]
-                                && (taskX[key] != null || (taskX[key] == null && Utils.hasValue((queryParams.values || queryParams)[key])))
+                                && (taskX[key] != null || (taskX[key] === null && Utils.hasValue((queryParams.values || queryParams)[key])))
                             ) {         
-                                if (key == 'status_id') {
+                                if (key === 'status_id') {
                                     taskLogX.old_status_id = taskX[key];
                                     taskLogX.new_status_id = (queryParams.values || queryParams)[key];
                                 }                                                                              
                                 taskX[key] = (queryParams.values || queryParams)[key]; 
-                                if (key.indexOf("DATE") > -1 && Utils.hasValue(taskX[key]) && typeof taskX[key] == 'string') {
+                                if (key.indexOf("DATE") > -1 && Utils.hasValue(taskX[key]) && typeof taskX[key] === 'string') {
                                     taskX[key] = Sequelize.fn('str_to_date',taskX[key],'%Y-%m-%d %H:%i:%s')//new Date(taskX[key]);
                                 }                                
                             }

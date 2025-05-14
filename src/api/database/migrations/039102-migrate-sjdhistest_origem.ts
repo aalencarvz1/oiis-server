@@ -10,7 +10,7 @@ import SjdHistEst_Origem from '../models/sjd/SjdHistEst_Origem.js';
 /*migration*/
 export default {
   async up(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_EP_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_EP_INTEGRATION) === true) {
       await SjdHistEst_Origem.runUpMigration(queryInterface);     
     }
   },

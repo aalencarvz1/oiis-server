@@ -134,7 +134,7 @@ export default class NcmsController extends BaseRegistersController {
         try {
             let json : any = req.body.data;
             if (Utils.hasValue(json)) {
-                if (typeof json == 'string') {
+                if (typeof json === 'string') {
                     json = JSON.parse(json);
                 }
                 for(let k in json.Nomenclaturas) {
@@ -154,7 +154,7 @@ export default class NcmsController extends BaseRegistersController {
                         start_act_year: ncm.Ano_Ato_Ini
                     };
                     if (ncm.Codigo.length > 2) {
-                        if (ncm.Codigo[2] == '.') {
+                        if (ncm.Codigo[2] === '.') {
                             newNcm.position = ncm.Codigo.substring(3,5)-0;
                         } else {
                             newNcm.position = ncm.Codigo.substring(2,4)-0;

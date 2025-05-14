@@ -8,12 +8,12 @@ import  Integration_Parameters  from '../models/winthor_integration/Integration_
 /*migration*/
 export default {
   async up(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
       await Integration_Parameters.runUpMigration(queryInterface);     
     }
   },
   async down(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
       await Integration_Parameters.runDownMigration(queryInterface);         
     }
   }

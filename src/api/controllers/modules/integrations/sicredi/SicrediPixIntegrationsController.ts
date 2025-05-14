@@ -189,7 +189,7 @@ export default class SicrediPixIntegrationsController{
             agent: SicrediPixIntegrationsController.httpsAgent
         }
         if (params?.body) {
-            if (typeof params.body == 'string') {
+            if (typeof params.body === 'string') {
                 result.body = params.body;
             } else {
                 result.body = JSON.stringify(params.body);
@@ -231,8 +231,8 @@ export default class SicrediPixIntegrationsController{
                 let status = p_PixReqParams?.status;
                 let inicio = p_PixReqParams?.init || p_PixReqParams?.inicio || SicrediPixIntegrationsController.getDefaultInitDateTiime();
                 let fim = p_PixReqParams?.end || p_PixReqParams?.fim || SicrediPixIntegrationsController.getDefaultEndDateTiime();                
-                if (inicio.length == 10) inicio += "T00:00:00Z";
-                if (fim.length == 10) fim += "T23:59:59Z";
+                if (inicio.length === 10) inicio += "T00:00:00Z";
+                if (fim.length === 10) fim += "T23:59:59Z";
 
                 let pixParams : any = {
                     inicio:inicio,
@@ -352,7 +352,7 @@ export default class SicrediPixIntegrationsController{
                         nome: (pcClient.CLIENTE || '').substring(0,199) 
                     };
 
-                    if (pcClient.TIPOFJ == 'J') pixParams.devedor.cnpj = pcClient.CGCENT.replace(/[^0-9]/g,'')
+                    if (pcClient.TIPOFJ === 'J') pixParams.devedor.cnpj = pcClient.CGCENT.replace(/[^0-9]/g,'')
                     else pixParams.devedor.cpf = pcClient.CGCENT.replace(/[^0-9]/g,'');
                 }
             }
@@ -429,12 +429,12 @@ export default class SicrediPixIntegrationsController{
             let responseJson : any = await SicrediPixIntegrationsController.createPix(pixParams);                      
             if (!responseJson) throw new Error("responseJson is null");
             result.data = responseJson?.data || responseJson;
-            if (result.data?.status != 'ATIVA' && result.data?.status > 400 && result.data?.status < 499) {
+            if (result.data?.status !== 'ATIVA' && result.data?.status > 400 && result.data?.status < 499) {
                 console.error(result.data);
                 throw new Error((result.data?.title || '')+':' + (result.data?.detail || '') + '('+result.data?.violacoes?.reduce((prev?: any,current?: any)=>prev += current?.razao + '['+current?.propriedade+']')+')');
             }
             
-            if ((result.data?.status || '') == 'ATIVA' && Utils.hasValue(result.data?.txid)) {
+            if ((result.data?.status || '') === 'ATIVA' && Utils.hasValue(result.data?.txid)) {
 
                 if (integrateWinthor && params?.numtrans) {                     
                     let whereOr : any = [{                                
@@ -499,7 +499,7 @@ export default class SicrediPixIntegrationsController{
             result.data = [];
 
 
-            if (Utils.typeOf(txIdentifiers) != 'array') {
+            if (Utils.typeOf(txIdentifiers) !== 'array') {
                 txIdentifiers = txIdentifiers.split(',');
             }
 
@@ -535,7 +535,7 @@ export default class SicrediPixIntegrationsController{
         try {
             if (pix.infoAdicionais?.length) {
                 for(let keyInfo in pix.infoAdicionais) {
-                    if (pix.infoAdicionais[keyInfo]?.nome == field) {
+                    if (pix.infoAdicionais[keyInfo]?.nome === field) {
                         result = pix.infoAdicionais[keyInfo].valor;
                         break;
                     }
@@ -568,7 +568,7 @@ export default class SicrediPixIntegrationsController{
                 status:'CONCLUIDA'
             });
             if (result?.success) {
-                if (Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true) {
+                if (Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION)) === true) {
                     for(let key in result?.data?.cobs) {
                         let numtrans = null;
                         let numnf = null;
@@ -599,7 +599,7 @@ export default class SicrediPixIntegrationsController{
                         if (!numtrans) {
                             numnf = SicrediPixIntegrationsController.getFieldFromInfo(result.data.cobs[key],'numnf');
                         }
-                        if ((pixWint?.STATUS || result.data.cobs[key].status) == 'CONCLUIDA' && (pixWint?.BAIXADOPCPRESTVIAAPI || 0) == 0) {
+                        if ((pixWint?.STATUS || result.data.cobs[key].status) === 'CONCLUIDA' && (pixWint?.BAIXADOPCPRESTVIAAPI || 0) == 0) {
                             let downed : any = null;
                             if (numtrans) {
                                 downed = await PcPrestController.closePixPayment({

@@ -9,7 +9,7 @@ import DBConnectionManager from '../DBConnectionManager.js';
 /*migration*/
 export default {  
   async up(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
         let originQueryInterface : any = await DBConnectionManager.getWinthorIntegrationDBConnection()?.getQueryInterface();        
         let objectName = `trg_wint_${PcProdut.tableName}_int`;
         let query = `
@@ -103,7 +103,7 @@ END;
     }
   },
   async down(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
         let originQueryInterface : any = await DBConnectionManager.getWinthorIntegrationDBConnection()?.getQueryInterface();
         let objectName = `trg_wint_${PcProdut.tableName}_int`;
         await originQueryInterface.sequelize.query(`DROP function ${objectName}`);

@@ -26,11 +26,11 @@ export default class EpClientsIntegrationsController extends BaseRegistersIntegr
         let result = null;
         try {
             if (identifiersDocs) {
-                if (Utils.typeOf(identifiersDocs) != 'array') identifiersDocs = identifiersDocs.toString().split(',');
+                if (Utils.typeOf(identifiersDocs) !== 'array') identifiersDocs = identifiersDocs.toString().split(',');
                 let whereIdentifiersDocs = identifiersDocs.map((el: any)=>{
                     let r : any = {};
                     let and = [];
-                    if (typeof el == 'object') {
+                    if (typeof el === 'object') {
                         if (el.CODTIPODOCIDENTIFICADOR) {
                             and.push(Sequelize.where(
                                 Sequelize.col(`${EpPessoas.tableName}.CODTIPODOCIDENTIFICADOR`),
@@ -107,15 +107,15 @@ export default class EpClientsIntegrationsController extends BaseRegistersIntegr
         let result = new DataSwap();
         try {    
             params = params || {};
-            if (typeof params != 'object') {
+            if (typeof params !== 'object') {
                 params = {
                     registersIdentifiersDocs: params
                 }
             }
             params.registersIdentifiersDocs = params.registersIdentifiersDocs || params;
-            if (Utils.typeOf(params.registersIdentifiersDocs) != 'array') params.registersIdentifiersDocs = params.registersIdentifiersDocs.toString().split(',');
+            if (Utils.typeOf(params.registersIdentifiersDocs) !== 'array') params.registersIdentifiersDocs = params.registersIdentifiersDocs.toString().split(',');
             for (let k in params.registersIdentifiersDocs) {
-                if (typeof params.registersIdentifiersDocs[k] != 'object') {
+                if (typeof params.registersIdentifiersDocs[k] !== 'object') {
                     params.registersIdentifiersDocs[k] = {
                         CODDOCIDENTIFICADOR : params.registersIdentifiersDocs[k]
                     }
@@ -131,7 +131,7 @@ export default class EpClientsIntegrationsController extends BaseRegistersIntegr
                         getIntegratedsByOriginIds: async (registersIdentifiersDocs?: any,options?: any) => {
                             let peopleRegsIdentifiers = registersIdentifiersDocs.map((el: any)=>{
                                 let r : any = {};
-                                if (typeof el == 'object') {
+                                if (typeof el === 'object') {
                                     r = {
                                         identifier_doc_type_id: el?.CODTIPODOCIDENTIFICADOR == 1 && (el.CODDOCIDENTIFICADOR || '').length() <= 11 ? Identifier_Types.CPF : Identifier_Types.CNPJ,
                                         identifier_doc: el.CODDOCIDENTIFICADOR 

@@ -55,7 +55,7 @@ export default class PcCidadeController extends WinthorBaseRegistersIntegrations
 
                 //try preserve winthor code, if unique or primary key viloated, then raise exception here
                 if (city) {
-                    if (city.name != pccidade.NOMECIDADE) {
+                    if (city.name !== pccidade.NOMECIDADE) {
                         city.name = pccidade.NOMECIDADE;
                         await city.save(options);                
                     }
@@ -87,7 +87,7 @@ export default class PcCidadeController extends WinthorBaseRegistersIntegrations
         let result = new DataSwap();
         try {
             let identifiers = params.identifiers || params || []; 
-            if (Utils.typeOf(identifiers) != 'array') identifiers = identifiers.split(',');                    
+            if (Utils.typeOf(identifiers) !== 'array') identifiers = identifiers.split(',');                    
             if (identifiers.length > 0) {
                 result.data = [];
                 let hasFail = false;

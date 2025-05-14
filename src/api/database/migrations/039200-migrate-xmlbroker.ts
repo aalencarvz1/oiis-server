@@ -10,7 +10,7 @@ import XMLBroker from '../models/sjd/XMLBroker.js';
 /*migration*/
 export default {
   async up(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_EP_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_EP_INTEGRATION) === true) {
       await XMLBroker.runUpMigration(queryInterface);     
     }
   },

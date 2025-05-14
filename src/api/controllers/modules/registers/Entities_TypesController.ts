@@ -66,7 +66,7 @@ export default class Entities_TypesController extends BaseRegistersController {
             }
 
             if (Utils.hasValue(whereClause)) {
-                if (typeof whereClause == 'function') {
+                if (typeof whereClause === 'function') {
                     where.push(whereClause(entityType));
                 } else {
                     where.push(whereClause);

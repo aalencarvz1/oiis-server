@@ -28,8 +28,8 @@ export default class Modules extends BaseTableModel {
   static adjustedForeignKeys : boolean = false;
   
 
-  static WMS = modules.find((el) => el.name == "WMS")?.id;
-  static LOGISTIC = modules.find((el) => el.name == "LOGISTIC")?.id;
+  static WMS = modules.find((el) => el.name === "WMS")?.id;
+  static LOGISTIC = modules.find((el) => el.name === "LOGISTIC")?.id;
 
   static fields = {
     ...Modules.getBaseTableModelFields(),...{     
