@@ -1,11 +1,10 @@
 
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
-import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import Action_StatusController from "../../../../../dist/api/controllers/modules/registers/Action_StatusController";
 import Action_Status from "../../../../../dist/api/database/models/Action_Status";
 import HelperTestController from "../../HelperTestController";
 
-const stringTest = 'TEST';
+const stringTest = 'TEST_000051';
 
 describe(Action_StatusController.name, () => {
    

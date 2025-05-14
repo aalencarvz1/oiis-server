@@ -5,8 +5,8 @@ import HelperTestController from "../../HelperTestController";
 import Collaborators from "../../../../../dist/api/database/models/Collaborators";
 import People from "../../../../../dist/api/database/models/People";
 
-const stringTest = 'TEST';
-const stringDoc = '14.524.123-5';
+const stringTest = 'TEST_000110';
+const stringDoc = '14.524.110-5';
 describe(CollaboratorsController.name, () => {
    
    

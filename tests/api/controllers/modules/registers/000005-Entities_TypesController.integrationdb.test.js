@@ -1,10 +1,9 @@
 import Entities_TypesController from "../../../../../dist/api/controllers/modules/registers/Entities_TypesController";
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
-import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import Entities_Types from "../../../../../dist/api/database/models/Entities_Types";
 import HelperTestController from "../../HelperTestController";
 
-const stringTest = 'TEST';
+const stringTest = 'TEST_000005';
 
 describe(Entities_TypesController.name, () => {
 

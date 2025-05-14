@@ -1,10 +1,9 @@
 import LanguagesController from "../../../../../dist/api/controllers/modules/registers/LanguagesController";
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import Languages from "../../../../../dist/api/database/models/Languages";
-import processes from "../../../../../dist/api/database/models/Processes";
 import HelperTestController from "../../HelperTestController";
 
-const stringTest = 'TEST_LANGUAGENS';
+const stringTest = 'TEST_000248';
 
 describe(LanguagesController.name, () => {
 

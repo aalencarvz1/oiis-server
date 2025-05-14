@@ -4,7 +4,7 @@ import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import Routine_Contents from "../../../../../dist/api/database/models/Routine_Contents";
 import HelperTestController from "../../HelperTestController";
 
-const stringTest = 'TEST_ROUTINE_CONTENTS';
+const stringTest = 'TEST_000241';
 
 describe(Routines_ContentsController.name, () => {
 
