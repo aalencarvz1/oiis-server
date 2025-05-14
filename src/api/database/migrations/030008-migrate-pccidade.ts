@@ -9,7 +9,7 @@ import  PcCidade  from '../models/winthor/PcCidade.js';
 /*migration*/
 export default {
   async up(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
       await PcCidade.runUpMigration(queryInterface);     
     }
   },

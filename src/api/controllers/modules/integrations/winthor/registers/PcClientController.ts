@@ -128,11 +128,11 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
         let result = null;
         try {
             if (identifiersDocs) {
-                if (Utils.typeOf(identifiersDocs) != 'array') identifiersDocs = identifiersDocs.toString().split(',');
+                if (Utils.typeOf(identifiersDocs) !== 'array') identifiersDocs = identifiersDocs.toString().split(',');
                 let whereIdentifiersDocs = identifiersDocs.map((el: any)=>{
                     let r : any = {};
                     let and = [];
-                    if (typeof el == 'object') {
+                    if (typeof el === 'object') {
                         if (el.TIPOFJ) {
                             and.push({
                                 TIPOFJ : el.TIPOFJ
@@ -205,16 +205,16 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
             params = params || {};
             params.identifiers = params.identifiers || params;
             if (params.identifiers) {
-                if (Utils.typeOf(params.identifiers) != 'array') params.identifiers = params.identifiers.toString().split(',');
+                if (Utils.typeOf(params.identifiers) !== 'array') params.identifiers = params.identifiers.toString().split(',');
                 let where : any = {
                     [Op.or] : []
                 };
                 let whereIds = [];
                 let whereDocs = [];
                 for(let k in params.identifiers) {
-                    if (Utils.typeOf(params.identifiers[k]) == 'object') {
+                    if (Utils.typeOf(params.identifiers[k]) === 'object') {
                         let doc = params.identifiers[k].identifier_doc || params.identifiers[k].CNPJ || params.identifiers[k].CGC || params.identifiers[k].CGCENT || params.identifiers[k].CPF;
-                        let idTpDoc = params.identifiers[k].identifier_doc_type_id || (params.identifiers[k].TIPOFJ == 'F' ? Identifier_Types.CPF : Identifier_Types.CNPJ);
+                        let idTpDoc = params.identifiers[k].identifier_doc_type_id || (params.identifiers[k].TIPOFJ === 'F' ? Identifier_Types.CPF : Identifier_Types.CNPJ);
                         whereDocs.push({
                             identifier_doc: doc.toString().replace(/[^\d]/,'')-0,
                             identifier_doc_type_id: idTpDoc
@@ -408,7 +408,7 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
                     getIntegratedsByOriginIds: async (registersIdentifiersDocs: any,options?: any) => {
                         let peopleRegsIdentifiers = registersIdentifiersDocs.map((el: any)=>{
                             return {
-                                identifier_doc_type_id: el?.TIPOFJ == 'F' ? Identifier_Types.CPF : Identifier_Types.CNPJ,
+                                identifier_doc_type_id: el?.TIPOFJ === 'F' ? Identifier_Types.CPF : Identifier_Types.CNPJ,
                                 identifier_doc: el?.CGCENT || el
                             }
                         });
@@ -641,7 +641,7 @@ export default class PcClientController extends WinthorBaseRegistersIntegrations
         let result = new DataSwap();
         try {
             let identifiers = params.identifiers || []; 
-            if (Utils.typeOf(identifiers) != 'array') identifiers = identifiers.split(',');                    
+            if (Utils.typeOf(identifiers) !== 'array') identifiers = identifiers.split(',');                    
             if (identifiers.length > 0) {
                 identifiers = identifiers.map((el: any)=>Utils.hasValue(el)?el:'null');
                 result.data = [];

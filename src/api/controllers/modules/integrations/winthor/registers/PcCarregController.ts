@@ -62,7 +62,7 @@ export default class PcCarregController extends WinthorBaseRegistersIntegrations
             where.push(`c.codveiculo in (${params.codveiculo.join(',')})`);
         }
         if (params.identifier) {
-            let identifier = Utils.typeOf(params.identifier) == 'array' ? params.identifier : params.identifier.split(',');
+            let identifier = Utils.typeOf(params.identifier) === 'array' ? params.identifier : params.identifier.split(',');
             identifier = identifier.map((el: any)=>Utils.hasValue(el)?el:'null');
             where.push(`c.numcar in (${identifier.join(',')})`);
         }
@@ -214,7 +214,7 @@ export default class PcCarregController extends WinthorBaseRegistersIntegrations
             ERRORS : []
         }
         try {            
-            if (Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true) {            
+            if (Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION)) === true) {            
                 if (Utils.hasValue(ids)) {
                     if (Utils.typeOf(ids) !== 'array') {
                         ids = ids.toString().split(',');
@@ -794,7 +794,7 @@ export default class PcCarregController extends WinthorBaseRegistersIntegrations
 
                                     for(let ki in itemsWinthor) {
                                         if (typeof itemsWinthor[ki].logs === 'string') {
-                                            if (itemsWinthor[ki].logs.trim() == '[]') itemsWinthor[ki].logs = []
+                                            if (itemsWinthor[ki].logs.trim() === '[]') itemsWinthor[ki].logs = []
                                             else itemsWinthor[ki].logs = JSON.parse(itemsWinthor[ki].logs);
                                         }
                                         if (itemsWinthor[ki].invoice_id == nfsWinthor[kn].id_at_origin) {
@@ -906,7 +906,7 @@ export default class PcCarregController extends WinthorBaseRegistersIntegrations
                                     nfsBroker[kn].items = nfsBroker[kn].items || [];
                                     for(let ki in itemsBroker) {
                                         if (typeof itemsBroker[ki].lots === 'string') {
-                                            if (itemsBroker[ki].lots.trim() == '[]') itemsBroker[ki].lots = []
+                                            if (itemsBroker[ki].lots.trim() === '[]') itemsBroker[ki].lots = []
                                             else itemsBroker[ki].lots = JSON.parse(itemsBroker[ki].lots);
                                         }
                                         if (itemsBroker[ki].invoice_id == nfsBroker[kn].id_at_origin) {
@@ -1247,7 +1247,7 @@ export default class PcCarregController extends WinthorBaseRegistersIntegrations
         let result : any = null;
         let query = null;
         let idsItemsOnOriginData = params.IDITEMONORIGINDATA || [];
-        if (idsItemsOnOriginData && Utils.typeOf(idsItemsOnOriginData) != 'array') {
+        if (idsItemsOnOriginData && Utils.typeOf(idsItemsOnOriginData) !== 'array') {
             idsItemsOnOriginData = idsItemsOnOriginData.toString().split(",");
             idsItemsOnOriginData = idsItemsOnOriginData.map((el: any)=>Utils.hasValue(el)?el:'null');
         }

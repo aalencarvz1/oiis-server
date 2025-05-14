@@ -73,7 +73,7 @@ export default class Api_Requests extends BaseTableModel {
     params = params || {};  
     params.queryParams = params.queryParams || params || {};
     params.queryParams.request_params = params.queryParams.request_params || {};
-    if (typeof params.queryParams.request_params != 'object') params.queryParams.request_params = JSON.parse(params.queryParams.request_params);
+    if (typeof params.queryParams.request_params !== 'object') params.queryParams.request_params = JSON.parse(params.queryParams.request_params);
     params.queryParams.request_params.headers = params.queryParams.request_params.headers || {};
     params.queryParams.request_params.headers['Content-Type'] = params.queryParams.request_params.headers['Content-Type'] || 'application/json';
     params.queryParams.request_params.headers['Accept'] = params.queryParams.request_params.headers['Accept'] || 'application/json';

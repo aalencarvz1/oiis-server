@@ -10,7 +10,7 @@ import  PcDicionarioItem  from '../models/winthor/PcDicionarioItem.js';
 /*migration*/
 export default {
   async up(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
       await PcDicionarioItem.runUpMigration(queryInterface);     
     }
   },

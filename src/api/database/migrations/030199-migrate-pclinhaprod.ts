@@ -9,7 +9,7 @@ import  PcLinhaProd  from '../models/winthor/PcLinhaProd.js';
 /*migration*/
 export default {
   async up(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
       await PcLinhaProd.runUpMigration(queryInterface);     
     }
   },

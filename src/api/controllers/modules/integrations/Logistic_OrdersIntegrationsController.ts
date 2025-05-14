@@ -705,7 +705,7 @@ export default class Logistic_OrdersIntegrationsController extends BaseRegisters
                     result.data = cargos;
                     result.success = true;
                     try {
-                        if (idsLogOrders.length > 0 && Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true && Utils.toBool(await Parameter_Values.get(Parameters.LOGISTIC_INTEGRATE_AUTOMATIC_CLOSE_BOX_DRIVER)) == true) {
+                        if (idsLogOrders.length > 0 && Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION)) === true && Utils.toBool(await Parameter_Values.get(Parameters.LOGISTIC_INTEGRATE_AUTOMATIC_CLOSE_BOX_DRIVER)) === true) {
                             // not await
                             PcCarregController.integrateBoxClosing(idsLogOrders);
                         }   
