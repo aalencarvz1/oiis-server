@@ -124,7 +124,7 @@ export default class EndPointsController{
      * check if func parameter has request handler signature
      */
     static isRequestHandler(func: any): func is RequestHandler {
-        return typeof func == 'function' && !Utils.isClass(func) && func.length >= 2 && func.__isRequestHandler; // Pelo menos req e res
+        return typeof func === 'function' && !Utils.isClass(func) && func.length >= 2 && func.__isRequestHandler; // Pelo menos req e res
     }
 
     /**
@@ -166,7 +166,7 @@ export default class EndPointsController{
                     } else if (Utils.isClass(handler)) {
                         let objKeys : string[] = Utils.getAllProperties(handler);
                         for (let i in objKeys) {
-                            if (['caller','callee','arguments'].indexOf(objKeys[i]) == -1) {
+                            if (['caller','callee','arguments'].indexOf(objKeys[i]) === -1) {
                                 let handler2 : any = (handler as any)[objKeys[i]];
                                 if (this.isRequestHandler(handler2)) {
                                     let routePath : string = path.join(basePath, entry.name.replace('.js', ''));
@@ -179,7 +179,7 @@ export default class EndPointsController{
                                         console.log(`Registrando endpoint(3): ${routePath} -> ${methodName}`);
                                         (this.router as any)[methodName.trim().toLowerCase()](routePath, handler2.bind(handler)); // Associa ao método HTTP apropriado
                                     }
-                                } else if (typeof handler2 == 'function') {
+                                } else if (typeof handler2 === 'function') {
                                     //@todo closured function
                                 }
                             }
@@ -210,7 +210,7 @@ export default class EndPointsController{
                             methods[el.toLowerCase()] = el.toUpperCase();
                         }
                     });
-                    if (Object.keys(methods)[0] == 'all') {
+                    if (Object.keys(methods)[0] === 'all') {
                         methods = {
                             post:'POST',
                             get:'GET',

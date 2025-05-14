@@ -10,7 +10,7 @@ import SjdProduto_Origem from '../models/sjd/SjdProduto_Origem.js';
 /*migration*/
 export default {
   async up(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_EP_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_EP_INTEGRATION) === true) {
       await SjdProduto_Origem.runUpMigration(queryInterface);     
     }
   },

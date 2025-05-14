@@ -31,7 +31,7 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
     static checkGtin(data: any, field: string) : void {
         if (Utils.hasValue(data[`GTINCODAUXILIAR${field}`])) {
             if (Utils.hasValue(data[`CODAUXILIAR${field}`])) {
-                if (Utils.toNumber(data[`GTINCODAUXILIAR${field}`]) != data[`CODAUXILIAR${field}`]?.toString().length) {
+                if (Utils.toNumber(data[`GTINCODAUXILIAR${field}`]) !== data[`CODAUXILIAR${field}`]?.toString().length) {
                     throw new Error(`wrong CODAUXILIAR${field} length (${Utils.toNumber(data[`GTINCODAUXILIAR${field}`])} <> ${data[`CODAUXILIAR${field}`]?.toString().length})`);
                 }
             } else {
@@ -1032,7 +1032,7 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
 
             //date filter
             if (Utils.hasValue(search.date?.values)) {
-                if (search.date.comparator == 'between') {
+                if (search.date.comparator === 'between') {
                     if (["DTULTENT","DTULTSAIDA"].indexOf(search.date.field.toUpperCase().trim()) > -1) {
                         queryParams.where[Op.and].push(Sequelize.where(
                             Sequelize.col(`${PcEst.tableName}.${search.date.field}`),
@@ -1066,7 +1066,7 @@ export default class PcProdutController extends WinthorBaseRegistersIntegrations
 
             //stock filter
             if (Utils.hasValue(search.stock?.values)) {
-                if (search.stock.comparator == 'between') {
+                if (search.stock.comparator === 'between') {
                     queryParams.where[Op.and].push(Sequelize.where(
                         Sequelize.col(`${PcEst.tableName}.${search.stock.field}`),
                         Op.between,

@@ -12,7 +12,7 @@ import  Integration_Control  from '../models/winthor_integration/Integration_Con
 /*migration*/
 export default {
   async up(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
       await Integration_Control.runUpMigration(queryInterface);   
       /*
       altered field to type string because unique is truncked to date
@@ -22,7 +22,7 @@ export default {
     }
   },
   async down(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
       await Integration_Control.runDownMigration(queryInterface);         
     }
   }

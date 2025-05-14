@@ -54,7 +54,7 @@ export default class PcPaisController extends WinthorBaseRegistersIntegrationsCo
 
                 //try preserve winthor code, if unique or primary key viloated, then raise exception here
                 if (country) {
-                    if (country.name != pcpais.DESCRICAO) {
+                    if (country.name !== pcpais.DESCRICAO) {
                         country.name = pcpais.DESCRICAO;
                         await country.save(options);                
                     }
@@ -83,7 +83,7 @@ export default class PcPaisController extends WinthorBaseRegistersIntegrationsCo
         let result = new DataSwap();
         try {
             let identifiers = params.identifiers || params || []; 
-            if (Utils.typeOf(identifiers) != 'array') identifiers = identifiers.split(',');                    
+            if (Utils.typeOf(identifiers) !== 'array') identifiers = identifiers.split(',');                    
             if (identifiers.length > 0) {
                 result.data = [];
                 let hasFail = false;

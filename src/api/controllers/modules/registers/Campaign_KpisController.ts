@@ -10,7 +10,7 @@ export default class Campaign_KpisController extends BaseRegistersController {
     }
 
     static handleFieldsToSave(queryParams: any) : void {
-        if (queryParams?.conditions && typeof queryParams.conditions != 'string') {
+        if (queryParams?.conditions && typeof queryParams.conditions !== 'string') {
             if (Utils.hasValue(queryParams?.conditions)) {
                 queryParams.conditions = JSON.stringify(queryParams.conditions);
             } else {
@@ -20,7 +20,7 @@ export default class Campaign_KpisController extends BaseRegistersController {
     }
 
      static handleFieldsOfResultToSave(queryParams: any) : void {
-        if (queryParams?.campaign_entity_ids && typeof queryParams.campaign_entity_ids != 'string') {
+        if (queryParams?.campaign_entity_ids && typeof queryParams.campaign_entity_ids !== 'string') {
             if (Utils.hasValue(queryParams.campaign_entity_ids)) {
                 queryParams.campaign_entity_ids = queryParams.campaign_entity_ids.join(",");
             } else {

@@ -24,7 +24,7 @@ export default class PcNcmController extends WinthorBaseRegistersIntegrationsCon
                     }
                 });
                 if (!winthorData && (
-                    Utils.hasValue(queryParams.exception) && Utils.toBool(await Parameter_Values.get(Parameters.WINTHOR_INTEGRATION_NCM_CONSIDER_EXCEPTION_NULL_IF_NOT_EXISTS)) == true
+                    Utils.hasValue(queryParams.exception) && Utils.toBool(await Parameter_Values.get(Parameters.WINTHOR_INTEGRATION_NCM_CONSIDER_EXCEPTION_NULL_IF_NOT_EXISTS)) === true
                 )) { 
                     winthorData = await PcNcm.findOne({
                         where:{

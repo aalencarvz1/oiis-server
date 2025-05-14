@@ -76,7 +76,7 @@ export default {
               for(let oldColumn in oldTables.allTables.columns) {                
                 correctOldColumnKey = Utils.getKey(newRegs[0],oldColumn);                
                 if (Utils.hasValue(correctOldColumnKey)) {                    
-                  if (typeof oldTables.allTables?.allColumns == 'function') {
+                  if (typeof oldTables.allTables?.allColumns === 'function') {
                     allOldColumns[oldTables.allTables.allColumns(correctOldColumnKey)] = oldTables.allTables.columns[oldColumn];                      
                   } else {
                     allOldColumns[correctOldColumnKey] = oldTables.allTables.columns[oldColumn];                      
@@ -91,7 +91,7 @@ export default {
               for(let oldColumn in oldTable.columns) {
                 correctOldColumnKey = Utils.getKey(newRegs[0],oldColumn);
                 if (Utils.hasValue(correctOldColumnKey)) {
-                  if (typeof oldTables.allTables?.allColumns == 'function') {
+                  if (typeof oldTables.allTables?.allColumns === 'function') {
                     allOldColumns[oldTables.allTables.allColumns(correctOldColumnKey)] = oldTable.columns[oldColumn];
                   } else {
                     allOldColumns[correctOldColumnKey] = oldTable.columns[oldColumn];
@@ -103,10 +103,10 @@ export default {
             for(let index in newRegs) {
 
               if (Utils.hasValue(oldTables.allTables?.allColumns)) {
-                if (typeof oldTables.allTables.allColumns == 'function') {
+                if (typeof oldTables.allTables.allColumns === 'function') {
                   for(let oldColumn in newRegs[index]) {
                     let newCol = oldTables.allTables.allColumns(oldColumn);
-                    if (newCol != oldColumn) {
+                    if (newCol !== oldColumn) {
                       newRegs[index][newCol] = newRegs[index][oldColumn];
                       delete newRegs[index][oldColumn];
                     }

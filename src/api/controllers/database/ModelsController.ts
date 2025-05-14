@@ -432,7 +432,7 @@ export default class ModelsController {
         await Midias.initModel();
         await Integration_Rules.initModel();
 
-        if (Utils.toBool(process.env.HAS_DB_EXTERNAL_DATA) == true) {
+        if (Utils.toBool(process.env.HAS_DB_EXTERNAL_DATA) === true) {
             await Businesses.initModel();
             await ExternalDatasCities.initModel();
             await Cnaes.initModel();
@@ -444,7 +444,7 @@ export default class ModelsController {
             await Responsible_Person_Qualifications.initModel();
         }
         
-        if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+        if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
             await All_Tab_Columns.initModel();
             await PcConsum.initModel();
             await PcDicionarioItem.initModel();
@@ -497,7 +497,7 @@ export default class ModelsController {
             await Integration_Tables.initModel();
         }
 
-        if (Utils.toBool(process.env.HAS_CONSULT_INTEGRATION) == true) {
+        if (Utils.toBool(process.env.HAS_CONSULT_INTEGRATION) === true) {
             await SjdOrigemDeDados.initModel();
             await SjdProduto_Origem.initModel();
             await SjdEstoque_Origem.initModel();
@@ -509,7 +509,7 @@ export default class ModelsController {
             await await Gtin_Produtos.initModel();
         }
 
-        if (Utils.toBool(process.env.HAS_EP_INTEGRATION) == true) {
+        if (Utils.toBool(process.env.HAS_EP_INTEGRATION) === true) {
             await EpAtividadesClientes.initModel();
             await EpCategoriasOrigem.initModel();
             await EpCidades.initModel();
@@ -701,7 +701,7 @@ export default class ModelsController {
         Integration_Rules.initAssociations();
 
 
-        if (Utils.toBool(process.env.HAS_DB_EXTERNAL_DATA) == true) {
+        if (Utils.toBool(process.env.HAS_DB_EXTERNAL_DATA) === true) {
             await Businesses.initAssociations();
             await ExternalDatasCities.initAssociations();
             await Cnaes.initAssociations();
@@ -712,7 +712,7 @@ export default class ModelsController {
             await Responsible_Person_Qualifications.initAssociations();
         }
 
-        if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {        
+        if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {        
             await All_Tab_Columns.initAssociations();
             await PcConsum.initAssociations();
             await PcDicionarioItem.initAssociations();
@@ -765,7 +765,7 @@ export default class ModelsController {
             await Integration_Tables.initAssociations();
         }
 
-        if (Utils.toBool(process.env.HAS_CONSULT_INTEGRATION) == true) {
+        if (Utils.toBool(process.env.HAS_CONSULT_INTEGRATION) === true) {
             SjdOrigemDeDados.initAssociations();
             await SjdProduto_Origem.initAssociations();
             await SjdEstoque_Origem.initAssociations();
@@ -777,7 +777,7 @@ export default class ModelsController {
             await Gtin_Produtos.initAssociations();
         }
 
-        if (Utils.toBool(process.env.HAS_EP_INTEGRATION) == true) {
+        if (Utils.toBool(process.env.HAS_EP_INTEGRATION) === true) {
             await EpAtividadesClientes.initAssociations();
             await EpCategoriasOrigem.initAssociations();
             await EpCidades.initAssociations();

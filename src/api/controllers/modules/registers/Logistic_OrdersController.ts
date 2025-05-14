@@ -21,7 +21,7 @@ export default class Logistic_OrdersController extends BaseRegistersController {
         try {
             let where : any = [];
             if (req.body.id) {
-                let identifier = Utils.typeOf(req.body.id) == 'array' ? req.body.id : req.body.id.toString().split(',');
+                let identifier = Utils.typeOf(req.body.id) === 'array' ? req.body.id : req.body.id.toString().split(',');
                 identifier = identifier.map((el : any)=>Utils.hasValue(el)?el:'null');
                 where.push(`l.id in (${identifier.join(',')})`);
             }

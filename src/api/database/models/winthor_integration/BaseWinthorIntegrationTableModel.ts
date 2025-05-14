@@ -65,7 +65,7 @@ export default class BaseWinthorIntegrationTableModel extends BaseTableModel {
             }],{
                 ignoreDuplicates:true
             });
-            if (Object.keys(options).indexOf('migrateForeignKeyContraint') == -1) options.migrateForeignKeyContraint = true;
+            if (Object.keys(options).indexOf('migrateForeignKeyContraint') === -1) options.migrateForeignKeyContraint = true;
             if (options.migrateForeignKeyContraint == true) {
                 await this.migrateForeignKeyContraint(originQueryInterface);              
             }
