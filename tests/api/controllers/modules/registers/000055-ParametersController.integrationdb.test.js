@@ -1,11 +1,10 @@
 
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
-import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import ParametersController from "../../../../../dist/api/controllers/modules/registers/ParametersController";
 import HelperTestController from "../../HelperTestController";
 import Parameters from "../../../../../dist/api/database/models/Parameters";
 
-const stringTest = 'TEST1';
+const stringTest = 'TEST_000055';
 
 describe(ParametersController.name, () => {
    

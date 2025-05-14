@@ -1,24 +1,24 @@
-import TextsController from "../../../../../dist/api/controllers/modules/registers/TextsController";
+import Relationship_TypesController from "../../../../../dist/api/controllers/modules/registers/Relationship_TypesController";
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
-import Texts from "../../../../../dist/api/database/models/Texts";
+import Relationship_Types from "../../../../../dist/api/database/models/Relationship_Types";
 import HelperTestController from "../../HelperTestController";
 
-const stringTest = 'TEST_000249';
+const stringTest = 'TEST_001000';
 
-describe(TextsController.name, () => {
+describe(Relationship_TypesController.name, () => {
 
     //initialize models, necessary to user controllers of models
     beforeAll(async ()=>{
         //await ModelsController.initModels();
         await HelperTestController.initBasicModels();
-        await Texts.initModel();
+        await Relationship_Types.initModel();
     });
 
 
 
     //test class model name is correctly seted to table model name
     test('table class model name', () => {
-        let tableClassModel = TextsController.getTableClassModel();
+        let tableClassModel = Relationship_TypesController.getTableClassModel();
         expect(Utils.hasValue(tableClassModel)).toBeTruthy();
         let tableModelClassName = tableClassModel?.name;
         expect(Utils.hasValue(tableModelClassName)).toBeTruthy();
@@ -28,7 +28,7 @@ describe(TextsController.name, () => {
     });
 
      test('put without data', async () => {
-            let result = await TextsController._put({}) 
+            let result = await Relationship_TypesController._put({}) 
             expect(Utils.hasValue(result)).toBeTruthy();
             expect(result.success).toBeFalsy();
             expect(result.message).toMatch(/^[a-z0-9._]+\s+cannot\s+be\s+null$/i);
@@ -37,16 +37,14 @@ describe(TextsController.name, () => {
 
     //test put (insert)
     test('put', async () => {
-        
-        await HelperTestController.TextInsert(stringTest);
+       await HelperTestController.RelationShipsTypesInsert(stringTest);
     });
-    test('put Duplicate', async () => {
-        let TextResult = await HelperTestController.TextGet(stringTest);
 
-        let result = await TextsController._put({
-            
-            language_id:TextResult[0].language_id,
-            text:stringTest,
+    test('put Duplicate', async () => {
+
+        let result = await Relationship_TypesController._put({
+    
+            name:stringTest,
             
         })
         expect(Utils.hasValue(result)).toBeTruthy();
@@ -57,7 +55,7 @@ describe(TextsController.name, () => {
 
     //test get (select) inserted register
     test('get', async () => {
-       await HelperTestController.TextGet(stringTest);
+        await HelperTestController.RelationShipsTypesGet(stringTest);
     });    
 
 
@@ -67,28 +65,28 @@ describe(TextsController.name, () => {
         let id = null;
 
         //get register to update, previous inserted by put test
-        let result = await TextsController._get({
+        let result = await Relationship_TypesController._get({
             where:{
-                text: stringTest,
+                name: stringTest,
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         id = result[0].id;
 
         //update register
-        result = await TextsController._patch({
+         result = await Relationship_TypesController._patch({
             where: {
                 id: id
             },
             values:{
-                text: `${stringTest}_UPDATED`,
+                name: `${stringTest}_UPDATED`,
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
 
         //get register updated to confirm if has uupdated
-        result = await TextsController._get({
+        result = await Relationship_TypesController._get({
             where:{
                 id:id
             }
@@ -96,24 +94,24 @@ describe(TextsController.name, () => {
         expect(Utils.hasValue(result)).toBeTruthy();
 
         //test persistency of updated register
-        expect(result[0].text).toBe(`${stringTest}_UPDATED`);
+        expect(result[0].name).toBe(`${stringTest}_UPDATED`);
 
 
         ///
          //REVERT update register
-         result = await TextsController._patch({
+         result = await Relationship_TypesController._patch({
             where: {
                 id: id
             },
             values:{
-                text: stringTest,
+                name: stringTest,
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
 
         //get register REVERT updated to confirm if has uupdated
-        result = await TextsController._get({
+        result = await Relationship_TypesController._get({
             where:{
                 id:id
             }
@@ -121,15 +119,16 @@ describe(TextsController.name, () => {
         expect(Utils.hasValue(result)).toBeTruthy();
 
         //test persistency of updated register
-        expect(result[0].text).toBe(stringTest);
+        expect(result[0].name).toBe(stringTest);
     });
 
 
 
     //test delete inserted register
     test('delete', async () => {
-        await HelperTestController.TextDelete(stringTest);
-        await HelperTestController.LanguagensDelete(stringTest);
+       
+        await HelperTestController.RelationShipsTypesDelete(stringTest);
+
     });
     
 });
