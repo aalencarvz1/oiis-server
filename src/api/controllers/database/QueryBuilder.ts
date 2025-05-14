@@ -10,7 +10,7 @@ export default class QueryBuilder {
         let result : any = null;
         try {
             if (Utils.hasValue(field) && Utils.hasValue(values)) {
-                if (Utils.typeOf(values) != 'array') {
+                if (Utils.typeOf(values) !== 'array') {
                     result = `${field} in (${values})`;
                 } else {
                     if (values.length > QueryBuilder.IN_CLAUSE_ELEMENTS_LIMIT) {
@@ -18,7 +18,7 @@ export default class QueryBuilder {
                         let limitedsValues = [];
                         for(let i = 0; i < values.length; i++) {
                             limitedsValues.push(Utils.hasValue(values[i])?values[i]:'null');
-                            if (limitedsValues.length == QueryBuilder.IN_CLAUSE_ELEMENTS_LIMIT) {
+                            if (limitedsValues.length === QueryBuilder.IN_CLAUSE_ELEMENTS_LIMIT) {
                                 result.push(`${field} in (${limitedsValues.join(',')})`);
                                 limitedsValues = [];
                             }
@@ -40,7 +40,7 @@ export default class QueryBuilder {
         let result : any = null;
         try {
             if (Utils.hasValue(field) && Utils.hasValue(values)) {
-                if (Utils.typeOf(values) != 'array') {
+                if (Utils.typeOf(values) !== 'array') {
                     result = {
                         [field]: values
                     }
@@ -50,7 +50,7 @@ export default class QueryBuilder {
                         let limitedsValues = [];
                         for(let i = 0; i < values.length; i++) {
                             limitedsValues.push(Utils.hasValue(values[i])?values[i]:'null');
-                            if (limitedsValues.length == QueryBuilder.IN_CLAUSE_ELEMENTS_LIMIT) {
+                            if (limitedsValues.length === QueryBuilder.IN_CLAUSE_ELEMENTS_LIMIT) {
                                 result.push({
                                     [field]: {
                                         [Op.in]: limitedsValues

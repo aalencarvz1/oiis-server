@@ -9,7 +9,7 @@ import config from '../config/config.js';
 /*migration*/
 export default {  
   async up(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
       let originQueryInterface : any = await DBConnectionManager.getWinthorDBConnection()?.getQueryInterface();    
       let connectionConfig = (config as any)[`${process.env.NODE_ENV||'development'}_winthor_integration`];
       let dbUserName = connectionConfig?.username || 'OIIS';
@@ -18,7 +18,7 @@ export default {
     }    
   },
   async down(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
       let originQueryInterface : any = await DBConnectionManager.getWinthorDBConnection()?.getQueryInterface();    
       let connectionConfig = (config as any)[`${process.env.NODE_ENV||'development'}_winthor_integration`];
       let dbUserName = connectionConfig?.username || 'OIIS';

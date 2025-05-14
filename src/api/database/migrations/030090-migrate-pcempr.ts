@@ -9,7 +9,7 @@ import  PcEmpr  from '../models/winthor/PcEmpr.js';
 /*migration*/
 export default {
   async up(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
       await PcEmpr.runUpMigration(queryInterface);     
     }
   },

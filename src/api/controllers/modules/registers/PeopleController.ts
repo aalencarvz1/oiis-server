@@ -23,7 +23,7 @@ export default class PeopleController extends BaseRegistersController {
             queryParams.where[Op.or] = identifiersDocs.map((el: any)=>{
             let r : any = {};
             let and = [];
-            if (typeof el == 'object') {
+            if (typeof el === 'object') {
                 if (el.identifier_doc_type_id) {
                 and.push({
                     identifier_doc_type_id: el.identifier_doc_type_id

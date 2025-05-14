@@ -83,7 +83,7 @@ export default class AuroraPricesIntegrationsController extends BaseRegistersInt
                     let inserts = [];
                     //print_r(data);exit();
                     for(let k in data) {                        
-                        if (data[k].length ==  qt_tot_titles && Utils.hasValue(data[k][expected_titles.CODPROD])) {
+                        if (data[k].length ===  qt_tot_titles && Utils.hasValue(data[k][expected_titles.CODPROD])) {
                             let insert : any = {};
                             for(let k2 in expected_titles){                            
                                 insert[real_titles[k2]] = data[k][expected_titles[k2]];  

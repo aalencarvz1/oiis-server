@@ -57,8 +57,8 @@ export default class BaseRegistersIntegrationsController extends BaseRegistersCo
         let result = new DataSwap();
         try {
             if (params.registersIds) {
-                if (Utils.typeOf(params.registersIds) != 'array') params.registersIds = params.registersIds.toString().split(',');
-                if (typeof params.getIntegratedsByOriginIds == 'function') {
+                if (Utils.typeOf(params.registersIds) !== 'array') params.registersIds = params.registersIds.toString().split(',');
+                if (typeof params.getIntegratedsByOriginIds === 'function') {
                     result.data = await params.getIntegratedsByOriginIds(params.registersIds,{raw:params.getDataToUpdate?false:true});
                     if (result.data && result.data.length > 0) {
 
@@ -70,7 +70,7 @@ export default class BaseRegistersIntegrationsController extends BaseRegistersCo
                                 if (dataToUpdate && dataToUpdate.length > 0) {
                                     let hasUpdate = false;
                                     for(let k2 in dataToUpdate[0]) {
-                                        if (k2 != 'id' && result.data[k][k2] != dataToUpdate[0][k2]) {
+                                        if (k2 !== 'id' && result.data[k][k2] != dataToUpdate[0][k2]) {
                                             result.data[k][k2] = dataToUpdate[0][k2];
                                             hasUpdate = true;
                                         }
@@ -81,7 +81,7 @@ export default class BaseRegistersIntegrationsController extends BaseRegistersCo
                         }
 
                         //all registers preexists
-                        if (result.data.length == params.registersIds.length) {                            
+                        if (result.data.length === params.registersIds.length) {                            
                             if (params?.raw !== false && params.getDataToUpdate) {
                                 for(let k in result.data) {
                                     result.data[k] = result.data[k].dataValues;
@@ -110,7 +110,7 @@ export default class BaseRegistersIntegrationsController extends BaseRegistersCo
 
                                 result.data = await params.getIntegratedsByOriginIds(params.registersIds,{raw:Utils.firstValid([params?.raw,true])});
                                 if (result.data && result.data.length > 0) {
-                                    if (result.data.length == params.registersIds.length) {
+                                    if (result.data.length === params.registersIds.length) {
                                         result.success = true;
                                     } else {
                                         throw new Error('some of the records were not created');
@@ -125,14 +125,14 @@ export default class BaseRegistersIntegrationsController extends BaseRegistersCo
                     } else {
 
                         //create if all registers not exists
-                        if (typeof params.getBulkDataToCreate == 'function') {
+                        if (typeof params.getBulkDataToCreate === 'function') {
                             let bulkRegs = await params.getBulkDataToCreate(params.registersIds);
                             if (bulkRegs && bulkRegs.length) {
                                 if (params.tableClassModel) {
                                     await params.tableClassModel.bulkCreate(bulkRegs);
                                     result.data = await params.getIntegratedsByOriginIds(params.registersIds,{raw:Utils.firstValid([params?.raw,true])});
                                     if (result.data && result.data.length > 0) {
-                                        if (result.data.length == params.registersIds.length) {
+                                        if (result.data.length === params.registersIds.length) {
                                             result.success = true;
                                         } else {
                                             throw new Error('some of the records were not created');

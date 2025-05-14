@@ -9,7 +9,7 @@ import  Businesses  from '../models/external_data/Businesses.js';
 /*migration*/
 export default {
   async up(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_DB_EXTERNAL_DATA) == true) {
+    if (Utils.toBool(process.env.HAS_DB_EXTERNAL_DATA) === true) {
       await Businesses.runUpMigration(queryInterface); 
     }    
   },

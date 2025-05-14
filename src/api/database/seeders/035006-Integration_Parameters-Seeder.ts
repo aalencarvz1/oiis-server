@@ -9,7 +9,7 @@ import DBConnectionManager from '../DBConnectionManager.js';
 /** @type {import('sequelize-cli').Migration} */
 export default {
   async up(queryInterface: QueryInterface, Sequelize: any) {    
-    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
       let query = `
         MERGE INTO 
           "${Integration_Parameters.tableName}" target
@@ -56,7 +56,7 @@ export default {
   },
 
   async down(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_WINTHOR_INTEGRATION) === true) {
       await DBConnectionManager.getWinthorIntegrationDBConnection()?.getQueryInterface().bulkDelete(Integration_Parameters, {});
     }
   }

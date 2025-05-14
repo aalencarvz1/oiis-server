@@ -10,7 +10,7 @@ import SjdLogAnaliseEnt from '../models/sjd/SjdLogAnaliseEnt.js';
 /*migration*/
 export default {
   async up(queryInterface: QueryInterface, Sequelize: any) {
-    if (Utils.toBool(process.env.HAS_EP_INTEGRATION) == true) {
+    if (Utils.toBool(process.env.HAS_EP_INTEGRATION) === true) {
       await SjdLogAnaliseEnt.runUpMigration(queryInterface);     
     }
   },

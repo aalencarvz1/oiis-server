@@ -136,7 +136,7 @@ export default class WmsOutputsIntegrationsController extends BaseRegistersInteg
     static async unify_loadings(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let identifiers = req.body.identifiers || []; 
-            if (Utils.typeOf(identifiers) != 'array') {
+            if (Utils.typeOf(identifiers) !== 'array') {
                 identifiers = identifiers.split(',');
             }
             identifiers = identifiers.map((el: any)=>Utils.hasValue(el) ? el : 'null');           
@@ -158,7 +158,7 @@ export default class WmsOutputsIntegrationsController extends BaseRegistersInteg
 
 
                 //check if is same rca
-                if (Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION)) == true && Utils.toBool(await Parameter_Values.get(Parameters.WMS_OUTPUT_INTEGRATION_CHECK_RCA)) == true) {
+                if (Utils.toBool(await Parameter_Values.get(Parameters.HAS_WINTHOR_INTEGRATION)) === true && Utils.toBool(await Parameter_Values.get(Parameters.WMS_OUTPUT_INTEGRATION_CHECK_RCA)) === true) {
                     let loadingsWinthor = [];
                     let loadingsBroker = [];
                     for(let key in identifiers) {
@@ -242,7 +242,7 @@ export default class WmsOutputsIntegrationsController extends BaseRegistersInteg
     static async get_loadings_items_for_print(req: Request, res: Response, next: NextFunction) : Promise<void> {
         try {
             let identifiers = req.body.identifiers || [];
-            if (Utils.typeOf(identifiers) != 'array') {
+            if (Utils.typeOf(identifiers) !== 'array') {
                 identifiers = identifiers.split(',');
             }
             identifiers = identifiers.map((el: any)=>Utils.hasValue(el) ? el : 'null');           

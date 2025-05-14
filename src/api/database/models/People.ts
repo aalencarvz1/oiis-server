@@ -111,13 +111,13 @@ export default class People extends BaseTableModel {
       let ind = null;
       for(let key in queryParams) {
         ind = fieldsLower.indexOf(key.trim().toLowerCase());
-        if (ind > -1 && key != 'id') {
+        if (ind > -1 && key !== 'id') {
           newParams[originalFieldsNames[ind]] = queryParams[key];
         }
       }
       if (people) {
         for(let key in newParams) {
-          if (key != 'id') people[key] = newParams[key];
+          if (key !== 'id') people[key] = newParams[key];
         }
         await people.save();
         return people;
@@ -139,7 +139,7 @@ export default class People extends BaseTableModel {
       queryParams.where[Op.or] = identifiersDocs.map((el: any)=>{
         let r : any = {};
         let and = [];
-        if (typeof el == 'object') {
+        if (typeof el === 'object') {
           if (el.identifier_doc_type_id) {
             and.push({
               identifier_doc_type_id: el.identifier_doc_type_id

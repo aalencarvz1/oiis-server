@@ -56,7 +56,7 @@ export default class Clients extends BasePeopleModel {
       queryParams.where[Op.or] = identifiersDocs.map(el=>{
         let r : any = {};
         let and = [];
-        if (typeof el == 'object') {
+        if (typeof el === 'object') {
           if (el.identifier_doc_type_id) {
             and.push(Sequelize.where(
               Sequelize.col(`${People.tableName}.identifier_doc_type_id`),

@@ -1,4 +1,4 @@
-import express, { Request } from 'express';
+import express, { Request, Response } from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
@@ -22,11 +22,11 @@ import MidiasController from './controllers/modules/registers/MidiasController.j
 
 //multer configure
 const storage = multer.diskStorage({
-  destination: function (req: Request, file: any, cb: Function) {
+  destination: function (req: Request, file: Express.Multer.File, cb: (error: Error | null, destination: string) => void) {
     cb(null, 'uploads/')
   },
-  filename: function (req: Request , file: any, cb: Function) {
-      let fileExt = file.mimetype?.split('/') || file.filename?.split('.') || ['file'];
+  filename: function (req: Request , file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) {
+      let fileExt : string | string[] = file.mimetype?.split('/') || file.filename?.split('.') || ['file'];
       if (fileExt && fileExt.length > 0) {
           fileExt = fileExt[fileExt.length-1];
       } 
@@ -66,7 +66,7 @@ ModelsController.initModels().then(async ()=>{
   api.use(AuthController.check_token); //auth token check middleware
 
 
-  let requestHandlersRootDir = `${__dirname}/controllers`;
+  const requestHandlersRootDir = `${__dirname}/controllers`;
   EndPointsController.loadDefaultEndPoints();
 
   //base end point is /api/controllers
@@ -75,7 +75,7 @@ ModelsController.initModels().then(async ()=>{
   api.use(EndPointsController.getRouter());
 
   //falback (404)
-  api.use((req,res,next) => {
+  api.use((req: Request,res: Response) => {
     res.success = false;
     res.message = "resource not found";
     res.sendResponse(404,false);
@@ -92,37 +92,4 @@ ModelsController.initModels().then(async ()=>{
 
 }).catch(error=>{
   console.log(error);
-})
-
-
-
-
-
-//handle all methods and routes
-/*(async()=>{
-
-  //only controllers can receive requests
-  let requestHandlersRootDir = `${__dirname}/controllers`;
-  EndPointsController.loadDefaultEndPoints();
-
-   //base end point is /api/controllers
-   //auto load configure this app with router of all controlers that has methods with request handler signature as a endpoint.
-  await EndPointsController.autoLoadEndPoints(requestHandlersRootDir,"/api/controllers/");
-  api.use(EndPointsController.getRouter());
-
-  //falback (404)
-  api.use((req,res,next) => {
-    res.success = false;
-    res.message = "resource not found";
-    res.sendResponse(404,false);
-  })
-  Utils.log('endpoints',EndPointsController.getEndPoints(EndPointsController.getRouter()));
-})();
-
-
-//api start
-api.listen(process.env.API_PORT||3000,function(){
-    Utils.log('FL',`server api running on port ${process.env.API_PORT||3000} at ${new Date()}`)
 });
-
-ModelsController.initModels();*/

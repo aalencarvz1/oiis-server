@@ -98,7 +98,7 @@ export default class PcPrestController extends WinthorBaseRegistersIntegrationsC
 
                                 if (Utils.hasValue(pcEstcr)) {
 
-                                    if (pcCob.CARTAO == 'S') {
+                                    if (pcCob.CARTAO === 'S') {
 
                                         let pcClient : any = await PcClient.findOne({
                                             raw:true,
