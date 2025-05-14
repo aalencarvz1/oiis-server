@@ -1,10 +1,9 @@
 import SchemasController from "../../../../../dist/api/controllers/modules/registers/SchemasController";
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
-import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import Schemas from "../../../../../dist/api/database/models/Schemas";
 import HelperTestController from "../../HelperTestController";
 
-const stringTest = 'TEST';
+const stringTest = 'TEST_000003';
 
 describe(SchemasController.name, () => {
 

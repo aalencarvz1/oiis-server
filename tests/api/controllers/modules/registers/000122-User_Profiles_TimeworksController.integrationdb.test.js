@@ -4,9 +4,9 @@ import User_Profile_TimeworksController from "../../../../../dist/api/controller
 import HelperTestController from "../../HelperTestController";
 
 
-const emailTest = 'jumbotesteProfile@test.com';
-const passwordTest = 'Test123e21Profile';
-const nameTest = 'testeProfile';
+const emailTest = 'jumbotesteTEST_000122@test.com';
+const passwordTest = 'TEST_000122asa';
+const nameTest = 'TEST_000122';
 
 describe(User_Profile_TimeworksController.name, () => {
    

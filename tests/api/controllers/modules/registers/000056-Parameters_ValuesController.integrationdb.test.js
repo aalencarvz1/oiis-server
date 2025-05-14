@@ -1,11 +1,10 @@
 
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
-import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import Parameters_ValueController from "../../../../../dist/api/controllers/modules/registers/Parameter_ValuesController";
 import HelperTestController from "../../HelperTestController";
 import Parameter_Values from "../../../../../dist/api/database/models/Parameter_Values";
 
-const stringTest = 'TEST';
+const stringTest = 'TEST_000056';
 
 async function insert(stringTest){
     let resultParameter = await HelperTestController.ParameterCompletInsert(`${stringTest}_PARENT`);
@@ -158,9 +157,8 @@ describe(Parameters_ValueController.name, () => {
 
     //delete table register
     test('delete', async () => {
-        
+    
         await HelperTestController.Parameters_ValuesControllerDelete(stringTest);
-        
     });
     
 

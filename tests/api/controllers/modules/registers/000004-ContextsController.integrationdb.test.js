@@ -4,7 +4,7 @@ import ModelsController from "../../../../../dist/api/controllers/database/Model
 import Contexts from "../../../../../dist/api/database/models/Contexts";
 import HelperTestController from "../../HelperTestController";
 
-const stringTest = 'TEST';
+const stringTest = 'TEST_000004';
 
 describe(ContextsController.name, () => {
 

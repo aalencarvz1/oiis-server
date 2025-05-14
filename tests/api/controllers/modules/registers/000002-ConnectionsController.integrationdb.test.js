@@ -1,10 +1,9 @@
 import ConnectionsController from "../../../../../dist/api/controllers/modules/registers/ConnectionsController";
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
-import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import Connections from "../../../../../dist/api/database/models/Connections";
 import HelperTestController from "../../HelperTestController";
 
-const stringTest = 'TEST';
+const stringTest = 'TEST_000002';
 
 describe(ConnectionsController.name, () => {
 

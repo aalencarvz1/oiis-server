@@ -1,11 +1,10 @@
 import TablesController from "../../../../../dist/api/controllers/modules/registers/TablesController";
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
-import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import config from "../../../../../dist/api/database/config/config";
 import Tables from "../../../../../dist/api/database/models/Tables";
 import HelperTestController from "../../HelperTestController";
 
-const stringTest = 'TEST';
+const stringTest = 'TEST_000001';
 
 describe(TablesController.name, () => {
 
@@ -39,25 +38,7 @@ describe(TablesController.name, () => {
 
     //test put (insert)
     test('put', async () => {
-        let dbConfig = config[`${process.env.NODE_ENV||'development'}`];
-        let result = await TablesController._put({
-            data_connection_id: dbConfig.id,
-            schema_id: dbConfig.id,
-            name: stringTest,
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result.success).toBeTruthy();
-
-        //get inserted register to confirm persistency
-        result = await TablesController._get({
-            where:{
-                data_connection_id: dbConfig.id,
-                schema_id: dbConfig.id,
-                name: stringTest,
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result[0].name).toBe(stringTest);
+       await HelperTestController.TableInsert(stringTest);
     });
 
     test('put Duplicate', async () => {
@@ -72,16 +53,7 @@ describe(TablesController.name, () => {
 
     //test get (select) inserted register
     test('get', async () => {
-        let dbConfig = config[`${process.env.NODE_ENV||'development'}`];
-        let result = await TablesController._get({
-            where:{
-                data_connection_id: dbConfig.id,
-                schema_id: dbConfig.id,
-                name: stringTest,
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result[0].name).toBe(stringTest);
+        await HelperTestController.TableGet(stringTest);
     });    
 
 
@@ -154,38 +126,7 @@ describe(TablesController.name, () => {
 
     //test delete inserted register
     test('delete', async () => {
-        let id = null;
-        let dbConfig = config[`${process.env.NODE_ENV||'development'}`];
-
-        //get register to delete, previous inserted by put test
-        let result = await TablesController._get({
-            where:{
-                data_connection_id: dbConfig.id,
-                schema_id: dbConfig.id,
-                name: stringTest,
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        id = result[0].id;
-
-        //update register
-        result = await TablesController._delete({
-            where: {
-                id: id
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result.success).toBeTruthy();
-
-        //get register updated to confirm if has uupdated
-        result = await TablesController._get({
-            where:{
-                id:id
-            }
-        });
-
-        //test persistensy of delete
-        expect(Utils.hasValue(result)).toBeFalsy();
+       await HelperTestController.TableDelete(stringTest);
     });
     
 });

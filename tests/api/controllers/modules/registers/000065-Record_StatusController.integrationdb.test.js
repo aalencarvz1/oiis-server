@@ -1,10 +1,9 @@
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
-import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import RecordStatusController from "../../../../../dist/api/controllers/modules/registers/Record_StatusController";
 import Record_Status from "../../../../../dist/api/database/models/Record_Status";
 import HelperTestController from "../../HelperTestController";
 
-const stringTest = 'TEST';
+const stringTest = 'TEST_000065';
 
 describe(RecordStatusController.name, () => {
    

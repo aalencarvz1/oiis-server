@@ -4,8 +4,8 @@ import Measurement_UnitsController from "../../../../../dist/api/controllers/mod
 import HelperTestController from "../../HelperTestController";
 import Measurement_Units from "../../../../../dist/api/database/models/Measurement_Units";
 
-const stringTest = 'TEST';
-const sigla = 'TST';
+const stringTest = 'TEST_000080';
+const sigla = 'TST_80';
 
 describe(Measurement_UnitsController
 .name, () => {
