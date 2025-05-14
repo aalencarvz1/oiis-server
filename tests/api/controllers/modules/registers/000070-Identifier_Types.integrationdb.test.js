@@ -1,10 +1,9 @@
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
-import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import IdentifierTypes from "../../../../../dist/api/controllers/modules/registers/Identifier_TypesController";
 import HelperTestController from "../../HelperTestController";
 import Identifier_Types from "../../../../../dist/api/database/models/Identifier_Types";
 
-const stringTest = 'TEST';
+const stringTest = 'TEST_000070';
 
 describe(IdentifierTypes.name, () => {
    

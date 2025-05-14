@@ -1,10 +1,9 @@
 import Data_TypesController from "../../../../../dist/api/controllers/modules/registers/Data_TypesController";
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
-import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import HelperTestController from "../../HelperTestController";
 import Data_Types from "../../../../../dist/api/database/models/Data_Types";
 
-const stringTest = 'TEST';
+const stringTest = 'TEST_000050';
 
 describe(Data_TypesController.name, () => {
    
@@ -35,7 +34,7 @@ describe(Data_TypesController.name, () => {
     
 
     test('put', async () => {
-        let result = await HelperTestController.Data_TypesInsert(stringTest,true)
+        await HelperTestController.Data_TypesInsert(stringTest,true)
     
     });
     
@@ -114,31 +113,7 @@ describe(Data_TypesController.name, () => {
 
 
     test('delete', async () => {
-        let id = null;
-
-        let result = await Data_TypesController._get({
-            where:{
-                name: stringTest,
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        id = result[0].id;
-        
-        
-        result = await Data_TypesController._delete({
-            where:{
-                id:id,
-            }
-        });
-        expect(Utils.hasValue(result)).toBeTruthy();
-        expect(result.success).toBeTruthy();
-
-        result = await Data_TypesController._get({
-            where:{
-                id: id
-            }
-        });
-        expect(Utils.hasValue(result)).toBeFalsy();
+       await HelperTestController.Data_TypesDelete(stringTest);
     });
 
 })

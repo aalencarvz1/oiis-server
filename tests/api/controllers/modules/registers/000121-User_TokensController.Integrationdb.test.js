@@ -4,7 +4,7 @@ import UserTokensController from "../../../../../dist/api/controllers/modules/re
 import HelperTestController from "../../HelperTestController";
 
 
-const emailTest = 'jumbotesteUserTokens@test.com';
+const emailTest = 'jumbotesteTEST_000121@test.com';
 const passwordTest = 'Test123e21UserTokens';
 
 describe(UserTokensController.name, () => {
