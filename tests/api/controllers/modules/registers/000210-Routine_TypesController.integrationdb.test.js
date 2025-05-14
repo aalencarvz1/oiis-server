@@ -3,7 +3,7 @@ import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import Routine_Types from "../../../../../dist/api/database/models/Routine_Types";
 import HelperTestController from "../../HelperTestController";
 
-const stringTest = 'TEST';
+const stringTest = 'TEST_000210';
 
 describe(Routine_TypesController.name, () => {
 

@@ -4,9 +4,9 @@ import User_TimeworksController from "../../../../../dist/api/controllers/module
 import HelperTestController from "../../HelperTestController";
 
 
-const emailTest = 'jumbotesteUserTimework@test.com';
-const passwordTest = 'TestUserTimework';
-const nameTest = 'TestUserTimework';
+const emailTest = 'jumbotesteTEST_000123@test.com';
+const passwordTest = 'TEST_000123';
+const nameTest = 'TEST_000123';
 const start_atTest = '8:00';
 const end_atTest = '12:00';
 const week_day =  6;

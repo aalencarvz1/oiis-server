@@ -4,8 +4,8 @@ import PeopleController from "../../../../../dist/api/controllers/modules/regist
 import HelperTestController from "../../HelperTestController";
 import People from "../../../../../dist/api/database/models/People";
 
-const stringTest = 'TEST';
-const stringDoc = '14.524.123-5';
+const stringTest = 'TEST_000100';
+const stringDoc = '14.524.100-5';
 describe(PeopleController.name, () => {
    
    

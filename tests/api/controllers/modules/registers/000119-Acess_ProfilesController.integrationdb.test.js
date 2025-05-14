@@ -4,7 +4,7 @@ import Acess_Profiles from "../../../../../dist/api/controllers/modules/register
 import Access_Profiles from "../../../../../dist/api/database/models/Access_Profiles";
 import HelperTestController from "../../HelperTestController";
 
-const stringTest = 'TEST';
+const stringTest = 'TEST_000119';
 
 describe(Acess_Profiles.name, () => {
    

@@ -1,24 +1,24 @@
-import TextsController from "../../../../../dist/api/controllers/modules/registers/TextsController";
+import Value_NamesController from "../../../../../dist/api/controllers/modules/registers/Value_NamesController";
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
-import Texts from "../../../../../dist/api/database/models/Texts";
+import Value_Names from "../../../../../dist/api/database/models/Value_Names";
 import HelperTestController from "../../HelperTestController";
 
-const stringTest = 'TEST_000249';
+const stringTest = 'TEST_001002';
 
-describe(TextsController.name, () => {
+describe(Value_NamesController.name, () => {
 
     //initialize models, necessary to user controllers of models
     beforeAll(async ()=>{
         //await ModelsController.initModels();
         await HelperTestController.initBasicModels();
-        await Texts.initModel();
+        await Value_Names.initModel();
     });
 
 
 
     //test class model name is correctly seted to table model name
     test('table class model name', () => {
-        let tableClassModel = TextsController.getTableClassModel();
+        let tableClassModel = Value_NamesController.getTableClassModel();
         expect(Utils.hasValue(tableClassModel)).toBeTruthy();
         let tableModelClassName = tableClassModel?.name;
         expect(Utils.hasValue(tableModelClassName)).toBeTruthy();
@@ -28,7 +28,7 @@ describe(TextsController.name, () => {
     });
 
      test('put without data', async () => {
-            let result = await TextsController._put({}) 
+            let result = await Value_NamesController._put({}) 
             expect(Utils.hasValue(result)).toBeTruthy();
             expect(result.success).toBeFalsy();
             expect(result.message).toMatch(/^[a-z0-9._]+\s+cannot\s+be\s+null$/i);
@@ -37,16 +37,18 @@ describe(TextsController.name, () => {
 
     //test put (insert)
     test('put', async () => {
-        
-        await HelperTestController.TextInsert(stringTest);
+        let result = await Value_NamesController._put({
+            name:stringTest,
+        })
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
     });
-    test('put Duplicate', async () => {
-        let TextResult = await HelperTestController.TextGet(stringTest);
 
-        let result = await TextsController._put({
-            
-            language_id:TextResult[0].language_id,
-            text:stringTest,
+    test('put Duplicate', async () => {
+
+        let result = await Value_NamesController._put({
+    
+            name:stringTest,
             
         })
         expect(Utils.hasValue(result)).toBeTruthy();
@@ -57,7 +59,13 @@ describe(TextsController.name, () => {
 
     //test get (select) inserted register
     test('get', async () => {
-       await HelperTestController.TextGet(stringTest);
+        let result = await Value_NamesController._get({
+            where:{
+                name:stringTest
+            }
+        })
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result[0].name).toBe(stringTest);
     });    
 
 
@@ -67,28 +75,28 @@ describe(TextsController.name, () => {
         let id = null;
 
         //get register to update, previous inserted by put test
-        let result = await TextsController._get({
+        let result = await Value_NamesController._get({
             where:{
-                text: stringTest,
+                name: stringTest,
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         id = result[0].id;
 
         //update register
-        result = await TextsController._patch({
+         result = await Value_NamesController._patch({
             where: {
                 id: id
             },
             values:{
-                text: `${stringTest}_UPDATED`,
+                name: `${stringTest}_UPDATED`,
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
 
         //get register updated to confirm if has uupdated
-        result = await TextsController._get({
+        result = await Value_NamesController._get({
             where:{
                 id:id
             }
@@ -96,24 +104,24 @@ describe(TextsController.name, () => {
         expect(Utils.hasValue(result)).toBeTruthy();
 
         //test persistency of updated register
-        expect(result[0].text).toBe(`${stringTest}_UPDATED`);
+        expect(result[0].name).toBe(`${stringTest}_UPDATED`);
 
 
         ///
          //REVERT update register
-         result = await TextsController._patch({
+         result = await Value_NamesController._patch({
             where: {
                 id: id
             },
             values:{
-                text: stringTest,
+                name: stringTest,
             }
         });
         expect(Utils.hasValue(result)).toBeTruthy();
         expect(result.success).toBeTruthy();
 
         //get register REVERT updated to confirm if has uupdated
-        result = await TextsController._get({
+        result = await Value_NamesController._get({
             where:{
                 id:id
             }
@@ -121,15 +129,44 @@ describe(TextsController.name, () => {
         expect(Utils.hasValue(result)).toBeTruthy();
 
         //test persistency of updated register
-        expect(result[0].text).toBe(stringTest);
+        expect(result[0].name).toBe(stringTest);
     });
 
 
 
     //test delete inserted register
     test('delete', async () => {
-        await HelperTestController.TextDelete(stringTest);
-        await HelperTestController.LanguagensDelete(stringTest);
+       
+        let id = null;
+
+        //get register to delete, previous inserted by put test
+        let result = await Value_NamesController._get({
+            where:{
+                name: stringTest,
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        id = result[0].id;
+
+        //update register
+        result = await Value_NamesController._delete({
+            where: {
+                id: id
+            }
+        });
+        expect(Utils.hasValue(result)).toBeTruthy();
+        expect(result.success).toBeTruthy();
+
+        //get register updated to confirm if has uupdated
+        result = await Value_NamesController._get({
+            where:{
+                id:id
+            }
+        });
+
+        //test persistensy of delete
+        expect(Utils.hasValue(result)).toBeFalsy();
+
     });
     
 });

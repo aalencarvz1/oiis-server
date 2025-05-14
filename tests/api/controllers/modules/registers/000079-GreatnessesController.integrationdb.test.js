@@ -1,10 +1,9 @@
 import Utils from "../../../../../dist/api/controllers/utils/Utils";
-import ModelsController from "../../../../../dist/api/controllers/database/ModelsController";
 import GreatnessesController from "../../../../../dist/api/controllers/modules/registers/GreatnessesController";
 import HelperTestController from "../../HelperTestController";
 import Greatnesses from "../../../../../dist/api/database/models/Greatnesses";
 
-const stringTest = 'TEST';
+const stringTest = 'TEST_000079';
 const sigla = 'TST';
 describe(GreatnessesController.name, () => {
    

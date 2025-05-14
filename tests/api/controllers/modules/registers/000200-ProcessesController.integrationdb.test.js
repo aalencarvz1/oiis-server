@@ -3,7 +3,7 @@ import Utils from "../../../../../dist/api/controllers/utils/Utils";
 import processes from "../../../../../dist/api/database/models/Processes";
 import HelperTestController from "../../HelperTestController";
 
-const stringTest = 'TEST';
+const stringTest = 'TEST_000200';
 
 describe(processesController.name, () => {
 

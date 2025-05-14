@@ -4,7 +4,7 @@ import modules from "../../../../../dist/api/database/models/Modules";
 import Routines from "../../../../../dist/api/database/models/Routines";
 import HelperTestController from "../../HelperTestController";
 
-const stringTest = 'TEST';
+const stringTest = 'TEST_000240';
 
 describe(RoutinesController.name, () => {
 

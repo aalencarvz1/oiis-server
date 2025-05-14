@@ -5,7 +5,7 @@ import Users from "../../../../../dist/api/database/models/Users";
 import HelperTestController from "../../HelperTestController";
 import People from "../../../../../dist/api/database/models/People";
 
-const emailTest = 'jumboteste@test.com';
+const emailTest = 'jumboteste_TEST_0000120@test.com';
 const passwordTest = 'Test123e21';
 
 describe(UserController.name, () => {
