@@ -21,6 +21,7 @@ BEGIN
     DECLARE sql_count_current TEXT;
     DECLARE total_previous BIGINT;
     DECLARE total_current BIGINT;
+    DECLARE existe INT;
 
     -- Cursor com todas as tabelas do banco atual
     DECLARE cur CURSOR FOR
@@ -39,22 +40,31 @@ BEGIN
             LEAVE loop_tabelas;
         END IF;
 
-        -- Monta dinamicamente a contagem de linhas da tabela no banco anterior
-        SET @sql_count_previous = CONCAT('SELECT COUNT(*) INTO @total_previous FROM ', previous_db, '.', tabela_nome);
-        SET @sql_count_current = CONCAT('SELECT COUNT(*) INTO @total_current FROM ', current_db, '.', tabela_nome);
 
-        -- Executa e captura os valores
-        PREPARE stmt FROM @sql_count_previous;
-        EXECUTE stmt;
-        DEALLOCATE PREPARE stmt;
+        SELECT COUNT(*) INTO existe
+        FROM information_schema.tables
+        WHERE table_schema = previous_db
+            AND table_name = tabela_nome;
+        IF existe > 0 THEN
+            -- Monta dinamicamente a contagem de linhas da tabela no banco anterior
+            SET @sql_count_previous = CONCAT('SELECT COUNT(*) INTO @total_previous FROM ', previous_db, '.', tabela_nome);
+            SET @sql_count_current = CONCAT('SELECT COUNT(*) INTO @total_current FROM ', current_db, '.', tabela_nome);
 
-        PREPARE stmt FROM @sql_count_current;
-        EXECUTE stmt;
-        DEALLOCATE PREPARE stmt;
+            -- Executa e captura os valores
+            PREPARE stmt FROM @sql_count_previous;
+            EXECUTE stmt;
+            DEALLOCATE PREPARE stmt;
 
-        -- Compara e exibe diferenças
-        IF @total_previous != @total_current THEN
-            SELECT CONCAT('Table ', tabela_nome, ': difference lines count -> previous_db = ', @total_previous, ', current_db = ', @total_current) AS resultado;
+            PREPARE stmt FROM @sql_count_current;
+            EXECUTE stmt;
+            DEALLOCATE PREPARE stmt;
+
+            -- Compara e exibe diferenças
+            IF @total_previous != @total_current THEN
+                SELECT CONCAT('Table ', tabela_nome, ': difference lines count -> previous_db = ', @total_previous, ', current_db = ', @total_current) AS resultado;
+            END IF;
+        ELSE
+            SELECT CONCAT('Table ', tabela_nome, ' não existe no banco anterior') AS resultado;
         END IF;
 
     END LOOP;

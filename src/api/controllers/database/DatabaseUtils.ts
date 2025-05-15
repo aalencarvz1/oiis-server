@@ -3,6 +3,10 @@ import Utils from "../utils/Utils.js";
 import BaseTableModel from "../../database/models/BaseTableModel.js";
 
 export default class DatabaseUtils {
+
+    static #opKeys = Object.keys(Op); 
+    static #opKeysLower = DatabaseUtils.#opKeys.map(el=>el.toLowerCase().trim());     
+
     static customOrder(column: string, values: any[], direction: string) : any[] {
         let orderByClause = 'CASE ';
       
@@ -20,32 +24,28 @@ export default class DatabaseUtils {
     };
 
     static prepareLogicalQueryParams(queryParamsProp: any) : any {
-        let result = queryParamsProp;
-        let opKeysLower = Object.keys(Op).map(el=>el.toLowerCase().trim()); 
-        let opKeys = Object.keys(Op); 
+        let result = queryParamsProp;        
         let realInd = -1;
-        if (Utils.typeOf(queryParamsProp) === 'object') {
-            if (queryParamsProp == null) {
-                result = null;
-            } else {
+        if (Utils.hasValue(queryParamsProp)) {
+            if (Utils.typeOf(queryParamsProp) === 'object') {
                 //result = {}; //symbol keys not iteratable by for key in 
-                for(let key in queryParamsProp) {                
-                    realInd = opKeysLower.indexOf(key.replace(/[\s_]/g,'').toLowerCase().trim());
+                for(const key in queryParamsProp) {                
+                    realInd = DatabaseUtils.#opKeysLower.indexOf(key.replace(/[\s_]/g,'').toLowerCase().trim());
                     if (realInd > 0)  {
-                        result[(Op as any)[opKeys[realInd]]] = DatabaseUtils.prepareLogicalQueryParams(queryParamsProp[key]);
+                        result[(Op as any)[DatabaseUtils.#opKeys[realInd]]] = DatabaseUtils.prepareLogicalQueryParams(queryParamsProp[key]);
                         delete result[key]; //replaced by simbol key
                     } else {
                         result[key] = DatabaseUtils.prepareLogicalQueryParams(queryParamsProp[key]);  
                     }
                 }
+            } else if (Utils.typeOf(queryParamsProp) === 'array') {
+                for(const key in queryParamsProp) {                                
+                    result[key] = DatabaseUtils.prepareLogicalQueryParams(queryParamsProp[key]);  
+                }
+            } else if (typeof queryParamsProp === 'string' && (queryParamsProp.indexOf(' ') > -1  || queryParamsProp.indexOf('(') > -1)) {
+                if (queryParamsProp.indexOf('%') === 0) queryParamsProp = `'${queryParamsProp}'`; //like %%
+                result = Sequelize.literal(queryParamsProp);
             }
-        } else if (Utils.typeOf(queryParamsProp) === 'array') {
-            for(let key in queryParamsProp) {                                
-                result[key] = DatabaseUtils.prepareLogicalQueryParams(queryParamsProp[key]);  
-            }
-        } else if (typeof queryParamsProp === 'string' && (queryParamsProp.indexOf(' ') > -1  || queryParamsProp.indexOf('(') > -1)) {
-            if (queryParamsProp.indexOf('%') === 0) queryParamsProp = `'${queryParamsProp}'`; //like %%
-            result = Sequelize.literal(queryParamsProp);
         }
         return result;
     }
@@ -55,7 +55,7 @@ export default class DatabaseUtils {
         if (queryParams.where) {
             queryParams.where = DatabaseUtils.prepareLogicalQueryParams(queryParams.where || {});
         }
-        for(let key in queryParams?.attributes || []) {
+        for(const key in queryParams?.attributes || []) {
             if (typeof queryParams.attributes[key] === 'string') {
                 if (queryParams.attributes[key].trim().indexOf(' ') > -1
                     || queryParams.attributes[key].trim().indexOf('(') > -1
@@ -64,7 +64,7 @@ export default class DatabaseUtils {
                 }
             }
         }        
-        for(let key in queryParams?.order || []) {            
+        for(const key in queryParams?.order || []) {            
             if (queryParams.order[key][0]?.toString().trim().indexOf(' ') > -1
                 || queryParams.order[key][0]?.toString().trim().indexOf('(') > -1
                 || (!isNaN(queryParams.order[key][0]) && Number.isInteger(queryParams.order[key][0]-0))
@@ -93,10 +93,10 @@ export default class DatabaseUtils {
 
 
     static mountCondition(whereClause: any,field: any,values:any,compare?:any,valuesFunc?:any) : void {
-        if (values && values != null) {
+        if (Utils.hasValue(values)) {
             if (Utils.typeOf(values) === 'array') {
                 if (values.length > 0) {
-                    let inValues = [];
+                    const inValues = [];
                     compare = compare || Op.in;
                     for(let i = 0; i < values.length; i++) {
                         inValues.push(valuesFunc ? Sequelize.fn(valuesFunc,values[i].id || values[i].id || values[i].name || values[i].name || values[i].label || values[i]) : values[i].id || values[i].id || values[i].name || values[i].name || values[i].label || values[i]);
@@ -165,8 +165,8 @@ export default class DatabaseUtils {
     static whereToString(where: any,tableClassModel?: typeof BaseTableModel,delimiter?: string) : any {
         let result = null;
         if (Utils.hasValue(where)) {
-            if (Utils.typeOf(where) === 'array') {
-                let wheres = [];
+            const wheres = [];
+            if (Utils.typeOf(where) === 'array') {                
                 for(let i = 0; i < where.length; i++) {
                     wheres.push(this.whereToString(where[i],tableClassModel,delimiter));
                 }
@@ -174,9 +174,7 @@ export default class DatabaseUtils {
             } else if (Utils.typeOf(where) === 'object') {
                 let fieldsNames = Object.keys(tableClassModel?.fields||{});
                 fieldsNames = fieldsNames.map(el=>el.trim().toLowerCase());
-                let wheres = [];
-                for(let key in where) {
-                    
+                for(const key in where) {                    
 
                     switch(key.trim().toLowerCase()) {
                         case 'and':
@@ -191,9 +189,9 @@ export default class DatabaseUtils {
                                 }
                             }
                             if (Utils.typeOf(where[key]) === 'object') {
-                                let keys = Object.keys(where[key]);
+                                const keys = Object.keys(where[key]);
                                 if (keys.length > 1) throw new Error(`where clause field ${key} has more than 1 object key`);
-                                let fieldKey = keys[0].trim().toLowerCase();
+                                const fieldKey = keys[0].trim().toLowerCase();
                                 if (fieldKey === 'in' || fieldKey === 'not in') {
                                     wheres.push(`${fieldWhere} ${fieldKey} (${Utils.typeOf(where[key][keys[0]]) === 'array' ? where[key][keys[0]].join(',') : where[key][keys[0]]})`);
                                 } else /*if (fieldKey === 'like' || fieldKey === 'not like')*/ {

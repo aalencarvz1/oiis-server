@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import BaseRegistersIntegrationsController from "./BaseRegistersIntegrationsController.js";
 import PcClientController from "./winthor/registers/PcClientController.js";
 
@@ -9,9 +9,9 @@ export default class AddressesIntegrationsController extends BaseRegistersIntegr
      * @created 2025-01-04
      * @version 1.0.0
      */
-    static async integrate(req: Request, res: Response, next: NextFunction) : Promise<void> {
+    static async integrate(req: Request, res: Response) : Promise<void> {
         try {
-            let origin = req.body.origin || "";
+            const origin = req.body.origin || "";
             switch((origin.name || origin.label || origin).trim().toLowerCase()) {                        
                 case "winthor":
                     res.setDataSwap(await PcClientController.integratePeopleAddress(req.body));

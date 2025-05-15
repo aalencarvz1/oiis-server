@@ -1,15 +1,15 @@
 'use strict';
 
 import { QueryInterface } from 'sequelize';
-import  Commission_Values  from '../models/Commission_Values.js';
+import  Customized_Commission_Entity_Items  from '../models/Customized_Commission_Entity_Items.js';
 /** @type {import('sequelize-cli').Migration} */
 
 /*migration*/
 export default {
   async up(queryInterface: QueryInterface, Sequelize: any) {
-    await Commission_Values.runUpMigration(queryInterface);     
+    await Customized_Commission_Entity_Items.runUpMigration(queryInterface);     
   },
   async down(queryInterface: QueryInterface, Sequelize: any) {
-    await queryInterface.dropTable(Commission_Values.tableName);
+    await queryInterface.dropTable(Customized_Commission_Entity_Items.tableName);
   }
 };
