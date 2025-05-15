@@ -24,16 +24,7 @@ ex:
 }
 */
 let oldTables : any = {    
-  'campaign_kpis':{
-    'columns':{
-      'order_num':'numeric_order'
-    }
-  },
-  'campaign_kpi_result_values':{
-    'columns':{
-      'order_num':'numeric_order'
-    }
-  }
+  
 }
 
 export default {

@@ -36,15 +36,15 @@ export default class Item_Mov_Xml_Import_Id_Conversions extends BaseTableModel {
         allowNull:false
       },
       emitent_doc:{
-        type: DataTypes.STRING(256),
+        type: DataTypes.STRING(128),
         allowNull:false
       },
       origin_item_id:{
-        type: DataTypes.STRING(256),
+        type: DataTypes.STRING(128),
         allowNull: false
       },
       xml_quantity_field_name:{
-        type: DataTypes.STRING(256),
+        type: DataTypes.STRING(128),
         allowNull: false
       },
       item_id:{
@@ -74,7 +74,11 @@ export default class Item_Mov_Xml_Import_Id_Conversions extends BaseTableModel {
     'xml_quantity_field_name'
   ];
 
-  static constraints = [...(Item_Mov_Xml_Import_Id_Conversions.getBaseTableModelConstraints() || []),...[]];
+  static constraints = [...(Item_Mov_Xml_Import_Id_Conversions.getBaseTableModelConstraints() || []),...[{
+    name: Item_Mov_Xml_Import_Id_Conversions.tableName + '_u1',
+    fields: [...Item_Mov_Xml_Import_Id_Conversions.getBaseTableModelUniqueFields(),...Item_Mov_Xml_Import_Id_Conversions.uniqueFields],
+    type:"unique"
+  }]];
 
   
   static foreignsKeys : any[] = [];

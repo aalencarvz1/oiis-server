@@ -83,7 +83,7 @@ export default class EndPointsController{
               res.exception = res.exception || exception;  
               if (res.exception) {
                   if (res.exception.errors) {
-                      let messages = res.exception.errors.map((el:any)=>el?.message || el.toString());
+                      const messages = res.exception.errors.map((el:any)=>el?.message || el.toString());
                       res.message += `: ${messages.join(",")}`;
                   }
               }
@@ -164,15 +164,15 @@ export default class EndPointsController{
                         routePath = routePath.replaceAll(path.sep,"/").trim().toLowerCase();
                         this.router.all(routePath, (handler as any)); // Associa ao método HTTP apropriado
                     } else if (Utils.isClass(handler)) {
-                        let objKeys : string[] = Utils.getAllProperties(handler);
-                        for (let i in objKeys) {
+                        const objKeys : string[] = Utils.getAllProperties(handler);
+                        for (const i in objKeys) {
                             if (['caller','callee','arguments'].indexOf(objKeys[i]) === -1) {
-                                let handler2 : any = (handler as any)[objKeys[i]];
+                                const handler2 : any = (handler as any)[objKeys[i]];
                                 if (this.isRequestHandler(handler2)) {
                                     let routePath : string = path.join(basePath, entry.name.replace('.js', ''));
                                     routePath = routePath.replaceAll(path.sep,"/").trim().toLowerCase();
-                                    let methodName : string = handler2.name||'';
-                                    let routePathWithMethod =`${routePath}/${methodName}`
+                                    const methodName : string = handler2.name||'';
+                                    const routePathWithMethod =`${routePath}/${methodName}`
                                     console.log(`Registrando endpoint(2): ${routePathWithMethod}->${methodName}`);
                                     this.router.all(routePathWithMethod, handler2.bind(handler)); // Associa ao método HTTP apropriado
                                     if (['get','post','put','patch','delete'].indexOf(methodName.trim().toLowerCase()) > -1) {
@@ -219,9 +219,9 @@ export default class EndPointsController{
                         };
                     }
                     
-                    let routeArray = layer.route.path.split("/");
-                    let controllerName = (routeArray[routeArray.length-2] || routeArray[routeArray.length-1]).trim().toLowerCase();
-                    let methodName = routeArray[routeArray.length-1].trim().toLowerCase();
+                    const routeArray = layer.route.path.split("/");
+                    const controllerName = (routeArray[routeArray.length-2] || routeArray[routeArray.length-1]).trim().toLowerCase();
+                    const methodName = routeArray[routeArray.length-1].trim().toLowerCase();
                     if (this.namedEndpoints.indexOf(methodName) > -1) {
                         routes[methodName] = {
                             path: layer.route.path,
@@ -263,9 +263,9 @@ export default class EndPointsController{
      * @created 2024-12-31
      * @version 1.0.0
      */
-    static get_endpoints: RequestHandler = (req:Request, res: Response, next: NextFunction)=>{
+    static get_endpoints: RequestHandler = (req:Request, res: Response)=>{
         try {
-            let params = req.body || {};
+            const params = req.body || {};
             res.data = this.getEndPoints(this.getRouter(),params);
             res.success = true;
             res.sendResponse(200,true);
