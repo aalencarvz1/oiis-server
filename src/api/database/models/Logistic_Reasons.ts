@@ -1,7 +1,7 @@
 'use strict';
 
 
-import { DataTypes } from "sequelize";
+import { DataTypes, Sequelize } from "sequelize";
 import  BaseTableModel  from './BaseTableModel.js';
 import Utils from "../../controllers/utils/Utils.js";
 
@@ -23,7 +23,7 @@ export default class Logistic_Reasons extends BaseTableModel {
   static fields = {
     ...Logistic_Reasons.getBaseTableModelFields(),...{                 
       name:{
-        type: DataTypes.STRING(2000),
+        type: DataTypes.STRING(512),
         allowNull: false
       },
       mov_type_sigla:{
@@ -32,9 +32,16 @@ export default class Logistic_Reasons extends BaseTableModel {
     }
   };
   
-  static uniqueFields = [];
+  static uniqueFields = [
+    'name',
+    Sequelize.literal('(coalesce(mov_type_sigla,0))')
+  ];
 
-  static constraints = [...(Logistic_Reasons.getBaseTableModelConstraints() || []),...[]];
+  static constraints = [...(Logistic_Reasons.getBaseTableModelConstraints() || []),...[{
+    name: Logistic_Reasons.tableName + '_u1',
+    fields: [...Logistic_Reasons.getBaseTableModelUniqueFields(),...Logistic_Reasons.uniqueFields],
+    type:"unique"
+  }]];
 
   static foreignsKeys : any[] = [];
   
