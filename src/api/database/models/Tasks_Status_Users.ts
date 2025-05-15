@@ -81,7 +81,11 @@ export default class Tasks_Status_Users extends BaseTableModel {
     'status_id'
   ];
 
-  static constraints = [...(Tasks_Status_Users.getBaseTableModelConstraints() || []),...[]];
+  static constraints = [...(Tasks_Status_Users.getBaseTableModelConstraints() || []),...[{
+    name: Tasks_Status_Users.tableName + '_u1',
+    fields: [...Tasks_Status_Users.getBaseTableModelUniqueFields(),...Tasks_Status_Users.uniqueFields],
+    type:"unique"
+  }]];
 
   
   static foreignsKeys : any[] = [];

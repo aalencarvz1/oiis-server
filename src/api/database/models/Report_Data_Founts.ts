@@ -68,9 +68,15 @@ export default class Report_Data_Founts extends BaseTableModel {
     }
   };
   
-  static uniqueFields = [];
+  static uniqueFields = [
+    'name'
+  ];
 
-  static constraints = [...(Report_Data_Founts.getBaseTableModelConstraints() || []),...[]];
+  static constraints = [...(Report_Data_Founts.getBaseTableModelConstraints() || []),...[{
+    name: Report_Data_Founts.tableName + '_u1',
+    fields: [...Report_Data_Founts.getBaseTableModelUniqueFields(),...Report_Data_Founts.uniqueFields],
+    type:"unique"
+  }]];
 
   static foreignsKeys : any[] = [];
 

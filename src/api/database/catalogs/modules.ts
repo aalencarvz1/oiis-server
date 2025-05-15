@@ -318,20 +318,20 @@ export default [
                     "subs":[{
                         "id" : 255020000,
                         "routine_type_id" : 1,
-                        "name" : "MANEGEMENT CAMPAIGN",
+                        "name" : "MANAGEMENT CAMPAIGN",
                         "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M480-80Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q10 0 19.5.5T520-877v81q-10-2-20-3t-20-1q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186q122-112 181-203.5T720-552q0-2-.5-4t-.5-4h80q0 2 .5 4t.5 4q0 100-79.5 217.5T480-80Zm0-450Zm195-108 84-84 84 84 56-56-84-84 84-84-56-56-84 84-84-84-56 56 84 84-84 84 56 56ZM480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Z\"/></svg>",
-                        "view_path" :"/views/modules/registers/reports/campaigns/customized_campaigns/manegement/:campaign_id",
+                        "view_path" :"/views/modules/registers/reports/campaigns/customized_campaigns/management/:campaign_id",
                         "numeric_order":255020000,
                         "show_in_menu":0,
                         "subs":[{
-                                "id" : 25502000000,
-                                "routine_type_id" : 1,
-                                "name" : "KPI CAMPAIGN",
-                                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M480-80Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q10 0 19.5.5T520-877v81q-10-2-20-3t-20-1q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186q122-112 181-203.5T720-552q0-2-.5-4t-.5-4h80q0 2 .5 4t.5 4q0 100-79.5 217.5T480-80Zm0-450Zm195-108 84-84 84 84 56-56-84-84 84-84-56-56-84 84-84-84-56 56 84 84-84 84 56 56ZM480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Z\"/></svg>",
-                                "view_path" :"/views/modules/registers/reports/campaigns/customized_campaigns/manegement/:campaign_id/kpis/manegement/:kpi_id",
-                                "numeric_order":25502000000,
-                                "show_in_menu":0
-                            }]
+                            "id" : 25502000000,
+                            "routine_type_id" : 1,
+                            "name" : "KPI CAMPAIGN",
+                            "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M480-80Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q10 0 19.5.5T520-877v81q-10-2-20-3t-20-1q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186q122-112 181-203.5T720-552q0-2-.5-4t-.5-4h80q0 2 .5 4t.5 4q0 100-79.5 217.5T480-80Zm0-450Zm195-108 84-84 84 84 56-56-84-84 84-84-56-56-84 84-84-84-56 56 84 84-84 84 56 56ZM480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Z\"/></svg>",
+                            "view_path" :"/views/modules/registers/reports/campaigns/customized_campaigns/management/:campaign_id/kpis/management/:kpi_id",
+                            "numeric_order":25502000000,
+                            "show_in_menu":0
+                        }]
                     }]
                 }]
             }]
@@ -685,11 +685,33 @@ export default [
             "numeric_order":8003
         },{      
             "id" :8005,
-            "routine_type_id" : 1,
             "name" : "COMMISSIONS",
             "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M260-361v-40H160v-80h200v-80H200q-17 0-28.5-11.5T160-601v-160q0-17 11.5-28.5T200-801h60v-40h80v40h100v80H240v80h160q17 0 28.5 11.5T440-601v160q0 17-11.5 28.5T400-401h-60v40h-80Zm298 240L388-291l56-56 114 114 226-226 56 56-282 282Z\"/></svg>",
-            "view_path" :"/views/modules/reports/commissions",
-            "numeric_order":8005
+            "numeric_order":8005,
+            "subs":[{      
+                "id" :800500,
+                "routine_type_id" : 1,
+                "name" : "COMMISSIONS CLT",
+                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M260-361v-40H160v-80h200v-80H200q-17 0-28.5-11.5T160-601v-160q0-17 11.5-28.5T200-801h60v-40h80v40h100v80H240v80h160q17 0 28.5 11.5T440-601v160q0 17-11.5 28.5T400-401h-60v40h-80Zm298 240L388-291l56-56 114 114 226-226 56 56-282 282Z\"/></svg>",
+                "view_path" :"/views/modules/reports/commissions/commissions_clt",
+                "numeric_order":800500
+            },{      
+                "id" :800501,
+                "routine_type_id" : 1,
+                "name" : "CUSTOMIZED COMMISSIONS",
+                "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M260-361v-40H160v-80h200v-80H200q-17 0-28.5-11.5T160-601v-160q0-17 11.5-28.5T200-801h60v-40h80v40h100v80H240v80h160q17 0 28.5 11.5T440-601v160q0 17-11.5 28.5T400-401h-60v40h-80Zm298 240L388-291l56-56 114 114 226-226 56 56-282 282Z\"/></svg>",
+                "view_path" :"/views/modules/reports/commissions/customized_commissions",
+                "numeric_order":800501,
+                "subs":[{
+                    "id" : 80050100,
+                    "routine_type_id" : 1,
+                    "name" : "MANAGEMENT CUSTOMIZED COMMISSION",
+                    "icon" : "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"2em\" viewBox=\"0 -960 960 960\" width=\"2em\" fill=\"currentColor\"><path d=\"M480-80Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q10 0 19.5.5T520-877v81q-10-2-20-3t-20-1q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186q122-112 181-203.5T720-552q0-2-.5-4t-.5-4h80q0 2 .5 4t.5 4q0 100-79.5 217.5T480-80Zm0-450Zm195-108 84-84 84 84 56-56-84-84 84-84-56-56-84 84-84-84-56 56 84 84-84 84 56 56ZM480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Z\"/></svg>",
+                    "view_path" :"/views/modules/reports/commissions/customized_commissions/management/:customized_commission_id",
+                    "numeric_order":80050100,
+                    "show_in_menu":0
+                }]
+            }]
         },{      
             "id" :8010,
             "name" : "CLIENTS",
