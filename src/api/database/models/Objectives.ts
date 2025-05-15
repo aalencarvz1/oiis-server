@@ -70,9 +70,17 @@ export default class Objectives extends BaseTableModel {
     }
   };
   
-  static uniqueFields = [];
+  static uniqueFields = [
+    'name',
+    'start_date',
+    'end_date'
+  ];
 
-  static constraints = [...(Objectives.getBaseTableModelConstraints() || []),...[]];
+  static constraints = [...(Objectives.getBaseTableModelConstraints() || []),...[{
+    name: Objectives.tableName + '_u1',
+    fields: [...Objectives.getBaseTableModelUniqueFields(),...Objectives.uniqueFields],
+    type:"unique"
+  }]];
 
   static foreignsKeys : any[] = [];
 
