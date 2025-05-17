@@ -169,38 +169,47 @@ export default class Customized_CommissionsController extends BaseRegistersContr
                                     console.log('reportParams',reportParams);
                                     const resultCustomizedReport = await ReportsController.getCustomizedReportData(reportParams);
                                     if (resultCustomizedReport.success) {
-                                        resultCustomizedReport.data = resultCustomizedReport.data[0].DATA || [];
-                                        const keys = Object.keys(resultCustomizedReport.data[0]);
-                                        const sum : number = resultCustomizedReport.data.reduce((acc?:number,row?: any)=> acc += Utils.toNumber(row[keys[keys.length-1]]||0)||0, 0);
-                                        const result = sum * Utils.toNumber(data[i][`${Customized_Commission_Entities.tableName}.${Customized_Commission_Entity_Items.tableName}.percent1`]) / 100;
-                                        console.log(sum,result);
                                         const row = await Customized_Commission_Entity_Items.findOne({
                                             where:{
                                                 id:data[i][`${Customized_Commission_Entities.tableName}.${Customized_Commission_Entity_Items.tableName}.id`]
                                             }
                                         });
-                                        row.base_value = sum;
-                                        row.base_value = Utils.hasValue(row.min_base_value) 
-                                            ? Math.max(Utils.toNumber(row.min_base_value||0)||0,row.base_value) 
-                                            : row.base_value;
-                                        row.base_value = Utils.hasValue(row.max_base_value) 
-                                            ? Math.min(Utils.toNumber(row.max_base_value||0)||0,row.base_value) 
-                                            : row.base_value;
-                                        row.result_value = result;
-                                        row.result_value = Utils.hasValue(row.min_result_value) 
-                                            ? Math.max(Utils.toNumber(row.min_result_value||0)||0,row.result_value) 
-                                            : row.result_value;
-                                        row.result_value = Utils.hasValue(row.max_result_value) 
-                                            ? Math.min(Utils.toNumber(row.max_result_value||0)||0,row.result_value) 
-                                            : row.result_value;
-                                        row.calculated_at = calculatedAt;
-                                        await row.save();
-                                        entitiesToUpdate[row.customized_commission_entity_id] = entitiesToUpdate[row.customized_commission_entity_id] || {};
-                                        entitiesToUpdate[row.customized_commission_entity_id].calculated_at = entitiesToUpdate[row.customized_commission_entity_id].calculated_at || calculatedAt;
-                                        entitiesToUpdate[row.customized_commission_entity_id].base_value = entitiesToUpdate[row.customized_commission_entity_id].base_value || 0;
-                                        entitiesToUpdate[row.customized_commission_entity_id].result_value = entitiesToUpdate[row.customized_commission_entity_id].result_value || 0;
-                                        entitiesToUpdate[row.customized_commission_entity_id].base_value += sum;
-                                        entitiesToUpdate[row.customized_commission_entity_id].result_value += result;
+                                        if (Utils.hasValue(row)) {
+                                            let sum: number = 0;
+                                            let result: number = 0;
+                                            row.base_value = sum;
+                                            row.result_value = result;
+                                            row.calculated_at = calculatedAt;
+                                            entitiesToUpdate[row.customized_commission_entity_id] = entitiesToUpdate[row.customized_commission_entity_id] || {};
+                                            entitiesToUpdate[row.customized_commission_entity_id].calculated_at = entitiesToUpdate[row.customized_commission_entity_id].calculated_at || calculatedAt;
+                                            entitiesToUpdate[row.customized_commission_entity_id].base_value = entitiesToUpdate[row.customized_commission_entity_id].base_value || 0;
+                                            entitiesToUpdate[row.customized_commission_entity_id].result_value = entitiesToUpdate[row.customized_commission_entity_id].result_value || 0;
+                                            resultCustomizedReport.data = resultCustomizedReport.data[0]?.DATA || [];
+                                            if (Utils.hasValue(resultCustomizedReport.data)) {
+                                                const keys = Object.keys(resultCustomizedReport.data[0]);
+                                                sum = resultCustomizedReport.data.reduce((acc?:number,row?: any)=> acc += Utils.toNumber(row[keys[keys.length-1]]||0)||0, 0);
+                                                result = sum * Utils.toNumber(data[i][`${Customized_Commission_Entities.tableName}.${Customized_Commission_Entity_Items.tableName}.percent1`]) / 100;
+                                                row.base_value = sum;
+                                                row.base_value = Utils.hasValue(row.min_base_value) 
+                                                    ? Math.max(Utils.toNumber(row.min_base_value||0)||0,row.base_value) 
+                                                    : row.base_value;
+                                                row.base_value = Utils.hasValue(row.max_base_value) 
+                                                    ? Math.min(Utils.toNumber(row.max_base_value||0)||0,row.base_value) 
+                                                    : row.base_value;
+                                                row.result_value = result;
+                                                row.result_value = Utils.hasValue(row.min_result_value) 
+                                                    ? Math.max(Utils.toNumber(row.min_result_value||0)||0,row.result_value) 
+                                                    : row.result_value;
+                                                row.result_value = Utils.hasValue(row.max_result_value) 
+                                                    ? Math.min(Utils.toNumber(row.max_result_value||0)||0,row.result_value) 
+                                                    : row.result_value;                                                                                                                                        
+                                                entitiesToUpdate[row.customized_commission_entity_id].base_value += sum;
+                                                entitiesToUpdate[row.customized_commission_entity_id].result_value += result;
+                                            }
+                                            if (Utils.hasValue(row.changed())) {
+                                                await row.save();
+                                            }
+                                        }                                        
                                     } else {
                                         resultCustomizedReport.throw();
                                     }
