@@ -9,7 +9,7 @@ export default class Utils {
     static log(...values:any) : void {
         if ((process.env.NODE_ENV || 'development') === 'production' && (process.env.LOG_LEVEL || 'debug') === 'production') {
             if (values[0]) {
-                let tp = typeof values[0];
+                const tp = typeof values[0];
                 if ((values instanceof Error                     
                     || (tp === 'object' && values[0].message)
                     || (tp === 'string' && (
@@ -51,7 +51,7 @@ export default class Utils {
     static loge(...values : any) : void {
         if ((process.env.NODE_ENV || 'development') === 'production' && (process.env.LOG_LEVEL || 'debug') === 'production') {
             if (values[0]) {
-                let tp = typeof values[0];
+                const tp = typeof values[0];
                 if ((values instanceof Error                     
                     || (tp === 'object' && values[0].message)
                     || (tp === 'string' && (
@@ -95,8 +95,8 @@ export default class Utils {
      */
     static hasValue<T>(pValue: T | null | undefined) : pValue is T {
         let result = false;
-        let tpof = Utils.typeOf(pValue);
-        if (tpof !== "undefined" && pValue != null) {
+        const tpof = Utils.typeOf(pValue);
+        if (tpof !== "undefined" && pValue != null) { // eslint-disable-line eqeqeq
             if (tpof === "object") {
                 if (Object.keys(pValue).length > 0
                     || Object.getOwnPropertySymbols(pValue).length > 0
@@ -134,7 +134,7 @@ export default class Utils {
                 check_null = check_null === false ? false : true;
                 if (arr_valores !== null) {            
                     if (Utils.typeOf(arr_valores) === "array") {
-                        let q = arr_valores.length;                
+                        const q = arr_valores.length;                
                         if (check_null) {
                             for (let i = 0; i < q; i++) {
                                 if (typeof arr_valores[i] !== "undefined" && arr_valores[i] !== null) {
@@ -163,7 +163,7 @@ export default class Utils {
 
     static toBool(pValue : any) : boolean{
         let result : boolean = false;
-        if (typeof pValue !== "undefined" && pValue != null) {
+        if (typeof pValue !== "undefined" && pValue != null) { // eslint-disable-line eqeqeq
             if (typeof pValue === "boolean") {
                 result = pValue;
             } else if (typeof pValue === "string") {
@@ -171,7 +171,7 @@ export default class Utils {
                     result = true;
                 }
             } else if (typeof pValue === "number") {
-                if (pValue != 0) {
+                if (pValue !== 0) {
                     return true;
                 }
             } else {
@@ -185,7 +185,7 @@ export default class Utils {
     static getDeepProperty(obj: any,arrayOfDeepProps: string[]) : any {
         let _return = null;
         let obj_temp = obj;
-        for(let key in arrayOfDeepProps) {
+        for(const key in arrayOfDeepProps) {
             obj_temp = obj_temp?.[arrayOfDeepProps[key]];
             if (!Utils.isNotNull(obj_temp)) {
                 break;
@@ -197,16 +197,16 @@ export default class Utils {
 
     
 
-    static getKey(obj: object | Function | null | undefined, key: string) : string | null {
+    static getKey(obj: object | Function | null | undefined, key: string) : string | null {  // eslint-disable-line @typescript-eslint/no-unsafe-function-type
         let result = null;
         try {
-            let tObj = typeof obj;
-            if (tObj !== "undefined" && obj != null) {
+            const tObj = typeof obj;
+            if (tObj !== "undefined" && obj != null) { // eslint-disable-line eqeqeq
                 if (tObj === "object" || tObj === "function") {
-                    if (typeof key !== "undefined" && key != null) {
+                    if (typeof key !== "undefined" && key != null) { // eslint-disable-line eqeqeq
                         //let objKeys = Object.keys(obj);
-                        let objKeys = Object.getOwnPropertyNames(obj);
-                        let keyTemp = key.trim().toLowerCase();
+                        const objKeys = Object.getOwnPropertyNames(obj);
+                        const keyTemp = key.trim().toLowerCase();
                         for(let i = 0; i < objKeys.length; i++) {
                             if (objKeys[i].trim().toLowerCase() === keyTemp) {
                                 result = objKeys[i];
@@ -226,7 +226,7 @@ export default class Utils {
     static toNumber(v: any) : number | null {
         let r = null;
         try {
-            let t = typeof v;
+            const t = typeof v;
             if (t === 'number') {
                 r = v;
             } else {
@@ -237,8 +237,8 @@ export default class Utils {
                     if (isNaN(r)) {
                         v = v.replace(/[^\d|\,|\.|\-|\+]+/ig,'');
                         if (v.length > 0) { 
-                            let pc = v.indexOf(",");
-                            let pp = v.indexOf(".");
+                            const pc = v.indexOf(",");
+                            const pp = v.indexOf(".");
                             if (pc > -1 && pp > -1) {
                                 if (pp > pc) {
                                     r = Number(v.replaceAll(",",""));
@@ -266,7 +266,7 @@ export default class Utils {
     static deleteNotExistsProperty(object: any,properties: any) : void{
         properties = Utils.toArray(properties || []);
         properties = properties.join(',').toLowerCase().split(',');
-        for(let k2 in object) {
+        for(const k2 in object) {
             if (properties.indexOf(k2.toLowerCase().trim()) === -1) {
               delete object[k2];
             }
@@ -275,11 +275,11 @@ export default class Utils {
 
 
     static arrayToObject(array: any,key: any = null) : any {
-        let result : any = {};
+        const result : any = {};
         if (array && key) {
             if (Utils.typeOf(key) === 'array') {                
                 let currentPath = null;
-                for(let i in array) {                    
+                for(const i in array) {                    
                     result[array[i][key[0]]] = result[array[i][key[0]]] || {};
                     currentPath = result[array[i][key[0]]];
                     for(let j = 1; j < key.length; j++) {
@@ -293,7 +293,7 @@ export default class Utils {
                     
                 }
             } else {
-                for(let i in array) {
+                for(const i in array) {
                     result[array[i][key]] = result[array[i][key]] || []; 
                     result[array[i][key]].push(array[i]);
                 }
@@ -323,7 +323,7 @@ export default class Utils {
     }
 
     static getPreviousYearDate(pDate : any) : Date {
-        let previousDate : Date = Utils.toDate(pDate);                   
+        const previousDate : Date = Utils.toDate(pDate);                   
         previousDate.setUTCFullYear(previousDate.getUTCFullYear()-1);
         return previousDate;
     }
@@ -333,7 +333,7 @@ export default class Utils {
         let previousDate = new Date(pDate)//Utils.toDate(Utils.toISODate(pDate));        
         previousDate.setDate(1);        
         previousDate.setUTCFullYear(previousDate.getUTCFullYear()-1);        
-        let lastDayMonthDate1 = new Date(pDate.getUTCFullYear(), pDate.getUTCMonth()+1, 0);        
+        const lastDayMonthDate1 = new Date(pDate.getUTCFullYear(), pDate.getUTCMonth()+1, 0);        
         if (lastDayMonthDate1.getDate() === pDate.getDate()) {
             previousDate = new Date(previousDate.getUTCFullYear(), previousDate.getUTCMonth()+1, 0);            
         } else {
@@ -368,9 +368,9 @@ export default class Utils {
     
 
     static singleArrayTo2LevelArray(array : any[]) : any[] {
-        let newArray = [];
+        const newArray = [];
         let current2Level = [];
-        for(let k in array) {
+        for(const k in array) {
             if (Utils.typeOf(array[k]) !== 'array') {
                 current2Level.push(array[k]);
                 if (current2Level.length === 2 ) {
@@ -389,7 +389,7 @@ export default class Utils {
 
     static getSingleUrlPath(urlPath: string) : string {
         let result = urlPath || '';
-        let p1 = result.indexOf("?");
+        const p1 = result.indexOf("?");
         if (p1 > -1) {
             result = result.substring(0,p1);
         }            
@@ -409,19 +409,19 @@ export default class Utils {
      * @version 1.0.1
      */
     static getMethodName(obj:any,methodName:string) : string | null{
-        let ownPropName : string = `${obj.name}_hashMethodsNames`;
+        const ownPropName : string = `${obj.name}_hashMethodsNames`;
         if (!this.hasValue(obj[ownPropName])) {            
             obj[ownPropName] = {};
 
             let obj2 = obj;
             do {
                 if (obj2 && typeof obj2 !== 'undefined' && obj2 !== undefined && obj2 !== null) {
-                    let keys : any = Reflect.ownKeys(obj2);
+                    const keys : any = Reflect.ownKeys(obj2);
                     if (keys && typeof keys !== 'undefined' && keys.length > 0) {
-                        for (let k in keys) {
+                        for (const k in keys) {
                             try {
                                 if (typeof keys[k] === 'string' && [ 'caller', 'callee', 'arguments'].indexOf(keys[k]) === -1 && typeof (obj2||{})[keys[k]]  === 'function') obj[ownPropName][keys[k].toLowerCase()] = keys[k];
-                            } catch (e) {
+                            } catch {
                                 obj[ownPropName][keys[k].toLowerCase()] = keys[k];
                             }
                         };

@@ -44,7 +44,7 @@ export default abstract class BaseRegistersController {
                     }
                 );
             } else {
-                if (((this.getTableClassModel() as any).accessLevel || 1) == 2 ) {
+                if (((this.getTableClassModel() as any).accessLevel || 1) === 2 ) {
                     queryParams.where = queryParams.where || {};
                     queryParams.where.creator_user_id = params?.user?.id || null
                 }
@@ -62,9 +62,9 @@ export default abstract class BaseRegistersController {
      * @created 2024-12-31
      * @version 1.0.0
      */
-    static async get(req: Request, res: Response, next: NextFunction) : Promise<void> {
+    static async get(req: Request, res: Response, next: NextFunction) : Promise<void> { // eslint-disable-line @typescript-eslint/no-unused-vars
         try {
-            let params = req.body;
+            const params = req.body;
             params.user = req.user;
             res.data = await this._get(params);
             res.sendResponse(200,true);
@@ -80,9 +80,9 @@ export default abstract class BaseRegistersController {
      * @version 1.0.0
      */
     static async _put(params: any) : Promise<DataSwap> {
-        let result = new DataSwap();
+        const result = new DataSwap();
         try {
-            let queryParams = params.queryParams || params;            
+            const queryParams = params.queryParams || params;            
             result.data = await this.getTableClassModel().createData(queryParams);
             result.success = true;
         } catch (e) {
@@ -99,9 +99,9 @@ export default abstract class BaseRegistersController {
      * @created 2024-12-31
      * @version 1.0.0
      */
-    static async put(req: Request, res: Response, next: NextFunction) : Promise<void> {
+    static async put(req: Request, res: Response, next: NextFunction) : Promise<void> { // eslint-disable-line @typescript-eslint/no-unused-vars
         try {
-            let params = req.body;
+            const params = req.body;
             params.user = req.user;
             res.setDataSwap(await this._put(params));
         } catch (e: any) {
@@ -116,9 +116,9 @@ export default abstract class BaseRegistersController {
      * @version 1.0.0
      */
     static async _patch(params: any) : Promise<DataSwap> {
-        let result = new DataSwap();
+        const result = new DataSwap();
         try {
-            let queryParams = params.queryParams || params;
+            const queryParams = params.queryParams || params;
             result.data = await this.getTableClassModel().patchData(queryParams);
             result.success = true;
         } catch (e: any) {
@@ -133,9 +133,9 @@ export default abstract class BaseRegistersController {
      * @created 2024-12-31
      * @version 1.0.0
      */
-    static async patch(req: Request, res: Response, next: NextFunction) : Promise<void> {
+    static async patch(req: Request, res: Response, next: NextFunction) : Promise<void> { // eslint-disable-line @typescript-eslint/no-unused-vars
         try {
-            let params = req.body;
+            const params = req.body;
             res.setDataSwap(await this._patch(params));
         } catch (e: any) {
             res.setException(e);
@@ -149,9 +149,9 @@ export default abstract class BaseRegistersController {
      * @version 1.0.0
      */
     static async _delete(params: any) : Promise<DataSwap> {
-        let result = new DataSwap();
+        const result = new DataSwap();
         try {
-            let queryParams = params.queryParams || params;
+            const queryParams = params.queryParams || params;
             result.data = await this.getTableClassModel().deleteData(queryParams);
             result.success = true;
         } catch (e: any) {
@@ -167,9 +167,9 @@ export default abstract class BaseRegistersController {
      * @created 2024-12-31
      * @version 1.0.0
      */
-    static async delete(req: Request, res: Response, next: NextFunction) : Promise<void> {
+    static async delete(req: Request, res: Response, next: NextFunction) : Promise<void> { // eslint-disable-line @typescript-eslint/no-unused-vars
         try {
-            let params = req.body;
+            const params = req.body;
             res.setDataSwap(await this._delete(params));
         } catch (e: any) {
             res.setException(e);
@@ -180,7 +180,7 @@ export default abstract class BaseRegistersController {
     /**
      * call its on inherited class at static block to configure this methodos as request handlers
      */
-    static configureDefaultRequestHandlers(funcs?: Function[]){
+    static configureDefaultRequestHandlers(funcs?: ((req:Request, res: Response, next?: NextFunction)=> Promise<void> | void)[]){
         [
             this.get,
             this.put,

@@ -35,8 +35,8 @@ export default class Customized_Commission_Entity_Items extends BaseTableModel {
   declare base_value?: number;
   declare percent1: number;
   declare percent2?: number;
-  declare min_value?: number;
-  declare max_value?: number;
+  declare min_result_value?: number;
+  declare max_result_value?: number;
   declare expression?: string;
   declare result_value?: number;
   declare calculated_at?: Date;
@@ -82,19 +82,13 @@ export default class Customized_Commission_Entity_Items extends BaseTableModel {
         type: DataTypes.BIGINT.UNSIGNED
       },
       consider_normal_sales:{
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue:1
+        type: DataTypes.INTEGER
       },
       consider_returns:{
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue:1
+        type: DataTypes.INTEGER
       },
       consider_bonuses:{
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue:0
+        type: DataTypes.INTEGER
       },
       conditions:{
         type: DataTypes.TEXT,
@@ -122,10 +116,10 @@ export default class Customized_Commission_Entity_Items extends BaseTableModel {
       percent2:{
         type: DataTypes.DECIMAL(32,10)
       },
-      min_value:{
+      min_result_value:{
         type: DataTypes.DECIMAL(32,10),
       }, 
-      max_value:{
+      max_result_value:{
         type: DataTypes.DECIMAL(32,10),
       }, 
       expression:{
@@ -158,7 +152,7 @@ export default class Customized_Commission_Entity_Items extends BaseTableModel {
     type:"check",
     where:{
       consider_normal_sales: {
-        [Op.in]: [0,1]
+        [Op.in]: [null,0,1]
       }
     }
   },{
@@ -167,7 +161,7 @@ export default class Customized_Commission_Entity_Items extends BaseTableModel {
     type:"check",
     where:{
       consider_returns: {
-        [Op.in]: [0,1]
+        [Op.in]: [null,0,1]
       }
     }
   },{
@@ -176,7 +170,7 @@ export default class Customized_Commission_Entity_Items extends BaseTableModel {
     type:"check",
     where:{
       consider_bonuses: {
-        [Op.in]: [0,1]
+        [Op.in]: [null,0,1]
       }
     }
   }]];
