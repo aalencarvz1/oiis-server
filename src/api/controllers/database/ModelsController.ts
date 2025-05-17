@@ -698,7 +698,7 @@ export default class ModelsController {
         await Packs_X_Packs_Origins.initAssociations();
         await Meas_X_Meas_Origins.initAssociations();
         await Midias.initAssociations();
-        Integration_Rules.initAssociations();
+        await Integration_Rules.initAssociations();
 
 
         if (Utils.toBool(process.env.HAS_DB_EXTERNAL_DATA) === true) {
