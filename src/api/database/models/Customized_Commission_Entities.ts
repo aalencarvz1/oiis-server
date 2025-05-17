@@ -15,7 +15,7 @@ import Entities_Types from "./Entities_Types.js";
 export default class Customized_Commission_Entities extends BaseTableModel {
 
   //table fields
-  declare customized_commision_id: number;
+  declare customized_commission_id: number;
   declare entity_type_id: number;
   declare entity_id: number;
   declare entity_name: string;
@@ -25,8 +25,11 @@ export default class Customized_Commission_Entities extends BaseTableModel {
   declare start_at?: Date;
   declare end_at?: Date;
   declare conditions?: string;
-  declare min_total_value?: number;
-  declare max_total_value?: number;
+  declare min_base_value?: number;
+  declare max_base_value?: number;
+  declare base_value?: number;
+  declare min_result_value?: number;
+  declare max_result_value?: number;
   declare expression?: string;
   declare result_value?: number;
   declare calculated_at?: Date;
@@ -40,7 +43,7 @@ export default class Customized_Commission_Entities extends BaseTableModel {
 
   static fields = {
     ...Customized_Commission_Entities.getBaseTableModelFields(),...{           
-      customized_commision_id:{
+      customized_commission_id:{
         type: DataTypes.BIGINT.UNSIGNED,
         allowNull:false
       },
@@ -73,11 +76,20 @@ export default class Customized_Commission_Entities extends BaseTableModel {
       },
       conditions:{
         type: DataTypes.TEXT
-      },
-      min_total_value:{
+      },    
+      min_base_value:{
         type: DataTypes.DECIMAL(38,12)
       },
-      max_total_value:{
+      max_base_value:{
+        type: DataTypes.DECIMAL(38,12)
+      },        
+      base_value:{
+        type: DataTypes.DECIMAL(38,12)
+      },
+      min_result_value:{
+        type: DataTypes.DECIMAL(38,12)
+      },
+      max_result_value:{
         type: DataTypes.DECIMAL(38,12)
       },
       expression:{
@@ -96,7 +108,7 @@ export default class Customized_Commission_Entities extends BaseTableModel {
   };
   
   static uniqueFields = [
-    'customized_commision_id',
+    'customized_commission_id',
     'entity_type_id',
     'entity_id',
     'entity_name',
@@ -126,7 +138,7 @@ export default class Customized_Commission_Entities extends BaseTableModel {
     if (!this.adjustedForeignKeys || !Utils.hasValue(this.foreignsKeys)) {
       result = super.getForeignKeys();    
       result.push({
-        fields: ['customized_commision_id'],
+        fields: ['customized_commission_id'],
         type: 'foreign key',
         references: { 
             table: Customized_Commissions,
